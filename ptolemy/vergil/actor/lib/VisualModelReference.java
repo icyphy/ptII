@@ -88,16 +88,8 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
 
    </ul>
    <p>
-   There are currently a number of serious limitations:
+   Limitations:
    <ul>
-   FIXME: Modifying and saving the referenced model, if done through the
-   Vergil window opened by this actor, results in overwriting the referenced
-   model with a copy of the model containing this actor!
-   <li>
-   FIXME: Modifying the referenced model in another window and saving
-   it does not result in this actor re-reading the model.
-   <li>
-   FIXME: Closing the master model doesn't close open referenced models.
    <li>
    FIXME: Supporting full-screen operation creates a dependence on vergil.
    Without that, this actor could be in the actor package.  Need to figure
@@ -310,12 +302,12 @@ public class VisualModelReference
 
                                 JFrame frame = _tableau.getFrame();
                                 if (frame != null) {
-                                    frame.toFront();
                                     if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                                         if (frame instanceof ExtendedGraphFrame) {
                                             ((ExtendedGraphFrame) frame).fullScreen();
                                         }
                                     }
+                                    frame.toFront();
                                 }
                             }
                         };
@@ -350,24 +342,6 @@ public class VisualModelReference
                     throw new InternalErrorException(ex);
                 }
             }
-            // If we did not open in Vergil, then there is no tableau.
-            /** FIXME: Not needed anymore?
-            if (_tableau != null) {
-                JFrame frame = _tableau.getFrame();
-                if (frame != null) {
-                    if (_openOnFiringValue == _OPEN_IN_VERGIL) {
-                        frame.toFront();
-                    } else if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
-                        if (frame instanceof ExtendedGraphFrame) {
-                            ((ExtendedGraphFrame) frame).fullScreen();
-                        } else {
-                            // No support for full screen.
-                            frame.toFront();
-                        }
-                    }
-                }
-            }
-            */
         }
         // Call this last so that we open before executing.
         super.fire();
