@@ -76,7 +76,7 @@ in the JDK
 keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass this.is.not.secure,it.is.for.testing.only -storepass this.is.not.secure,it.is.for.testing.only
 </pre>
 You will be prompted for information about yourself.
-<li>Optional: Generate a Certificate Signing Request (CVR), send
+<li>Optional: Generate a Certificate Signing Request (CSR), send
 it to your vendor and import the response.  Since we
 are using a self signed certificate, this step is option.
 <li> Export the certificate
