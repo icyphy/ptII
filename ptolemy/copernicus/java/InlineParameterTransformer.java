@@ -579,14 +579,15 @@ public class InlineParameterTransformer extends SceneTransformer {
         }
     }
     
-    // Create a static field in the given class for each attribute in the given container 
-    // that is a variable or settable.  If the attribute is a variable, then the field will have
-    // type Token, and if only a settable, then the field will have type String.
-    // In addition, add a tag to the field that contains the value of the token or expression
-    // that that field contains.
+    // Create a static field in the given class for each attribute in
+    // the given container that is a variable or settable.  If the
+    // attribute is a variable, then the field will have type Token,
+    // and if only a settable, then the field will have type String.
+    // In addition, add a tag to the field that contains the value of
+    // the token or expression that that field contains.
     private static void _createTokenAndExpressionFields(SootClass theClass,
-            NamedObj context, NamedObj container, Map attributeToValueFieldMap, 
-            boolean debug) {
+            NamedObj context, NamedObj container, 
+            Map attributeToValueFieldMap, boolean debug) {
         /*   SootClass tokenClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
             Type tokenType = RefType.v(tokenClass);*/
@@ -600,6 +601,9 @@ public class InlineParameterTransformer extends SceneTransformer {
                 container.attributeList().iterator();
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
+            if(attributeToValueFieldMap.get(attribute) != null) {
+                throw new RuntimeException("already created field for attribute" + attribute);
+            }
             if(attribute instanceof Settable) {
                 Settable settable = (Settable)attribute;
 

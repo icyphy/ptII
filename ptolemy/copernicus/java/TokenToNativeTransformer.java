@@ -227,18 +227,22 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                value instanceof InterfaceInvokeExpr) {
                                 InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                            
-                                Type baseType = typeAnalysis.getSpecializedSootType((Local)r.getBase());
-
+                                Type baseType = r.getBase().getType();
+                               
                                 // If we are invoking a method on a Token, and
                                 // the token is not unsafe.
                                 if(baseType instanceof RefType &&
                                         !unsafeLocalSet.contains(r.getBase())) {
                                     RefType type = (RefType)baseType;
-                                                                               
                                     if(SootUtilities.derivesFrom(type.getSootClass(),
-                                            PtolemyUtilities.tokenClass)
-                                            ||  SootUtilities.derivesFrom(type.getSootClass(),
-                                                    PtolemyUtilities.typeClass)) {
+                                               PtolemyUtilities.arrayTokenClass)) {
+                                        type = (RefType)typeAnalysis.getSpecializedSootType((Local)r.getBase());
+                                    }
+                                         
+                                    if(SootUtilities.derivesFrom(type.getSootClass(),
+                                               PtolemyUtilities.arrayTokenClass)
+                                               ||  SootUtilities.derivesFrom(type.getSootClass(),
+                                                       PtolemyUtilities.typeClass)) {
 
                                         // Then determine the method that was
                                         // actually invoked.
@@ -299,7 +303,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     RefType type = (RefType)baseType;
                                     
                                     if(SootUtilities.derivesFrom(type.getSootClass(),
-                                            PtolemyUtilities.tokenClass)) {
+                                            PtolemyUtilities.arrayTokenClass)) {
                                         SootMethod inlinee =
                                             hierarchy.resolveSpecialDispatch(
                                                     r, method);
@@ -336,7 +340,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 SootMethod inlinee = (SootMethod)r.getMethod();
                                 SootClass declaringClass = inlinee.getDeclaringClass();
                                 if(SootUtilities.derivesFrom(declaringClass,
-                                        PtolemyUtilities.tokenClass)) {
+                                        PtolemyUtilities.arrayTokenClass)) {
                                     declaringClass.setLibraryClass();
                                     if(!inlinee.isAbstract() && 
                                             !inlinee.isNative()) {
@@ -406,6 +410,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     RefType type = (RefType)PtolemyUtilities.getBaseTokenType(fieldType);
                     SootClass fieldClass = type.getSootClass();
                                     
+                    if(!SootUtilities.derivesFrom(fieldClass, PtolemyUtilities.arrayTokenClass)) {
+                        continue;
+                    }
+
                     if(debug) System.out.println("field = " + field);
 
                     Map tokenFieldToReplacementField = new HashMap();
@@ -481,6 +489,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         if(debug) System.out.println("local = " + local);
                         if(debug) System.out.println("localClass = " + localClass);
                     
+                        if(!SootUtilities.derivesFrom(localClass, 
+                                   PtolemyUtilities.arrayTokenClass)) {
+                            continue;
+                        }
+
                         // Create a boolean value that tells us whether or
                         // not the token is null.  Initialize it to true.
                         Local isNullLocal = Jimple.v().newLocal(
@@ -590,7 +603,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     RefType type = (RefType)r.getBase().getType();
                                     //System.out.println("BaseType = " + type);
                                     if(SootUtilities.derivesFrom(type.getSootClass(), 
-                                            PtolemyUtilities.tokenClass)) {
+                                            PtolemyUtilities.arrayTokenClass)) {
                                         if(debug) System.out.println("handling " +
                                                 unit + " token operation");
                                     
@@ -611,7 +624,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     RefType type = (RefType)r.getBase().getType();
                                 //System.out.println("BaseType = " + type);
                                     if(SootUtilities.derivesFrom(type.getSootClass(), 
-                                            PtolemyUtilities.tokenClass)) {
+                                            PtolemyUtilities.arrayTokenClass)) {
                                         if(debug) System.out.println("handling " +
                                                 unit + " token operation");
                                     
@@ -651,7 +664,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         if(unit instanceof AssignStmt) {
                             AssignStmt stmt = (AssignStmt)unit;
                             Type assignmentType = stmt.getLeftOp().getType();
-                            if(PtolemyUtilities.isTokenType(assignmentType)) {
+                            if(PtolemyUtilities.isArrayTokenType(assignmentType)) {
                                 if(stmt.getLeftOp() instanceof Local &&
                                         (stmt.getRightOp() instanceof Local ||
                                                 stmt.getRightOp() instanceof Constant)) {

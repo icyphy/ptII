@@ -252,6 +252,7 @@ public class Main extends KernelMain {
         //        ConstantLoopUnroller.v()));
 
         // Simplify to speed up instance equality elimination
+        // FIXME: This has bugs...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
@@ -334,9 +335,9 @@ public class Main extends KernelMain {
 
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
         //         TypeSpecializer.v(_toplevel)));
-        // Scene.v().getPack("wjtp").add(
-        //        new Transform("wjtp.ttn",
-        //                TokenToNativeTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ttn",
+                        TokenToNativeTransformer.v(_toplevel)));
  
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",

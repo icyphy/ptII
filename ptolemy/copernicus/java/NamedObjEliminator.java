@@ -225,6 +225,10 @@ public class NamedObjEliminator extends SceneTransformer {
                                 body.getUnits().remove(unit);
                                 break;
                             }
+                            if(expr.getMethod().getName().equals("_debug")) {
+                                body.getUnits().remove(unit);
+                                break;
+                            }
                             // Inline namedObj methods on the
                             // attribute.  
                             // FIXME: This should do the
