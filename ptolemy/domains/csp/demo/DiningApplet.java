@@ -47,7 +47,7 @@ import java.text.NumberFormat;
 //// DiningApplet
 /**
    Applet containing Dining Philosophers demo. This demo uses the
-   both the time and conditional communiaction constructs of the CSP
+   both the time and conditional communication constructs of the CSP
    domain in Ptolemy II. It represents the classic concurrency problem,
    first described by Dijkstra in 1965, which has 5 philosophers sitting
    around a table with one chopstick between each pair of philosophers. To
