@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 2, 1019, 780}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 0, 1019, 738}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 662]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 620]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 331.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 310.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to&#10;model an assembly line.&#10;&#10;The Clock actor (Jobs) generates a set of jobs at different times, where no two&#10;jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job &#10;request and produces the service time of the job request. &#10;&#10;The NonInterruptibleTimer actor (Station) takes the service time and sets a&#10;timer. The timer goes off when the service time expires. The timer can not&#10;be interrupted to respond to another input when it is running. &#10;&#10;A job is passed along all three stations. The Plotter monitors the outputs&#10;from Stations plots the times when jobs leaves the station.&#10;&#10;This model is based on the assembly line example described in &quot;Distributed &#10;Discrete-Event Simulation&quot; by Jayadev Misra, Computer Serveys, Vol. 18, &#10;No. 1, March 1986.">
@@ -43,7 +43,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[47.5, 42.5]">
         </property>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Times when stations finish jobs" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Station 1,Station 2, Station 3">
@@ -52,13 +52,13 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 176]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Times when jobs leave work stations.</title>
+<title>Times when stations finish jobs</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="50.0"/>
@@ -83,7 +83,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 310.0]">
         </property>
     </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Times when jobs arrive" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 500, 442, 231}, maximized=false}">
@@ -96,7 +96,7 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Times when jobs arrive.</title>
+<title>Times when jobs arrive</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="50.0"/>
@@ -177,14 +177,14 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Jobs.output" relation="relation7"/>
-    <link port="TimedPlotter.input" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
-    <link port="TimedPlotter.input" relation="relation6"/>
+    <link port="Times when stations finish jobs.input" relation="relation"/>
+    <link port="Times when stations finish jobs.input" relation="relation4"/>
+    <link port="Times when stations finish jobs.input" relation="relation6"/>
     <link port="ServiceTimes 2.output" relation="relation2"/>
     <link port="ServiceTimes 2.trigger" relation="relation"/>
     <link port="ServiceTimes 3.output" relation="relation5"/>
     <link port="ServiceTimes 3.trigger" relation="relation4"/>
-    <link port="TimedPlotter2.input" relation="relation3"/>
+    <link port="Times when jobs arrive.input" relation="relation3"/>
     <link port="ServiceTimes 1.output" relation="relation8"/>
     <link port="ServiceTimes 1.trigger" relation="relation7"/>
     <link port="CurrentTime.output" relation="relation3"/>

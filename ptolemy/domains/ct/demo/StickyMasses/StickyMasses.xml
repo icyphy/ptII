@@ -161,10 +161,18 @@ to see the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 35.0]">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Jie Liu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 350.0]">
+        </property>
+    </property>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={491, 234, 508, 301}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={491, 234, 508, 528}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 473]">
         </property>
@@ -215,7 +223,7 @@ to see the modal behavior.</text></svg></configure>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <port name="stickness" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="stickiness" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -328,7 +336,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 335.0]">
                 </property>
             </port>
-            <port name="stickness" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="stickiness" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
@@ -385,7 +393,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="force + stickness &lt; 0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="force + stickiness &lt; 0">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
                 </property>
@@ -455,29 +463,17 @@ of the two masses.</text></svg></configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 2, 815, 639}, maximized=false}">
             </property>
-            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The masses are not touching, therefore there is no force.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 415.0]">
-                </property>
-            </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 260.5}">
             </property>
-            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The masses are not touching, therefore there is no stickness.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 475.0]">
-                </property>
+            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2844113605434">
             </property>
-            <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.2854906488852">
+            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5936022016585">
             </property>
-            <property name="p2" class="ptolemy.data.expr.Parameter" value="1.5947677061894">
+            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2844113605434">
             </property>
-            <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.2854906488852">
-            </property>
-            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5947677061894">
+            <property name="p1" class="ptolemy.data.expr.Parameter" value="1.5936022016585">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -501,6 +497,12 @@ of the two masses.</text></svg></configure>
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 45}">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The masses are not touching, therefore there is no stickiness.&#10;The difference of spring forces applied on the masses is not &#10;useful in this mode, therefore, it is simply set to 0.0.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 455.0]">
                 </property>
             </property>
             <port name="V1" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -533,9 +535,9 @@ of the two masses.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 425.0]">
                 </property>
             </port>
-            <port name="stickness" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="stickiness" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 480.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 425.0]">
                 </property>
             </port>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -560,6 +562,12 @@ of the two masses.</text></svg></configure>
             <entity name="V2 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v2">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 245.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -576,6 +584,12 @@ of the two masses.</text></svg></configure>
             <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p1">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 140.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -591,6 +605,12 @@ of the two masses.</text></svg></configure>
             </entity>
             <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v1">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 140.0">
                 </property>
@@ -622,6 +642,12 @@ of the two masses.</text></svg></configure>
             </entity>
             <entity name="P2 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p2">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 245.0">
                 </property>
@@ -663,7 +689,7 @@ of the two masses.</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 480.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 425.0]">
                 </property>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -718,7 +744,7 @@ of the two masses.</text></svg></configure>
             <link port="P2" relation="1:_R7"/>
             <link port="touched" relation="relation"/>
             <link port="force" relation="relation2"/>
-            <link port="stickness" relation="relation3"/>
+            <link port="stickiness" relation="relation3"/>
             <link port="Expression.output" relation="1:_R1"/>
             <link port="Expression.P1" relation="1:_R3"/>
             <link port="AddSubtract.plus" relation="1:_R3"/>
@@ -744,9 +770,9 @@ of the two masses.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.876742786411">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.8771362988194">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1519346801557">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.1499156608489">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
@@ -845,13 +871,19 @@ stickiness.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 315.0]">
                 </property>
             </port>
-            <port name="stickness" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="stickiness" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 390.0]">
                 </property>
             </port>
             <entity name="Stickiness integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="stickiness">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 415.0">
                 </property>
@@ -884,6 +916,12 @@ stickiness.</text></svg></configure>
             <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="v">
                 </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 160.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -914,6 +952,12 @@ stickiness.</text></svg></configure>
             </entity>
             <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="p">
+                </property>
+                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 160.0">
                 </property>
@@ -966,7 +1010,7 @@ stickiness.</text></svg></configure>
             <link port="P1" relation="1:_R4"/>
             <link port="P2" relation="1:_R4"/>
             <link port="force" relation="relation4"/>
-            <link port="stickness" relation="1:_R1"/>
+            <link port="stickiness" relation="1:_R1"/>
             <link port="Stickiness integrator.input" relation="1:relation0"/>
             <link port="Stickiness integrator.output" relation="1:_R1"/>
             <link port="Expression.output" relation="1:relation1"/>
@@ -992,7 +1036,7 @@ stickiness.</text></svg></configure>
         </relation>
         <relation name="forceRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="sticknessRelation" class="ptolemy.actor.TypedIORelation">
+        <relation name="stickinessRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="V1" relation="V1Relation"/>
         <link port="V2" relation="V2Relation"/>
@@ -1000,26 +1044,26 @@ stickiness.</text></svg></configure>
         <link port="P2" relation="P2Relation"/>
         <link port="touched" relation="touchedRelation"/>
         <link port="force" relation="forceRelation"/>
-        <link port="stickness" relation="sticknessRelation"/>
+        <link port="stickiness" relation="stickinessRelation"/>
         <link port="_Controller.V1" relation="V1Relation"/>
         <link port="_Controller.V2" relation="V2Relation"/>
         <link port="_Controller.P1" relation="P1Relation"/>
         <link port="_Controller.P2" relation="P2Relation"/>
         <link port="_Controller.touched" relation="touchedRelation"/>
         <link port="_Controller.force" relation="forceRelation"/>
-        <link port="_Controller.stickness" relation="sticknessRelation"/>
+        <link port="_Controller.stickiness" relation="stickinessRelation"/>
         <link port="Separate.V1" relation="V1Relation"/>
         <link port="Separate.V2" relation="V2Relation"/>
         <link port="Separate.P1" relation="P1Relation"/>
         <link port="Separate.P2" relation="P2Relation"/>
         <link port="Separate.touched" relation="touchedRelation"/>
         <link port="Separate.force" relation="forceRelation"/>
-        <link port="Separate.stickness" relation="sticknessRelation"/>
+        <link port="Separate.stickiness" relation="stickinessRelation"/>
         <link port="Together.V1" relation="V1Relation"/>
         <link port="Together.P1" relation="P1Relation"/>
         <link port="Together.P2" relation="P2Relation"/>
         <link port="Together.force" relation="forceRelation"/>
-        <link port="Together.stickness" relation="sticknessRelation"/>
+        <link port="Together.stickiness" relation="stickinessRelation"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
