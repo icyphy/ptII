@@ -395,8 +395,6 @@ public class SoundPlayback {
 		// Record data to sound file.
 		_startPlaybackToFile();
 	    } else  {
-		// FIXME: IOException is probably not the
-		// best exception to throw here.
 		throw new IOException("SoundPlayback: " +
                 "startPlayback(): unknown playback mode: " +
                 _playbackMode);
@@ -467,7 +465,7 @@ public class SoundPlayback {
 
         // get and open the source data line for playback.
 	try {
-	    // Source DataLine is a stupid name. It is really a target for
+	    // Source DataLinet is really a target for
 	    // audio data, not a source.
 	    _sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
             // Open line and suggest a buffer size (in bytes) to use or
@@ -700,9 +698,6 @@ public class SoundPlayback {
     private float _sampleRate;
     private int _channels;
     private int _bufferSize;
-    // This is a stupid name, but it is consistent with
-    // the Java Sound API naming conventions. It is
-    // really a "target."
     private SourceDataLine _sourceLine;
     // Array of audio samples in byte format.
     private byte[] _data;
