@@ -82,6 +82,11 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
+OTHER_FILES_TO_BE_JARED = \
+	ptinyDomains.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 MISC_FILES =	$(DIRS)
