@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// CTStatefulActor
 /**
-   An interface for actors that have states. The state of the actor can be
+   Interface for actors that have states. The state of the actor can be
    marked (saved). The saved state can be restored so that the actor can go
    back to its previously marked state. This feature is used for rolling
    back the simulation when needed, which is essential when embedding

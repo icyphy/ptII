@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 /**
-   This is the abstract base class for directors in the CT domain. A CTDirector
+   Abstract base class for directors in the CT domain. A CTDirector
    has a CTScheduler which provides the schedules for firing
    the actors in different phases of execution in one iteration.
    <P>

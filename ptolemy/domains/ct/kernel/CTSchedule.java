@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// CTSchedule
 /**
-   A schedule for CT models. This class overrides the base class and uses
+   A static schedule for CT models. This class overrides the base class and uses
    an ArrayList implementation for the first level of the schedule, so
    that accessing subschedules takes constant time. A CT schedule is an
    array of LinkedList. The array always has length X, consisting of the
@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NamedObj;
        schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
    </pre>
 
-   @author  Jie Liu
+   @author  Jie Liu, Haiayng Zheng
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Yellow (liuj)

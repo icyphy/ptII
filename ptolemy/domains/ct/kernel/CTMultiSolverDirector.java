@@ -85,8 +85,8 @@ import ptolemy.kernel.util.Workspace;
    used for iterations of normal integration over ODEs.
    <LI><I>breakpointODESolver</I>: This is the name of the ODE solver used
    in iterations at breakpoint. The breakpoint ODE solvers does not need
-   history information (this property is called self-start). The default solver
-   is "ptolemy.domains.ct.kernel.solver.DerivativeResolver".
+   history information (this property is called self-start). There is only one
+   such solver, "ptolemy.domains.ct.kernel.solver.DerivativeResolver".
    </UL>
 
    @see ptolemy.domains.ct.kernel.CTDirector
@@ -1277,7 +1277,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // Prefire dynamic actors (intergrators actually) to produce temporary
         // inputs for state transition actors.
         // NOTE: We need to prefire dynamic actors again even though they have
-        // been prefired in the _propagateREsolvedStates method, because ODE
+        // been prefired in the _propagateResolvedStates method, because ODE
         // solver changes and the Integrator Aux Variables need updated.
         prefireDynamicActors();
 
@@ -1297,6 +1297,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     }
                     actor.goToMarkedState();
                 }
+                
                 // Reset the round counts and the convergencies to false.
                 // NOTE: some solvers have their convergencies depending on
                 // the round counts. For example, it takes 3 rounds for a

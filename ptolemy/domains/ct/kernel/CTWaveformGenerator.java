@@ -33,9 +33,9 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// CTWaveformGenerator
 /**
-   Interface for CT actors that generates continuous signals (waveforms) from
+   Interface for CT actors that generate continuous signals (waveforms) from
    discrete events. Typical implementations of waveform generators are
-   zero-order holds and impulses.
+   zero-order hold and first-order hold actors.
 
    @author Jie Liu
    @version $Id$

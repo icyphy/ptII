@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
 /**
-   This is a CTDirector that supports the interaction of the continuous-time
+   A CTDirector that supports the interaction of the continuous-time
    simulation with event-based domains. This director can both serve as
    a top-level director and an inside director that is contained by
    a composite actor in an event-based domain. If it is a top-level
@@ -314,6 +314,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         "Outside time is later than the local time. " +
                         "This should never happen.");
             } else if (_outsideTime.compareTo(localTime) < 0) {
+                // FIXME: get a concrete example that illustrates how this 
+                // can happen.
                 // Outside time less than the local time. Rollback!
                 if (_debugging) {
                     _debug(getName() + " rollback from: " +
@@ -322,11 +324,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 }
                 // The local time is set backwards to a known good time.
                 _rollback();
-
-                // FIXME: the following is unnecessary.
-//                // Set a catch-up destination time by registering the
-//                // outside time as a breakpoint.
-//                fireAt(container, _outsideTime);
+                
+                // restore the derivatives by propogating the restored states. 
+                _propagateResolvedStates();
 
                 // NOTE: At this time, new inputs are not transferred yet.
                 // The catchup will use the old inputs. This is one of the
