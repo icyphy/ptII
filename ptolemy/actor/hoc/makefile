@@ -51,6 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	IterateOverArray.java \
 	MobileFunction.java \
 	MobileModel.java \
 	ModelReference.java \
