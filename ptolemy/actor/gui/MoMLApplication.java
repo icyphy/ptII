@@ -254,11 +254,11 @@ public class MoMLApplication {
 
                     // Create an effigy for the model.
                     PtolemyEffigy effigy
-                            = new PtolemyEffigy(_config.workspace());
+                        = new PtolemyEffigy(_config.workspace());
                     effigy.setModel(newModel);
 
                     ModelDirectory directory
-                             = (ModelDirectory)_config.getEntity("directory");
+                        = (ModelDirectory)_config.getEntity("directory");
 
                     effigy.setName(arg);
                     if (directory != null) {
@@ -290,10 +290,10 @@ public class MoMLApplication {
                     // assume the file is an XML file.
                     if (_config != null) {
                         ModelDirectory directory =
-                                (ModelDirectory)_config.getEntity("directory");
+                            (ModelDirectory)_config.getEntity("directory");
                         if (directory == null) {
                             throw new InternalErrorException(
-                                     "No model directory!");
+                                    "No model directory!");
                         }
 
                         String key = inurl.toExternalForm();
@@ -362,7 +362,7 @@ public class MoMLApplication {
                 throw new InternalErrorException("No model directory!");
             }
             Iterator proxies
-                    = directory.entityList(Effigy.class).iterator();
+                = directory.entityList(Effigy.class).iterator();
             while(proxies.hasNext()) {
 		Effigy effigy = (Effigy)proxies.next();
 		if(effigy instanceof PtolemyEffigy) {
@@ -378,7 +378,7 @@ public class MoMLApplication {
 		    }
                     if (model instanceof CompositeActor) {
                         Director director
-                                = ((CompositeActor)model).getDirector();
+                            = ((CompositeActor)model).getDirector();
 		        if (director != null) {
                             attribute = director.getAttribute(name);
                             if (attribute instanceof Settable) {
