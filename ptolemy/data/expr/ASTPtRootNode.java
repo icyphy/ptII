@@ -32,6 +32,10 @@ Created : May 1998
 
 */
 
+package ptolemy.data.expr;
+
+import collections.LinkedList;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRootNode
 /**
@@ -59,12 +63,6 @@ children of each node before resolving the type of the current node.
 @see ptolemy.data.expr.PtParser 
 @see ptolemy.data.Token 
 */
-
-
-package ptolemy.data.expr;
-
-import collections.LinkedList;
-
 public class ASTPtRootNode implements Node {
     protected Node parent;
     protected Node[] children;
