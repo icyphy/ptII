@@ -74,7 +74,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     public DatagramReceiver(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container,name);
+        super(container, name);
 
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
@@ -297,7 +297,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                 } else {
                     _offset = 0;
                 }
-                __packet = new DatagramPacket(_buf,0,200);
+                __packet = new DatagramPacket(_buf, 0, 200);
                 try {
                     System.out.println("attempt socket.receive");
                     socket.receive(__packet);

@@ -69,7 +69,7 @@ public class RxDatagram extends TypedAtomicActor {
 
     public RxDatagram(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container,name);
+        super(container, name);
 
         remoteAddress = new TypedIOPort(this, "remoteAddress");
         remoteAddress.setOutput(true);
@@ -183,7 +183,8 @@ public class RxDatagram extends TypedAtomicActor {
             _listenerThread.interrupt();
             _listenerThread = null;
         } else {
-            throw new IllegalActionException("listenerThread null at wrapup!?");
+            throw new IllegalActionException("listenerThread null "
+                    + "at wrapup!?");
         }
 
         if (socket != null) {
@@ -271,7 +272,7 @@ public class RxDatagram extends TypedAtomicActor {
                 } else {
                     _offset = 0;
                 }
-                __packet = new DatagramPacket(_buf,_offset,200);
+                __packet = new DatagramPacket(_buf, _offset, 200);
                 try {
                     System.out.println("attempt socket.receive");
                     socket.receive(__packet);
