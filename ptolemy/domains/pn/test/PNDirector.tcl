@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+# Ptolemy II test bed, see $PTII/doc/coding/testing.htm for more information.
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
@@ -40,12 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
 
 #############################################
 
@@ -74,3 +68,15 @@ test PNDirector-6.1 {Test an application} {
 
 } {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19}
 
+#############################################
+####
+#
+test PNDirector-2.0 {Try a PN inside DE model} {
+    # PN Inside DE fails
+    # See ptolemy hackers log for 12/15/2004 and 12/16/2004"
+    catch {createAndExecute "PNInsideDE.xml"} errMsg
+    regsub {@[a-f0-9]*} $errMsg {@xxxx} r1
+    list $r1
+} {{ptolemy.kernel.util.IllegalActionException:   in .decspbug.MoMLSimpleApplication
+Because:
+Failed to cast 'ptolemy.domains.de.kernel.DEReceiver@xxxx', which is a 'ptolemy.domains.de.kernel.DEReceiver' to a ProcessReceiver. Note that currently, process domains like PN and CSP do not work inside non process domains.}}
