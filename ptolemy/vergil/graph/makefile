@@ -71,7 +71,30 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'EditorDropTarget$$1.class' \
+	'EditorDropTarget$$DTListener.class' \
+	'EditorGraphController$$ConnectedVertexCreator.class' \
+	'EditorGraphController$$LinkCreator.class' \
+	'EditorGraphController$$PortCreator.class' \
+	'EditorGraphController$$RelationCreator.class' \
+	'EntityController$$EntityContextMenuFactory.class' \
+	'EntityController$$EntityRenderer.class' \
+	'EntityPortController$$EntityPortRenderer.class' \
+	'EntityPortController$$PortContextMenuFactory$$PortDescriptionFactory.class' \
+	'EntityPortController$$PortContextMenuFactory.class' \
+	'LinkController$$LinkContextMenuFactory.class' \
+	'LinkController$$LinkRenderer.class' \
+	'LinkController$$LinkTarget.class' \
+	'PortController$$PortRenderer.class' \
+	'PtolemyGraphModel$$1.class' \
+	'PtolemyGraphModel$$2.class' \
+	'PtolemyGraphModel$$3.class' \
+	'RelationController$$RelationContextMenuFactory.class' \
+	'RelationController$$RelationRenderer.class' \
+	'ViewerGraphController$$EditDirectorParameterStylesFactory.class' \
+	'ViewerGraphController$$EditDirectorParametersFactory.class' \
+	'ViewerGraphController$$SchematicContextMenuFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

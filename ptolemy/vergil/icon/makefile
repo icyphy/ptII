@@ -62,11 +62,40 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	lib \
 	test \
-	$(PTCLASSJAR)
+	gifs \
+	$(PTCLASSJAR) \
+	'IconEditor$$1.class' \
+	'IconEditor$$10.class' \
+	'IconEditor$$11.class' \
+	'IconEditor$$12.class' \
+	'IconEditor$$13.class' \
+	'IconEditor$$14.class' \
+	'IconEditor$$15.class' \
+	'IconEditor$$16.class' \
+	'IconEditor$$17.class' \
+	'IconEditor$$18.class' \
+	'IconEditor$$19.class' \
+	'IconEditor$$2.class' \
+	'IconEditor$$20.class' \
+	'IconEditor$$21.class' \
+	'IconEditor$$22.class' \
+	'IconEditor$$23.class' \
+	'IconEditor$$24.class' \
+	'IconEditor$$25.class' \
+	'IconEditor$$26.class' \
+	'IconEditor$$27.class' \
+	'IconEditor$$3.class' \
+	'IconEditor$$4.class' \
+	'IconEditor$$5.class' \
+	'IconEditor$$6.class' \
+	'IconEditor$$7.class' \
+	'IconEditor$$8.class' \
+	'IconEditor$$9.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all:' \
+	jclass
 install: jclass $(PTCLASSJAR)
 
 depend:

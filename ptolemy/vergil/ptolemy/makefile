@@ -71,7 +71,31 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'CompaanNotation$$1.class' \
+	'CompaanNotation$$CompaanEntityRenderer.class' \
+	'CompaanNotation$$CompaanListener.class' \
+	'DirectorService$$1.class' \
+	'DirectorService$$2.class' \
+	'DirectorService$$3.class' \
+	'Ptolemy.properties PtolemyDocument$$FSMFactory.class' \
+	'PtolemyDocument$$Factory.class' \
+	'PtolemyDocument$$IsDirtyListener.class' \
+	'PtolemyModule$$1.class' \
+	'PtolemyModule$$2.class' \
+	'PtolemyModule$$3.class' \
+	'PtolemyModule$$4.class' \
+	'PtolemyModule$$5.class' \
+	'PtolemyModule$$PaletteInitializer.class' \
+	'PtolemyModule$$PtolemyLayout.class' \
+	'PtolemyModule$$PtolemyLayoutTarget.class' \
+	'PtolemyModule$$VergilExecutionListener.class' \
+	'PtolemyModule$$editIconAction.class' \
+	'PtolemyModule$$executeSystemAction.class' \
+	'PtolemyModule$$layoutAction.class' \
+	'PtolemyModule$$lookInsideAction.class' \
+	'PtolemyModule$$newPortAction.class' \
+	'PtolemyModule$$newRelationAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -67,7 +67,11 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	lib \
 	test \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'FSMGraphController$$LinkCreator.class' \
+	'FSMStateController$$EntityRenderer.class' \
+	'FSMTransitionController$$LinkRenderer.class' \
+	'FSMTransitionController$$LinkTarget.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

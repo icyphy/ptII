@@ -77,7 +77,19 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'EditParameterStylesFactory$$1.class' \
+	'EditParametersFactory$$1.class' \
+	'FigureAction$$1.class' \
+	'FigureAction$$SourceType.class' \
+	'GraphPalette$$1.class' \
+	'GraphPalette$$EditorDragGestureListener.class' \
+	'GraphPalette$$LayoutListener.class' \
+	'GraphPalette$$NodeTransferable.class' \
+	'GraphPalette$$PaletteController$$NodeDnDInteractor.class' \
+	'GraphPalette$$PaletteController.class' \
+	'JDesignTree$$1.class' \
+	'JDesignTree$$DesignTreeDragGestureListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
