@@ -74,7 +74,7 @@ JSRCS = \
 	CurrentTime.java \
 	DB.java \
 	Discard.java \
-    DiscreteRandomSource.java \
+	DiscreteRandomSource.java \
 	Distributor.java \
 	Expression.java \
 	FileWriter.java \
@@ -82,7 +82,7 @@ JSRCS = \
 	IIR.java \
 	Interpolator.java \
 	MathFunction.java \
-    MaxIndex.java \
+	MaxIndex.java \
 	Maximum.java \
 	Minimum.java \
 	MultiplyDivide.java \
@@ -126,6 +126,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	javasound \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class'
 
