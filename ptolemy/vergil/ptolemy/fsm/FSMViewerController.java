@@ -75,7 +75,7 @@ create a context-sensitive menu for the graph.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class FSMViewerController extends CompositeGraphController {
+public class FSMViewerController extends GraphController {
     /**
      * Create a new basic controller with default
      * terminal and edge interactors.

@@ -79,7 +79,7 @@ create a context-sensitive menu for the graph.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class ViewerGraphController extends CompositeGraphController {
+public class ViewerGraphController extends GraphController {
     /**
      * Create a new basic controller with default
      * terminal and edge interactors.
