@@ -33,11 +33,14 @@ import java.util.ArrayList;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -50,19 +53,30 @@ import ptolemy.kernel.util.Workspace;
 //// ArrayPeakSearch
 /**
 This actor outputs the indices and values of peaks in an input array.
-The <i>dip</i> and <i>squelch</i> parameters control the sensitivity
-to noise.  These are given either as a fraction or in decibels,
-depending on the value of the <i>scale</i> parameter. For example,
-if <i>dip</i> is given as 2.0 and <i>scale</i> has value "linear",
+The <i>dip</i> and <i>squelch</i> parameters control the
+sensitivity to noise.  These are given either as absolute numbers or
+as relative numbers.  If they are absolute numbers, then a peak is
+detected if a rise above <i>dip</i> is detected before the peak
+and a dip below <i>dip</i> is detected after the peak.
+If they are given as relative numbers, then a peak is detected when
+a rise by a factor <i>dip</i> above the most recently seen minimum
+(if there has been one) is seen before the peak, and if a dip
+by a factor <i>dip</i> relative to the peak is seen
+after the peak.  Relative numbers can be
+either linear (a fraction) or in decibels.  This is determined by
+the value of the <i>scale</i> parameter. For example,
+if <i>dip</i> is given as 2.0 and <i>scale</i> has value "relative linear",
 then a dip must drop to half of a local peak value to be considered a dip.
-If <i>squelch</i> is given as 10.0 and <i>scale</i> has value "linear",
+If <i>squelch</i> is given as 10.0 and <i>scale</i> has value "relative linear",
 then any peaks that lie below 1/10 of the global peak are ignored.
-Note that <i>dip</i> is relative to the most recently seen peak,
-whereas <i>squelch</i> is relative to the global peak in the array.
-If <i>scale</i> has value "amplitude decibels", then a value of
+Note that <i>dip</i> is relative to the most recently seen peak or valley,
+and <i>squelch</i> is relative to the global peak in the array,
+when relative values are used.
+If <i>scale</i> has value "relative amplitude decibels", then a value of
 6.0 is equivalent to the linear value 2.0.
-If <i>scale</i> has value "power decibels", then a value of
+If <i>scale</i> has value "relative power decibels", then a value of
 3.0 is equivalent to the linear value 2.0.
+In either decibel scale, 0.0 is equivalent to 0.0 linear.
 Other parameters control how the search is conducted.
 This actor is based on Matlab code developed by John Signorotti of
 Southwest Research Institute.
@@ -87,25 +101,25 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
         // Set Parameters.
         dip = new Parameter(this, "dip");
-        dip.setExpression("3.0");
+        dip.setExpression("0.0");
         dip.setTypeEquals(BaseType.DOUBLE);
 
         squelch = new Parameter(this, "squelch");
-        squelch.setExpression("40.0");
+        squelch.setExpression("-10.0");
         squelch.setTypeEquals(BaseType.DOUBLE);
         
-        scale = new Parameter(this, "scale");
-        scale.setStringMode(true);
-        scale.setExpression("power decibels");
-        scale.addChoice("linear");
-        scale.addChoice("amplitude decibels");
-        scale.addChoice("power decibels");
+        scale = new StringParameter(this, "scale");
+        scale.setExpression("absolute");
+        scale.addChoice("absolute");
+        scale.addChoice("relative linear");
+        scale.addChoice("relative amplitude decibels");
+        scale.addChoice("relative power decibels");
         
-        startIndex = new Parameter(this, "startIndex");
+        startIndex = new PortParameter(this, "startIndex");
         startIndex.setExpression("0");
         startIndex.setTypeEquals(BaseType.INT);
 
-        endIndex = new Parameter(this, "endIndex");
+        endIndex = new PortParameter(this, "endIndex");
         endIndex.setExpression("MaxInt");
         endIndex.setTypeEquals(BaseType.INT);
 
@@ -133,10 +147,11 @@ public class ArrayPeakSearch extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The fraction below a local peak that the signal must drop before a
-     *  peak is detected. This is a double that can be interpreted on
+    /** The amount that the signal must drop below a local maximum before a
+     *  peak is detected. This is a double that can be interpreted as an
+     *  absolute threshold or relative to the local peak, and if relative, on
      *  a linear or decibel scale, depending on the <i>scale</i>
-     *  parameter. It defaults to 3.0.
+     *  parameter. It defaults to 0.0.
      */
     public Parameter dip;
     
@@ -144,7 +159,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  the length of the input array, then the search is to the end
      *  of the array.  This is an integer that defaults to MaxInt.
      */
-    public Parameter endIndex;
+    public PortParameter endIndex;
     
     /** The input port.  This is required to be an array of doubles
      */
@@ -165,21 +180,24 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      */
     public TypedIOPort peakValues;
     
-    /** An indicator of whether <i>dip</i> and <i>squelch</i> should
-     *  be interpreted on a linear scale, in amplitude decibels,
-     *  or power decibels. If decibels are used, then the corresponding
-     *  linear quentity is 10^(<i>dip</i>/<i>N</i>), where <i>N</i> is
-     *  20 (for amplitude decibels) or 10 (for power decibels).
-     *  This parameter is a string with possible values "linear",
-     *  "amplitude decibels" or "power decibels". The default value
-     *  is "power decibels".
+    /** An indicator of whether <i>dip</i> and <i>squelch</i>
+     *  should be interpreted as absolute or relative, and if relative, then on a
+     *  linear scale, in amplitude decibels, or power decibels.
+     *  If decibels are used, then
+     *  the corresponding linear threshold is 10^(<i>threshold</i>/<i>N</i>),
+     *  where <i>N</i> is 20 (for amplitude decibels) or 10 (for power decibels).
+     *  This parameter is a string with possible values "absolute",
+     *  "relative linear", "relative amplitude decibels" or "relatitve
+     *  power decibels". The default value is "absolute".
      */
     public Parameter scale;
     
-    /** The value below the highest peak that is ignored by the
-     *  algorithm. This is a double that can be interpreted on a
+    /** The value below which the input is ignored by the
+     *  algorithm. This is a double that can be interpreted as an
+     *  absolute number or a relative number, and if relative, on a
      *  linear or decibel scale, depending on the <i>scale</i>
-     *  parameter. It defaults to 40.0.
+     *  parameter. For the relative case, the number is relative
+     *  to the global peak. It defaults to -10.0.
      */
     public Parameter squelch;
     
@@ -190,7 +208,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  started at the end of the input array.
      *  This is an integer that defaults to 0.
      */
-    public Parameter startIndex;
+    public PortParameter startIndex;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -219,6 +237,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *   if sorting is not supported for the input array.
      */
     public void fire() throws IllegalActionException {
+        startIndex.update();
+        endIndex.update();
         if (input.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken) input.get(0);
             int inputSize = inputArray.length();
@@ -249,9 +269,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                 increment = -1;
             }
 
-            //  Originally these were reversed.
-            boolean searchValley = true;
-            boolean searchPeak = false;
+            boolean searchValley = false;
+            boolean searchPeak = true;
             
             int localMaxIndex = start;
             int localMinIndex = start;
@@ -259,26 +278,47 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             double localMax = ((DoubleToken)inputArray.getElement(start)).doubleValue();
             double localMin = localMax;
             
-            // Search for the global maximum value so squelch works properly.
-            double maxValue = localMax;
-            for (int i = 0; i <= inputSize - 1; i = i + increment) {
-                double indata = ((DoubleToken)inputArray.getElement(i)).doubleValue();
-                if (indata > maxValue) {
-                    maxValue = indata;
+            double dipValue = ((DoubleToken)dip.getToken()).doubleValue();
+            double squelchValue = ((DoubleToken)squelch.getToken()).doubleValue();
+            
+            // The following values change since they are relative to most recently
+            // peaks or values.
+            double dipThreshold = dipValue;
+            double riseThreshold = dipValue;
+            
+            String scaleValue = ((StringToken)scale.getToken())
+                    .stringValue();
+            // Index of what scale we are dealing with.
+            int scaleIndicator = _ABSOLUTE;
+            if (!scaleValue.equals("absolute")) {
+                // Scale is relative so we adjust the thresholds.
+                // Search for the global maximum value so squelch works properly.
+                double maxValue = localMax;
+                for (int i = 0; i <= inputSize - 1; i = i + increment) {
+                    double indata = ((DoubleToken)inputArray.getElement(i)).doubleValue();
+                    if (indata > maxValue) {
+                        maxValue = indata;
+                    }
+                }
+
+                if (scaleValue.equals("relative amplitude decibels")) {
+                    scaleIndicator = _RELATIVE_DB;
+                    dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
+                    riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
+                    squelchValue = maxValue * Math.pow(10.0, (-squelchValue/20));
+                } else if (scaleValue.equals("relative power decibels")) {
+                    scaleIndicator = _RELATIVE_DB_POWER;
+                    dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
+                    riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
+                    squelchValue = maxValue * Math.pow(10.0, (-squelchValue/10));
+                } else if (scaleValue.equals("relative linear")) {
+                    scaleIndicator = _RELATIVE_LINEAR;
+                    dipThreshold = localMax - dipValue;
+                    riseThreshold = localMin + dipValue;
+                    squelchValue = maxValue - squelchValue;
                 }
             }
-            
-            double dipThreshold = ((DoubleToken)dip.getToken()).doubleValue();
-            double peakSquelch = ((DoubleToken)squelch.getToken()).doubleValue();
-            String scaleValue = scale.getExpression();
-            if (scaleValue.equals("amplitude decibels")) {
-                dipThreshold = Math.pow(10.0, (dipThreshold/20));
-                peakSquelch = Math.pow(10.0, (peakSquelch/20));
-            } else if (scaleValue.equals("power decibels")) {
-                dipThreshold = Math.pow(10.0, (dipThreshold/10));
-                peakSquelch = Math.pow(10.0, (peakSquelch/10));
-            }
-            
+
             ArrayList resultIndices = new ArrayList();
             ArrayList resultPeaks = new ArrayList();
 
@@ -293,20 +333,59 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                 if (searchValley) {
                     if (indata < localMin) {
                         localMin = indata;
+                        switch(scaleIndicator) {
+                            case _RELATIVE_DB:
+                                riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
+                                break;
+                            case _RELATIVE_DB_POWER:
+                                riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
+                                break;
+                            case _RELATIVE_LINEAR:
+                                riseThreshold = localMax + dipValue;
+                                break;
+                        }
                         localMinIndex = i;
                     }
-                    if ((indata > dipThreshold*localMin) && (indata > maxValue/peakSquelch)) {
+                    if (_debugging) {
+                        _debug("-- Looking for a value above " + riseThreshold);
+                    }
+                    if (indata > riseThreshold && indata > squelchValue) {
                         localMax = indata;
+                        switch(scaleIndicator) {
+                            case _RELATIVE_DB:
+                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
+                                break;
+                            case _RELATIVE_DB_POWER:
+                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
+                                break;
+                            case _RELATIVE_LINEAR:
+                                dipThreshold = localMax - dipValue;
+                                break;
+                        }
                         localMaxIndex = i;
                         searchValley = false;
                         searchPeak = true;
                     }  
                 } else if (searchPeak) {
-                    if (indata > localMax) {
+                    if (indata > localMax && indata > squelchValue) {
                         localMax = indata;
+                        switch(scaleIndicator) {
+                            case _RELATIVE_DB:
+                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/20));
+                                break;
+                            case _RELATIVE_DB_POWER:
+                                dipThreshold = localMax * Math.pow(10.0, (-dipValue/10));
+                                break;
+                            case _RELATIVE_LINEAR:
+                                dipThreshold = localMax - dipValue;
+                                break;
+                        }
                         localMaxIndex = i;
                     }
-                    if (indata < localMax/dipThreshold) {
+                    if (_debugging) {
+                        _debug("-- Looking for a value below " + dipThreshold);
+                    }
+                    if (indata < dipThreshold) {
                         if (_debugging) {
                             _debug("** Found a peak with value "
                                     + localMax
@@ -319,6 +398,17 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                             break;
                         }
                         localMin = indata;
+                        switch(scaleIndicator) {
+                            case _RELATIVE_DB:
+                                riseThreshold = localMin * Math.pow(10.0, (dipValue/20));
+                                break;
+                            case _RELATIVE_DB_POWER:
+                                riseThreshold = localMin * Math.pow(10.0, (dipValue/10));
+                                break;
+                            case _RELATIVE_LINEAR:
+                                riseThreshold = localMin + dipValue;
+                                break;
+                        }
                         localMinIndex = i;
                         searchValley = true;
                         searchPeak = false;
@@ -339,4 +429,12 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             peakIndices.send(0, new ArrayToken(resultIndicesArray));
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static final int _ABSOLUTE = 0;
+    private static final int _RELATIVE_DB = 1;
+    private static final int _RELATIVE_DB_POWER = 2;
+    private static final int _RELATIVE_LINEAR = 3;
 }
