@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 This is a base class designed for the MAC actors. Since these actors
 largely share a set of prameters, we would like to declare them here
 to avoid repeatly do the same amount of work in every MAC actor.
-FIXME: Currently, the paremeters in this actor are extracted from
+FIXME: Currently, the parameters in this actor are extracted from
 the ChannelState component...
 
 This actor also defines a set of constant that are widely used in 
@@ -142,7 +142,7 @@ public class MACActorBase extends NetworkActorBase {
 
     // all time are in the unit of microseconds
     
-    /** The paremeter for SIFS (Short Inter Frame Space). This time
+    /** The parameter for SIFS (Short Inter Frame Space). This time
      *  is used to separate transmissions belong to a single dialog.
      *  This Value is fixed per PHY and is calculated base on
      *  the time that takes for the transmitting part to switch back

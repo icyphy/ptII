@@ -53,7 +53,7 @@ request to the physical layer. Upon receiving the PhyTxStart confirmation,
 it sends data to the physical layer. After the data has been sent, it sends
 PhyTxEnd request to the physical layer and sends TxConfirm to the source of
 the original TxRequest after receiving PhyTxEnd confirmation from the 
-physcal layer.
+physical layer.
 <p>
 Both TxCoordination and RxCoordination in the Protocol_Control can send 
 TxRequest and require TxConfirm. This actor uses a pair of input and output

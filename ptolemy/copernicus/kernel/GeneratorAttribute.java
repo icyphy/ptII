@@ -166,7 +166,7 @@ public class GeneratorAttribute extends SingletonAttribute
     }
 
 
-    /** Return true if a parametere with the given name is defined in this
+    /** Return true if a parameter with the given name is defined in this
      *  GeneratorAttribute.
      */
     public boolean hasParameter(String name) throws IllegalActionException {

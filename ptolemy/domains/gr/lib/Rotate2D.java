@@ -60,7 +60,7 @@ increase clockwise beginning at the positive X-axis in a Cartesian
 plane.  If the <i>accumulate</i> parameter defined in the base class
 is set to true, any changes to the angle of rotation will be relative
 to the figure's current orientation.  Otherwise, the angle specified
-will be relative to the positve X-axis.
+will be relative to the positive X-axis.
 
 @author Ismael M. Sarmiento, Steve Neuendorffer
 @version $Id$

@@ -35,8 +35,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitEquation
-/** A Unit equation is a particlar type of Unit constraint, another type being
-a Unit inequality.
+/** A Unit equation is a particular type of Unit constraint, another
+type being a Unit inequality.
+
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1

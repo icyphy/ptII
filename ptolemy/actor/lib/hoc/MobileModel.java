@@ -381,7 +381,7 @@ public class MobileModel extends TypedCompositeActor {
     }
 
     /** preinitialize this actor. create the director as specified
-     *  by the <i>director<i> papameter.
+     *  by the <i>director<i> parameter.
      *  @exception IllegalActionException If can't create the director, or
      *  if the director's preinitialize() method throws it.
      */
