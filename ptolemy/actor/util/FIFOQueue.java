@@ -46,7 +46,7 @@ and removed from the queue with the take() method. The object
 removed is the oldest one in the queue. By default, the capacity is
 infinite, but it can be set to any nonnegative size. If the history
 capacity is greater than zero (or infinite, by setting the capacity to
-INFINITE_CAPACITY), then objects removed from the queue are transfered 
+INFINITE_CAPACITY), then objects removed from the queue are transfered
 to a history queue rather than simply removed. By default, the history
 capacity is zero.
 
@@ -62,7 +62,7 @@ public class FIFOQueue implements Cloneable {
         _historylist = new LinkedList();
     }
 
-    /** Construct an empty queue with the specified container. The 
+    /** Construct an empty queue with the specified container. The
      *  container is only used for error reporting.
      *  @param container The container of the queue.
      */
@@ -88,7 +88,7 @@ public class FIFOQueue implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone this queue. The cloned queue has no container. The 
+    /** Clone this queue. The cloned queue has no container. The
      *  objects in the queue themselves are not cloned.
      *  @return A clone of this queue
      */
@@ -112,17 +112,17 @@ public class FIFOQueue implements Cloneable {
         return _queuelist.size() == _queuecapacity;
     }
 
-    /** Return an object in the queue or history. The object is not 
-     *  removed from the queue or history. If the offset argument is 
-     *  zero, return the oldest object in the queue. If the offset is 
-     *  1, return the second oldest object, etc. If there is no such 
-     *  object in the queue (the offset is greater than or equal to 
-     *  the current queue size), throw an exception. If the argument 
-     *  is -1, return the most recent object that was put in the 
-     *  history. If the argument is -2, return the second most recent 
+    /** Return an object in the queue or history. The object is not
+     *  removed from the queue or history. If the offset argument is
+     *  zero, return the oldest object in the queue. If the offset is
+     *  1, return the second oldest object, etc. If there is no such
+     *  object in the queue (the offset is greater than or equal to
+     *  the current queue size), throw an exception. If the argument
+     *  is -1, return the most recent object that was put in the
+     *  history. If the argument is -2, return the second most recent
      *  object in the history, etc. If there is no such object in the
-     *  history (the history capacity is zero or the absolute value 
-     *  of the offset is greater than the current size of the history 
+     *  history (the history capacity is zero or the absolute value
+     *  of the offset is greater than the current size of the history
      *  queue), throw an exception.
      *  @param offset The position of the desired object.
      *  @return The desired object in the queue or history.
@@ -141,9 +141,9 @@ public class FIFOQueue implements Cloneable {
             String str = ".";
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
-            }  
+            }
             throw new NoSuchElementException("No object at offset "
-                    + offset + " in the FIFOQueue" + str); 
+                    + offset + " in the FIFOQueue" + str);
         }
         return obj;
     }
@@ -171,11 +171,11 @@ public class FIFOQueue implements Cloneable {
         return _historycapacity;
     }
 
-    /** Enumerate the objects in the history, which are the N most recent 
-     *  objects taken from the queue, beginning with the oldest, where 
-     *  N is less than or equal to the history capacity. If the history 
+    /** Enumerate the objects in the history, which are the N most recent
+     *  objects taken from the queue, beginning with the oldest, where
+     *  N is less than or equal to the history capacity. If the history
      *  capacity is infinite, then the enumeration includes all objects
-     *  previously taken from the queue. If the history capacity is zero, 
+     *  previously taken from the queue. If the history capacity is zero,
      *  then return an empty enumeration.
      *  @return An enumeration of objects in the history.
      *  @see collections.LinkedList#elements()
@@ -198,7 +198,7 @@ public class FIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean put(Object element) {
-        if (_queuecapacity == INFINITE_CAPACITY || 
+        if (_queuecapacity == INFINITE_CAPACITY ||
                 _queuecapacity > _queuelist.size()) {
             _queuelist.insertLast(element);
             return true;
@@ -207,12 +207,12 @@ public class FIFOQueue implements Cloneable {
         }
     }
 
-    /** Set queue capacity. Use INFINITE_CAPACITY to indicate unbounded 
-     *  capacity (which is the default). If the current size of the 
+    /** Set queue capacity. Use INFINITE_CAPACITY to indicate unbounded
+     *  capacity (which is the default). If the current size of the
      *  queue exceeds the desired capacity, throw an exception.
      *  @param capacity The desired capacity.
-     *  @exception IllegalActionException If the queue contains more 
-     *   objects than the proposed capacity or the proposed capacity 
+     *  @exception IllegalActionException If the queue contains more
+     *   objects than the proposed capacity or the proposed capacity
      *   is illegal.
      */
     public void setCapacity(int capacity)
@@ -236,18 +236,18 @@ public class FIFOQueue implements Cloneable {
         _container = container;
     }
 
-    /** Set the capacity of the history queue. Use 0 to disable the 
-     *  history mechanism and INFINITE_CAPACITY to make the history 
-     *  capacity unbounded. If the size of the history queue exceeds 
-     *  the desired capacity, remove the oldest objects from the 
+    /** Set the capacity of the history queue. Use 0 to disable the
+     *  history mechanism and INFINITE_CAPACITY to make the history
+     *  capacity unbounded. If the size of the history queue exceeds
+     *  the desired capacity, remove the oldest objects from the
      *  history queue until its size equals the proposed capacity.
      *  Note that this can be used to clear the history queue by
      *  supplying 0 as the argument.
      *  @param capacity The desired capacity of the history queue.
-     *  @exception IllegalActionException If the desired capacity 
+     *  @exception IllegalActionException If the desired capacity
      *   is illegal.
      */
-    public void setHistoryCapacity(int capacity) 
+    public void setHistoryCapacity(int capacity)
             throws IllegalActionException {
         if (capacity > 0) {
             while (_historylist.size() > capacity) {
@@ -302,7 +302,7 @@ public class FIFOQueue implements Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Used to indicate that the size of the queue or the history 
+    /** Used to indicate that the size of the queue or the history
      *  queue is infinite.
      */
     public static final int INFINITE_CAPACITY = -1;
