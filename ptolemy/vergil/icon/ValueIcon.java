@@ -30,13 +30,16 @@
 
 package ptolemy.vergil.icon;
 
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicEllipse;
 import diva.canvas.toolbox.LabelFigure;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.util.NamedObj.*;
 import ptolemy.kernel.util.Settable.*;
 
 import javax.swing.SwingConstants;
+import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
@@ -81,12 +84,15 @@ public class ValueIcon extends XMLIcon {
      *  @return A new CompositeFigure consisting of the label.
      */
     public Figure createFigure() {
+        CompositeFigure background = new CompositeFigure(
+                super.createBackgroundFigure());
         Settable container = (Settable)getContainer();
         String name = container.getName();
         String value = container.getExpression();
         LabelFigure label = new LabelFigure(name + ": " + value,
                 _labelFont, 1.0, SwingConstants.SOUTH_WEST);
-        return label;
+        background.add(label);
+        return background;
     }
 
     /** Write a MoML description of this object.
@@ -122,6 +128,16 @@ public class ValueIcon extends XMLIcon {
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Create a new default background figure, which is a bullet.
+     *  @return A figure representing a bullet.
+     */
+    protected Figure _createDefaultBackgroundFigure() {
+	return new BasicEllipse(-10, -6, 6, 6, Color.black, 1);
     }
 
     ///////////////////////////////////////////////////////////////////
