@@ -47,7 +47,7 @@ ME =		java/pt/actors
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-
+JAVAHOME = /opt/jdk1.2latest
 DIRS = 		test #doc
 
 CLASSPATH = ../..
@@ -71,7 +71,6 @@ JSRCS = \
 	FlowPort.java \
 	IOPort.java \
 	IORelation.java \
-	RendezvousPort.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
