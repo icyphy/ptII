@@ -1147,11 +1147,16 @@ public class NamedObj implements
     }
 
     /** Return true if setDeferringChangeRequests() has been called
-     *  to specify that change requests should be deferred.
+     *  to specify that change requests should be deferred. If there
+     *  is a container, this delegates to the container.
      *  @return True if change requests are being deferred.
      *  @see #setDeferringChangeRequests(boolean)
      */
     public boolean isDeferringChangeRequests() {
+        NamedObj container = (NamedObj) getContainer();
+        if (container != null) {
+            return container.isDeferringChangeRequests();
+        }
         return _deferChangeRequests;
     }
 
