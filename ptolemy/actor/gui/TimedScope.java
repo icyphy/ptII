@@ -52,10 +52,10 @@ Each channel is plotted as a separate data set.
 The horizontal axis represents time.
 The <i>width</i> parameter is a double that gives the width
 of the plot. The horizontal axis will be labeled from 0.0 to
-<i>width</i>.  It defaults to 100.
+<i>width</i>.  It defaults to 10.
 If the <i>persistence</i> parameter is positive, then it specifies
 the amount of time into the past that points are shown.
-It also defaults to 100, so any point older than 100 time units is
+It also defaults to 10, so any point older than 10 time units is
 erased and forgotten. The input is of type DoubleToken.
 
 @author  Edward A. Lee
@@ -76,10 +76,10 @@ public class TimedScope extends TimedPlotter {
         super(container, name);
 
         // set the parameters
-        width = new Parameter(this, "width", new DoubleToken(100.0));
+        width = new Parameter(this, "width", new DoubleToken(10.0));
         width.setTypeEquals(BaseType.DOUBLE);
         persistence = new Parameter(this, "persistence",
-                new DoubleToken(100.0));
+                new DoubleToken(10.0));
         persistence.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -138,6 +138,10 @@ public class TimedScope extends TimedPlotter {
         double persValue = ((DoubleToken)persistence.getToken()).doubleValue();
         plot.setXPersistence(persValue);
         plot.repaint();
+        // Override the default so that there are not gaps in the lines.
+        if (plot.getMarksStyle().equals("none")) {
+            plot.setMarksStyle("pixels");
+        }
     }
 
     /** Call the base class postfire() method, then yield so that the
