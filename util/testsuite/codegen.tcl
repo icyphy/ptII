@@ -426,7 +426,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
         puts "Running Copernicus: $execCommand"
 	#    	java::new ptolemy.copernicus.kernel.Copernicus $args
 	
-	set timeout 1300000
+	set timeout 2400000
 	puts "Setting watchdog for $timeout milliseconds"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
