@@ -63,7 +63,7 @@ models.
 @see ptolemy.domains.odf.kernel.ODFThread
 @see ptolemy.domains.odf.kernel.NullToken
 */
-public class ODFActor extends AtomicActor {
+public class ODFActor extends TypedAtomicActor {
 
     /** Construct an ODFActor with no container and no name.
      */
@@ -81,8 +81,12 @@ public class ODFActor extends AtomicActor {
     /** Construct an ODFActor with the specified container and name.
      * @param container The container of this ODFActor.
      * @param name The name of this ODFActor.
+     * @exception IllegalActionException If the constructor of the
+     *  superclass throws an IllegalActionException.
+     * @exception NameDuplicationException If the constructor of the
+     *  superclass throws a NameDuplicationException .
      */
-    public ODFActor(CompositeActor container, String name)
+    public ODFActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -130,7 +134,8 @@ public class ODFActor extends AtomicActor {
      *  If there exists a set of multiple receivers that share a common
      *  minimum rcvrTime, then return the token contained by the highest
      *  priority receiver within this set. If this actor contains no
-     *  receivers then return null.
+     *  receivers then return null. This method may block as it calls
+     *  several blocking methods. 
      * @return Return a non-NullToken that has the minimum, nonnegative
      *  rcvrTime of all receivers contained by this actor.
      */
@@ -165,7 +170,7 @@ public class ODFActor extends AtomicActor {
 	boolean rcvrSet = false;
 
 	while( enum.hasMoreElements() && !rcvrSet ) {
-	    IOPort port = (IOPort)enum.nextElement();
+	    TypedIOPort port = (TypedIOPort)enum.nextElement();
 	    Receiver[][] rcvrs = port.getReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
@@ -212,7 +217,7 @@ public class ODFActor extends AtomicActor {
     private Token _getNextInput() throws IllegalActionException {
         ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
 	if( lowestRcvr.hasToken() ) {
-	    _lastPort = (IOPort)lowestRcvr.getContainer();
+	    _lastPort = (TypedIOPort)lowestRcvr.getContainer();
 	    return lowestRcvr.get();
 	} else {
 	    return _getNextInput();
@@ -226,7 +231,7 @@ public class ODFActor extends AtomicActor {
 
     private TimeKeeper _timeKeeper = null;
     
-    private IOPort _lastPort = null;
+    private TypedIOPort _lastPort = null;
 
 }
 
