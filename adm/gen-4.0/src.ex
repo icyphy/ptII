@@ -22,6 +22,7 @@ CVS
 */tags
 adm
 alljsimpletests.tcl
+alljtests.tcl
 ant
 bin/comm.policy
 bin/makebat
