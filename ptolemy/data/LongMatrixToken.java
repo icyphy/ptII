@@ -30,6 +30,7 @@
 
 package ptolemy.data;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -144,7 +145,7 @@ public class LongMatrixToken extends MatrixToken {
     public LongMatrixToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
-        Token token = tree.evaluateParseTree();
+        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof LongMatrixToken) {
             long[][] value = ((LongMatrixToken)token).longMatrix();
             _initialize(value, DO_COPY);

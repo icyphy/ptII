@@ -31,6 +31,7 @@
 package ptolemy.data;
 
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeTypeInference;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.FunctionType;
@@ -63,7 +64,7 @@ public class FunctionToken extends Token {
         ASTPtRootNode tree = parser.generateParseTree(init);
         ParseTreeTypeInference inference = new ParseTreeTypeInference();
         inference.inferTypes(tree);
-        Token token = tree.evaluateParseTree();
+        Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof FunctionToken) {
             _function = ((FunctionToken)token)._function;
             _type = ((FunctionToken)token)._type;
