@@ -768,6 +768,10 @@ fi
 # $PTII/ptolemy/actor/lib/makefile if Colt was found.
 PTCOLT_DIR=
 
+# Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
+# of $PTII/vendors/misc/colt.jar
+PTCOLT_JARS=
+
 # Directory that contains the colt jar file
 COLT_DIR='${PTII}/vendors/misc/colt'
 
@@ -779,27 +783,48 @@ if test ! -d "$COLT_USER_DIR"; then
     Open Source Libraries for High Performance Scientific and Technical
     Computing in Java.])
 else
-    AC_MSG_CHECKING([for Colt, the scientific computing lib])
+    AC_MSG_CHECKING([for Ptolemy subset of Colt, the scientific computing lib])
+    if test -f "$PTII/lib/ptcolt.jar"; then
+        AC_MSG_RESULT($PTII/lib/colt.jar)
+        PTCOLT_JAR="$PTII/lib/ptcolt.jar"
+	PTCOLT_DIR=colt
+	# PTCOLT_PACKAGES is used in ptII/doc/makefile
+	PTCOLT_PACKAGES=ptolemy.actor.lib.colt
+
+    else
+        AC_MSG_WARN([Failed to find $PTII/lib/ptcolt.jar, will look for
+    full colt.jar])
+        PTCOLT_JAR=    
+    fi
+
+    AC_MSG_CHECKING([for Full version of Colt, the scientific computing lib])
     AC_ARG_WITH(colt, [  --with-colt=DIR       use colt.jar from DIR,
                           defaults to \$PTII/vendors/misc/colt],
 	COLT_DIR=$withval,
 	COLT_DIR=$PTII/vendors/misc/colt)
 
     if test -f "$COLT_DIR/colt.jar"; then
-        AC_MSG_RESULT(ok)
+        AC_MSG_RESULT($COLT_DIR/colt.jar)
+	PTCOLT_JARS=$COLT_DIR/colt.jar$CLASSPATHSEPARATOR$PTCOLT_JAR
 	# We found colt
 	PTCOLT_DIR=colt
 	# PTCOLT_PACKAGES is used in ptII/doc/makefile
 	PTCOLT_PACKAGES=ptolemy.actor.lib.colt
     else  
-        AC_MSG_WARN([Failed to find $COLT_DIR/colt.jar
+	PTCOLT_JARS=$PTCOLT_JAR
+	if test -z "PTCOLT_DIR"; then
+            AC_MSG_WARN([Failed to find $PTII/lib/ptcolt.jar
+    and $COLT_DIR/colt.jar.
     Colt is the 'Open Source Libraries for High Performance
     Scientific and Technical Computing in Java'
     For more information, see http://hoschek.home.cern.ch/hoschek/colt/
     If it is not present, you will not be able to use the Colt facilities
     or run the demonstrations in ptolemy/actor/lib/colt.])
-	# Note that we don't substitute in the ${PTII} here
-	COLT_DIR='${PTII}/vendors/misc/colt'
+	    # Note that we don't substitute in the ${PTII} here
+	    COLT_DIR='${PTII}/vendors/misc/colt'
+        else 
+            AC_MSG_RESULT([$COLT_DIR/colt.jar not found, using $PTII/lib/ptcolt.jar])
+        fi
     fi
 fi
 
@@ -2978,6 +3003,10 @@ AC_SUBST(PTCM_DIR)
 
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 AC_SUBST(PTCOLT_DIR)
+
+# Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
+# of $PTII/vendors/misc/colt.jar
+AC_SUBST(PTCOLT_JARS)
 
 # Ptolemy II packages that use COLT
 # PTCOLT_PACKAGES is used in ptII/doc/makefile
