@@ -70,6 +70,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         // Evaluate the value of the root node.
         node.visit(this);
         // and return it.
+        _scope = null;
         return node.getToken();
     }
     

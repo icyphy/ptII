@@ -193,7 +193,9 @@ public class PtParser {
             throw new IllegalActionException("Error parsing expression \""
                     + stringIn + "\":\n" + x.getMessage());
         }
-        return (ASTPtRootNode)rootNode.jjtGetChild(0);
+        ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
+        primary.jjtSetParent(null);
+        return primary;
     }
                
     /** Return the list of classes the parser searches 

@@ -78,7 +78,6 @@ public class ASTPtRootNode implements Node {
 
     public ASTPtRootNode(PtParser p, int i) {
         this(i);
-        //        _parser = p;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -224,20 +223,10 @@ public class ASTPtRootNode implements Node {
     protected Node _parent;
     protected ArrayList _children;
     protected int _id;
-    //    protected PtParser _parser;
 
     /** Each node stores its type and state information in this variable.
      */
     protected ptolemy.data.Token _ptToken;
-
-    /** In nodes with more than one child, the operators are stored in this
-     *  LinkedList. Note that here token refers to tokens returned by the
-     *  lexical analyzer.
-     */
-    //    protected List _lexicalTokens = new ArrayList(0);
-
-    /** Stores the ptolemy.data.Tokens of each of the children nodes */
-    //    protected ptolemy.data.Token[] _childTokens;
 
     /** Flags whether the parse tree under this root evaluates to a constant.
      */

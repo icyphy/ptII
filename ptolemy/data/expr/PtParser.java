@@ -181,7 +181,9 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             throw new IllegalActionException("Error parsing expression \""
                     + stringIn + "\":\n" + x.getMessage());
         }
-        return (ASTPtRootNode)rootNode.jjtGetChild(0);
+        ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
+        primary.jjtSetParent(null);
+        return primary;
     }
 
     /** Return the list of classes the parser searches 
@@ -1616,12 +1618,6 @@ String tidied, x;
     return retval;
   }
 
-  final private boolean jj_3_3() {
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   final private boolean jj_3_2() {
     if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1642,6 +1638,12 @@ String tidied, x;
     if (jj_scan_token(ID)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(43)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_3() {
+    if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
