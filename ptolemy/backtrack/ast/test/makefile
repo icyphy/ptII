@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy backtracking package
+# Makefile for tests of classes in the ptolemy.backtrack.ast package
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -29,12 +29,11 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/backtrack/ast
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/backtrack/ast/test
 
-DIRS = 		test	
-
-# Root of the Java directory
-ROOT =		../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../..
 
 # PTBACKTRACK_JARS is set in $PTII/mk/ptII.mk
 # PTBACKTRACK_JARS always has a leading CLASSPATHSEPARATOR
@@ -44,48 +43,50 @@ CLASSPATH =	$(ROOT)$(PTBACKTRACK_JARS)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	ast
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
-# Don't use GNU make extensions here
-#    $(wildcard *.java)
 JSRCS = \
-	ASTBuilder.java \
-	ASTClassNotFoundException.java \
-	ASTDump.java \
-	ASTException.java \
-	ASTFormatter.java \
-	ASTIORuntimeException.java \
-	ASTMalformedException.java \
-	ASTResolutionException.java \
-	ASTRuntimeException.java \
-	LocalClassLoader.java \
-	PathFinder.java \
-	Type.java \
-	TypeAnalyzer.java \
-	TypeAnalyzerState.java \
-	UnknownASTException.java
 
-OTHER_FILES_TO_BE_JARED = \
-	jrefactory-copyright.htm
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+	ASTFormatter.tcl
+
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass $(PTCLASSJAR)
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
