@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/sdf/lib/huffman
 
-DIRS = 		#doc
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../../../..
