@@ -36,7 +36,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 import javax.swing.event.MouseInputAdapter;
@@ -182,7 +181,8 @@ public class ViewScreen2D extends GRActor2D
         // done correctly, despite the fact that all of the transform
         // calls on figures are happening outside of the swing thread.
         
-        _canvas.repaint();
+        
+        //_canvas.repaint();
     }
 
     /** Return the Diva canvas used by this view screen.

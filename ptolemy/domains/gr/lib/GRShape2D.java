@@ -29,28 +29,27 @@
 */
 package ptolemy.domains.gr.lib;
 
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
+import java.awt.Paint;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor2D;
-import ptolemy.domains.gr.kernel.GRUtilities2D;
 import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Paint;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRShape2D
 /** An abstract base class for two-dimensional GR Actors representing
-figures. The parameters <i>redComponent</i>, <i>greenComponent</i>,
-<i>blueComponent</i> determine the color of the object.  
+figures.  The color of the figure is chosen from a color chooser dialog,
+or can be entered manually as an array of double values of the form
+{red, green, blue, alpha}.
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
@@ -74,13 +73,11 @@ abstract public class GRShape2D extends GRActor2D {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
-        rgbFillColor = new Parameter(this, "rgbFillColor",
-                new DoubleMatrixToken(new double[][] {{ 1.0, 1.0, 1.0}} ));
-        rgbFillColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        rgbFillColor = new ColorAttribute(this, "rgbFillColor");
+        rgbFillColor.setExpression("{1.0,1.0,1.0,1.0}");
         
-        rgbOutlineColor = new Parameter(this, "rgbOutlineColor",
-                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
-        rgbOutlineColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        rgbOutlineColor = new ColorAttribute(this, "rgbOutlineColor");
+        rgbOutlineColor.setExpression("{0.0,0.0,0.0,1.0}");
 
         outlineWidth = new Parameter(this, "outlineWidth",
                 new DoubleToken(1.0));
@@ -95,17 +92,17 @@ abstract public class GRShape2D extends GRActor2D {
      */
     public TypedIOPort sceneGraphOut;
 
-    /** The red, green, and blue color components of the interior of
-     *  the figure.  This parameter must contain a DoubleMatrixToken.
-     *  The default value is [1.0,1.0,1.0], corresponding to white.
-     */
-    public Parameter rgbFillColor;
+    /** The red, green, blue, and alpha components of the interior color
+     *  of the figure.  This parameter must contain an array of double values.
+     *  The default value is {1.0,1.0,1.0,1.0}, corresponding to opaque white.
+     */  
+    public ColorAttribute rgbFillColor;
 
-    /** The red, green, and blue color components of the outside of
-     *  the figure.  This parameter must contain a DoubleMatrixToken.
-     *  The default value is [0.0,0.0,0.0], corresponding to black.
+    /** The red, green, blue and alpha components of the outline color
+     *  of the figure.  This parameter must contain an array of double values.
+     *  The default value is {0.0,0.0,0.0,1.0}, corresponding to opaque black.
      */
-    public Parameter rgbOutlineColor;
+    public ColorAttribute rgbOutlineColor;
 
     /** The width of the figure's outline.  This parameter must contain a 
      *  DoubleToken.  The default value is 1.0.
@@ -165,10 +162,8 @@ abstract public class GRShape2D extends GRActor2D {
     // Set the appearance of the given figure consistent with the
     // parameters of this class.
     private void _setAppearance(Figure figure) throws IllegalActionException {
-        Paint fillPaint = GRUtilities2D.makeColor(   
-                (DoubleMatrixToken) rgbFillColor.getToken());
-        Paint strokePaint = GRUtilities2D.makeColor(
-                (DoubleMatrixToken) rgbOutlineColor.getToken());
+        Paint fillPaint = rgbFillColor.asColor();
+        Paint strokePaint = rgbOutlineColor.asColor();
         float lineWidth = (float)
             ((DoubleToken) outlineWidth.getToken()).doubleValue();
         

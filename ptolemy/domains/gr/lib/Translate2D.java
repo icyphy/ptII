@@ -30,7 +30,9 @@
 
 package ptolemy.domains.gr.lib;
 
-import diva.canvas.Figure;
+import java.awt.geom.Point2D;
+
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -39,8 +41,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.geom.Point2D;
+import diva.canvas.Figure;
 
 //////////////////////////////////////////////////////////////////////////
 //// Translate2D
@@ -147,9 +148,20 @@ public class Translate2D extends GRTransform2D {
                 }
             }
         }
+        
+        final Figure finalFigure = figure;
+        final double finalXOffset = xOffset;
+        final double finalYOffset = yOffset;
 
         if (applyTransform) {
-            figure.translate(xOffset,yOffset);
+            Runnable doSet = new Runnable() {
+                public void run() {
+                    finalFigure.translate(finalXOffset,finalYOffset);
+                    finalFigure.getParent().repaint();
+                }
+            };
+            SwingUtilities.invokeLater(doSet);
+            
         }
     }
 
