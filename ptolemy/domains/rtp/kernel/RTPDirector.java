@@ -217,8 +217,8 @@ public class RTPDirector extends ProcessDirector {
         executionDuration = new Parameter
             (this, "executionDuration", new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);
-        // FIXME: Remove this after debugging, or when GUI supports it.
-        addDebugListener(new StreamListener());
+
+        //addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
