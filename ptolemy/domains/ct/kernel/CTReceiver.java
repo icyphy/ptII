@@ -33,17 +33,35 @@ package ptolemy.domains.ct.kernel;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+
+import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
 /**
-The receiver for the continuous time domain. This is a mailbox with
-capacity one, and any token put in the receiver overwrites
-any token previously present in the receiver. As a consequence,
-hasRoom() method always returns true. The get() method will consume
-the token if there exists one. After the consumption, the hasToken()
+The receiver for the continuous time (mixed-signal) domain. The receiver
+can be of one of the two types: CONTINUOUS and DISCRETE. Conceptually,
+a CONTINUOUS CTReceiver contains a sample of a continuous signal at a
+particular time (defined by the CTDirector). Thus, there is one and
+only one token at all time in a CONTINUOUS CTReceiver. A DISCRETE
+CTReceiver contains a discrete event. Thus a DISCRETE CTReceiver may
+be empty if an event is not present.
+<P>
+The receiver is implemented as a Mailbox of capacity one. Any token put
+in the receiver overwrites any token previously present in the receiver.
+As a consequence, hasRoom() method always returns true.
+<P>
+The behavior of the get() method depends on the type of the receiver.
+If it is CONTINUOUS, then get() only reads the value. Consecutive get()
+will return the same token if no put() has been called. For a CONTINUOUS
+CTReceiver, hasToken() will always return true after the first put()
+has been called. For a DISCRETE
+CTReceiver, get() will return and destroy the token, thus the token
+can only be processed once. After the consumption, the hasToken()
 method will return false, until a token is put into this receiver.
 
 @author  Jie Liu
@@ -56,6 +74,7 @@ public class CTReceiver extends Mailbox {
      */
     public CTReceiver() {
         super();
+        _type = UNKNOWN;
     }
 
     /** Construct an empty CTReceiver with the specified container.
@@ -65,10 +84,78 @@ public class CTReceiver extends Mailbox {
      */
     public CTReceiver(IOPort container) throws IllegalActionException {
         super(container);
+        _type = UNKNOWN;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Signal type: continuous */
+    public static SignalType CONTINUOUS = new SignalType();
+
+    /** Signal type: discrete */
+    public static SignalType DISCRETE = new SignalType();
+
+    /** Signal type: unknown */
+    public static SignalType UNKNOWN = new SignalType();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    public inner classes                   ////
+
+    /** Inner class used for the static enumeration of indicators of
+     *  signal types.  Instances of this class cannot be constructed outside
+     *  the enclosing interface because its constructor is private.
+     */
+    public static class SignalType implements Serializable {
+
+        // Protected constructor prevents construction outside.
+        // This constructor should not be called!
+        // it is protected to work around a compiler bug in JDK1.2.2
+        protected SignalType() {}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the contained token if it is not null. If the receiver
+     *  is CONTINUOUS, then the token is still available for the next
+     *  get, i.e. the token is not set to null. If the receiver is
+     *  DISCRETE, then the token is removed from the receiver, and
+     *  the receiver contains null, which means that is another get()
+     *  is called before a calling of put, then an exception will be
+     *  thrown. If the receiver contains null, then thrown a
+     *  NoTokenException.
+     *  @exception NoTokenException If the receiver contains null.
+     *  @exception InvalidStateException If this method is called and
+     *  the signal type of this receiver is UNKNOWN.
+     */
+    public Token get() throws NoTokenException {
+        if (_token != null) {
+            if (_type == CONTINUOUS) {
+                return _token;
+            } else if (_type == DISCRETE) {
+                return super.get();
+            } else {
+                throw new InvalidStateException( getContainer(),
+                        "get() is called before the signal type of this port has"
+                        + " been set. This may indicate an error in CTScheduler.");
+            }
+        } else {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get data from an empty discrete CTReceiver.\n"
+                    + "Are you trying to use a discrete signal "
+                    + "to drive a continuous port?\n");
+        }
+
+    }
+
+    /** Return the signal type of this receiver.
+     *  @return The signal type of the receiver.
+     */
+    public SignalType getSignalType() {
+        return _type;
+    }
+
 
     /** Return true, since the new token will override the old one.
      *  @return True.
@@ -88,11 +175,25 @@ public class CTReceiver extends Mailbox {
      */
     public void put(Token token) throws NoRoomException{
         if (hasToken()) {
-            get();
+            // Remove the token.
+            _token = null;
         }
         super.put(token);
         // Uncomment the following lines when debugging the receiver.
         // System.out.println(getContainer().getFullName() +
         //        " received " + token);
     }
+
+    /** Set the signal type of this receiver. This method must be called
+     *  by the CTScheduler before any get() method are called.
+     *  @param type The SignalType to set to the receiver.
+     */
+    public void setSignalType(SignalType type) {
+        _type = type;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+    private SignalType _type;
+
 }
