@@ -421,26 +421,27 @@ public class ModelTransformer extends SceneTransformer {
                 }
 
                 if (token == null) {
-                    throw new RuntimeException("Calling getToken() on '"
+                    System.out.println("WARNING: Calling getToken() on '"
                             + attribute + "' returned null.  This may occur "
                             + "if an attribute has no value in the moml file");
-                }
-                Local tokenLocal = 
-                    PtolemyUtilities.buildConstantTokenLocal(body,
-                        assignStmt, token, "token");
+                } else {
+                    Local tokenLocal = 
+                        PtolemyUtilities.buildConstantTokenLocal(body,
+                                assignStmt, token, "token");
                         
-		// call setToken.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
+                    // call setToken.
+                    body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(
                                 variableLocal,
                                 PtolemyUtilities.variableSetTokenMethod,
                                 tokenLocal)));
-                // call validate to ensure that attributeChanged is called.
-                body.getUnits().add(Jimple.v().newInvokeStmt(
+                    // call validate to ensure that attributeChanged is called.
+                    body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
                                 variableLocal,
                                 PtolemyUtilities.validateMethod)));
                 
+                }
             } else if (attribute instanceof Settable) {
                 // If the attribute is settable, then set its
                 // expression.
