@@ -89,7 +89,7 @@ DECOMPILERTARGETCLASS =		CG$(MODEL)
 jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
 jodeDecompileDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
-	classes=`cd $(DECOMPILERTARGETPATH); ls -1 *.class | sed 's/.class//g'`; \
+	classes=`(cd $(DECOMPILERTARGETPATH)$(MODEL); ls *.class | sed 's/.class//g')`; \
 	for class in $$classes; \
 	do \
 		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
