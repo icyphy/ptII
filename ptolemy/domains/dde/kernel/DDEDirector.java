@@ -155,7 +155,7 @@ public class DDEDirector extends ProcessDirector {
      * @param container The container of this director.
      * @param name Name of this director.
      * @exception IllegalActionException If the director is not compatible
-     * with the specified container.  May be thrown in a dirived class.
+     * with the specified container.  May be thrown in a derived class.
      */
     public DDEDirector(CompositeActor container, String name)
             throws IllegalActionException {
