@@ -61,7 +61,7 @@
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of static unit system.&#10;  This is a model of the growth process in a fermenter. There are three&#10;submodels; 1) growth models the number of cells being produced as a&#10;function of the current number of cells and the vat temperature,&#10;2) HeatProduction models the amount of heat produced (in calories) as&#10;a function of the amount of work done (in joules), and 3) HeatExchanger&#10;models the removal of heat from the vat as a function of the rate at&#10;which water flows through the cooling jacket around the vat.&#10;  Some of the units constraints in the model are inconsistent. See the&#10;red notes. The UnitsConstraint Solver can be used to discover, and&#10;analyse these inconsistencies. (Right mouse-click and select&#10;UnitsConstraint Solver).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 445.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 445.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -78,6 +78,14 @@
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 60.0">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Rowland R Johnson">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 660.0">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -415,7 +423,7 @@
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 175.0">
         </property>
-        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
+        <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$output=$minus;$plus=$minus">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
