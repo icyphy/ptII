@@ -1,7 +1,7 @@
 package tutorial;
 import ptolemy.domains.de.gui.DEApplet;
 import ptolemy.actor.lib.Clock;
-import ptolemy.actor.gui.TimedPlotter;
+import ptolemy.actor.lib.gui.TimedPlotter;
 
 public class TutorialApplet extends DEApplet {
     public void init() {
