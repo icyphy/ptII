@@ -679,18 +679,14 @@ public class ProcessDirector extends Director {
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
+    protected synchronized void _actorBlocked(Iterator rcvrs) {
+    }
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
     }
-
-    /** Implementations of this method must be synchronized.
-    protected synchronized void _actorWriteBlocked(ProcessReceiver rcvr) {
-    }
-     */
-
-    /** Implementations of this method must be synchronized.
-    protected synchronized void _actorWriteUnBlocked(ProcessReceiver rcvr) {
-    }
-     */
 
     /** 
      */
@@ -726,9 +722,10 @@ public class ProcessDirector extends Director {
     // A count of the active threads controlled by this director that
     // have been stopped
     private int _threadsStopped = 0;
-
-    private long _branchControllersActive;
-    private long _branchControllersBlocked;
+    
+    // The Branch Controllers of this director
     private LinkedList _branchControllers = new LinkedList();
+    private int _branchControllersBlocked = 0;
+    private int _branchControllersActive = 0;
 
 }
