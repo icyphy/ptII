@@ -33,7 +33,7 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.kernel.VergilUtilities;
 
-import diva.canvas.event.MouseFilter;
+import diva.canvas.event.ExtendedMouseFilter;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
@@ -59,13 +59,13 @@ import java.awt.event.MouseEvent;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */
-public class PopupMouseFilter extends MouseFilter {
+public class PopupMouseFilter extends ExtendedMouseFilter {
 
     /** Create an attribute controller associated with the specified graph
      *  controller.
      */
     public PopupMouseFilter() {
-        super(InputEvent.BUTTON3_MASK);
+        super(3, 0, 0);
     }
 
     /**
