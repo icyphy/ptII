@@ -85,7 +85,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all jars
 
 demo: subdemo
 
