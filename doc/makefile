@@ -90,7 +90,12 @@ OPTIONAL_FILES =	\
 	codeDocPtiny \
 	uml
 
+# Javasound is not part of JDK1.2
+#JAVASOUNDJSRCS =	ptolemy.actor.lib.javasound \
+#			ptolemy.media.javasound
+
 PTINYJSRCS = \
+			$(JAVASOUNDJSRCS) \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
@@ -105,13 +110,9 @@ PTINYJSRCS = \
 #GRJSRCS =		ptolemy.domains.gr.kernel \
 #			ptolemy.domains.gr.lib
 
-# Javasound is not part of JDK1.2
-#JAVASOUNDJSRCS =	ptolemy.actor.lib.javasound \
-#			ptolemy.media.javasound
 
 ALLJSRCS =		$(PTINYJSRCS) \
 			$(GRJSRCS) \
-			$(JAVASOUNDJSRCS) \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
