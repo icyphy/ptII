@@ -49,8 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	ContinuousClock.xml \
-	ContinuousClock.htm \
-	ContinuousClockVergil.htm
+#	ContinuousClock.htm 
+
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -77,8 +77,8 @@ demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer ContinuousClock.htm
 
-demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer ContinuousClockVergil.htm
+#demo_vergil_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer ContinuousClockVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" ContinuousClock.xml
