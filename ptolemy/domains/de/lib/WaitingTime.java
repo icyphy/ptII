@@ -104,23 +104,6 @@ public class WaitingTime extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        WaitingTime newobj = (WaitingTime)super.clone(ws);
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.waitee = (TypedIOPort)newobj.getPort("waitee");
-        newobj.waiter = (TypedIOPort)newobj.getPort("waiter");
-        return newobj;
-    }
-
-
-
     /** If this firing is triggered by an event at <i>waitee</i>, then output
      *  the waiting time for each prior event arrival at <i>waiter</i>
      *  since the last arrival of waitee.  If there is no event at

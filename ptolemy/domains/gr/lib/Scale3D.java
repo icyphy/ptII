@@ -107,22 +107,6 @@ public class Scale3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the type constraints.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Scale3D newobj = (Scale3D) super.clone(workspace);
-        newobj.scaleFactor = (Parameter)newobj.getAttribute("scaleFactor");
-        newobj.xScale = (Parameter)newobj.getAttribute("xScale");
-        newobj.yScale = (Parameter)newobj.getAttribute("yScale");
-  	    newobj.zScale = (Parameter)newobj.getAttribute("zScale");
-        return newobj;
-    }
-
     /** Setup the transformation needed for scaling
      */    
     public void initialize() throws IllegalActionException {
