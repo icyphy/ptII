@@ -103,8 +103,8 @@ test SchematicRelation-2.2 {setDocumentation, isDocumentation tests} {
 ####
 #
 test SchematicRelation-3.1 {addTerminal} {
-    set t1 [java::new ptolemy.schematic.util.Terminal Terminal1]
-    set t2 [java::new ptolemy.schematic.util.Terminal Terminal2]
+    set t1 [java::new ptolemy.schematic.util.SchematicTerminal Terminal1]
+    set t2 [java::new ptolemy.schematic.util.SchematicTerminal Terminal2]
     $e0 addTerminal $t1
     $e0 toString
 } {relation({

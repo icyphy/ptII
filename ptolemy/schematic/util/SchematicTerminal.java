@@ -149,11 +149,23 @@ implements diva.graph.model.Node {
     }
 
     // methods from diva.graph.model.Node.
+    /** Get the object containing the in edges.
+     */
+    protected BasicEdgeSet getInEdgeSet() {
+        return _in;
+    }
+
+    /** Get the object containing the out edges
+     */
+    public BasicEdgeSet getOutEdgeSet() {
+        return _out;
+    }
+
     /**
      * Return the parent graph of this node.
      */
     public Graph getParent() {
-	return _parent;
+	return (Graph)getContainer();
     }
 
     /* Get the semantic object of this node. Generally this
@@ -178,8 +190,7 @@ implements diva.graph.model.Node {
      * returned.
      */
     public Iterator inEdges() {
-	// FIXME: how to find this?
-	return null;
+	return getInEdgeSet().edges();
     }
 
     /**
@@ -197,15 +208,18 @@ implements diva.graph.model.Node {
      * returned.
      */
     public Iterator outEdges() {
-	// FIXME: how to find this?
-	return null;
+	return getOutEdgeSet().edges();
     }
 
     /** Set the parent of this node, that is, the graph in
      * which it is contained.
      */
     public void setParent(Graph g) {
-        _parent = g;
+	try {
+	    setContainer((PTMLObject)g);
+	} catch (Exception e) {
+	    throw new GraphException(e.getMessage());
+	}
     }
 
     /**  Set the semantic object of this node. Generally this
@@ -246,11 +260,6 @@ implements diva.graph.model.Node {
     private double _x, _y;
 
     /**
-     * The graph to which this node belongs.
-     */
-    private Graph _parent = null;
-
-    /**
      * Whether or not this node has been visited.
      */
     private boolean _visited = false;
@@ -264,6 +273,16 @@ implements diva.graph.model.Node {
      * The visual representation.
      */
     private Object _visualObject = null;
+
+    /**
+     * The edges <b>into</b> this node.
+     */
+    private BasicEdgeSet _in = new BasicEdgeSet();
+
+    /**
+     * The edges <b>out of</b> this node.
+     */
+    private BasicEdgeSet _out = new BasicEdgeSet();
 
 }
 

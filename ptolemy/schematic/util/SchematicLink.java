@@ -77,19 +77,29 @@ public class SchematicLink extends BasicPropertyContainer
     }
 
     /** 
-     * Set the from port of this Link to the given non-null port.  
-     * If the given port is null, then do nothing.
+     * Set the from port of this Link to the given port.
      */
     public void setFrom(SchematicTerminal port) {
-	if(port != null) _from = port;
+    	if(_from != null) {
+	    _from.getOutEdgeSet().remove(this);
+	}
+	_from = port;
+        if(_from != null) {
+    	    _from.getOutEdgeSet().add(this);
+        }
     }
 
     /** 
-     * Set the to port of this Link to the given non-null port.  
-     * If the given port is null, then do nothing.
+     * Set the to port of this Link to the given port.
      */
     public void setTo(SchematicTerminal port) {
-	if(port != null) _to = port;
+    	if(_to != null) {
+	    _to.getInEdgeSet().remove(this);
+	}
+	_to = port;
+        if(_to != null) {
+    	    _to.getInEdgeSet().add(this);
+        }
     }
    
     /** 
@@ -138,7 +148,7 @@ public class SchematicLink extends BasicPropertyContainer
     
     public Object getSemanticObject() { return _semanticObject; }
 
-    public boolean isDirected() { return true; }
+    public boolean isDirected() { return false; }
     
     public void setDirected(boolean val) {
         // Do nothing.  Edges in ptolemy are always directed.

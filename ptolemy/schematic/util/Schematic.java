@@ -83,6 +83,7 @@ public class Schematic extends PTMLObject
     public void addEntity (SchematicEntity entity) 
             throws IllegalActionException, NameDuplicationException {
         _entities.append(entity);
+	//	entity.setContainer(this);
     }
 
     /**
@@ -122,6 +123,7 @@ public class Schematic extends PTMLObject
     public void addTerminal (SchematicTerminal terminal) 
             throws IllegalActionException, NameDuplicationException {
         _terminals.append(terminal);
+	//	terminal.setContainer(this);
     }
 
     /**
@@ -223,6 +225,7 @@ public class Schematic extends PTMLObject
      */
     public void removeEntity(SchematicEntity entity) {
  	_entities.remove(entity);
+	//	entity.setContainer(null);
     }
 
     /**
@@ -255,6 +258,7 @@ public class Schematic extends PTMLObject
      */
     public void removeTerminal(SchematicTerminal terminal) {
         _terminals.remove(terminal);
+	//	terminal.setContainer(null);
     }
 
     /**

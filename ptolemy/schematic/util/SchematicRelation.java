@@ -74,7 +74,7 @@ public class SchematicRelation extends PTMLObject
     public SchematicRelation (String name) {
         super(name);
         _links = (CircularList) new CircularList();
-	_ports = (NamedList) new NamedList();
+	_terminals = (NamedList) new NamedList();
 	setWidth(1);
     }
 
@@ -92,9 +92,9 @@ public class SchematicRelation extends PTMLObject
      *  coincides with the name of another port 
      *  contained in this relation.
      */
-    public void addSchematicPort (SchematicPort port) 
+    public void addTerminal (SchematicTerminal terminal) 
         throws IllegalActionException, NameDuplicationException {
-        _ports.append(port);
+        _terminals.append(terminal);
     }
 
     /**
@@ -107,8 +107,8 @@ public class SchematicRelation extends PTMLObject
    /**
      * Test if this relation contains the given port.
      */
-    public boolean containsSchematicPort (SchematicPort port) {
-        return _ports.includes(port);
+    public boolean containsTerminal (SchematicTerminal terminal) {
+        return _terminals.includes(terminal);
     }
 
     /**
@@ -130,10 +130,10 @@ public class SchematicRelation extends PTMLObject
     /**
      * Return an enumeration over the ports in this relation. \
      *
-     * @return An Enumeration of SchematicPort
+     * @return An Enumeration of SchematicTerminal
      */
-    public Enumeration ports () {
-        return _ports.elements();
+    public Enumeration terminals () {
+        return _terminals.elements();
     }
 
     /**
@@ -146,8 +146,8 @@ public class SchematicRelation extends PTMLObject
     /**
      * Remove the given link from this relation.
      */
-    public void removeSchematicPort(SchematicPort port) {
-        _ports.remove(port);
+    public void removeTerminal(SchematicTerminal terminal) {
+        _terminals.remove(terminal);
     }
 
     /**
@@ -161,11 +161,12 @@ public class SchematicRelation extends PTMLObject
      * Return a string representing this relation.
      */
     public String toString() {
-        Enumeration enumports = ports();
+        Enumeration enumterminals = terminals();
         String str = getName() + "({";
-        while(enumports.hasMoreElements()) {
-            SchematicPort port = (SchematicPort) enumports.nextElement();
-            str += "\n..." + port.toString();
+        while(enumterminals.hasMoreElements()) {
+            SchematicTerminal terminal = 
+		(SchematicTerminal) enumterminals.nextElement();
+            str += "\n..." + terminal.toString();
         }
         str += "}{";
 	Enumeration enumlinks = links();
@@ -285,6 +286,6 @@ public class SchematicRelation extends PTMLObject
 
     private int _width;
     private CircularList _links;
-    private NamedList _ports;
+    private NamedList _terminals;
 }
 
