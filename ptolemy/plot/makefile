@@ -369,7 +369,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Set the PTII variable to this directory: " >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
-	echo "PTII=`pwd` " >> \
+	echo "PTII=\`pwd\` " >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
 	echo "Then configure and make:" >> \
 		$(PTTMPDIR)/$(PTDIST)/README.txt
@@ -548,7 +548,8 @@ DIST_DIR = $(DIST_BASE)/$(PTDIST)
 update_ftp:
 	rm -rf $(DIST_DIR)
 	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
-	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
+	# $(PTDIST)_tmp included windows installers in previous releases
+	#cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
 	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
 	cp $(PTDIST).tar.gz $(DIST_DIR)/ptolemy/plot/
 	cp $(PTDIST).zip $(DIST_DIR)/ptolemy/plot/
