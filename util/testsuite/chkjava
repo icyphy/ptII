@@ -47,6 +47,7 @@
 # 15) Make sure that Parameters names do not start with capital letters
 # 16) Warn about catching CloneNotSupported
 # 17) Warn about import ... *;
+# 18) Warn if the clone method copies port or parameters
 for file in $@
 do
 
@@ -279,6 +280,25 @@ do
 	if [ "x$results" != "x" ]; then
 	    echo "$file: import ...*; should import each class individually"
 	    echo "$results"
+	fi
+        # 18) Warn if the clone method copies port or parameters
+	results=`egrep 'Object clone\(W' $file`
+	if [ "x$results" != "x" ]; then
+	    awk '{  if ($0 ~ /Object clone/) {
+			clonedecl=NR
+		    } else {
+			if ($0 ~ /getPort/ || $0 ~ /getAttribute/) {
+			    if (NR - clonedecl < 20) {
+				print FILENAME ": clone?"
+				print "    This class has a clone method that calls either getPort or getAttribute."
+				print "    If this class extends TypedAtomicActor, then consider removing the getPort"
+				print "    and getAttribute lines in this clone method,"
+				print"     TypedAtomicActor does that for you."
+				exit
+			    } 
+			}
+		    }  
+		 }' $file
 	fi
 
 done
