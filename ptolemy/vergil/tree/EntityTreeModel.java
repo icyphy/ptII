@@ -100,7 +100,7 @@ public class EntityTreeModel implements TreeModel {
     public int getChildCount(Object parent) {
         if (!(parent instanceof CompositeEntity)) return 0;
         CompositeEntity entity = (CompositeEntity)parent;
-        return entity.numEntities();
+        return entity.numberOfEntities();
     }
 
     /** Return the index of the given child within the given parent.

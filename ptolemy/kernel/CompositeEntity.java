@@ -955,9 +955,9 @@ public class CompositeEntity extends ComponentEntity {
     /** Return the number of contained class definitions.
      *  This method is read-synchronized on the workspace.
      *  @return The number of class definitions.
-     *  @see #numEntities()
+     *  @see #numberOfEntities()
      */
-    public int numClassDefinitions() {
+    public int numberOfClassDefinitions() {
         try {
             _workspace.getReadAccess();
             return classDefinitionList().size();
@@ -970,9 +970,9 @@ public class CompositeEntity extends ComponentEntity {
      *  class definitions.
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
-     *  @see #numClassDefinitions()
+     *  @see #numberOfClassDefinitions()
      */
-    public int numEntities() {
+    public int numberOfEntities() {
         try {
             _workspace.getReadAccess();
             return entityList().size();
@@ -985,13 +985,33 @@ public class CompositeEntity extends ComponentEntity {
      *  This method is read-synchronized on the workspace.
      *  @return The number of relations.
      */
-    public int numRelations() {
+    public int numberOfRelations() {
         try {
             _workspace.getReadAccess();
             return _containedRelations.size();
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Return the number of contained entities, not including
+     *  class definitions.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of entities.
+     *  @deprecated Use numberOfEntities
+     *  @see #numberOfEntities()
+     */
+    public int numEntities() {
+        return numberOfEntities();
+    }
+
+    /** Return the number of contained relations.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of relations.
+     *  @deprecated Use numberOfRelations.
+     */
+    public int numRelations() {
+        return numberOfRelations();
     }
 
     /** List the relations contained by this entity.

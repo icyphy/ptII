@@ -429,7 +429,7 @@ public class EntityLibrary
      */
     public int numClassDefinitions() {
         populate();
-        return super.numClassDefinitions();
+        return super.numberOfClassDefinitions();
     }
 
     /** Return the number of contained entities. This overrides the base class
@@ -439,9 +439,9 @@ public class EntityLibrary
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
      */
-    public int numEntities() {
+    public int numberOfEntities() {
         populate();
-        return super.numEntities();
+        return super.numberOfEntities();
     }
 
     /** Populate the actor by reading the file specified by the
