@@ -87,7 +87,7 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         </property>
     </property>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[233.4807753012209, 262.3648177666926]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -134,6 +134,16 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+        </property>
+        <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Reverse Y direction (the plotter&#10;has Y increasing upwards, and Vergil&#10;has Y increasing downwards).">
+            </property>
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 235.0">
+            </property>
         </property>
         <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
@@ -182,7 +192,7 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 265.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 320.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -230,7 +240,7 @@ the receiver will not be able to here the signal from the sender.</text></svg></
             </port>
         </entity>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={106, 545, 697, 415}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 363, 697, 415}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[689, 360]">
             </property>
@@ -243,13 +253,23 @@ the receiver will not be able to here the signal from the sender.</text></svg></
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="-3.325202400512686E-6" max="3.325202400512674E-6"/>
+<yRange min="-1.9538461906870225E-7" max="1.9730761011227057E-6"/>
 </plot>?>
             </configure>
         </entity>
         <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
             <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 150.0">
+            </property>
+        </entity>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 200.0">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -276,6 +296,8 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="in" relation="relation"/>
@@ -297,7 +319,9 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         <link port="PolarToCartesian.magnitude" relation="relation9"/>
         <link port="PolarToCartesian.angle" relation="relation8"/>
         <link port="PolarToCartesian.x" relation="relation3"/>
-        <link port="PolarToCartesian.y" relation="relation2"/>
+        <link port="PolarToCartesian.y" relation="relation10"/>
+        <link port="Scale.input" relation="relation10"/>
+        <link port="Scale.output" relation="relation2"/>
     </entity>
     <entity name="Sender" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 245.0">
@@ -348,7 +372,7 @@ the receiver will not be able to here the signal from the sender.</text></svg></
             <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 170.0">
             </property>
         </entity>
-        <entity name="TransformPropert" class="ptolemy.domains.wireless.lib.TransformProperty">
+        <entity name="TransmitPropertyTransformer" class="ptolemy.domains.wireless.lib.TransmitPropertyTransformer">
             <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="file:/C:/ptII/ptolemy/domains/wireless/demo/AntennaPattern/phasedArrayAntennaIteration.xml">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 170.0">
@@ -360,19 +384,17 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         </relation>
         <link port="out" relation="relation2"/>
         <link port="Clock.output" relation="relation"/>
-        <link port="TransformPropert.data" relation="relation"/>
-        <link port="TransformPropert.output" relation="relation2"/>
-    </entity>
-    <entity name="TerrainChannel" class="ptolemy.domains.wireless.lib.TerrainChannel">
-        <property name="powerLossFactor" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 105.0">
-        </property>
+        <link port="TransmitPropertyTransformer.input" relation="relation"/>
+        <link port="TransmitPropertyTransformer.output" relation="relation2"/>
     </entity>
     <entity name="TerrainProperty" class="ptolemy.domains.wireless.lib.TerrainProperty">
         <property name="xyPoints" class="ptolemy.data.expr.Parameter" value="{{0,0}, {0,100}, {20,100}, {20, 0}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 235.0">
+        </property>
+    </entity>
+    <entity name="TerrainChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 60.0">
         </property>
     </entity>
 </entity>
