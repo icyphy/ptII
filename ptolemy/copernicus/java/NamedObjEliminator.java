@@ -125,7 +125,7 @@ public class NamedObjEliminator extends SceneTransformer {
                             SootField field = fieldRef.getField();
                             // Turn off debugging..
                             if (field.getSubSignature().equals(
-                                       PtolemyUtilities.debuggingField.getSubSignature())) {
+                                    PtolemyUtilities.debuggingField.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -175,7 +175,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                 }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -186,7 +186,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                 }
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
-                                               PtolemyUtilities.findEffigyMethod.getSubSignature())) {
+                                    PtolemyUtilities.findEffigyMethod.getSubSignature())) {
                                 if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
@@ -258,9 +258,9 @@ public class NamedObjEliminator extends SceneTransformer {
 
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                                     (Local)expr.getBase(),
-                                                     PtolemyUtilities.objectConstructor,
-                                                     Collections.EMPTY_LIST));
+                                        (Local)expr.getBase(),
+                                        PtolemyUtilities.objectConstructor,
+                                        Collections.EMPTY_LIST));
                                 //          body.getUnits().remove(unit);
                             }
                         }
@@ -282,12 +282,12 @@ public class NamedObjEliminator extends SceneTransformer {
                                             NullConstant.v()),
                                     body.getFirstNonIdentityStmt());
                         }//  else if (value instanceof ThisRef) {
-//                             // Fix the type of thisRefs.
-//                             ValueBox box = identityStmt.getRightOpBox();
-//                             box.setValue(
-//                                     Jimple.v().newThisRef(
-//                                             RefType.v(PtolemyUtilities.objectClass)));
-//                         }
+                        //                             // Fix the type of thisRefs.
+                        //                             ValueBox box = identityStmt.getRightOpBox();
+                        //                             box.setValue(
+                        //                                     Jimple.v().newThisRef(
+                        //                                             RefType.v(PtolemyUtilities.objectClass)));
+                        //                         }
                     }
                 }
 
@@ -335,9 +335,9 @@ public class NamedObjEliminator extends SceneTransformer {
 
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                     (Local)expr.getBase(),
-                                     declaringClass.getMethod("void <init>()"),
-                                     Collections.EMPTY_LIST));
+                                        (Local)expr.getBase(),
+                                        declaringClass.getMethod("void <init>()"),
+                                        Collections.EMPTY_LIST));
                             }
                         }
                     }
@@ -396,7 +396,7 @@ public class NamedObjEliminator extends SceneTransformer {
                 }
             }
         }/*
-         */
+          */
     }
 
     // Return true if the type is one that should not appear in generated

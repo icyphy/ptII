@@ -105,7 +105,7 @@ public class ModelTransformer extends SceneTransformer {
      */
     private ModelTransformer(CompositeActor model) {
         _model = model;
-     }
+    }
 
     /** Return an instance of this transformer that will operate on
      * the given model. The model is assumed to already have been
@@ -184,9 +184,9 @@ public class ModelTransformer extends SceneTransformer {
                 // If the attribute is a parameter, then generateCode...
                 Local tokenLocal =
                     DataUtilities.generateExpressionCodeBefore(
-                        (Entity)namedObj, theClass,
-                        ((Variable)attribute).getExpression(),
-                        new HashMap(), new HashMap(), body, insertPoint);
+                            (Entity)namedObj, theClass,
+                            ((Variable)attribute).getExpression(),
+                            new HashMap(), new HashMap(), body, insertPoint);
 
                 // cast to Variable.
                 body.getUnits().insertBefore(
@@ -593,7 +593,7 @@ public class ModelTransformer extends SceneTransformer {
         }
 
         for (Iterator validateLocals = validateLocalsList.iterator();
-            validateLocals.hasNext();) {
+             validateLocals.hasNext();) {
             Local validateLocal = (Local)validateLocals.next();
             // Validate local params
             body.getUnits().insertBefore(
@@ -740,7 +740,7 @@ public class ModelTransformer extends SceneTransformer {
                 if (value instanceof SpecialInvokeExpr) {
                     SpecialInvokeExpr r = (SpecialInvokeExpr)value;
                     if (PtolemyUtilities.executableInterface.declaresMethod(
-                                r.getMethod().getSubSignature())) {
+                            r.getMethod().getSubSignature())) {
                         boolean isNonVoidMethod =
                             r.getMethod().getName().equals("prefire") ||
                             r.getMethod().getName().equals("postfire");
@@ -783,7 +783,7 @@ public class ModelTransformer extends SceneTransformer {
             method.setActiveBody(body);
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnStmt(
-                                        IntConstant.v(1)));
+                    IntConstant.v(1)));
         }
         if (!theClass.declaresMethodByName("fire")) {
             SootMethod method = new SootMethod("fire",
@@ -802,7 +802,7 @@ public class ModelTransformer extends SceneTransformer {
             method.setActiveBody(body);
             body.insertIdentityStmts();
             body.getUnits().add(Jimple.v().newReturnStmt(
-                                        IntConstant.v(1)));
+                    IntConstant.v(1)));
         }
         if (!theClass.declaresMethodByName("wrapup")) {
             SootMethod method = new SootMethod("wrapup",
@@ -1061,9 +1061,9 @@ public class ModelTransformer extends SceneTransformer {
                                                 port.getName()))));
                 // and then cast to portLocal
                 body.getUnits().add(
-                            Jimple.v().newAssignStmt(portLocal,
-                                    Jimple.v().newCastExpr(tempPortLocal,
-                                            portType)));
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(tempPortLocal,
+                                        portType)));
             } else {
                 //    System.out.println("Creating new!");
                 // If the class does not create the port
@@ -1384,7 +1384,7 @@ public class ModelTransformer extends SceneTransformer {
         // Add code to the end of each class initializer to set the
         // instance field.
         for (Iterator methods = actorClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             if (method.getName().equals("<init>")) {
                 JimpleBody body = (JimpleBody)method.getActiveBody();
