@@ -25,7 +25,7 @@ Kahn-MacQueen process network semantics.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (mudit@eecs.berkeley.edu)
+@ProposedRating Green (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -274,7 +274,8 @@ public class BasePNDirector extends ProcessDirector {
      */
     public boolean postfire() throws IllegalActionException {
 	if (_getActiveActorsCount() != 0) {
-	    if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()){
+	    if ((((CompositeActor)getContainer()).
+		    inputPorts()).hasMoreElements()){
 		return true;
 	    } else {
 		return false;
@@ -384,7 +385,6 @@ public class BasePNDirector extends ProcessDirector {
 	    if (smallestCapacity == -1) {
 	        smallestCapacityQueue = queue;
 		smallestCapacity = queue.getCapacity();
-		//smallestCapacityRecep = flowqueue;
 	    } else if (smallestCapacity > queue.getCapacity()) {
 	        smallestCapacityQueue = queue;
 	        smallestCapacity = queue.getCapacity();
@@ -532,11 +532,9 @@ public class BasePNDirector extends ProcessDirector {
             Enumeration enum = _processlisteners.elements();
             while (enum.hasMoreElements()) {
                 PNProcessListener lis = (PNProcessListener)enum.nextElement();
-		//FIXME: Change it to processFinished(event)
-                lis.processStateChanged(event);
+                lis.processFinished(event);
             }
         }
-        
     }
 
 

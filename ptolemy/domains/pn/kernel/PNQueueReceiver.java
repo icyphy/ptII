@@ -25,7 +25,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating yellow (mudit@eecs.berkeley.edu)
+@ProposedRating Green (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -124,8 +124,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
-
-                //Only for listeners. Keep it before informRB
+                //Only for listeners. Keep it before inform
                 _readblockedactor = (Actor)getContainer().getContainer();
                 director._informOfReadBlock(this);
                 _readpending = true;
@@ -133,7 +132,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     workspace.wait(this);
                 }
             }
-
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
@@ -141,14 +139,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_writepending) {
                     director._informOfWriteUnblock(this);
-                    //FIXME: For listeners alone. Keep it after informOfWriteU
+                    //For listeners alone. Keep it after informOfWriteU
                     _writeblockedactor = null;
-
                     _writepending = false;
                     notifyAll(); //Wake up threads waiting on a write;
                 }
             }
-            
             while (_pause) {
                 director.increasePausedCount();
                 workspace.wait(this);
@@ -240,11 +236,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized(this) {
             if (!super.hasRoom()) {
                 _writepending = true;
-
                 //Note: Required only to inform the listeners
                 _writeblockedactor = 
                     ((ProcessThread)Thread.currentThread()).getActor();
-
                 director._informOfWriteBlock(this);
                 while (!_terminate && !super.hasRoom()) {
                     while(_writepending) {
@@ -260,7 +254,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 //Check if pending write to the Queue;
                 if (_readpending) {
                     director._informOfReadUnblock(this);
-                    //FIXME: Only for listeners. Please keep it after informU
+                    //NOTE: Only for listeners. Please keep it after informU
                     _readblockedactor = null;
                     _readpending = false;
                     notifyAll();

@@ -25,7 +25,7 @@ network semantics.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (mudit@eecs.berkeley.edu)
+@ProposedRating Green (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -247,7 +247,6 @@ public class TimedPNDirector extends BasePNDirector {
 		    worksp.wait(this);
 		}
 		timedmut = _timedMutations;
-		//_timedMutations = false;
 	    }
 	    if (_writeBlockCount != 0) {
 		System.out.println("Artificial deadlock");
@@ -287,8 +286,6 @@ public class TimedPNDirector extends BasePNDirector {
                 wait(); //Should I call workspace().wait(this) ?
             }
         } catch (InterruptedException e) {}
-        //delayUnblock();
-        //FIXME: Unblocked on a delay
     }
 
     /** Return the current time of the simulation.
@@ -338,7 +335,6 @@ public class TimedPNDirector extends BasePNDirector {
 	synchronized(this) {
 	    _timedMutations = true;
 	    _informOfMutationBlock();
-	    //notifyAll();
 	    while(_timedMutations) {
 		try {
 		    wait();
@@ -346,8 +342,6 @@ public class TimedPNDirector extends BasePNDirector {
 		    System.err.println(e.toString());
 		}
 	    }
-	    //_mutationUnblock();
-	    //notifyAll();
 	}
     }
 
@@ -425,7 +419,8 @@ public class TimedPNDirector extends BasePNDirector {
 	    synchronized(this) {
 		try {
 		    _eventQueue.take();
-		    _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+		    _currenttime = 
+			((Double)(_eventQueue.getPreviousKey())).doubleValue();
 		    _informOfDelayUnblock();
 		} catch (IllegalAccessException e) {
 		    throw new InternalErrorException("Inconsistency"+
@@ -438,8 +433,8 @@ public class TimedPNDirector extends BasePNDirector {
 		    if (!_eventQueue.isEmpty()) {
 			try {
 			    Actor actor = (Actor)_eventQueue.take();
-			    
-			    double newtime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+			    double newtime = ((Double)(_eventQueue.
+				    getPreviousKey())).doubleValue();
 			    if (newtime == _currenttime) {
 				_informOfDelayUnblock();
 			    } else {
@@ -480,7 +475,6 @@ public class TimedPNDirector extends BasePNDirector {
     protected void _processTopologyRequests()
             throws IllegalActionException, TopologyChangeFailedException {
 	Workspace worksp = workspace();
-	//pause();
 	super._processTopologyRequests();
 	LinkedList threadlist = new LinkedList();
 	//FIXME: Where does the type resolution go?

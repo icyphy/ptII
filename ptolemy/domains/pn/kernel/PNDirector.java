@@ -25,7 +25,7 @@ network semantics supporting non-deterministic mutations.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (mudit@eecs.berkeley.edu)
+@ProposedRating Green (mudit@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
