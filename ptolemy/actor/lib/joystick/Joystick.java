@@ -80,16 +80,14 @@ cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
 <p> When the fire() method is called, a DoubleMatrixToken is
 produced on the output.  The X value is in [0][0] and the
 Y value is in [1][0] (FIXME: what is the range?)
-(FIXME: it looks like there is some confusion about polling
-vs. callbacks?)
+
 
 @author Christopher Hylands, David Lee, Paul Yang
 @version $Id$
 @since Ptolemy II 3.0
 @see ptolemy.actor.lib.io.comm.SerialComm
  */
-public class Joystick extends Source implements 
-com.centralnexus.input.JoystickListener {
+public class Joystick extends TypedAtomicActor {
 
     /** Construct a Joystick actor with the given container and name.
      *  @param container The container.
@@ -103,27 +101,20 @@ com.centralnexus.input.JoystickListener {
             throws NameDuplicationException, IllegalActionException, 
             IOException {
         super(container, name);
-	_debugging = true;
-	if (_debugging) {
-	    _debug("Joystick()");
-	}
 
-        // FIXME: Why Double Matrix?  Why not an array or two separate ports?
-        // FIXME: What is the range of the output?
-	output.setTypeEquals(BaseType.DOUBLE_MATRIX);
-	output.setMultiport(false);
-	pollingInterval
-            = new Parameter(this, "pollingInterval", new IntToken("50"));
 	deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
+
+        x = new TypedIOPort(this, "x", false, true);
+        x.setTypeEquals(BaseType.DOUBLE);
+
+        y = new TypedIOPort(this, "y", false, true);
+        y.setTypeEquals(BaseType.DOUBLE);
+
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The polling interval of the Joystick in milliseconds.  The
-     *  default value is an IntToken with a value of 50
-     */  
-    public Parameter pollingInterval;
 
     /** The deadzone of the Joystick: Under this absolute value, the
      *  joystick coordinate is 0.0.  The default value is a 
@@ -131,13 +122,20 @@ com.centralnexus.input.JoystickListener {
      */
     public Parameter deadZone;
 
+    /** The output port for the x coordinate, which has type DoubleToken. */
+    public TypedIOPort x;
+
+    /** The output port for the y coordinate, which has type DoubleToken. */
+    public TypedIOPort y;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute is pollingInterval or deadZone and the
-     *  joystick has already been initialized by calling initialize()
-     *  then update the appropriate value in the joystick interface.
-     *  If initialized() has not yet been called, then do nothing. 
+    /** If the attribute is deadZone and the joystick has already been
+     *  initialized by calling initialize() then update the
+     *  appropriate value in the joystick interface.  If the attribute
+     *  is deadZone and initialized() has not yet been called, then do
+     *  nothing.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Maybe thrown (?)
      */
@@ -148,11 +146,7 @@ com.centralnexus.input.JoystickListener {
 	}
 
         // FIXME: not sure about this, but it seems like a good idea.
-        if (attribute == pollingInterval && _joy != null) {
-            int pollingIntervalValue
-                = ((IntToken)pollingInterval.getToken()).intValue();
-            _joy.setPollInterval(pollingIntervalValue);
-        } else if (attribute == deadZone && _joy != null) {
+        if (attribute == deadZone && _joy != null) {
             double deadZoneValue
                 = ((DoubleToken)deadZone.getToken()).doubleValue();
             _joy.setDeadZone(deadZoneValue);
@@ -161,28 +155,13 @@ com.centralnexus.input.JoystickListener {
         }
     }
 
-    
-    /** Close this JoyDriver by removing it from the JoystickListeners. */
-    public void close() {
-	_joy.removeJoystickListener(this);
-    }
-
     /** Get the current location values from the joystick
      *  and generate a DoubleMatrixToken on the output. 
      */
     public synchronized void fire() throws IllegalActionException {
 	super.fire();
-	double currentX = _joy.getX();
-	double currentY = _joy.getY();
-	double[][] data = new double[2][1];
-	data[0][0] = currentX;
-	data[1][0] = -currentY;
-	DoubleMatrixToken result = new DoubleMatrixToken(data);
-	if (_debugging){
-	    _debug("Joystick.fire(): " + result);
-	}
-
-	output.send(0, result);
+	x.send(0, new DoubleToken (_joy.getX()));
+	y.send(0, new DoubleToken (_joy.getY()));
     }
 
     /** Get the values of the parameters and initialize the joystick
@@ -195,8 +174,6 @@ com.centralnexus.input.JoystickListener {
 	if (_debugging){
 	    _debug("Joystick.initialize() start");
 	}
-        int pollingIntervalValue
-                = ((IntToken)pollingInterval.getToken()).intValue();
         double deadZoneValue
                 = ((DoubleToken)deadZone.getToken()).doubleValue();
 
@@ -211,51 +188,10 @@ com.centralnexus.input.JoystickListener {
                     "Failed to create a joystick instance");
 	}
         _joy.setDeadZone(deadZoneValue);
-	_joy.setPollInterval(pollingIntervalValue);
-	_joy.addJoystickListener(this);
 	if (_debugging){
 	    _debug("Joystick.initialize() end");
 	}
 
-    }
-
-
-    /** Indicates the joystick's input when the joystick is polled. */
-    public void joystickChanged(com.centralnexus.input.Joystick j) {
-        // FIXME: Why not use this method?
-	//	current_X = _joy.getX();
-	//	current_Y = _joy.getY();
-    }
-
-    /** Called when the joystick axis has changed.
-     *  Indicates the joystick's input when the joystick is polled.
-     */
-    public void joystickAxisChanged(com.centralnexus.input.Joystick j) {
-        // FIXME: Why not use this method?
-	//	current_X = _joy.getX();
-	//	current_Y = _joy.getY();
-    }
-
-    /** Called when the joystick button is changed. */
-    public void joystickButtonChanged(com.centralnexus.input.Joystick j) {
-        // FIXME: Why not use these
-
-    }
-
-    /** Sets the polling interval.
-     *  @param pollMillis The number of milliseconds between polls.
-     */
-    public void setPollInterval(int pollMillis) {
-        // FIXME: Does not do anything? we are polling every time
-        // we call fire.
-        _joy.setPollInterval(pollMillis);
-    }
-
-    /** Close this JoyDriver by removing it from the JoystickListeners.
-     *  @exception IllegalActionException Not thrown in this baseclass.
-     */
-    public void wrapup() throws IllegalActionException {
-	close();
     }
 
     ///////////////////////////////////////////////////////////////////
