@@ -88,6 +88,12 @@ KVM_DIR = @KVM_DIR@
 # Directory the Palm Pilot Hot Sync program looks for downloads
 PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 
+# Tini is a single board Java processor from Dallas Semi (www.dalsemi.com)
+TINI_CLASSES = @TINI_CLASSES@
+
+# Directory that contains the TINI installation
+TINI_DIR = @TINI_DIR@
+
 # Waba is another JDK for PalmOS, see
 # http://www.wabasoft.clom
 WABA_CLASSES = @WABA_CLASSES@
@@ -178,6 +184,10 @@ COMMAPI_DIR =   @COMMAPI_DIR@
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
 PTLEGO_DIR =	@PTLEGO_DIR@
+
+# Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
+# TINI was found
+PTTINI_DIR =	@PTINI_DIR@
 
 # Set to waba and used in $PTII/ptolemy/makefile if the PalmOS WABA was found
 PTWABA_DIR =	@PTWABA_DIR@
