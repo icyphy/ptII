@@ -40,6 +40,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.util.StringUtilities;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -87,9 +88,31 @@ public class Argument extends Attribute implements Settable {
     */
     public String getC2Type() {
         String ret = _cType;
-        if(_cType.endsWith("[]"))
+        if(_cType.endsWith("[]")) {
+            if (StringUtilities.getProperty("os.name")
+                    .startsWith("SunOS")) {
+            }
             ret = _cType.substring(0, _cType.length()-2) + " *";
+        }
         return ret;
+    }
+
+
+    /** Get the C2 Type Array, but if we are under SunOS, and
+     *  getC2Type returns long, then return int *.  On other platforms, 
+     *  just return the value of getC2Type().  FIXME: This platform
+     *  dependent change is necessary under Solaris 8 for some reason.
+     *  @return the _cType attribute in pointer
+     */
+    public String getC2TypeHack() {
+        String returnValue = getC2Type();
+        if (StringUtilities.getProperty("os.name")
+                .startsWith("SunOS")) {
+            if (returnValue.startsWith("long")) {
+                return "int *";
+            }
+        }
+        return returnValue;
     }
 
     /** Get the expression of the argument.
