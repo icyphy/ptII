@@ -33,8 +33,8 @@ ME =		ptolemy/actor/lib/javasound/demo
 
 DIRS =
 
-# Root of the Java directory
-ROOT =		../../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
