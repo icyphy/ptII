@@ -63,6 +63,7 @@ JSRCS = \
 	Expression.java \
 	FileWrite.java \
 	Gaussian.java \
+	Interpolator.java \
 	Maximum.java \
 	Minimum.java \
 	MultiplyDivide.java \
