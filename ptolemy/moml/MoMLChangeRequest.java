@@ -30,12 +30,13 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.NamedObj;
-
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UndoStackAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
@@ -188,7 +189,6 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  that are registered with this object via their changeFailed()
      *  method.
      *  @param report False to disable error reporting.
-     *  @since Ptolemy II 3.1
      */
     public void setReportErrorsToHandler(boolean report) {
         _reportToHandler = report;
@@ -205,16 +205,12 @@ public class MoMLChangeRequest extends ChangeRequest {
     protected void _execute() throws Exception {
         // Check to see whether there is a parser...
         if (_context != null) {
-            NamedObj toplevel = _context.toplevel();
-            ParserAttribute parserAttribute =
-                (ParserAttribute)toplevel.getAttribute("_parser");
-            if (parserAttribute != null) {
-                _parser = parserAttribute.getParser();
-                _parser.reset();
-            }
+            _parser = ParserAttribute.getParser(_context);
+            _parser.reset();
         }
         if (_parser == null) {
-            // There is no previously associated parser.
+            // There is no previously associated parser (can only
+            // happen if _context is null).
             _parser = new MoMLParser();
         }
         // NOTE: To see what is being parsed, uncomment the following:
@@ -222,7 +218,7 @@ public class MoMLChangeRequest extends ChangeRequest {
           System.out.println("****** Executing MoML change:");
           System.out.println(getDescription());
           if (_context != null) {
-          System.out.println("------ in context " + _context.getFullName());
+              System.out.println("------ in context " + _context.getFullName());
           }
         */
 
@@ -249,8 +245,8 @@ public class MoMLChangeRequest extends ChangeRequest {
 
         // Merge the undo entry created if needed
         if (_undoable && _mergeWithPreviousUndo) {
-            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(_context);
-            undoInfo.mergeTopTwoUndos();
+            UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(_context);
+            undoInfo.mergeTopTwo();
         }
 
         // Apply the same change to any object that defers its MoML
@@ -299,10 +295,11 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // The parser given in the constructor.
     private MoMLParser _parser;
-
-    // Indicator of whether this request is the result of a propagating change.
-    private boolean _propagating = false;
     
+    // Indicator of whether this request is the result of a
+    // propagating change.
+    private boolean _propagating = false;
+
     // Flag indicating whether to report to the handler registered
     // with the parser.
     private boolean _reportToHandler = false;

@@ -63,12 +63,10 @@ JSRCS =	Documentation.java \
 	MoMLChangeRequest.java \
 	MoMLFilter.java \
 	MoMLParser.java \
-	MoMLUndoChangeRequest.java \
 	MoMLUndoEntry.java \
 	ParserAttribute.java \
 	StreamErrorHandler.java \
 	UndoContext.java \
-	UndoInfoAttribute.java \
 	Vertex.java
 
 

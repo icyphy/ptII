@@ -30,25 +30,24 @@
 
 package ptolemy.vergil.basic;
 
-import diva.canvas.Figure;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.NodeDragInteractor;
+import java.awt.Point;
+import java.awt.geom.Point2D;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UndoStackAttribute;
 import ptolemy.moml.MoMLUndoEntry;
-import ptolemy.moml.UndoInfoAttribute;
 import ptolemy.vergil.toolbox.SnapConstraint;
-
-import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import diva.canvas.Figure;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.NodeDragInteractor;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
@@ -201,8 +200,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         try {
             CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
             MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
-            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(toplevel);
-            undoInfo.pushUndoEntry(newEntry);
+            UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
+            undoInfo.push(newEntry);
         }
         catch (Exception ex) {
             // Unable to queue undo

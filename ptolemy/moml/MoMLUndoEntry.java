@@ -23,73 +23,70 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
-// Review base URL stuff.
 */
 
 package ptolemy.moml;
 
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UndoAction;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLUndoEntry
 /**
-An entry into the list of actions that can be un-done. If undo/redo
-is enabled, an instance of a class derived from this class is created
-each time an operation is carried out on a MoML model following its
-initial creation.
-<p>
-This class contains that info which will be common so all undo entries,
-and defines methods that each such entry should provide e.g. redo()
-<p>
-FIXME: this class may do well as an interface...
-<p>
-@author  Neil Smyth
+This is an undo action on the undo/redo stack.  The undo/redo stack
+is stored in an instance of UndoInfoAttribute associated with the top-level
+of a model.  If undo/redo is enabled, a MoMLParser will create entries
+automatically and put them on the stack whenever it parses MoML.  So the
+easiest mechanism to perform undoable actions is to specify those actions
+in MoML and issue a MoMLChangeRequest to execute them. An alternative,
+however, is to create an instance of this class with no MoML, using
+the single argument constructor, and to override execute() to directly
+perform the undo.
+
+@see MoMLParser
+@see kernel.util.UndoStackAttribute
+@see MoMLChangeRequest
+@author  Neil Smyth and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class MoMLUndoEntry  {
+public class MoMLUndoEntry implements UndoAction {
 
-    /**
+    /** Create an undo entry comprised of the specified MoML code.
+     *  @param context The context in which to execute the undo.
+     *  @param undoMoML The MoML specification of the undo action.
      */
-    public MoMLUndoEntry(NamedObj context,
-            String undoMoML) {
-        // First store the context
+    public MoMLUndoEntry(NamedObj context, String undoMoML) {
         _context = context;
-
-        // For now the xml to execute to undo the entry...
         _undoMoML = undoMoML;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Gets the MoML that will undo the entry */
-    public String getUndoMoML() {
-        return _undoMoML;
-    }
-
-    /** Get teh context for the undo
-     *  @return the NamedObj which is the context for the undo MoML
+    /** Parse the MoML specified in the constructor call in the context
+     *  specified in the constructor call using the parser associated
+     *  with the context (as determined by ParserAttribute.getParser()).
+     *  @see ParserAttribute.getParser(NamedObj)
      */
-    public NamedObj getUndoContext() {
-        return _context;
+    public void execute() throws Exception {
+        // Use a MoMLChangeRequest so that changes get propogated
+        // as appropriate to models that defer to this.
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, _context, _undoMoML);
+        // An undo entry is always undoable so that redo works.
+        request.setUndoable(true);
+        request.execute();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Holds the context in which this undo entry
-    // was created.
+    // The context in which to execute the undo.
     private NamedObj _context;
 
-    // Holds the MoML that will undo the executed MoML
-    // FIXME: find a better name...
+    // The MoML specification of the undo.
     private String _undoMoML;
-
 }

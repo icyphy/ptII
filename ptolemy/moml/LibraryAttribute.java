@@ -130,16 +130,8 @@ public class LibraryAttribute extends ConfigurableAttribute {
      */
     public CompositeEntity getLibrary() throws Exception {
         if (_librarySet) return _library;
-        NamedObj toplevel = toplevel();
-        ParserAttribute parserAttribute = (ParserAttribute)
-            toplevel.getAttribute("_parser", ParserAttribute.class);
-        MoMLParser parser;
-        if (parserAttribute != null) {
-            parser = parserAttribute.getParser();
-            parser.reset();
-        } else {
-            parser = new MoMLParser();
-        }
+        MoMLParser parser = ParserAttribute.getParser(this);
+        parser.reset();
         NamedObj library = parser.parse(value());
         if (!(library instanceof CompositeEntity)) {
             throw new IllegalActionException(this,

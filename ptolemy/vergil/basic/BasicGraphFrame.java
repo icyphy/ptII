@@ -30,65 +30,6 @@
 
 package ptolemy.vergil.basic;
 
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.JCanvas;
-import diva.canvas.Site;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.Terminal;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
-import diva.graph.GraphEvent;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.JGraph;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.LayoutTarget;
-import diva.graph.layout.LevelLayout;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FocusMouseListener;
-import diva.gui.toolbox.JCanvasPanner;
-import diva.util.java2d.ShapeUtilities;
-
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.RunTableau;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLUndoChangeRequest;
-import ptolemy.moml.MoMLUndoEntry;
-import ptolemy.moml.UndoInfoAttribute;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.tree.EntityTreeModel;
-import ptolemy.vergil.tree.PTree;
-import ptolemy.vergil.tree.VisibleTreeModel;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -135,6 +76,65 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.RunTableau;
+import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.gui.CancelException;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.RedoChangeRequest;
+import ptolemy.kernel.util.UndoChangeRequest;
+import ptolemy.kernel.util.UndoStackAttribute;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.tree.EntityTreeModel;
+import ptolemy.vergil.tree.PTree;
+import ptolemy.vergil.tree.VisibleTreeModel;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.JCanvas;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.Terminal;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphController;
+import diva.graph.GraphEvent;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.LayoutTarget;
+import diva.graph.layout.LevelLayout;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.FocusMouseListener;
+import diva.gui.toolbox.JCanvasPanner;
+import diva.util.java2d.ShapeUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
 /**
@@ -1131,8 +1131,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
             // Push the undo entry onto the stack
             MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite, moml.toString());
-            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(composite);
-            undoInfo.pushUndoEntry(undoEntry);
+            UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(composite);
+            undoInfo.push(undoEntry);
         } catch (Exception e) {
             // operation not undoable
         }
@@ -1222,9 +1222,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GraphModel model = controller.getGraphModel();
         try {
             CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-            MoMLUndoChangeRequest change =
-                new MoMLUndoChangeRequest(this, toplevel);
-            change.setRedoable();
+            RedoChangeRequest change =
+                new RedoChangeRequest(this, toplevel);
             toplevel.requestChange(change);
         }
         catch (Exception ex) {
@@ -1304,8 +1303,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GraphModel model = controller.getGraphModel();
         try {
             CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-            MoMLUndoChangeRequest change =
-                new MoMLUndoChangeRequest(this, toplevel);
+            UndoChangeRequest change =
+                new UndoChangeRequest(this, toplevel);
             toplevel.requestChange(change);
         }
         catch (Exception ex) {

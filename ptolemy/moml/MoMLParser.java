@@ -31,30 +31,6 @@
 package ptolemy.moml;
 
 // Ptolemy imports.
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Configurable;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.util.StringUtilities;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -76,6 +52,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.gui.CancelException;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Configurable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.UndoStackAttribute;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.HandlerBase;
 import com.microstar.xml.XmlException;
@@ -436,12 +436,7 @@ public class MoMLParser extends HandlerBase {
             if (_undoDebug) {
                 // Print out what has been generated
                 System.out.println("=======================");
-                if (!_undoIsRedo) {
-                    System.out.println("Generated UNDO MoML: ");
-                }
-                else {
-                    System.out.println("Generated REDO MoML: ");
-                }
+                System.out.println("Generated UNDO MoML: ");
                 System.out.print(undoMoML);
                 System.out.println("=======================");
             }
@@ -455,15 +450,10 @@ public class MoMLParser extends HandlerBase {
                 context = _toplevel;
             }
             MoMLUndoEntry newEntry = new MoMLUndoEntry(context, undoMoML);
-            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(context);
-            if (!_undoIsRedo) {
-                // Is an undo...
-                undoInfo.pushUndoEntry(newEntry);
-            }
-            else {
-                // Just carried out an undo, need to store for a redo
-                undoInfo.pushRedoEntry(newEntry);
-            }
+            UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(context);
+            // If we are in the middle of processing an undo, then this will
+            // go onto the redo stack.
+            undoInfo.push(newEntry);
             // Clear up the various MoML variables.
             _resetUndo();
         }
@@ -871,13 +861,17 @@ public class MoMLParser extends HandlerBase {
 
         // Add a parser attribute to the toplevel to indicate a parser
         // responsible for handling changes, unless there already is a
-        // parser, in which case we just set the parser.
-        ParserAttribute parserAttribute = (ParserAttribute)
-            _toplevel.getAttribute("_parser", ParserAttribute.class);
-        if (parserAttribute == null) {
-            parserAttribute = new ParserAttribute(_toplevel, "_parser");
+        // parser, in which case we just set the parser to this one.
+        MoMLParser parser = ParserAttribute.getParser(_toplevel);
+        if (parser != this) {
+            // Force the parser to be this one.
+            ParserAttribute parserAttribute = (ParserAttribute)
+                    _toplevel.getAttribute("_parser", ParserAttribute.class);
+            if (parserAttribute == null) {
+                parserAttribute = new ParserAttribute(_toplevel, "_parser");
+            }
+            parserAttribute.setParser(this);
         }
-        parserAttribute.setParser(this);
 
         return _toplevel;
     }
@@ -981,44 +975,6 @@ public class MoMLParser extends HandlerBase {
             _currentCharData.append(" ");
             _currentCharData.append(data);
             _currentCharData.append("?>");
-        }
-    }
-
-    /**
-     *  Redo the last undoable change carried out by this parser. If there are
-     *  no redoable entries available, then simply do nothing.
-     *
-     *  @throws  Exception  if something goes wrong with
-     *  @since Ptolemy II 2.1
-     */
-    public void redo() throws Exception {
-        // NOTE: _current cannot be null, so the MoMLUndoChangeReequest
-        // class uses the context it was given to set _current, but it is the
-        // context from the undo entry that is used to carry out the undo in
-        NamedObj named = _current;
-        if (named == null) {
-            named = _toplevel;
-        }
-        UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(named);
-        MoMLUndoEntry redoable = undoInfo.popRedoEntry();
-        if (redoable == null) {
-            // Redo called with nothing to redo, do nothing
-            return;
-        }
-
-        // First set the context, then carry out the undo
-        NamedObj context = redoable.getUndoContext();
-        setContext(context);
-        String redoableMoML = redoable.getUndoMoML();
-        // Mark this parse as being redone via a redo
-        _undoIsRedo = false;
-        try {
-            /// Carry out the undo(), making sure it is redoable
-            setUndoable(true);
-            parse(null, redoableMoML);
-        }
-        finally {
-            _resetUndo();
         }
     }
 
@@ -1130,11 +1086,7 @@ public class MoMLParser extends HandlerBase {
      */
     public void setContext(NamedObj context) {
         reset();
-        Nameable toplevel = context;
-        while (toplevel.getContainer() != null) {
-            toplevel = toplevel.getContainer();
-        }
-        _toplevel = (NamedObj)toplevel;
+        _toplevel = context.toplevel();
         _current = context;
     }
 
@@ -2499,48 +2451,6 @@ public class MoMLParser extends HandlerBase {
         _externalEntities.push(systemID);
     }
 
-    /**
-     *  Undo the last undoable change carried out by this parser If
-     *  there are no undoable entries available, then simply do
-     *  nothing.
-     *
-     *  @exception  Exception  Description of Exception
-     *  @since Ptolemy II 2.1
-     */
-    public void undo() throws Exception {
-        // NOTE: _current cannot be null, so the MoMLUndoChangeReequest
-        // class uses the context it was given to set _current, but it is the
-        // context from the undo entry that is used to carry out the undo in
-        NamedObj named = _current;
-        if (named == null) {
-            named = _toplevel;
-        }
-        UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(named);
-        MoMLUndoEntry undoable = undoInfo.popUndoEntry();
-        if (undoable == null) {
-            // Undo called with nothing to undo, do nothing
-            return;
-        }
-
-        // First set the context, then carry out the undo
-        NamedObj context = undoable.getUndoContext();
-        setContext(context);
-        String undoableMoML = undoable.getUndoMoML();
-        if (_undoDebug) {
-            System.out.println("undo(): undo MoML = " + undoableMoML);
-        }
-        // Mark this parse as being undone via a redo
-        _undoIsRedo = true;
-        try {
-            // Carry out the undo(), making sure it is redoable
-            setUndoable(true);
-            parse(null, undoableMoML);
-        }
-        finally {
-            _resetUndo();
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
@@ -3595,16 +3505,14 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-
     //  Reset the undo information to give a fresh setup for the next
     //  incremental change. NOTE: this resets all the undo information except
-    //  for the undoInfoAttribute which is associated with the model.
+    //  for the UndoStackAttribute which is associated with the model.
     //  @since Ptolemy II 2.1
     private void _resetUndo() {
         _undoContext = null;
         _undoContexts = new Stack();
         _undoEnabled = false;
-        _undoIsRedo = false;
     }
 
     // Given a name that is either absolute (with a leading period)
@@ -3888,6 +3796,7 @@ public class MoMLParser extends HandlerBase {
 
     // Holds information needed to generate undo MoML at this level
     private Stack _undoContexts = new Stack();
+    
     // The current undo context. This contains information about the
     // the current undo environment
     private UndoContext _undoContext = null;
@@ -3898,9 +3807,6 @@ public class MoMLParser extends HandlerBase {
     // Flag indicating if the MoML currently being parsed should be
     // undoable. Primarily for incremental parsing.
     private boolean _undoEnabled = false;
-
-    // Whether or not the undo is actally a redo
-    private boolean _undoIsRedo = false;
 
     // The workspace for this model.
     // List of unrecognized elements.

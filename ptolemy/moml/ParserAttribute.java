@@ -30,13 +30,14 @@
 
 package ptolemy.moml;
 
+import java.util.List;
+
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
-
-import java.io.IOException;
-import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParserAttribute
@@ -84,6 +85,35 @@ public class ParserAttribute extends SingletonAttribute {
             _parser = new MoMLParser();
         }
         return _parser;
+    }
+    
+    /** Get a parser for the specified object. This searches up the
+     *  hierarchy until it finds a container of the specified object
+     *  that contains an instance of ParserAttribute. If none is
+     *  found, then a new ParserAttribute is created at the top level.
+     *  @param object The object for which to find an associated parser.
+     *  @exception NullPointerException If the argument is null.
+     */
+    public static MoMLParser getParser(NamedObj object) {
+        NamedObj container = object;
+        while (container != null) {
+            List attributes = object.attributeList(ParserAttribute.class);
+            if (attributes != null && attributes.size() > 0) {
+                // Found one.
+                ParserAttribute attribute = (ParserAttribute)attributes.get(0);
+                return attribute.getParser();
+            }
+            container = (NamedObj)container.getContainer();
+        }
+        // No parser attribute was found.
+        NamedObj toplevel = object.toplevel();
+        try {
+            ParserAttribute attribute = new ParserAttribute(toplevel, "_parser");
+            return attribute.getParser();
+        } catch (KernelException ex) {
+            // This should not occur.
+            throw new InternalErrorException(ex);
+        }
     }
 
     /** Set the parser.
