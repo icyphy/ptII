@@ -28,7 +28,8 @@
 #						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptII
+# Current directory relative to $PTII
+ME =		.
 
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite

@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =
+ME =		ptolemy/domains/sdf/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..

@@ -32,7 +32,7 @@
 # Ptolemy II Design Doc to HTML
 
 
-ME =		ptII/doc/design/src
+ME =		doc/design/src
 
 # Sub directories to run make in.
 DIRS =

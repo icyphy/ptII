@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =
+ME =		ptolemy/domains/ct/lib/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptII/doc
+ME =		doc
 
 # Sub directories to run make in.
 DIRS =		 coding design tutorial #internals #usersGuides

@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		test
+ME =		ptolemy/domains/csp/kernel/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

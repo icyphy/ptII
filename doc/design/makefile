@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptII/doc/design
+ME =		doc/design
 
 # Sub directories to run make in.
 # Don't include src directory, since we don't ship it with the release

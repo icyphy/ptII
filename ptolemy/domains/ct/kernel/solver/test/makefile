@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemydomains/ct/kernel/solver/test
+ME =		ptolemy/domains/ct/kernel/solver/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..

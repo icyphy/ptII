@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptII/doc/coding
+ME =		doc/coding
 
 DIRS =
 
