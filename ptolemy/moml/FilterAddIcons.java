@@ -165,7 +165,7 @@ public class FilterAddIcons implements MoMLFilter {
 
     // FIXME: this should go away
     private void _debug(String printString) {
-	System.out.println(printString);
+	//System.out.println(printString);
     }
 
     // Map of actors that should have _icon
