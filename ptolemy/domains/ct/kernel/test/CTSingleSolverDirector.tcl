@@ -80,8 +80,8 @@ test CTSingleSolverDirector-2.1 {Ramp with ForwardEulerSolver} {
     $sys setManager $man
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
     $sys setDirector $dir
-    $dir setVERBOSE 1
-    $dir setDEBUG 1
+    #$dir setVERBOSE 1
+    #$dir setDEBUG 1
     set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
     set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integ]
     set print [java::new ptolemy.domains.ct.kernel.test.CTTestValueSink\

@@ -175,7 +175,30 @@ test CTScheduler-2.4 {chain of dynamic actors with feedback} {
 } {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} {.CA.Dyn .CA.D2} {} {} {} {} {}\
  {.CA.D2 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A2} .CA.A3}
 
-test CTScheduler-2.5 {event generators and event interpreters} { 
+test CTScheduler-2.5 { longer chain of dynamic actors with feedback} { 
+    #Note: use above setup.
+    $pd1o unlink $rd
+    set d3 [java::new ptolemy.domains.ct.kernel.test.CTDummyDynamicActor \
+	    $ca D3]
+    set pd3i [$d3 getPort input]
+    set pd3o [$d3 getPort output]
+    set rd2 [$ca connect $pd1o $pd3i RD2]
+    $pd3o link $rd
+    list [enumToFullNames [$sch arithmaticActors]] \
+	 [enumToFullNames [$sch dynamicActors]] \
+	 [enumToFullNames [$sch eventGenerators]] \
+	 [enumToFullNames [$sch eventInterpreters]] \
+	 [enumToFullNames [$sch statefulActors]] \
+	 [enumToFullNames [$sch stateTransitionSSCActors]] \
+	 [enumToFullNames [$sch outputSSCActors]] \
+	 [enumToFullNames [$sch dynamicActorSchedule]] \
+	 [enumToFullNames [$sch stateTransitionSchedule]] \
+	 [enumToFullNames [$sch outputSchedule]]
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} {.CA.Dyn .CA.D2 .CA.D3} {} {} {} {} {}\
+ {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A2} .CA.A3}
+
+
+test CTScheduler-2.6 {event generators and event interpreters} { 
     #Note: use above setup.
     set eg [java::new ptolemy.domains.ct.kernel.test.CTDummyEventGenerator \
 	    $ca EG]
@@ -209,10 +232,11 @@ test CTScheduler-2.5 {event generators and event interpreters} {
 	 [enumToFullNames [$sch stateTransitionSchedule]] \
 	 [enumToFullNames [$sch outputSchedule]]
 } {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5}\
-	{.CA.Dyn .CA.D2} .CA.EG .CA.EI {} {} .CA.SSC {.CA.D2 .CA.Dyn}\
+	{.CA.Dyn .CA.D2 .CA.D3} .CA.EG .CA.EI {} {} .CA.SSC\
+	{.CA.D2 .CA.D3 .CA.Dyn}\
 	{.CA.A1 .CA.A4 .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5}}
 
-test CTScheduler-2.5 {contained in a composite actor} { 
+test CTScheduler-2.7 {contained in a composite actor} { 
     #Note: use above setup.
     set pci1 [java::new ptolemy.actor.TypedIOPort $ca PCI1]
     set pci2 [java::new ptolemy.actor.TypedIOPort $ca PCI2]
@@ -257,12 +281,12 @@ test CTScheduler-2.5 {contained in a composite actor} {
 	 [enumToFullNames [$sch stateTransitionSchedule]] \
 	 [enumToFullNames [$sch outputSchedule]]
 } {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S\
-	.CA.A7S .CA.ED} {.CA.Dyn .CA.D2} {.CA.EG .CA.ED} .CA.EI\
-	{.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.Dyn}\
+	.CA.A7S .CA.ED} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI\
+	{.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn}\
 	{.CA.A1 .CA.A4 .CA.A7S .CA.A2}\
 	{.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED}}
 
-test CTScheduler-2.6 {transparent arithmetic actor} { 
+test CTScheduler-2.8 {transparent arithmetic actor} { 
     #Note: use above setup.
     set pci3 [java::new ptolemy.actor.TypedIOPort $ca PCI3]
     set pco3 [java::new ptolemy.actor.TypedIOPort $ca PCO3]
@@ -286,7 +310,7 @@ test CTScheduler-2.6 {transparent arithmetic actor} {
 	 [enumToFullNames [$sch dynamicActorSchedule]] \
 	 [enumToFullNames [$sch stateTransitionSchedule]] \
 	 [enumToFullNames [$sch outputSchedule]]
-} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2 .CA.D3} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A7S} {} .CA.SSC {.CA.D2 .CA.D3 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
 
 ######################################################################
 ####
