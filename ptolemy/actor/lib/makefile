@@ -57,6 +57,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Add.java \
 	Const.java \
+	Distributor.java \
 	Ramp.java
 
 EXTRA_SRCS =	$(JSRCS)
