@@ -217,7 +217,7 @@ public class CSPDirector extends ProcessDirector {
      *  @param req The topology change being queued.
      */
     public synchronized void
-    queueTopologyChangeRequest(TopologyChangeRequest req) {
+            queueTopologyChangeRequest(TopologyChangeRequest req) {
         _topologyChangesPending = true;
         super.queueTopologyChangeRequest(req);
     }
@@ -266,9 +266,6 @@ public class CSPDirector extends ProcessDirector {
     public void wrapup() throws IllegalActionException {
         if ((_actorsDelayed != 0 ) || _topologyChangesPending ||
                 (_getPausedActorsCount() != 0)) {
-            /*throw new InvalidStateException( "CSPDirector wrapping up " +
-              "when there are actors delayed or paused, or when " +
-              "topology changes are pending.");*/
         }
         super.wrapup();
     }
@@ -361,7 +358,6 @@ public class CSPDirector extends ProcessDirector {
                     Actor actor = (Actor)newActors.nextElement();
                     actor.createReceivers();
                     actor.initialize();
-                    String name = ((Nameable)actor).getName();
                     ProcessThread pnt = new ProcessThread(actor, this);
                     newThreads.insertFirst(pnt);
                 }
@@ -383,13 +379,12 @@ public class CSPDirector extends ProcessDirector {
                 // Now go through list of delayed actors
                 // and wake up those at this time
                 // Note that to deal with roundoff errors on doubles,
-                // any times within 0.000000001 are considered the same.
+                // any times within TOLERANCE are considered the same.
                 boolean done = false;
                 while (!done && _delayedActorList.size() > 0 ) {
                     DelayListLink val =
                         (DelayListLink)_delayedActorList.first();
-                    double tolerance = Math.pow(10, -10);
-                    if (Math.abs(val._resumeTime - nextTime) < tolerance) {
+                    if (Math.abs(val._resumeTime - nextTime) < TOLERANCE) {
                         _delayedActorList.removeFirst();
                         val._actor._continue();
                         _actorsDelayed--;
@@ -398,7 +393,6 @@ public class CSPDirector extends ProcessDirector {
                     }
                 }
             } else {
-                System.out.println("REAL DEADLOCK!!");
                 // Real deadlock. Return true so that the
                 // fire method can return.
                 return true;
@@ -432,7 +426,6 @@ public class CSPDirector extends ProcessDirector {
     protected synchronized boolean _isPaused() {
         if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed ==
                 _getActiveActorsCount()) {
-            System.out.println("CSPDirector: model successfully paused!");
 	    return true;
         }
         return false;
@@ -497,6 +490,8 @@ public class CSPDirector extends ProcessDirector {
     // Flag indicating that changes in the topology have been
     // registered with this director.
     private boolean _topologyChangesPending = false;
+
+    private static double TOLERANCE = Math.pow(10, -10);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
