@@ -240,6 +240,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public boolean isThisStepAccurate() {
         boolean result = true;
+        CTDirector dir= (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
         if (_enabledRefinements != null) {
             Iterator refinements = _enabledRefinements.iterator();
             while (refinements.hasNext()) {
@@ -263,7 +264,18 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Variable guard = tr._guard2;
                 _distanceToBoundary = ( (DoubleToken) guard.getToken()).
                     doubleValue();
-                _transitionAccurate = (_distanceToBoundary < 1e-4);
+                //System.out.println("the distance to guard "+ guard.getExpression() + " is " +  _distanceToBoundary);
+
+                // the returned value as -1.0 indicating this transition is
+                // always enabled, return true. The HSDirector is responsible
+                // to refire itself at the current time.
+
+                if (_distanceToBoundary == -1.0) {
+                    //System.out.println("==>the guard " + guard.getExpression() + " is true.");
+                    return true;
+                }
+
+                _transitionAccurate = (_distanceToBoundary < dir.getErrorTolerance());
 
                 if (_transitionAccurate) {
                     _lastTransitionAccurate = true;
@@ -276,7 +288,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return result;
         }
 
-        //return result;
     }
 
     /** Return a CTReceiver.
@@ -306,6 +317,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   enabled.
      */
     public boolean postfire() throws IllegalActionException {
+        Director dir= ((Actor)getContainer()).getExecutiveDirector();
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
@@ -318,10 +330,12 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
             _ctrl._setInputsFromRefinement();
         }
+        // FIXME: why do we need to execute the update actions again in postfire?
         Transition tr =
             _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
-        if (_debugging && tr != null) {
-            _debug(tr.getFullName(), "is chosen.");
+        if (tr != null) {
+            CompositeActor container = (CompositeActor)getContainer();
+            dir.fireAt(container, getCurrentTime());
         }
         return super.postfire();
     }
@@ -354,6 +368,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     public boolean prefire() throws IllegalActionException {
         _ctrl = getController();
         _st = _ctrl.currentState();
+
         return super.prefire();
     }
 
@@ -368,8 +383,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        CTDirector dir =
-            (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
+        CTDirector dir= (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
         double result = dir.getCurrentStepSize();
         if (_enabledRefinements != null) {
             Iterator refinements = _enabledRefinements.iterator();
@@ -389,23 +403,26 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
             // If last step size is not accurate, we use a linear interpolation
             // approach to get the refined step size; otherwise, we use the
-            // current derivatives of integrators to refine the step size.
+            // maximum value of current derivatives of state variables to refine the step size.
 
+            // Notice, we try to refine the step size such that the distance
+            // to boundary is errorTolerance/2.
             double possibleStepSize = result;
+            double errorTolerance = dir.getErrorTolerance();
 
             if (!_lastTransitionAccurate) {
-                /*
-                System.out.println();
-                System.out.println("====> using linear interopolation.");
-                System.out.println("====> current step size " + result + " former step size " + _lastStepSize);
-                System.out.println("====> current distance to boundary " + _distanceToBoundary + " former " + _lastDistanceToBoundary);
-*/
+
+                //System.out.println();
+                //System.out.println("====> using linear interopolation.");
+                //System.out.println("====> current step size " + result + " former step size " + _lastStepSize);
+                //System.out.println("====> current distance to boundary " + _distanceToBoundary + " former " + _lastDistanceToBoundary);
+
                 possibleStepSize = _lastStepSize - (_lastStepSize - result)
-                    *_lastDistanceToBoundary / (_lastDistanceToBoundary - _distanceToBoundary);
+                    *( _lastDistanceToBoundary - errorTolerance/2) / (_lastDistanceToBoundary - _distanceToBoundary);
             } else {
 
-//                System.out.println();
-//                System.out.println("***** using derivative.");
+                //System.out.println();
+                //System.out.println("***** using derivative.");
                 double maximumDerivative = 0.0;
 
                 Iterator actors = _enabledRefinements.iterator();
@@ -431,7 +448,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     }
                 }
 
-                possibleStepSize = result - _distanceToBoundary/maximumDerivative;
+                possibleStepSize = result - (_distanceToBoundary - errorTolerance/2) /maximumDerivative;
             }
 
             // save for next step size checking.
@@ -439,10 +456,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _lastTransitionAccurate = false;
             _lastStepSize = result;
 
-//            System.out.println("           refined current Step size " + possibleStepSize);
+            //System.out.println("           refined current Step size " + possibleStepSize);
 
-            if (possibleStepSize < dir.getMinStepSize()) {
-                // This step size is too small and not accurate.
+            if (possibleStepSize < 0.0) {
+                // This refined step size does not make sense.
                 return result/2.0;
             } else {
                 // step size is always reduced.
@@ -466,8 +483,12 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     // Lcoal variable to indicate the distance to boundary.
     private double _distanceToBoundary = 0.0;
 
-    // Lcoal variable to indicate the distance to boundary.
+    // Lcoal variable to indicate the last distance to boundary.
     private double _lastDistanceToBoundary = 0.0;
+
+    // Lcoal variable to indicate the last step size.
     private double _lastStepSize = 0.0;
+
+    // Lcoal variable to indicate the last transition accurate or not.
     private boolean _lastTransitionAccurate = true;
 }
