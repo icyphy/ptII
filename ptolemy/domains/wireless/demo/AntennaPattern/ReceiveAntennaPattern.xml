@@ -57,7 +57,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates modeling receiving antenna gain.&#10;The Receiver has an 8-element beamforming antenna with a&#10;steering angle applied. When you run this model, the&#10;Receiver will move around the Sender and measure the&#10;received power. It then plots the receive power on a&#10;polar plot, with the distance from the origin representing&#10;the received power, and the angle representing the angle&#10;of its position relative to the transmitter.  In effect,&#10;it measures and displays the antenna gain pattern of&#10;the Receiver. (See AntennaPattern.xml as an example&#10;of modeling transmit antenna gain) ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example illustrates modeling receiving antenna gain.&#10;The Receiver has an 8-element beamforming antenna with a&#10;steering angle applied. When you run this model, the&#10;Receiver will move around the Sender and measure the&#10;received power. It then plots the receive power on a&#10;polar plot, with the distance from the origin representing&#10;the received power, and the angle representing the angle&#10;of its position relative to the transmitter.  In effect,&#10;it measures and displays the antenna gain pattern of&#10;the Receiver. (See TransmitAntennaPattern.xml as an example&#10;of modeling transmit antenna gain) ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 275.0]">
         </property>
