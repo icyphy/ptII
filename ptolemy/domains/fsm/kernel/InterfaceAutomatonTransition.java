@@ -108,6 +108,7 @@ public class InterfaceAutomatonTransition extends Transition {
 	    throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
+	label = new StringAttribute(this, "");
 	guardExpression.setVisibility(Settable.NONE);
 	triggerExpression.setVisibility(Settable.NONE);
     }
