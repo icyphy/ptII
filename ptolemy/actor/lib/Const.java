@@ -34,11 +34,15 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.graph.Inequality;
+
+import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Const
 /**
-An actor that produces a constant output. The type and value of the
+Produces a constant output. The type and value of the
 output is determined by a parameter set by the user.
 
 @author Yuhong Xiong
@@ -47,57 +51,81 @@ output is determined by a parameter set by the user.
 
 public class Const extends TypedAtomicActor {
 
-    /** Construct a constant source. The value of the constant output
-     *  is determined by the specified expression. If the expression is
-     *  null, it is set to the default value "0".
+    /** Construct a constant source with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param expr The String expression of the constant output.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Const(TypedCompositeActor container, String name, String expr)
+    public Const(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	_value = new Parameter(this, "Value");
-	if (expr == null) {
-	    _value.setExpression("0");
-	} else {
-	    _value.setExpression(expr);
-	}
-	_value.evaluate();
-    	_output = new TypedIOPort(this, "Output", false, true);
+    	value = new Parameter(this, "value");
+    	output = new TypedIOPort(this, "output", false, true);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The output port.
+     */
+    public TypedIOPort output = null;
+
+    /** The value produced by this constant source. This parameter
+     *  is initialized to a DoubleToken, with value 0.0.
+     */
+    public Parameter value = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Evaluate the Parameter containing the value of this constant
-     *  source and set the declared type.
-     *   @exception IllegalActionException Not thrown in this class.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and paramters.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
      */
-    // FIXME: this might not work if user change the parameter during
-    // simulation.
-    public void initialize()
-	    throws IllegalActionException {
-        _output.setDeclaredType(_value.getType());
+    public Object clone(Workspace ws) {
+	try {
+	    Const newobj = (Const)super.clone(ws);
+	    newobj.output = (TypedIOPort)newobj.getPort("output");
+	    newobj.value = (Parameter)newobj.getAttribute("value");
+	    return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
-    /** Output a token of the constant value.
+    /** Send out the constant value.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire()
 	    throws IllegalActionException {
-        _output.broadcast(_value.getToken());
+        output.broadcast(value.getToken());
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    /** Return the type constraint that the output type must be
+     *  greater than or equal to the type of the value parameter.
+     *  If the the value parameter has not been set, then it is
+     *  set to type IntToken with value 1.
+     */
+    // FIXME: it may be better to set the default value for
+    // paramters in the constructor.
+    public Enumeration typeConstraints() {
+	if (value.getToken() == null) {
+	    value.setToken(new IntToken(1));
+	}
 
-    private Parameter _value = null;
-    private TypedIOPort _output = null;
+	LinkedList result = new LinkedList();
+	Class paramType = value.getToken().getClass();
+        Inequality ineq = new Inequality(new TypeTerm(paramType),
+					 output.getTypeTerm());
+	result.insertLast(ineq);
+	return result.elements();
+    }
 }
 
