@@ -725,8 +725,26 @@ else
   Try --with-java=DIR, or set the JAVA_HOME environment variable." 1>&2; exit 1; }
 fi
 
+echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
+echo "configure:730: checking for the proper CLASSPATH separator" >&5
+case "`uname -s`" in
+    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
+    *) CLASSPATHSEPARATOR=":";;
+esac
+echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
 
 
+
+# Keep these substitutions alphabetical, with a description
+
+# Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
+
+# Location of the JDK
+
+# Location of the PtII directory
+
+
+# Files we substitute in
 trap '' 1 2 15
 cat > confcache <<\EOF
 # This file is a shell script that caches the results of configure
@@ -871,6 +889,7 @@ s%@infodir@%$infodir%g
 s%@mandir@%$mandir%g
 s%@JAVAC@%$JAVAC%g
 s%@JAVA@%$JAVA%g
+s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 

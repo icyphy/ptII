@@ -138,6 +138,23 @@ else
   Try --with-java=DIR, or set the JAVA_HOME environment variable.])
 fi
 
+AC_MSG_CHECKING([for the proper CLASSPATH separator])
+case "`uname -s`" in
+    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
+    *) CLASSPATHSEPARATOR=":";;
+esac
+AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
+
+
+
+# Keep these substitutions alphabetical, with a description
+
+# Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
+AC_SUBST(CLASSPATHSEPARATOR)
+# Location of the JDK
 AC_SUBST(PTJAVA_DIR)
+# Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
+
+# Files we substitute in
 AC_OUTPUT(mk/ptII.mk ptolemy/plot/ptplot)
