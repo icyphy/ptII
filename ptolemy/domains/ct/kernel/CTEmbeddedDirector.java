@@ -242,7 +242,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 + nextIterationTime);
         setCurrentTime(_outsideTime);
         // if break point now, change solver.
-        double bp;
         Double now = new Double(_outsideTime);
         TotallyOrderedSet breakPoints = getBreakPoints();
         if(breakPoints != null && !breakPoints.isEmpty()) {

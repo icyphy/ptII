@@ -47,7 +47,7 @@ import java.util.Iterator;
 /**
 A CTDirector that uses real time. This director can only be the top level
 director. When initializing, it set the start time to be the computer
-time. At the postfire statage of each iteration, it waits until the
+time. At the postfire stage of each iteration, it waits until the
 computer time has progressed to the director time.
 FIXME: still under development.
 @author  Jie Liu
