@@ -373,7 +373,7 @@ public class DDEDirector extends ProcessDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are transfered.
+     *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -415,7 +415,7 @@ public class DDEDirector extends ProcessDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
-     *  @return True if data are transfered.
+     *  @return True if data are transferred.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {

@@ -396,7 +396,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  ports it is connected to on the inside.  The port argument must
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored. The execution
-     *  phase is set to event phase if there's any data transfered.
+     *  phase is set to event phase if there's any data transferred.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.

@@ -358,7 +358,7 @@ public class FSMDirector extends Director {
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
-     *  @return True if data are transfered.
+     *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {

@@ -573,7 +573,7 @@ public class DEDirector extends Director {
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
      *
-     *  @return True if data are transfered.
+     *  @return True if data are transferred.
      *  @param port The input port from which tokens are transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, or if the current time of the executive director
