@@ -65,12 +65,7 @@ JSRCS = \
 	Graph.java \
 	Inequality.java \
 	InequalitySolver.java \
-	InequalityTerm.java \
-        InvalidGraphException.java \
-	StaticGraph.java \
-	IllegalTopologyException.java \
-	StaticDirectedGraph.java \
-	StaticUndirectedGraph.java
+	InequalityTerm.java
    
 EXTRA_SRCS =	$(JSRCS)
 
