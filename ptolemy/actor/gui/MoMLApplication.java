@@ -134,7 +134,7 @@ public class MoMLApplication {
         _parser = new MoMLParser();
 
 	// Handle Backward Compatibility.
-	//_parser.addMoMLFilter(new FilterBackwardCompatibility());
+	_parser.addMoMLFilter(new FilterBackwardCompatibility());
 
         _parseArgs(args);
 
