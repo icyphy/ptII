@@ -77,6 +77,7 @@ JSRCS = \
 	Expression.java \
 	FileWriter.java \
 	Gaussian.java \
+	IIR.java \
 	Interpolator.java \
         MaxIndex.java \
 	Maximum.java \
