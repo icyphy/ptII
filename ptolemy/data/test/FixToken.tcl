@@ -38,7 +38,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+#set VERBOSE 1
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
@@ -50,27 +50,32 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 test FixToken-1.0 {Create an empty instance} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
-    set c0 [java::call ptolemy.math.Quantizer round 0.0 $p0 ]
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    0.0 $p0]
     set p [java::new ptolemy.data.FixToken $c0 ]
     $p toString
 } {fix(0.0,16,4)}
 
 test FixToken-1.1 {Create a non-empty instance from two strings} {
-    set c1 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
     set p [java::new ptolemy.data.FixToken $c1 ]
     $p toString
 } {fix(5.573486328125,16,4)}
 
 test FixToken-1.2 {Create a non-empty instance from two strings} {
     set p1 [java::new ptolemy.math.Precision "(4^32)" ]
-    set c2 [java::call ptolemy.math.Quantizer round 5.5734 $p1 ]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } 5.5734 $p1 ]
     set p [java::new ptolemy.data.FixToken $c2 ]
     $p toString
 } {fix(5.573399998247623,32,4)}
 
 test FixToken-1.3 {Create a non-empty instance from an String} {
     set p1 [java::new ptolemy.math.Precision "(4.12)" ]
-    set c3 [java::call ptolemy.math.Quantizer round  7.7734 $p1 ]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } 7.7734 $p1 ]
     set p [java::new ptolemy.data.FixToken $c3 ]
     $p toString
 } {fix(7.7734375,16,4)}
@@ -78,14 +83,16 @@ test FixToken-1.3 {Create a non-empty instance from an String} {
 ######################################################################
 
 test FixToken-2.1 {Test additive identity} {	    
-    set c21 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c21 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.5734 $p0 ]
     set p [java::new ptolemy.data.FixToken $c21 ]
     set token [$p zero]
     list [$token toString]
 } {fix(0.0,16,4)}
 
 test FixToken-2.2 {Test multiplicative identity} { 
-    set c22 [java::call ptolemy.math.Quantizer round 12.2 $p0 ]
+    set c22 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } 12.2 $p0 ]
     set p [java::new ptolemy.data.FixToken $c22 ]
     set token [$p one]
     list [$token toString]
@@ -94,8 +101,10 @@ test FixToken-2.2 {Test multiplicative identity} {
 ######################################################################
 
 test FixToken-3.1 {Test Addition} {
-    set c31 [java::call ptolemy.math.Quantizer round 3.2334454232 $p0 ]	
-    set c32 [java::call ptolemy.math.Quantizer round -1.5454325   $p0 ]
+    set c31 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } 3.2334454232 $p0 ]
+    set c32 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } -1.5454325   $p0 ]
     set pa [java::new ptolemy.data.FixToken $c31 ]
     set pb [java::new ptolemy.data.FixToken $c32 ]
     set res [$pa add $pb]    
@@ -125,7 +134,8 @@ test FixToken-3.4 {Test Divide} {
 ######################################################################
 
 test FixToken-4.0 {Test fixValue} {
-    set c1 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } 5.5734 $p0 ]
     set p  [java::new ptolemy.data.FixToken $c1 ]
     set res1 [$p fixValue]
     list [$res1 toBitString]
@@ -158,15 +168,18 @@ test FixToken-4.4 {Test stringValue} {
 test FixToken-5.0 {Test equality between FixTokens} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round 5.375 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.375 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/2)" ]
-    set c2 [java::call ptolemy.math.Quantizer round 5.375 $p2 ]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.375 $p2 ]
     set r2 [java::new ptolemy.data.FixToken $c2 ]
 
     set p3 [java::new ptolemy.math.Precision "(32/6)" ]
-    set c3 [java::call ptolemy.math.Quantizer round 5.375 $p3 ]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.375 $p3 ]
     set r3 [java::new ptolemy.data.FixToken $c3 ]
 
     set res1 [$r1 {isEqualTo ptolemy.data.Token} $r1]
@@ -193,7 +206,8 @@ test FixToken-5.1 {Test equality between FixToken and IntToken} {
 test FixToken-6.0 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round 5.375 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.375 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -216,7 +230,8 @@ test FixToken-6.0 {Test scaleToPrecision} {
 test FixToken-6.1 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round -5.375 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -5.375 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -239,7 +254,8 @@ test FixToken-6.1 {Test scaleToPrecision} {
 test FixToken-6.2 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round -5.375 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -5.375 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -262,7 +278,8 @@ test FixToken-6.2 {Test scaleToPrecision} {
 test FixToken-6.3 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round -5.375 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -5.375 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -287,7 +304,8 @@ test FixToken-6.3 {Test scaleToPrecision} {
 test FixToken-6.4 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round 5.97534 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.97534 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -310,7 +328,8 @@ test FixToken-6.4 {Test scaleToPrecision} {
 test FixToken-6.5 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round -5.97534 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -5.97534 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -333,7 +352,8 @@ test FixToken-6.5 {Test scaleToPrecision} {
 test FixToken-6.6 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round 5.97534 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} 5.97534 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
@@ -356,7 +376,8 @@ test FixToken-6.6 {Test scaleToPrecision} {
 test FixToken-6.7 {Test scaleToPrecision} {
 
     set p1 [java::new ptolemy.math.Precision "(32/4)" ]
-    set c1 [java::call ptolemy.math.Quantizer round -5.97534 $p1 ]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision} -5.97534 $p1 ]
     set r1 [java::new ptolemy.data.FixToken $c1 ]
 
     set p2 [java::new ptolemy.math.Precision "(32/4)" ]
