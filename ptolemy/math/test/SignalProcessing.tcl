@@ -349,7 +349,7 @@ test SignalProcessing-5.5 {FFTComplexOut Complex[] order 2} {
 
 
 ####################################################################
-test SignalProcessing-5.6 {FFTComplexOut, order 1, w/ larger array} {
+test SignalProcessing-5.6 {FFTComplexOut Complex[] order 1, w/ larger array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 3, or a order 1 fft, the size should be 2
@@ -360,7 +360,7 @@ test SignalProcessing-5.6 {FFTComplexOut, order 1, w/ larger array} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.7 {FFTComplexOut, order 2, smaller array} {
+test SignalProcessing-5.7 {FFTComplexOut Complex[] order 2, smaller array} {
     set c0 [java::new ptolemy.math.Complex 0.0 0.0]
     set c1 [java::new ptolemy.math.Complex 1.0 0.0]
     # Complex array of size 2, hopefully fft will pad
@@ -371,7 +371,7 @@ test SignalProcessing-5.7 {FFTComplexOut, order 2, smaller array} {
 } {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-5.8 {FFTComplexOut, order 4} {
+test SignalProcessing-5.8 {FFTComplexOut Complex[] order 4} {
     set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut ptolemy.math.Complex[] int } $cat1 4]
     set efftr [java::call ptolemy.math.ComplexArrayMath \
@@ -407,7 +407,7 @@ test SignalProcessing-7.3 {FFTComplexOut double[] order 0} {
 } {}
 
 ####################################################################
-test SignalProcessing-7.4 {FFTComplexOut double, order 1} {
+test SignalProcessing-7.4 {FFTComplexOut double[], order 1} {
     # NOTE: uses setup from 6.3 above
     set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut double[] int} $impulse 1 ]
@@ -415,12 +415,34 @@ test SignalProcessing-7.4 {FFTComplexOut double, order 1} {
 } {{1.0 + 0.0i} {1.0 + 0.0i}}
 
 ####################################################################
-test SignalProcessing-7.5 {FFTComplexOut double, order 3} {
+test SignalProcessing-7.5 {FFTComplexOut double[], order 3} {
     # NOTE: uses setup from 6.3 above
     # The input array is length 5.
     set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut double[] int} $impulse 3 ]
     epsilonDiff [javaPrintArray $result] {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
+} {}
+
+####################################################################
+test SignalProcessing-8.1 {FFTRealOut Complex, order 0} {
+    set result [java::call ptolemy.math.SignalProcessing \
+     {FFTRealOut ptolemy.math.Complex[] int} $ca1 0]
+    set ceresult [java::call ptolemy.math.SignalProcessing \
+	    {FFTComplexOut ptolemy.math.Complex[] int} $ca1 0] 
+    set reresult [java::call ptolemy.math.ComplexArrayMath \
+     realParts $ceresult] 
+    epsilonDiff [$result getrange 0] [$reresult getrange 0]  
+} {}
+
+####################################################################
+test SignalProcessing-8.2 {FFTRealOut Complex, order 1} {
+    set result [java::call ptolemy.math.SignalProcessing \
+     {FFTRealOut ptolemy.math.Complex[] int} $ca2 1]
+    set ceresult [java::call ptolemy.math.SignalProcessing \
+	    {FFTComplexOut ptolemy.math.Complex[] int} $ca2 1] 
+    set reresult [java::call ptolemy.math.ComplexArrayMath \
+     realParts $ceresult] 
+    epsilonDiff [$result getrange 0] [$reresult getrange 0]  
 } {}
 
 ####################################################################
@@ -598,32 +620,45 @@ test SignalProcessing-12.1  {nextPowerOfTwo: check range} {
 
 ####################################################################
 test SignalProcessing-13.1 {sampleWave line} {
-    set lineGen [java::new ptolemy.math.SignalProcessing.LineSampleGenerator \
+    set lineGen [java::new ptolemy.math.SignalProcessing\$LineSampleGenerator \
     -3.0 2.0]
-    set lineOut [java::call ptolemy.math.SignalProcessing.sampleWave -5.0 6 1.5 lineGen]
-    epsilonDiff $lineOut {17.0 9.5 2.0 -5.5 -13.0 -20.5}
+    set lineOut [java::call ptolemy.math.SignalProcessing sampleWave 6 -5.0 \
+    1.5 $lineGen]
+    epsilonDiff [$lineOut getrange 0] {17.0 12.5 8.0 3.5 -1.0 -5.5}
+} {}
+
+####################################################################
+test SignalProcessing-13.1 {sampleWave raisedCosine} {
+    set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.6]
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
+    1.0 $rcGen]
+    epsilonDiff [$rcOut getrange 0] { \
+    -0.10185916357881 0.04864983309571 0.41157317310039 0.81942678059631 \
+    1.0 0.81942678059631 0.41157317310039 0.04864983309571 -0.10185916357881 \
+    -0.07789903503424} 
+} {}
+
+####################################################################
+test SignalProcessing-13.2 {sampleWave raisedCosine excess 0} {
+    set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.0]
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
+    1.0 $rcGen]
+    epsilonDiff [$rcOut getrange 0] { \
+    -0.18006326323142 0.06623912340961 0.47052798214592 0.84692799250337 \
+    1.0 0.84692799250337 0.47052798214592 0.06623912340961 \
+    -0.18006326323142 -0.19980393662457}
 } {}
 
 ####################################################################
 test SignalProcessing-13.2 {sampleWave sinusoid} {
-    set sinGen [java::new ptolemy.math.SignalProcessing.SinusoidSampleGenerator     -3.0 2.0]
-    set sinOut [java::call ptolemy.math.SignalProcessing.sampleWave -3.0 -5 \
-    1.25 sinGen]
-    epsilonDiff $sinOut {0.90744678145020 -0.98476517346732 0.70866977429126  
--0.17824605564949 -0.41614683654714 0.86119241716152 -0.99717215619638   
-0.77528547012929 -0.27516333805160}
+    set sinGen [java::new ptolemy.math.SignalProcessing\$SinusoidSampleGenerator     -3.0 -2.0]
+    set sinOut [java::call ptolemy.math.SignalProcessing sampleWave 9 -5.0 \
+    1.25 $sinGen]
+    epsilonDiff [$sinOut getrange 0] \
+ {0.90744678145020 -0.98476517346732 0.70866977429126  -0.17824605564949 \
+  -0.41614683654714 0.86119241716152 -0.99717215619638 0.77528547012929 \
+  -0.27516333805160}
 } {}
-
-####################################################################
-test SignalProcessing-13.1 {raisedCosine} {
-    list "We need tests for raisedCosine with realistic input data"
-} {1} {KNOW_ERROR}
-
-####################################################################
-test SignalProcessing-14.1 {raisedCosinePulse} {
-    list "We need tests for raisedCosinePulse with realistic input data"
-} {1} {KNOW_ERROR}
-
 
 # Used to test sawtooth, square and triangle
 proc _testSignalProcessingFunction { function period phase \
