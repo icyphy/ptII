@@ -82,13 +82,33 @@ test ParseTreeEvaluator-2.4 {Construct a Parser, try simple double expressions} 
 ######################################################################
 ####
 # 
-test ParseTreeEvaluator-2.4.1 {Construct a Parser, test out power} {
+test ParseTreeEvaluator-2.4.1 {Construct a Parser, test out power op '^' on doubles} {
     list [theTest "3.0 ^ -3"] \
+	[theTest "pow(3.0, -3.0)"] \
 	[theTest "3.0 ^ 0"] \
 	[theTest "3.0 ^ 0ub"] \
 	[theTest "3.0 ^ 3"] \
-	[theTest "3.0 ^ 3ub"] 
-} {0.0123456790123 1.0 1.0 27.0 27.0}
+	[theTest "3.0 ^ 3ub"] \
+	[theTest "(3 + 0i) ^ 3ub"] \
+	[theTest "(3 + 2i) ^ 3ub"] \
+	[theTest "(3 + 0i) ^ -3"] 
+} {0.037037037037 0.037037037037 1.0 1.0 27.0 27.0 {27.0 + 0.0i} {-9.0 + 46.0i} {0.037037037037037035 + 0.0i}}
+
+######################################################################
+####
+# 
+test ParseTreeEvaluator-2.4.2 {Construct a Parser, test out power op '^' on matrices} {
+    catch {theTest {[1,2;3,4] ^ -1}} errMsg
+    list "$errMsg\n \
+	[theTest {[1,2;3,4] ^ 0}]\n \
+	[theTest {[1,2;3,4] ^ 1}]\n \
+	[theTest {[1,2;3,4] ^ 2}]\n \
+	[theTest {[1,2;3,4] ^ 2ub}]"
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.IntMatrixToken '[1, 0; 0, 1]' and ptolemy.data.IntMatrixToken '[1, 2; 3, 4]'
+  [1, 0; 0, 1]
+  [1, 2; 3, 4]
+  [7, 10; 15, 22]
+  [7, 10; 15, 22]}}
 
 ######################################################################
 ####
