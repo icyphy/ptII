@@ -45,11 +45,23 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
+JSRCS = TestUnboxingMain.java \
+	Unboxing1.java \
+	Unboxing1b.java \
+	Unboxing1c.java \
+	Unboxing1d.java \
+	Unboxing2.java \
+	Unboxing3.java \
+	Unboxing4.java \
+	Unboxing5.java \
+	Unboxing6.java \
+	Unboxing7.java \
+	Unboxing8.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	QuickSmoke.tcl
+	QuickSmoke.tcl \
+	TokenUnboxing.tcl
 
 # Long tests, that take so damn long they are not even done in the
 # nightly build.
