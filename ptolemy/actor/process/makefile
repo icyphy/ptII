@@ -50,7 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	BoundaryDetector.java \
 	Branch.java \
+	BranchController.java \
 	CompositeProcessDirector.java \
 	MailboxBoundaryReceiver.java \
 	NotifyThread.java \
@@ -58,12 +60,9 @@ JSRCS = \
 	ProcessReceiver.java \
 	ProcessThread.java \
 	TerminateBranchException.java \
-	TerminateProcessException.java \
-	BoundaryDetector.java 
+	TerminateProcessException.java 
 	
-#	BoundaryReceiver.java 
 #	MultiBranchActor.java \
-#	BranchController.java \
 #	BranchThread.java 
 #	MailboxBoundaryReceiver.java \
 

@@ -447,6 +447,7 @@ public class ProcessDirector extends Director {
      */
     synchronized void _increaseActiveCount() {
 	_actorsActive++;
+        notifyAll();
     }
 
     /** Return true if the count of active processes in the container is 0.

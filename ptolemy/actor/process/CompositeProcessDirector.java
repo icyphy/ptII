@@ -73,7 +73,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public CompositeProcessDirector() {
         super();
-        _blockedRcvrs = new LinkedList();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -83,7 +82,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public CompositeProcessDirector(Workspace workspace) {
         super(workspace);
-        _blockedRcvrs = new LinkedList();
     }
 
     /** Construct a director in the given container with the given name.
@@ -101,7 +99,6 @@ public class CompositeProcessDirector extends ProcessDirector {
             throws IllegalActionException {
         super(container, name);
         _name = name;
-        _blockedRcvrs = new LinkedList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -119,6 +116,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return The new ProcessDirector.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
+        // FIXME
         CompositeProcessDirector newObj = 
 	        (CompositeProcessDirector)super.clone(ws);
 	newObj._onFirstIteration = _onFirstIteration;
@@ -171,6 +169,9 @@ public class CompositeProcessDirector extends ProcessDirector {
         }
         
         super.initialize();
+       
+        _blockedRcvrs = new LinkedList();
+        _blockedActorCount = 0;
         
         _inputBranchController = new BranchController(container);
         _outputBranchController = new BranchController(container);
@@ -242,10 +243,10 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  that are contained by these threads. This method is non-blocking.
      *  After calling this method, the fire() method of this director
      *  is guaranteed to return in finite time.
-     */
     public void stopFire() {
         super.stopFire();
     }
+     */
 
     /**
      *  @param port The port to transfer tokens from.
@@ -396,7 +397,7 @@ public class CompositeProcessDirector extends ProcessDirector {
     /**
      */
     protected synchronized int _getBlockedActorsCount() {
-	return _blockedRcvrs.size();
+	return _blockedActorCount;
     }
 
     /** Create a new ProcessThread for controlling the actor that
@@ -438,9 +439,9 @@ public class CompositeProcessDirector extends ProcessDirector {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
+        System.out.println("Entered CompositeProcessDirector._resolveDeadlock");
 	Workspace workspace = workspace();
 	if( _areActorsExternallyBlocked() && _areActorsDeadlocked() ) {
-	    System.out.println("BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDDDDD!!!");
 	    if( _inputBranchController.isBlocked() ) {
                 while( !_outputBranchController.isBlocked() ) {
                     workspace.wait(this);
@@ -485,13 +486,6 @@ public class CompositeProcessDirector extends ProcessDirector {
     /**
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
-	System.out.println("SHONUFF");
-	System.out.println("SHONUFF");
-	System.out.println("SHONUFF");
-	System.out.println("SHONUFF");
-	System.out.println("SHONUFF");
-	System.out.println("SHONUFF");
-	System.out.println("SHONUFF");
 	return false;
     }
 
@@ -513,6 +507,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
         _blockedRcvrs.add(rcvr);
+        _blockedActorCount++;
+        notifyAll();
     }
 
     /** Implementations of this method must be synchronized.
@@ -523,14 +519,31 @@ public class CompositeProcessDirector extends ProcessDirector {
             return;
         }
         _blockedRcvrs.addAll(rcvrs);
+        _blockedActorCount++;
+        notifyAll();
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
-        _blockedRcvrs.remove(rcvr);
+        _blockedRcvrs.remove(rcvr); 
+        _blockedActorCount--;
         notifyAll();
+        /*
+        if( !foundItem ) {
+            Thread thread = Thread.currentThread();
+            ProcessThread pThread = null;
+            if( thread instanceof ProcessThread ) {
+            	pThread = (ProcessThread)thread;
+                Actor actor = pThread.getActor();
+                String name = ((Nameable)actor).getName();
+            	System.out.println("ITEM NOT FOUND; Called by " + name);
+            } else {
+            	System.out.println("ITEM NOT FOUND; Actor name unknown");
+            }
+        }
+        */
     }
 
     /** Implementations of this method must be synchronized.
@@ -542,6 +555,7 @@ public class CompositeProcessDirector extends ProcessDirector {
             ProcessReceiver rcvr = (ProcessReceiver)rcvrIterator.next();
             _blockedRcvrs.remove(rcvr);
         }
+        _blockedActorCount--;
         notifyAll();
     }
 
@@ -678,6 +692,7 @@ public class CompositeProcessDirector extends ProcessDirector {
     private boolean _outputControllerIsBlocked = true;
     
     private LinkedList _blockedRcvrs;
+    private int _blockedActorCount = 0;
     
     private Object _branchCntlrLock = new Object();
     
