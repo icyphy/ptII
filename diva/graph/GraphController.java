@@ -228,7 +228,7 @@ public interface GraphController {
     public void setSelectionModel(SelectionModel m);
 
     /**
-     * Dispatch the given graph view event to all registered grpah view
+     * Dispatch the given graph view event to all registered graph view
      * listeners.  This method is generally only called by subclasses and
      * representatives of thse subclasses, such as a node controller or
      * an edge controller.
