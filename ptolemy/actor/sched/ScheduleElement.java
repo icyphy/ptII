@@ -114,6 +114,20 @@ public abstract class ScheduleElement {
 	_iterationCount = count;
     }
 
+    /** Set the parent schedule element of this schedule element to
+     *  the specified schedule element. If this schedule element is
+     *  added to another schedule element (the parent), then the
+     *  add() method of the parent will invoke this method.
+     *  This association is used to notify the parent schedule
+     *  element when changes are made to this schedule element.
+     *
+     *  @param parent The parent schedule element of this schedule
+     *   element.
+     */
+    public void setParent(ScheduleElement parent) {
+	_parent = parent;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -142,19 +156,7 @@ public abstract class ScheduleElement {
 	}
     }
 
-    /** Set the parent schedule element of this schedule element.
-     *  the specified schedule element. If this schedule element is
-     *  added to another schedule element (the parent), then the
-     *  add() method of the parent will invoke this method.
-     *  This association is used to notify the parent schedule
-     *  element when changes are made to this schedule element.
-     *
-     *  @param parent The parent schedule element of this schedule
-     *   element.
-     */
-    protected void _setParent(ScheduleElement parent) {
-	_parent = parent;
-    }
+   
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

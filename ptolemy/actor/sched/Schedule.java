@@ -159,7 +159,7 @@ public class Schedule extends ScheduleElement {
 	// Give element a reference to this schedule so that it can
 	// notify this schedule (via _incrementVersions()) when
 	// element is modified.
-	element._setParent(this);
+	element.setParent(this);
 	_incrementVersion();
 	_schedule.add(element);
     }
@@ -179,7 +179,7 @@ public class Schedule extends ScheduleElement {
 	// Give element a reference to this schedule so that it can
 	// notify this schedule (via _incrementVersions()) when
 	// element is modified.
-	element._setParent(this);
+	element.setParent(this);
 	_incrementVersion();
 	_schedule.add(index, element);
     }
