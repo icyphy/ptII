@@ -279,6 +279,10 @@ public class Variable extends AbstractSettableAttribute
         // method of the container is called.
         _setToken(token);
         setPersistent(false);
+        // Record the initial value so "Restore Defaults" works.
+        // Note that we call the superclass only to avoid getting the
+        // other effects of setting the expression.
+        super.setExpression(token.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -750,7 +754,6 @@ public class Variable extends AbstractSettableAttribute
         } else {
             _needsEvaluation = true;
         }
-        boolean changed = (expr != null && !expr.equals(_currentExpression));
         _currentExpression = expr;
         _parseTree = null;
         _parseTreeValid = false;
