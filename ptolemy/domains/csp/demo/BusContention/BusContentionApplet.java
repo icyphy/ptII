@@ -394,10 +394,7 @@ public class BusContentionApplet extends PtolemyApplet {
 
             // Create and set up the selection dragger
             _selectionDragger = new SelectionDragger(pane);
-            _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
-            _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)getNodeController().getNodeInteractor());
+            _selectionDragger.addSelectionModel(getSelectionModel());
         }
     }
 
