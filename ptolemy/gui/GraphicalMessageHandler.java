@@ -53,7 +53,20 @@ import ptolemy.util.StringUtilities;
    is not specified, then the display window is centered on the screen,
    but iconifying and deiconifying may not work as desired.
    <p>
-   This class is based on (and contains code from) the diva GUIUtilities
+   
+   <p>Note that to display a window with an error message, this graphical
+   handler must be registered by calling 
+   {@link ptolemy.gui.MessageHandler#setMessageHandler(MessageHandler)}.
+   For example:
+   <pre>
+   GraphicalMessageHandler handler = new GraphicalMessageHandler();
+   GraphicalMessageHandler.setMessageHandler(handler);
+   GraphicalMessageHandler.error("My error", new Exception("My Exception"));
+   </pre>
+   If setMessageHandler() is not called, then the error() call will
+   use the default handler and possibly display the message on standard error.
+
+   <p>This class is based on (and contains code from) the diva GUIUtilities
    class.
 
    @author  Edward A. Lee, Steve Neuendorffer, and John Reekie
