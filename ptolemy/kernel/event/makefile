@@ -51,13 +51,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ChangeFailedException.java \
-	ChangeList.java \
 	ChangeListener.java \
 	ChangeRequest.java \
-	PlaceEntity.java \
-	PlacePort.java \
-	PlaceRelation.java \
 	StreamChangeListener.java
 
 EXTRA_SRCS =	$(JSRCS)

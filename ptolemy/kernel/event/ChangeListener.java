@@ -36,10 +36,9 @@ package ptolemy.kernel.event;
 //// ChangeListener
 /**
 A ChangeListener is an interface implemented by objects that are
-interested in being kept informed about changes in a graph as they
-are executed.
-These listeners are informed only when each change is successfully
-executed (no exception results).
+interested in being kept informed about changes in a model as they
+are executed. These listeners are informed when each change is successfully
+executed, or when an attempt to execute it results in an exception.
 
 @author Edward A. Lee
 @version $Id$
@@ -53,4 +52,10 @@ public interface ChangeListener {
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change);
+
+    /** Notify the listener that a change has resulted in an exception.
+     *  @param change The change that was attempted.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception);
 }

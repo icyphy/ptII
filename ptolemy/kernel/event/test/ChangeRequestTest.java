@@ -84,29 +84,23 @@ public class ChangeRequestTest {
 
     /** Insert a feedback loop.
      */
-    public void insertFeedback() throws ChangeFailedException {
+    public void insertFeedback() {
         // Create an anonymous inner class
-        ChangeRequest change = new ChangeRequest(_top, "test2") {
-            public void execute() throws ChangeFailedException {
-                try {
-                    _const.output.unlinkAll();
-                    _rec.input.unlinkAll();
-                    AddSubtract add = new AddSubtract(_top, "add");
-                    Delay delay = new Delay(_top, "delay");
-                    delay.initialOutputs.setExpression("[4, 5]");
-                    _top.connect(_const.output, add.plus);
-                    ComponentRelation relation =
-                            _top.connect(add.output, delay.input);
-                    _rec.input.link(relation);
-                    // Any pre-existing input port whose connections
-                    // are modified needs to have this method called.
-                    _rec.input.createReceivers();
-                    _top.connect(delay.output, add.plus);
-                } catch (IllegalActionException ex) {
-                    throw new ChangeFailedException(this, ex);
-                } catch (NameDuplicationException ex) {
-                    throw new ChangeFailedException(this, ex);
-                }
+        ChangeRequest change = new ChangeRequest(this, "test2") {
+            protected void _execute() throws Exception {
+                _const.output.unlinkAll();
+                _rec.input.unlinkAll();
+                AddSubtract add = new AddSubtract(_top, "add");
+                Delay delay = new Delay(_top, "delay");
+                delay.initialOutputs.setExpression("[4, 5]");
+                _top.connect(_const.output, add.plus);
+                ComponentRelation relation =
+                       _top.connect(add.output, delay.input);
+                _rec.input.link(relation);
+                // Any pre-existing input port whose connections
+                // are modified needs to have this method called.
+                _rec.input.createReceivers();
+                _top.connect(delay.output, add.plus);
             }
         };
         _top.requestChange(change);
@@ -114,15 +108,11 @@ public class ChangeRequestTest {
 
     /** Mutate.
      */
-    public void mutate() throws ChangeFailedException {
+    public void mutate() {
         // Create an anonymous inner class
-        ChangeRequest change = new ChangeRequest(_top, "test") {
-            public void execute() throws ChangeFailedException {
-                try {
-                    _const.value.setToken(new DoubleToken(2.0));
-                } catch (IllegalActionException ex) {
-                    throw new ChangeFailedException(this, ex);
-                }
+        ChangeRequest change = new ChangeRequest(this, "test") {
+            protected void _execute() throws Exception {
+                _const.value.setToken(new DoubleToken(2.0));
             }
         };
         _top.requestChange(change);

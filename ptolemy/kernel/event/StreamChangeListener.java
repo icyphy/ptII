@@ -36,15 +36,13 @@ import java.io.*;
 //// StreamChangeListener
 /**
 A change listener that describes the changes on the standard output.
-It simply prints the description of the change once it executes.
+It simply prints the description of the change once it executes (or
+throws an exception).
 
 @author Edward A. Lee
 @version $Id$
 */
 public class StreamChangeListener implements ChangeListener {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructors                      ////
 
     /** Create a change listener that sends messages to the standard output.
      */
@@ -52,8 +50,8 @@ public class StreamChangeListener implements ChangeListener {
         _output = System.out;
     }
 
-
     /** Create a change listener that sends messages to the specified stream.
+     *  @param out The stream to send messages to.
      */
     public StreamChangeListener(OutputStream out) {
         _output = new PrintStream(out);
@@ -67,6 +65,17 @@ public class StreamChangeListener implements ChangeListener {
      */
     public void changeExecuted(ChangeRequest change) {
         _output.println(change.getDescription());
+        _output.println("SUCCEEDED");
+    }
+
+    /** Print the description of the failure to the stream output.
+     *  @param change The change that has been executed.
+     *  @param exception The exception that occurred.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        _output.println(change.getDescription());
+        _output.println("FAILED:");
+        _output.println(exception.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

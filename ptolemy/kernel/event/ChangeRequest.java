@@ -30,7 +30,11 @@
 
 package ptolemy.kernel.event;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Nameable;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChangeRequest
@@ -42,16 +46,19 @@ which it is safe to make the modification.  Such changes are called
 <i>mutations</i>.
 <p>
 A typical use of this class is to define an anonymous inner class that
-implements the execute() method to bring about the desired change.
-The instance of that anonymous inner class is then queued with the
-director or manager using the requestChange() method.
+implements the _execute() method to bring about the desired change.
+The instance of that anonymous inner class is then queued with a
+a composite entity using its requestChange() method.
 <p>
-Alternatively, a set of concrete derived classes are provided that
-implement a few of the more common sorts of mutations. These derived
-classes can be instantiated and queued with the director or manager.
+Concrete derived classes can be defined to implement
+mutations of a certain kind or in a certain way. Instances of these
+classes should be queued with a composite entity, just like an anonymous
+inner class extending this class. MoMLChangeRequest is such a concrete
+derived class, where the mutation is specified as MoML code.
+<p>
 To ensure that a group of such changes is executed together,
 use ChangeList to collect them, and queue the instance of
-ChangeList with the director or manager.
+ChangeList with the composite entity.
 
 @author  Edward A. Lee
 @version $Id$
@@ -62,48 +69,109 @@ public abstract class ChangeRequest {
     /** Construct a request with the specified originator and description.
      *  The description is a string that is used to report the change,
      *  typically to the user in a debugging environment.
-     *  @param originator The source of the change request.
+     *  The originator is the source of the change request.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  @param originator The originator of the change request.
      *  @param description A description of the change request.
      */
-    public ChangeRequest(Nameable originator, String description) {
-        _description = description;
+    public ChangeRequest(Object originator, String description) {
         _originator = originator;
+        _description = description;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Execute the change.  This method is defined in derived classes,
-     *  which are specialized to particular changes.
-     *  @exception ChangeFailedException If the change fails.
+    /** Execute the change.  This method invokes the protected method
+     *  _execute(), reports to listeners (if any) that have been
+     *  specified using the setListeners() method, and wakes up any
+     *  threads that might be waiting in a call to waitForCompletion().
      */
-    public abstract void execute() throws ChangeFailedException;
+    public synchronized void execute() {
+        _exception = null;
+        try {
+            _execute();
+        } catch (Exception ex) {
+            _exception = ex;
+        }
+        if (_listeners != null) {
+            Iterator listeners = _listeners.iterator();
+            while (listeners.hasNext()) {
+                ChangeListener listener = (ChangeListener)listeners.next();
+                if (_exception == null) {
+                    listener.changeExecuted(this);
+                } else {
+                    listener.changeFailed(this, _exception);
+                }
+            }
+        }
+        _pending = false;
+        notifyAll();
+    }
 
-    /** Get the description.
+    /** Get the description that was specified in the constructor.
      *  @return The description of the change.
      */
     public String getDescription() {
         return _description;
     }
 
-    /** Get the source of the change request.
-     *  @return The source of the change request.
+    /** Get the originator that was specified in the constructor.
+     *  @return The originator of the change.
      */
-    public Nameable getOriginator() {
+    public Object getOriginator() {
         return _originator;
     }
 
-    /** Notify the specified listener of this change.
-     *  In this base class, this just calls the changeExecuted() method of
-     *  the listener.  This is defined so that derived classes can alter
-     *  the way they notify listeners.  In particular, ChangeList will
-     *  notify listeners of all changes that succeeded.
-     *  @param listener The listener to notify.
-     *  @see ChangeList
+    /** Specify a list of listeners to be notified when changes are
+     *  successfully executed, or when an attempt to execute them results
+     *  in an exception.  The next time that execute() is called, all
+     *  listeners on the specified list will be notified.
+     *  This class has this single method, rather than the usual
+     *  addChangeListener() and removeChangeListener() because it is
+     *  assumed that the list of listeners is being maintained in another
+     *  class, named CompositeEntity.
+     *  The class copies the list, so that in the process of handling
+     *  notifications from this class, more listeners can be added to
+     *  the list of listeners in the CompositeEntity.
+     *  <p>
+     *  Note that an alternative to using listeners is to call
+     *  waitForCompletion().
+     *
+     *  @param listeners A list of instances of ChangeListener.
+     *  @see ChangeListener
+     *  @see CompositeEntity
      */
-    public void notify(ChangeListener listener) {
-        listener.changeExecuted(this);
+    public void setListeners(List listeners) {
+        _listeners = new LinkedList(listeners);
     }
+
+    /** Wait for execution (or failure) of this change request.
+     *  The calling thread is suspended until the execute() method
+     *  completes.  If an exception occurs processing the request,
+     *  then this method will throw that exception.
+     *  @exception Exception If the execution of the change request
+     *   throws it.
+     */
+    public synchronized void waitForCompletion() throws Exception {
+        while (_pending) {
+            wait();
+        }
+        if (_exception != null) {
+            throw (Exception)(_exception.fillInStackTrace());
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Execute the change.  Derived classes must implement this method.
+     *  Any exception may be thrown if the change fails.
+     *  @exception Exception If the change fails.
+     */
+    protected abstract void _execute() throws Exception;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -111,6 +179,15 @@ public abstract class ChangeRequest {
     // A description of the change.
     private String _description;
 
-    // The source of the change request.
-    private Nameable _originator;
+    // The exception thrown by the most recent call to execute(), if any.
+    private Exception _exception;
+
+    // A list of listeners.
+    private List _listeners;
+
+    // The originator of the change request.
+    private Object _originator;
+
+    // A flag indicating that a request is pending.
+    private boolean _pending = true;
 }
