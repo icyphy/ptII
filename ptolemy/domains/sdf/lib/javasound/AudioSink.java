@@ -279,8 +279,14 @@ public class AudioSink extends SDFAtomicActor {
 		_audioInDoubleArray[j][i] = _audioTokenArray[i].doubleValue();
 	    }
 	}
-	// write out samples to speaker and/or file.
-	_soundPlayback.putSamples(_audioInDoubleArray);
+	try {
+	    // write out samples to speaker and/or file.
+	    _soundPlayback.putSamples(_audioInDoubleArray);
+	} catch (Exception ex) {
+	    throw new IllegalActionException(
+		    "Cannot playback audio:\n" +
+		    ex.getMessage());
+	}
 	return true;
     }
 
@@ -291,10 +297,10 @@ public class AudioSink extends SDFAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	System.out.println("AudioSink: initialize(): invoked");
+	//System.out.println("AudioSink: initialize(): invoked");
 	if (((StringToken)sink.getToken()).toString() == "file") {
 	    // Write audio data to a file.
-	    System.out.println("AudioSink: initialize(): playback to file");
+	    //System.out.println("AudioSink: initialize(): playback to file");
 	    String pathNameString =
 		((StringToken)pathName.getToken()).toString();
 	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
@@ -311,7 +317,7 @@ public class AudioSink extends SDFAtomicActor {
                     _consumptionRate);
 	} else if (((StringToken)sink.getToken()).toString() == "speaker") {
 	    // Send audio data to the speaker.
-	    System.out.println("AudioSink: initialize(): playback to speaker");
+	    //System.out.println("AudioSink: initialize(): playback to speaker");
             int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
             int sampleSizeInBitsInt =
                 ((IntToken)sampleSizeInBits.getToken()).intValue();
@@ -323,7 +329,7 @@ public class AudioSink extends SDFAtomicActor {
                     channelsInt,
                     bufferSizeInt,
                     _consumptionRate);
-            System.out.println("AudioSink: initialize(): SoundPlayback created");
+            //System.out.println("AudioSink: initialize(): SoundPlayback created");
 
 	} else if (((StringToken)sink.getToken()).toString() == "both") {
 	    // Write audio data to a file.
@@ -338,9 +344,15 @@ public class AudioSink extends SDFAtomicActor {
                     "\"file\", and \"both\"");
 	}
 
-	// Start audio playback.
-	_soundPlayback.startPlayback();
-	System.out.println("AudioSink: initialize(): return");
+	try {
+	    // Start audio playback.
+	    _soundPlayback.startPlayback();
+	    //System.out.println("AudioSink: initialize(): return");
+	} catch (IOException ex) {
+	    throw new IllegalActionException(
+		    "Cannot playback audio:\n" +
+		    ex.getMessage());
+	}
 
 	// Allocate arrays for postfire()
 	_audioTokenArray = new DoubleToken[_consumptionRate];
@@ -368,11 +380,17 @@ public class AudioSink extends SDFAtomicActor {
     /** Close the specified file, if any.
      */
     public void wrapup() throws IllegalActionException {
-	System.out.println("AudioSink: wrapup(): invoked");
+	//System.out.println("AudioSink: wrapup(): invoked");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
 	if (_soundPlayback != null) {
-	    _soundPlayback.stopPlayback();
+	     try {
+		 _soundPlayback.stopPlayback();
+	     } catch (IOException ex) {
+		 throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	     }
 	}
     }
 

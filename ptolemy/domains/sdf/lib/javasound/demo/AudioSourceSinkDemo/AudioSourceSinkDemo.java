@@ -114,7 +114,7 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	    //_sdfDirector.iterations.setToken(new IntToken(1000));
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 22050;
+	    int sampleRate = 44100;
 
 	    int channels = 2;
 	    // Set the token consumption rate and production rate to use.
