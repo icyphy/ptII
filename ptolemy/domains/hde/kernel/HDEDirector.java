@@ -369,10 +369,10 @@ public class HDEDirector extends DEDirector {
     
      public boolean transferOutputs(IOPort port)
      throws IllegalActionException {
-	 return super.transferOutputs(port);
+     return super.transferOutputs(port);
      }
 
-     */
+    */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
 	if (_debugging) _debug("Transferring outputs on port " +
