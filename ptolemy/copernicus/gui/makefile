@@ -67,6 +67,7 @@ OPTIONAL_FILES = \
 	'GeneratorTableau$$Factory.class' \
 	'GeneratorTableau$$GeneratorFrame.class' \
 	'GeneratorTableau$$_Exec.class' \
+	'GeneratorTableauAttribute$$GeneratorTableauEditorFactory.class' \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
