@@ -49,8 +49,6 @@ import pt.data.parser.*;
 
 public abstract class Token implements Cloneable {
 
-    /** FIXME: need to add relevant constructors
-    public Token() {};
 
     /////////////////////////////////////////////////////////////////////////
     ////                         public methods                          ////
@@ -58,8 +56,9 @@ public abstract class Token implements Cloneable {
     /** Add the value of the argument Token to the current Token. It should be 
      *  overridden in derived classes to provide type specific actions for 
      *  add. It is here mainly for the parser. 
-     *  @param The token whose value we add to this Token
-     *  @exception Thrown if this method is not supported by the derived class
+     *  @param a The token whose value we add to this Token
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class
      */
     public Token add(Token a) throws IllegalActionException {
         String str = "Add method not supported on ";
@@ -70,8 +69,9 @@ public abstract class Token implements Cloneable {
     /** Subtract the value of the argument Token from the current Token. It 
      *  should be overridden in derived classes to provide type specific 
      *  actions for subtract. It is here mainly for the parser. 
-     *  @param The token whose value we sutract from this Token
-     *  @exception Thrown if this method is not supported by the derived class
+     *  @param a The token whose value we sutract from this Token
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class
      */
     public Token subtract(Token a) throws  IllegalActionException {
         String str = "Subtract method not supported on ";
@@ -82,8 +82,9 @@ public abstract class Token implements Cloneable {
     /** Multiply the value of the argument Token with the value of this Token.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for multiply. It is here mainly for the parser. 
-     *  @param The token whose value we multiply the value of this Token with
-     *  @exception Thrown if this method is not supported by the derived class
+     *  @param a The token whose value we multiply the value of this Token with
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class
      */
     public Token multiply(Token a) throws  IllegalActionException {
         String str = "Multiply method not supported on ";
@@ -94,8 +95,9 @@ public abstract class Token implements Cloneable {
     /** Divide the value of this Token with the value of the argument Token.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for divide. It is here mainly for the parser. 
-     *  @param The token whose value we divide the value of this Token by
-     *  @exception Thrown if this method is not supported by the derived class
+     *  @param a The token whose value we divide the value of this Token by
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class
      */
     public Token divide(Token a) throws  IllegalActionException {
         String str = "Divide method not supported on ";
@@ -107,8 +109,9 @@ public abstract class Token implements Cloneable {
      *  argument Token. Set the value of this token to the result.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for modulo. It is here mainly for the parser. 
-     *  @param The token whose value we do modulo with
-     *  @exception Thrown if this method is not supported by the derived class
+     *  @param a The token whose value we do modulo with
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class
      */
     public Token modulo(Token a) throws  IllegalActionException {
         String str = "Modulo method not supported on ";
@@ -119,8 +122,9 @@ public abstract class Token implements Cloneable {
     /** Test for equality of the values of this Token and the argument Token.
      *  It  should be overridden in derived classes to provide type specific 
      *  actions for equality testing. It is here mainly for the parser. 
-     *  @param The token with which to test equality
-     *  @exception Thrown if this method is not supported by the derived class
+     *  @param a The token with which to test equality
+     *  @exception IllegalActionException Thrown if this method is not 
+     *  supported by the derived class
      */
     public BooleanToken equality(Token a) throws  IllegalActionException {
         String str = "Equality method not supported on ";
@@ -141,6 +145,7 @@ public abstract class Token implements Cloneable {
 
     /** Initialize the value of the token from the given string.
      *  In this base class, we just throw an exception.
+     *  @param init The String to set the current value from.
      *  @exception IllegalActionException Initialization of this token
      *   from a string is not supported.
      */	
@@ -189,6 +194,7 @@ public abstract class Token implements Cloneable {
     /** Attach a new TokenPublisher to this token. This method is 
      *  only intended for use when placing a new Token in a Param.
      *  This method should be called by a param and be synchronized.
+     *  @param publ The new TokenPublisher associated with this Token
      *  @return The previous Publisher
      */
      public TokenPublisher setPublisher(TokenPublisher publ) {
@@ -198,24 +204,6 @@ public abstract class Token implements Cloneable {
          return old;
      }
 
-     /* This method is used to set the value of the token from a 
-      * String. It relies on each derived class having an appropriate 
-      * definition of fromString(). 
-      * FIXME: This method is not final, but perhaps should be?
-      * FIXME: this currently only implements a simple version of
-      * parsing, more functionality will be added later
-      * @param value The string to be parsed to get the tokens value
-      */
-
-      public void setValue(String value) throws IllegalArgumentException {
-          try {
-              Token result = getParser().parseExpression(value);
-              this.fromString(result.toString());
-          } catch (Exception ex) {
-              throw new IllegalArgumentException("Cannot parse argument " + value);
-          }               
-      } 
-
       /* This method is used to set the value of the token from a 
       * String. It relies on each derived class having an appropriate 
       * definition of fromString(). 
@@ -223,14 +211,19 @@ public abstract class Token implements Cloneable {
       * @param value The string to be parsed to get the tokens value
       * @param params The params that this tokens value can depend on
       */
-
       public void setValue(String value, NamedList params) throws IllegalArgumentException {
           try {
-              Token result = getParser().parseExpression(value, params, null);
+              Token result;
+              if (params == null) {
+                  result = getParser().parseExpression(value);
+              } else {
+                  result = getParser().parseExpression(value, params);
+              }
               this.fromString(result.toString());
           } catch (Exception ex) {
               throw new IllegalArgumentException("Cannot parse argument "+value);
-          }               
+          }     
+          notifySubscribers();
       }         
           
      /** This method should be overridden where appropriate in subclasses
