@@ -412,8 +412,23 @@ public class ProcessDirector extends Director {
                     }
                 }
             }
+
             // Now wake up all the receivers.
+            //FIXME: for PN, this notification is already done by
+            //PNQueueReceiver.requestFinish() in the loop above.
+            //If all process domain receivers do the same, then this
+            //is not needed.
             (new NotifyThread(receiversList)).start();
+
+            // wait until all process threads stop
+            synchronized (this) {
+                while (_activeActorCount > 0)
+                    try {
+                        wait();
+                    } catch (InterruptedException ex) {
+                        // ignore, wait until all process threads stop
+                    }
+            }
         }
     }
 
