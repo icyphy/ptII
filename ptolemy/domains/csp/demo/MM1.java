@@ -73,27 +73,34 @@ public class MM1 {
             univ.setManager(manager);
             univ.setDirector(localdir);
 
-            Parameter custRate = new Parameter(univ, "customerArrivalRate");
-            custRate.setExpression("1.0");
+            Parameter custRate = new Parameter(univ, "arrivalRate");
+            custRate.setExpression("50.0");
             custRate.evaluate();
 
             Parameter bufferSize = new Parameter(univ, "bufferDepth");
             bufferSize.setExpression("5");
             bufferSize.evaluate();
 
-            Parameter servRate = new Parameter(univ, "customerServiceRate");
-            servRate.setExpression("1.0");
+            Parameter servRate = new Parameter(univ, "serviceRate");
+            servRate.setExpression("50.0");
             servRate.evaluate();
 
 
 	    Customer source = new Customer(univ, "Customer");
 	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
-            Server sink = new Server(univ, "Server");
+            Server server = new Server(univ, "Server");
 
-            IOPort out1 = source.output;
-	    IOPort in1 = middle.input;
-	    IOPort out2 = middle.output;
-            IOPort in2 = sink.input;
+            Parameter p1 = (Parameter)source.getAttribute("arrivalRate");
+            p1.setExpression("arrivalRate");
+            Parameter p2 = (Parameter)middle.getAttribute("depth");
+            p2.setExpression("bufferDepth");
+            Parameter p3 = (Parameter)server.getAttribute("serviceRate");
+            p3.setExpression("serviceRate");
+            
+            IOPort out1 = (IOPort)source.getPort("output");
+	    IOPort in1 = (IOPort)middle.getPort("input");
+	    IOPort out2 = (IOPort)middle.getPort("output");
+            IOPort in2 = (IOPort)server.getPort("input");
 
             IORelation rel1 = (IORelation)univ.connect(out1, in1, "R1");
             IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
