@@ -33,6 +33,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -55,7 +57,7 @@ public interface ITreeNode extends Cloneable {
     public Object accept(IVisitor v, LinkedList visitorArgs);
     
     /** Return the list of all direct children of this node. */
-    public List children(); 
+    public ArrayList children(); 
 
     public Object childReturnValueAt(int index);
 
@@ -80,7 +82,7 @@ public interface ITreeNode extends Cloneable {
      */
     public void traverseChildren(IVisitor v, LinkedList args);
     
-    public void setChildren(List childList);
+    public void setChildren(ArrayList childList);
 
     /** Return a String representation of this node.
      *  Call the toString() method of all child nodes.

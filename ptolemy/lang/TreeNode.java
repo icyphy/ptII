@@ -50,6 +50,21 @@ import java.util.LinkedList;
 public abstract class TreeNode extends TrackedPropertyMap
      implements ITreeNode {
 
+    /** Construct a TreeNode with an unspecified number of children to
+     *  be added to the child list later.
+     */
+    public TreeNode() {
+        // the list will grow as needed
+        this(0);
+    }
+
+    /** Construct a TreeNode with the specified number of children to be
+     *  added to the child list later.
+     */
+    public TreeNode(int numChildren) {
+        _childList = new ArrayList(numChildren);        
+    }
+
     /** Accept a visitor, giving the visitor a list of zero arguments. */
     public Object accept(IVisitor v) {
         return accept(v, new LinkedList());
@@ -100,7 +115,7 @@ public abstract class TreeNode extends TrackedPropertyMap
     }
     
     /** Return the list of all direct children of this node. */
-    public List children() { return _childList; } // change this name
+    public ArrayList children() { return _childList; } // change this name
 
     public Object childReturnValueAt(int index) {
         List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
@@ -158,12 +173,11 @@ public abstract class TreeNode extends TrackedPropertyMap
      *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
      */
     public void traverseChildren(IVisitor v, LinkedList args) {
-        List retList = TNLManip.traverseList(v, this, args, _childList);
-
-        setProperty(CHILD_RETURN_VALUES_KEY, retList);
+        setProperty(CHILD_RETURN_VALUES_KEY, 
+         TNLManip.traverseList(v, this, args, _childList));
     }
     
-    public void setChildren(List childList) {
+    public void setChildren(ArrayList childList) {
         _childList = childList;
     }
 
@@ -308,7 +322,7 @@ public abstract class TreeNode extends TrackedPropertyMap
     ////                        protected variables                ////
 
     protected Class  _myClass = null;    
-    protected List _childList = new ArrayList();
+    protected ArrayList _childList;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -106,14 +106,14 @@ public class GenerateVisitor {
 
     _ifs.close();
 
-    Iterator itr = _typeList.listIterator();
-    Iterator parItr = _parentTypeList.listIterator();
-    Iterator concreteItr = _isConcreteList.listIterator();
-    Iterator singletonItr = _isSingletonList.listIterator();
-    Iterator inTreeItr = _isInTreeList.listIterator();
+    Iterator itr = _typeList.iterator();
+    Iterator parItr = _parentTypeList.iterator();
+    Iterator concreteItr = _isConcreteList.iterator();
+    Iterator singletonItr = _isSingletonList.iterator();
+    Iterator inTreeItr = _isInTreeList.iterator();
     Iterator interfaceItr = _isInterfaceList.listIterator();
-    Iterator methodListItr = _methodListList.listIterator();
-    Iterator implListItr = _implListList.listIterator();
+    Iterator methodListItr = _methodListList.iterator();
+    Iterator implListItr = _implListList.iterator();
 
     while (itr.hasNext()) {
       String typeName = (String) itr.next();
@@ -384,12 +384,13 @@ public class GenerateVisitor {
 
          boolean isSingleton;
          boolean isInterface;
+         boolean isConcrete;
          try {
             isSingleton = nextToken.startsWith("S");
             _isSingletonList.addLast(new Boolean(isSingleton));
 
-            _isConcreteList.addLast(new Boolean(
-             isSingleton || nextToken.startsWith("C")));
+            isConcrete = isSingleton || nextToken.startsWith("C");
+            _isConcreteList.addLast(new Boolean(isConcrete));
 
             isInterface = nextToken.startsWith("I");
             _isInterfaceList.addLast(new Boolean(isInterface));
@@ -422,7 +423,7 @@ public class GenerateVisitor {
            {
              MethodSignature ms =
                new MethodSignature(markChar, strTokenizer, className,
-                _defaultPlacement, isInterface);
+                _defaultPlacement, isInterface, isConcrete);
              methodList.addLast(ms);
            }
            break;
@@ -431,17 +432,14 @@ public class GenerateVisitor {
            {
              MethodSignature ms =
                new MethodSignature(markChar, strTokenizer, className,
-                _defaultPlacement, isInterface);
+                _defaultPlacement, isInterface, isConcrete);
 
              methodList.addLast(ms);
-
-             LinkedList accessorMethodList = ms.accessors();
-
-             methodList.addAll(accessorMethodList);
+             methodList.addAll(ms.accessors());
            }
            break;
 
-           case 'i':
+           case 'i': // add a class name to the implements list
            {
              boolean isName;
              do {
@@ -487,14 +485,18 @@ public class GenerateVisitor {
     public MethodSignature(String className) {
       _modifiers = "private";
       _name = className;
+      _construct = true;
+      _isConcrete = true;
     }
 
     /** a constructor or method */
     public MethodSignature(char sigType, StringTokenizer strToken,
-     String className, char defaultPlacement, boolean isInterface)
+     String className, char defaultPlacement, boolean isInterface,
+     boolean isConcrete)
      throws IOException {
 
       _isInterface = isInterface;
+      _isConcrete = isConcrete;
 
       _defConstruct = (sigType == 'k');
       _construct = (sigType == 'c') || _defConstruct;
@@ -533,6 +535,10 @@ public class GenerateVisitor {
                // make it a member if it's a Java type and we default to put it in a list
                _varPlacements.addLast(new Character('m'));
             } else {
+               if (defaultPlacement == 'l') {
+                  _childListSize++; 
+               }
+                           
                _varPlacements.addLast(new Character(defaultPlacement));
             }
          }
@@ -719,8 +725,15 @@ public class GenerateVisitor {
               varCount++;
            } while (typeItr.hasNext());
         }
+        
+        if (_isConcrete) {
+           sb.append("\n" + ident + ident + "_childList.trimToSize();");
+        }
+        
         return sb.toString();
       } // if _construct
+
+      // this is method
 
       if (_returnType.equals("void") || _returnType.equals("")) {
          return "";
@@ -765,8 +778,7 @@ public class GenerateVisitor {
          sb.append(_returnType + " ");
       }
 
-      sb.append(_name);
-      sb.append('(');
+      sb.append(_name + "(");
 
       Iterator typeItr = _paramTypes.listIterator();
       Iterator nameItr = _paramNames.listIterator();
@@ -905,6 +917,8 @@ public class GenerateVisitor {
     protected LinkedList _paramNames = new LinkedList();
     protected LinkedList _varPlacements = new LinkedList();
     protected LinkedList _superArgs = new LinkedList();
+    
+    protected int _childListSize = 0; // not currently used
 
     protected int _superParams = 0;
 
@@ -913,6 +927,9 @@ public class GenerateVisitor {
     protected boolean _construct = false;
     protected boolean _isInterface = false;
     protected boolean _defConstruct = false;
+    
+    /** True if this is a member of a concrete class. */
+    protected boolean _isConcrete = false;
   }
 
   public static class ClassField {
