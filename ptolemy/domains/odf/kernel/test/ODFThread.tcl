@@ -53,18 +53,18 @@ if {[string compare test [info procs test]] == 1} then {
 test ODFThread-2.1 {getTimeKeeper()} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
     set man [java::new ptolemy.actor.Manager $wspc "manager"]
     
     $topLevel setDirector $dir
     $topLevel setManager $man
 
-    set actor1 [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actor"] 
+    set actor1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set thread [java::new ptolemy.domains.odf.kernel.ODFThread $actor1 $dir]
     set keeper [$thread getTimeKeeper]
     set newactor [$keeper getActor]
-    set actor2 [java::cast ptolemy.domains.odf.kernel.ODFActor $newactor]
+    set actor2 [java::cast ptolemy.actor.TypedAtomicActor $newactor]
 
     list [ expr {$actor1 == $actor2}]
 

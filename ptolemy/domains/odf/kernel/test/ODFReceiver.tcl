@@ -52,15 +52,15 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and \
 _lastTime} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
 	    $actorRcvr]
     $odr setReceivingTimeKeeper $rcvrkeeper
 
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
 	    $actorSend]
     $odr setSendingTimeKeeper $sendkeeper
@@ -90,9 +90,9 @@ _lastTime} {
 #
 test ODFReceiver-2.2 {Put delayed event into non-empty queue; \
 	check rcvrTime and lastTime} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -113,9 +113,9 @@ test ODFReceiver-2.2 {Put delayed event into non-empty queue; \
 #
 test ODFReceiver-3.1 {Set event time = -1.0  and place into \
 	empty queue; check rcvrTime and lastTime} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -137,12 +137,12 @@ test ODFReceiver-3.1 {Set event time = -1.0  and place into \
 #
 test ODFReceiver-3.2 {Set negative delay time} {
     set wkspc [java::new ptolemy.kernel.util.Workspace]
-    set comp [java::new ptolemy.actor.CompositeActor $wkspc]
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor \
+    set comp [java::new ptolemy.actor.TypedCompositeActor $wkspc]
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor \
 	    $comp "Receiver"]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor \
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor \
 	    $comp "Sender"]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -162,12 +162,12 @@ test ODFReceiver-3.2 {Set negative delay time} {
 #
 test ODFReceiver-3.3 {Set negative current time} {
     set wkspc [java::new ptolemy.kernel.util.Workspace]
-    set comp [java::new ptolemy.actor.CompositeActor $wkspc]
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor \
+    set comp [java::new ptolemy.actor.TypedCompositeActor $wkspc]
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor \
 	    $comp "Receiver"]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor \
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor \
 	    $comp "Sender"]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -187,9 +187,9 @@ test ODFReceiver-3.3 {Set negative current time} {
 ####
 #
 test ODFReceiver-4.1 {Three gets followed by three puts} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -216,9 +216,9 @@ test ODFReceiver-4.1 {Three gets followed by three puts} {
 ####
 #
 test ODFReceiver-4.2 {Insert events in wrong order} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -237,9 +237,9 @@ test ODFReceiver-4.2 {Insert events in wrong order} {
 ####
 #
 test ODFReceiver-5.1 {hasToken() - tokens available} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
@@ -260,9 +260,9 @@ test ODFReceiver-5.1 {hasToken() - tokens available} {
 ####
 # FIXME
 test ODFReceiver-5.1 {hasToken() - tokens available} {
-    set actorRcvr [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set actorSend [java::new ptolemy.domains.odf.kernel.ODFActor]
-    set iop [java::new ptolemy.actor.IOPort $actorRcvr \
+    set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
+    set actorSend [java::new ptolemy.actor.TypedAtomicActor]
+    set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
     set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
     set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
