@@ -117,14 +117,14 @@ public class PlotFrame extends JFrame {
     public PlotFrame(String title, PlotBox plotArg) {
         super(title);
 
-        // Background color is a light grey.
-        setBackground(new Color(0xe5e5e5));
-
         if (plotArg == null) {
             plot = new Plot();
         } else {
             plot = plotArg;
         }
+
+        // Background color is a light grey.
+        plot.setBackground(new Color(0xe5e5e5));
 
         _fileMenu.setMnemonic(KeyEvent.VK_F);
         _editMenu.setMnemonic(KeyEvent.VK_E);
@@ -177,6 +177,7 @@ public class PlotFrame extends JFrame {
             new JMenuItem("Help", KeyEvent.VK_H),
             new JMenuItem("Clear", KeyEvent.VK_C),
             new JMenuItem("Fill", KeyEvent.VK_F),
+            new JMenuItem("Reset axes", KeyEvent.VK_R),
             new JMenuItem("Sample plot", KeyEvent.VK_S),
         };
         SpecialMenuListener sml = new SpecialMenuListener();
@@ -267,240 +268,11 @@ public class PlotFrame extends JFrame {
         dispose();
     }
 
-    /** Interactively edit the file format.
+    /** Interactively edit the file format in a modal dialog.
      */
     protected void _editFormat() {
-        JPanel panel = new JPanel(new BorderLayout());
-        final Query wideQuery = new Query();
-        panel.add(wideQuery, BorderLayout.WEST);
-        final Query narrowQuery = new Query();
-        panel.add(narrowQuery, BorderLayout.EAST);
-
-        // Populate the wide query.
-        wideQuery.setTextWidth(20);
-        String originalTitle = plot.getTitle();
-        wideQuery.addLine("title", "Title", originalTitle);
-        String originalXLabel = plot.getXLabel();
-        wideQuery.addLine("xlabel", "X Label", originalXLabel);
-        String originalYLabel = plot.getYLabel();
-        wideQuery.addLine("ylabel", "Y Label", originalYLabel);
-        double[] originalXRange = plot.getXRange();
-        wideQuery.addLine("xrange", "X Range",
-                "" + originalXRange[0] + ", " + originalXRange[1]);
-        double[] originalYRange = plot.getYRange();
-        wideQuery.addLine("yrange", "Y Range",
-                "" + originalYRange[0] + ", " + originalYRange[1]);
-        String[] marks = {"none", "points", "dots", "various", "pixels"};
-        String originalMarks = "none";
-        if (plot instanceof Plot) {
-            originalMarks = ((Plot)plot).getMarksStyle();
-            wideQuery.addRadioButtons("marks", "Marks", marks, originalMarks);
-        }
-        Vector[] originalXTicks = plot.getXTicks();
-        String originalXTicksSpec = "";
-        if (originalXTicks != null) {
-            StringBuffer buffer = new StringBuffer();
-            Vector positions = originalXTicks[0];
-            Vector labels = originalXTicks[1];
-            for(int i = 0; i < labels.size(); i++) {
-                if(buffer.length() > 0) {
-                    buffer.append(", ");
-                }
-                buffer.append(labels.elementAt(i).toString());
-                buffer.append(" ");
-                buffer.append(positions.elementAt(i).toString());
-            }
-            originalXTicksSpec = buffer.toString();
-        }
-        wideQuery.addLine("xticks", "X Ticks", originalXTicksSpec);
-
-        Vector[] originalYTicks = plot.getYTicks();
-        String originalYTicksSpec = "";
-        if (originalYTicks != null) {
-            StringBuffer buffer = new StringBuffer();
-            Vector positions = originalYTicks[0];
-            Vector labels = originalYTicks[1];
-            for(int i = 0; i < labels.size(); i++) {
-                if(buffer.length() > 0) {
-                    buffer.append(", ");
-                }
-                buffer.append(labels.elementAt(i).toString());
-                buffer.append(" ");
-                buffer.append(positions.elementAt(i).toString());
-            }
-            originalYTicksSpec = buffer.toString();
-        }
-        wideQuery.addLine("yticks", "Y Ticks", originalYTicksSpec);
-
-        boolean originalGrid = plot.getGrid();
-        narrowQuery.addCheckBox("grid", "Grid", originalGrid);
-        boolean originalStems = false;
-        boolean[][] originalConnected = null;
-        if (plot instanceof Plot) {
-            originalStems = ((Plot)plot).getImpulses();
-            narrowQuery.addCheckBox("stems", "Stems", originalStems);
-            originalConnected = _getConnected();
-            narrowQuery.addCheckBox("connected", "Connect",
-                    ((Plot)plot).getConnected());
-        }
-        boolean originalColor = plot.getColor();
-        narrowQuery.addCheckBox("color", "Use Color", originalColor);
-
-        // FIXME: setXLog() and setYLog() cause problems with
-        // dropped data if they are toggled after data is read in.
-        // This is because the log axis facility modifies the datasets
-        // in addPlotPoint() in Plot.java.  When this is fixed
-        // we can add the XLog and YLog facility to the Format menu
-        //
-        //boolean originalXLog = plot.getXLog();
-        //narrowQuery.addCheckBox("xlog", "X Log", originalXLog);
-        //if (originalXTicks != null) {
-        //    narrowQuery.setBoolean("xlog", false);
-        //    narrowQuery.setEnabled("xlog", false);
-        //}
-        //boolean originalYLog = plot.getYLog();
-        //narrowQuery.addCheckBox("ylog", "Y Log", originalYLog);
-        //if (originalYTicks != null) {
-        //    narrowQuery.setBoolean("ylog", false);
-        //    narrowQuery.setEnabled("ylog", false);
-        //}
-
-        // Attach listeners.
-        wideQuery.addQueryListener(new QueryListener() {
-            public void changed(String name) {
-                if (name.equals("title")) {
-                    plot.setTitle(wideQuery.stringValue("title"));
-                } else if (name.equals("xlabel")) {
-                    plot.setXLabel(wideQuery.stringValue("xlabel"));
-                } else if (name.equals("ylabel")) {
-                    plot.setYLabel(wideQuery.stringValue("ylabel"));
-                } else if (name.equals("xrange")) {
-                    plot.read("XRange: " + wideQuery.stringValue("xrange"));
-                } else if (name.equals("xticks")) {
-                    String spec = wideQuery.stringValue("xticks").trim();
-                    plot.read("XTicks: " + spec);
-                    // FIXME: log axis format temporarily disable, see above.
-                    // if(spec.equals("")) {
-                    //    narrowQuery.setEnabled("xlog", true);
-                    // } else {
-                    //    narrowQuery.setBoolean("xlog", false);
-                    //    narrowQuery.setEnabled("xlog", false);
-                    // }
-                } else if (name.equals("yticks")) {
-                    String spec = wideQuery.stringValue("yticks").trim();
-                    plot.read("YTicks: " + spec);
-                    // FIXME: log axis format temporarily disable, see above.
-                    // if(spec.equals("")) {
-                    //    narrowQuery.setEnabled("ylog", true);
-                    // } else {
-                    //    narrowQuery.setBoolean("ylog", false);
-                    //    narrowQuery.setEnabled("ylog", false);
-                    // }
-                } else if (name.equals("yrange")) {
-                    plot.read("YRange: " + wideQuery.stringValue("yrange"));
-                } else if (name.equals("marks")) {
-                    ((Plot)plot).setMarksStyle(wideQuery.stringValue("marks"));
-                }
-                plot.repaint();
-            }
-        });
-
-        narrowQuery.addQueryListener(new QueryListener() {
-            public void changed(String name) {
-                if (name.equals("grid")) {
-                    plot.setGrid(narrowQuery.booleanValue("grid"));
-                } else if (name.equals("stems")) {
-                    ((Plot)plot).setImpulses(narrowQuery.booleanValue("stems"));
-                    plot.repaint();
-                } else if (name.equals("color")) {
-                    plot.setColor(narrowQuery.booleanValue("color"));
-                // FIXME: log axis format temporarily disable, see above.
-                // } else if (name.equals("xlog")) {
-                //    plot.setXLog(narrowQuery.booleanValue("xlog"));
-                // } else if (name.equals("ylog")) {
-                //    plot.setYLog(narrowQuery.booleanValue("ylog"));
-                } else if (name.equals("connected")) {
-                    _setConnected(narrowQuery.booleanValue("connected"));
-                }
-                plot.repaint();
-            }
-        });
-
-        // Open the dialog.
-        String[] buttons = {"Apply", "Cancel"};
-        ComponentDialog dialog =
-            new ComponentDialog(this, "Set plot format", panel, buttons);
-
-        if (dialog.buttonPressed().equals("Apply")) {
-            // Apply current values.
-            plot.setTitle(wideQuery.stringValue("title"));
-            plot.setXLabel(wideQuery.stringValue("xlabel"));
-            plot.setYLabel(wideQuery.stringValue("ylabel"));
-            plot.read("XRange: " + wideQuery.stringValue("xrange"));
-            plot.read("YRange: " + wideQuery.stringValue("yrange"));
-            plot.setGrid(narrowQuery.booleanValue("grid"));
-            plot.setColor(narrowQuery.booleanValue("color"));
-            // FIXME: log axis format temporarily disable, see above.
-            // plot.setXLog(narrowQuery.booleanValue("xlog"));
-            // plot.setYLog(narrowQuery.booleanValue("ylog"));
-            if (plot instanceof Plot) {
-                Plot cplot = (Plot)plot;
-                cplot.setMarksStyle(wideQuery.stringValue("marks"));
-                cplot.setImpulses(narrowQuery.booleanValue("stems"));
-                _setConnected(narrowQuery.booleanValue("connected"));
-            }
-            // FIXME: log axis format temporarily disable, see above.
-            // String spec = wideQuery.stringValue("xticks").trim();
-            // plot.read("XTicks: " + spec);
-            // if(spec.equals("")) {
-            //    narrowQuery.setEnabled("xlog", true);
-            // } else {
-            //    narrowQuery.setBoolean("xlog", false);
-            //    narrowQuery.setEnabled("xlog", false);
-            // }
-            // spec = wideQuery.stringValue("yticks").trim();
-            // plot.read("YTicks: " + spec);
-            // if(spec.equals("")) {
-            //    narrowQuery.setEnabled("ylog", true);
-            // } else {
-            //    narrowQuery.setBoolean("ylog", false);
-            //    narrowQuery.setEnabled("ylog", false);
-            // }
-        } else {
-            // Restore original values.
-            plot.setTitle(originalTitle);
-            plot.setXLabel(originalXLabel);
-            plot.setYLabel(originalYLabel);
-            plot.setXRange(originalXRange[0], originalXRange[1]);
-            plot.setYRange(originalYRange[0], originalYRange[1]);
-            plot.setGrid(originalGrid);
-            plot.setColor(originalColor);
-            // FIXME: log axis format temporarily disable, see above.
-            // plot.setXLog(originalXLog);
-            // plot.setYLog(originalYLog);
-            if (plot instanceof Plot) {
-                Plot cplot = (Plot)plot;
-                cplot.setMarksStyle(originalMarks);
-                cplot.setImpulses(originalStems);
-                _restoreConnected(originalConnected);
-            }
-            // FIXME: log axis format temporarily disabled, see above.
-            // plot.read("XTicks: " + originalXTicksSpec);
-            // if(originalXTicksSpec.equals("")) {
-            //    narrowQuery.setEnabled("xlog", true);
-            // } else {
-            //   narrowQuery.setBoolean("xlog", false);
-            //    narrowQuery.setEnabled("xlog", false);
-            // }
-            // plot.read("YTicks: " + originalYTicksSpec);
-            // if(originalYTicksSpec.equals("")) {
-            //    narrowQuery.setEnabled("ylog", true);
-            // } else {
-            //    narrowQuery.setBoolean("ylog", false);
-            //    narrowQuery.setEnabled("ylog", false);
-            // }
-        }
-        plot.repaint();
+        PlotFormatter fmt = new PlotFormatter(plot);
+        fmt.openModal();
     }
 
     /** Query the user for a filename and export the plot to that file.
@@ -667,66 +439,6 @@ public class PlotFrame extends JFrame {
             _save();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Get the current connected state of all the point in the
-    // plot.  NOTE: This method reaches into the protected members of
-    // the Plot class, taking advantage of the fact that this class is
-    // in the same package.
-    private boolean[][] _getConnected() {
-        Vector points = ((Plot)plot)._points;
-        boolean[][] result = new boolean[points.size()][];
-        for (int dataset = 0; dataset < points.size(); dataset++) {
-            Vector pts = (Vector)points.elementAt(dataset);
-            result[dataset] = new boolean[pts.size()];
-            for (int i = 0; i < pts.size(); i++) {
-                PlotPoint pt = (PlotPoint)pts.elementAt(i);
-                result[dataset][i] = pt.connected;
-            }
-        }
-        return result;
-    }
-
-    // Set the current connected state of all the point in the
-    // plot.  NOTE: This method reaches into the protected members of
-    // the Plot class, taking advantage of the fact that this class is
-    // in the same package.
-    private void _setConnected(boolean value) {
-        Vector points = ((Plot)plot)._points;
-        // Make sure the default matches.
-        ((Plot)plot).setConnected(value);
-        boolean[][] result = new boolean[points.size()][];
-        for (int dataset = 0; dataset < points.size(); dataset++) {
-            Vector pts = (Vector)points.elementAt(dataset);
-            result[dataset] = new boolean[pts.size()];
-            boolean first = true;
-            for (int i = 0; i < pts.size(); i++) {
-                PlotPoint pt = (PlotPoint)pts.elementAt(i);
-                pt.connected = value && !first;
-                first = false;
-            }
-        }
-    }
-
-    // Set the current connected state of all the point in the
-    // plot.  NOTE: This method reaches into the protected members of
-    // the plot class, taking advantage of the fact that this class is
-    // in the same package.
-    private void _restoreConnected(boolean[][] original) {
-        Vector points = ((Plot)plot)._points;
-        boolean[][] result = new boolean[points.size()][];
-        for (int dataset = 0; dataset < points.size(); dataset++) {
-            Vector pts = (Vector)points.elementAt(dataset);
-            result[dataset] = new boolean[pts.size()];
-            for (int i = 0; i < pts.size(); i++) {
-                PlotPoint pt = (PlotPoint)pts.elementAt(i);
-                pt.connected = original[dataset][i];
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -769,6 +481,8 @@ public class PlotFrame extends JFrame {
                 _help();
             } else if (actionCommand.equals("Fill")) {
                 plot.fillPlot();
+            } else if (actionCommand.equals("Reset axes")) {
+                plot.resetAxes();
             } else if (actionCommand.equals("Clear")) {
                 plot.clear(false);
                 plot.repaint();
