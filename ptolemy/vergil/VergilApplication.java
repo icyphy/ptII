@@ -360,10 +360,7 @@ public class VergilApplication extends MoMLApplication {
         for (i = 0; i < super._commandFlags.length; i++) {
             result += " " + super._commandFlags[i];
         }
-        for (i = 0; i < _commandFlags.length; i++) {
-            result += " " + _commandFlags[i];
-        }
-        
+
         try {
             // Look for configuration directories in ptolemy/configs
             // This will likely fail if ptolemy/configs is in a jar file
@@ -378,11 +375,13 @@ public class VergilApplication extends MoMLApplication {
                     + configurationDirectory + " configurationDirectories = "
                     + configurationDirectories);
             if (configurationDirectories != null) {
-                result += "\n";
+                result += "\nThe following Boolean flags start vergil using "
+                    + "different configurations:\n";
                 for(i = 0; i < configurationDirectories.length; i++) {
                     result += " -" + configurationDirectories[i].getName()
-                        + "   <read in " + configurationDirectories[i]
-                        + "/configuration.xml>\n";
+                        + "\tread in "
+                        + configurationDirectories[i] + File.separator
+                        + "configuration.xml\n";
                 } 
             }
         } catch (Exception ex) {
