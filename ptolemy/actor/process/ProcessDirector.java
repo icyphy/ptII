@@ -163,9 +163,7 @@ public class ProcessDirector extends Director {
      */
     public synchronized void increasePausedCount() {
         _actorsPaused++;
-        if (_isPaused()) {
-	    notifyAll();
-	}
+	notifyAll();
     }
 
     /** Invoke the initialize() methods of all the deeply contained
@@ -439,6 +437,7 @@ public class ProcessDirector extends Director {
 		    _threadsStopped--;
 		}
 		thread = (ProcessThread)threads.next();
+		thread.finish();
 		thread.restartThread();
 	    }
 	}
@@ -544,10 +543,7 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
-	if (_isDeadlocked() || _isPaused()) {
-	    //Wake up the director waiting for a deadlock
-	    notifyAll();
-	}
+	notifyAll();
     }
 
     /** Return the number of active processes under the control of this
