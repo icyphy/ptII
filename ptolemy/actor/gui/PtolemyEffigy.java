@@ -93,8 +93,15 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
+
+        // Initially, the undo facility wanted us to call
+        // setModified(true) here.  However, if we do, then running an
+        // SDF Model that sets the bufferSize of a relation would
+        // result in the model being marked as modified and the user
+        // being queried about saving the model upon exit.
+
         // Needed for undo.
-        setModified(true);
+        //setModified(true);
     }
 
     /** React to the fact that a change has triggered an error by
