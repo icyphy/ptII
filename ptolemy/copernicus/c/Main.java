@@ -158,7 +158,8 @@ public void generateCode(String [] args) {
     soot.ConsoleCompilationListener consoleCompilationListener =
             new soot.ConsoleCompilationListener();
     soot.Main.addCompilationListener(consoleCompilationListener);
-    main.run(false);
+    // main.run(false);
+    main.run();
 }
 
 
