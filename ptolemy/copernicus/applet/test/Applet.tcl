@@ -49,12 +49,14 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 # Generate code for all the xml files in a directory.
 proc autoAppletCG {autoDirectory} {
+    global KNOWN_FAILED	
     foreach file [glob $autoDirectory/*.xml] {
 	if { [string last FileWriter2.xml $file] != -1 \
-		|| [string last Legiotto.xml $file] != -1 } {
+		|| [string last Legiotto.xml $file] != -1 \
 		|| [string last ReadFile2.xml $file] != -1 } {
 	    # Skip known failures
 	    puts "Skipping Known Failure: $file"
+	    incr KNOWN_FAILED
 	    continue
 	}
 	puts "---- testing $file"
@@ -70,15 +72,17 @@ proc autoAppletCG {autoDirectory} {
 # Generate code all the demos where a demo model has the name 
 # demo/Foo/Foo.xml thus avoiding running scripts like demo/Foo/xxx.xml
 proc autoAppletDemoCG {autoDirectory} {
+    global KNOWN_FAILED	
     set i 0
     foreach directory [glob $autoDirectory/*/demo/*] {
 	set base [file tail $directory]
 	set file [file join $directory $base.xml]
 	if { [string last FileWriter2.xml $file] != -1 \
-		|| [string last Legiotto.xml $file] != -1 } {
+		|| [string last Legiotto.xml $file] != -1 \
 		|| [string last ReadFile2.xml $file] != -1 } {
 	    # Skip known failures
-	    puts "Skipping Known Failure: $file"
+	    puts "Skipping Known Demo Failure: $file"
+	    incr KNOWN_FAILED
 	    continue
 	}
 	if [ file exists $file ] {
