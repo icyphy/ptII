@@ -53,8 +53,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	index.htm
-
+	index.htm \
+	usingVergil.pdf
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
