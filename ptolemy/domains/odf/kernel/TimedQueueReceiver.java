@@ -326,4 +326,57 @@ public class TimedQueueReceiver implements Receiver {
 
     // The thread controlling the actor that contains this receiver.
     private ODFThread _controllingThread;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+
+    // An Event is an aggregation consisting of a Token, a 
+    // time stamp and destination Receiver. Both the token 
+    // and destination receiver are allowed to have null 
+    // values. This is particularly useful in situations 
+    // where the specification of the destination receiver 
+    // may be considered redundant.
+
+    public class Event {
+
+	// Construct an Event with a token and time stamp. 
+	public Event(Token token, double time) {
+	    _token = token; 
+	    _timeStamp = time;
+	}
+
+	// Construct an Event with a token, a time stamp and a 
+	// destination receiver. 
+	public Event(Token token, double time, Receiver receiver) {
+	    this(token, time); 
+	    _receiver = receiver;
+	}
+
+
+        /////////////////////////////////////////////////////////// 
+	////                     public methods                //// 
+
+	// Return the destination receiver of this event. 
+	public Receiver getReceiver() {
+	    return _receiver;
+	} 
+
+	// Return the time stamp of this event. 
+	public double getTime() {
+	    return _timeStamp;
+	} 
+
+	// Return the token of this event. 
+	public Token getToken() {
+	    return _token;
+	}
+
+        ///////////////////////////////////////////////////////////
+        ////                     private variables             //// 
+
+	double _timeStamp = 0.0; 
+	Token _token = null; 
+	Receiver _receiver = null;
+    }
+
 }
