@@ -129,6 +129,16 @@ public abstract class ConditionalBranch {
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    public void _checkAndWait() throws InterruptedException {
+        getParent().branchBlocked();
+        getReceiver()._checkAndWait();
+        getParent().branchUnblocked();
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
     // The receiver this thread is trying to rendezvous with. It is immutable.

@@ -157,22 +157,26 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      */
     public void run() {
         try {
-            // FIXME: put in check that another put or condSend is not trying
-            // at this receiver
-            String str = getParent().getName() + ": Starting conditionalSend ";
-            //System.out.println( str + "branch: " + getID());
+            // FIXME: For testing purposes only. Needed so that threads are 
+            // not always executed in the same order.
             Random rand = new Random();
-            Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-            boolean debug = true;
-            synchronized(getReceiver()) {
-                while (getReceiver().isConditionalSendWaiting()) {
-                    // last time condSend got there first, condRec
-                    // hasn't cleared yet
-                    String s = "CondSend waiting for CondRec to clear state: ";
-                    System.out.println(s + getID());
-                    getReceiver()._checkAndWait();
-                }
+            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
 
+            //System.out.println(getParent().getName() + 
+              //      ": Starting conditionalSend...");
+               
+            synchronized(getReceiver()) {
+                if (getReceiver().isConditionalSendWaiting()
+                     || getReceiver().isPutWaiting() ) {
+                    // Should never happen that a put or a ConditionalSend 
+                    // is already at the receiver.
+                    
+                    throw new InvalidStateException(getParent().getName() +
+                         ": ConditionalSend branch trying to rendezvous " +
+                         "with a receiver that already has a put or a " + 
+                         "ConditionalSend waiting.");
+                }
+                
                 // MAIN LOOP
                 while (true) {
                     if (!isAlive()) {
@@ -195,7 +199,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 getParent().branchSucceeded(getID());
                                 return;
                             } else {
-                                getReceiver()._checkAndWait();
+                                _checkAndWait();
                             }
                             if (!isAlive()) {
                                 getParent().branchFailed(getID());
@@ -231,7 +235,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         }
                         String s = "CondSend: not first, but still alive: ";
                         //System.out.println(s + getID());
-                        getReceiver()._checkAndWait();
+                        _checkAndWait();
                     } else {
                         // CASE 3: ConditionalSend got here before a get or a
                         // ConditionalReceive. Once enter this part of main
@@ -239,7 +243,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         String s = "setting conditionalSend waiting flag: ";
                         //System.out.println(s + getID() );
                         getReceiver().setConditionalSend(true, getParent());
-                        getReceiver()._checkAndWait();
+                        _checkAndWait();
                         while (true) {
                             if (!isAlive()) {
                                 // reset state of receiver controlling
@@ -250,36 +254,44 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             } else if (getReceiver().isGetWaiting()) {
                                 if (getParent().amIFirst(getID())) {
                                     // I am the branch that succeeds
-                                    getReceiver().put(_token);
+                                    // Note that need to reset condSend 
+                                    // flag BEFORE doing put.
                                     CSPReceiver rec = getReceiver();
                                     rec.setConditionalSend(false, null);
+                                    rec.put(_token);
                                     getParent().branchSucceeded(getID());
                                     return;
                                 }
                             }
                             //cannot rendezvous this time, still alive
-                            getReceiver()._checkAndWait();
+                            _checkAndWait();
                         }
                     }
                 }
             }
         } catch (InterruptedException ex) {
-            System.out.println("ConditionalSend interrupted:"+ex.getMessage());
+            System.out.println( getParent().getName() + 
+                    ": ConditionalSend interrupted: " + ex.getMessage());
+            getReceiver().setConditionalSend(false, null);
+            getParent().branchFailed(getID());
         } catch (NoRoomException ex) {
-            System.out.println("get failed in CondRec., NoSuchItemException");
+            System.out.println("get failed in CondSend, NoTokenException");
+            getReceiver().setConditionalSend(false, null);
             getParent().branchFailed(getID());
         } catch (TerminateProcessException ex) {
+            System.out.println( getParent().getName() + 
+                    ": ConditionalSend terminated: " + ex.getMessage());
+            getReceiver().setConditionalSend(false, null);
             getParent().branchFailed(getID());
         }
-
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ////                         protected variables                      ////
 
     // The token this conditional send is trying to send. It is fixed
     // upon creation of the branch (it is immutable).
-    private Token _token;
+    protected Token _token;
 }
 
 

@@ -156,20 +156,22 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     public void run() {
         try {
-            // FIXME: put in check that another get or condRec is not trying
-            //at this receiver
-            Token res = null;
-            String s = getParent().getName() + ": Starting ";
-            //System.out.println( s+ "conditionalReceive branch: " + getID());
+            // FIXME: For testing purposes only. Needed so that threads are 
+            // not always executed in the same order.
             Random rand = new Random();
-            Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-            boolean debug = true;
+            //Thread.currentThread().sleep((long)(rand.nextDouble()*10000));
+
+            Token res = null;
+
             synchronized(getReceiver()) {
-                while (getReceiver().isConditionalReceiveWaiting()) {
-                    // last time condRec got there first, condSend hasn't
-                    // cleared yet
-                    System.out.println("CondRec waiting for CondSend"+getID());
-                    getReceiver()._checkAndWait();
+                if (getReceiver().isConditionalReceiveWaiting()
+                     || getReceiver().isGetWaiting() ) {
+                    // Should never happen that a get or a ConditionalReceive 
+                    // is already at the receiver.
+                    throw new InvalidStateException(getParent().getName() +
+                         ": ConditionalReceive branch trying to rendezvous " +
+                         "with a receiver that already has a get or a " + 
+                         "ConditionalReceive waiting.");
                 }
 
                 // MAIN LOOP
@@ -185,16 +187,17 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         while (true) {
                             if (getParent().amIFirst(getID())) {
                                 // I am the branch that succeeds
-                                String ss = getParent().getName();
-                                ss +=  ": conditionalReceive succeeded: ";
-                                //System.out.println(ss + getID());
+                                //System.out.println(getParent().getName() +
+                                          //": conditionalReceive succeeded: " +
+                                          //getID());
                                 res = getReceiver().get();
                                 getParent().branchSucceeded(getID(), res);
                                 return;
                             } else {
-                                String ss = "not first, but still alive:";
-                                //System.out.println(ss + getID());
-                                getReceiver()._checkAndWait();
+                                //System.out.println(getParent().getName() +
+                                          //": not first, but still alive:" + 
+                                          //getID());
+                                _checkAndWait();
                                 //System.out.println("loop again");
                             }
                             if (!isAlive()) {
@@ -225,13 +228,13 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             }
                         }
                         //System.out.println("not first, alive: " + getID());
-                        getReceiver()._checkAndWait();
+                        _checkAndWait();
                         //System.out.println("loop again, "+ id);
                     } else {
                         // CASE 3: ConditionalReceive tried to rendezvous
                         // before a put or a ConditionalSend.
                         getReceiver().setConditionalReceive(true, getParent());
-                        getReceiver()._checkAndWait();
+                        _checkAndWait();
                         while (true) {
                             if (!isAlive()) {
                                 // reset state of receiver
@@ -242,6 +245,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             } else if (getReceiver().isPutWaiting()) {
                                 if (getParent().amIFirst(getID())) {
                                     // I am the branch that succeeds
+                                    // Note that need to reset condSend 
+                                    // flag BEFORE doing put.
                                     CSPReceiver rec = getReceiver();
                                     rec.setConditionalReceive(false, null);
                                     res = getReceiver().get();
@@ -250,18 +255,23 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 }
                             }
                             //can't rendezvous this time, but still alive
-                            getReceiver()._checkAndWait();
+                            _checkAndWait();
                         }
                     }
                 }
             }
         } catch (InterruptedException ex) {
-            String str = "ConditionalReceive interrupted: ";
-            System.out.println( str + ex.getMessage());
+            System.out.println( getParent().getName() + 
+                    ": ConditionalReceive interrupted: " + ex.getMessage());
+            getReceiver().setConditionalReceive(false, null);
+            getParent().branchFailed(getID());
         } catch (NoTokenException ex) {
-            System.out.println("get failed in CondRec., NoSuchItemException");
+            System.out.println("get failed in CondReceive, NoTokenException");
+            getReceiver().setConditionalReceive(false, null);
             getParent().branchFailed(getID());
         } catch (TerminateProcessException ex) {
+            System.out.println("ConditionalRecieve terminated by exception.");
+            getReceiver().setConditionalReceive(false, null);
             getParent().branchFailed(getID());
         }
     }

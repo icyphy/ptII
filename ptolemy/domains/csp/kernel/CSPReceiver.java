@@ -54,7 +54,7 @@ Is the synchronization below provable? Or is it just reasoned?
 
 */
 
-public class CSPReceiver implements Receiver {
+public class CSPReceiver implements ProcessReceiver {
 
     /** Construct a CSPReceiver with no container.
      */
@@ -65,7 +65,6 @@ public class CSPReceiver implements Receiver {
      */
     public CSPReceiver(IOPort container) {
         _container = container;
-        _firstContainer = false;
     }
 
 
@@ -89,14 +88,24 @@ public class CSPReceiver implements Receiver {
                 _setPutWaiting(false);  //needs to be done here
                 tmp = _token;
                 _setPutDone(false);
-                notifyAll(); //wake up the waiting put
+                notifyAll(); //wake up the waiting put;
                 while (!isPutDone()) {
                     _checkAndWait();
                 }
-            } else { // get got there first, so have to wait for a put
-                //System.out.println(getContainer().getName() + ": get got here before put");
+            } else {
+                // get got there first, so have to wait for a put;
+                // System.out.println(Thread.currentThread().getName() + ": " + getContainer().getName() + ": get got here before put");
                 _setGetWaiting(true);
                 notifyAll();
+
+                // This is needed for the case when a condSend reaches 
+                // the receiver before a get. When the condSend continues, 
+                // it resets the condSend flag, the getWaiting flag is set to 
+                // false and the rendezvous proceeds normally.
+                while (isConditionalSendWaiting()) {
+                    _checkAndWait();
+                }
+
                 _getDirector().actorBlocked();
                 while (isGetWaiting()) {
                     _checkAndWait();
@@ -125,33 +134,36 @@ public class CSPReceiver implements Receiver {
      *   comment is bogus.
      *  @param t The token being transferred in the rendezvous.
      */
-      public synchronized void put(Token t) {
-          //System.out.println("Thread calling put is: " + Thread.currentThread().getName());
-        if (isPutWaiting()) {System.out.println("ERROR:put true");}
+    public synchronized void put(Token t) {
         try {
             _token = t; // perform transfer
             if (isGetWaiting()) {
                 _setGetWaiting(false);  //needs to be done here
                 _setGetDone(false);
-                notifyAll(); //wake up the waiting put
+                notifyAll(); //wake up the waiting get
                 while (!isGetDone()) {
                     _checkAndWait();
                 }
                 return;
             } else { 
                 // put got there first, so have to wait for a get
-                //System.out.println(getContainer().getName() + ": put got here before get");
+                // System.out.println(Thread.currentThread().getName() + ": " + getContainer().getName() + ": put got here before get");
                 _setPutWaiting(true);
                 notifyAll();
+
+                // This is needed for the case when a condRec reaches 
+                // the receiver before a put. When the condRec continues, 
+                // it resets the condRec flag, the putWaiting flag is set to 
+                // false and the rendezvous proceeds normally.
+                while (isConditionalReceiveWaiting()) {
+                    _checkAndWait();
+                }
+
                 _getDirector().actorBlocked();
                 while(isPutWaiting()) {
-                    //System.out.println("put waiting for get to arrive");
                     _checkAndWait();
                 }
                 _getDirector().actorUnblocked();
-                if (isGetWaiting()) {
-                    System.out.println("Error:getWaiting is true!");
-                }
                 _setPutDone(true);
                 notifyAll();
                 return;
@@ -246,7 +258,8 @@ public class CSPReceiver implements Receiver {
         return _putWaiting;
     }
 
-    /** Set the container of this CSPReceiver to the specified IOPort.
+    /** FIXME: this method not good???
+     *  Set the container of this CSPReceiver to the specified IOPort.
      *  A receiver can only ever have one container. If the argument is
      *  null, this CSPReceiver is removed from the list of receivers
      *  in its container.
@@ -263,13 +276,7 @@ public class CSPReceiver implements Receiver {
             _container = null;
             // FIXME: remove receiver from list of IOPorts receivers
         }
-        if (_firstContainer) {
-            _container = parent;
-            _firstContainer = false;
-        } else {
-            String str = "CSPReceiver: A Receiver can only ever";
-            throw new IllegalActionException(str + " have one container");
-        }
+        _container = parent;
     }
 
     /** Set a flag so that a conditional send branch knows whether or
@@ -302,11 +309,19 @@ public class CSPReceiver implements Receiver {
 	_otherParent = par;
     }
 
+    /** The simulation has been paused, so set a flag so that the
+     *  next time an actor tries to get or put it knows to pause.
+     *  @param value The new value of the paused flag.
+     */
+    public synchronized void setPause(boolean value) {
+        _simulationPaused = value;
+    }
     /** The simulation has finished, so set a flag so that the
      *  next time an actor tries to get or put it gets a
      *  TerminateProcessException which will cause it to finish.
      */
-    public void setSimulationFinished() {
+    public synchronized void setFinish() {
+        System.out.println(getContainer().getName() + ": receiver finished.");
         _simulationFinished = true;
     }
 
@@ -341,13 +356,19 @@ public class CSPReceiver implements Receiver {
               TerminateProcessException, InterruptedException {
         if (_simulationFinished) {
             throw new TerminateProcessException(getContainer().getName() + 
-                    ": terminated");
+                    ": terminated1");
+        } else if (_simulationPaused) {
+            ProcessThread thread = (ProcessThread)Thread.currentThread();
+            ProcessDirector dir = (ProcessDirector)thread.getDirector();
+            dir.increasePausedCount();
+            // FIXME: what goes here?
         }
+            
         wait();
-	if (_simulationFinished) {
+        if (_simulationFinished) {
             throw new TerminateProcessException(getContainer().getName() + 
-                    ": terminated");
-        }
+                    ": terminated2");
+        } 
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -381,6 +402,7 @@ public class CSPReceiver implements Receiver {
      * @param value boolean indicating whether a get is finished or not.
      */
     private void _setGetDone(boolean value) {
+        System.out.println(Thread.currentThread().getName() + ": setting get done flag to " + value);
         _getDone = value;
     }
 
@@ -399,6 +421,7 @@ public class CSPReceiver implements Receiver {
      * @param value boolean indicating whether a put is finished or not.
      */
     private void _setPutDone(boolean value) {
+        System.out.println(Thread.currentThread().getName() + ": setting put done flag to " + value);
         _putDone = value;
     }
 
@@ -415,10 +438,9 @@ public class CSPReceiver implements Receiver {
     ////                         private variables                      ////
 
 
-    // Container is not changeable.
+    // Container.
     private IOPort _container = null;
-    private boolean _firstContainer = true;
-
+    
     // The director controlling this simulation, and its version.
     private CSPDirector _director;
     private long _directorVersion = -1;
@@ -449,6 +471,10 @@ public class CSPReceiver implements Receiver {
     // Flag indicating that the director controlling the actor this
     //receiver is contained by has terminated the simulation.
     private boolean _simulationFinished = false;
+
+    // Flag indicating that the director controlling the actor this
+    // receiver is contained by has been paused.
+    private boolean _simulationPaused = false;
 
     // The token being transferred during the rendezvous.
     private Token _token;

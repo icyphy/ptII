@@ -33,6 +33,7 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.data.Token;
 import ptolemy.actor.*;
+import ptolemy.actor.TerminateProcessException;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import collections.LinkedList;
@@ -60,7 +61,8 @@ Then it waits for one branch to succeed, after which it wakes up and
 terminates the remaining branches. When the last conditional branch
 thread has finished it allows the actor thread to continue.
 <p>
-Time is supported by two methods, delay() and delay(double). If the simulation
+Time is supported by two methods, delay() and delay(double). These methods 
+do nothing if the simulation is untimed. If the simulation
 is timed. the first method just pauses the actor until the next time 
 artificial deadlock is reached and time is advanced. The second method 
 pauses the actor until time is advanced the argument time from the 
@@ -140,26 +142,46 @@ public class CSPActor extends AtomicActor {
         }
     }
 
+    /** Increase the count of conditional branches that are blocked.
+     *  Check if all the conditional branches are blocked, and if so 
+     *  register this actor as being blocked.
+     */
+    public void branchBlocked() {
+        //System.out.println(getName() + ": branchBlocked.");
+        synchronized(_getInternalLock()) {
+            _branchesBlocked++;
+            // System.out.println(getName() + ": number of blocked branches is " +
+                    //   _branchesBlocked + ", alive is " + _branchesActive);
+            if (_branchesBlocked == _branchesStarted) {
+                System.out.println(getName() + ": all branches are blocked.");
+                // Note: acquiring a second lock, need to be careful.
+                ((CSPDirector)getDirector()).actorBlocked();
+            }
+        }
+    }
+
     /** Called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
     public void branchFailed(int branchNumber) {
         if (_successfulBranch == branchNumber) {
-            // simulation must have been terminated.
+            // simulation must have finished.
             _successfulBranch = -1;
         }
         synchronized(_getInternalLock()) {
             _branchesActive--;
-            //System.out.println(getName() + ": branch failed: " + branchNumber);
+            System.out.println(getName() + ": branch failed: " +
+                      branchNumber);
             if (_branchesActive == 0) {
-                //System.out.println(getName() + ": Last branch finished, waking up chooseBranch");
+                System.out.println(getName() + ": Last branch finished, " +
+                       "waking up chooseBranch");
                 _getInternalLock().notifyAll();
             }
         }
     }
 
-    /** Called by a conditional branch after a successful rendezvous. It
+    /** Called by ConditionalSend after a successful rendezvous. It
      *  wakes up chooseBranch which then proceeds to terminate the
      *  remaining branches.
      *  @param branchNumber The ID assigned to the calling branch
@@ -168,12 +190,15 @@ public class CSPActor extends AtomicActor {
     public void branchSucceeded(int branchNumber) {
         synchronized(_getInternalLock() ) {
             if (_branchTrying != branchNumber) {
-                System.out.println("Error: trying not equal to success");
+                System.out.println(getName() + ": branchSucceeded called " +
+                        "with a branch id not equal to the id of the branch" +
+                        " registered as trying.");
             }
             _successfulBranch = _branchTrying;
             _branchesActive--;
             // wakes up chooseBranch() which wakes up parent thread
-            //System.out.println(getName() + ": branch succeeded: " + branchNumber + ", waking up chooseBranch");
+            System.out.println(getName() + ": branch succeeded: " +
+                      branchNumber + ", waking up chooseBranch");
             _getInternalLock().notifyAll();
         }
     }
@@ -191,15 +216,44 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** The heart of the conditional rendezvous mechanism. It fires up
-     *  the conditional branches passed in as a parameter, waits for one
-     *  to succeed, and then terminates the remining branches.
-     *  It returns after all the threads for the conditional branches
-     *  have finished.
-     *  FIXME: need to work out id to return if no branches were created 
-     *  and when the conditional construct was terminated prematurely.
+    /** Decrease the count of conditional branches that are blocked.
+     *  Check if all the conditional branches were previously blocked, 
+     *  and if so register this actor with the director as being unblocked.
+     */
+    public void branchUnblocked() {
+        // System.out.println(getName() + ": branchUnBlocked.");
+         synchronized(_getInternalLock()) {
+            //System.out.println(getName() + ": UUnumber of blocked branches " +
+                    //     "is " + _branchesBlocked + ", alive is " + _branchesActive);
+            if (_branchesBlocked == _branchesStarted) {
+                System.out.println(getName() + ": all branches WERE blocked.");
+                // Note: acquiring a second lock, need to be careful.
+                ((CSPDirector)getDirector()).actorUnblocked();
+            }
+            _branchesBlocked--;
+        }
+    }
+
+    /** Determine which branch suceeds in rendezvousing. This method is 
+     *  central to nondeterministic rendezvous. It is passed in an array
+     *  of branches, each element of which represents one of the 
+     *  conditional rendezvous branches. If the entry in the array  is 
+     *  null, this means that the guard preceeding the communication 
+     *  command was false. It returns the id of the successful branch, 
+     *  or -1 if all of the entries in the array are null.
+     *  <p>
+     *  If more than one entries in the array are non-null, a thread 
+     *  is created and started for each of the non-null branches. 
+     *  These threads each try to rendezvous until one succeeds. After
+     *  a thread succeeds the other threads are killed, and the id of 
+     *  the successful branch is returned.
+     *  <p>
+     *  If exactly one of the entries in the arry is non-null, then 
+     *  the communication is perfromed direclt and the id of this branch 
+     *  is returned.
      *  @param branches The set of conditional branches involved.
-     *  @return The ID of the successful branch.
+     *  @return The ID of the successful branch, or -1 if all of the 
+     *   entries in the branch array are null.
      */
     public int chooseBranch(ConditionalBranch[] branches) {
         try {
@@ -207,66 +261,109 @@ public class CSPActor extends AtomicActor {
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
-                //start the branches
-                int priority = Thread.currentThread().getPriority() -1;
-                _branchesActive = 0;
+                // Create the threads for the branches.
                 _threadList = new LinkedList();
+                ConditionalBranch onlyBranch = null;
                 for (int i = 0; i< branches.length; i++) {
+                    // If an entry in the array is null it means the guard 
+                    // preceeding the conditional communication was false.
                     if (branches[i] != null) {
-                        // start a thread with this branch
-                        Thread thread = new Thread((Runnable)branches[i]);
-                        _threadList.insertFirst(thread);
-                        thread.setPriority(priority);
+                        // Create a thread for this branch
+                        Nameable act = (Nameable)branches[i].getParent();
+                        String name = act.getName() + branches[i].getID();
+                        Thread t = new Thread((Runnable)branches[i], name);
+                        _threadList.insertFirst(t);
+                        onlyBranch = branches[i];
+                    }
+                }
+            
+                // Three cases: 1) No guards were true so return -1
+                // 2) Only one guard was true so perform the rendezvous 
+                // directly, 3) More than one guard was true, so start 
+                // the thread for each branch and wait for one of them 
+                // to rendezvous.
+                int num = _threadList.size();
+
+                if (num == 0) {
+                    // The guards preceeding all the conditional 
+                    // communications were false, so no branches to create.
+                    System.out.println("No branches to create, returning");
+                    return _successfulBranch; // will be -1
+                } else if (num == 1) {
+                    // Only one guard was true, so perform simple rendezvous.
+                    System.out.println("Only one branch to create...\n");
+                    if (onlyBranch instanceof ConditionalSend) {
+                        Token t = ((ConditionalSend)onlyBranch)._token;
+                        onlyBranch.getReceiver().put(t);
+                        return onlyBranch.getID();
+                    } else {
+                        // branch is a ConditionalReceive
+                        _token = onlyBranch.getReceiver().get();
+                        return onlyBranch.getID();
+                    }
+                } else {
+                    // Have a proper conditional communication.
+                    // Start the threads for each branch.
+                    Enumeration threads = _threadList.elements();
+                    while (threads.hasMoreElements()) {
+                        Thread thread = (Thread)threads.nextElement();
                         thread.start();
                         _branchesActive++;
                     }
-                }
-                if (_branchesActive == 0) {
-                    //FIXME: this test should go into the actor, or 
-                    // should we return a flag?
-                    System.out.println("No branches to create, returning");
-                }
-                // FIXME: we could perhaps get a performance gain by 
-                // testing if only one branch was started here?
-  
-                // wait for a branch to succeed
-                while ((_successfulBranch == -1) && (_branchesActive > 0)) {
-                    // FIXME: is it possible to have -1 active Branches?
-                    _getInternalLock().wait();
-                }
-
-                // Now terminate non-successful branches
-                for (int i = 0; i<branches.length; i++) {
-                    // if a branch is null, indicates boolean
-                    // preceding communication was false.
-                    if ( (i!= _successfulBranch) && (branches[i] != null) ) {
-                        // to terminate a branch, need to set flag, acquire
-                        // lock on receiver & wake it up
-                        Receiver rec = branches[i].getReceiver();
-                        synchronized(rec) {
-                            branches[i].setAlive(false);
-                            rec.notifyAll();
-                        }
+                    _branchesStarted = _branchesActive;
+                    System.out.println(_branchesStarted + " branches created..\n");
+                    // wait for a branch to succeed
+                    while ((_successfulBranch == -1) && 
+                            (_branchesActive > 0)) {
+                        _getInternalLock().wait();
                     }
                 }
-
-                // when there are no more active branches, branchFailed should
-                // issue a notifyAll on the internalLock
+            }
+            // If get to here have more than one conditional branch.
+            System.out.println("Now terminating non successful branches...");
+            
+            LinkedList tmp = new LinkedList();
+            
+            // Now terminate non-successful branches
+            for (int i = 0; i < branches.length; i++) {
+                // if a branch is null, indicates boolean
+                // preceding communication was false.
+                if ( (i!= _successfulBranch) && (branches[i] != null) ) {
+                    // to terminate a branch, need to set flag 
+                    // on receiver & wake it up
+                    Receiver rec = branches[i].getReceiver();
+                    tmp.insertFirst(rec);
+                    branches[i].setAlive(false);
+                }
+            }
+            // Now wake up all the receivers.
+            NotifyThread obj = new NotifyThread(tmp);
+            synchronized(obj) {
+                (new Thread(obj)).start();
+                obj.wait();
+            }
+            // when there are no more active branches, branchFailed
+            // should issue a notifyAll on the internalLock
+            synchronized(_getInternalLock()) {
                 while (_branchesActive != 0) {
                     _getInternalLock().wait();
                 }
                 // counter indicating # active branches, should be zero
                 if (_branchesActive != 0) {
-                    System.out.println("Error: exiting chooseBranch while still active branches!");
+                    throw new InvalidStateException(getName() +
+                    ": chooseBranch() is exiting with branches" +
+                    " still active.");
                 }
             }
         } catch (InterruptedException ex) {
-            System.out.println(getName() + " interrupted in chooseBranch.");
+            // FIXME: what should happen here?
+            throw new TerminateProcessException(this, "CSPActor.chooseBranch" +
+            " interrupted.");
         }
         if (_successfulBranch == -1) {
             // Conditional construct was ended prematurely
-            String msg = "CSPActor: exiting conditional branching due to";
-            throw new TerminateProcessException(this, msg + " termination");
+            throw new TerminateProcessException(this, "CSPActor: exiting " +
+            "conditional branching due to TerminateProcessException.");
         }
         _threadList = null;
         return _successfulBranch;
@@ -288,6 +385,7 @@ public class CSPActor extends AtomicActor {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CSPActor newobj = (CSPActor)super.clone(ws);
         newobj._branchesActive = 0;
+        newobj._branchesBlocked = 0;
 	newobj._branchTrying = -1;
         newobj._internalLock = new Object();
         newobj._successfulBranch = -1;
@@ -332,7 +430,7 @@ public class CSPActor extends AtomicActor {
     /** Release the calling branches status as the first branch to
      *  try to rendezvous. The branch was obviously not able to complete
      *  the rendezvous because the other side of the rendezvous was also
-     *  conditional and the other side could not claim the status of
+     *  conditional and could not claim the status of
      *  being the first branch. Thus allow another branch the chance
      *  to proceed with a rendezvous.
      *  @param branchNumber The ID assigned to the branch upon creation.
@@ -345,10 +443,13 @@ public class CSPActor extends AtomicActor {
                 return;
             }
         }
-        System.out.println("Error: branch releasing first without possessing it! :" + _branchTrying + " & " + branchNumber);
+        throw new InvalidStateException(getName() + ": Error: branch " +
+               "releasing first without possessing it! :" + _branchTrying + 
+               " & " + branchNumber);
     }
 
-    /** Terminate any threads created by this actor.   
+    /** Terminate abruptly any threads created by this actor. Note that 
+     *  this method does not allow the threads to terminate gracefully.
      */   
     public void terminate() {
         synchronized(_getInternalLock()) {
@@ -390,21 +491,31 @@ public class CSPActor extends AtomicActor {
     private void _resetConditionalState() {
         //System.out.println("reseting conditional state in: " +getName());
         synchronized(_getInternalLock()) {
-            _branchTrying = -1;
-            _successfulBranch = -1;
             _branchesActive = 0;
+            _branchesBlocked = 0;
+            _branchesStarted = 0;
+            _branchTrying = -1;
+            _successfulBranch = -1;         
         }
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
+    // Contains the number of conditional branches that are still alive.
+    private int _branchesActive = 0;
+
+    // Contains the number of conditional branches that are blocked 
+    // trying to rendezvous.
+    private int _branchesBlocked = 0;
+
+    // Contains the number of branches that were actually started for 
+    // the most recent conditional rendezvous.
+    private int _branchesStarted = 0;
+
     // Contains the ID of the branch currently trying to rendezvous. It
     // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
-
-    // Contains the umber of conditional branches that are still alive.
-    private int _branchesActive = 0;
 
     // This lock is only used internally by the actor. It is used to
     // avoid having to synchronize on the actor itself. The chooseBranch

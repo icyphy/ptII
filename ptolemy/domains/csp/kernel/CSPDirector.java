@@ -34,10 +34,7 @@ package ptolemy.domains.csp.kernel;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-//import ptolemy.kernel.event.*;
 import collections.LinkedList;
-//import ptolemy.data.*;
-
 import java.util.Enumeration;
 
 
@@ -103,7 +100,7 @@ ignore delay() calls, i.e have them return immediately.
 @see ptolemy.actor.Director;
 
 */
-public class CSPDirector extends Director {
+public class CSPDirector extends ProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -144,14 +141,10 @@ public class CSPDirector extends Director {
      *  count of number of blocked actors.
      */
     public synchronized void actorBlocked() {
-        try {
-            workspace().getReadAccess();
-            _actorsBlocked++;
-            //System.out.println("Actor blocked, count is: " + _actorsBlocked);
-            _handleDeadlock();
-        } finally {
-            workspace().doneReading();
-        }
+        _actorsBlocked++;
+        System.out.println(getName() + ": Actor blocked, count is: " +
+                _actorsBlocked);
+        _checkForDeadlock();
     }
 
     /** Called by a CSPActor when it wants to delay. This method 
@@ -170,7 +163,7 @@ public class CSPDirector extends Director {
             _delayedUntilTime(resumeTime);
         }
 
-        // FIXME: where to call handleDeadlock()?
+        // FIXME: where to call checkForDeadlock()?
         // Delay the actor calling this method until appropriate time.
         try {
             synchronized(_delayLock) {
@@ -192,42 +185,12 @@ public class CSPDirector extends Director {
         return;
     }
 
-    /** Update the count of active actor processes each time a new actor is
-     *  fired up.
-     */
-    public synchronized void actorStarted() {
-        // No need to synchronize this because the action is atomic
-        // and synchronization would just ensure that no write action
-        // is in progress.
-        workspace().getReadAccess();
-        _actorsAlive++;
-        workspace().doneReading();
-    }
-
-    /** Checks for deadlock each time an Actor stops(finishes). Also updates
-     *  count of number of actors still alive.
-     */
-    public synchronized void actorStopped() {
-        try {
-            workspace().getReadAccess();
-            _actorsAlive--;
-            System.out.println("actor stopped, still alive:" + _actorsAlive);
-            _handleDeadlock();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** A actor has unblocked, update count of blocked actors.
      */
-    public synchronized void actorUnblocked() {
-        // No need to synchronize this because the action is atomic
-        // and synchronization would just ensure that no write action
-        // is in progress.
-        workspace().getReadAccess();
+    public synchronized void actorUnblocked() {     
         _actorsBlocked--;
-        //System.out.println("Actor unblocked, count is: " + _actorsBlocked);
-        workspace().doneReading();
+        System.out.println(getName() + ": Actor unblocked, count is: " + 
+                _actorsBlocked);
     }
 
     /** Clone the director into the specified workspace. The new object is
@@ -243,10 +206,9 @@ public class CSPDirector extends Director {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CSPDirector newobj = (CSPDirector)super.clone(ws);
-        _actorsAlive = 0;
-	_actorsBlocked = 0;
-	_actorsDelayed = 0;
-        _simulationFinished = false;
+        newobj._actorsBlocked = 0;
+	newobj._actorsDelayed = 0;
+        newobj._simulationFinished = false;
         return newobj;
     }
 
@@ -255,7 +217,6 @@ public class CSPDirector extends Director {
     *  actors as these actors get executed in a separate thread.
     */
     public void fire() throws IllegalActionException {
-        //System.out.println("Ha, ha!");
     }
 
     /** The current simulation time.
@@ -263,40 +224,6 @@ public class CSPDirector extends Director {
      */
     public double getTime() {
         return _time;
-    }
-
-    /** Create the execution threads that will control the execution 
-     *  of each actor controlled by this director. This method should 
-     *  be invoked once per execution.
-     *  <p>
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be. Note that this method cannot be write synchronized
-     *  as this would then preclude having csp in pn, pn in csp pn in pn etc...
-     *  
-     *  @exception IllegalActionException If the receivers could not 
-     *   be created for any of the actors under the control of this director.
-     */
-    public synchronized void initialize() throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement(); 
-                actor.createReceivers();
-                String name = ((NamedObj)actor).getName();
-                PNThread pnt = new PNThread(actor, name);
-                _threadList.insertFirst(pnt);
-            }
-            Enumeration threads = _threadList.elements();
-            while (threads.hasMoreElements()) {
-                PNThread pnt = (PNThread)threads.nextElement();
-                System.out.println("Starting thread for: " +
-                      pnt.getName());
-                actorStarted();
-                pnt.start();
-            }
-            System.out.println("CSPDirector: have started actor threads.");
-        }
     }
     
     /** Return a new CSPReceiver compatible with this director.
@@ -310,23 +237,29 @@ public class CSPDirector extends Director {
     public boolean postfire() {
         try {
             synchronized(_iterationLock) {
-                _iterationLock.wait();
+                while (!_iterationFinished) {
+                    // simulation is not yet finished so must wait.
+                    _iterationLock.wait();
+                }
                 // FIXME: what other checks should go in here?
              }
         } catch (InterruptedException ex) {
             System.out.println("CSPDirector.postfire: interrupted while" +
                     " waiting for iteration to finish.");
         }
-        return true;
+        // FIXME: do we always only run for one iteration?;
+        _iterationFinished = false;
+        
+        return false;
     }
 
     /** FIXME!
     */
-    public boolean prefire() {
-        // FIXME: should call handledeadlock here to see if still 
+    public boolean prefire() throws IllegalActionException  {
+        // FIXME: should call checkFordeadlock here to see if still 
         // deadlocked after transfering tokens from ports of composite 
         // actor to internal actors.
-        return true;
+        return super.prefire();
     }
 
     /** Set the current simulation time.
@@ -334,27 +267,6 @@ public class CSPDirector extends Director {
      */
     public void setTime(double newTime) {
         _time = newTime;
-    }
-
-    /** Terminate all threads under control of this director immediately.
-     *  This abrupt termination will not allow normal cleanup actions 
-     *  to be performed.
-     *
-     *  FIXME: for now call Thread.stop() but should change to use 
-     *  Thread.destroy() when it is eventually implemented.
-     */
-    public synchronized void terminate() {
-        // First need to invoke terminate on all actors under the 
-        // control of this dierector.
-        super.terminate();
-        // Now stop any threads created by this director.
-        Enumeration threads = _threadList.elements();
-        while (threads.hasMoreElements()) {
-            Thread next = (Thread)threads.nextElement();
-            if (next.isAlive()) {
-                next.stop();
-            }
-        }
     }
 
     /** End the simulation. A flag is set in all the receivers, and 
@@ -372,63 +284,16 @@ public class CSPDirector extends Director {
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
+     *  @exception IllegalActionExcepion if a method accessing the topology
+     *   throws it.
      */
-    public synchronized void wrapup() {
-        System.out.println("CSPDirector: about to end the simulation");
-        if (_simulationFinished) {
-            // simulation has already been terminated!
-            return;
+    public void wrapup() throws IllegalActionException {
+        System.out.println(Thread.currentThread().getName() +
+                ": CSPDirector: about to end the simulation");
+        synchronized(this) {
+            _simulationFinished = true;
         }
-        _simulationFinished = true;
-
-        CompositeActor cont = (CompositeActor)getContainer();
-        Enumeration allMyActors = cont.deepGetEntities();
-        
-        while (allMyActors.hasMoreElements()) {
-            try {
-                Actor actor = (Actor)allMyActors.nextElement();
-                Enumeration actorPorts = actor.inputPorts();
-                CSPReceiver nextRec;
-                while (actorPorts.hasMoreElements()) {
-                    IOPort port = (IOPort)actorPorts.nextElement();
-                    // Terminating the ports and hence the star.
-                    Receiver[][] receivers = port.getReceivers();
-                    for (int i=0; i<receivers.length; i++) {
-                        for (int j=0; j<receivers[i].length; j++) {
-                            nextRec = (CSPReceiver)receivers[i][j];
-                            nextRec.setSimulationFinished();
-                            synchronized(nextRec) {
-                                nextRec.notifyAll();
-                            }
-                        }
-                    }
-                }
-                // FIXME: is terminating all receivers on non-atomic 
-                // output ports enough?
-                if (!((ComponentEntity)actor).isAtomic()) {
-                    actorPorts = actor.outputPorts();
-                    while (actorPorts.hasMoreElements()) {
-                        IOPort port = (IOPort)actorPorts.nextElement();
-                        // Terminating the ports and hence the star
-                               Receiver[][] receivers = port.getReceivers();
-                        for (int i=0; i<receivers.length; i++) {
-                            for (int j=0; j<receivers[i].length; j++) {
-                                nextRec = (CSPReceiver)receivers[i][j];
-                                nextRec.setSimulationFinished();
-                                synchronized(nextRec) {
-                                    nextRec.notifyAll();
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                //FIXME: should not catch general exception
-                System.out.println("CSPDirector: unable to terminate " +
-                        "all actors because: " + ex.getClass().getName() +
-                        ", message: " + ex.getMessage());
-            }
-        }
+        super.wrapup();      
     }
   
     ///////////////////////////////////////////////////////////////////
@@ -451,11 +316,13 @@ public class CSPDirector extends Director {
 
     /** FIXME: Needs a lot of polishing...
     */
-    private synchronized void _handleDeadlock() {
+    protected synchronized void _checkForDeadlock() {
         if (_simulationFinished) {
             return;
         }
-        if (_actorsAlive == (_actorsBlocked + _actorsDelayed)) {
+        System.out.println("_checkForDeadlock: Active = " + _actorsActive + 
+                ", blocked = " + _actorsBlocked);
+        if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
             if (_actorsDelayed > 0) {
                 // Artificial deadlock.
                 double nextTime = _getNextTime();
@@ -466,22 +333,16 @@ public class CSPDirector extends Director {
             } else if (false) {
                 // FIXME: handle immediate mutations here.
             } else {
-                // Real deadlock
+                System.out.println("REAL DEADLOCK!!");
+                // Real deadlock. This marks the end of an iteration so 
+                // allow the postfire method to continue by issueing 
+                // a notifyAll of the delayLock.
                 // FIXME: this could be todied up a bit.
-                if (getContainer().getContainer() != null) {
-                    // End of an iteration one level up, so allow 
-                    // postfire to return.
-                    synchronized(_iterationLock) {
-                        _iterationLock.notifyAll();
-                    }
-                } else {
-                    // This director controls the top level composite actor, 
-                    // and the deadlock is real, so end the simulation.
-                    synchronized(_iterationLock) {
-                        _iterationLock.notifyAll();
-                    }
-                    wrapup();
+                synchronized(_iterationLock) {
+                    _iterationFinished = true;
+                    _iterationLock.notifyAll();
                 }
+                System.out.println("returning from _checkForDeadlock");
             }
         }
     }
@@ -490,8 +351,9 @@ public class CSPDirector extends Director {
     ////                         private variables                 ////
 
     private int _actorsBlocked = 0;
-    private int _actorsAlive = 0;
     private int _actorsDelayed = 0;
+
+    private boolean _iterationFinished = false;
 
     // the current time of this simulation.
     private double _time = 0;
@@ -508,8 +370,4 @@ public class CSPDirector extends Director {
 
     // Set to true when the simulation is terminated
     private boolean _simulationFinished = false;
-
-    // The threads under started by this director.
-    private LinkedList _threadList = new LinkedList();
-
 }
