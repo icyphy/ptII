@@ -138,8 +138,11 @@ public class SDFScheduler extends Scheduler {
      *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
+     *  @exception IllegalActionException If the TokenConsumptionRate
+     *   parameter has an invalid expression.
      */
-    protected int _getTokenConsumptionRate(IOPort p) {
+    protected int _getTokenConsumptionRate(IOPort p)
+            throws IllegalActionException {
         Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
         if(param == null) {
             if(p.isInput())
@@ -156,8 +159,11 @@ public class SDFScheduler extends Scheduler {
      * by the port's "TokenInitProduction" parameter.   If the parameter
      * does not exist, then assume the actor is zero-delay and return
      * a value of zero.
+     * @exception IllegalActionException If the TokenInitProduction
+     *  parameter has an invalid expression.
      */
-    protected int _getTokenInitProduction(IOPort p) {
+    protected int _getTokenInitProduction(IOPort p)
+            throws IllegalActionException {
         Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
         if(param == null)
             return 0;
@@ -167,11 +173,14 @@ public class SDFScheduler extends Scheduler {
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor during each firing,
      *  as supplied by
-     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
+     *  by the port's "TokenProductionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
+     *  @exception IllegalActionException If the TokenProductionRate
+     *   parameter has an invalid expression.
      */
-    protected int _getTokenProductionRate(IOPort p) {
+    protected int _getTokenProductionRate(IOPort p)
+            throws IllegalActionException {
         Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
         if(param == null) {
             if(p.isOutput())
@@ -238,7 +247,13 @@ public class SDFScheduler extends Scheduler {
         }
 
         // First solve the balance equations
-        LLMap firings = _solveBalanceEquations(AllActors.elements());
+        LLMap firings = null;
+        try {
+            firings = _solveBalanceEquations(AllActors.elements());
+        } catch (IllegalActionException ex) {
+            throw new NotSchedulableException(this, "Check expression of "
+                    + "rate and initial production parameters.");
+        }
         firings = _normalizeFirings(firings);
 
         _setFiringVector(firings);
@@ -254,7 +269,12 @@ public class SDFScheduler extends Scheduler {
         _debug("Firing Vector:");
         _debug(firings.toString());
 
-        _setContainerRates();
+        try {
+            _setContainerRates();
+        } catch (IllegalActionException ex) {
+            throw new NotSchedulableException(this, "Check expression of "
+                    + "rate and initial production parameters.");
+        }
 
         setValid(true);
 
@@ -488,13 +508,14 @@ public class SDFScheduler extends Scheduler {
      *  set, but have not been propagated onwards.
      *  @exception NotSchedulableException If the CompositeActor is not
      *  schedulable.
+     *  @exception IllegalActionException If any called method throws it.
      */
     private void _propagateInputPort(IOPort currentPort,
             LLMap firings,
             CircularList remainingActors,
             CircularList pendingActors)
 
-            throws NotSchedulableException {
+            throws NotSchedulableException, IllegalActionException {
 
         ComponentEntity currentActor =
             (ComponentEntity) currentPort.getContainer();
@@ -593,12 +614,13 @@ public class SDFScheduler extends Scheduler {
      *  set, but have not been propagated onwards.
      *  @exception NotSchedulableException If the CompositeActor is not
      *  schedulable.
+     *  @exception IllegalActionException If any called method throws it.
      */
     private void _propagateOutputPort(IOPort currentPort,
             LLMap firings,
             CircularList remainingActors,
             CircularList pendingActors)
-            throws NotSchedulableException {
+            throws NotSchedulableException, IllegalActionException {
 
         ComponentEntity currentActor =
             (ComponentEntity) currentPort.getContainer();
@@ -893,9 +915,10 @@ public class SDFScheduler extends Scheduler {
     /** Push the rates calculated for this system up to the contained Actor.
      *  This allows the container to be properly scheduled if it is
      *  in a hierarchical system
+     *  @exception IllegalActionException If any called method throws it.
      */
     private void _setContainerRates()
-            throws NotSchedulableException {
+            throws NotSchedulableException, IllegalActionException {
         Director director = (Director) getContainer();
         if(director == null)
             throw new NotSchedulableException("Scheduler must " +
@@ -1167,9 +1190,10 @@ public class SDFScheduler extends Scheduler {
      *  @exception NotSchedulableException If the graph is not consistent
      *  under the synchronous dataflow model.
      *  @exception NotSchedulableException If the graph is not connected.
+     *  @exception IllegalActionException If any called method throws it.
      */
     private LLMap _solveBalanceEquations(Enumeration Actors)
-            throws NotSchedulableException {
+            throws NotSchedulableException, IllegalActionException {
 
         // firings contains the LLMap that we will return.
         // It gets populated with the fraction firing ratios for
