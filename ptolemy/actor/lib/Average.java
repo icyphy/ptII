@@ -76,8 +76,10 @@ public class Average extends Transformer {
      *  base class and then sets the ports.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         Average newobj = (Average)super.clone(ws);
         newobj.output.setTypeSameAs(newobj.input);
         return newobj;

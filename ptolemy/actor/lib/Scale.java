@@ -99,8 +99,10 @@ public class Scale extends Transformer {
      *  base class and then sets the type constraints.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         Scale newobj = (Scale)super.clone(ws);
         newobj.gain = (Parameter)newobj.getAttribute("gain");
 	newobj.output.setTypeAtLeast(newobj.input);
