@@ -191,12 +191,15 @@ public class StringUtilities {
         String property = null;
         try {
             property = System.getProperty(propertyName);
-        } catch (SecurityException security) {
+        } catch (SecurityException ex) {
             if (!propertyName.equals("ptolemy.ptII.dir")) {
                 // Constants.java depends on this when running with 
                 // -sandbox.
-                throw new SecurityException("Could not find '"
-                        + propertyName + "' System property", security);
+                SecurityException security = 
+                    new SecurityException("Could not find '"
+                        + propertyName + "' System property");
+                security.initCause(ex);
+                throw security;
             }
         }
         if (propertyName.equals("user.dir")) {
