@@ -1,6 +1,6 @@
 # Tests for the NoSuchItemException class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -96,3 +96,33 @@ test NoSuchItemException-5.2 {Create a NoSuchItemException with a NamedObj \
     list [$pe getMessage]
 } {{Detail String
   in .My NamedObj}}
+
+
+######################################################################
+####
+#
+test NoSuchItemException-3.5 {NoSuchItemException with a nameable \
+	cause and no message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "myN1"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.NoSuchItemException \
+	    $n1 $cause [java::null]]
+    list [$pe getMessage]
+} {{  in .myN1
+Because:
+Cause Exception}}
+
+######################################################################
+####
+#
+test NoSuchItemException-3.6 {NoSuchItemException with a nameable \
+	cause and a detail message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "myN1"]
+    set cause [java::new Exception "Cause Exception"]
+    set pe [java::new ptolemy.kernel.util.NoSuchItemException \
+	    $n1 $cause "Detail Message"]
+    list [$pe getMessage]
+} {{Detail Message
+  in .myN1
+Because:
+Cause Exception}}
