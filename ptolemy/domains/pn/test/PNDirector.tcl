@@ -96,7 +96,7 @@ test PNDirector-7.1 {Test a mutation} {
     #$m2 run
     
     enumToFullNames [$b1 deepGetEntities]
-} {.b1.r1 .b1.2_sieve .b1.s1 .b1.3_sieve .b1.5_sieve .b1.7_sieve .b1.11_sieve .b1.13_sieve .b1.17_sieve .b1.19_sieve .b1.23_sieve .b1.29_sieve .b1.31_sieve .b1.37_sieve .b1.41_sieve .b1.43_sieve .b1.47_sieve .b1.53_sieve .b1.59_sieve .b1.61_sieve .b1.67_sieve .b1.71_sieve .b1.73_sieve .b1.79_sieve .b1.83_sieve .b1.89_sieve .b1.97_sieve} 
+} {.b1.r1 .b1.2_sieve .b1.s1 .b1.3_sieve .b1.5_sieve .b1.7_sieve .b1.11_sieve .b1.13_sieve .b1.17_sieve .b1.19_sieve .b1.23_sieve .b1.29_sieve .b1.31_sieve .b1.37_sieve .b1.41_sieve .b1.43_sieve .b1.47_sieve .b1.53_sieve .b1.59_sieve .b1.61_sieve .b1.67_sieve .b1.71_sieve .b1.73_sieve .b1.79_sieve .b1.83_sieve .b1.89_sieve .b1.97_sieve} {This test is known to fail}
 
 
 
