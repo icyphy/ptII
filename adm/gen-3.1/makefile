@@ -1062,7 +1062,8 @@ $(REMOTE6DONEFILE):
 
 
 # If the remote done files are present, concatenate the logs and send email
-# Note that currently we are not running remote 1 and remote2
+# Put remote2.log into ptIInightly_txt, avoid remote4.log and
+# remote5.log, they are huge
 remotealldone:
 	if [ -f $(REMOTE2DONEFILE) \
 		-a -f $(REMOTE4DONEFILE) \
@@ -1071,8 +1072,7 @@ remotealldone:
 			]; then \
 		date; \
 		echo "Remote processes finished"; \
-		ls -l $(REMOTE2LOG) $(REMOTE4LOG) $(REMOTE5LOG) \
-			$(REMOTE6LOG); \
+		cat $(REMOTE2LOG) >> $(PTIINIGHTLY_TXT); \
 		/bin/sh $(PTIIADM)/bin/ptIInightly-mail cxh ; \
 		/bin/sh $(PTIIADM)/bin/ptIIcodegen-mail $(EMAILTO) ; \
 	else \
