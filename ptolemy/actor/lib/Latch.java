@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) Should support multiports
 */
 
 package ptolemy.actor.lib;
@@ -49,6 +49,10 @@ of the term since it is missing a trigger.  This actor will not
 be of much use in the DE domain, see the DE Sampler actor for
 an alternative.  This actor is useful in domains with non-strict semantics
 like SR and Giotto.
+
+<p>FIXME: This actor should be modified to handle multiports, but under SR
+a multiport version of this actor hangs in 
+$PTII/ptolemy/actor/lib/test/auto/Latch.xml
 
 @see ptolemy.domains.de.lib.Sampler
 @author Paul Whitaker, Christopher Hylands
