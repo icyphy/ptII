@@ -79,7 +79,7 @@ is empty, and attempting
 to execute the actor without setting it triggers an exception.
 <p>
 The expression language understood by this actor is the same as
-<a href="../../../../expression.htm">that used to set any parameter value</a>,
+<a href="../../../../expressions.htm">that used to set any parameter value</a>,
 with the exception that
 the expressions evaluated by this actor can refer to the values
 of inputs, and to the current
