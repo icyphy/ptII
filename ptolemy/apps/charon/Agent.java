@@ -55,11 +55,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.Relation;
-import ptolemy.vergil.fsm.modal.ModalModel;
-import ptolemy.vergil.fsm.modal.ModalPort;
-import ptolemy.vergil.fsm.modal.ModalController;
-import ptolemy.vergil.fsm.modal.Refinement;
-import ptolemy.vergil.fsm.modal.RefinementPort;
+import ptolemy.domains.fsm.modal.ModalModel;
+import ptolemy.domains.fsm.modal.ModalPort;
+import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.fsm.modal.Refinement;
+import ptolemy.domains.fsm.modal.RefinementPort;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -1114,3 +1114,4 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
   private LinkedList _subAgents = new LinkedList();
   private LinkedList _connections = new LinkedList();
   private LinkedList _transitions = new LinkedList();
+}

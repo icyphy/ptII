@@ -303,3 +303,4 @@ public class CharonProcessor {
   private Writer _writer;
   private String _inputFileName;
   private String _outputFileName;
+}
