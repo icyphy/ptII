@@ -97,7 +97,7 @@
         </port>
     </entity>
     <entity name="Test14" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0905, 0.156396, 0.2122421, 0.2586158, 0.2960435, 0.3250521, 0.3461695, 0.3599247, 0.3668472, 0.3679356}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0523958, 0.131928, 0.221415, 0.3202687, 0.4279474, 0.5439111, 0.667622, 0.7985455, 0.9361522, 1.0799195, 1.2293357, 1.383904, 1.424792}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
@@ -109,7 +109,7 @@
         </port>
     </entity>
     <entity name="Test15" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1856667, 0.328518, 0.4572899, 0.5726921, 0.6753264, 0.765796, 0.8447055, 0.9126618, 0.9702734, 1.0000743}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0939167, 0.2049071, 0.2989235, 0.3765206, 0.4383279, 0.4849744, 0.517089, 0.5352987, 0.5402281, 0.5324975, 0.5127207, 0.4815008, 0.4715996}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
