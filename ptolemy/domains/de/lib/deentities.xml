@@ -1,0 +1,38 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
+
+<class name="de" extends="ptolemy.actor.TypedCompositeActor">
+<doc>DE actors</doc>
+
+<entity name="Delay" class="ptolemy.domains.de.lib.Delay">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.integral</configure>
+</rendition>
+</entity>
+
+<entity name="Server" class="ptolemy.domains.de.lib.Server">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+<entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+</class>
+
