@@ -962,6 +962,26 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Return the number of contained entities, not including
+     *  class definitions.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of entities.
+     *  @deprecated Use numberOfEntities
+     *  @see #numberOfEntities()
+     */
+    public int numEntities() {
+        return numberOfEntities();
+    }
+
+    /** Return the number of contained relations.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of relations.
+     *  @deprecated Use numberOfRelations.
+     */
+    public int numRelations() {
+        return numberOfRelations();
+    }
+
     /** Return the number of contained class definitions.
      *  This method is read-synchronized on the workspace.
      *  @return The number of class definitions.
@@ -1002,26 +1022,6 @@ public class CompositeEntity extends ComponentEntity {
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Return the number of contained entities, not including
-     *  class definitions.
-     *  This method is read-synchronized on the workspace.
-     *  @return The number of entities.
-     *  @deprecated Use numberOfEntities
-     *  @see #numberOfEntities()
-     */
-    public int numEntities() {
-        return numberOfEntities();
-    }
-
-    /** Return the number of contained relations.
-     *  This method is read-synchronized on the workspace.
-     *  @return The number of relations.
-     *  @deprecated Use numberOfRelations.
-     */
-    public int numRelations() {
-        return numberOfRelations();
     }
 
     /** List the relations contained by this entity.
@@ -1222,6 +1222,39 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.append(relation);
     }
 
+    /** Adjust the deferral relationships in the specified clone.
+     *  Specifically, if this object defers to something that is
+     *  deeply contained by the specified prototype, then find
+     *  the corresponding object in the specified clone and defer
+     *  to it instead. This method also calls the same method
+     *  on all contained class definitions and
+     *  ordinary entities.
+     *  @param prototype The object that was cloned.
+     *  @param clone The clone.
+     *  @exception IllegalActionException If the clone does not contain
+     *   a corresponding object to defer to.
+     */
+    protected void _adjustDeferrals(
+            CompositeEntity prototype, CompositeEntity clone) {
+        super._adjustDeferrals(prototype, clone);
+
+        // Adjust the contained class definitions.
+        Iterator classes = classDefinitionList().iterator();
+        while (classes.hasNext()) {
+            ComponentEntity classDefinition
+                    = (ComponentEntity)classes.next();
+            classDefinition._adjustDeferrals(prototype, clone);
+        }
+
+        // Clone the contained entities.
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity
+                    = (ComponentEntity)entities.next();
+            entity._adjustDeferrals(prototype, clone);
+        }
+    }
+
     /** Return an iterator over contained objects. In this class,
      *  this is an iterator over attributes, ports, entities, and
      *  relations, in that order.
@@ -1230,17 +1263,6 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected Iterator _containedObjectsIterator() {
         return new ContainedObjectsIterator();
-    }
-
-    /** Notify this entity that the given entity has been added inside it.
-     *  This base class does nothing.   Derived classes may override it to
-     *  do something useful in responds to the notification.
-     *  It is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @param entity The contained entity.
-     */
-    protected void _finishedAddEntity(ComponentEntity entity) {
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -1364,6 +1386,17 @@ public class CompositeEntity extends ComponentEntity {
         output.write(exportLinks(depth, null));
     }
 
+    /** Notify this entity that the given entity has been added inside it.
+     *  This base class does nothing.   Derived classes may override it to
+     *  do something useful in responds to the notification.
+     *  It is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @param entity The contained entity.
+     */
+    protected void _finishedAddEntity(ComponentEntity entity) {
+    }
+
     /** Return the depth of the deferral that defines the specified object.
      *  This overrides the base class so that if this object defers to
      *  another that defines the defined object, and the exported
@@ -1450,39 +1483,6 @@ public class CompositeEntity extends ComponentEntity {
                 "</svg>\n");
     }
 
-    /** Adjust the deferral relationships in the specified clone.
-     *  Specifically, if this object defers to something that is
-     *  deeply contained by the specified prototype, then find
-     *  the corresponding object in the specified clone and defer
-     *  to it instead. This method also calls the same method
-     *  on all contained class definitions and
-     *  ordinary entities.
-     *  @param prototype The object that was cloned.
-     *  @param clone The clone.
-     *  @exception IllegalActionException If the clone does not contain
-     *   a corresponding object to defer to.
-     */
-    protected void _adjustDeferrals(
-            CompositeEntity prototype, CompositeEntity clone) {
-        super._adjustDeferrals(prototype, clone);
-
-        // Adjust the contained class definitions.
-        Iterator classes = classDefinitionList().iterator();
-        while (classes.hasNext()) {
-            ComponentEntity classDefinition
-                    = (ComponentEntity)classes.next();
-            classDefinition._adjustDeferrals(prototype, clone);
-        }
-
-        // Clone the contained entities.
-        Iterator entities = entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity
-                    = (ComponentEntity)entities.next();
-            entity._adjustDeferrals(prototype, clone);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1557,7 +1557,7 @@ public class CompositeEntity extends ComponentEntity {
                 _classListIterator = classDefinitionList().iterator();
             }
             if (_classListIterator.hasNext()) {
-                _lastElementWasClass= true;
+                _lastElementWasClass = true;
                 return _classListIterator.next();
             }
             if (_entityListIterator == null) {
@@ -1590,7 +1590,7 @@ public class CompositeEntity extends ComponentEntity {
         }
 
         private Iterator _classListIterator = null;
-        private boolean _lastElementWasClass= false;
+        private boolean _lastElementWasClass = false;
         private Iterator _entityListIterator = null;
         private boolean _lastElementWasEntity = false;
         private boolean _lastElementWasRelation = false;

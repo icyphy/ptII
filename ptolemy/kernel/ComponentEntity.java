@@ -154,7 +154,8 @@ public class ComponentEntity extends Entity {
      *   with adjusted deferral relationships.
      *  @exception CloneNotSupportedException If this prototype
      *   cannot be cloned.
-     *  @exception IllegalActionException If this object is not a class definition
+     *  @exception IllegalActionException If this object is not a
+     *   class definition
      *   or the proposed container is not acceptable.
      *  @exception NameDuplicationException If the name collides with
      *   an object already in the container.

@@ -598,8 +598,8 @@ public class Port extends NamedObj {
      *   or has the wrong class, or if the specified container is not
      *   an instance of Entity.
      */
-    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
-            throws InternalErrorException {
+    protected NamedObj _getHeritageObject(String relativeName,
+            NamedObj container) throws InternalErrorException {
         if (!(container instanceof Entity)) {
             throw new InternalErrorException(
                     "Expected "

@@ -315,16 +315,17 @@ public class Relation extends NamedObj {
      *   or has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
-            throws InternalErrorException {
+    protected NamedObj _getHeritageObject(String relativeName,
+            NamedObj container) throws InternalErrorException {
         if (!(container instanceof CompositeEntity)) {
             throw new InternalErrorException(
                     "Expected "
                     + container.getFullName()
-                    + " to be an instance of ptolemy.kernel.CompositeEntity, but it is "
-                    + container.getClass().getName());
+                    + " to be an instance of ptolemy.kernel.CompositeEntity, "
+                    + "but it is " + container.getClass().getName());
         }
-        Relation candidate = ((CompositeEntity)container).getRelation(relativeName);
+        Relation candidate =
+            ((CompositeEntity)container).getRelation(relativeName);
         if (!getClass().isInstance(candidate)) {
             throw new InternalErrorException(
                     "Expected "

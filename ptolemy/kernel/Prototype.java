@@ -171,8 +171,9 @@ public class Prototype extends NamedObj implements Instantiable {
      *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
      *  <p>
-     *  If this ojbect is not persistent, or if there is no MoML description
-     *  of this object, or if this object is a class instance, then write nothing.
+     *  If this object is not persistent, or if there is no MoML
+     *  description of this object, or if this object is a class
+     *  instance, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -250,6 +251,56 @@ public class Prototype extends NamedObj implements Instantiable {
         return _parent;
     }
 
+    /** Create an instance by cloning this prototype and then adjust
+     *  the deferral relationship between the the clone and its parent.
+     *  Specifically, the
+     *  clone defers its definition to this prototype, which is its
+     *  "parent." It inherits all the objects contained by this prototype.
+     *  <p>
+     *  The new object is not a class definition (it is by default an
+     *  "instance" rather than a "class").  To make it a class
+     *  definition (a "subclass"), call setClassDefinition(true).
+     *  <p>
+     *  In this base class, the container argument is ignored except that
+     *  it provides the workspace into which to clone this prototype. Derived
+     *  classes with setContainer() methods are responsible for overriding this
+     *  and calling setContainer().
+     *  @see #setClassDefinition(boolean)
+     *  @param container The container for the instance.
+     *  @param name The name for the clone.
+     *  @return A new instance that is a clone of this prototype
+     *   with adjusted deferral relationships.
+     *  @exception CloneNotSupportedException If this prototype
+     *   cannot be cloned.
+     *  @exception IllegalActionException If this object is not a
+     *   class definition or the proposed container is not acceptable.
+     *  @exception NameDuplicationException If the name collides with
+     *   an object already in the container.
+     */
+    public Instantiable instantiate(NamedObj container, String name)
+            throws CloneNotSupportedException,
+            IllegalActionException, NameDuplicationException {
+        if (!isClassDefinition()) {
+            throw new IllegalActionException(this,
+            "Cannot instantiate an object that is not a class definition");
+        }
+        // Use the workspace of the container, if there is one,
+        // or the workspace of this object, if there isn't.
+        Workspace workspace = workspace();
+        if (container != null) {
+            workspace = container.workspace();
+        }
+        Prototype clone = (Prototype)clone(workspace);
+        // Set the name before the container to not get
+        // spurious name conflicts.
+        clone.setName(name);
+        clone.setParent(this);
+        clone.setClassDefinition(false);
+        clone.setClassName(getFullName());
+
+        return clone;
+    }
+
     /** Return true if this object is a class definition, which means that
      *  it can be instantiated.
      *  @return True if this object is a class definition.
@@ -282,7 +333,7 @@ public class Prototype extends NamedObj implements Instantiable {
             // is an instance of Prototype.
             context = (Prototype)context.getContainer();
         }
-        // No deferrals encountered while moving up the hiearchy.
+        // No deferrals encountered while moving up the hierarchy.
         return result;
     }
 
@@ -328,7 +379,8 @@ public class Prototype extends NamedObj implements Instantiable {
                     // it is not sufficient to just remove this!
                     ListIterator references = deferredFromList.listIterator();
                     while (references.hasNext()) {
-                        WeakReference reference = (WeakReference)references.next();
+                        WeakReference reference =
+                            (WeakReference)references.next();
                         if (reference == null || reference.get() == this) {
                             references.remove();
                         }
@@ -346,56 +398,6 @@ public class Prototype extends NamedObj implements Instantiable {
         } finally {
             _workspace.doneWriting();
         }
-    }
-
-    /** Create an instance by cloning this prototype and then adjust
-     *  the deferral relationship between the the clone and its parent.
-     *  Specifically, the
-     *  clone defers its definition to this prototype, which is its
-     *  "parent." It inherits all the objects contained by this prototype.
-     *  <p>
-     *  The new object is not a class definition (it is by default an "instance"
-     *  rather than a "class").  To make it a class definition (a "subclass"),
-     *  call setClassDefinition(true).
-     *  <p>
-     *  In this base class, the container argument is ignored except that
-     *  it provides the workspace into which to clone this prototype. Derived
-     *  classes with setContainer() methods are responsible for overriding this
-     *  and calling setContainer().
-     *  @see #setClassDefinition(boolean)
-     *  @param container The container for the instance.
-     *  @param name The name for the clone.
-     *  @return A new instance that is a clone of this prototype
-     *   with adjusted deferral relationships.
-     *  @exception CloneNotSupportedException If this prototype
-     *   cannot be cloned.
-     *  @exception IllegalActionException If this object is not a class definition
-     *   or the proposed container is not acceptable.
-     *  @exception NameDuplicationException If the name collides with
-     *   an object already in the container.
-     */
-    public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException,
-            IllegalActionException, NameDuplicationException {
-        if (!isClassDefinition()) {
-            throw new IllegalActionException(this,
-            "Cannot instantiate an object that is not a class definition");
-        }
-        // Use the workspace of the container, if there is one,
-        // or the workspace of this object, if there isn't.
-        Workspace workspace = workspace();
-        if (container != null) {
-            workspace = container.workspace();
-        }
-        Prototype clone = (Prototype)clone(workspace);
-        // Set the name before the container to not get
-        // spurious name conflicts.
-        clone.setName(name);
-        clone.setParent(this);
-        clone.setClassDefinition(false);
-        clone.setClassName(getFullName());
-
-        return clone;
     }
 
     ///////////////////////////////////////////////////////////////////
