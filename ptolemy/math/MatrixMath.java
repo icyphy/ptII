@@ -1,5 +1,10 @@
 /* A library for mathematical operations on matrices.
 
+Some algorithms are from :
+
+[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+    Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
 
@@ -31,21 +36,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.*;
-
 //////////////////////////////////////////////////////////////////////////
 //// MatrixMath
 /**
- * This class provides library for mathematical operations on
- * double matrices.
+ * This class provides a library for mathematical operations on
+ * matrices of doubles.
  * <p>
- * The suffix "R" on method names means "Replace."  Any method with
- * that suffix modifies the array argument rather than constructing a new
- * array.
  * Rows and column numbers of matrices are specified with zero-based indices.
  *
+ * All calls expect matrix arguments to be non-null. In addition, all
+ * rows of the matrix are expected to have the same number of columns.
+ *
  * @author Jeff Tsay
- * @version @(#)MatrixMath.java	1.1   11/10/98
+ * @version @(#)MatrixMath.java	1.2   1/21/98
  */
 
 public final class MatrixMath {
@@ -53,20 +56,156 @@ public final class MatrixMath {
     // Private constructor prevents construction of this class.
     private MatrixMath() {}
 
-    /** Return the number of rows of a matrix.
-     *  @param matrix A matrix of doubles.
-     *  @retval An int.
+    /** Return a new matrix that is constructed from the argument by
+     *  adding the second argument to every element.
+     *  @param matrix An array of doubles.
+     *  @param z The double number to add.
+     *  @return A new matrix of doubles.
      */
-    public static final int rows(double[][] matrix) {
-        return matrix.length;
+    public static final double[][] add(double[][] matrix, double z) {
+        double[][] result = new double[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                result[i][j] = matrix[i][j] + z;
+            }
+        }
+        return result;
     }
 
-    /** Return the number of columns of a matrix.
-     *  @param matrix A matrix of doubles.
-     *  @retval An int.
+    /** Return a new matrix that is constructed from the argument by
+     *  adding the second matrix to the first one. The matrices must be
+     *  of the same size.
+     *  @param matrix1 The first matrix of doubles.
+     *  @param matrix2 The second matrix of doubles.
+     *  @return A new matrix of doubles.
      */
-    public static final int columns(double[][] matrix) {
-        return matrix[0].length;
+    public static final double[][] add(double[][] matrix1, double[][] matrix2) {
+        _checkSameDimension("add", matrix1, matrix2);
+
+        double[][] result = new double[_rows(matrix1)][_columns(matrix1)];
+        for (int i = 0; i < _rows(matrix1); i++) {
+            for (int j = 0; j < _columns(matrix1); j++) {
+                result[i][j] = matrix1[i][j] + matrix2[i][j];
+            }
+        }
+        return result;
+    }
+
+    /** Return a new matrix that is a copy of the matrix argument.
+     *  @param matrix A matrix of doubles.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] allocCopy(double[][] matrix) {
+        return crop(matrix, 0, 0, _rows(matrix), _columns(matrix)) ;
+    }
+
+    /** Return a new matrix that is a sub-matrix of the input
+     *  matrix argument. The row and column from which to start
+     *  and the number of rows and columns to span are specified.
+     *  @param matrix A matrix of doubles.
+     *  @param rowStart An int specifying which row to start on.
+     *  @param colStart An int specifying which column to start on.
+     *  @param rowSpan An int specifying how many rows to copy.
+     *  @param colSpan An int specifying how many columns to copy.
+     */
+    public static final double[][] crop(double[][] matrix,
+                                        int rowStart, int colStart,
+                                        int rowSpan, int colSpan) {
+        double[][] retval = new double[rowSpan][colSpan];
+        for (int i = 0; i < rowSpan; i++) {
+            System.arraycopy(matrix[rowStart + i], colStart,
+                             retval[i], 0, colSpan);
+        }
+        return retval;
+    }
+
+    /** Return the determinate of a square matrix.
+     *  This algorithm uses LU decomposition, and is taken from [1]
+     *  @param matrix A matrix of doubles.
+     *  @retval The determinate of the matrix.
+     */
+    public static final double determinate(double[][] matrix) {
+         _checkSquare("determinite", matrix);
+
+        double[][] a;
+        double det = 1.0;
+        int n = _rows(matrix);
+
+        a = allocCopy(matrix);
+
+        for (int pivot = 0; pivot < n-1; pivot++) {
+            // find the biggest absolute pivot
+            double big = Math.abs(a[pivot][pivot]);
+            int swapRow = 0; // initialize for no swap
+            for (int row = pivot + 1; row < n; row++) {
+                double absElement = Math.abs(a[row][pivot]);
+                if (absElement > big) {
+                   swapRow = row;
+                   big = absElement;
+                }
+            }
+
+            // unless swapRow is still zero we must swap two rows
+            if (swapRow != 0) {
+               double[] aPtr = a[pivot];
+               a[pivot] = a[swapRow];
+               a[swapRow] = aPtr;
+
+               // change sign of determinate because of swap
+               det *= -a[pivot][pivot];
+            } else {
+               // calculate the determinate by the product of the pivots
+               det *= a[pivot][pivot];
+            }
+
+            // if almost singular matrix, give up now
+
+            // FIXME use epsilon instead of this ugly constant
+            if (Math.abs(det) < 1.0e-50) {
+               return det;
+            }
+
+            double pivotInverse = 1.0 / a[pivot][pivot];
+            for (int col = pivot + 1; col < n; col++) {
+                a[pivot][col] *= pivotInverse;
+            }
+
+            for (int row = pivot + 1; row < n; row++) {
+                double temp = a[row][pivot];
+                for (int col = pivot + 1; col < n; col++) {
+                    a[row][col] -= a[pivot][col] * temp;
+                }
+            }
+        }
+
+        // last pivot, no reduction required
+        det *= a[n-1][n-1];
+
+        return det;
+    }
+
+    /** Return a new matrix that is constructed by element by element
+     *  division of the two matrix arguments. Each element of the
+     *  first matrix is divided by the corresponding element of the
+     *  second matrix.  The matrices must be of the same size.
+     *  @param matrix1 A matrix of doubles.
+     *  @param matrix2 A matrix of doubles.
+     *  @retval A new matrix of doubles.
+     */
+    public static final double[][] divideElements(double[][] matrix1,
+                                                  double[][] matrix2) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        _checkSameDimension("divideElements", matrix1, matrix2);
+
+        double[][] result = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result[i][j] = matrix1[i][j] / matrix2[i][j];
+            }
+        }
+        return result;
     }
 
     /** Return a new array that is filled with the contents of the matrix.
@@ -77,17 +216,8 @@ public final class MatrixMath {
      *  @param A matrix of doubles.
      *  @retval A new array of doubles.
      */
-    public static final double[] toArray(double[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        double[] retval = new double[rows * cols];
-        for (int i = 0; i < rows; i++) {
-            int offset = i * cols;
-            for (int j = 0; j < cols; j++) {
-                retval[offset + j] = matrix[i][j];
-            }
-        }
-        return retval;
+    public static final double[] fromMatrixToArray(double[][] matrix) {
+        return fromMatrixToArray(matrix, _rows(matrix), _columns(matrix));
     }
 
     /** Return a new array that is filled with the contents of the matrix.
@@ -103,143 +233,11 @@ public final class MatrixMath {
      *  @param matrix A matrix of doubles.
      *  @retval A new array of doubles.
      */
-    public static final double[] toArray(double[][] matrix, int maxRow,
-                                         int maxCol) {
+    public static final double[] fromMatrixToArray(double[][] matrix, int maxRow,
+                                                   int maxCol) {
         double[] retval = new double[maxRow * maxCol];
         for (int i = 0; i < maxRow; i++) {
-            int offset = i * maxCol;
-            for (int j = 0; j < maxCol; j++) {
-                retval[offset + j] = matrix[i][j];
-            }
-        }
-        return retval;
-    }
-
-    /** Replace the array elements with those in the matrix argument.
-     *  The doubles are stored row by row, i.e. using the notation
-     *  (row, column), the entries of the array are in the following order
-     *  for a (m,n) matrix :
-     *  (0,0), (0,1), (0,2), ... , (0,n-1), (1,0), (1,1), ... , (m-1,n-1)
-     *  @param array An array of doubles
-     *  @param matrix A matrix of doubles
-     */
-    public static final void fillArray(double[] array, double[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        for (int i = 0; i < rows; i++) {
-            int offset = i * cols;
-            for (int j = 0; j < cols; j++) {
-                array[offset + j] = matrix[i][j];
-            }
-        }
-    }
-
-    /** Return a new matrix of doubles that is initialized from a 1-D array.
-     *  The format of the array must be (0,0), (0,1), ..., (0, n-1), (1,0),
-     *  (1,1), ..., (m-1, n-1) where the output matrix is to be m x n and
-     *  entries are denoted by (row, column).
-     *  @param array An array of doubles.
-     *  @param rows An int.
-     *  @param cols An int.
-     *  @retval A new matrix of doubles.
-     */
-    public static final double[][] initFromArray(double[] array, int rows,
-                                                 int cols)
-    {
-        double[][] retval = new double[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            int offset = i * cols;
-            for (int j = 0; j < cols; j++) {
-                retval[i][j] = array[offset + j];
-            }
-        }
-        return retval;
-    }
-
-
-    /** Replace the first matrix argument elements with the values of
-     *  the second matrix argument. The second matrix argument must be
-     *  large enough to hold all the values of second matrix argument.
-     *  @param destMatrix A matrix of doubles, used as the destination.
-     *  @param srcMatrix A matrix of doubles, used as the source.
-     */
-    public static final void copy(double[][] destMatrix, double[][] srcMatrix) {
-        for (int i = 0; i < srcMatrix.length; i++) {
-            for (int j = 0; j < srcMatrix[0].length; j++) {
-                srcMatrix[i][j] = destMatrix[i][j];
-            }
-        }
-    }
-
-    /** Return a new matrix that is a copy of the matrix argument.
-     *  @param matrix A matrix of doubles.
-     *  @return A new matrix of doubles.
-     */
-    public static final double[][] allocCopy(double[][] matrix) {
-        double[][] retval = new double[matrix.length][matrix[0].length];
-        copy(retval, matrix);
-        return retval;
-    }
-
-    /** Replace the first matrix argument's values, in the specified row
-     *  and column range, with the second matrix argument's values, starting
-     *  from specified row and column of the second matrix.
-     *  @param destMatrix A matrix of doubles, used as the destination.
-     *  @param destRowStart An int specifying the starting row of the dest.
-     *  @param rowSpan An int specifying how many rows to copy.
-     *  @param destColStart An int specifying the starting column of the
-     *         dest.
-     *  @param colSpan An int specifying how many columns to copy.
-     *  @param srcMatrix A matrix of doubles, used as the destination.
-     *  @param srcRowStart An int specifying the starting row of the source.
-     *  @param srcColStart An int specifying the starting column of the
-     *  source.
-     */
-    public static final void partialCopy(double[][] destMatrix,
-                                         int destRowStart, int rowSpan,
-                                         int destColStart, int colSpan,
-                                         double[][] srcMatrix,
-                                         int srcRowStart, int srcColStart) {
-        // We should verify the parameters here
-        for (int i = 0; i < rowSpan; i++) {
-            for (int j = 0; j < colSpan; j++) {
-                destMatrix[destRowStart + i][destColStart + j] =
-                 srcMatrix[srcRowStart + i][srcColStart + j];
-            }
-        }
-    }
-
-    /** Return a new matrix that is a sub-matrix of the input
-     *  matrix argument. The row and column from which to start
-     *  and the number of rows and columns to span are specified.
-     *  @param matrix A matrix of doubles.
-     *  @param rowStart An int specifying which row to start on.
-     *  @param colStart An int specifying which column to start on.
-     *  @param rowSpan An int specifying how many rows to copy.
-     *  @param colSpan An int specifying how man columns to copy.
-     */
-    public static final double[][] crop(double[][] matrix,
-                                        int rowStart, int colStart,
-                                        int rowSpan, int colSpan) {
-        double[][] retval = new double[rowSpan][colSpan];
-        for (int i = 0; i < rowSpan; i++) {
-            for (int j = 0; j < colSpan; j++) {
-                retval[i][j] = matrix[rowStart + i][colStart + j];
-            }
-        }
-        return retval;
-    }
-
-    /** Return an identity matrix with the specified dimension. The
-     *  matrix is square, so only one dimension specifier is needed.
-     *  @param dim An int
-     *  @retval A new identity matrix of doubles
-     */
-    public static final double[][] identity(int dim) {
-        double[][] retval = new double[dim][dim];
-        // we rely on the fact Java fills the allocated matrix with 0's
-        for (int i = 0; i < dim; i++) {
-            retval[i][i] = 1.0;
+            System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
         }
         return retval;
     }
@@ -260,68 +258,229 @@ public final class MatrixMath {
         return retval;
     }
 
-    // Are these add a scalar methods really useful?
-
-    /** Return a new matrix that is constructed from the argument by
-     *  adding the second argument to every element.
-     *  @param matrix An array of doubles.
-     *  @param z The double number to add.
-     *  @return A new matrix of doubles.
+    /** Return an identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     *  @param dim An int
+     *  @retval A new identity matrix of doubles
      */
-    public static final double[][] add(double[][] matrix, double z) {
-        double[][] result = new double[matrix.length][matrix[0].length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                result[i][j] = matrix[i][j] + z;
-            }
+    public static final double[][] identity(int dim) {
+        double[][] retval = new double[dim][dim];
+        // we rely on the fact Java fills the allocated matrix with 0's
+        for (int i = 0; i < dim; i++) {
+            retval[i][i] = 1.0;
         }
-        return result;
+        return retval;
     }
 
-    /** Return a new matrix that is constructed from the argument by
-     *  adding the second matrix to the first one.
-     *  @param matrix1 The first matrix of doubles.
-     *  @param matrix2 The second matrix of doubles.
-     *  @return A new matrix of doubles.
+    /** Return a new matrix that is constructed by inverting the input
+     *  matrix. If the input matrix is singular, null is returned.
+     *  This method is from [1]
+     *  @param matrix A matrix of doubles
+     *  @return A new matrix of doubles, or null if no inverse exists
      */
-    public static final double[][] add(double[][] matrix1, double[][] matrix2) {
-        double[][] result = new double[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                result[i][j] = matrix1[i][j] + matrix2[i][j];
+    public static final double[][] inverse(double[][] A) {
+        _checkSquare("inverse", A);
+
+        int n = _rows(A);
+
+        double[][] Ai = allocCopy(A);
+
+        // We depend on each of the elements being initialized to 0.0
+        int[] pivotFlag = new int[n];
+        int[] swapCol = new int[n];
+        int[] swapRow = new int[n];
+
+        int irow = 0, icol = 0;
+
+        for (int i = 0; i < n; i++) { // n iterations of pivoting
+            // find the biggest pivot element
+            double big = 0.0;
+            for (int row = 0; row < n; row++) {
+                if (pivotFlag[row] == 0) {
+                    for (int col = 0; col < n; col++) {
+                        if (pivotFlag[col] == 0) {
+                            double absElement = Math.abs(Ai[row][col]);
+                            if (absElement >= big) {
+                                big = absElement;
+                                irow = row;
+                                icol = col;
+                            }
+                        }
+                    }
+                }
+            }
+            pivotFlag[icol]++;
+
+            // swap rows to make this diagonal the biggest absolute pivot
+            if (irow != icol) {
+                for (int col = 0; col < n; col++) {
+                    double temp = Ai[irow][icol];
+                    Ai[irow][col] = Ai[icol][col];
+                    Ai[icol][col] = temp;
+                }
+            }
+
+            // store what we swapped
+            swapRow[i] = irow;
+            swapCol[i] = icol;
+
+            // if the pivot is zero, the matrix is singular
+            if (Ai[icol][icol] == 0.0) {
+               return null;
+            }
+
+            // divide the row by the pivot
+            double pivotInverse = 1.0 / A[icol][icol];
+            Ai[icol][icol] = 1.0; // pivot = 1 to avoid round off
+            for (int col = 0; col < n; col++) {
+                Ai[icol][col] *= pivotInverse;
+            }
+
+            // fix the other rows by subtracting
+            for (int row = 0; row < n; row++) {
+                if (row != icol) {
+                   double temp = Ai[row][icol];
+                   Ai[row][icol] = 0.0;
+                   for (int col = 0; col < n; col++) {
+                       Ai[row][col] -= Ai[icol][col] * temp;
+                   }
+                }
             }
         }
-        return result;
-    }
 
-    /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.
-     *  @param matrix1 The first matrix of doubles.
-     *  @param matrix2 The second matrix of doubles.
-     *  @return A new matrix of doubles.
-     */
-    public static final double[][] subtract(double[][] matrix1,
-                                            double[][] matrix2) {
-        double[][] result = new double[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                result[i][j] = matrix1[i][j] - matrix2[i][j];
+        // fix the effect of all the swaps for final answer
+        for (int swap = n - 1; swap >= 0; swap--) {
+            if (swapRow[swap] != swapCol[swap]) {
+                for (int row = 0; row < n; row++) {
+                    double temp = Ai[row][swapRow[swap]];
+                    Ai[row][swapRow[swap]] = Ai[row][swapCol[swap]];
+                    Ai[row][swapCol[swap]] = temp;
+                }
             }
         }
-        return result;
+
+        return Ai;
     }
 
-    /** Return a new matrix that is the additive inverse of the
-     *  argument matrix.
+    /** Replace the first matrix argument elements with the values of
+     *  the second matrix argument. The second matrix argument must be
+     *  large enough to hold all the values of second matrix argument.
+     *  @param destMatrix A matrix of doubles, used as the destination.
+     *  @param srcMatrix A matrix of doubles, used as the source.
+     */
+    public static final void matrixCopy(double[][] srcMatrix,
+                                        double[][] destMatrix) {
+        matrixCopy(srcMatrix, 0, 0, destMatrix, 0, 0, _rows(srcMatrix),
+                   _columns(srcMatrix));
+    }
+
+    /** Replace the first matrix argument's values, in the specified row
+     *  and column range, with the second matrix argument's values, starting
+     *  from specified row and column of the second matrix.
+     *  @param srcMatrix A matrix of doubles, used as the destination.
+     *  @param srcRowStart An int specifying the starting row of the source.
+     *  @param srcColStart An int specifying the starting column of the
+     *  source.
+     *  @param destMatrix A matrix of doubles, used as the destination.
+     *  @param destRowStart An int specifying the starting row of the dest.
+     *  @param destColStart An int specifying the starting column of the
+     *         dest.
+     *  @param rowSpan An int specifying how many rows to copy.
+     *  @param colSpan An int specifying how many columns to copy.
+     */
+    public static final void matrixCopy(double[][] srcMatrix,
+                                        int srcRowStart, int srcColStart,
+                                        double[][] destMatrix,
+                                        int destRowStart, int destColStart,
+                                        int rowSpan, int colSpan) {
+        // We should verify the parameters here
+        for (int i = 0; i < rowSpan; i++) {
+            System.arraycopy(srcMatrix[srcRowStart + i], srcColStart,
+                             destMatrix[destRowStart + i], destColStart,
+                             colSpan);
+        }
+    }
+
+    /** Return a new matrix that is constructed by multiplying the matrix
+     *  by a scalefactor.
      *  @param matrix A matrix of doubles.
-     *  @return A new matrix of doubles.
+     *  @scalefactor The constant by whch to multiply the matrix.
      */
-    public static final double[][] negative(double[][] matrix) {
-        double[][] result = new double[matrix.length][matrix[0].length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                result[i][j] = -matrix[i][j];
+    public static final double[][] multiply(double[][] matrix,
+                                            double scalefactor) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        double[][] result = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                result[i][j] = matrix[i][j] * scalefactor;
             }
+        }
+        return result;
+    }
+
+    /** Return a new array that is constructed from the argument by
+     *  pre-multiplying the array (treated as a row vector) by a matrix.
+     *  The number of rows of the matrix must equal the number of elements
+     *  in the array. The returned array will have a length equal to the number
+     *  of columns of the matrix.
+     *  @param matrix A matrix of doubles.
+     *  @param array An array of doubles.
+     *  @return A new array of doubles.
+     */
+    public static final double[] multiply(double[][] matrix,
+                                          double[] array) {
+
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        if (rows != array.length) {
+           throw new IllegalArgumentException(
+            "preMultiply : array does not have the same number of elements (" +
+            array.length + ") as the number of rows of the matrix (" + rows +
+            ")");
+        }
+
+        double[] result = new double[columns];
+        for (int i = 0; i < columns; i++) {
+            double sum = 0.0;
+            for (int j = 0; j < rows; j++) {
+                sum += matrix[j][i] * array[j];
+            }
+            result[i] = sum;
+        }
+        return result;
+    }
+
+    /** Return a new array that is constructed from the argument by
+     *  post-multiplying the matrix by an array (treated as a row vector).
+     *  The number of columns of the matrix must equal the number of elements
+     *  in the array. The returned array will have a length equal to the number
+     *  of rows of the matrix.
+     *  @param array An array of doubles.
+     *  @param matrix A matrix of doubles.
+     *  @return A new array of doubles.
+     */
+    public static final double[] multiply(double[] array,
+                                          double[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        if (columns != array.length) {
+           throw new IllegalArgumentException(
+            "postMultiply() : array does not have the same number of elements (" +
+            array.length + ") as the number of columns of the matrix (" +
+            columns + ")");
+        }
+
+        double[] result = new double[rows];
+        for (int i = 0; i < rows; i++) {
+            double sum = 0.0;
+            for (int j = 0; j < columns; j++) {
+                sum += matrix[i][j] * array[j];
+            }
+            result[i] = sum;
         }
         return result;
     }
@@ -340,8 +499,8 @@ public final class MatrixMath {
      */
     public static final double[][] multiply(double[][] matrix1,
                                             double[][] matrix2) {
-        double[][] result = new double[matrix1.length][matrix2[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
+        double[][] result = new double[_rows(matrix1)][matrix2[0].length];
+        for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 double sum = 0.0;
                 for (int k = 0; k < matrix2.length; k++) {
@@ -353,114 +512,117 @@ public final class MatrixMath {
         return result;
     }
 
-    /** Return a new vector that is constructed from the argument by
-     *  pre-multiplying the vector by a matrix. The number of columns of
-     *  the matrix must equal the number of elements in the vector.
-     *  The returned vector will have the same size as the input
-     *  vector. The array is treated as a column vector.
-     *  @param matrix A matrix of doubles.
-     *  @param array An array of doubles.
-     *  @return A new array of doubles.
-     */
-    public static final double[] preMultiply(double[][] matrix,
-                                             double[] array) {
-        double[] result = new double[array.length];
-        for (int i = 0; i < array.length; i++) {
-            double sum = 0.0;
-            for (int j = 0; j < array.length; j++) {
-                sum += matrix[i][j] * array[j];
-            }
-            result[i] = sum;
-        }
-        return result;
-    }
-
-    /** Return a new vector that is constructed from the argument by
-     *  post-multiplying the vector by a matrix. The number of rows of 
-     *  the matrix must equal the number of elements in the vector.
-     *  The returned vector will have the same size as the input
-     *  vector. The array is treated as a row vector.
-     *  @param array An array of doubles.
-     *  @param matrix A matrix of doubles.
-     *  @return A new array of doubles.
-     */
-    public static final double[] postMultiply(double[] array,
-                                              double[][] matrix) {
-        double[] result = new double[array.length];
-        for (int i = 0; i < array.length; i++) {
-            double sum = 0.0;
-            for (int j = 0; j < array.length; j++) {
-                sum += matrix[j][i] * array[j];
-            }
-            result[i] = sum;
-        }
-        return result;
-    }
-
     /** Return a new matrix that is constructed by element by element
-     *  multiplication of the two matrix arguments.
+     *  multiplication of the two matrix arguments. The matrices must be
+     *  of the same size.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
      *  @retval A new matrix of doubles.
      */
-    public static final double[][] pwiseMultiply(double[][] matrix1,
-                                                 double[][] matrix2) {
-        double[][] result = new double[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
+    public static final double[][] multiplyElements(double[][] matrix1,
+                                                    double[][] matrix2) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        _checkSameDimension("multiplyElements", matrix1, matrix2);
+
+        double[][] result = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 result[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
         return result;
     }
 
-    /** Modify the first matrix argument by element by element
-     *  multiplication by the second matrix argument.
-     *  @param matrix1 A matrix of doubles.
-     *  @param matrix2 A matrix of doubles.
+    /** Return a new matrix that is the additive inverse of the
+     *  argument matrix.
+     *  @param matrix A matrix of doubles.
+     *  @return A new matrix of doubles.
      */
-    public static final void pwiseMultiplyR(double[][] matrix1,
-                                            double[][] matrix2) {
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                matrix1[i][j] *= matrix2[i][j];
+    public static final double[][] negative(double[][] matrix) {
+        double[][] result = new double[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                result[i][j] = -matrix[i][j];
             }
         }
+        return result;
     }
 
-    /** Return a new matrix that is constructed by element by element
-     *  division of the two matrix arguments. Each element of the
-     *  first matrix is divided by the corresponding element of the
-     *  second matrix.
-     *  @param matrix1 A matrix of doubles.
-     *  @param matrix2 A matrix of doubles.
+    /** Return a new matrix that is constructed from the argument by
+     *  subtracting the second matrix from the first one.  The matrices must be
+     *  of the same size.
+     *  @param matrix1 The first matrix of doubles.
+     *  @param matrix2 The second matrix of doubles.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] subtract(double[][] matrix1,
+                                            double[][] matrix2) {
+        _checkSameDimension("subtract", matrix1, matrix2);
+
+        double[][] result = new double[_rows(matrix1)][_columns(matrix1)];
+        for (int i = 0; i < _rows(matrix1); i++) {
+            for (int j = 0; j < _columns(matrix1); j++) {
+                result[i][j] = matrix1[i][j] - matrix2[i][j];
+            }
+        }
+        return result;
+    }
+
+    /** Return a new matrix of doubles that is initialized from a 1-D array.
+     *  The format of the array must be (0,0), (0,1), ..., (0, n-1), (1,0),
+     *  (1,1), ..., (m-1, n-1) where the output matrix is to be m x n and
+     *  entries are denoted by (row, column).
+     *  @param array An array of doubles.
+     *  @param rows An int.
+     *  @param cols An int.
      *  @retval A new matrix of doubles.
      */
-    public static final double[][] pwiseDivide(double[][] matrix1,
-                                               double[][] matrix2) {
-        double[][] result = new double[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                result[i][j] = matrix1[i][j] / matrix2[i][j];
-            }
+    public static final double[][] toMatrixFromArray(double[] array, int rows,
+                                                     int cols) {
+        double[][] retval = new double[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            System.arraycopy(array, i * cols, retval[i], 0, cols);
         }
-        return result;
+        return retval;
     }
 
-    /** Return a new matrix that is constructed by multiplying the matrix
-     *  by a scalefactor.
+    /** Return the string representation of this matrix.
+     *  The format of the string representing an m x n matrix is the following :
+     *  "{" row(0) "," row(1) "," ... row(m-1) "}"; each row i is in the format :
+     *  "{" matrix[i][0] "," matrix[i][1] "," ... "," matrix[i][n-1] "}", where
+     *  n is the number of
+     *  @retval The string representing the matrix.
      *  @param matrix A matrix of doubles.
-     *  @scalefactor The constant to multiply the matrix by.
      */
-    public static final double[][] scale(double[][] matrix,
-                                   double scalefactor) {
-        double[][] result = new double[matrix.length][matrix[0].length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                result[i][j] = matrix[i][j] * scalefactor;
+    public static final String toString(double[][] matrix) {
+        StringBuffer sb = new StringBuffer();
+        sb.append('{');
+
+        for (int i = 0; i < _rows(matrix); i++) {
+
+            // Replace with ArrayMath.toString(matrix[i]) when it gets in line
+
+            sb.append('{');
+            for (int j = 0; j < _columns(matrix); j++) {
+               sb.append(Double.toString(matrix[i][j]));
+
+               if (j < (_columns(matrix) - 1)) {
+                  sb.append(',');
+               }
+            }
+
+            sb.append('}');
+
+            if (i < (_rows(matrix) - 1)) {
+               sb.append(',');
             }
         }
-        return result;
+
+        sb.append('}');
+
+        return new String(sb);
     }
 
     /** Return a new matrix that is constructed by transposing the input
@@ -469,222 +631,138 @@ public final class MatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] transpose(double[][] matrix) {
-        double[][] result = new double[matrix[0].length][matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        double[][] result = new double[columns][rows];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 result[j][i] = matrix[i][j];
             }
         }
         return result;
     }
 
-    // The following methods are valid only on square matrices.
-
-    /** Return a new matrix that is constructed by inverting the input
-     *  matrix. If the input matrix is singular, null is returned.
-     *  This method is from "C Language Algorithms for Digital Signal
-     *  Processing" by Embree and Kimble.
-     *  @param matrix A matrix of doubles
-     *  @return A new matrix of doubles, or null if no inverse exists
+    /** Returns true iff the differences of all corresponding elements of
+     *  2 matrices, that are of the same size, are all within a constant range,
+     *  [-R, R], where R is the allowed error. The specified absolute
+     *  difference must be non-negative.
+     *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [R, R,
+     *  for 0<=i<m and 0<=j<n where M1 and M2 are both m x n matrices.
+     *  @param matrix1 A matrix of doubles.
+     *  @param matrix2 A matrix of doubles.
+     *  @param absoluteError A double indicating the absolute value of the
+     *  allowed error.
+     *  @retval A boolean condition.
      */
-    public static final double[][] inverse(double[][] A) {
-        // We should check that A is a square matrix here
+    public static final boolean within(double[][] matrix1, double[][] matrix2,
+                                       double absoluteError) {
+        if (absoluteError < 0.0) {
+           throw new IllegalArgumentException(
+            "within(): absoluteError (" + absoluteError +
+            " must be non-negative.");
+        }
 
-        double[][] Ai = allocCopy(A);
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
 
-        int n = A.length;
-        // We depend on each of the elements being initialized to 0.0
-        int[] pivot_flag = new int[n];
-        int[] swap_col = new int[n];
-        int[] swapRow = new int[n];
+        _checkSameDimension("within", matrix1, matrix2);
 
-        int irow = 0, icol = 0;
-
-        for (int i = 0; i < n; i++) { // n iterations of pivoting
-            /* find the biggest pivot element */
-            double big = 0.0;
-            for (int row = 0; row < n; row++) {
-                if (pivot_flag[row] == 0) {
-                    for (int col = 0; col < n; col++) {
-                        if (pivot_flag[col] == 0) {
-                            double abs_element = Math.abs(Ai[row][col]); 
-                            if (abs_element >= big) {
-                                big = abs_element;
-                                irow = row;
-                                icol = col;
-                            }
-                        }
-                    }
-                }
-            }
-            pivot_flag[icol]++;
-
-            // swap rows to make this diagonal the biggest absolute pivot
-            if (irow != icol) {
-                for (int col = 0; col < n; col++) {
-                    double temp = Ai[irow][icol];
-                    Ai[irow][col] = Ai[icol][col];
-                    Ai[icol][col] = temp;
-                }
-            }
-
-            // store what we swapped
-            swapRow[i] = irow;
-            swap_col[i] = icol;
-
-            // if the pivot is zero, the matrix is singular
-            if (Ai[icol][icol] == 0.0) {
-               return null;
-            }
-
-            // divide the row by the pivot
-            double pivot_inverse = 1.0 / A[icol][icol];
-            Ai[icol][icol] = 1.0; // pivot = 1 to avoid round off
-            for (int col = 0; col < n; col++) {
-                Ai[icol][col] *= pivot_inverse;
-            }
-
-            // fix the other rows by subtracting
-            for (int row = 0; row < n; row++) {
-                if (row != icol) {
-                   double temp = Ai[row][icol];
-                   Ai[row][icol] = 0.0;
-                   for (int col = 0; col < n; col++) {
-                       Ai[row][col] -= Ai[icol][col] * temp;
-                   }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (Math.abs(matrix1[i][j] - matrix2[i][j]) > absoluteError) {
+                   return false;
                 }
             }
         }
-
-        // fix the effect of all the swaps for final answer
-        for (int swap = n - 1; swap >= 0; swap--) {
-            if (swapRow[swap] != swap_col[swap]) {
-                for (int row = 0; row < n; row++) {
-                    double temp = Ai[row][swapRow[swap]];
-                    Ai[row][swapRow[swap]] = Ai[row][swap_col[swap]];
-                    Ai[row][swap_col[swap]] = temp;
-                }
-            }
-        }
-
-        return Ai;
+        return true;
     }
 
-    /** Return the determinate of a square matrix.
-     *  This algorithm uses LU decomposition, and is taken from
-     *  "C Language Algorithms for Digital Signal Processing" by
-     *  Embree and Kimble.
+    /** Returns true iff the differences of all corresponding elements of
+     *  2 matrices, that are of the same size, are all within the range
+     *  specificed by the corresponding values of the error matrix. The
+     *  error matrix may contain negative entries; the absolute value
+     *  is used.
+     *  More concisely, abs(M1[i,j] - M2[i,j]) must be within [-E[i,j], E[i,j]],
+     *  for 0<=i<m and 0<=j<n where M1, M2, and E are all m x n matrices.
+     *  @param matrix1 A matrix of doubles.
+     *  @param matrix2 A matrix of doubles.
+     *  @param errorMatrix A matrix of doubles.
+     *  @retval A boolean condition.
+     */
+    public static final boolean within(double[][] matrix1, double[][] matrix2,
+                                       double[][] errorMatrix) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        _checkSameDimension("within", matrix1, matrix2);
+        _checkSameDimension("within", matrix1, errorMatrix);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (Math.abs(matrix1[i][j] - matrix2[i][j]) >
+                    Math.abs(errorMatrix[i][j])) {
+                   return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Return the number of columns of a matrix.
      *  @param matrix A matrix of doubles.
-     *  @retval The determinate of the matrix.
+     *  @retval An int.
      */
-    public static final double determinate(double[][] matrix) {
-        // check that the matrix is square
-
-        double[][] a = allocCopy(matrix);
-        double det = 1.0;
-        int n = matrix.length;
-
-        for (int pivot = 0; pivot < n-1; pivot++) {
-            // find the biggest absolute pivot
-            double big = Math.abs(a[pivot][pivot]);
-            int swapRow = 0; // initialize for no swap
-            for (int row = pivot + 1; row < n; row++) {
-                double abs_element = Math.abs(a[row][pivot]);
-                if (abs_element > big) {
-                   swapRow = row;
-                   big = abs_element;
-                }
-            }
-
-            // unless swapRow is still zero we must swap two rows
-            if (swapRow != 0) {
-               double[] a_ptr = a[pivot];
-               a[pivot] = a[swapRow];
-               a[swapRow] = a_ptr;
-
-               // change sign of determinate because of swap
-               det *= -a[pivot][pivot];
-            } else {
-               // calculate the determinate by the product of the pivots
-               det *= a[pivot][pivot];
-            }
-
-            // if almost singular matrix, give up now
-
-            // FIXME use epsilon instead of this ugly constant
-            if (Math.abs(det) < 1.0e-50)
-               return det;
-
-            double pivot_inverse = 1.0 / a[pivot][pivot];
-            for (int col = pivot + 1; col < n; col++) {
-                a[pivot][col] *= pivot_inverse;
-            }
-
-            for (int row = pivot + 1; row < n; row++) {
-                double temp = a[row][pivot];
-                for (int col = pivot + 1; col < n; col++) {
-                    a[row][col] -= a[pivot][col] * temp;
-                }
-            }
-        }
-
-        // last pivot, no reduction required
-        det *= a[n-1][n-1];
-
-        return det;
+    private static final int _columns(double[][] matrix) {
+        return matrix[0].length;
     }
 
-    /** Convert the matrix into a string representation, which is to
-     *  be readable by human beings.
-     *  @param M A matrix of doubles
+    /** Check that the two matrix arguments are of the same dimension.
+     *  If they are not, an IllegalArgumentException is thrown.
+     *  @param caller A string representing the caller method name.
+     *  @param matrix1 A matrix of doubles.
+     *  @param matrix2 A matrix of doubles.
      */
-    public static final String toString(double[][] M) {
-        StringBuffer sb = new StringBuffer();
-        sb.append('{');
+    private static final void _checkSameDimension(String caller,
+                                                  double[][] matrix1,
+                                                  double[][] matrix2) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix2);
 
-        for (int i = 0; i < MatrixMath.rows(M); i++) {
-                                      
-            // Replace with ArrayMath.toString(M[i]) when it gets in line
-
-            sb.append('{');         
-            for (int j = 0; j < MatrixMath.columns(M); j++) {
-               sb.append(Double.toString(M[i][j]));
-               
-               if (j < (MatrixMath.columns(M) - 1)) {
-                  sb.append(',');
-               }
-            }
-            
-            sb.append('}'); 
-
-            if (i < (MatrixMath.rows(M) - 1)) {
-               sb.append(',');
-            }
+        if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
+           throw new IllegalArgumentException(
+            "ptolemy.math.MatrixMath." + caller + "() : one matrix " +
+            _dimensionString(matrix1) +
+            " is not the same size as another matrix " +
+            _dimensionString(matrix2));
         }
-
-        sb.append('}');     
-
-        return new String(sb);
     }
+
+    /** Check that the argument matrix is a square matrix. If the matrix is not
+     *  square, an IllegalArgumentException is thrown.
+     *  @param caller A string representing the caller method name.
+     *  @param matrix A matrix of doubles.
+     *  @retval An int which is the dimension of the square matrix.
+     */
+    private static final void _checkSquare(String caller, double[][] matrix) {
+        if (_rows(matrix) != _columns(matrix)) {
+           throw new IllegalArgumentException(
+           "ptolemy.math.MatrixMath." + caller + "() : matrix argument "
+           + _dimensionString(matrix) + " is not a square matrix");
+        }
+    }
+
+    private static final String _dimensionString(double[][] matrix) {
+        return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+    }
+
+    /** Return the number of rows of a matrix.
+     *  @param matrix A matrix of doubles.
+     *  @retval An int.
+     */
+    private static final int _rows(double[][] matrix) {
+        return matrix.length;
+    }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
