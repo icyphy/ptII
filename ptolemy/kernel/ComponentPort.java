@@ -84,6 +84,7 @@ public class ComponentPort extends Port {
 
     /** Construct a port in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
+     *  The object is added to the workspace directory.
      */
     public ComponentPort() {
 	super();
@@ -96,6 +97,7 @@ public class ComponentPort extends Port {
     /** Construct a port in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
      */
@@ -132,7 +134,8 @@ public class ComponentPort extends Port {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and add the clone
+     *  to the directory of that workspace.
      *  The result is a new port with no connections and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
@@ -151,11 +154,12 @@ public class ComponentPort extends Port {
      *  from the inside, then enumerate all the ports deeply connected
      *  on the outside to that transparent port.  Note that a port may
      *  be listed more than once.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
     public Enumeration deepConnectedPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             if (_deeplinkedportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedports.elements();
@@ -197,6 +201,8 @@ public class ComponentPort extends Port {
             _deeplinkedports = result;
             _deeplinkedportsversion = workspace().getVersion();
             return _deeplinkedports.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -207,11 +213,12 @@ public class ComponentPort extends Port {
      *  example if this port is transparent but has no inside links.
      *  Also, a port may be listed more than once if more than one
      *  inside connection to it has been established.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
     public Enumeration deepInsidePorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             if (_deeplinkedinportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedinports.elements();
@@ -254,17 +261,20 @@ public class ComponentPort extends Port {
             _deeplinkedinports = result;
             _deeplinkedinportsversion = workspace().getVersion();
             return _deeplinkedinports.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Enumerate the ports connected on the inside to this port. Note that
      *  a port may be listed more than once if more than one inside connection
      *  has been established to it.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
     public Enumeration insidePorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             LinkedList result = new LinkedList();
             Enumeration relations = insideRelations();
             while (relations.hasMoreElements()) {
@@ -272,30 +282,39 @@ public class ComponentPort extends Port {
                 result.appendElements(relation.linkedPorts(this));
             }
             return result.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Enumerate the relations linked on the inside to this port.
      *  Note that a relation may be listed more than once if more than link
      *  to it has been established.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
      */	
     public Enumeration insideRelations() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _insideLinks.getLinks();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return true the the given port is deeply connected with this port.
+     *  This method is read-synchronized on the workspace.
      *  @return True if the given port is deeply connected.
      */
     public boolean isDeeplyConnected(ComponentPort port) {
         if(port == null) return false;
-        synchronized(workspace()){
+        try {
+            workspace().read();
             // Call deepConnectedPort to refresh the cache.
             Enumeration dummy = deepConnectedPorts();
             return _deeplinkedports.includes(port);
+        } finally {
+            workspace().doneReading();
         }
     }
     
@@ -333,7 +352,7 @@ public class ComponentPort extends Port {
      *  the link will be reported more than once by the linkedRelations()
      *  method.
      *  If the relation argument is null, do nothing.
-     *  This method is synchronized on the workspace
+     *  This method is write-synchronized on the workspace
      *  and increments its version number.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If the relation does not share 
@@ -346,7 +365,8 @@ public class ComponentPort extends Port {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             if (_outside(relation.getContainer())) {
                 // An inside link
                 _linkInside(relation);
@@ -354,6 +374,8 @@ public class ComponentPort extends Port {
                 // An outside link
                 _link(relation);
             }
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -364,7 +386,7 @@ public class ComponentPort extends Port {
      *  be linked to the same relation more than once, in which case
      *  the link will be reported more than once by the linkedRelations()
      *  method.  If the argument is null, do nothing.
-     *  This method is synchronized on the workspace
+     *  This method is write-synchronized on the workspace
      *  and increments its version number.
      *  @param relation The relation to link to. 
      *  @exception IllegalActionException If the link crosses levels of
@@ -383,7 +405,8 @@ public class ComponentPort extends Port {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             Nameable container = getContainer();
             if (container != null) {
                 Nameable relcont = relation.getContainer();
@@ -394,16 +417,21 @@ public class ComponentPort extends Port {
                 }
             }
             liberalLink((ComponentRelation)relation);
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     /** Return the number of inside links.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return The number of inside links.
      */
     public int numInsideLinks() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _insideLinks.size();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -427,28 +455,32 @@ public class ComponentPort extends Port {
 
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing.
-     *  This method is synchronized on the workspace
+     *  This method is write-synchronized on the workspace
      *  and increments its version number.
      *  @param relation The relation to unlink.
      */
     public void unlink(Relation relation) {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             // Not sure whether it's an inside link, so unlink both.
             super.unlink(relation);
             _insideLinks.unlink(relation);
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     } 
 
     /** Unlink all relations, inside and out.
-     *  This method is synchronized on the workspace
+     *  This method is write-synchronized on the workspace
      *  and increments its version number.
      */	
     public void unlinkAll() {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             super.unlinkAll();
             _insideLinks.unlinkAll();
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -473,12 +505,13 @@ public class ComponentPort extends Port {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the Nameable interface.  Lines are indented according to
      *  to the level argument using the protected method _indent().
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
      */
     protected String _description(int detail, int indent){
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             String result = super._description(detail, indent);
             if ((detail & LINKS) != 0) {
                 if (result.length() > 0) {
@@ -497,6 +530,8 @@ public class ComponentPort extends Port {
                 result = result + _indent(indent) + "}";
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -504,6 +539,8 @@ public class ComponentPort extends Port {
      *  not a ComponentRelation.  If it is, then invoke the base class method.
      *  This method should not be used
      *  directly.  Use the public version instead.
+     *  This method <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container or
      *   the relation is not a ComponentRelation.
@@ -525,46 +562,46 @@ public class ComponentPort extends Port {
      *  Level-crossing links are allowed.
      *  This port and the relation are assumed to be in the same workspace,
      *  but this not checked here.  The caller should check.
-     *  This method is synchronized on the
-     *  workspace and increments its version number.
+     *  This method <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container or
      *   is not a ComponentPort.
      */	
     protected void _linkInside(ComponentRelation relation) 
             throws IllegalActionException {
-        synchronized(workspace()) {
-            if (!(relation instanceof ComponentRelation)) {
-                throw new IllegalActionException(this,
-                        "Attempt to link to an incompatible relation.");
-            }
-            if (getContainer() == null) {
-                throw new IllegalActionException(this, relation,
-                        "Port must have a container to establish a link.");
-            }
-            // Throw an exception if this port is not of an acceptable
-            // class for the relation.
-            relation._checkPort(this);
-            // It is acceptable.
-            _insideLinks.link( relation._getPortList() );
-            workspace().incrVersion();
+        if (!(relation instanceof ComponentRelation)) {
+            throw new IllegalActionException(this,
+            "Attempt to link to an incompatible relation.");
         }
+        if (getContainer() == null) {
+            throw new IllegalActionException(this, relation,
+            "Port must have a container to establish a link.");
+        }
+        // Throw an exception if this port is not of an acceptable
+        // class for the relation.
+        relation._checkPort(this);
+        // It is acceptable.
+        _insideLinks.link( relation._getPortList() );
     }
 
     /** Return true if the port is either a port of the specified entity,
      *  or a port of an entity that contains the specified entity.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param entity A possible container.
      *  @return True if this port is outside the entity.
      */	
     protected boolean _outside(Nameable entity) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             Nameable portcontainer = getContainer();
             while (entity != null) {
                 if (portcontainer == entity) return true;
                 entity = entity.getContainer();
             }
             return false;
+        } finally {
+            workspace().doneReading();
         }
     }
 

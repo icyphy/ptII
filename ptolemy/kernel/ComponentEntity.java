@@ -58,6 +58,7 @@ appropriate subclass.
 public class ComponentEntity extends Entity {
 
     /** Construct an entity in the default workspace with an empty string
+     *  The object is added to the workspace directory.
      *  as its name. Increment the version number of the workspace.
      */
     public ComponentEntity() {
@@ -67,6 +68,7 @@ public class ComponentEntity extends Entity {
     /** Construct an entity in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
@@ -80,7 +82,7 @@ public class ComponentEntity extends Entity {
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
-     *  This constructor synchronizes on the workspace.
+     *  This constructor write-synchronizes on the workspace.
      *  @param container The container entity.
      *  @param name The name of the entity.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -91,19 +93,22 @@ public class ComponentEntity extends Entity {
     public ComponentEntity(CompositeEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             container._addEntity(this);
             // "super" call above puts this on the workspace list. Remove it.
             workspace().remove(this);
             _container = container;
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and add the clone to
+     *  the directory of that workspace.
      *  The result is a new entity with the same ports as the original, but
      *  no connections.
      *  @param ws The workspace in which to place the cloned object.
@@ -143,7 +148,7 @@ public class ComponentEntity extends Entity {
      *  The container of the port is set to this entity.
      *  This overrides the base class to create an instance of ComponentPort.
      *  Derived classes may override this to further constrain the ports.
-     *  This method is synchronized on the workspace and increments
+     *  This method is write-synchronized on the workspace and increments
      *  its version number.
      *  @param name The new port name.
      *  @return The new port
@@ -153,9 +158,12 @@ public class ComponentEntity extends Entity {
      */	
     public Port newPort(String name) 
             throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             Port port = new ComponentPort(this, name);
             return port;
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -167,14 +175,14 @@ public class ComponentEntity extends Entity {
      *  If the entity is already contained by the container, do nothing.
      *  If this entity already has a container, remove it
      *  from that container first.  Otherwise, remove it from
-     *  the list of objects in the workspace, if it is present.
+     *  the directory of the workspace, if it is present.
      *  If the argument is null, then unlink the ports of the entity
      *  from any relations and remove it from its container.
-     *  It is not added to the workspace, so this could result in
+     *  It is not added to the workspace directory, so this could result in
      *  this entity being garbage collected.
      *  Derived classes may override this method to constrain the container
-     *  to subclasses of CompositeEntity. This method is synchronized on the
-     *  workspace and increments its version number.
+     *  to subclasses of CompositeEntity. This method is write-synchronized
+     *  to the workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
@@ -188,7 +196,8 @@ public class ComponentEntity extends Entity {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             // NOTE: The following code is quite tricky.  It is very careful
             // to leave a consistent state even in the face of unexpected
             // exceptions.  Be very careful if modifying it.
@@ -204,7 +213,6 @@ public class ComponentEntity extends Entity {
                 }
             }
             _container = container;
-            workspace().incrVersion();
             if (prevcontainer != null) {
                 // This is safe now because it does not throw an exception.
                 prevcontainer._removeEntity(this);
@@ -216,6 +224,8 @@ public class ComponentEntity extends Entity {
                     port.unlinkAll();
                 }
             }
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -232,8 +242,8 @@ public class ComponentEntity extends Entity {
      *  entity, but does not check.  The caller should check.
      *  Derived classes may override this method to further constrain to
      *  a subclass of ComponentPort.
-     *  This method is synchronized on the workspace and increments
-     *  its version number.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param port The port to add to this entity.
      *  @exception IllegalActionException If the port class is not
      *   acceptable to this entity, or the port has no name.

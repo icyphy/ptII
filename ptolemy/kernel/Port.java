@@ -64,7 +64,7 @@ public class Port extends NamedObj {
 
     /** Construct a port in the default workspace with an empty string
      *  as its name.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      */
     public Port() {
@@ -79,7 +79,7 @@ public class Port extends NamedObj {
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument
      *  is null, then use the default workspace.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the port.
      */
@@ -96,7 +96,7 @@ public class Port extends NamedObj {
      *  NullPointerException will be thrown.  This port will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  The object is not added to the list of objects in the workspace,
+     *  The object is not added to the workspace directory,
      *  unless the container is null.
      *  Increment the version of the workspace.
      *  @param container The parent entity.
@@ -119,7 +119,8 @@ public class Port extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and list the clone
+     *  in the directory of that workspace.
      *  The result is a new port with no connections and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
@@ -134,11 +135,12 @@ public class Port extends NamedObj {
 
     /** Enumerate the connected ports.  Note that a port may be listed
      *  more than once if more than one connection to it has been established.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Port objects. 
      */
     public Enumeration connectedPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             LinkedList result = new LinkedList();
             Enumeration relations = linkedRelations();
             while (relations.hasMoreElements()) {
@@ -146,6 +148,8 @@ public class Port extends NamedObj {
                 result.appendElements(relation.linkedPorts(this));
             }
             return result.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -157,33 +161,42 @@ public class Port extends NamedObj {
     }
 
     /** Get the container entity.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An instance of Entity.
      */
     public Nameable getContainer() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _container;
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return true if the given Relation is linked to this port.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return True if the given relation is linked to this port.
      */
     public boolean isLinked(Relation r) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _relationsList.isLinked(r);
+        } finally {
+            workspace().doneReading();
         }
     }
     
     /** Enumerate the linked relations.  Note that a relation may appear
      *  more than once if more than one link to it has been established.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Relation objects. 
      */
     public Enumeration linkedRelations() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _relationsList.getLinks();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -197,7 +210,7 @@ public class Port extends NamedObj {
      *  method. In derived classes, the relation may be required to be an
      *  instance of a particular subclass of Relation (this is checked
      *  by the _link() protected method).
-     *  This method is synchronized on the workspace and increments
+     *  This method is write-synchronized on the workspace and increments
      *  its version number.
      *  @param relation The relation to link to this port.
      *  @exception IllegalActionException If the link would cross levels of
@@ -212,7 +225,8 @@ public class Port extends NamedObj {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             Nameable container = getContainer();
             if (container != null) {
                 if (container.getContainer() != relation.getContainer()) {
@@ -221,16 +235,21 @@ public class Port extends NamedObj {
                 }
             }
             _link(relation);
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     /** Return the number of links to relations.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return The number of links, a non-negative integer.
      */
     public int numLinks() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _relationsList.size();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -242,12 +261,12 @@ public class Port extends NamedObj {
      *  If the port is already contained by the entity, do nothing.
      *  If the port already has a container, remove
      *  this port from its port list first.  Otherwise, remove it from
-     *  the list of objects in the workspace, if it is present.
+     *  the workspace directory, if it is present.
      *  If the argument is null, then
      *  unlink the port from any relations and remove it from its container.
-     *  It is not added to the workspace, so this could result in
+     *  It is not added to the workspace directory, so this could result in
      *  this port being garbage collected.
-     *  This method is synchronized on the
+     *  This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param entity The container.
      *  @exception IllegalActionException If this port is not of the
@@ -262,7 +281,8 @@ public class Port extends NamedObj {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             Entity prevcontainer = (Entity)getContainer();
             if (prevcontainer == entity) return;
             // Do this first, because it may throw an exception.
@@ -279,31 +299,37 @@ public class Port extends NamedObj {
             if (entity == null) {
                 unlinkAll();
             }
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing.
-     *  This method is synchronized on the
+     *  This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param relation The relation to unlink.
      */
     public void unlink(Relation relation) {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             _relationsList.unlink(relation);
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     } 
 
     /** Unlink all relations.
-     *  This method is synchronized on the
+     *  This method is write-synchronized on the
      *  workspace and increments its version number.
      */	
     public void unlinkAll() {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             _relationsList.unlinkAll();
             workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -330,12 +356,13 @@ public class Port extends NamedObj {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the Nameable interface.  Lines are indented according to
      *  to the level argument using the protected method _indent().
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
      */
     protected String _description(int detail, int indent) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             String result = super._description(detail, indent);
             if ((detail & LINKS) != 0) {
                 if (result.length() > 0) {
@@ -354,6 +381,8 @@ public class Port extends NamedObj {
                 result = result + _indent(indent) + "}";
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -365,25 +394,22 @@ public class Port extends NamedObj {
      *  Relation. Level-crossing links are allowed.
      *  This port and the relation are assumed to be in the same workspace,
      *  but this not checked here.  The caller should check.
-     *  This method is synchronized on the
-     *  workspace and increments its version number.
+     *  This method <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container.
      */	
     protected void _link(Relation relation) 
             throws IllegalActionException {
-        synchronized(workspace()) {
-            if (relation != null) {
-                if (getContainer() == null) {
-                    throw new IllegalActionException(this, relation,
-                            "Port must have a container to establish a link.");
-                }
-                // Throw an exception if this port is not of an acceptable
-                // class for the relation.
-                relation._checkPort(this);
-                _relationsList.link( relation._getPortList() );
+        if (relation != null) {
+            if (getContainer() == null) {
+                throw new IllegalActionException(this, relation,
+                "Port must have a container to establish a link.");
             }
-            workspace().incrVersion();
+            // Throw an exception if this port is not of an acceptable
+            // class for the relation.
+            relation._checkPort(this);
+            _relationsList.link( relation._getPortList() );
         }
     }
 

@@ -57,6 +57,7 @@ public class Relation extends NamedObj {
 
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
+     *  The object is added to the workspace directory.
      */
     public Relation() {
 	super();
@@ -69,6 +70,7 @@ public class Relation extends NamedObj {
     /** Construct a relation in the default workspace with the given name.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version number of the workspace.
+     *  The object is added to the workspace directory.
      *  @param name Name of this object.
      */
     public Relation(String name) {
@@ -82,6 +84,7 @@ public class Relation extends NamedObj {
     /** Construct a relation in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
      *  If the name argument is null, then the name is set to the empty string.
+     *  The object is added to the workspace directory.
      *  Increment the version of the workspace.
      *  @param workspace Workspace for synchronization and version tracking
      *  @param name Name of this object.
@@ -97,7 +100,8 @@ public class Relation extends NamedObj {
     /////////////////////////////////////////////////////////////////////////
     ////                         public methods                          ////
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and add the clone
+     *  to the directory of that workspace.
      *  The result is a new relation with no links and no container.
      *  @param ws The workspace in which to place the cloned object. 
      *  @exception CloneNotSupportedException Thrown only in derived classes.
@@ -112,25 +116,29 @@ public class Relation extends NamedObj {
 
     /** Enumerate the linked ports.  Note that a port may appear more than
      *  once if more than on link to it has been established.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An Enumeration of Port objects.
      */	
     public Enumeration linkedPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _portList.getLinks();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Enumerate the linked ports except the specified port.
      *  Note that a port may appear more than
      *  once if more than on link to it has been established.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param except Port to exclude from the enumeration.
      *  @return An Enumeration of Port objects.
      */	
     public Enumeration linkedPorts(Port except) {
         // This works by constructing a linked list and then enumerating it.
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             LinkedList storedPorts = new LinkedList();
             Enumeration ports = _portList.getLinks();
         
@@ -140,27 +148,34 @@ public class Relation extends NamedObj {
                     storedPorts.insertLast(p); 
             }
             return storedPorts.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return the number of links to ports.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return The number of links.
      */	
     public int numLinks() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _portList.size();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Unlink all ports.
-     *  This method is synchronized on the workspace and increments
+     *  This method is write-synchronized on the workspace and increments
      *  its version number.
      */	
     public void unlinkAll() {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             _portList.unlinkAll();
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -197,12 +212,13 @@ public class Relation extends NamedObj {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the Nameable interface.  Lines are indented according to
      *  to the level argument using the protected method _indent().
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
      */
     protected String _description(int detail, int indent){
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             String result = super._description(detail, indent);
             if ((detail & LINKS) != 0) {
                 if (result.length() > 0) {
@@ -221,6 +237,8 @@ public class Relation extends NamedObj {
                 result = result + _indent(indent) + "}";
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 

@@ -66,7 +66,8 @@ override the setContainer() method.
 public class ComponentRelation extends Relation {
 
     /** Construct a relation in the default workspace with an empty string
-     *  as its name. Increment the version number of the workspace.
+     *  as its name. Add the relation to the directory of the workspace.
+     *  Increment the version number of the workspace.
      */
     public ComponentRelation() {
         super();
@@ -75,6 +76,7 @@ public class ComponentRelation extends Relation {
     /** Construct a relation in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
+     *  Add the relation to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the relation.
      */
@@ -87,7 +89,8 @@ public class ComponentRelation extends Relation {
      *  NullPointerException will be thrown.  This relation will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
+     *  This constructor write-synchronizes on the workspace and increments
+     *  its version number.
      *  @param container The parent entity.
      *  @param name The name of the relation.
      *  @exception IllegalActionException If the container is incompatible
@@ -98,17 +101,23 @@ public class ComponentRelation extends Relation {
     public ComponentRelation(CompositeEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        container._addRelation(this);
-        // "super" call above puts this on the workspace list.  Remove it.
-        workspace().remove(this);
-        _container = container;
-        workspace().incrVersion();
+        try {
+            workspace().write();
+            container._addRelation(this);
+            // "super" call above puts this on the workspace list.  Remove it.
+            workspace().remove(this);
+            _container = container;
+            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and add the clone to
+     *  the directory of that workspace.
      *  The result is a new relation with no links and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
@@ -123,11 +132,12 @@ public class ComponentRelation extends Relation {
 
     /** Deeply enumerate the ports linked to this relation. Look through
      *  all transparent ports and return only opaque ports.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentPorts.
      */	
     public Enumeration deepLinkedPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             if (_deeplinkedportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedports.elements();
@@ -154,17 +164,16 @@ public class ComponentRelation extends Relation {
             }
             _deeplinkedportsversion = workspace().getVersion();
             return _deeplinkedports.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Get the container entity.
-     *  This method is synchronized on the workspace.
      *  @return An instance of CompositeEntity.
      */
     public Nameable getContainer() {
-        synchronized(workspace()) {
-            return _container;
-        }
+        return _container;
     }
 
     /** Specify the container entity, adding the relation to the list 
@@ -175,14 +184,14 @@ public class ComponentRelation extends Relation {
      *  If the relation is already contained by the container, do nothing.
      *  If this relation already has a container, remove it
      *  from that container first.  Otherwise, remove it from
-     *  the list of objects in the workspace, if it is present.
+     *  the workspace directory, if it is present.
      *  If the argument is null, then unlink the ports from the relation and
      *  remove it from its container.
-     *  It is not added to the workspace, so this could result in
+     *  It is not added to the workspace directory, so this could result in
      *  this relation being garbage collected.
      *  Derived classes may further constrain the class of the container
-     *  to a subclass of CompositeEntity. This method is synchronized on the
-     *  workspace and increments its version number.
+     *  to a subclass of CompositeEntity. This method is write-synchronized
+     *  on the workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException
      *   If this entity and the container are not in the same workspace.
@@ -195,7 +204,8 @@ public class ComponentRelation extends Relation {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             CompositeEntity prevcontainer = (CompositeEntity)getContainer();
             if (prevcontainer == container) return;
             // Do this first, because it may throw an exception.
@@ -213,6 +223,8 @@ public class ComponentRelation extends Relation {
                 unlinkAll();
             }
             workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 

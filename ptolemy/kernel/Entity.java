@@ -71,7 +71,7 @@ public class Entity extends NamedObj {
 
     /** Construct an entity in the default workspace with an empty string
      *  as its name.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      */
     public Entity() {
@@ -82,7 +82,7 @@ public class Entity extends NamedObj {
     /** Construct an entity in the default workspace with the given name.
      *  If the name argument
      *  is null, then the name is set to the empty string.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param name The name of this object.
      */
@@ -95,7 +95,7 @@ public class Entity extends NamedObj {
      *  If the workspace argument is null, use the default workspace.
      *  If the name argument
      *  is null, then the name is set to the empty string.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the workspace directory.
      *  Increment the version of the workspace.
      *  @param workspace The workspace for synchronization and version tracking.
      *  @param name The name of this object.
@@ -108,7 +108,8 @@ public class Entity extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and list the clone
+     *  in the directory of that workspace.
      *  The result is a new entity with clones of the ports of the original
      *  entity.  The ports are not connected to anything.
      *  @param ws The workspace in which to place the cloned object.
@@ -143,11 +144,12 @@ public class Entity extends NamedObj {
      *  relation.   The connected entities can be obtained from the ports
      *  using getContainer().  Note that a port may be listed more than
      *  once if there is more than one connection to it.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Port objects.
      */	
     public Enumeration connectedPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             // This works by constructing a linked list and then enumerating it.
             // While this may seem costly, it means that the returned
             // enumeration is robust.  It will not be corrupted by changes
@@ -165,39 +167,48 @@ public class Entity extends NamedObj {
                 _connectedportsversion = workspace().getVersion();
             }
             return _connectedports.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return the port contained by this entity that has the specified name.
      *  If there is no such port, return null.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired port.
      *  @return A port with the given name, or null if none exists.
      */	
     public Port getPort(String name) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return (Port)_portList.get(name);
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Enumerate the ports belonging to this entity.
      *  The order is the order in which they became contained by this entity.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Port objects.
      */	
     public Enumeration getPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _portList.getElements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Enumerate relations that are linked to ports contained by this
      *  entity. Note that a relation may be listed more once. 
-     *  This method is synchronized on the workspace.
+     *  This method is sread-ynchronized on the workspace.
      *  @return An enumeration of Relation objects.
      */	
     public Enumeration linkedRelations() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             // This method constructs a list and then enumerates it.
             // The list is cached for efficiency.
             if (workspace().getVersion() != _linkedrelationsversion) {
@@ -212,6 +223,8 @@ public class Entity extends NamedObj {
                 _linkedrelationsversion = workspace().getVersion();
             }
             return _linkedrelations.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -219,7 +232,7 @@ public class Entity extends NamedObj {
      *  to be this entity. Derived classes should override this method
      *  to create a subclass of Port, if they require subclasses of Port.
      *  If the name argument is null, then the name used is an empty string.
-     *  This method is synchronized on the workspace, and increments
+     *  This method is write-synchronized on the workspace, and increments
      *  its version number.
      *  @param name The name to assign to the newly created port.
      *  @return The new port.
@@ -231,20 +244,23 @@ public class Entity extends NamedObj {
      */	
     public Port newPort(String name) 
             throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             Port port = new Port(this, name);
-            workspace().incrVersion();
             return port;
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     /** Remove all ports by setting their container to null.
      *  As a side effect, the ports will be unlinked from all relations.
-     *  This method is synchronized on the workspace, and increments
+     *  This method is write-synchronized on the workspace, and increments
      *  its version number.
      */	
     public void removeAllPorts() {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             // Have to copy _portList to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this a bug in in NamedList?
             NamedList portListCopy = new NamedList(_portList);
@@ -258,7 +274,8 @@ public class Entity extends NamedObj {
                     // Ignore exceptions that can't occur.
                 }
             }
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -274,8 +291,8 @@ public class Entity extends NamedObj {
      *  Derived classes should override this method if they require
      *  a subclass of Port to throw an exception if the argument is
      *  not of an acceptable class.
-     *  This method is synchronized on the workspace and increments
-     *  its version number.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param port The port to add to this entity.
      *  @exception IllegalActionException If the port has no name.
      *  @exception NameDuplicationException If the port name collides with a 
@@ -283,11 +300,7 @@ public class Entity extends NamedObj {
      */	
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
-            _portList.append(port);
-            // NOTE: this is probably not necessary, but just in case...
-            workspace().incrVersion();
-        }
+        _portList.append(port);
     }
 
     /** Clear references that are not valid in a cloned object.  The clone()
@@ -306,12 +319,13 @@ public class Entity extends NamedObj {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the Nameable interface.  Lines are indented according to
      *  to the level argument using the protected method _indent().
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
      */
     protected String _description(int detail, int indent) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             String result = super._description(detail, indent);
             if ((detail & CONTENTS) != 0 || (detail & LINKS) != 0) {
                 if (result.length() > 0) {
@@ -327,6 +341,8 @@ public class Entity extends NamedObj {
                 result = result + _indent(indent) + "}";
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -335,16 +351,12 @@ public class Entity extends NamedObj {
      *  with a null argument. The port is assumed to be contained
      *  by this entity (otherwise, nothing happens). This
      *  method does not alter the container of the port.
-     *  This method is synchronized on the workspace and increments
-     *  its version number.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param port The port being removed from this entity.
      */	
     protected void _removePort(Port port) {
-        synchronized(workspace()) {
-            _portList.remove(port);
-            // NOTE: this is probably not necessary, but just in case...
-            workspace().incrVersion();
-        }
+        _portList.remove(port);
     }
 
     /////////////////////////////////////////////////////////////////////////

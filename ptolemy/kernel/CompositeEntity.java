@@ -80,7 +80,8 @@ appropriate subclass.
 public class CompositeEntity extends ComponentEntity {
 
     /** Construct an entity in the default workspace with an empty string
-     *  as its name. Increment the version number of the workspace.
+     *  as its name. Add the entity to the workspace directory.
+     *  Increment the version number of the workspace.
      */
     public CompositeEntity() {
         super();
@@ -89,6 +90,7 @@ public class CompositeEntity extends ComponentEntity {
     /** Construct an entity in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
+     *  Add the entity to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
@@ -132,7 +134,8 @@ public class CompositeEntity extends ComponentEntity {
         _levelCrossingConnectAllowed = boole;
     }
 
-    /** Clone the object and register the clone in the specified workspace.
+    /** Clone the object into the specified workspace and add the clone
+     *  to the directory of that workspace.
      *  NOTE: This will not work if there are level-crossing transitions.
      *  The result is an entity with clones of the ports of the original
      *  entity, the contained entities, and the contained relations.
@@ -225,7 +228,7 @@ public class CompositeEntity extends ComponentEntity {
      *  connections, since they break modularity and cloning.
      *  A reference to the newly created relation is returned.
      *  To remove the relation, call its setContainer() method with a null
-     *  argument. This method is synchronized on the workspace
+     *  argument. This method is write-synchronized on the workspace
      *  and increments its version number.
      *  @param port1 The first port to connect.
      *  @param port2 The second port to connect.
@@ -249,7 +252,7 @@ public class CompositeEntity extends ComponentEntity {
      *  connections, since they break modularity and cloning.
      *  A reference to the newly created alias relation is returned.
      *  To remove the relation, call its setContainer() method with a null
-     *  argument. This method is synchronized on the workspace
+     *  argument. This method is write-synchronized on the workspace
      *  and increments its version number.
      *  @param port1 The first port to connect.
      *  @param port2 The second port to connect.
@@ -272,7 +275,8 @@ public class CompositeEntity extends ComponentEntity {
             throw new IllegalActionException(port1, port2,
                     "Cannot connect ports because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             ComponentRelation ar = newRelation(relationname);
             if (_levelCrossingConnectAllowed) {
                 port1.liberalLink(ar);
@@ -291,17 +295,20 @@ public class CompositeEntity extends ComponentEntity {
                 throw ex;
             }
             return ar;
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     /** Enumerate the atomic entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
      *  are no such contained entities.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of atomic ComponentEntity objects.
      */	
     public Enumeration deepGetEntities() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             Enumeration enum = _containedEntities.getElements();
             // Construct a linked list and then return an enumeration of it.
             LinkedList result = new LinkedList();
@@ -316,17 +323,22 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
             return result.elements();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Get a contained entity by name.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
      */	
     public ComponentEntity getEntity(String name) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return (ComponentEntity)_containedEntities.get(name);
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -335,26 +347,32 @@ public class CompositeEntity extends ComponentEntity {
      *  The returned enumeration is static in the sense
      *  that it is not affected by any subsequent additions or removals
      *  of entities.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentEntity objects.
      */	
     public Enumeration getEntities() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             // Copy the list so we can create a static enumeration.
             NamedList entitiesCopy = new NamedList(_containedEntities);
             Enumeration entities = entitiesCopy.getElements();
             return entities;
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Get a contained relation by name.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired relation.
      *  @return A relation with the specified name, or null if none exists.
      */	
     public ComponentRelation getRelation(String name) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return (ComponentRelation)_containedRelations.get(name);
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -362,15 +380,18 @@ public class CompositeEntity extends ComponentEntity {
      *  The returned enumeration is static in the sense
      *  that it is not affected by any subsequent additions or removals
      *  of relations.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
      */	
     public Enumeration getRelations() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             // Copy the list so we can create a static enumeration.
             NamedList relationsCopy = new NamedList(_containedRelations);
             Enumeration relations = relationsCopy.getElements();
             return relations;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -387,47 +408,59 @@ public class CompositeEntity extends ComponentEntity {
     /** Create a new relation with the specified name, add it to the
      *  relation list, and return it. Derived classes can override
      *  this to create domain-specific subclasses of ComponentRelation.
-     *  This method is synchronized on the workspace and increments
+     *  This method is write-synchronized on the workspace and increments
      *  its version number.
      *  @param name The name of the new relation.
+     *  @return The new relation.
      *  @exception IllegalActionException If name argument is null.
      *  @exception NameDuplicationException If name collides with a name
      *   already in the container.
      */
     public ComponentRelation newRelation(String name)
             throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             ComponentRelation rel = new ComponentRelation(this, name);
-            workspace().incrVersion();
             return rel;
+        } finally {
+            workspace().doneWriting();
         }
     }
 
     /** Return the number of contained entities.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of entities.
      */	
     public int numEntities() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _containedEntities.size();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return the number of contained relations.	
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of relations.
      */	
     public int numRelations() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return _containedRelations.size();
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Remove all contained entities and unlink them from all relations.
      *  This is done by setting their containers to null.
-     *  This method is synchronized on the workspace
+     *  This method is read-synchronized on the workspace
      *  and increments its version number.
      */	
     public void removeAllEntities() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             // Have to copy list to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
@@ -443,16 +476,19 @@ public class CompositeEntity extends ComponentEntity {
                     // Ignore exceptions that can't occur.
                 }
             }
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Remove all contained relations and unlink them from everything.
      *  This is done by setting their containers to null.
-     *  This method is synchronized on the workspace
+     *  This method is write-synchronized on the workspace
      *  and increments its version number.
      */	
     public void removeAllRelations() {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             // Have to copy list to avoid corrupting the enumeration.
             // NOTE: Is this still true?  Or was this due to a bug in
             // NamedList?
@@ -468,6 +504,8 @@ public class CompositeEntity extends ComponentEntity {
                     // Ignore exceptions that can't occur.
                 }
             }
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -482,7 +520,8 @@ public class CompositeEntity extends ComponentEntity {
      *  container, but does not check.  The caller should check.
      *  Derived classes may override this method to constrain the
      *  the entity to a subclass of ComponentEntity.
-     *  This method is synchronized on the workspace.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param entity Entity to contain.
      *  @exception IllegalActionException If the entity has no name, or the
      *   action would result in a recursive containment structure.
@@ -491,11 +530,9 @@ public class CompositeEntity extends ComponentEntity {
      */	
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
-            if (entity.deepContains(this)) {
-                throw new IllegalActionException(entity, this,
-                "Attempt to construct recursive containment.");
-            }
+        if (entity.deepContains(this)) {
+            throw new IllegalActionException(entity, this,
+            "Attempt to construct recursive containment.");
         }
         _containedEntities.append(entity);
     }
@@ -504,7 +541,8 @@ public class CompositeEntity extends ComponentEntity {
      *  directly.  Call the setContainer() method of the relation instead.
      *  This method does not set
      *  the container of the relation to refer to this container.
-     *  It is synchronized on the workspace.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param relation Relation to contain.
      *  @exception IllegalActionException If the relation has no name.
      *  @exception NameDuplicationException If the name collides with a name 
@@ -512,9 +550,7 @@ public class CompositeEntity extends ComponentEntity {
      */	
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
-            _containedRelations.append(relation);
-        }
+        _containedRelations.append(relation);
     }
 
     /** Clear references that are not valid in a cloned object.  The clone()
@@ -534,12 +570,13 @@ public class CompositeEntity extends ComponentEntity {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the Nameable interface.  Lines are indented according to
      *  to the level argument using the protected method _indent().
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
      */
     protected String _description(int detail, int indent){
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             String result = super._description(detail, indent);
             if ((detail & CONTENTS) != 0) {
                 if (result.length() > 0) {
@@ -563,6 +600,8 @@ public class CompositeEntity extends ComponentEntity {
                 result = result + _indent(indent) + "}";
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -571,13 +610,12 @@ public class CompositeEntity extends ComponentEntity {
      *  a null argument.
      *  The entity is assumed to be contained by this composite (otherwise,
      *  nothing happens). This does not alter the entity in any way.
-     *  This method is synchronized on the workspace.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param entity The entity to remove.
      */	
     protected void _removeEntity(ComponentEntity entity) {
-        synchronized(workspace()) {
-            _containedEntities.remove(entity);
-        }
+        _containedEntities.remove(entity);
     }
 
     /** Remove the specified relation. This method should not be used
@@ -585,13 +623,12 @@ public class CompositeEntity extends ComponentEntity {
      *  a null argument.
      *  The relation is assumed to be contained by this composite (otherwise,
      *  nothing happens). This does not alter the relation in any way.
-     *  This method is synchronized on the workspace.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *  @param relation The relation to remove.
      */	
     protected void _removeRelation(ComponentRelation relation) {
-        synchronized(workspace()) {
-            _containedRelations.remove(relation);
-        }
+        _containedRelations.remove(relation);
     }
 
     //////////////////////////////////////////////////////////////////////////
