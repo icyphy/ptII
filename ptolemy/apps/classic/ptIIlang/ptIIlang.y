@@ -1959,7 +1959,8 @@ void genDef ()
 		fprintf (fp, "%s\n", idBlock);
 /* include files */
 	//fprintf (fp, "#include \"%s.h\"\n", fullClass);
-	fprintf (fp, "package ptolemy.domains.sdf.cgc;\n\n");
+	// FIXME: The package hardwired in
+	fprintf (fp, "package ptolemy.domains.sdf.cgc.lib;\n\n");
 	fprintf (fp, "import ptolemy.actor.TypedAtomicActor;\n");
 	fprintf (fp, "import ptolemy.actor.TypedIOPort;\n");
 	fprintf (fp, "import ptolemy.data.expr.Parameter;\n");
