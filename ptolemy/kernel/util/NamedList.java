@@ -90,7 +90,7 @@ public class NamedList implements Cloneable, Serializable {
     /** Add an element to the end of the list.
      *  The element is required to have a name that does not coincide with
      *  that of an element already on the list. 
-     *  @param element
+     *  @param element Element to be added to the list.
      *  @exception IllegalActionException Argument has no name.
      *  @exception NameDuplicationException Name coincides with
      *  an element already on the list.
@@ -141,7 +141,7 @@ public class NamedList implements Cloneable, Serializable {
     }
    
     /** Return true if the specified object is on the list.
-     *  @param element
+     *  @param element Element to be searched for in the list.
      */	
     public boolean includes(Nameable element) {
         CollectionEnumeration enum = new NamedListEnumeration();
@@ -194,7 +194,7 @@ public class NamedList implements Cloneable, Serializable {
     /** Add an element to the beginning of the list.
      *  The element is required to have a name that does not coincide with
      *  that of an element already on the list. 
-     *  @param element
+     *  @param element Element to be added to the list.
      *  @exception IllegalActionException Argument has no name.
      *  @exception NameDuplicationException Name coincides with
      *  an element already on the list.
@@ -214,7 +214,7 @@ public class NamedList implements Cloneable, Serializable {
 
     /** Remove the specified element.  If the element is not on the
      *  list, do nothing.
-     *  @param element
+     *  @param element Element to be removed.
      */
     public void remove(Nameable element) {
         _namedlist.removeOneOf(element);
@@ -222,7 +222,7 @@ public class NamedList implements Cloneable, Serializable {
 
     /** Remove an element specified by name.  If no such element exists
      *  on the list, do nothing.
-     *  @param name
+     *  @param name Name of the element to be removed.
      *  @return Return A reference to the removed object, or null if no
      *  object with the specified name is found.
      */
