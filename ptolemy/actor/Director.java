@@ -523,6 +523,9 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        if (_debugging) {
+        	_debug("Called initialize().");
+        }
         // Initialize the time constants that will be used in this director.
         // NOTE: Ideally, only timed directors need to do this.
         timeConstants = new TimeConstants(this);
@@ -570,6 +573,11 @@ public class Director extends Attribute implements Executable {
      *  acceptable to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
+        if (_debugging) {
+        	_debug("Initializing actor: " 
+                    + ((Nameable)actor).getFullName()
+                    + ".");
+        }
         actor.initialize();
     }
 
@@ -718,6 +726,9 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called postfire().");
+        }
         return !_stopRequested;
     }
 
@@ -740,6 +751,9 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called prefire().");
+        }
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Director executiveDirector =
