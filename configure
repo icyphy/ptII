@@ -4047,7 +4047,7 @@ echo "${ECHO_T}ok" >&6
 echo $ECHO_N "checking for java.home prop by running a test program ... $ECHO_C" >&6
 	if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
 	    # Run it again and get the results with \ converted to /
-	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome | sed 's@\\\@/@'g`
+	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
 	    echo "$as_me:$LINENO: result: $PTJAVA_HOME" >&5
 echo "${ECHO_T}$PTJAVA_HOME" >&6
 
