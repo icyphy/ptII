@@ -30,7 +30,7 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -55,7 +55,7 @@ import javax.swing.BoxLayout;
 /**
 This class is an editor to configure the ports of an object.
 It supports setting their input, output, and multiport properties,
-and adding and removing ports.  Only ports that extend the IOPort
+and adding and removing ports.  Only ports that extend the TypedIOPort
 class are listed, since more primitive ports cannot be configured
 in this way.
 
@@ -74,15 +74,18 @@ public class PortConfigurer extends Query implements QueryListener {
 	this.addQueryListener(this);
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	setTextWidth(25);
+	setTextWidth(15);
+
+        // The second column is for type designators.
+        setColumns(2);
 
         _object = object;
 
 	Iterator ports = _object.portList().iterator();
         while (ports.hasNext()) {
             Object candidate = ports.next();
-            if (candidate instanceof IOPort) {
-                IOPort port = (IOPort)candidate;
+            if (candidate instanceof TypedIOPort) {
+                TypedIOPort port = (TypedIOPort)candidate;
                 Set optionsDefault = new HashSet();
                 if (port.isInput()) optionsDefault.add("input");
                 if (port.isOutput()) optionsDefault.add("output");
@@ -90,6 +93,10 @@ public class PortConfigurer extends Query implements QueryListener {
 
                 addSelectButtons(port.getName(), port.getName(),
                         _optionsArray, optionsDefault);
+
+                String typeEntryName = port.getName() + " type";
+                addLine(typeEntryName, typeEntryName,
+                         port.getType().toString());
             }
 	}
     }
@@ -100,60 +107,88 @@ public class PortConfigurer extends Query implements QueryListener {
     /** Apply the changes by configuring the ports that have changed.
      */
     public void apply() {
-        Iterator names = _changed.iterator();
-        while (names.hasNext()) {
-            String name = (String)names.next();
-            String value = stringValue(name);
+        StringBuffer moml = new StringBuffer("<group>");
+        boolean foundOne = false;
+	Iterator ports = _object.portList().iterator();
+        NamedObj parent = null;
+        while (ports.hasNext()) {
+            Object candidate = ports.next();
+            if (candidate instanceof TypedIOPort) {
+                TypedIOPort port = (TypedIOPort)candidate;
+                String name = port.getName();
+                // If port has not changed, skip it.
+                String typeEntryName = name + " type";
+                if (!_changed.contains(name)
+                        && !_changed.contains(typeEntryName)) continue;
 
-            // First, parse the value, which may be a comma-separated list.
-            Set selectedValues = new HashSet();
-            StringTokenizer tokenizer = new StringTokenizer(value, ",");
-            while (tokenizer.hasMoreTokens()) {
-                selectedValues.add(tokenizer.nextToken().trim());
-            }
-            // Next, configure the ports.
-            Port port = _object.getPort(name);
-            if (port instanceof IOPort) {
+                String value = stringValue(name);
+
+                // First, parse the value, which may be a comma-separated list.
+                Set selectedValues = new HashSet();
+                StringTokenizer tokenizer = new StringTokenizer(value, ",");
+                while (tokenizer.hasMoreTokens()) {
+                    selectedValues.add(tokenizer.nextToken().trim());
+                }
+
                 // The context for the MoML should be the first container
                 // above this port in the hierarchy that defers its
-                // MoML definition, or the immediate parent if there is none.
-                NamedObj parent = MoMLChangeRequest.getDeferredToParent(port);
+                // MoML definition, or the immediate parent
+                // if there is none.
+                parent = MoMLChangeRequest.getDeferredToParent(port);
                 if (parent == null) {
                     parent = (NamedObj)port.getContainer();
                 }
-		StringBuffer moml = new StringBuffer("<port name=\"");
+                foundOne = true;
+                moml.append("<port name=\"");
                 moml.append(port.getName(parent));
                 moml.append("\">");
 
                 if (selectedValues.contains("input")) {
                     moml.append("<property name=\"input\"/>");
                 } else {
-                    moml.append("<property name=\"input\" value=\"false\"/>");
+                    moml.append(
+                            "<property name=\"input\" value=\"false\"/>");
                 }
                 if (selectedValues.contains("output")) {
                     moml.append("<property name=\"output\"/>");
                 } else {
-                    moml.append("<property name=\"output\" value=\"false\"/>");
+                    moml.append(
+                            "<property name=\"output\" value=\"false\"/>");
                 }
                 if (selectedValues.contains("multiport")) {
                     moml.append("<property name=\"multiport\"/>");
                 } else {
-                    moml.append("<property name=\"multiport\" value=\"false\"/>");
+                    moml.append(
+                            "<property name=\"multiport\" value=\"false\"/>");
+                }
+
+                if (_changed.contains(typeEntryName)) {
+                    // Type designation has changed.
+                    String type = stringValue(typeEntryName);
+                    moml.append(
+                            "<property name=\"_type\" "
+                            + "class = \"ptolemy.actor.TypeAttribute\" "
+                            + "value = \""
+                            + type
+                            + "\"/>");
                 }
                 moml.append("</port>");
-                ChangeRequest request = new MoMLChangeRequest(
-                        this,            // originator
-                        parent,          // context
-                        moml.toString(), // MoML code
-                        null);           // base
-
-                // NOTE: There is no need to listen for completion
-                // or errors in this change request, since, in theory,
-                // it will just work.  Will someone report the error
-                // if one occurs?  I hope so...
-
-                parent.requestChange(request);
             }
+        }
+
+        if (foundOne) {
+            moml.append("</group>");
+            ChangeRequest request = new MoMLChangeRequest(
+                    this,            // originator
+                    parent,          // context
+                    moml.toString(), // MoML code
+                    null);           // base
+
+            // NOTE: There is no need to listen for completion
+            // or errors in this change request, since, in theory,
+            // it will just work.  Will someone report the error
+            // if one occurs?  I hope so...
+            parent.requestChange(request);
         }
     }
 

@@ -29,12 +29,10 @@
 
 package ptolemy.actor;
 
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAttribute
@@ -45,13 +43,41 @@ Use setExpression() to define a data type, as in for example,
     attribute.setExpression("double");
 </pre>
 The class TypedIOPort recognizes when this attribute is inserted
-and calls setTypeEquals() to define its type.
+and calls setTypeEquals() to define its type. In the above example,
+the type of the port is set to double.
+<p>
+The type can be given by any expression that can be evaluated.
+In fact, it would be equally valid to specify the type to be double
+using
+<pre>
+    attribute.setExpression("0.0");
+</pre>
+The Constants class defines the constant "double" to have the value
+0.0, so that instead you may give the type by name.
+The Constants class defines for convenience the following
+contants: boolean, complex, double, fixedpoint, general,
+int, long, object, and string.
+<p>
+Since the type is given by a "prototype" (an expression with the
+appropriate type), any data type that can be given in an expression
+can be specified as a type. For structured types, follow the
+same syntax as in expressions. For example:
+<pre>
+    {double} - double array
+    [int]    - int matrix
+    {field1 = string, field2 = int} - record with two fields
+</pre>
+<p>
+Note that because the type is given as a prototype, there is no
+mechanism for specifying a type that is an abstract type,
+like "scalar."
 
-@author Edward A. Lee
+@author Edward A. Lee, Xiaojun Liu
 @version $Id$
 @see TypedIOPort
+@see data.expr.Constants
 */
-public class TypeAttribute extends StringAttribute {
+public class TypeAttribute extends Parameter {
 
     /** Construct an attribute with the given name contained by the specified
      *  port. The container argument must not be null, or a
@@ -74,31 +100,6 @@ public class TypeAttribute extends StringAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the type class that has been set by setExpression(), or
-     *  null if setExpression() has not been called.
-     *  @return The type class.
-     */
-    public Type getType() {
-        return _type;
-    }
-
-    /** Check the type designation using BaseType.forName().
-     *  @see BaseType#forName(String)
-     *  @exception IllegalActionException If the expression is not a valid
-     *   type name.
-     */
-    public void validate() throws IllegalActionException {
-        _type = BaseType.forName(getExpression());
-        if (_type == null) {
-            throw new IllegalActionException(this,
-                    "Cannot find type class: " + getExpression());
-        }
-        super.validate();
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Override the base class to ensure that the proposed container
@@ -115,10 +116,4 @@ public class TypeAttribute extends StringAttribute {
 		    "of TypedIOPort.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The type.
-    private Type _type;
 }

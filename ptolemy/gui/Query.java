@@ -63,7 +63,9 @@ public class Query extends JPanel {
         _grid = new GridBagLayout();
         _constraints = new GridBagConstraints();
         _constraints.fill = GridBagConstraints.HORIZONTAL;
-        _constraints.weightx = 1.0;
+        // Currently, resizing the query does not change the size
+        // of the entries.  To change that, uncomment the following.
+        // _constraints.weightx = 1.0;
         _constraints.anchor = GridBagConstraints.NORTHWEST;
         _entryPanel.setLayout(_grid);
         // It's not clear whether the following has any real significance...
@@ -584,6 +586,19 @@ public class Query extends JPanel {
         _notifyListeners(name);
     }
 
+    /** Specify the number of columns to use.
+     *  The default is one.  If an integer larger than one is specified
+     *  here, then the queries will be arranged using the specified number
+     *  of columns.  As queries are added, they are put in the first row
+     *  until that row is full.  Then they are put in the second row, etc.
+     *  @param columns The number of columns.
+     */
+    public void setColumns(int columns) {
+        if (columns <= 0) throw new IllegalArgumentException(
+                "Query.setColumns() requires a strictly positive argument.");
+        _columns = columns;
+    }
+
     /** Set the displayed text of an entry that has been added using
      *  addDisplay.
      *  Notify listeners that the value has changed.
@@ -722,7 +737,6 @@ public class Query extends JPanel {
     /** Specify the preferred width to be used for entry boxes created
      *  in using addLine().  If this is called multiple times, then
      *  it only affects subsequent calls.
-     *
      *  @param characters The preferred width.
      */
     public void setTextWidth(int characters) {
@@ -820,9 +834,16 @@ public class Query extends JPanel {
         // Note that Box and BoxLayout do not work because they do not
         // support gridded layout.
         _constraints.gridwidth = 1;
+        _constraints.insets = _leftPadding;
         _grid.setConstraints(label, _constraints);
         _entryPanel.add(label);
-        _constraints.gridwidth = GridBagConstraints.REMAINDER;
+
+        _constraints.insets = _noPadding;
+        if (_columns > 1 && ((_entries.size() + 1) % _columns != 0)) {
+            _constraints.gridwidth = 1;
+        } else {
+            _constraints.gridwidth = GridBagConstraints.REMAINDER;
+        }
         _grid.setConstraints(widget, _constraints);
         _entryPanel.add(widget);
         _entries.put(name, entry);
@@ -885,6 +906,9 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The number of columns.
+    private int _columns = 1;
+
     // The hashtable of items in the query.
     private Map _entries = new HashMap();
 
@@ -894,11 +918,17 @@ public class Query extends JPanel {
     // The hashtable of labels in the query.
     private Map _labels = new HashMap();
 
+    // Left padding insets.
+    private Insets _leftPadding = new Insets(0, 10, 0, 0);
+
     // Area for messages.
     private JTextArea _messageArea = null;
 
     // Panel into which messages are placed.
     private JPanel _messagePanel = new JPanel();
+
+    // No padding insets.
+    private Insets _noPadding = new Insets(0, 0, 0, 0);
 
     // The hashtable of previous values, indexed by entry name.
     private Map _previous = new HashMap();

@@ -72,7 +72,6 @@ JSRCS = \
 	Manager.java \
 	NoRoomException.java \
 	NoTokenException.java \
-	PrototypeAttribute.java \
 	QueueReceiver.java \
 	Receiver.java \
 	StreamExecutionListener.java \

@@ -31,6 +31,7 @@
 package ptolemy.gui.demo;
 
 import javax.swing.JApplet;
+import javax.swing.UIManager;
 import java.awt.Color;
 import ptolemy.gui.*;
 
@@ -49,6 +50,17 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
      */
     public QueryApplet() {
         super();
+
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        // NOTE: This creates the only dependence on Swing in this
+        // class.  Should this be left to derived classes?
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -67,7 +79,6 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
     public void init() {
         super.init();
         _query = new Query();
-        getContentPane().add(_query);
         _query.addCheckBox("check", "Check box", true);
         _query.setTextWidth(20);
         _query.addLine("line", "Entry box", "default entry");
@@ -82,6 +93,7 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
+        getContentPane().add(_query);
     }
 
     ///////////////////////////////////////////////////////////////////

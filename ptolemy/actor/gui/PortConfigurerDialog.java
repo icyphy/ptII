@@ -59,7 +59,7 @@ not return until the user dismisses the dialog.
 @version $Id$
 */
 public class PortConfigurerDialog extends ComponentDialog
-    implements ChangeListener {
+        implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  Several buttons are added to the dialog.

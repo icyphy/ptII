@@ -103,23 +103,16 @@ public class Constants {
         _table.put("true", BooleanToken.TRUE);
         _table.put("false", BooleanToken.FALSE);
 
+        // Type constants.
 	_table.put("boolean", BooleanToken.FALSE);
 	_table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
 	_table.put("double", new DoubleToken(0.0));
-
-	// conflict with the fix() function in the FixPointFunctions class
-	//_table.put("fix", new FixToken(0.0, 2, 1));
-
+        _table.put("fixedpoint", new FixToken(0.0, 2, 1));
+	_table.put("general", new ptolemy.data.Token());
 	_table.put("int", new IntToken(0));
 	_table.put("long", new LongToken(0));
-
-	// object tokens are not used now
-	//_table.put("object", new ObjectToken(new Object()));
-
+        _table.put("object", new ObjectToken());
 	_table.put("string", new StringToken(""));
-
-	// is this needed?
-	//_table.put("general", new ptolemy.data.Token());
     }
 
 }

@@ -174,14 +174,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute instanceof TypeAttribute) {
-            ((TypeAttribute)attribute).validate();
             Type type = ((TypeAttribute)attribute).getType();
-            if (type != null) {
-                setTypeEquals(type);
-            }
-        } else if (attribute instanceof PrototypeAttribute) {
-            ((PrototypeAttribute)attribute).validate();
-            Type type = ((PrototypeAttribute)attribute).getType();
             if (type != null) {
                 setTypeEquals(type);
             }
