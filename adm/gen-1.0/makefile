@@ -137,16 +137,6 @@ $(PTIIDIST):
 	find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	@echo "Regenerate the documentation"
 	(cd $(PTIIDIST)/doc; make)
-	@echo "Update $(PTIIDIST)/mk, since it is probably a link" 
-	rm -rf $(PTIIDIST)/mk
-	mkdir $(PTIIDIST)/mk
-	chmod g+ws $(PTIIDIST)/mk
-	cp $(PTIIHOME)/mk/ptdir.mk $(PTIIDIST)/mk
-	cp $(PTIIHOME)/mk/ptdist.mk $(PTIIDIST)/mk
-	cp $(PTIIHOME)/mk/ptII.mk $(PTIIDIST)/mk
-	cp $(PTIIHOME)/mk/ptII.mk.in $(PTIIDIST)/mk
-	cp $(PTIIHOME)/mk/ptno-compile.mk $(PTIIDIST)/mk
-	cp $(PTIIHOME)/mk/ptcommon.mk $(PTIIDIST)/mk
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make 
