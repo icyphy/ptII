@@ -61,7 +61,7 @@ import diva.util.xml.XmlReader;
 //// SVGIcon
 /**
 This class is intended to eventually replace XMLIcon, however,
-the current version doesn't work very well.
+the current version doesn't work very well, so it isn't used.
 
 @author Edward A. Lee
 @version $Id$
