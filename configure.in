@@ -1660,8 +1660,10 @@ else
     	     AC_MSG_WARN(['Did not find "$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip"'])
 	  else    
 	     QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
+	     AC_MSG_RESULT([ok, found '$QTJAVA_ZIP'])
+	     AC_MSG_CHECKING([again for Quicktime for Java])
 	     if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
-	         AC_MSG_RESULT(ok, found $QTJAVA_ZIP)
+	         AC_MSG_RESULT(ok)
 	         PTQUICKTIME_DIR=quicktime
 	     fi
 	  fi    
@@ -1685,7 +1687,7 @@ fi
 if test -z "$PTQUICKTIME_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime"
 else
-    if ! -z "$QTJAVA_ZIP"; then
+    if test ! -z "$QTJAVA_ZIP"; then
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$QTJAVA_ZIP\"/>"
     fi
