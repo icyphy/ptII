@@ -99,7 +99,8 @@ compileShallowDemo: $(JCLASS)
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
 	ptolemy.copernicus.shallow.Main $(SOURCECLASS) -d "$(ROOT)"  \
-		-p wjtp targetPackage:$(SHALLOWTARGETPACKAGE) \
+		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
+		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
