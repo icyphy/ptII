@@ -58,9 +58,11 @@ of the new/resulting Token is checked to see if it can be converted to
 the type of the Parameter in a lossless manner. If it cannot an exception
 is thrown.
 <p>
-If another Object (e.g. Parameter) wants to Observe this Parameter, it must
-register its interest with the TokenPublisher associated with the
-contained Token.
+If another object (e.g. Parameter) wants to notified of changes in this
+Parameter, it must implement the ParameterListner interface and register
+itself as a listner with this Parameter. Since Tokens are immutable, the
+value contained by this Parameter only changes when a new Token is placed
+in it or it is given a new expression which is evaluated.
 <p>
 To create a parameter from an expression, create the parameter with the
 appropriate container and name, then call setExpression() to set its value.
