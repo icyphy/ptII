@@ -1,24 +1,13 @@
-<!-- $Id$-->
-<HTML>
-<HEAD>
-<TITLE>Discrete Event Simulation Demo</TITLE>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6">
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Discrete Event Queueing Demonstration
+</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
 
-<CENTER>
-<H1>
-Demo of DE simulation applet</H1></CENTER>
+<H1>Discrete Event Queueing Demonstration</H1>
 
-<H3>
-DE Simulation:</H3>
-The following applet uses Ptolemy II DE domain architecture to simulate a
-queueing system with blocking policy. This particular demo is obtained from
-Ptolemy 0.7.1 DE domain demo.
-<P>
-You can interact with the applet by choosing the stop time of the simulation.
-<P>
-<BR>&nbsp;
-<BR>&nbsp;
 <CENTER>
 <P><APPLET name="AdderApplet"
    bgcolor=#FAF0E6
@@ -27,11 +16,15 @@ You can interact with the applet by choosing the stop time of the simulation.
 	ptolemy/ptsupport.jar"
    code=ptolemy.domains.de.demo.QueueApplet.class
    codebase=../../../..
-   width=600 height=400>
+   width=700 height=450>
 <param name="background" value="#faf0e6">
-<BR><I>If you were able to run applets, you would have a waveform demo
+<BR><I>If you were able to run applets, you would have a queueuing demo
 here.</I>
 <BR></APPLET></CENTER>
+
+This applet uses the Ptolemy II DE domain architecture to simulate a
+queueing system with blocking policy. This particular demo is obtained from
+the Ptolemy 0.7.1 DE domain demo.
 
 <P>This applet is implemented by
 <TT><A HREF="QueueApplet.java">QueueApplet.java</A></TT>.
@@ -83,9 +76,7 @@ Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <IMG SRC="img/QueueDiagram.gif"
 Alt="Imagemap" Usemap="#ActorsMap" Ismap>
 </CENTER>
-<BR>
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
-</BODY>
-</HTML>
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
