@@ -404,7 +404,19 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile
-	(cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
+	# Fix up domains/makefile
+	grep -v "csp.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
+	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
+		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile
+	# Fix up configs/makefile
+	grep -v "dsp.jar|full.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
+	#cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
 	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
 
 ###############
