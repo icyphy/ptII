@@ -67,6 +67,8 @@ OPTIONAL_FILES = \
 	doc \
 	'SDFScheduler$$1.class' \
 	'SDFScheduler$$NamedObjComparator.class'
+	'UnsafeSDFScheduler$$1.class' \
+	'UnsafeSDFScheduler$$NamedObjComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

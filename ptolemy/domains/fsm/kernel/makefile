@@ -75,6 +75,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'AbstractActionsAttribute$$1.class' \
+	'AbstractActionsAttribute$$ActionScope.class' \
 	'FSMDirector$$1.class' \
 	'InterfaceAutomaton$$1.class' \
 	'InterfaceAutomaton$$Triple.class'

@@ -62,7 +62,8 @@ MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'RelationList$$RelationNode.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
