@@ -34,7 +34,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
 import soot.SceneTransformer;
 
 import java.io.BufferedWriter;
@@ -60,7 +61,8 @@ in the directory named by the outDir parameter.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class InterpretedWriter extends SceneTransformer {
+public class InterpretedWriter extends SceneTransformer
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InterpretedWriter(CompositeActor model) {
@@ -77,13 +79,20 @@ public class InterpretedWriter extends SceneTransformer {
     }
 
     public String getDefaultOptions() {
-        return super.getDefaultOptions();
+        return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage outDir";
+        return "targetPackage outDir";
     }
 
+
+    public String getPhaseName() {
+        return "";
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Save the model as a .xml file
      *  <p>For example, if the model is called MyModel, and
@@ -107,11 +116,11 @@ public class InterpretedWriter extends SceneTransformer {
         System.out.println("InterpretedWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        _outputDirectory = Options.getString(options, "outDir");
+        _outputDirectory = PhaseOptions.getString(options, "outDir");
 
         // If the targetPackage is foo.bar, and the model is Bif,
         // the we will do mkdir $PTII/foo/bar/Bif/
-        _targetPackage = Options.getString(options, "targetPackage");
+        _targetPackage = PhaseOptions.getString(options, "targetPackage");
 
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
