@@ -97,6 +97,16 @@ public class UtilityFunctions {
         return new DoubleMatrixToken(result);
     }
 
+    /** Return the approximate number of bytes available for future 
+     *  object allocation.  Note that requesting a garbage collection
+     *  may change this value.
+     *  @return The approximate number of bytes available.
+     *  @see #totalMemory
+     */
+    public static LongToken freeMemory() {
+	return new LongToken(Runtime.getRuntime().freeMemory());
+    }
+
     /** FIXME. Placeholder for a function that will return a model.
      */
     public static ObjectToken model(String classname)
@@ -271,6 +281,15 @@ public class UtilityFunctions {
             result[i] = element;
         }
         return new ArrayToken(result);
+    }
+
+    /** Return the approximate number of bytes used by current objects
+     *	and available for future object allocation.
+     *  @return The total number of bytes used by the JVM.
+     *  @see #freeMemory
+     */
+    public static LongToken totalMemory() {
+	return new LongToken(Runtime.getRuntime().totalMemory());
     }
 
     ///////////////////////////////////////////////////////////////////
