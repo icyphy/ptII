@@ -859,11 +859,11 @@ fi
 		echo "$ac_t""$CMD_PATH" 1>&6
 	else
 		echo "configure: warning: Failed to find the 'cmd' command, which
-is used by the $PTII/bin/ptolemy script.  Usually cmd is found
-at c:\\winnt\\system32\\cmd.exe.  You may need to modify your
-PATH to explicitly include c:\\winnt\\system32 by going
-to Start->Settings->Control Panels->System->Environment and changing
-%SystemRoot%\\system32 to c:\\winnt\\system32" 1>&2
+    is used by the $PTII/bin/ptolemy script.  Usually cmd is found
+    at c:\\winnt\\system32\\cmd.exe.  You may need to modify your
+    PATH to explicitly include c:\\winnt\\system32 by going
+    to Start->Settings->Control Panels->System->Environment and changing
+    %SystemRoot%\\system32 to c:\\winnt\\system32" 1>&2
 
 	fi
 	;;
