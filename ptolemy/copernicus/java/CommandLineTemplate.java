@@ -114,7 +114,11 @@ public class CommandLineTemplate {
             // start the models.
             Iterator models = _models.iterator();
             while(models.hasNext()) {
+                long startTime = System.currentTimeMillis();
                 startRun((CompositeActor)models.next());
+                
+                System.out.println("Execution stats:");
+                System.out.println(timeAndMemory(startTime));
             }
         }
     }
@@ -223,13 +227,26 @@ public class CommandLineTemplate {
             long startTime = System.currentTimeMillis();
             manager.startRun();
             System.out.println("Execution stats:");
-            System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
+            System.out.println(timeAndMemory(startTime));
         
         } catch (IllegalActionException ex) {
             // Model is already running.  Ignore.
             System.out.println("Exception = " + ex);
             ex.printStackTrace();
         }
+    }
+    
+    // copied from Manager.
+    public static String timeAndMemory(long startTime) {
+	Runtime runtime = Runtime.getRuntime();
+	long totalMemory = runtime.totalMemory()/1024;
+	long freeMemory = runtime.freeMemory()/1024;
+	return System.currentTimeMillis() - startTime
+	    + " ms. Memory: "
+	    + totalMemory + "K Free: " + freeMemory + "K ("
+	    + Math.round( (((double)freeMemory)/((double)totalMemory))
+			  * 100.0)
+	    + "%)";
     }
 
     /** If the specified model has a manager and is executing, then
