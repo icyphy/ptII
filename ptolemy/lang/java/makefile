@@ -172,14 +172,14 @@ depend:
 # This rule will update the .bin files by reading in .tbl files
 # Note that this requires the modified version of byacc that 
 # we don't actually ship with ptII
-update_tables: yylhs.bin
+update_tables: JavaParser.class Skeleton.class yylhs.bin
 yylhs.bin: yylhs.tbl
 	$(ROOT)/bin/ptinvoke ptolemy.lang.java.Skeleton $(ROOT)/$(ME)/Main.java
 	-rm -f Main.jskel
 
 # We don't actually ship our modified version of byacc
 PTBYACC = $(ROOT)/vendors/misc/byacc/ptbyacc
-yylhs.tbl: jparser.y
+yylhs.tbl: jparser.y 
 	$(PTBYACC) -j -p ptolemy.lang.java -f JavaParserTmp jparser.y	
 
 demo: PrintTree RegenerateCode

@@ -83,11 +83,16 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 //#line 84 "JavaParser.java"
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.File;
-import java.io.RandomAccessFile;
 import java.io.FileReader;
-import java.io.StreamTokenizer;
 import java.io.LineNumberReader;
+import java.io.RandomAccessFile;
+import java.io.Reader;
+import java.io.StreamTokenizer;
 
 
 
@@ -528,7 +533,7 @@ protected void yyerror(String msg)
 
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 2069 "JavaParser.java"
+//#line 2074 "JavaParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1881,7 +1886,7 @@ case 287:
 //#line 1479 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3419 "JavaParser.java"
+//#line 3424 "JavaParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
