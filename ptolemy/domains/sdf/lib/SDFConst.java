@@ -47,8 +47,8 @@ performance in the SDF domain.
 <p>
  The value of the
 output is that of the token contained by the <i>value</i> parameter,
-which by default is a DoubleToken with value 1. The type of the output
-is DoubleToken.
+which by default is a IntToken with value 1. The type of the output
+is constrained to be at least the type of <i>value</i>.
 <p>
 The production rate of this actor is set by the <i>rate</i> parameter,
 which has a default value of 256.
@@ -61,7 +61,7 @@ public class SDFConst extends SDFSource {
 
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
-     *  the default value of an DoubleToken with value 1.
+     *  the default value of an IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -72,18 +72,17 @@ public class SDFConst extends SDFSource {
     public SDFConst(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	value = new Parameter(this, "value", new DoubleToken(1));
+    	value = new Parameter(this, "value", new IntToken(1));
 
-	// set the type constraints. Set type equals double for
-	// performance reasons.
-	output.setTypeEquals(BaseType.DOUBLE);;
+	// set the type constraints.
+	output.setTypeAtLeast(value);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The value produced by this constant source.
-     *  By default, it contains an DoubleToken with value 1.  If the
+     *  By default, it contains an IntToken with value 1.  If the
      *  type of this token is changed during the execution of a model,
      *  then the director will be asked to redo type resolution. This
      *  value is reread on each call to fire().
@@ -131,12 +130,10 @@ public class SDFConst extends SDFSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	DoubleToken[] resultTokenArray = new DoubleToken[_rate];
-	double valueDouble = ((DoubleToken)value.getToken()).doubleValue();
+	Token[] resultTokenArray = new Token[_rate];
 	for (int i = 0; i < _rate; i++) {
-	    // Convert to double[].
 	    resultTokenArray[i] = 
-		new DoubleToken(valueDouble);
+		value.getToken();
 	}
 	output.sendArray(0, resultTokenArray);
     }
