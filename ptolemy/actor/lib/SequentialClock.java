@@ -256,21 +256,6 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         getDirector().fireAt(this, _offsets[0] + currentTime);
     }
 
-    /** Set the current value.
-     *  @return True.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || val.length() <= _phase) {
-            throw new IllegalActionException(this,
-                    "Offsets and values parameters lengths do not match.");
-        }
-
-        _currentValue = val.getElement(_phase);
-        return true;
-    }
-
     /** Update the state of the actor and schedule the next firing,
      *  if appropriate.
      *  @exception IllegalActionException If the director throws it when
@@ -303,6 +288,21 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         getDirector().fireAt(this, _cycleStartTime + _offsets[_phase]);
 
+        return true;
+    }
+
+    /** Set the current value.
+     *  @return True.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        ArrayToken val = (ArrayToken)(values.getToken());
+        if (val == null || val.length() <= _phase) {
+            throw new IllegalActionException(this,
+                    "Offsets and values parameters lengths do not match.");
+        }
+
+        _currentValue = val.getElement(_phase);
         return true;
     }
 
