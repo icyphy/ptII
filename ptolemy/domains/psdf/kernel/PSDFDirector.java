@@ -40,6 +40,10 @@ import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 
+// ssb psdf-related imports
+import ptolemy.graph.sched.*;
+import synthesis.dif.psdf.*;
+
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -126,14 +130,59 @@ public class PSDFDirector extends SDFDirector {
         _init();
     }
 
+    /** Preinitialize the actors associated with this director and
+     *  compute the schedule.  The schedule is computed during
+     *  preinitialization so that hierarchical opaque composite actors
+     *  can be scheduled properly, since the act of computing the
+     *  schedule sets the rate parameters of the external ports.  In
+     *  addition, performing scheduling during preinitialization
+     *  enables it to be present during code generation.  The order in
+     *  which the actors are preinitialized is arbitrary.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        
+        _debugMessage("In PSDFDirector.preinitialize()\n");        
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
+            throw new IllegalActionException("Attempted to initialize " +
+                    "PSDF system with no scheduler");
+        // force the schedule to be computed.
+        if (_debugging) _debug("Computing schedule");
+        try {
+            ptolemy.actor.sched.Schedule schedule = scheduler.getSchedule();
+            _debugMessage("PSDFDirector.preinitialize: scheduling complete\n"); 
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to compute schedule:");
+        }
+    }
+
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected boolean _postfirereturns = true;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // Print a debugging message if the debugging flag is turned on.
+    private void _debugMessage(String message) {
+        if (_debugFlag) {
+            System.out.print(message);
+        }
+    }
 
     /** Initialize the object.   In this case, we give the PSDFDirector a
      *  default scheduler of the class PSDFScheduler.
      */
-
-    private void _init() throws IllegalActionException, NameDuplicationException {
+    private void _init() throws IllegalActionException, NameDuplicationException
+            {
         PSDFScheduler scheduler =
             new PSDFScheduler(this, uniqueName("Scheduler"));
     }
@@ -141,5 +190,8 @@ public class PSDFDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    protected boolean _postfirereturns = true;
+    // Debugging flag.
+    private boolean _debugFlag = true;
+
+
 }

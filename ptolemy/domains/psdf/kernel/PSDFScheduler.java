@@ -42,6 +42,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
@@ -65,6 +66,10 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
+
+import synthesis.dif.psdf.*;
+// import ptolemy.graph.sched.*;
+import ptolemy.graph.*;
 
 ///////////////////////////////////////////////////////////
 //// PSDFScheduler
@@ -151,6 +156,42 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         super(container, name);
     }
 
+    /** Return the parameterized scheduling sequence.  
+     *  An exception will be thrown if the graph is not schedulable.  
+     *
+     *  @return A schedule of the deeply contained opaque entities
+     *  in the firing order.
+     *  @exception NotSchedulableException If a parameterized schedule 
+     *  cannot be derived for the model.
+     *  @exception IllegalActionException If the rate parameters
+     *  of the model are not correct, or the computed rates for
+     *  external ports are not correct.
+     */
+
+    protected Schedule _getSchedule() 
+            throws NotSchedulableException, IllegalActionException {
+        System.out.println("Starting PSDFScheduler._getSchedule()"); 
+        PSDFDirector director = (PSDFDirector)getContainer();
+        CompositeActor model = (CompositeActor)director.getContainer();
+        PSDFGraphReader graphReader = new PSDFGraphReader();
+        PSDFGraph psdfGraph = (PSDFGraph) (graphReader.convert(model));
+        System.out.println("Finished converting to a PSDF graph"); 
+        System.out.println(psdfGraph.toString()); 
+        psdfGraph.printEdgeRateExpressions();
+        System.out.println("Invoking the P-APGAN algorithm"); 
+        PSDFAPGANStrategy scheduler = new PSDFAPGANStrategy(psdfGraph);
+        ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
+        System.out.println("Returned from P-APGAN; the schedule follows."); 
+        System.out.println(schedule.toString()); 
+        Schedule result = (Schedule) 
+                 _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
+                 scheduler);
+        System.out.println("Completed PSDFScheduler._getSchedule().\n The "
+                + "schedule follows.\n" + result.toString());
+        // Just return an empty schedule for now
+        return new Schedule();
+    }
+
     // Evaluate the given parse tree in the scope of the the model
     // being scheduled, resolving "::" scoping syntax inside the
     // model.
@@ -166,6 +207,39 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 node, _parserScope);
         return result;
     }
+
+    // Expand the P-APGAN-clustered graph.
+    // @param graph The graph containing the node.
+    // @param node The super node to expand.
+    // @param apgan The scheduler that was used to build the cluster hierarchy.
+    // @return The schedule saving the expansion result.
+    private ScheduleElement _expandAPGAN(PSDFGraph graph, 
+            ptolemy.graph.Node node, PSDFAPGANStrategy apgan) {
+        ScheduleElement element;
+        PSDFGraph childGraph = (PSDFGraph)apgan.getSubgraph(node);
+
+        // atomic node
+        if (childGraph == null) {
+            PSDFNodeWeight weight = (PSDFNodeWeight)node.getWeight();
+            element = new Firing((Actor)weight.getComputation());
+        // super node
+        } else {
+            element = new Schedule();
+            // Expand the super node with adjacent nodes contained within it.
+            Edge edge = (Edge)childGraph.edges().iterator().next();
+            ptolemy.graph.Node source = edge.source();
+            ptolemy.graph.Node sink   = edge.sink();
+            ScheduleElement first  = _expandAPGAN(childGraph, source, apgan);
+            ScheduleElement second = _expandAPGAN(childGraph, sink, apgan);
+            ((Schedule)element).add(first);
+            ((Schedule)element).add(second);
+        }
+
+        // FIXME: set the iteration count appropriately
+        // element.setIterationCount(graph.getRepetitions(node));
+        return element;
+    }
+
 
     private class SymbolicFiring extends Firing {
         /** Construct a firing with the given actor.  The given actor

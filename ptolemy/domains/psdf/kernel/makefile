@@ -36,7 +36,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT);synthesis.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
