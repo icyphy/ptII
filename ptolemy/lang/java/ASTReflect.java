@@ -372,7 +372,7 @@ public final class ASTReflect {
 				       "Could not find class '" + className +
 				       "'. The package of this class has " +
 				       "not yet been loaded, so we need to " +
-				       "look in the searchPath. Looked in" +
+				       "look in the searchPath. Looked in " +
                                        packageBuffer);
 	}
     }
