@@ -187,4 +187,87 @@ public class JNLPUtilities {
         output.close();
         return temporaryFile.toString();
     }
+
+    /** Given a jar URL, read in the resource and save it as a file in
+     *  a similar directory in the classpath if possible.  In this
+     *  context, by similar directory, we mean the directory where
+     *  the file would found if it was not in the jar url.
+     *  For example, if the jar url is 
+     *  jar:file:/ptII/doc/design.jar!/doc/design/design.pdf
+     *  then this method will read design.pdf from design.jar
+     *  and save it as /ptII/doc/design.pdf.
+     *        
+     *  @param jarURLName The name of the jar URL to read.  jar URLS start
+     *  with "jar:" and have a "!/" in them.
+     *  @return the name of the file that was created or
+     *  null if the file cannot be created
+     */
+    public static String saveJarURLInClassPath(String jarURLName)
+        throws IOException {
+        URL jarURL = jarURLEntryResource(jarURLName);
+        if (jarURL == null) {
+            jarURL = Thread.currentThread()
+                  .getContextClassLoader().getResource(jarURLName);
+        }
+
+        if (jarURL == null) {
+            throw new FileNotFoundException("Could not find '"
+                                            + jarURLName + "'");
+        }
+
+        int jarSeparatorIndex = jarURLName.indexOf("!/");
+        if (jarSeparatorIndex == -1) {
+            return null;
+        }
+
+        String jarURLFileName = jarURLName.substring(0, jarSeparatorIndex);
+        String entryFileName = jarURLName.substring(jarSeparatorIndex + 2);
+
+        // We assume / is the file separator here because URLs 
+        // _BY_DEFINITION_ have / as a separator and not the Microsoft
+        // non-conforming hack of using a backslash.
+
+        String jarURLParentFileName =
+            jarURLFileName.substring(0,jarURLFileName.lastIndexOf("/"));
+
+        String parentEntryFileName = 
+            entryFileName.substring(0, entryFileName.lastIndexOf("/"));
+
+        if (jarURLParentFileName.endsWith(parentEntryFileName)
+            && jarURLParentFileName.startsWith("jar:file:/")) {
+            // The top level directory, probably $PTII
+            String jarURLTop =
+                jarURLParentFileName.substring(10,
+                        jarURLParentFileName.length()
+                        - parentEntryFileName.length());
+
+            File temporaryFile = new File(jarURLTop, entryFileName);
+
+            // If the file exists, we assume that it is the right one.
+            // FIXME: we could do more here, like check for file sizes.
+            if ( !temporaryFile.exists()) {
+                // The file does not exist, so we copy to it.
+                BufferedOutputStream output =
+                    new BufferedOutputStream(
+                            new FileOutputStream(temporaryFile));
+
+                // The resource pointed to might be a pdf file, which
+                // is binary, so we are careful to read it byte by
+                // byte and not do any conversions of the bytes.
+
+                BufferedInputStream input =
+                    new BufferedInputStream(jarURL.openStream());
+
+                int c;
+                while (( c = input.read()) != -1) {
+                    output.write(c);
+                }
+                input.close();
+                output.close();
+            }
+            return temporaryFile.toString();
+        }
+        return null;
+    }
 }
+
