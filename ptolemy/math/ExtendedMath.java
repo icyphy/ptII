@@ -59,7 +59,7 @@ public final class ExtendedMath {
     public static double acosh (double x) {
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
-            + "is required to be greater than 1.  Got " + x);
+                    + "is required to be greater than 1.  Got " + x);
         }
         return Math.log( x+Math.sqrt(x*x-1) );
     }

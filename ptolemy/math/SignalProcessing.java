@@ -100,7 +100,7 @@ public final class SignalProcessing {
 
         if (x == null || x.length == 0) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
-            + "empty array argument.");
+                    + "empty array argument.");
         }
         // Calculate the order of the FFT.
         double m = Math.log(x.length)*_LOG2SCALE;
@@ -135,7 +135,7 @@ public final class SignalProcessing {
     public static void fft(Complex[] x, boolean inverse) {
         if (x == null || x.length == 0) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
-            + "empty array argument.");
+                    + "empty array argument.");
         }
         // Calculate the order of the FFT.
         double m = Math.log(x.length)*_LOG2SCALE;
@@ -145,8 +145,8 @@ public final class SignalProcessing {
         int size = 1 << order;
         if (size != x.length) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
-            + "In-place fft requires an array argument with length that is "
-            + "a power of two. Got length: " + x.length);
+                    + "In-place fft requires an array argument with length that is "
+                    + "a power of two. Got length: " + x.length);
         }
 
         _fft(x, order, inverse);
@@ -179,7 +179,7 @@ public final class SignalProcessing {
     public static Complex[] fft(Complex[] x, int order, boolean inverse) {
         if (x == null || x.length == 0) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
-            + "empty array argument.");
+                    + "empty array argument.");
         }
         // size = 2**order
         int size = 1 << order;
@@ -267,7 +267,7 @@ public final class SignalProcessing {
     public static int powerOfTwo(double x) {
         if (x <= 0.0) {
             throw new IllegalArgumentException("SignalProcessing.powerOfTwo: "
-            + "argument is not a positive number: " + x);
+                    + "argument is not a positive number: " + x);
         }
         double m = Math.log(x)*_LOG2SCALE;
         int exp = (int)Math.ceil(m);
@@ -305,19 +305,19 @@ public final class SignalProcessing {
      *  @param excess The excess bandwith (in the range 0.0 to 1.0).
      *  @return A sample of a raised cosine pulse.
      */
-     public static double raisedCosine(double t, double T, double excess) {
-         if (t == 0.0) return 1.0;
-         double x = t/T;
-         double s = Math.sin(Math.PI * x) / (Math.PI * x);
-         if (excess == 0.0) return s;
-         x *= excess;
-         double denominator = 1.0 - 4 * x * x;
-         // If the denominator is close to zero, take it to be zero.
-         if (close(denominator, 0.0)) {
-             return s * Math.PI/4.0;
-         }
-         return s * Math.cos (Math.PI * x) / denominator;
-     }
+    public static double raisedCosine(double t, double T, double excess) {
+        if (t == 0.0) return 1.0;
+        double x = t/T;
+        double s = Math.sin(Math.PI * x) / (Math.PI * x);
+        if (excess == 0.0) return s;
+        x *= excess;
+        double denominator = 1.0 - 4 * x * x;
+        // If the denominator is close to zero, take it to be zero.
+        if (close(denominator, 0.0)) {
+            return s * Math.PI/4.0;
+        }
+        return s * Math.cos (Math.PI * x) / denominator;
+    }
 
     /** Return a new array containing a raised cosine pulse, computed using
      *  the raisedCosine() method. The first argument is the time of the first
@@ -342,14 +342,14 @@ public final class SignalProcessing {
      *  @param excess The excess bandwith (in the range 0.0 to 1.0).
      *  @return An array containing a raised cosine pulse.
      */
-     public static double[] raisedCosinePulse(double start, int length,
-             double period, double T, double excess) {
-         double[] result = new double[length];
-         for (int i = 0; i < length; i++) {
-             result[i] = raisedCosine(start + i*period, T, excess);
-         }
-         return result;
-     }
+    public static double[] raisedCosinePulse(double start, int length,
+            double period, double T, double excess) {
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = raisedCosine(start + i*period, T, excess);
+        }
+        return result;
+    }
 
     /** Return a sample of a sawtooth wave with the specified period and
      *  phase at the specified time.  The returned value ranges between
@@ -376,10 +376,10 @@ public final class SignalProcessing {
      *  @param x A number.
      *  @return The sinc function.
      */
-     public static double sinc(double x) {
-         if (x == 0.0) return 1.0;
-         return Math.sin(x) / x;
-     }
+    public static double sinc(double x) {
+        if (x == 0.0) return 1.0;
+        return Math.sin(x) / x;
+    }
 
     /** Return a sample of a square wave with the specified period and
      *  phase at the specified time.  The returned value is 1 or -1.
@@ -445,13 +445,13 @@ public final class SignalProcessing {
         double denominator = t*t*16*excess*excess - T*T;
         if (close(denominator, 0.0)) {
             return (T * sqrtT/(8 * excess * Math.PI * t)) *
-            (oneplus * Math.sin(oneplus * t) -
-            (oneminus * T/(4 * excess * t)) * Math.cos(oneminus * t) +
-            (T/(4 * excess * t * t)) * Math.sin(oneminus * t) );
+                (oneplus * Math.sin(oneplus * t) -
+                        (oneminus * T/(4 * excess * t)) * Math.cos(oneminus * t) +
+                        (T/(4 * excess * t * t)) * Math.sin(oneminus * t) );
         }
         return (4 * excess / (Math.PI*sqrtT)) *
-        (Math.cos(oneplus * t) + Math.sin(oneminus * t)/(x * 4 * excess)) /
-        (1.0 - 16 * excess * excess * x * x);
+            (Math.cos(oneplus * t) + Math.sin(oneminus * t)/(x * 4 * excess)) /
+            (1.0 - 16 * excess * excess * x * x);
     }
 
     /** Return a new array containing a square-root raised cosine pulse,
@@ -477,14 +477,14 @@ public final class SignalProcessing {
      *  @param excess The excess bandwith (in the range 0.0 to 1.0).
      *  @return An array containing a raised cosine pulse.
      */
-     public static double[] sqrtRaisedCosinePulse(double start, int length,
-             double period, double T, double excess) {
-         double[] result = new double[length];
-         for (int i = 0; i < length; i++) {
-             result[i] = sqrtRaisedCosine(start + i*period, T, excess);
-         }
-         return result;
-     }
+    public static double[] sqrtRaisedCosinePulse(double start, int length,
+            double period, double T, double excess) {
+        double[] result = new double[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = sqrtRaisedCosine(start + i*period, T, excess);
+        }
+        return result;
+    }
 
     /** Return a sample of a triangle wave with the specified period and
      *  phase at the specified time.  The returned value ranges between
@@ -553,7 +553,7 @@ public final class SignalProcessing {
     private static void _fft(Complex[] x, int order, boolean inverse) {
         if (order <= 0) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
-            + "Invalid order argument: " + order);
+                    + "Invalid order argument: " + order);
         }
         // size = 2**order
         int size = 1 << order;
@@ -627,14 +627,14 @@ public final class SignalProcessing {
         for (int i = 1;i<(size-1);i++){
             int k = size/2;
             while(k <= j){
-               j = j - k;
-               k = k/2;
+                j = j - k;
+                k = k/2;
             }
             j = j+k;
             if (i<j){
-               Complex temp = x[j];
-               x[j] = x[i];
-               x[i] = temp;
+                Complex temp = x[j];
+                x[j] = x[i];
+                x[i] = temp;
             }
         }
 

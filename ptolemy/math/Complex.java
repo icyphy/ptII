@@ -380,9 +380,9 @@ public final class Complex implements Cloneable, Serializable {
      *  @param z A complex number
      *  @return A new complex number.
      */
-     public static Complex log (Complex z) {
-         return  new Complex( Math.log(z.abs()), z.angle() );
-     }
+    public static Complex log (Complex z) {
+        return  new Complex( Math.log(z.abs()), z.angle() );
+    }
 
     /** Multiply this complex number by the specified complex number.
      *  @param w A complex number.
