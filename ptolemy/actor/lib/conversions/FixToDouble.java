@@ -39,27 +39,45 @@ import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
-/** 
+/**  
 
-Read a FixToken and converts it to a DoubleToken. Before doing so,
-scale the FixToken to the give precision. To fit the new precision, a
-rounding error may occur. In that case the value of the FixToken is
-determined, depending on the quantization mode selected. The following
-quantization modes are supported in case an overflow occurs.
+This actor converts a FixToken into a DoubleToken. This conversion is
+explicitly provided since there exists not a lossless conversion
+between these two types in the type lattice and thus the type system
+cannot resolve this conversion automatically.
+
+<P>
+
+The actor reads in a single FixToken from its input port and converts
+it to a DoubleToken. Before doing the conversion, it scales the
+FixToken to a give precision. To fit into this new precision, a
+rounding or overflow error may occur. In case of an overflow, the
+value of the FixToken is determined, depending on the overflow mode
+selected. The following overflow modes are supported in case an
+overflow occurs.
 
 <ul>
-<li> mode = 0, <b>Saturate</b>: The FixToken is set,
-depending on its sign, equal to the Max or Min value possible
-with the new given precision.
-<li> mode = 1, <b>Zero Saturate</b>: The FixToken is
-set equal to zero.
+
+<li> mode = 0, <b>Saturate</b>: The FixToken is set, depending on its
+sign, equal to the Maximum or Minimum value possible with the new
+given precision.
+
+<li> mode = 1, <b>Zero Saturate</b>: The FixToken is set equal to
+zero.
+
 </ul>
 
-The default quantizer is Saturate and the default value for precision
-is "(16/2)".
+For this actor, the default overflow mode is set to Saturate and the
+default precision is "(16/2)", which means that a FixToken is fit into
+16 bits of which 2 bits represent the integer part.
+
+Parameter <i>precision</i> is of type StringToken and parameter
+<i>overflow</i> is of type IntToken.
 
 @author Bart Kienhuis
 @version $Id$
+@see ptolemy.data.FixToken
+@see ptolemy.data.Precision
 */
 
 public class FixToDouble extends Transformer {
@@ -83,8 +101,8 @@ public class FixToDouble extends Transformer {
         precision.setTypeEquals(BaseType.STRING);
 
         // Set the Parameter
-	quantizer = new Parameter(this, "quantizer", new IntToken(0));
-        quantizer.setTypeEquals(BaseType.INT);
+	overflow = new Parameter(this, "overflow", new IntToken(0));
+        overflow.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,9 +114,10 @@ public class FixToDouble extends Transformer {
     public Parameter precision;
 
 
-    /** Select the mode when rounding the FixPoint to the given Precision.
+    /** Overflow mode used when fitting the FixPoint into the given
+     *  Precision.
      */
-    public Parameter quantizer;
+    public Parameter overflow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -114,20 +133,22 @@ public class FixToDouble extends Transformer {
 	    throws CloneNotSupportedException {
         FixToDouble newobj = (FixToDouble)super.clone(ws);
         newobj.precision = (Parameter)newobj.getAttribute("precision");
-        newobj.quantizer = (Parameter)newobj.getAttribute("quantizer");
+        newobj.overflow = (Parameter)newobj.getAttribute("overflow");
         return newobj;
     }
 
-    /** Read at most one token from each input and convert the FixToken
-     *  into a DoubleToken.
+    /** Read at most one token from each input the convert the
+     *  FixToken into a DoubleToken. The FixToken is howver first
+     *  scaled to the desired precision, which may lead to rounding or
+     *  overflow errors.
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 	if (input.hasToken(0)) {
     	    FixToken in = (FixToken)input.get(0);
-            // Scale the FixToken to specific precision.
-            // If rounding occurs, select which quantizer to use.
-            FixToken scaled = in.scaleToPrecision( _precision, _quantizer );
+            // Scale the FixToken to specific precision. If rounding
+            // occurs, select which overflow mode to use.
+            FixToken scaled = in.scaleToPrecision( _precision, _overflow );
 	    DoubleToken result = new DoubleToken( scaled.convertToDouble() );
             output.send(0, result);
         }
@@ -140,7 +161,7 @@ public class FixToDouble extends Transformer {
         super.initialize();
         _precision = new Precision(((StringToken)precision.getToken()).
                 toString());
-        _quantizer = ((IntToken)quantizer.getToken()).intValue();
+        _overflow = ((IntToken)overflow.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,6 +170,6 @@ public class FixToDouble extends Transformer {
     // The Precision of the Actor.
     private Precision _precision = null;
 
-    // The quantizer when fitting to the desired precision.
-    private int _quantizer = 0;
+    // The overflow mode used when fitting to the desired precision.
+    private int _overflow = 0;
 }

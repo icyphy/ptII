@@ -42,20 +42,45 @@ import ptolemy.data.expr.Parameter;
 //// DoubleToFix
 /**
 
-Read a DoubleToken and converts it to a FixToken with a given
-precision.  In fitting the double into a fix point, the following
-quantization modes are supported.
+This actor converts a DoubleToken into a FixToken. This conversion is
+explicitly provided since there exists not a lossless conversion
+between these two types in the type lattice and thus the type system
+cannot resolve this conversion automatically.
+
+<p> 
+
+The actor reads in a single DoubleToken from its input port and
+converts it to a FixToken with a given precision. In this process,
+quantization errors may occur. In fitting the double into a fix point,
+the following quantization modes are supported.
 
 <ul>
-<li> mode = 0, <b>Rounding</b>:.
-<li> mode = 1, <b>Truncate</b>:.
+
+<li> mode = 0, <b>Rounding</b>: Returns a Fixtoken that is nearest to
+the value that can be presented with the given precision, possibly
+introducing quantization errors.
+
+<li> mode = 1, <b>Truncate</b>: Returns a FixToken that is the nearest
+value towards zero that can be presented with the given precision,
+possibly introducing quantization errors.
+
 </ul>
 
-The default quantizer is rounding and the default value for precision
-is "(16/2)".
+For this actor, the default quantization mode is set to
+<i>Rounding</i> and the default precision is "(16/2)", which means
+that a FixToken is created of 16 bits of which 2 bits represent the
+integer part.
+
+<p>
+
+Parameter <i>precision</i> is of type StringToken and parameter
+<i>quantizer</i> is of type IntToken.
 
 @author Bart Kienhuis
 @version $Id$
+@see ptolemy.math.Quantizer
+@see ptolemy.data.FixToken
+@see ptolemy.math.Precision
 */
 
 public class DoubleToFix extends Transformer {
@@ -109,7 +134,7 @@ public class DoubleToFix extends Transformer {
         return newobj;
     }
 
-    /** Read at most one token from each input and convert the Token
+    /** Read at most one token from the input and convert the Token
      *  value in a FixToken with a given precision.
      *
      * @exception IllegalActionException If there is no director.
