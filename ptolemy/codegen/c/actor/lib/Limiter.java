@@ -16,12 +16,12 @@ import ptolemy.kernel.util.NamedObj;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class Remainder extends CCodeGeneratorHelper {
+public class Limiter extends CCodeGeneratorHelper {
 
 	/**
 	 * @param component
 	 */
-    public Remainder(ptolemy.actor.lib.Remainder actor) {
+    public Limiter(ptolemy.actor.lib.Limiter actor) {
         super(actor);
     }
 
@@ -31,8 +31,11 @@ public class Remainder extends CCodeGeneratorHelper {
         ptolemy.actor.lib.AddSubtract actor = 
             (ptolemy.actor.lib.AddSubtract)getComponent();
         StringBuffer tmpStream = new StringBuffer();
-        tmpStream.append("$val(output) = $val(input) % $val(divisor);\n");
-        
+        tmpStream.append(
+                  "$val(output) =   ($val(input) < $val(bottom)? $val(bottom) : \n"
+                + "                 ($val(input) > $val(top)? $val(top) : \n"
+                + "                 $val(input));\n");
+
         _codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }

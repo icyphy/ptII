@@ -38,6 +38,9 @@ public class TrigFunction extends CCodeGeneratorHelper {
                 + "           (!strcmp($ref(function), \"asin\")) ? asin($val(input)) : \n"
                 + "           (!strcmp($ref(function), \"acos\")) ? acos($val(input)) : \n"
                 + "           atan($val(input));\n");
+    
+        _codeBlock = tmpStream.toString();
+        stream.append(processCode(_codeBlock));
     }
 
     ///////////////////////////////////////////////////////////////////

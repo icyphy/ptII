@@ -32,6 +32,9 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
             (ptolemy.actor.lib.AddSubtract)getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");
+
+        _codeBlock = tmpStream.toString();
+        stream.append(processCode(_codeBlock));
     }
 
     ///////////////////////////////////////////////////////////////////
