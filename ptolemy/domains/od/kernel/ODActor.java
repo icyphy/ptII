@@ -39,7 +39,37 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ODActor
 /** 
-The base class for OD actors.
+The base class for OD actors. ODActors are intended to run as threaded
+processes that maintain a distributed notion of time. Each ODActor in
+a system of connected actors, must maintain a local notion of time 
+which is dependent on the time of events that flow through the input
+receivers. An event is simply an object which contains a token, a
+time stamp and a receiver (to which the event is destined).
+
+To facilitate this process, the ODReceivers used by ODActors each have 
+three important variables: rcvrTime, lastTime and priority. The rcvrTime 
+of an ODReceiver is equal to the time of the oldest event that resides 
+on the receiver. The lastTime is equal to the time of the newest event 
+residing in the receiver. 
+
+An ODActor consumes tokens from the input receiver which has the oldest
+(smallest valued) rcvrTime. Such consumption is accomplished via blocking
+reads from the corresponding input receiver. The priority variable is used
+in cases where multiple input receivers share a common rcvrTime. Each
+receiver has an integer-valued priority. The receiver with the highest 
+priority is utilized if a common rcvrTime is shared. 
+
+The receiver priorities are set using the method setPriorities(). 
+First all of the input receivers are grouped by their container ports.
+If the ODIOPorts which contain the receivers have been explicitly 
+assigned priorities, then these groups are ordered accordingly. If not,
+the groups are ordered in increasing order according to the call to
+inputPorts(). Within each group, the priorities are assigned in increasing 
+order based on the call to port.getReceivers(). 
+
+Note that currently setPriorities() calls the method port.getPriority().
+This requires the port to be of type ODIOPort and hence precludes 
+polymorphic actors. A later version of this class will not have this constraint.
 
 
 @author John S. Davis II
@@ -233,14 +263,15 @@ public class ODActor extends AtomicActor {
         LinkedList listOfPorts = new LinkedList();
         Enumeration enum = inputPorts();
 	if( !enum.hasMoreElements() ) {
+            // FIXME: Eventually remove the print statement
 	    System.out.println("No ports in enumeration");
+            return;
 	}
         
         //
         // First Order Input Ports According To Priority
         //
         while( enum.hasMoreElements() ) {
-	    System.out.println("Getting ports");
             // FIXME: Are enumerations created deterministically?
             ODIOPort port = (ODIOPort)enum.nextElement();
             int priority = port.getPriority();
@@ -251,7 +282,7 @@ public class ODActor extends AtomicActor {
             } else {
                 for( int cnt = 0; cnt < listOfPorts.size(); cnt++ ) {
                     ODIOPort nextPort = (ODIOPort)listOfPorts.at(cnt);
-                    if( port.getPriority() <= nextPort.getPriority() ) {
+                    if( port.getPriority() < nextPort.getPriority() ) {
                         if( port != nextPort ) {
                             listOfPorts.insertAt( cnt, port ); 
                             cnt = listOfPorts.size(); 
