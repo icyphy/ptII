@@ -77,6 +77,7 @@ public class JavaToC {
         if (verbose) {
             System.out.println("JavaToC.convert(): classpath is: "
                     + classPath);
+            System.out.println("Single class flag is: " + generateSingleClass); 
         }
 
         // Initialize code generation.
