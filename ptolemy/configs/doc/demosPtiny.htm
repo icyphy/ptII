@@ -34,6 +34,45 @@ The top-level parameters are the model are shown in the run window.
 Edit these to explore the models.  They can be edited while the
 models are running.
 <ul>
+<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals</a>
+(New in Ptolemy II 2.0)
+.
+ <br>A modal model is an FSM (finite state machine) combined
+hierarchically with other models. In our visual syntax, the system
+builder directly interacts with this hierarchical view. If you look
+inside the modal model, you will see a visual rendition of the FSM. If
+you create a state in this FSM, then you can create a refinement, and
+also you can look inside the state using the context menu on the state.
+The refinement can be another FSM or some other model using some other
+Ptolemy domain. For example, by using the CT domain (continuous time),
+one can easily build hybrid systems.
+</li>
+
+<li>
+<a href="../../data/unit/demo/Units/Units.xml">Units</a>
+(New in Ptolemy II 2.0)
+.
+<br>
+This model illustrates the unit sytem.
+
+
+<br>A major source of errors in embedded software is incorrect application
+of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
+Ptolemy II that is quite clever. A suite of constants are defined, with
+names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
+"days". In each unit category ("length" or "time" for example), there
+is a primary unit with respect to which all the others are specified.
+Thus, for example, if the primary unit of length is meters, then the
+expression "1.0 * cm" will have an internal value of 0.01 * meters.
+Compound units are specified by just multiplying and dividing, as in
+for example "1.0 * cm/second".
+
+<br>The way this is realized is that these unit constants are tokens just
+like other Ptolemy II data, and multiplication and division are
+overloaded in the base classes for numeric valued tokens.
+
+</li>
+
 <li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
 Spectrum of a modulated sine wave</a>.
 <br> This example shows simple spectral estimation of the product
@@ -99,25 +138,6 @@ models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
 
-<li><a href="../../data/unit/demo/Units/Units.xml">Units</a>.<br>
-This model illustrates the unit sytem.
-
-<br>A major source of errors in embedded software is incorrect application
-of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
-Ptolemy II that is quite clever. A suite of constants are defined, with
-names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
-"days". In each unit category ("length" or "time" for example), there
-is a primary unit with respect to which all the others are specified.
-Thus, for example, if the primary unit of length is meters, then the
-expression "1.0 * cm" will have an internal value of 0.01 * meters.
-Compound units are specified by just multiplying and dividing, as in
-for example "1.0 * cm/second".
-
-<br>The way this is realized is that these unit constants are tokens just
-like other Ptolemy II data, and multiplication and division are
-overloaded in the base classes for numeric valued tokens.
-
-</li>
 <!--vergilDocs-->
 </ul>
 
@@ -134,7 +154,7 @@ The list below is organized by domains and includes the demonstrations above.
 <!-- Agilent -->
 <!--vergilDocs-->
 
-<li> <a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a>
+<li> <a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a> (New in Ptolemy II 2.0)
 <!-- Corba -->
 <li> <a href="../../domains/ct/demo/Helicopter/Helicopter.xml">Helicopter Control</a>
 <li> <a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz Attractors</a>
@@ -142,9 +162,9 @@ The list below is organized by domains and includes the demonstrations above.
 <li> <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">Sigma-Delta A/D Conversion</a>
 <li> <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
 <li> <a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
-<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals</a>
-<li> <a href="../../domains/ct/demo/Thermostat/ModalThermostat.xml">Modal Thermostat</a>
-<li> <a href="../../data/unit/demo/Units/Units.xml">Units</a> (New in PtolemyII 2.0)
+<li> <a href="../../domains/ct/demo/Thermostat/ModalThermostat.xml">Modal Thermostat</a> (New in Ptolemy II 2.0)
+<li>
+<a href="../../data/unit/demo/Units/Units.xml">Units</a> (New in PtolemyII 2.0)
 <!-- jspaces -->
 </ul>
 
@@ -163,8 +183,8 @@ The list below is organized by domains and includes the demonstrations above.
 <h3>Finite State Machine</h3>
 <ul>
 <li> <a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
-<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a>
-<li> <a href="../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml">Multiple&nbsp;Runs</a>
+<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (New in Ptolemy II 2.0)
+<li> <a href="../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml">Multiple&nbsp;Runs</a> (New in Ptolemy II 2.0)
 <!-- systemLevelTypes-->
 </ul>
 
@@ -183,11 +203,13 @@ The list below is organized by domains and includes the demonstrations above.
 <li><a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>
 <!--vergilDocs-->
 <li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong</a>
-<li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>
-<li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+<li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a> (New in Ptolemy II 2.0)
+<li><a href="../../domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">OrthogonalCom</a> (New in Ptolemy II 2.0)
+<li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a> (New in Ptolemy II 2.0)
 
 <li><a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab</a>
-(Windows only, requires that Matlab be installed locally)
+Windows only, requires that Matlab be installed locally
+(New in Ptolemy II 2.0)
 
 <!--OrthogonalCom - Used by codegen -->
 
