@@ -54,12 +54,17 @@
 #
 
 
-if [info exist env(PTOLEMY)] {
-    set TYCHO $env(PTOLEMY)/tycho
+# Load up Tcl procs to print out enums
+if {[info procs _testEnums] == "" } then { 
+    source [file join $PTII util testsuite testEnums.tcl]
 }
 
-if [info exist env(TYCHO)] {
-    set TYCHO $env(TYCHO)
+if {[info procs enumToFullNames] == "" } then { 
+    source [file join $PTII util testsuite enums.tcl]
+}
+
+if {[info procs description2TclBlend] == "" } then { 
+    source [file join $PTII util testsuite description.tcl]
 }
 
 
