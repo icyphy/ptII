@@ -41,7 +41,7 @@ import java.util.EmptyStackException;
  *  An attribute that holds the undo/redo information about a models change
  *  history. This attribute is not persistent. This makes sense because a user
  *  commonly expects a models undo/redo information to disappear once the
- *  applictaion that is being worked on is closed. It is also a singleton,
+ *  application that is being worked on is closed. It is also a singleton,
  *  meaning that it will replace any previous attribute that has the same name
  *  and is an instance of the base class, SingletonAttribute.
  *  <p>
