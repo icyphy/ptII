@@ -121,24 +121,24 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
  
     /** Single input port.
      */
-    TypedIOPort input;
+    public TypedIOPort input;
     
     /** Single output port.
      */
-    TypedIOPort output;
+    public TypedIOPort output;
     
     /** The coefficients of the numerator, containing a DoubleMatrixToken.
      *  The DoubleMatrix can only be a row vector.
      *  The default value is [1.0].
      */
-    Parameter numerator;
+    public Parameter numerator;
     
     /** The coefficients of the denominator, containing a DoubleMatrixToken.
      *  The DoubleMatrix can only be a row vector will length greater
      *  than or equal to the length of the numerator.
      *  The default value is [1.0].
      */
-    Parameter denominator;
+    public Parameter denominator;
     
     //////////////////////////////////////////////////////////////////////
     ////                      public methods                          ////
@@ -231,9 +231,6 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         // Note that b is initialized to contain all zeros.
         for (int i = 1; i <= m; i++) {
             b[n-i] = bRow[m-i];
-        }
-        for (int i = 0; i < n; i++) {
-            System.out.println("a["+i+"] = " + a[i] + "; b["+i+"] = " + b[i]);
         }
         try {
             _workspace.getWriteAccess();
