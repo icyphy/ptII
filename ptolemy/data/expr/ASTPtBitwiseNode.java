@@ -56,13 +56,13 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
             throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num == 1) {
-            return childTokens[0];
+            return _childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
             throw new IllegalActionException(
                     "Not enough/too many operators for number of children");
         }
-        ptolemy.data.Token result = childTokens[0];
+        ptolemy.data.Token result = _childTokens[0];
         boolean isBoolean = false;
         if (result instanceof BooleanToken) {
             isBoolean = true;
@@ -76,14 +76,14 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
             _lexicalTokens.add(x);
             op = ((Token)x).image;
             if (isBoolean) {
-                if ( !(childTokens[i] instanceof BooleanToken) ) {
+                if ( !(_childTokens[i] instanceof BooleanToken) ) {
                     throw new IllegalActionException("Operation " + op +
                             " not defined between a BooleanToken and a "
-                            + childTokens[i].getClass());
+                            + _childTokens[i].getClass());
                 }
                 boolean arg1 = ((BooleanToken)result).booleanValue();
                 boolean arg2 =
-                        ((BooleanToken)childTokens[i]).booleanValue();
+                        ((BooleanToken)_childTokens[i]).booleanValue();
                 if (op.equals("&")) {
                     result = new BooleanToken(arg1 & arg2);
                 } else if (op.equals("|")) {
@@ -96,16 +96,16 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                 // must be applying bitwise operation between integer types
                 // integer types are long and int
                 if ( !((result instanceof IntToken) ||
-                        (childTokens[i] instanceof LongToken)) ) {
+                        (_childTokens[i] instanceof LongToken)) ) {
                     throw new IllegalActionException("Bitwise operation "
                             + op + " is not supported between " +
                             result.getClass() + " and " +
-                            childTokens[i].getClass());
+                            _childTokens[i].getClass());
                 }
                 if ( (result instanceof LongToken) ||
-                        (childTokens[i] instanceof LongToken) ) {
+                        (_childTokens[i] instanceof LongToken) ) {
                     long arg1 = ((ScalarToken)result).longValue();
-                    long arg2 = ((ScalarToken)childTokens[i]).longValue();
+                    long arg2 = ((ScalarToken)_childTokens[i]).longValue();
                     if (op.equals("&")) {
                         result = new LongToken(arg1 & arg2);
                     } else if (op.equals("|")) {
@@ -119,7 +119,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
                     }
                 } else {
                     int arg1 = ((ScalarToken)result).intValue();
-                    int arg2 = ((ScalarToken)childTokens[i]).intValue();
+                    int arg2 = ((ScalarToken)_childTokens[i]).intValue();
                     if (op.equals("&")) {
                         result = new IntToken(arg1 & arg2);
                     } else if (op.equals("|")) {

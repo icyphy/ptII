@@ -64,21 +64,21 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
                     "one operator, check PtParser.");
         }
         boolean res = false;
-        ptolemy.data.Token result = childTokens[0];
+        ptolemy.data.Token result = _childTokens[0];
         Token x = (Token)_lexicalTokens.removeFirst();
         // need to insert at end if want to reparse tree
         _lexicalTokens.add(x);
 
         if (x.image.compareTo("==") == 0) {
-            result = result.isEqualTo(childTokens[1]);
+            result = result.isEqualTo(_childTokens[1]);
             return result;
         } else  if (x.image.compareTo("!=") == 0) {
-            result = result.isEqualTo(childTokens[1]);
+            result = result.isEqualTo(_childTokens[1]);
             return ((ptolemy.data.BooleanToken)result).not();
         } else  {
             // relational operators only make sense on types below double
-            double a = ((ScalarToken)childTokens[0]).doubleValue();
-            double b = ((ScalarToken)childTokens[1]).doubleValue();
+            double a = ((ScalarToken)_childTokens[0]).doubleValue();
+            double b = ((ScalarToken)_childTokens[1]).doubleValue();
             if (x.image.compareTo(">=") == 0) {
                 if (a >= b) res = true;
             } else if  (x.image.compareTo(">") == 0) {
@@ -90,8 +90,8 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
             } else {
                 throw new IllegalActionException(
                         "Invalid operation " + x.image + " between " +
-                        childTokens[0].getClass().getName() + " and " +
-                        childTokens[1].getClass().getName());
+                        _childTokens[0].getClass().getName() + " and " +
+                        _childTokens[1].getClass().getName());
             }
         }
         return new BooleanToken(res);

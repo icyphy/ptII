@@ -75,7 +75,7 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
             throw new InternalErrorException(
                     "More than one child of a Unary node");
         }
-        ptolemy.data.Token result = childTokens[0];
+        ptolemy.data.Token result = _childTokens[0];
         if (_isMinus == true) {
             // Need to chose the type at the bottom of the hierarch
             // so as to not do any upcasting. For now IntToken will do.

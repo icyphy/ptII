@@ -69,7 +69,7 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
         int num = jjtGetNumChildren();
         // A functional-if node MUST have three children in parse tree, the
         // first of which is of type BooleanToken.
-        ptolemy.data.Token test = childTokens[0];
+        ptolemy.data.Token test = _childTokens[0];
         if ( !(test instanceof BooleanToken)) {
             throw new IllegalArgumentException(
                     "Functional-If must branch on a boolean: " +
@@ -82,9 +82,9 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
         // construct appears ok
         boolean value = ((BooleanToken)test).booleanValue();
         if (value) {
-            return childTokens[1];
+            return _childTokens[1];
         } else {
-            return childTokens[2];
+            return _childTokens[2];
         }
     }
 

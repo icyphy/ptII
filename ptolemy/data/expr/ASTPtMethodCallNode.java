@@ -100,7 +100,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         int num = jjtGetNumChildren();
         // if only one child, then must be an enclosing parenthesis
         // i.e. actually no method call.
-        if (num == 1) return childTokens[0];
+        if (num == 1) return _childTokens[0];
 
         // The first child is the token on which to invoke the method.
         // Note that all the arguments to the method call must be
@@ -112,12 +112,12 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         Object[] argValues = new Object[num - 1];
         try {
             for (int i = 1; i < num; i++) {
-                argValues[i-1] = (ptolemy.data.Token)childTokens[i];
+                argValues[i-1] = (ptolemy.data.Token)_childTokens[i];
                 argTypes[i-1] = Class.forName("ptolemy.data.Token");
             }
-            Class destTokenClass = childTokens[0].getClass();
+            Class destTokenClass = _childTokens[0].getClass();
             Method m = destTokenClass.getMethod(_methodName, argTypes);
-            Object result = m.invoke(childTokens[0], argValues);
+            Object result = m.invoke(_childTokens[0], argValues);
             // Method call can only return ptolemy.data.Token, we want?
             if (result instanceof ptolemy.data.Token) {
                 return (ptolemy.data.Token)result;
@@ -145,14 +145,14 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         int num = jjtGetNumChildren();
         for (int i = 0; i < (num-1); i++) {
             if (i == 0) {
-                sb.append(childTokens[i].toString());
+                sb.append(_childTokens[i].toString());
             } else {
-                sb.append(", " + childTokens[i].toString());
+                sb.append(", " + _childTokens[i].toString());
             }
         }
         return  "Function " + _methodName + "(" + sb + ") cannot" +
                 " be executed with given arguments, on ptTokens of " +
-                "type " + childTokens[0].getClass().getName() + ": " +
+                "type " + _childTokens[0].getClass().getName() + ": " +
                 ex.getMessage();
     }
 

@@ -55,7 +55,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
             throws IllegalActionException {
         int num =  jjtGetNumChildren();
         if (num == 1) {
-            return childTokens[0];
+            return _childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
             throw new InternalErrorException(
@@ -63,7 +63,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
                     "not equal to number of operators plus one, " +
                     "check PtParser.");
         }
-        ptolemy.data.Token result = childTokens[0];
+        ptolemy.data.Token result = _childTokens[0];
         String op = "";
         for (int i = 1; i < num; i++) {
             // When start using 1.2 will change this
@@ -73,9 +73,9 @@ public class ASTPtSumNode extends ASTPtRootNode {
             _lexicalTokens.add(x);
             op = x.image;
             if (op.compareTo("+") == 0) {
-                result = result.add(childTokens[i]);
+                result = result.add(_childTokens[i]);
             } else if (op.compareTo("-") == 0) {
-                result = result.subtract(childTokens[i]);
+                result = result.subtract(_childTokens[i]);
             } else {
                 throw new InternalErrorException(
                         "Invalid concatenator in sum() production, " +

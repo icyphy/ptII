@@ -55,17 +55,17 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
             throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num == 1) {
-            return childTokens[0];
+            return _childTokens[0];
         }
         boolean values[] = new boolean[num];
         int i = 0;
         for ( i = 0; i < num; i++ ) {
-            if (!(childTokens[i] instanceof BooleanToken)) {
+            if (!(_childTokens[i] instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
-                        + "operation on " + childTokens[i].getClass());
+                        + "operation on " + _childTokens[i].getClass());
             }
             values[i] =
-                    ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
+                    ((ptolemy.data.BooleanToken)_childTokens[i]).booleanValue();
         }
         boolean result = values[0];
         for (i = 0; i < _lexicalTokens.size(); i++) {

@@ -54,9 +54,9 @@ public class ASTPtProductNode extends ASTPtRootNode {
             throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num == 1) {
-            return childTokens[0];
+            return _childTokens[0];
         }
-        ptolemy.data.Token result = childTokens[0];
+        ptolemy.data.Token result = _childTokens[0];
         String op = "";
         int i = 1;
         for (i = 1; i < num; i++) {
@@ -66,11 +66,11 @@ public class ASTPtProductNode extends ASTPtRootNode {
             _lexicalTokens.add(x); // so that tree can be reparsed
             op = x.image;
             if (op.compareTo("*") == 0) {
-                result = result.multiply(childTokens[i]);
+                result = result.multiply(_childTokens[i]);
             } else if (op.compareTo("/") == 0) {
-                result = result.divide(childTokens[i]);
+                result = result.divide(_childTokens[i]);
             } else if (op.compareTo("%") == 0) {
-                result = result.modulo(childTokens[i]);
+                result = result.modulo(_childTokens[i]);
             } else {
                 throw new InternalErrorException(
                         "Invalid concatenator in term() production, " +

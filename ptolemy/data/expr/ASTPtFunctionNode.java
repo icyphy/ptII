@@ -97,22 +97,22 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             int col = 0;
             if (args == 3) {
                 // referencing a matrix
-                if (!(childTokens[1] instanceof IntToken)) {
+                if (!(_childTokens[1] instanceof IntToken)) {
                     throw new IllegalActionException("The row index to "
                             + _funcName + " is not an integer.");
                 } else {
-                    row = ((IntToken)childTokens[1]).intValue();
+                    row = ((IntToken)_childTokens[1]).intValue();
                 }
             }
             ptolemy.data.Token colTok =
-                    (args == 2) ? childTokens[1] : childTokens[2];
+                    (args == 2) ? _childTokens[1] : _childTokens[2];
             if (!(colTok instanceof IntToken)) {
                 throw new IllegalActionException("The column index to "
                         + _funcName + " is not an integer.");
             } else {
                 col = ((IntToken)colTok).intValue();
             }
-            ptolemy.data.Token tok = childTokens[0];
+            ptolemy.data.Token tok = _childTokens[0];
             if (tok instanceof BooleanMatrixToken) {
                 boolean val = ((BooleanMatrixToken)tok).getElementAt(row, col);
                 return new BooleanToken(val);
@@ -141,7 +141,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                         " recursive call to null parser.");
             }
             NamedList scope = _parser.getScope();
-            exp = childTokens[0].toString();
+            exp = _childTokens[0].toString();
             ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
             return tree.evaluateParseTree();
         }
@@ -152,7 +152,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         // Note: Java makes a distinction between the class objects
         // for double & Double...
         for (int i = 0; i < args; i++) {
-            ptolemy.data.Token child = childTokens[i];
+            ptolemy.data.Token child = _childTokens[i];
             if (child instanceof DoubleToken) {
                 argValues[i] = new Double(((DoubleToken)child).doubleValue());
                 argTypes[i] = Double.TYPE;

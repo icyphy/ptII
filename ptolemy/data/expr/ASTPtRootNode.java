@@ -95,10 +95,10 @@ public class ASTPtRootNode implements Node {
                     "Encountered a node with no children that is " +
                     "not a leaf node, check PtParser.");
         } else {
-            childTokens = new ptolemy.data.Token[numChildren];
+            _childTokens = new ptolemy.data.Token[numChildren];
             for (int i = 0; i < numChildren; i++) {
                 ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
-                childTokens[i] = child.evaluateParseTree();
+                _childTokens[i] = child.evaluateParseTree();
             }
             _ptToken = _resolveNode();
             return _ptToken;
@@ -221,7 +221,7 @@ public class ASTPtRootNode implements Node {
                     "Node has no children, this method " +
                     "should be overridden!");
         }
-        return childTokens[0];
+        return _childTokens[0];
     }
 
 
@@ -247,7 +247,7 @@ public class ASTPtRootNode implements Node {
     protected LinkedList _lexicalTokens = new LinkedList();
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
-    protected ptolemy.data.Token[] childTokens;
+    protected ptolemy.data.Token[] _childTokens;
 
     /** Flags whether the parse tree under this root evaluates to a constant.
      */
