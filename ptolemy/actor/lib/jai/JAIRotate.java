@@ -40,6 +40,8 @@ import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -79,26 +81,34 @@ public class JAIRotate extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        xOrigin = new Parameter(this, "xOrigin", new IntToken(0));
-        yOrigin = new Parameter(this, "yOrigin", new IntToken(0));
 
-        degrees = new Parameter(this, "degrees", new DoubleToken(0.0F));
+        degrees = new PortParameter(this, "degrees");
+        degrees.setTypeEquals(BaseType.DOUBLE);
+        degrees.setExpression("0.0");
+
+        input.setTypeEquals(BaseType.OBJECT);
 
         interpolationType = new StringAttribute(this, "interpolationType");
         interpolationType.setExpression("bilinear");
         _interpolationType = _BILINEAR;
 
+        output.setTypeEquals(BaseType.OBJECT);
+
         subSampleBits =
             new Parameter(this, "subSampleBits", new IntToken(8));
+
+        xOrigin = new Parameter(this, "xOrigin", new IntToken(0));
+        yOrigin = new Parameter(this, "yOrigin", new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The number of degrees to rotate.  The default value of this
-     *  parameter is the double value 0.
+     *  parameter is the double value 0. If the port is left unconnected,
+     *  then the parameter value will be used.
      */
-    public Parameter degrees;
+    public PortParameter degrees;
 
     /** The type of interpolation to use.  This is a string valued
      *  attribute that defaults to type "bilinear"
@@ -147,8 +157,6 @@ public class JAIRotate extends Transformer {
             _xOrigin = ((IntToken)xOrigin.getToken()).intValue();
         } else if (attribute == yOrigin) {
             _yOrigin = ((IntToken)yOrigin.getToken()).intValue();
-        } else if (attribute == degrees) {
-            _degrees = ((DoubleToken)degrees.getToken()).doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -160,6 +168,9 @@ public class JAIRotate extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        degrees.update();
+        _degrees = ((DoubleToken)degrees.getToken()).doubleValue();
+
         ParameterBlock parameters = new ParameterBlock();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
