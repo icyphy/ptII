@@ -168,8 +168,11 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  a contained attribute when its value changes.  In this base class,
      *  the method does nothing.
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) {}
+    public void attributeChanged(Attribute attribute)
+           throws IllegalActionException {}
 
     /** Clone the object into the current workspace by calling the clone()
      *  method that takes a Workspace argument.
