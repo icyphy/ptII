@@ -264,7 +264,7 @@ public class NamedList implements Cloneable, Serializable {
      *  @param name The name of the desired element.
      *  @return The index of the desired element, or -1 if it not on the list.
      */
-    public int _getIndexOf(String name) {
+    private int _getIndexOf(String name) {
         CollectionEnumeration enum = new NamedListEnumeration();
         int count = 0;
         while( enum.hasMoreElements() ) {
