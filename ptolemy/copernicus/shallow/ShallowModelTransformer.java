@@ -53,10 +53,11 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
 import soot.Body;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -91,7 +92,7 @@ import java.util.Map;
 @since Ptolemy II 2.0
 */
 
-public class ShallowModelTransformer extends SceneTransformer {
+public class ShallowModelTransformer extends SceneTransformer  implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private ShallowModelTransformer(CompositeActor model) {
@@ -194,12 +195,23 @@ public class ShallowModelTransformer extends SceneTransformer {
         }
     }
 
+    /** Return the name of the field that is created to
+     *  represent the given channel of the given type of the
+     *  given relation.
+     */
+    public static String getBufferFieldName(TypedIORelation relation,
+            int channel, ptolemy.data.type.Type type) {
+        return "_" + StringUtilities.sanitizeName(relation.getName())
+            + "_" + channel
+            + "_" + StringUtilities.sanitizeName(type.toString());
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return "targetPackage";
     }
 
     /** Return the name of the field that is created for the
@@ -234,15 +246,8 @@ public class ShallowModelTransformer extends SceneTransformer {
         return "R" + StringUtilities.sanitizeName(relation.getName(context));
     }
 
-    /** Return the name of the field that is created to
-     *  represent the given channel of the given type of the
-     *  given relation.
-     */
-    public static String getBufferFieldName(TypedIORelation relation,
-            int channel, ptolemy.data.type.Type type) {
-        return "_" + StringUtilities.sanitizeName(relation.getName())
-            + "_" + channel
-            + "_" + StringUtilities.sanitizeName(type.toString());
+    public String getPhaseName() {
+        return "";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -253,7 +258,8 @@ public class ShallowModelTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         // create a class for the model
-        String modelClassName = Options.getString(options, "targetPackage")
+        String modelClassName =
+            PhaseOptions.getString(options, "targetPackage")
             + ".CG" + StringUtilities.sanitizeName(_model.getName());
 
         EntitySootClass modelClass =

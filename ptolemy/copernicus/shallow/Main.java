@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import soot.Pack;
+import soot.PackManager;
 import soot.Scene;
 import soot.Transform;
 import soot.jimple.toolkits.scalar.CommonSubexpressionEliminator;
@@ -84,33 +85,33 @@ public class Main extends KernelMain {
     public void addTransforms() {
         super.addTransforms();
 
+        Pack pack = PackManager.v().getPack("wjtp");
+
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-                WatchDogTimer.v()));
+        addTransform(pack, "wjtp.watchDog",
+                WatchDogTimer.v());
 
         // Generate the makefile files in outDir
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel)));
+        addTransform(pack, "wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel));
 
         // Create a class for the composite actor of the model
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
-                ShallowModelTransformer.v(_toplevel)));
+        addTransform(pack, "wjtp.mt",
+                ShallowModelTransformer.v(_toplevel));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
-                JimpleWriter.v()));
+        addTransform(pack, "wjtp.writeJimple1",
+                JimpleWriter.v());
 
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can
         // have access to the result.
-        _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+        _addStandardOptimizations(pack);
 
         // Disable the watch dog timer
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
-                WatchDogTimer.v(), "cancel:true"));
-
+        addTransform(pack, "wjtp.watchDogCancel",
+                WatchDogTimer.v(), "cancel:true");
     }
 
     /** Read in a MoML model, generate java files
