@@ -302,8 +302,8 @@ public class BasePNDirector extends ProcessDirector {
 	//If the container has input ports and there are active processes
 	//in the container, then the execution might restart on receiving
 	// additional data.
-	if ((((CompositeActor)getContainer()).
-		inputPorts()).hasMoreElements()
+	if (!((((CompositeActor)getContainer()).
+		inputPortList()).isEmpty())
 		&& _getActiveActorsCount() != 0 ){
 	    return true;
 	} else {
