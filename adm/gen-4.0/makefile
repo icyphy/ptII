@@ -185,7 +185,7 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
 		$(PTIIDIST)/config/*.class
-	(cd $(PTIIDIST; $(FINDCLEAN))
+	(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
