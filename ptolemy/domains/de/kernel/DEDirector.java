@@ -119,7 +119,7 @@ import java.util.Iterator;
  *  the prefire() method of this director. By default, execution also ends
  *  when the global event queue becomes empty. Sometimes, the desired
  *  behaviour is for the director to wait on an empty queue until another
- *  thread makes new events avalable.  For example, a DE actor may produce
+ *  thread makes new events available.  For example, a DE actor may produce
  *  events when a user hits a button on the screen. To prevent ending the
  *  execution when there are no more events, call
  *  stopWhenQueueIsEmpty() with argument <code>false</code>.
