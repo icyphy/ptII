@@ -100,6 +100,30 @@ public class DDEReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Removed ignored tokens from this receiver. If the receiver
+     *  time of this receiver is equal to TimedQueueReceiver.IGNORE,
+     *  then take the oldest token off of the queue. If after doing
+     *  so no other tokens are on the queue, then set the receiver 
+     *  time of this receiver to be equal to the current time of the 
+     *  time keeper controlling this receiver. 
+     */
+    public synchronized void clearIgnoredTokens() {
+	// Remove Ignored Token
+	super.get();
+
+	// Set the receiver time if queue is empty
+	if( (getRcvrTime() == TimedQueueReceiver.IGNORE) 
+		&& !super.hasToken() ) {
+	    Thread thread = Thread.currentThread();
+	    DDEThread ddeThread;
+	    if( thread instanceof DDEThread ) {
+		ddeThread = (DDEThread)thread;
+		TimeKeeper keeper = ddeThread.getTimeKeeper();
+		setRcvrTime( keeper.getCurrentTime() );
+	    }
+	}
+    }
+
     /** Do a blocking read on the queue. If no token is available,
      *  then inform the director that this receiver is blocking on
      *  a read and wait until a token becomes available. When a
@@ -252,16 +276,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	notifyAll();
     }
 
-    /** Set the pause flag of this receiver. If the flag is set to true,
-     *  then pause any process that tries to read from or write to this
-     *  receiver. If the flag is false, then resume any process that 
-     *  tries to read from or write to this receiver.
-     * @param flag The boolean pause flag of this receiver.
-     */
-    public void requestPause(boolean flag) {
-        ;
-    }
-
     /** Reset local flags. The local flag of this receiver indicates
      *  whether this receiver is scheduled for termination. Resetting
      *  the termination flag will make sure that this receiver is not
@@ -274,8 +288,8 @@ public class DDEReceiver extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         private methods 		   ////
 
-    // This method provides the recursive functionality
-    // of hasToken()
+    // This method provides the recursive 
+    // functionality of hasToken()
     private synchronized boolean _hasToken(Workspace workspace,
 	    DDEDirector director, TimeKeeper timeKeeper ) {
 
