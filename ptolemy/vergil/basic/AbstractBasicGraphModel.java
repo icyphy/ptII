@@ -31,6 +31,7 @@
 package ptolemy.vergil.basic;
 
 import diva.graph.GraphEvent;
+import diva.graph.GraphModel;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.NodeModel;
@@ -328,11 +329,18 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
          *  @param change The change that has been executed.
          */
         public void changeExecuted(ChangeRequest change) {
-            // Ignore anything that comes from this graph model.
-            // the other methods take care of issuing the graph event in
+            // Ignore anything that comes from a graph model.
+            // The other methods take care of issuing the graph event in
             // that case.
+            // This used to only ignore events that came from this
+            // graph model, but that had the side effect of triggering
+            // a structure changed event when you first look inside a
+            // composite actor.  This is because a new graph controller
+            // is involved in rendering the inside of the composite,
+            // but the change listener is registered with the top-level
+            // model.
             if (change != null
-                    && change.getSource() == AbstractBasicGraphModel.this) {
+                    && change.getSource() instanceof GraphModel) {
                 return;
             }
 
