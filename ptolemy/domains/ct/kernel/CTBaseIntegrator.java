@@ -434,16 +434,6 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _history.setCapacity(cap);
     }
 
-    /** Set the tentative state. Tentative state is the state that
-     *  the ODE solver resolved in one step.
-     *  It may not
-     *  be the final state due to error control or event detection.
-     *  @param value The value to be set.
-     */
-    public final void setTentativeState(double value) {
-        _tentativeState = value;
-    }
-
     /** Set the tentative derivative, dx/dt. Tentative derivative
      *  is the derivative of the state that
      *  the ODE solver resolved in one step. This may not
@@ -452,6 +442,16 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public final void setTentativeDerivative(double value) {
         _tentativeDerivative = value;
+    }
+
+    /** Set the tentative state. Tentative state is the state that
+     *  the ODE solver resolved in one step.
+     *  It may not
+     *  be the final state due to error control or event detection.
+     *  @param value The value to be set.
+     */
+    public final void setTentativeState(double value) {
+        _tentativeState = value;
     }
 
     ///////////////////////////////////////////////////////////////////
