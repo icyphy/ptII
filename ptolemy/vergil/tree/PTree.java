@@ -120,5 +120,5 @@ public class PTree extends JTree {
 		}
 	    }
 	}
-    };
+    }
 }
