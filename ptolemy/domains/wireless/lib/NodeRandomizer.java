@@ -79,7 +79,7 @@ import ptolemy.moml.MoMLChangeRequest;
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (sanjeev)
-   @see Locatable
+   @see ptolemy.kernel.util.Locatable
 */
 public class NodeRandomizer extends TypedAtomicActor {
 
