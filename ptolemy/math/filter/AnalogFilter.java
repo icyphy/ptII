@@ -37,10 +37,7 @@ The AnalogFilter class is an abstract class from which RealAnalogFilter and
 ComplexAnalogFilter are derived.  This class contains shared methods of 
 RealAnalogFilter and ComplexAnalogFilter.  These methods should be overwritten
 in RealAnalogFilter and ComplexAnalogFilter.  AnalogFilter class also contains
-method to designing an IIR filter with Butterworth and Chebychev.  These filter
-design methods were pull out of MathWizard and modified to the new filter 
-architecture.
-
+method to designing an IIR filter with Butterworth and Chebychev.  
 
 @author David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
 @version %W%	%G%
@@ -57,21 +54,14 @@ public abstract class AnalogFilter extends Filter {
      * filter.  
      * Thus it involves in these steps:
      *
-     *  - transform the spec from digital to analog with the specified 
-     *    transfer method 
-     *  - Given the spec(pass band freq and gain, stop band freq and gain), and 
-     *    characteristic (Butterworth, Chebyshev, etc) of the filter, an analog
-     *    prototype (lowpass, unit cutoff) is designed.  Along with the 
-     *    analog cutoff freq of the prototype lowpass.  The prototype is 
-     *    a RealAnalogFilter.
-     *  - The analog cutoff for lowpass and other third band is translated 
-     *    into data needed for frequency transformation.  
-     *  - The prototype undergoes analog frequency transform that change 
-     *    the unit cutoff lowpass to lowpass, highpass, bandpass or bandstop 
-     *    at desired shape.  
+     *  Given the spec(pass band freq and gain, stop band freq and gain), and 
+     *  characteristic (Butterworth, Chebyshev, etc) of the filter, an analog
+     *  prototype (lowpass, unit cutoff) is designed.  Along with the 
+     *  analog cutoff freq of the prototype lowpass.  The prototype is 
+     *  a RealAnalogFilter.
      *  
-     *    The filter object is returned back.  If specifictions is not yet 
-     *    supported, or illeagl, null will be returned.
+     *  The filter object is returned back.  If specifictions is not yet 
+     *  supported, or illeagl, IllegalArgumentException will thrown.
      *
      *    @return RealAnalogFilter object that contains designed filter.   
      *    @param appmethod the approximation method used for design analog 
@@ -83,12 +73,13 @@ public abstract class AnalogFilter extends Filter {
      *                    is at 0.8 PI radian frequency. 
      *    @param gain gains at various critical frequencies, value is between 
      *                0.0 ~ 1.0
-     *    @param fs sampling frequency
+     *   
      */
-    public static RealAnalogFilter designRealIIR(int mapmethod, int appmethod,
-            int filttype, double aPassEdgeFreq, double aStopEdgeFreq,
-            double passEdgeGain, double stopEdgeGain, double fs) {
-       
+    public static RealAnalogFilter designRealLowpassIIR(int mapmethod, 
+            int appmethod, int filttype, double aPassEdgeFreq, 
+            double aStopEdgeFreq, double passEdgeGain, double stopEdgeGain) 
+            throws IllegalArgumentException {
+                               
         // Epsilon factor in Chebyshev
         double epsilon;  
        
@@ -116,22 +107,28 @@ public abstract class AnalogFilter extends Filter {
                     aPassEdgeFreq, aStopEdgeFreq,epsilon);
         }
         else { 
-            System.out.println("Only Butterworth and Chebyshev approximations are supported"); 
-            return null;
+            throw new IllegalArgumentException(
+                    "Only Butterworth and Chebyshev approximations are supported"); 
         }
-            
+        
         return aFilter;
     }
 
-
+    /* Takes a RealAnalogFilter that lowpass and unit cutoff and transform it
+     * into the desired filter type.  The parameters inside RealAnalogFilter,
+     * analogfc, analogFreqCenter, analogFreqWidth needs to changed one's 
+     * desired value for the filter type.
+     * @param aFilter a RealAnalogFilter(lowpass) to be transformed
+     * @param filttype the desired filter type
+     */
     public static void freqTransformation(RealAnalogFilter aFilter, 
             int filttype) {
                 
         // transform prototype to desired filter type, then back digital domain
         if (filttype == Filter.LOWPASS){
                     
-        // transfer from unit lowpass to spec lowpass
-               _toLowPass(aFilter);
+            // transfer from unit lowpass to spec lowpass
+            _toLowPass(aFilter);
             
         } else if (filttype == Filter.HIGHPASS){
         
@@ -139,7 +136,7 @@ public abstract class AnalogFilter extends Filter {
             _toHighPass(aFilter);
             
         } else if (filttype == Filter.BANDPASS){
-
+        
             // transfer from unit lowpass to spec bandpass
             _toBandPass(aFilter);
         
@@ -149,7 +146,7 @@ public abstract class AnalogFilter extends Filter {
             _toBandStop(aFilter);
             
         } else {
-            System.out.println("Incorrect filter spec"); 
+            throw new IllegalArgumentException("Filter type not supported"); 
         }
     } 
     ////////////////////////////////////////////////////////////////////////
@@ -226,16 +223,14 @@ public abstract class AnalogFilter extends Filter {
                 d1 = 0;
                 d0 = 0;
             }
-                
-                
+                      
             // update the changes
             theFactors[i].setNumerator(new double[] {n0, n1, n2});
             theFactors[i].setDenominator(new double[] {d0, d1, d2});
         }      
-        
     }
 
-      /**
+    /**
      *  Perform analog frequency transformation that transform the unit cutoff
      *  frequency lowpass filter to highpass filter with cutoff frequency at 
      *  desired value.  This is done by replace the s in numerator/denominator 
@@ -298,6 +293,7 @@ public abstract class AnalogFilter extends Filter {
                 d2 = 0;
             }
 
+            // update the changes
             theFactors[i].setNumerator(new double[] {n0, n1, n2});
             theFactors[i].setDenominator(new double[] {d0, d1, d2});
         }
@@ -441,8 +437,6 @@ public abstract class AnalogFilter extends Filter {
             filter.addFactor(newFactors[i]);
         }
         
-        // double the order, since there are two edges
-        filter.order = filter.order*2;      
     }
 
      /**
@@ -460,9 +454,9 @@ public abstract class AnalogFilter extends Filter {
      *   
      *  to :
      *
-     *     n0*fo^4 + n1*B*fo^2*s + (n2*B^2 + 2*n0*fo^2)*s^2 + n1*B*s^3 + n0*s^4 
-     * new=--------------------------------------------------------------------
-     *     d0*fo^4 + d1*B*fo^2*s + (d2*B^2 + 2*d0*fo^2)*s^2 + d1*B*s^3 + d0*s^4 
+     *   n0*fo^4 + n1*B*fo^2*s + (n2*B^2 + 2*n0*fo^2)*s^2 + n1*B*s^3 + n0*s^4 
+     *  --------------------------------------------------------------------
+     *   d0*fo^4 + d1*B*fo^2*s + (d2*B^2 + 2*d0*fo^2)*s^2 + d1*B*s^3 + d0*s^4 
      *
      *  The new fraction is factored into two biquad and added to the
      *  RealAnalogFilter.  Notice the order of filter is doubled, since there 
@@ -579,8 +573,6 @@ public abstract class AnalogFilter extends Filter {
             filter.addFactor(newFactors[j]);
         }
         
-        // double the order, since there are two edges
-        filter.order = filter.order*2;      
     }
 
     
@@ -626,20 +618,14 @@ public abstract class AnalogFilter extends Filter {
           RealAnalogFilter designedFilter = new RealAnalogFilter();
           double num = Math.log(((1/passg)*(1/passg)-1)/
                                 ((1/stopg)*(1/stopg)-1));
-          //System.out.println("Butterworth stopef " + stopef+ " passef "+passe          //f);
+          
           double den = 2*Math.log(passef/stopef);
           double o = num/den;
          
-          if (_debug > 0){
-              System.out.println("order "+o);  
-          }
-
           // round the order to the nearest int
           int order = (int) Math.round(o);
-          // if (order%2!=0) order++;
+                    
           
-          designedFilter.order = order;
-
           // offset is the angluar difference from PI for each pair 
           // complex conjuage poles  
           double offset;
@@ -662,7 +648,7 @@ public abstract class AnalogFilter extends Filter {
           double [] coeff;          // coefficients of quadratic equation 
           if (order%2==0){          // even
               offset = Math.PI/(2*(double)order);  
-              quadterm = designedFilter.order/2;
+              quadterm = order/2;
           } else {                  // odd
               offset = 0;
               quadterm = order/2+1;
@@ -670,9 +656,7 @@ public abstract class AnalogFilter extends Filter {
 
           // allocate the space for quadratic terms
           RealSFactor[] newFactors = new RealSFactor[quadterm];
-          //System.out.println("quadterm = " + quadterm);
-          //System.out.println("newFactors Length = " + newFactors.length);
-          
+                    
           for (int i = 0; i < newFactors.length; i++) {
               newFactors[i] = new RealSFactor();
 
@@ -684,13 +668,11 @@ public abstract class AnalogFilter extends Filter {
               
               Complex pole = new Complex(Math.cos(Math.PI-offset), 
                                          Math.sin(Math.PI-offset)); 
-              System.out.println("SPole "+pole.real+" "+pole.imag);
               offset += Math.PI/((double)order);  
               // numerator equal to 1.0 for all quad terms 
                                                  
               newFactors[ind].setNumerator(numercoeff);
-              //System.out.println("ooo");  
-
+              
               // if pole's imaginary equal to zero then it's the single pole
               // at -1.0+j0.0 
               if ((pole.imag > -0.00001) && (pole.imag < 0.00001)){
@@ -700,15 +682,14 @@ public abstract class AnalogFilter extends Filter {
                   // conjugate pair of complex poles form zeroes for this term
                   double [] denomcoeff = 
                      { 1.0, (-2)*(pole.real), pole.magSquared()};
-                  System.out.println("denominator: "+ pole.magSquared()+" "+(-2)*(pole.real)+" 1.0");
-                  newFactors[ind].setDenominator(denomcoeff);     
+                     newFactors[ind].setDenominator(denomcoeff);     
               }
            
           }
-          //System.out.println("here");
           
           designedFilter.clearFactors();
          
+          // update the designed filter
           for (int i = 0; i < newFactors.length; i++) {
               designedFilter.addFactor(newFactors[i]);
           }
@@ -723,53 +704,47 @@ public abstract class AnalogFilter extends Filter {
           //            H(jf)^2         2*N 
           //
           //
-          //System.out.println("stopg "+stopg+" stopef"+stopef);
- 
           double a = Math.pow((1/stopg)*(1/stopg)-1, 1/((double) 2*order));
           double b = stopef;
           designedFilter.analogfc = b/a;
-          System.out.println("analog cutoff "+designedFilter.analogfc);
           return designedFilter;
     }
     
     
     /**
      * Design the pototype filter ( unit cutoff, lowpass) using Chebyshev 
-     * technique, and calculate the lowpass cutoff frequency.   The order 
-     * is determined by the two points specified by (passef, passg) and (stopef,
-     * stopg).  Then use the order and Chebyshev equation to enerate the 
-     * polynomials.  With the order found, the poles can be found using the 
+     * technique.  With the order found, the poles can be found using the 
      * knowledge that thers are 2*order of poles lie in a ellipse in s-plane.  
      * Results are then stored in RealAnalogFilter object's factors in 
-     * quadratic form.  Finally the cutoff frequency is found using 
-     * Chebyshev equation.
+     * quadratic form.  
+     * 
+     * Signal Processing Algorithms, Samuel D. Stearns, Ruth A. David
+     * Section 7.4, Chebyshev Filter Design
      *  
      * @return a RealAnalogFilter to be designed
-     * @param passg analog pass edge gain 
-     * @param stopg analog stop edge gain 
-     * @param passef analog pass edge freq 
-     * @param stopef analog stop edge freq 
+     * @param cutoffGain analog pass edge gain 
+     * @param stopGain analog stop edge gain 
+     * @param cutoffFreq analog pass edge freq 
+     * @param stopFreq analog stop edge freq 
      * @param epsilon ripple amplitude 
      */
-
-     /** Digital Filters and Signal Processing, Third Edition, by Leland B. 
-        Jackson
-        */
     private static RealAnalogFilter _designChebychev1(
             double cutoffGain, double stopGain, double cutoffFreq, 
             double stopFreq, 
             double epsilon) {
 
+        // calculate the order
         double order = ExtendedMath.acosh(1/(stopGain*epsilon))/
             ExtendedMath.acosh(stopFreq/cutoffFreq);
         order = Math.ceil(order);
+        
+        // calculate the constants
         double gamma = Math.pow(((1+Math.sqrt(1+Math.pow(epsilon,2)))/
                 epsilon),1/order);
         double sinhPhi = (gamma - Math.pow(gamma, -1))/2;
         double coshPhi = (gamma + Math.pow(gamma, -1))/2;
         
         RealAnalogFilter designedFilter = new RealAnalogFilter();
-        designedFilter.order = (int)order;
         designedFilter.analogfc = cutoffFreq;
         
         double mu;
@@ -778,23 +753,31 @@ public abstract class AnalogFilter extends Filter {
         double alpha;
         double beta;
         designedFilter.clearFactors();
+        
+        // counter used for adding poles and zeroes
         int N = (int)Math.ceil(order/2);
+        
+        // scaling factor for the poles and zeroes, so the transfer function
+        // is unit gain
         double factor = 1;
+        
+        // scaling factor for the even order filter
         double normalizer = Math.sqrt(1.0/(1.0+epsilon*epsilon));
         boolean odd = false;
         
-        double scale = cutoffFreq*stopFreq;
-        double reverse = stopFreq/cutoffFreq;
-        
+        // add poles and zeroes into the filter to be designed
         if (order%2 != 0) {
             mu = (2*N-1)*Math.PI/(2*order);
             sigma = -(sinhPhi*Math.sin(mu));
             omega = (coshPhi*Math.cos(mu));
+            
             Complex pole = new Complex(sigma, 0);
             Complex zero = new Complex(Double.POSITIVE_INFINITY);
             
             factor = pole.mag();
+            
             designedFilter.addPoleZero(pole, zero, factor, false);
+            
             odd = true;
         }
         
@@ -807,10 +790,15 @@ public abstract class AnalogFilter extends Filter {
                 mu = (2*i-1)*Math.PI/(2*order);
                 sigma = -(sinhPhi*Math.sin(mu));
                 omega = (coshPhi*Math.cos(mu));
+                
                 Complex pole = new Complex(sigma,omega);
                 Complex zero = new Complex(Double.POSITIVE_INFINITY);
                 
+                // since the poles and zeroes are in conjugate pairs
+                // their magnitude is the squared magnitude of a single
+                // pole.
                 factor = pole.magSquared();
+                
                 designedFilter.addPoleZero(pole, zero, factor, true);
             }
         }
@@ -818,34 +806,47 @@ public abstract class AnalogFilter extends Filter {
         if (odd == false ) {
             designedFilter.addFactor(new RealSFactor(new double[] {0,0,1},
             new double[] {0,0,1}, normalizer));
-        } else {
-            designedFilter.addFactor(new RealSFactor(new double[] {0,0,1},
-            new double[] {0,0,1}, -1));
-        }
-        
+        } 
+                
         return designedFilter;
     }
    
 
-    /** Digital Filters and Signal Processing, Third Edition, by Leland B. 
-        Jackson
-        */
+    /**
+     * Design the pototype filter ( unit cutoff, lowpass) using Chebyshev 
+     * technique.  The poles of this filter is simply scaled version of 
+     * chebyshev I filter.  The zeroes of this filter lies along the imaginary
+     * axis.  Results are then stored in RealAnalogFilter object's 
+     * factors in quadratic form.  
+     * 
+     * Signal Processing Algorithms, Samuel D. Stearns, Ruth A. David
+     * Section 7.4, Chebyshev Filter Design
+     *  
+     * @return a RealAnalogFilter to be designed
+     * @param cutoffGain analog pass edge gain 
+     * @param stopGain analog stop edge gain 
+     * @param cutoffFreq analog pass edge freq 
+     * @param stopFreq analog stop edge freq 
+     * @param epsilon ripple amplitude 
+     */
     private static RealAnalogFilter _designChebychev2(
             double cutoffGain, double stopGain, double cutoffFreq, 
             double stopFreq, 
             double epsilon) {
         
+        // calculate the order
         double order = ExtendedMath.acosh(1/(stopGain*epsilon))/
             ExtendedMath.acosh(stopFreq/cutoffFreq);
         double lambda = 1/stopGain;
         order = Math.ceil(order);
+        
+        // calculate the constants
         double gamma = Math.pow((lambda+Math.sqrt(Math.pow(lambda,2)-1)),
                 1/order);
         double sinhPhi = (gamma - Math.pow(gamma, -1))/2;
         double coshPhi = (gamma + Math.pow(gamma, -1))/2;
         
         RealAnalogFilter designedFilter = new RealAnalogFilter();
-        designedFilter.order = (int)order;
         designedFilter.analogfc = stopFreq;
         
         double mu;
@@ -854,10 +855,17 @@ public abstract class AnalogFilter extends Filter {
         double alpha;
         double beta;
         designedFilter.clearFactors();
+        
+        // counter used for adding poles and zeroes
         int N = (int)Math.ceil(order/2);
+        
+        // scaling factor for the poles and zeroes, so the transfer function
+        // is unit gain
         double factor;
+
         boolean odd = false;
         
+        // add the poles and zeroes into the filter
         if (order%2 != 0) {
             mu = (2*N-1)*Math.PI/(2*order);
             sigma = -(sinhPhi*Math.sin(mu));
@@ -885,6 +893,9 @@ public abstract class AnalogFilter extends Filter {
                 Complex pole = new Complex(alpha, beta);
                 Complex zero = new Complex(0, 1/Math.cos(mu));
                 
+                // since the poles and zeroes are in conjugate pairs
+                // their magnitude is the squared magnitude of the single
+                // pole and single zero.
                 factor = pole.magSquared()/zero.magSquared();
                 designedFilter.addPoleZero(pole, zero, factor, true);
             }

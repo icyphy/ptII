@@ -38,7 +38,7 @@ import ptolemy.math.*;
  * to be used on many signal processing tasks, like filter
  * design, FFT.
  *
- * @Author: Albert Chen, William Wu
+ * @Author: Albert Chen, William Wu, David Teng(davteng@hkn.eecs.berkeley.edu)
  * @Date: 3/16/98
  * @Version: 
  */
@@ -277,7 +277,9 @@ public final class MathWizard {
             String str = new String("Parameter roots must be an array of two Complex");
             throw new IllegalArgumentException(str); 
         }
-        
+
+        // find the absolute values of a, b, and c to see if their values are
+        // near zero
         double absOfA = Math.abs(a);
         double absOfB = Math.abs(b);
         double absOfC = Math.abs(c);

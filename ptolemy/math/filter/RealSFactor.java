@@ -34,12 +34,10 @@ import ptolemy.math.*;
 //// RealSFactor
 /** 
 The RealSFactor class is used to implement RealAnalogFilter's transfer
-function.  Like the RealZFactor, the RealSFactor supports methods like
-movePole, moveZero, addPoleZero, setNumerator, setDenominator, the 
-methods to change the factors characteristics.  To support those methods, 
-RealSFactor contains two polynomials of decreasing positive powers representing
-the transfer function this factor and the zero and pole locations 
-corresponding to the transfer function.  This class is derived from RealFactor.
+function.  This class is derived from RealFactor where pertinent data about 
+the RealSFactor is held.  The coefficients of the transfer and the pole/zero 
+locations are contained in RealFactor.
+
 
 @author  David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
 @version %W%	%G%
@@ -131,7 +129,6 @@ public class RealSFactor extends RealFactor {
          Vector conjpole = new Vector();
          Vector conjzero = new Vector();
          
-         System.out.println("in solveNumerator: " + _numerator.length);
          if (_numerator.length == 1) {
              // single scalar value, no pole/zero produced
                    
@@ -209,7 +206,6 @@ public class RealSFactor extends RealFactor {
              double a = _denominator[0];   
              double b = _denominator[1];   
              double c = _denominator[2]; 
-             System.out.println("hummm");
              Complex [] roots = new Complex[2]; 
              
              boolean conjugate = 

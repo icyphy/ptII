@@ -27,6 +27,7 @@ public class Filtertest {
 
        RealDigitalFilter filter = DigitalFilter.designRealIIR(1,2,1,new 
                double[] {1.25,1.88}, new double[] {0.99,.001},1);
+       System.out.println("hehe");
        Complex [] poles = filter.getPoles();
        Complex [] zeroes = filter.getZeroes();
        System.out.println(poles.length);

@@ -32,17 +32,12 @@ import java.util.Vector;
 import java.util.NoSuchElementException;
 import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
-//// RealFactor
+//// RealZFactor
 /** 
- This is the real factor class.  It is the component that will be used to 
- build real LTI transfer function for a digital system.  It store two 
- polynomial of negative power of z with real coefficients, and a real number 
- gain.  Internal function is usded to factor pole/zero of this factor.  
- Methods are provided to extract and modify these poles and zeroes.  
- When pole/zero are modified the two polynomials are also updated to reflect 
- the changes.  The factor also stores the internal states of the factor.
- state is stored in an array with ordering latest state will be at the end
- of array, while the earliest will be at the beginning.
+ This is the RealZFactor class.  It is the component that will be used to 
+ build real LTI transfer function for a digital system.  RealZFactor supports
+ to compute the output of the factor.  The states are stored in circular array
+ in RealFactor.  
 
 <p> 
 @author  William Wu (wbwu@eecs.berkeley.edu), David Teng(davteng@hkn.eecs.berkeley.edu)
@@ -382,46 +377,6 @@ public class RealZFactor extends RealFactor{
             _denominator[i] = tmpden[i].real;
         }
 
-    }
-
-    // add or substract the first parameter by the second parameter 
-    // depending on whether the second paramater is one or zero.  
-    // One is add, and zero means substract.  If the first parameter 
-    // is at the beginning of the circular number field, then substraction
-    // will take the first parameter to the end of the circular 
-    // number field.  If the first parameter is at the end, then
-    // addition will take it to the beginning.  This function is 
-    // used in the computation of the positions in a circular 
-    // array.
-    //  @param position the number to be perform add or subtract on
-    // @param incr value to add to or substract from position
-    // @param size the size of the circular number field
-    protected int _circularAddition(int position, int incr, int size){
-        int result = position;
-        
-        if (size == 0) {
-            return result;
-        }
-        
-        while (Math.abs(incr) > size) {
-            if (incr > 0) {
-                incr -= size;
-            }
-            if (incr < 0) {
-                incr += size;
-            }
-        }
-        
-        result += incr;
-        if (result >= size) {
-            result -= size;
-            return result;
-        }
-        else if (result < 0) {
-            result += size;
-            return result;
-        }
-        else return result;
     }
 
     ///////////////////////////////////////////////////////////////////

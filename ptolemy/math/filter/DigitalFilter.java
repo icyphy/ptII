@@ -40,7 +40,7 @@ should be overwritten in the derived classes.  DigitalFilter also contains a
 IIR filter designing method that will return a RealDigitalFilter with the given
 specifications.  
 
-@author  David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu), Albert Chen
+@author  David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
 
 @version %W%	%G%
 
@@ -113,19 +113,21 @@ public abstract class DigitalFilter extends Filter{
 
     /**
      * Design the IIR Filter according to the parameters.  
-     * AnalogFilter.designRealIIR will be called to obtained a RealAnalogFilter
-     * conforming the given specifications.  Then bilinear transform will be
+     * AnalogFilter.designLowpassRealIIR will be called to obtained a 
+     * RealAnalogFilter conforming the given the prewarped specifications.  
+     * Then frequency transformation will be performed to transform the 
+     * lowpass filter to the desired filter type.  Bilinear transform will be
      * used to transform the RealAnalogFilter into a RealDigitalFilter.
      * Given the RealAnalogFilter:
      *
-     *  - The s-domain factors is transfered using specified transfer 
+     *    The s-domain factors is transformed using specified transform 
      *    method.  The result is z-domain quadratic factors of numerators 
      *    and denominators, and the gain of the filter (so that the filter 
      *    is unit gain at pass band). 
      *  
      *    @return RealDigitalFilter object that contain designed filter.   
      *    @param appmethod the approximation method used for design analog 
-     *                     filter.
+     *                     filter: Butterworth, Chebyshev I and II.
      *    @param mapmethod transformation between analog and digital.
      *    @param filttype type of the filter.
      *    @param critfreq the critical frequencies of filter, given at 
@@ -133,16 +135,14 @@ public abstract class DigitalFilter extends Filter{
      *                    is at 0.8 PI radian frequency. 
      *    @param gain gains at various critical frequencies, value is between 
      *                0.0 ~ 1.0
-     *    @param stoprippleheight stop band ripple height.
-     *    @param passrippleheight pass band ripple height, used for Chebshev 
-     *                            and Elliptical design method. 
      *    @param fs sampling frequency
      *
      */
     public static RealDigitalFilter designRealIIR(int mapmethod, int appmethod,
-          int filttype, double [] critfreq, double [] gain, double fs){
+            int filttype, double [] critfreq, double [] gain, double fs) throws
+            IllegalArgumentException {
         
-         // digital and analog protoype pass edge frequencies
+        // digital and analog protoype pass edge frequencies
         double dPassEdgeFreq, aPassEdgeFreq;  
  
         // prototype pass edge gain
@@ -157,14 +157,10 @@ public abstract class DigitalFilter extends Filter{
         // digital and analog band width
         double dBandwidth, aBandwidth;  
 
-        double fc;
+        // digital critical frequency, used for frequency transformation
         double wc;
-
-        double filterGain;
-
-        int order;
-
-         // get the spec
+        
+        // get the spec
         // for lowpass and bandstop filter, the pass band/stop band will 
         // be the same as the ones used for designing prototype lowpass.  
         // While highpass and bandpass's pass band/stop band is the 
@@ -178,43 +174,36 @@ public abstract class DigitalFilter extends Filter{
             passEdgeGain = gain[0];
             stopEdgeGain = gain[1];
 
-            if (_debug > 0) {
-                //System.out.println("LOWPASS or bandstop stopb : "+stopef+
-                // " stopg: "+stopg+" passb: "+passef+ "passg: "+passg);
-            }
         } else if ((filttype == Filter.HIGHPASS) || 
-                   (filttype == Filter.BANDPASS)){               
+                (filttype == Filter.BANDPASS)){               
             dStopEdgeFreq = Math.PI-critfreq[0];
             dPassEdgeFreq = Math.PI-critfreq[1];
             stopEdgeGain = gain[0];
             passEdgeGain = gain[1];
-
-            if (_debug > 0) {
-                //System.out.println("highpass or bandpass stopb : "+stopef+
-                //" stopg: "+stopg+" passb: "+passef+ "passg: "+passg);
-            }
+            
         } else {
-            // Fixme, throw an exception here
-            System.out.println("error, incorrect filter spec");
-            return null;
+            throw new IllegalArgumentException("Filter type not supported");
         }
-
+         
         // Prewarp the spec from digital frequency to analog
         if (mapmethod == Filter.BILINEAR){  
             // only bilinear is supported
             aPassEdgeFreq = _bilinearPreWarp(dPassEdgeFreq, fs); 
             aStopEdgeFreq = _bilinearPreWarp(dStopEdgeFreq, fs); 
         } else {
-            // Fixme, throw an exception here
-            System.out.println("Only Bilinear transform is supported"); 
-            return null;
+            throw new IllegalArgumentException(
+                    "Only Bilinear transform is supported"); 
         }
         
+        // first design an analog lowpass filter
         RealAnalogFilter aFilter = 
-            AnalogFilter.designRealIIR(mapmethod, appmethod, filttype, 
-                    aPassEdgeFreq, aStopEdgeFreq, passEdgeGain, stopEdgeGain,
-                    fs);
+               AnalogFilter.designRealLowpassIIR(mapmethod, appmethod, 
+                       filttype, aPassEdgeFreq, aStopEdgeFreq, passEdgeGain, 
+                       stopEdgeGain);
         
+        // now do the preparation for frequency transformation that would  
+        // transform the designed analog lowpass filter into highpass, 
+        // bandpass, or bandstop filter
         if (filttype == Filter.HIGHPASS){
             
             if (mapmethod == Filter.BILINEAR){
@@ -233,13 +222,12 @@ public abstract class DigitalFilter extends Filter{
                 // digital highpass cutoff freq
                 wc = Math.PI - tmp; 
  
-       
                 // analog highpass cutoff freq
                 aFilter.analogfc = _bilinearPreWarp(wc, fs);
             
             } else { 
-                System.out.println("Only Bilinear is supported"); 
-                return null;
+                throw new IllegalArgumentException(
+                        "Only Bilinear is supported"); 
             }
 
         } else if (filttype == Filter.BANDPASS){
@@ -266,41 +254,41 @@ public abstract class DigitalFilter extends Filter{
                 aFilter.analogFreqWidth = fc2 - aFilter.analogfc;
                 
             } else { 
-                System.out.println("Only Bilinear is supported"); 
-                return null;
+                throw new IllegalArgumentException(
+                        "Only Bilinear is supported"); 
             }
             
         } else if (filttype == Filter.BANDSTOP){
-
+            
             if (mapmethod == Filter.BILINEAR){
-
+                
                 // analog second lowpass cutoff
                 double fc2 = _bilinearPreWarp(critfreq[2], fs);
 
                 // analog center is geometrical mean of two cutoff frequencies
                 aFilter.analogFreqCenter = Math.sqrt(aFilter.analogfc*fc2);
-              
+                
                 // analog width
                 aFilter.analogFreqWidth = fc2 - aFilter.analogfc;
            
             } else { 
-                System.out.println("Only Bilinear is supported"); 
-                return null;
+                throw new IllegalArgumentException(
+                        "Only Bilinear is supported"); 
             }
             
         }
         
+        // Transform the Lowpass analog filter to the appropriate filter type
+        // The filter's parameters should be changed to the desired values 
+        // before performing the frequency transformation
         AnalogFilter.freqTransformation(aFilter, filttype);
         
         // Bilinear transfer back to z-domain
         RealDigitalFilter dFilter =
                _bilinearQuadTransform(aFilter, fs);
 
-        Complex[] poles = dFilter.getPoles();
-        Complex[] zeroes = dFilter.getZeroes();
-        
         return dFilter;
-    }
+      }
             
         
     ///////////////////////////////////////////////////////////////////
@@ -349,21 +337,20 @@ public abstract class DigitalFilter extends Filter{
         
 
         for (int iter = 0; iter < sFactors.length; iter++){
-            
-            // transformation 
-            _bilinear(sFactors[iter], zFactors[iter], fs);
+             // transformation 
+             _bilinear(sFactors[iter], zFactors[iter], fs);
         }
         
         RealDigitalFilter designedFilter = new RealDigitalFilter();
         designedFilter.clearFactors();
         
         // put in the transformed z factors
-               
         for (int i = 0; i < zFactors.length; i++) {
+
             designedFilter.addFactor(zFactors[i]);
+
         }
-        
-        System.out.println("bil numFact "+designedFilter.getNumberOfFactors());
+
         return designedFilter;
     }
 
@@ -430,20 +417,16 @@ public abstract class DigitalFilter extends Filter{
         }
 
         double gain;
-        System.out.println("translate these to bilinear: "+a0+" "+a1+" "+a2+
-                "/"+b0+" "+b1+" "+b2);
-        
         double ad, bd;
         double c1, c0, d1, d0;
         
         // alpha denominator
-               ad = 4.0*a2*fs*fs + 2.0*a1*fs+a0; 
+        ad = 4.0*a2*fs*fs + 2.0*a1*fs+a0; 
         // beta denominator
-               bd = 4.0*b2*fs*fs + 2.0*b1*fs+b0; 
+        bd = 4.0*b2*fs*fs + 2.0*b1*fs+b0; 
         
         gain = ad/bd;
-        System.out.println("bilinear gain = " + gain);
-
+        
         d1 = (2.0*b0-8.0*b2*fs*fs)/bd;
         d0 = (4.0*b2*fs*fs-2.0*b1*fs+b0)/bd; 
         c1 = (2.0*a0-8.0*a2*fs*fs)/ad;
@@ -503,7 +486,6 @@ public abstract class DigitalFilter extends Filter{
     protected Complex[] _zeroes;
 
     protected int NUMSTEP = 150;
-    private static final int _debug = 1;
 }
 
 

@@ -39,14 +39,14 @@ import ptolemy.math.*;
    function of the filter.  Some methods supported are addPoleZero, addFactor,
    deletePole, deleteZero, setTransferFn, getOuput, getResponse, and etc 
    methods to set the properties of a digital filter.  One can create an 
-   instance of  RealDigitalFilter given a transfer function or pole/zero 
-   location.  On default, a RealDigitalFilter will constructed with a transfer
-   function of one.  To improve displaying efficiency, a cached/refined 
+   instance of  RealDigitalFilter given a transfer function.  On default, 
+   a RealDigitalFilter will constructed with a transfer function of one.  
+   To improve displaying efficiency, a cached/refined 
    version of the filter's poles and zeros will kept inside the 
    RealDigitalFilter, so that the display engines can access these 
    efficiently.  The poles and zeroes will be updated when it is necessary.
-   The Frequency Response and Impulse Response are also cached in the same 
-   style.
+   The Frequency Response, Impulse Response, and the transfer function of the 
+   filter  are also cached in the same style.
       
    @author  David Teng (davteng@hkn.eecs.berkeley.edu)
    @version %W%	%G%
@@ -305,12 +305,14 @@ public class RealDigitalFilter extends DigitalFilter{
     public void addPoleZero(Complex pole, Complex zero, double gain,
             boolean conj) {
         
+        // if the pole and zero are the same location, then they cancel
         if (pole.isInfinite() & zero.isInfinite()) {
             return;
         } else if (pole.equals(zero)) {
             return;
         }
         
+        // a pole at infinity gives denominator of one
         if (pole.isInfinite()) {
             double[] denom = {1};
             double[] numer;
@@ -332,7 +334,9 @@ public class RealDigitalFilter extends DigitalFilter{
             _transferFnValid = false;
             _freqImpulseValid = false;
             _gainValid = false;
+               
         } else if (zero.isInfinite()) {
+            // a zero at infinity gives numerator of one
             double[] numer = {1};
             double[] denom;
             if (conj == false) {
@@ -352,6 +356,7 @@ public class RealDigitalFilter extends DigitalFilter{
             _freqImpulseValid = false;
             _gainValid = false;
         }
+        // poles and zeroes are less than infinity
         else {
             double[] numer;
             double[] denom;
@@ -494,6 +499,7 @@ public class RealDigitalFilter extends DigitalFilter{
     // the given parameter distance
     private boolean _comparePoleZero(Complex pole, Complex zero, 
             double distance) {
+        // if the pole and zero are both at infinity, then return true
         if (Double.isInfinite(pole.real)) {
             if (Double.isInfinite(zero.real)) {
                 return true;
@@ -524,7 +530,6 @@ public class RealDigitalFilter extends DigitalFilter{
         boolean insertNewZero;
         
         // create a list of all the poles
-        System.out.println("_numberOfFactors = " + getNumberOfFactors());
         for (int i = 0; i < getNumberOfFactors(); i++) {
             currentFactor = (RealZFactor)_factors.at(i);
             Complex[] currentPoles = currentFactor.getPoles();
@@ -598,8 +603,7 @@ public class RealDigitalFilter extends DigitalFilter{
         partialFn = ((RealZFactor)_factors.at(0)).getDenominator();
         denominator = new Complex[partialFn.length];
     
-        /* put the first factor's denominator into Complex[] denominator
-         */
+        // put the first factor's denominator into Complex[] denominator
         for (int i = 0; i < partialFn.length; i++) {
             denominator[i] = new Complex(partialFn[i]);
         }
@@ -643,12 +647,10 @@ public class RealDigitalFilter extends DigitalFilter{
 
     private void _updateGain() {
         _gain = 1;
-        System.out.println("numberoffact = " + getNumberOfFactors());
         for (int i = 0; i < getNumberOfFactors(); i++) {
             _gain *= ((RealZFactor)_factors.at(i)).getGain();
-            System.out.println("_gain = " + _gain);
         } 
-        _gainValid = false;
+        _gainValid = true;
     }
 
     // update the cached version of the Frequency and Impulse Response
@@ -656,13 +658,13 @@ public class RealDigitalFilter extends DigitalFilter{
         if (_polesZeroesValid == false) {
             _updatePolesZeroes();
         }
+        
         double[] input = new double[_taps];
         input[0] = 1;
         _impulseResponse = new double[_taps];
         _impulseResponse = getResponse(input, _taps);
         double gain = getGain();
-        System.out.println("shit " + gain);
-        
+         
         _freqResponse = SignalProcessing.poleZeroToFreq(_poles, _zeroes,
                 new Complex(gain), NUMSTEP);
         

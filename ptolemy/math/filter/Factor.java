@@ -34,9 +34,9 @@ import ptolemy.math.*;
 //// Factor
 /** 
   This is the factor class.  It is the component that will be used to build
-LTI transfer function.  This is an abstract class to be derived by RealFactor
-class and ComplexFactor class.  It provide some abstract methods that will be 
-shared among these two classes. 
+  LTI transfer function.  This is an abstract class to be derived by RealFactor
+  class and ComplexFactor class.  It provide some abstract methods that will 
+  be shared among these two classes. 
 <p> 
 @author  William Wu (wbwu@eecs.berkeley.edu)
 @version %W%	%G%

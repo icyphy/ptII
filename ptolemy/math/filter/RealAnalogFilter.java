@@ -32,16 +32,20 @@ import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealAnalogFilter
 /** 
-The RealAnalogFilter contains RealSFactor that represent the AnalogFilter's
+The RealAnalogFilter contains RealSFactor that represent the RealAnalogFilter's
 transfer function.  This class will support similar functions to 
-RealDigitalFilter such as movePole, moveZero, addPole, addZero, getResponse,
-methods that change the properties of a filter.
+RealDigitalFilter such as movePole, moveZero, addPoleZero, getResponse, etc;
+Methods that change the properties of a filter.  To improve displaying 
+efficiency, a cached/refined version of the filter's poles and zeroes will be 
+kept inside the RealAnalogFilter.  The poles and zeroes will be updated when it
+is necessary.  The transfer function and gain of the filter is also cached. 
 
 @author  David Teng(davteng@hkn.eecs.berkeley.edu)
 @version %W%	%G%
 */
 
 public class RealAnalogFilter extends AnalogFilter {
+
     /** Default Constructor
      * Construct a Real Filter with a transfer function
      * of one
@@ -51,38 +55,9 @@ public class RealAnalogFilter extends AnalogFilter {
         addFactor(new RealSFactor());
         _updatePolesZeroes();
         _updateTransferFn();
+        _updateGain();
     }
     
-     /** Construct a Real Filter given poles, zeroes, and gain
-     * @param poles the locations of the real poles
-     * @param zeroes the locations of the real zeroes
-     * @param polePairs the locations of the conjugate poles
-     * @param zeroPairs the locations of the conjugate zeroes
-     * @param gain gain of the real filter
-     */
-    /*
-    public RealAnalogFilter(double[] poles, double[] zeroes, 
-            ConjugateComplex[] polePairs, ConjugateComplex[] zeroPairs, 
-            double gain) {
-        _factors = new LinkedList();
-        _poles = new Complex[poles.length + 2*polePairs.length];
-        _zeroes = new Complex[zeroes.length + 2*zeroPairs.length];
-        int polesCount = 0;
-        int zeroesCount = 0;
-        _numberOfFactors = 0;
-        
-        for (int i = 0; i < poles.length; i++) {
-            addPoleZero(poles[i], zeroes[i]);
-        }
-        
-        for (int k = 0; k < zeroPairs.length; k++) {
-            addPoleZeroPair(polePairs[k], zeroPairs[k]);
-        }
-        
-        _updatePolesZeroes();
-    }
-    */
-
     /** Construct Filter given transfer function
      * The transfer function is in the following form
      * <pre>
@@ -100,10 +75,10 @@ public class RealAnalogFilter extends AnalogFilter {
     public RealAnalogFilter(double[] numer, double[] denom,
             double gain) {
         _factors = new LinkedList();
-        _numberOfFactors = 0;
         addFactor(new RealSFactor(numer, denom, gain));
         _updateTransferFn();
         _updatePolesZeroes();
+        _updateGain();
     }
     
     
@@ -115,9 +90,9 @@ public class RealAnalogFilter extends AnalogFilter {
      */
     public void clearFactors() {
         _factors.clear();
-        _numberOfFactors = 0;
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
 
     /** Take as argument a transfer function represented by a 
@@ -135,9 +110,9 @@ public class RealAnalogFilter extends AnalogFilter {
             _factors.insertFirst(f[i]);
         }
 
-        _numberOfFactors = f.length;
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
     
     /** get the numerator of the filter's transfer function
@@ -170,48 +145,22 @@ public class RealAnalogFilter extends AnalogFilter {
      */
     public void addFactor(RealSFactor f) {
         _factors.insertFirst(f);
-        _numberOfFactors++;
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
 
-    /** Takes parameter state, values of the state of the filter
-     * and replaces the current state with the new one
-     * @param state an array containing the new state of the 
-     *                   filter
-     */
-    /*
-    public void setState(RealSFactor f, double[] state) {
-        f.setState(state);
-    }
-    */
-    
-   
-    /** reset all the states of the factors in the filter to 
-     * zero
-     */
-    /*
-    public void resetState() {
-        
-        for (int i = 0; i < _numberOfFactors; i++) {
-            RealZFactor currentFactor = (RealZFactor)factors.at(i);
-            currentFactor.resetState();
-        }
-        
-    }
-    */
-    
     /** returns the number of factors associated with this RealAnalogFilter
      */
     public int getNumberOfFactors() {
-        return _numberOfFactors;
+        return _factors.size();
     }
     
     /** Put the _factors LinkedList into an array and return it
      */
     public RealSFactor[] getFactors() {
-        RealSFactor[] SFactors = new RealSFactor[_numberOfFactors];
-        for (int i = 0; i<_numberOfFactors; i++) {
+        RealSFactor[] SFactors = new RealSFactor[getNumberOfFactors()];
+        for (int i = 0; i<getNumberOfFactors(); i++) {
             SFactors[i] = (RealSFactor)_factors.at(i);
         }
         return SFactors;
@@ -220,11 +169,12 @@ public class RealAnalogFilter extends AnalogFilter {
     /** returns the total gain of the RealAnalogFilter
      */
     public double getGain() {
-        double gain = 1;
-        for (int i = 0; i < _numberOfFactors; i++) {
-            gain *= ((RealSFactor)_factors.at(i)).getGain();
+        if (_gainValid == true) {
+            return _gain;
+        } else {
+            _updateGain();
+            return _gain;
         }
-        return gain;
     }
     
     /** Takes parameter zero, a zero location, and finds the 
@@ -235,7 +185,7 @@ public class RealAnalogFilter extends AnalogFilter {
             throws IllegalArgumentException{
                 int j = 0;
                 
-                while (j < _numberOfFactors) {
+                while (j < getNumberOfFactors()) {
                     if (((RealSFactor)_factors.at(j)).ifZero(zero)) {
                         return (RealSFactor)_factors.at(j);
                     }
@@ -255,7 +205,7 @@ public class RealAnalogFilter extends AnalogFilter {
             throws IllegalArgumentException{
                 int j = 0;
                 
-                while (j < _numberOfFactors) {
+                while (j < getNumberOfFactors()) {
                     if (((RealSFactor)_factors.at(j)).ifPole(Pole)) {
                         return (RealSFactor)_factors.at(j);
                     }
@@ -271,14 +221,6 @@ public class RealAnalogFilter extends AnalogFilter {
         zeroes.
     */
     public Complex[] getZeroes() {
-        /*
-          Complex[] zeroes = new Complex[_numberOfFactors];
-          for (int i = 0;i<_numberOfFactors;i++){
-              zeroes=((RealSFactor)_factors.at(i)).getZeroes();
-        }
-        return zeroes;
-        */
-        
         if (_polesZeroesValid) {
             return _zeroes;
         }
@@ -294,14 +236,6 @@ public class RealAnalogFilter extends AnalogFilter {
         poles.
     */
     public Complex[] getPoles() {
-        /*
-        Complex[] poles = new Complex[_numberOfFactors];
-        for (int i=0;i<_numberOfFactors;i++){
-            poles=((RealSFactor)_factors.at(i)).getPoles();
-        }
-        return poles;
-        */
-        
         if (_polesZeroesValid) {
             return _poles;
         }
@@ -319,19 +253,21 @@ public class RealAnalogFilter extends AnalogFilter {
      */
     public void addPoleZero(Complex pole, Complex zero, double gain,
             boolean conj) {
-        
+        // if pole and zero are equal, then they cancel
         if (pole.isInfinite() & zero.isInfinite()) {
             return;
         } else if (pole.equals(zero)) {
             return;
         }
+        
         Complex[] roots;
         Complex[] polyTemp;
         double[] numer;
         double[] denom;
         
+        // pole at infinity gives a denominator of one
         if (pole.isInfinite()) {
-            denom = new double[] {0,0,1};
+            denom = new double[] {1};
             if (conj == false) {
                 numer = new double[] {1, -zero.real};
             }
@@ -348,8 +284,10 @@ public class RealAnalogFilter extends AnalogFilter {
             addFactor(newFactor);
             _polesZeroesValid = false;
             _transferFnValid = false;
+            _gainValid = false;
         } else if (zero.isInfinite()) {
-            numer = new double[] {0,0,1};
+            // zero at infinity gives a numerator of one
+            numer = new double[] {1};
             if (conj == false) {
                 denom = new double[] {1, -pole.real};
             } else {
@@ -359,13 +297,14 @@ public class RealAnalogFilter extends AnalogFilter {
                 for (int i = 0; i < polyTemp.length; i++) {
                     denom[i] = polyTemp[i].real;
                 }
-                System.out.println("in RAF, denom.length = " + denom.length);
             }
             RealSFactor newFactor = new RealSFactor(numer, denom, gain);
             addFactor(newFactor);
             _polesZeroesValid = false;
             _transferFnValid = false;
+            _gainValid = false;
         }
+        // pole and zeroes both less than infinity
         else {
             if (conj == false) {
                numer = new double[] {1, -zero.real};
@@ -389,96 +328,19 @@ public class RealAnalogFilter extends AnalogFilter {
             addFactor(newFactor);
             _polesZeroesValid = false;
             _transferFnValid = false;
+            _gainValid = false;
         }
     }
    
-    
-    // don't use for now
-     /** Take as parameter a pole location and incorporate it into the
-     * current transfer function of the filter
-     * @param pole the value of a real pole's location that is to be 
-     *                             added
-     */
-    /*
-    public void addPole(double pole) {
-        double[] numer = {1};
-        double[] denom = {1, -pole};
-        RealSFactor newFactor = new RealSFactor(numer, denom, 1);
-        addFactor(newFactor);
-        _polesZeroesValid = false;
-    }
-    */
-    /** Take as parameter a conjugate pair of pole locations and 
-     * incorporate them into the current transfer function of the
-     * filter
-     * @param polePair a ConjugateComplex instance containing the
-     *                           values of a pair of poles that 
-     *                           is to added
-     */
-    /*
-    public void addPolePair(ConjugateComplex polePair) {
-        double[] numer = {1};
-        Complex[] roots = {polePair.getValue(), polePair.getConjValue()};
-        Complex[] denomTemp = MathWizard.zeroesToPoly(roots);
-        double[] denom = new double[denomTemp.length];
-        
-        for (int i = 0; i < denomTemp.length; i++) {
-            denom[i] = denomTemp[i].real;
-        }
-        
-        RealSFactor newFactor = new RealSFactor(numer, denom, 1);
-        addFactor(newFactor);
-        _polesZeroesValid = false;
-    }
-    */
-    /** Take as parameter a zero location and incorporate it into the
-     * current transfer function of the filter
-     * @param zero the value of a real zero's location that is to be
-     *                            added
-     */
-    /*
-    public void addZero(double zero) {
-        double[] numer = {1,-zero};
-        double[] denom = {1};
-        RealSFactor newFactor = new RealSFactor(numer, denom, 1);
-        addFactor(newFactor);
-        _polesZeroesValid = false;
-    }
-    */
-
-    /** Take as parameter a conjugate pair of zero locations and 
-     * incorporate them in to the current transfer function of the 
-     * filter
-     * @param zeroPair a ConjugateComplex instance containing the
-     *                           values of a pair of zeroes that
-     *                           is to be added
-     */
-    /*
-    public void addZeroPair(ConjugateComplex zeroPair) {
-        Complex[] roots = {zeroPair.getValue(), zeroPair.getConjValue()};
-        Complex[] numerTemp = MathWizard.zeroesToPoly(roots);
-        double[] numer = new double[numerTemp.length];
-
-        for (int i = 0; i < numerTemp.length; i++) {
-            numer[i] = numerTemp[i].real;
-        }
-
-        double[] denom = {1};
-        RealSFactor newFactor = new RealSFactor(numer, denom, 1);
-        addFactor(newFactor);        
-        _polesZeroesValid = false;
-    }
-    */
-
     /** Given a pole, deletePole will find the factor associated 
      * with this pole and delete that factor
      * @param pole the pole to be deleted
      */
     public void deletePole(Complex pole) {
         _factors.removeOneOf(getFactorWithPole(pole));
-        _numberOfFactors--;
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
     
     /** Given a zero, deleteZero will find the factor associated
@@ -487,9 +349,9 @@ public class RealAnalogFilter extends AnalogFilter {
      */
     public void deleteZero(Complex zero) {
         _factors.removeOneOf(getFactorWithZero(zero));
-        _numberOfFactors--;
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
 
      /** Take as parameter a zero and the value for its new location and
@@ -503,6 +365,7 @@ public class RealAnalogFilter extends AnalogFilter {
         factorWithGivenZero.moveZero(zero, real, imag);
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
     
     /** Take as parameter a pole and the value for its new location and
@@ -516,15 +379,9 @@ public class RealAnalogFilter extends AnalogFilter {
         factorWithGivenZero.movePole(pole, real, imag);
         _polesZeroesValid = false;
         _transferFnValid = false;
+        _gainValid = false;
     }
-
     
-    /*
-    public double getOutput(double input) {};
-    
-    public double getResponse(double[] input, int numSamples);
-    */
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -535,6 +392,7 @@ public class RealAnalogFilter extends AnalogFilter {
     // the given parameter distance
     private boolean _comparePoleZero(Complex pole, Complex zero, 
             double distance) {
+        // if both pole and zero are at infinity, then return true
         if (Double.isInfinite(pole.real)) {
             if (Double.isInfinite(zero.real)) {
                 return true;
@@ -551,7 +409,7 @@ public class RealAnalogFilter extends AnalogFilter {
     }      
     
     // Update the cached pole and zero locations of all the factors.  If 
-    // a zero  is close to a pole, they will not be returned.  
+    // a zero is close to a pole, they will not be cached.  
     //
     private void _updatePolesZeroes() {
         
@@ -566,7 +424,7 @@ public class RealAnalogFilter extends AnalogFilter {
         boolean insertNewZero;
         
         // create a list of all the poles
-        for (int i = 0; i < _numberOfFactors; i++) {
+        for (int i = 0; i < getNumberOfFactors(); i++) {
             currentFactor = (RealSFactor)_factors.at(i);
             Complex[] currentPoles = currentFactor.getPoles();
             for (int j = 0; j < currentPoles.length; j++) {
@@ -577,8 +435,8 @@ public class RealAnalogFilter extends AnalogFilter {
         
         // check each zero against each poles in polesList, and if a zero
         // and a pole are close, then the zero will not be inserted into 
-        // the list, the pole will be removed from the list
-        for (int i = 0; i < _numberOfFactors; i++) {
+        // the list of zeroes, the pole will be removed from the list
+        for (int i = 0; i < getNumberOfFactors(); i++) {
             currentFactor = (RealSFactor)_factors.at(i);
             Complex[] currentZeroes = currentFactor.getZeroes();
             
@@ -632,8 +490,7 @@ public class RealAnalogFilter extends AnalogFilter {
         numerator = new Complex[partialFn.length];
         
         
-        /* put the first factor's numerator into Complex[] numerator
-         */
+        //put the first factor's numerator into Complex[] numerator
         for (int i = 0; i < partialFn.length; i++) {
             numerator[i] = new Complex(partialFn[i]);
         } 
@@ -641,14 +498,13 @@ public class RealAnalogFilter extends AnalogFilter {
         partialFn = ((RealSFactor)_factors.at(0)).getDenominator();
         denominator = new Complex[partialFn.length];
         
-        /* put the first factor's denominator into Complex[] denominator
-         */
+        // put the first factor's denominator into Complex[] denominator
         for (int i = 0; i < partialFn.length; i++) {
             denominator[i] = new Complex(partialFn[i]);
         }
 
         // multiply the numerators out
-        for (int i = 1; i < _numberOfFactors; i++) {
+        for (int i = 1; i < getNumberOfFactors(); i++) {
             partialFn = ((RealSFactor)_factors.at(i)).getNumerator();
             tempFn = new Complex[partialFn.length];
             
@@ -660,7 +516,7 @@ public class RealAnalogFilter extends AnalogFilter {
         }
         
         // multiply the denominators out
-        for (int i = 1; i < _numberOfFactors; i++) {
+        for (int i = 1; i < getNumberOfFactors(); i++) {
             partialFn = ((RealSFactor)_factors.at(i)).getDenominator();
             tempFn = new Complex[partialFn.length];
             
@@ -682,21 +538,33 @@ public class RealAnalogFilter extends AnalogFilter {
             _denominator[i] = denominator[i].real;
         }
     }
-                    
 
+    // update the cached version of the filter's gain
+    private void _updateGain() {
+        _gain = 1;
+        for (int i = 0; i < getNumberOfFactors(); i++) {
+            _gain *= ((RealSFactor)_factors.at(i)).getGain();
+        } 
+        _gainValid = true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** the variables used for frequency transformation for designing 
+     * filters
+     */
     public double analogfc;
     public double analogFreqCenter;
     public double analogFreqWidth;
 
-    public int order;
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private LinkedList _factors;
-    private int _numberOfFactors;
-
+    
     // cached poles and zeros with its validity indication flags
     private boolean _polesZeroesValid;
     private Complex[] _poles;
@@ -707,7 +575,9 @@ public class RealAnalogFilter extends AnalogFilter {
     private double[] _numerator;
     private double[] _denominator;
     private boolean _transferFnValid;
-
+    private boolean _gainValid;
+    private double _gain;
+    
     private final double DELTA = 0.01;
 }
 
