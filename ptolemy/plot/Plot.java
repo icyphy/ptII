@@ -729,9 +729,15 @@ public class Plot extends PlotBox {
             long xpos, long ypos, boolean clip) {
         if (_debug > 20) {
             System.out.println("Plot: _drawImpulse("+xpos+" "+ypos+" "+
-                    clip+") ");
+                    clip+") ("+_ulx+" "+_uly+" "+_lrx+" "+_lry+")");
         }
-        if (clip && ypos < _uly) ypos = _uly;
+        if (clip) {
+            if (ypos < _uly) {
+                ypos = _uly;
+            } if (ypos > _lry) {
+                ypos = _lry;
+            }
+        }
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // The y position of the zero line.
             double zeroypos = _lry - (long) ((0-_yMin) * _yscale);
