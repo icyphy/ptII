@@ -128,43 +128,59 @@ Finished preinitialize().
 Called initialize().
 Invoking initialize():  .E1.Ramp
 Initializing actor: .E1.Ramp.
+Consumer is not enabled.
+Ramp is enabled and not deferrable
 Invoking initialize():  .E1.Consumer
 Initializing actor: .E1.Consumer.
+Ramp is enabled and not deferrable
+Consumer is not enabled.
 
 iterationCount 0
 Called prefire().
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
+Consumer is enabled and not deferrable
+Ramp is enabled and deferrable
 Called postfire().
 
 iterationCount 1
 Called prefire().
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
+Ramp is enabled and not deferrable
+Consumer is not enabled.
 Called postfire().
 
 iterationCount 2
 Called prefire().
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
+Consumer is enabled and not deferrable
+Ramp is enabled and deferrable
 Called postfire().
 
 iterationCount 3
 Called prefire().
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
+Ramp is enabled and not deferrable
+Consumer is not enabled.
 Called postfire().
 
 iterationCount 4
 Called prefire().
 The actor .E1.Ramp will be iterated.
 The actor .E1.Ramp was iterated.
+Consumer is enabled and not deferrable
+Ramp is enabled and deferrable
 Called postfire().
 
 iterationCount 5
 Called prefire().
 The actor .E1.Consumer will be iterated.
 The actor .E1.Consumer was iterated.
+Ramp is enabled and not deferrable
+Consumer is not enabled.
 iteration limit reached
 }}
 
