@@ -122,6 +122,7 @@ public class PausingMM1 {
             univ.getManager().startRun();
             localdir.pause();
             System.out.println("Model execution successfully paused!");
+            Thread.currentThread().sleep(3000);
             localdir.resume();
             System.out.println("Model execution successfully resumed!");
         } catch (Exception e) {
