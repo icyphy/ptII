@@ -71,7 +71,7 @@ matches within a regular expression.  At this time, this class does
 not implement version-strings.
 
 <p>
-@see TransientSingletonConfigurableAttribute
+@see ptolemy.kernel.util.TransientSingletonConfigurableAttribute
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
