@@ -24,7 +24,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
+@ProposedRating red (eal@eecs.berkeley.edu)
+@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
+
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.*;
