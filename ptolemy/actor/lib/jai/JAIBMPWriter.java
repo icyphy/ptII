@@ -160,7 +160,7 @@ public class JAIBMPWriter extends Sink {
         // bitmaps are currently supported, otherwise it would be
         // a parameter.
         BMPEncodeParam bmpEncodeParameters = new BMPEncodeParam();
-        bmpEncodeParameters.setVersion(bmpEncodeParameters.VERSION_3);
+        bmpEncodeParameters.setVersion(BMPEncodeParam.VERSION_3);
         bmpEncodeParameters.setTopDown(_storeTopDownValue);
         boolean confirmOverwriteValue
             = ((BooleanToken)confirmOverwrite.getToken())
