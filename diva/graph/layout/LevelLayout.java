@@ -926,7 +926,7 @@ public class LevelLayout extends AbstractGlobalLayout {
         }
     }
 
-    // add random purturbation for now.
+    // add random perturbation for now.
     private void placeNode(Object node, double x, double y) {
         LevelInfo inf = getLevelInfo(node);
         //       debug("placing: " + inf.origNode + "(" + x + ", " + y + ")");
