@@ -1,4 +1,4 @@
-/* An demo applet that uses Ptolemy II HDF and FSM domains to
+/* An demo applet that uses Ptolemy II SDF and FSM domains to
    demonstrate hysteresis.
 
  Copyright (c) 1999 The Regents of the University of California.
@@ -57,8 +57,9 @@ import ptolemy.domains.fsm.kernel.util.VariableList;
 //////////////////////////////////////////////////////////////////////////
 //// HysteresisApplet
 /** This applet provides a demo of hysteresis using SDF combined with
-    FSM. Since SDF is a special case of HDF, the HDF and FSM domains
-    are used.
+    FSM. Since SDF is a special case of HDF, the HDF-specific finite
+    state machine director is used.
+
 
 
 @author Brian K. Vogel
@@ -187,10 +188,8 @@ public class HysteresisApplet extends SDFApplet {
 		new TypedCompositeActor(tempAct, "state0");
 	    ctrls0.setRefinement(tempActState0);
             // ports
-	    //TypedIOPort tempActState0InPort = 
-	    //(TypedIOPort)tempActState0.newPort("state0Input");
-	    // FIXME: uncoment above two lines when following problem
-	    // is fixed: Currently, The names of all ports linked
+
+	    // FIXME: Currently, the names of all ports linked
 	    // to a common relation must have the same name.
 	    TypedIOPort tempActState0InPort = 
 		(TypedIOPort)tempActState0.newPort("dataIn");
@@ -209,9 +208,7 @@ public class HysteresisApplet extends SDFApplet {
 		// Initialization
 		SDFDirector _director0 =
 		    new SDFDirector(tempActState0, "SDFDirector0");
-		Parameter iterparam0 = _director0.iterations;
-		
-		iterparam0.setToken(new IntToken(iterations));
+
 		SDFScheduler scheduler0 = new SDFScheduler(_workspace);
 		
 		_director0.setScheduler(scheduler0);
@@ -227,11 +224,8 @@ public class HysteresisApplet extends SDFApplet {
 	    
 	    // For Const actor, no input port is required.
 	    //tempActState0.connect(tempActState0InPort, const0.input);
-
 	    
 	    tempActState0.connect(const0.output, tempActState0OutPort);
-	    /////////////////////////////////////////////////////////////////////
-	    //////////////////////////////////////////////////////////////////////
 
 	    // submachine refining tempAct's s1 state
             TypedCompositeActor tempActState1 =
@@ -256,10 +250,6 @@ public class HysteresisApplet extends SDFApplet {
             tempActInPort.link(tempActInRel);
             tempActState0InPort.link(tempActInRel);
             tempActState1InPort.link(tempActInRel);
-	   
-	    // Dosn't work????
-	    //tempAct.connect(tempActInPort, tempActState0InPort);
-	    //tempAct.connect(tempActInPort, tempActState1InPort);
 	    
 	     TypedIORelation tempActOutRel =
 		 (TypedIORelation)tempAct.newRelation("tempActOutRel");
@@ -267,16 +257,12 @@ public class HysteresisApplet extends SDFApplet {
             tempActState0OutPort.link(tempActInRel);
             tempActState1OutPort.link(tempActInRel);
 
-	    
-
 	    // Set up tempAct to contain an SDFDirector and an SDF diagram.
 	    try {
 		// Initialization
 		SDFDirector _director1 =
 		    new SDFDirector(tempActState1, "SDFDirector1");
-		Parameter iterparam1 = _director1.iterations;
-		
-		iterparam1.setToken(new IntToken(iterations));
+
 		SDFScheduler scheduler1 = new SDFScheduler(_workspace);
 		
 		_director1.setScheduler(scheduler1);
@@ -289,10 +275,6 @@ public class HysteresisApplet extends SDFApplet {
 	    // Add an SDF Actor and connect up ports.
 	    Const const1 = new Const(tempActState1, "Const1");
 	    const1.value.setToken(new DoubleToken(1));
-	    
-	    // For Const actor, no input port is required.
-	    //tempActState1.connect(tempActState1InPort, const1.input);
-
 	    
 	    tempActState1.connect(const1.output, tempActState1OutPort);
 
@@ -314,6 +296,4 @@ public class HysteresisApplet extends SDFApplet {
         }
     }
 
-    // Number of iterations to run refining SDF graphs.
-    int iterations = 200;
 }
