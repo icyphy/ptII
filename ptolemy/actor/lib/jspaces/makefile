@@ -61,6 +61,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	IndexEntry.java \
+	IndexedPublisher.java \
+	IndexedSubscriber.java \
 	Publisher.java \
 	Subscriber.java \
 	TokenEntry.java 

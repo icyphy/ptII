@@ -131,7 +131,10 @@ public class Publisher extends Sink {
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
 	String name = ((StringToken)jspaceName.getToken()).stringValue();
+        _lookupThread = Thread.currentThread();
 	_space = SpaceFinder.getSpace(name);
+        _lookupThread = null;
+
         String entryname = ((StringToken)entryName.getToken()).stringValue();
         TokenEntry tokenTemplate = new TokenEntry(name, null, null);
         try {
@@ -191,9 +194,22 @@ public class Publisher extends Sink {
         }
     }
 
+    /** Kill the lookup thread if it is not returned.
+     */
+    public void stopFire() {
+        if (_lookupThread != null) {
+            _lookupThread.interrupt();
+        }
+        super.stopFire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private JavaSpace _space;
+
+    // The thread that finds jini.
+    private Thread _lookupThread;
+
 }
 

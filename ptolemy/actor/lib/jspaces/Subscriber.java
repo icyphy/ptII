@@ -155,8 +155,13 @@ public class Subscriber extends Source implements RemoteEventListener {
     public void preinitialize() throws IllegalActionException {
         _entryName = ((StringToken)entryName.getToken()).stringValue();
    
+        _lookupThread = Thread.currentThread();
+
+        
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).stringValue());
+        
+        _lookupThread = null;
 
         // export this object so that the space can call back
         try {
@@ -229,6 +234,15 @@ public class Subscriber extends Source implements RemoteEventListener {
         }
     }
 
+    /** Kill the lookup thread if it is not returned.
+     */
+    public void stopFire() {
+        if (_lookupThread != null) {
+            _lookupThread.interrupt();
+        }
+        super.stopFire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -252,6 +266,9 @@ public class Subscriber extends Source implements RemoteEventListener {
 
     // Notification sequence number
     private long _notificationSeq;
+
+    // The thread that finds jini.
+    private Thread _lookupThread;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
