@@ -5,9 +5,9 @@
 # @author Christopher Hylands
 # @version $Id$
 #
-@java@ @jvmSize@
+"@java@" @jvmSize@
  -classpath "@classPath@"
  "@javaPtIIProperty@"
  ptolemy.copernicus.interpreted.Main "@modelPath@"  -d "@ptIIUserDirectory@"
  -p wjtp.interpretedWriter 
- targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@
+ "targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@"
