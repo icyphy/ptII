@@ -126,9 +126,11 @@ public class HTVQApplet extends SDFApplet {
 
 	    ImageDisplay consumer = new ImageDisplay(_toplevel, "Compressed");
 	    consumer.place(compressedPanel);
+	    consumer.setBackground(_background);
 
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.place(originalPanel);
+	    original.setBackground(_background);
 
             // Display actor puts the text at the right of the
             // applet window. Text Area size is set to be 7*10 (row* column)
@@ -140,6 +142,8 @@ public class HTVQApplet extends SDFApplet {
             prn.place(textPanel);
             prn.textArea.setColumns(10);
             prn.textArea.setRows(7);
+	    prn.setBackground(_background);
+	    textPanel.setBackground(_background);
 
 	    TypedIORelation r;
             r = (TypedIORelation) _toplevel.connect(
