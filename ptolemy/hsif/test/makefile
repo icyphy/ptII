@@ -35,8 +35,7 @@ ME =		ptolemy/hsif/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)\
-                $(CLASSPATHSEPARATOR)../../lib/saxon7.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SAXON_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
