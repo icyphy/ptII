@@ -30,6 +30,7 @@
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.IODependence;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -76,6 +77,11 @@ public class VariableDelay extends DETransformer {
         delay = new DEIOPort(this, "delay", true, false);
         delay.delayTo(output);
         delay.setTypeEquals(BaseType.DOUBLE);
+
+        // construct the IODependence attribute 
+        _IODependence = new IODependence(this, "IODependence");
+        _IODependence.addInputPort(input).addToDelayToPorts(output);       
+        _IODependence.addInputPort(delay).addToDelayToPorts(output);       
     }
 
     ///////////////////////////////////////////////////////////////////
