@@ -142,8 +142,13 @@ public class Plotter extends TypedAtomicActor implements Placeable {
      *  plot so that all the data is visible.
      */
     public void wrapup() {
-        if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
-            plot.fillPlot();
+        try {
+            if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
+                plot.fillPlot();
+            }
+        } catch (IllegalActionException ex) {
+            // fillOnWrapup does not evaluate to a valid token,
+            // skip fillPlot()
         }
     }
 
