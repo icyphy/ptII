@@ -285,7 +285,7 @@ public class ODFReceiver extends TimedQueueReceiver
 	    director.removeReadBlock();
             throw new TerminateProcessException( getContainer(),
                     "This receiver has been terminated during "
-                    + "hasToken()");
+                    + "_hasToken()");
 	} else {
             director.removeReadBlock();
             return _hasToken(workspace, director, thread);
