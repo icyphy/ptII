@@ -225,7 +225,8 @@ public class PtolemyUtilities {
     public static Local buildConstantTypeLocal(Body body, Object insertPoint,
             ptolemy.data.type.Type type) {
         Chain units = body.getUnits();
-        if (type instanceof ptolemy.data.type.BaseType) {
+        if (type instanceof ptolemy.data.type.BaseType || 
+                type instanceof ptolemy.data.type.UnsizedMatrixType) {
             Local typeLocal = Jimple.v().newLocal("type_" + type.toString(),
                     RefType.v(baseTypeClass));
             body.getLocals().add(typeLocal);
