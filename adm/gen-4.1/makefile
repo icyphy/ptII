@@ -160,6 +160,8 @@ clean:
 	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
 
+FINDCLEAN = $(GENDIR)/findclean
+
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
@@ -181,8 +183,9 @@ $(PTIIDIST):
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	@echo "  tar -X does not seem to work under Cygwin"
-	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar
-	-find $(PTIIDIST) -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core -exec rm -rf {} \;
+	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
+		$(PTIIDIST)/config/*.class
+	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
@@ -268,6 +271,8 @@ $(PTII_SRC): $(PTII_FULL)
 		cd ..; \
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
+		rm -rf `cat $(GENDIR)/src.ex`; \
+		$(FINDCLEAN); \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -c -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
@@ -299,7 +304,137 @@ src_jar: #$(PTII_SRC)
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign3-domains.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
+	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
+	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 
+
+###############
+# Build a jar file for use inside the installer
+# Create a jar file for use in the installer.
+# 1. The files that are jar'd do not include the large pdf docs, since
+# the installer already includes those
+# 2. The top directory of the jar file is not ptII$(VERSION), instead
+# it is _inside_ ptII$(VERSION) so that when the installer unjars it
+# the files come out in the right location
+
+# Location of the jar binary.  Cygwin /bin/jar is broken.
+JAR=c:/j2sdk1.4.2_05/bin/jar
+HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
+
+# The Jar file that we create.
+hyvisual.jar: $(HYVISUAL_SRC_JAR)
+$(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
+	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
+
+# The directory we jar up.
+# We include DE because some of the kernel/util tests use it.  CT demos also.
+hyvisual_src_jar: src_jar/hyvisual$(VERSION)
+src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
+	if [ ! -d src_jar/hyvisual$(VERSION) ]; then \
+		 mkdir -p src_jar/hyvisual$(VERSION); \
+	fi
+	(cd src_jar/hyvisual$(VERSION); \
+		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+
+	(cd src_jar/hyvisual$(VERSION); \
+		rm -rf jni \
+		doc/usingVergil \
+		doc/design/usingVergil \
+		lib/hsif \
+		lib/jni.jar \
+		lib/chic.jar \
+		lib/jasminclasses.jar \
+		lib/java_cup.jar \
+		lib/jython.jar \
+		lib/mapss.jar \
+		lib/ptCal.jar \
+		lib/sootclasses.jar \
+		lib/synthesis.jar \
+		mk/ptII.mk \
+		ptolemy/actor/gui/python \
+		ptolemy/actor/lib/comm \
+		ptolemy/actor/lib/conversions/test/auto/Round.xml \
+		ptolemy/actor/lib/io/comm \
+		ptolemy/actor/lib/jai \
+		ptolemy/actor/lib/javasound \
+		ptolemy/actor/lib/jmf \
+		ptolemy/actor/lib/joystick \
+		ptolemy/actor/lib/python \
+		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/test/auto/MathFunction.xml \
+		ptolemy/actor/lib/x10 \
+		ptolemy/actor/lib/xslt \
+		ptolemy/caltrop \
+		ptolemy/configs/dsp \
+		ptolemy/configs/full \
+		ptolemy/configs/jni \
+		ptolemy/configs/jxta \
+		ptolemy/configs/ptiny \
+		ptolemy/configs/SingleWindow \
+		ptolemy/configs/visualsense \
+		ptolemy/configs/copernicus \
+		ptolemy/copernicus \
+		ptolemy/domains/ci \
+		ptolemy/domains/csp \
+		ptolemy/domains/dde \
+		ptolemy/domains/domains.xml \
+		ptolemy/domains/dt \
+		ptolemy/domains/giotto \
+		ptolemy/domains/gr \
+		ptolemy/domains/hde \
+		ptolemy/domains/petrinet \
+		ptolemy/domains/psdf \
+		ptolemy/domains/pn \
+		ptolemy/domains/ptinyDomains.xml \
+		ptolemy/domains/sr \
+		ptolemy/domains/tm \
+		ptolemy/domains/wireless \
+		thales; \
+	   touch configure; \
+	   chmod a+rx configure; \
+	)
+	egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/hyvisual$(VERSION)/bin/makefile \
+		> src_jar/hyvisual$(VERSION)/bin/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/bin/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/bin/makefile
+	# Fix up actor/lib/makefile
+	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
+		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile
+	# Fix up domains/makefile
+	egrep -v "csp.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile
+	# Fix up configs/makefile
+	egrep -v "dsp.jar|full.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
+	# Fix up doc/design/makefile
+	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+		src_jar/hyvisual$(VERSION)/doc/design/makefile \
+		> src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/doc/design/makefile
+	# Fix up doc/makefile
+	egrep -v "comm|python|security|ci/kernel|ci/lib|csp|dde|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
+		src_jar/hyvisual$(VERSION)/doc/makefile \
+		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/doc/makefile
+	# Fix up makefile
+	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar" \
+		src_jar/hyvisual$(VERSION)/makefile \
+		> src_jar/hyvisual$(VERSION)/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/makefile \
+	#cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
+	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
 
 ###############
 
