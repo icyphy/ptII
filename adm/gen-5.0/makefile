@@ -356,6 +356,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		bin/ptjacl.bat \
 		bin/ptjaclapp.bat \
 		bin/ptolemy.bat \
+		bin/ptinvoke \
 		bin/ptplot.bat \
 		bin/ptstartjini.bat \
 		bin/pxgraph.bat \
@@ -365,6 +366,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		bin/tinicomm.bat \
 		bin/tiniconverter.bat \
 		bin/vergil.bat \
+		config/jarTest.jar \
 		diva/build.xml \
 		diva/canvas/test/alljsimpletests.tcl \
 		diva/canvas/tutorial/doc-files \
@@ -372,6 +374,9 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		diva/util/test/alljsimpletests.tcl \
 		doc/usingVergil \
 		doc/design/usingVergil \
+		doc/img/banner.psd \
+		doc/img/ptIIbanner2.psd \
+		doc/img/PtolemyIISpash.psd \
 		lib/hsif \
 		lib/jni.jar \
 		lib/cachedir \
