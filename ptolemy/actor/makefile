@@ -69,6 +69,7 @@ JSRCS = \
 	ControlledActor.java \
 	DataComputingInit.java \
 	FIFOQueue.java \
+	FlowPort.java \
 	IntParam.java \
 	ObservableParameter.java \
 	Param.java \
