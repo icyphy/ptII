@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Modal model. -->
-<entity name="modal model"
+<entity name="ModalModel"
         class="ptolemy.domains.fsm.modal.ModalModel">
   <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
   </property>

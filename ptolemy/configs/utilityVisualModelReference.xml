@@ -3,5 +3,5 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Blank composite actor. -->
-<entity name="visual model reference"
+<entity name="VisualModelReference"
         class="ptolemy.vergil.actor.lib.VisualModelReference"/>

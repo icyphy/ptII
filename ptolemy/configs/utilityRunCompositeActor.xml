@@ -3,5 +3,5 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Blank composite actor. -->
-<entity name="run composite actor"
+<entity name="RunCompositeActor"
         class="ptolemy.actor.RunCompositeActor"/>

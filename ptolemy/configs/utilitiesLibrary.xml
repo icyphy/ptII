@@ -9,7 +9,7 @@
       <group>
         <input source="ptolemy/configs/utilityIDAttribute.xml"/>
         <input source="ptolemy/configs/utilityCompositeActor.xml"/>
-        <class name="composite class definition"
+        <class name="CompositeClassDefinition"
 		extends="ptolemy.actor.TypedCompositeActor"/>
         <input source="ptolemy/configs/utilityModalModel.xml"/>
         <input source="ptolemy/configs/utilityRunCompositeActor.xml"/>

@@ -2,7 +2,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
+<property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
     <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
         </property>
