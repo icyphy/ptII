@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="HelloWorld" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HelloWorld" class="ptolemy.actor.CompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="NCCodeGenerator" class="ptolemy.domains.nc.kernel.NCCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {167, 30, 815, 516}, maximized = false}">
@@ -16,122 +16,90 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
-    <property name="Director" class="ptolemy.actor.Director">
-        <doc>Simple director that executes actors in the order in which they were created.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 35.0">
-        </property>
-    </property>
-    <port name="output" class="ptolemy.actor.TypedIOPort">
+    <port name="output" class="ptolemy.actor.IOPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 250.0">
         </property>
         <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </port>
-    <entity name="NCActor" class="ptolemy.domains.nc.lib.NCActorClass">
+    <entity name="NCComponent" class="ptolemy.domains.nc.lib.NCComponent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 125.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.IOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
         </port>
     </entity>
-    <entity name="NCActor2" class="ptolemy.domains.nc.lib.NCActorClass">
+    <entity name="NCComponent2" class="ptolemy.domains.nc.lib.NCComponent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 125.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.IOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
         </port>
     </entity>
-    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="CompositeActor" class="ptolemy.actor.CompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 250.0">
         </property>
-        <property name="Director" class="ptolemy.actor.Director">
-            <doc>Simple director that executes actors in the order in which they were created.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
-            </property>
-        </property>
-        <property name="NCCodeGenerator" class="ptolemy.domains.nc.kernel.NCCodeGenerator">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 60.0">
-            </property>
-        </property>
-        <port name="init" class="ptolemy.actor.TypedIOPort">
+        <port name="init" class="ptolemy.actor.IOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 125.0">
             </property>
         </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.IOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 125.0">
             </property>
         </port>
-        <entity name="NCActor" class="ptolemy.domains.nc.lib.NCActorClass">
+        <entity name="NCComponent" class="ptolemy.domains.nc.lib.NCComponent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 125.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <port name="input" class="ptolemy.actor.IOPort">
                 <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
             </port>
-            <port name="out" class="ptolemy.actor.TypedIOPort">
+            <port name="out" class="ptolemy.actor.IOPort">
                 <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
             </port>
         </entity>
-        <entity name="NCActor2" class="ptolemy.domains.nc.lib.NCActorClass">
+        <entity name="NCComponent2" class="ptolemy.domains.nc.lib.NCComponent">
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 125.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
+            <port name="output" class="ptolemy.actor.IOPort">
                 <property name="output"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
             </port>
-            <port name="init" class="ptolemy.actor.TypedIOPort">
+            <port name="init" class="ptolemy.actor.IOPort">
                 <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
             </port>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.IORelation">
         </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.IORelation">
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation3" class="ptolemy.actor.IORelation">
         </relation>
         <link port="init" relation="relation2"/>
         <link port="output" relation="relation3"/>
-        <link port="NCActor.input" relation="relation"/>
-        <link port="NCActor.out" relation="relation3"/>
-        <link port="NCActor2.output" relation="relation"/>
-        <link port="NCActor2.init" relation="relation2"/>
+        <link port="NCComponent.input" relation="relation"/>
+        <link port="NCComponent.out" relation="relation3"/>
+        <link port="NCComponent2.output" relation="relation"/>
+        <link port="NCComponent2.init" relation="relation2"/>
     </entity>
-    <entity name="NCActor3" class="ptolemy.domains.nc.lib.NCActorClass">
+    <entity name="NCComponent3" class="ptolemy.domains.nc.lib.NCComponent">
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 250.0">
         </property>
-        <port name="init" class="ptolemy.actor.TypedIOPort">
+        <port name="init" class="ptolemy.actor.IOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.IORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.IORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.IORelation">
     </relation>
     <link port="output" relation="relation3"/>
-    <link port="NCActor.output" relation="relation"/>
-    <link port="NCActor2.input" relation="relation"/>
+    <link port="NCComponent.output" relation="relation"/>
+    <link port="NCComponent2.input" relation="relation"/>
     <link port="CompositeActor.init" relation="relation2"/>
     <link port="CompositeActor.output" relation="relation3"/>
-    <link port="NCActor3.init" relation="relation2"/>
+    <link port="NCComponent3.init" relation="relation2"/>
 </entity>

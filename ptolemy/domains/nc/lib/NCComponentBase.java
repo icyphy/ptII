@@ -32,7 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.nc.lib;
 
-import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -43,16 +43,20 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// NCActor
+//// NCComponentBase
 /**
+Base class for nesC component classes.  These are classes with source
+code defined in a .nc file intended for use with TinyOS to program
+the Berkeley Motes.  This class provides a parameter <i>source</i>
+that is used to identify the nesC source file. It works in conjunction
+with the NCComponent MoML class, which attaches a tableau factory
+so that look inside will open the nesC source file.
 
-FIXME
-
-@author Edward A. Lee
+@author Elaine Cheong, Edward A. Lee, Yang Zhao
 @version $Id$
 @since Ptolemy II 4.0
 */
-public class NCActor extends TypedAtomicActor {
+public class NCComponentBase extends AtomicActor {
 
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -61,7 +65,7 @@ public class NCActor extends TypedAtomicActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public NCActor(Workspace workspace) {
+    public NCComponentBase(Workspace workspace) {
         super(workspace);
         try {
             _init();
@@ -79,7 +83,7 @@ public class NCActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public NCActor(CompositeEntity container, String name)
+    public NCComponentBase(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();

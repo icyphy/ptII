@@ -48,12 +48,12 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	NCActor.java
+	NCComponentBase.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	lib.xml \
-	NCActor.nc \
-	NCActorClass.xml
+	NCComponent.nc \
+	NCComponent.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

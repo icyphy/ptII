@@ -32,30 +32,33 @@ package ptolemy.domains.nc.kernel;
 
 // Ptolemy imports.
 import java.awt.Frame;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// NCCodeGenerator
 /**
-This attribute is a visible attribute that when configured (by double
-clicking on it or by invoking Configure in the context menu) it generates
+This is a visible attribute that when configured (by double
+clicking on it or by invoking Configure in the context menu) generates
 NC code and displays it a text editor.  It is up to the user to save
 the NC code in an appropriate file, if necessary.
 
@@ -64,7 +67,7 @@ the NC code in an appropriate file, if necessary.
 @since Ptolemy II 4.0
 */
 
-public class NCCodeGenerator extends Attribute {
+public class NCCodeGenerator extends Director {
 
     /** Construct a code generator with the specified container and name.
      *  @param container The container.
@@ -74,27 +77,84 @@ public class NCCodeGenerator extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public NCCodeGenerator(NamedObj container, String name)
+    public NCCodeGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+                "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
                 + "style=\"fill:blue\"/>"
-                + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
-        new SingletonAttribute(this, "_hideName");
-        new CodeDisplayerFactory(this, "_editorFactory");
+                + "<text x=\"-15\" y=\"9\" "
+                + "style=\"font-size:24; font-family:SansSerif; fill:white\">"
+                + "NC</text></svg>");
+        
+        destinationDirectory = new FileParameter(this, "destinationDirectory");
+        destinationDirectory.setExpression("$CWD");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /** The directory into which to write the code.
+     */
+    public FileParameter destinationDirectory;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate NC code for the given model.
+    /** Do nothing.
+     */
+    public void fire() {
+    }
+    
+    /** Do nothing.
+     */
+    public void initialize() {
+    }
+
+    /* Return false.
+     */
+    public boolean postfire() throws IllegalActionException {
+        return false;
+    }
+
+    /* Return false.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // FIXME: If we return false, the run doesn't terminate
+        // on its own.
+        return true;
+    }
+
+    /* Generate code.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if (!(getContainer() instanceof CompositeActor)) {
+            throw new IllegalActionException(this,
+            "Requires the container to be an instance of CompositeActor.");
+        }
+        CompositeActor container = (CompositeActor)getContainer();
+        
+        File directory = destinationDirectory.asFile();
+        if (!directory.isDirectory()) {
+            // FIXME: Should we create the directory?
+            throw new IllegalActionException(this,
+            "No directory named: "
+            + destinationDirectory.getExpression());
+        }
+        _writeCode(container, null, directory);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Generate NC code for the given model. This does not descend
+     *  hierarchically into contained composites. It simply generates
+     *  code for the top level of the specified model.
+     *  @param model The model for which to generate code.
      *  @return The NC code.
      */
-    public static String generateCode(TypedCompositeActor model)
+    public static String generateCode(CompositeActor model)
             throws IllegalActionException {
         StringBuffer generatedCode = new StringBuffer();
 
@@ -112,21 +172,18 @@ public class NCCodeGenerator extends Attribute {
         return generatedCode.toString();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
     /** Generate NC code describing the input ports.  Input ports are
      *  described in NC as interfaces "provided" by this module.
      *  @return The code describing the input ports.
      */
-    private static String _interfaceProvides(TypedCompositeActor model)
+    private static String _interfaceProvides(CompositeActor model)
             throws IllegalActionException {
 
         StringBuffer codeString = new StringBuffer();
 
         Iterator inPorts = model.inputPortList().iterator();
         while (inPorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort)inPorts.next();
+            IOPort port = (IOPort)inPorts.next();
             if (port.isOutput()) {
                 throw new IllegalActionException(port,
                 "Ports that are both inputs and outputs are not allowed.");
@@ -142,14 +199,14 @@ public class NCCodeGenerator extends Attribute {
     /** Generate interface the model uses.
      *  @return The code.
      */
-    private static String _interfaceUses(TypedCompositeActor model)
+    private static String _interfaceUses(CompositeActor model)
             throws IllegalActionException {
 
         StringBuffer codeString = new StringBuffer();
 
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort)outPorts.next();
+            IOPort port = (IOPort)outPorts.next();
             if (port.isInput()) {
                 throw new IllegalActionException(port,
                 "Ports that are both inputs and outputs are not allowed.");
@@ -167,7 +224,7 @@ public class NCCodeGenerator extends Attribute {
     /** Generate code for the components used in the model.
      *  @return The code.
      */
-    private static String _includeModule(TypedCompositeActor model)
+    private static String _includeModule(CompositeActor model)
             throws IllegalActionException {
 
         StringBuffer codeString = new StringBuffer();
@@ -193,7 +250,7 @@ public class NCCodeGenerator extends Attribute {
     /** Generate code for the connections.
      *  @return The connections code.
      */
-    private static String _includeConnection(TypedCompositeActor model, Actor actor)
+    private static String _includeConnection(CompositeActor model, Actor actor)
             throws IllegalActionException {
         
         StringBuffer codeString = new StringBuffer();
@@ -248,7 +305,7 @@ public class NCCodeGenerator extends Attribute {
      *  on the order of driver input parameters
      *  @return The drivers code.
      */
-    private static String _includeConnection(TypedCompositeActor model)
+    private static String _includeConnection(CompositeActor model)
             throws IllegalActionException {
 
         String codeString = "";
@@ -265,7 +322,7 @@ public class NCCodeGenerator extends Attribute {
 
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
-            TypedIOPort port = (TypedIOPort)outPorts.next();
+            IOPort port = (IOPort)outPorts.next();
                 // FIXME: Assuming ports are either
                 // input or output and not both.
                 //String portID = port.getName();
@@ -310,6 +367,56 @@ public class NCCodeGenerator extends Attribute {
         }
     }
 
+    /** Generate and write the code for the specified model
+     *  and the models it contains.  This method writes code
+     *  into files whose names are constructed from the names
+     *  of the composites relative to the specified top level.
+     *  @param model The model for which to generate code.
+     *  @param toplevel The top level, used to determine the file
+     *   name of the destination, or null to just use the name
+     *   of the model.
+     *  @param directory The directory in which to write the
+     *   file.
+     */
+    private void _writeCode(
+            CompositeActor model, 
+            CompositeActor toplevel, 
+            File directory)
+            throws IllegalActionException {
+        
+        String code = generateCode(model);
+        
+        String name;
+        if (toplevel != null) {
+            name = toplevel.getName() + "_" + model.getName(toplevel);
+        } else {
+            toplevel = model;
+            name = toplevel.getName();
+        }
+        name = StringUtilities.sanitizeName(name);
+        
+        // FIXME: We just overwrite the file.
+        File writeFile = new File(directory, name + ".nc");
+        // FIXME: Check whether the file exists?  How to manage overwriting?
+        try {
+            FileWriter writer = new FileWriter(writeFile);
+            writer.write(code);
+            writer.close();
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e,
+            "Failed to open file for writing.");
+        }
+        
+        // Descend recursively into contained composites.
+        Iterator entities = model.entityList(CompositeActor.class).iterator();
+        while (entities.hasNext()) {
+            CompositeActor contained = (CompositeActor)entities.next();
+            _writeCode(contained, toplevel, directory);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////    
 
     private static String _endLine = "\n";
 
@@ -335,7 +442,7 @@ public class NCCodeGenerator extends Attribute {
 
                 // NamedObj container = (NamedObj)object.getContainer();
 
-                TypedCompositeActor model = (TypedCompositeActor)
+                CompositeActor model = (CompositeActor)
                     NCCodeGenerator.this.getContainer();
 
                 // Preinitialize and resolve types.
