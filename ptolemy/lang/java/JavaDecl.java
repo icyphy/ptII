@@ -165,32 +165,32 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      *  names (of members, classes, interfaces, and subpackages) to
      *  JavaDecls of these entities.
      */
-    public Environ getEnviron() {
+    public Scope getEnviron() {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
 
     /** Get an environment of types associated with this declaration. This
-     *  method is used instead of getEnviron() when looking up types contained
-     *  in the environment. getEnviron() for ClassDecl needs to run pass 1 to
+     *  method is used instead of getScope() when looking up types contained
+     *  in the environment. getScope() for ClassDecl needs to run pass 1 to
      *  get all the fields and methods into the environment. This method avoids
      *  running pass 1 while still in pass 0.
      *
      *  This method is necessary to allow for inner classes, since the environment
      *  a class is necessary to lookup its inner classes.
      *
-     *  The default method just calls getEnviron().
+     *  The default method just calls getScope().
      */
-    public Environ getTypeEnviron() {
-        return getEnviron();
+    public Scope getTypeEnviron() {
+        return getScope();
     }
 
     /** Set the environment associated with this declaration. */
-    public void setEnviron(Environ environ) {
+    public void setScope(Environ environ) {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
 
     /** Return true iff this declaration has an environment associated with it. */
-    public boolean hasEnviron() { return false; }
+    public boolean hasScope() { return false; }
 
     /** Return the modifiers of this declaration.
      *  Classes, interfaces, and their members have modifiers, as defined in

@@ -136,9 +136,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
         ClassDecl classDecl = ctx.currentClassDecl;
-        Environ classEnv = classDecl.getEnviron();
+        Scope classEnv = classDecl.getEnviron();
 
-        EnvironIter methods = classEnv.lookupFirstProper(classDecl.getName(),
+        ScopeIterator methods = classEnv.lookupFirstProper(classDecl.getName(),
                 CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
@@ -160,9 +160,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             return AbsentTreeNode.instance;
         }
 
-        Environ superEnv = superDecl.getEnviron();
+        Scope superEnv = superDecl.getEnviron();
 
-        EnvironIter methods = superEnv.lookupFirstProper(superDecl.getName(),
+        ScopeIterator methods = superEnv.lookupFirstProper(superDecl.getName(),
                 CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
@@ -338,7 +338,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                         typeName.getName().getIdent());
             }
 
-            EnvironIter methods = typeDecl.getEnviron().lookupFirstProper(
+            ScopeIterator methods = typeDecl.getEnviron().lookupFirstProper(
                     typeDecl.getName(), CG_CONSTRUCTOR);
 
             MethodDecl constructor = resolveCall(methods, node.getArgs());
@@ -371,7 +371,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         ClassDecl superDecl = (ClassDecl) node.getDefinedProperty(SUPERCLASS_KEY);
 
-        EnvironIter methods = superDecl.getEnviron().lookupFirstProper(
+        ScopeIterator methods = superDecl.getEnviron().lookupFirstProper(
                 superDecl.getName(), CG_CONSTRUCTOR);
 
         MethodDecl constructor = resolveCall(methods, node.getSuperArgs());
@@ -454,7 +454,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
     protected void resolveAField(FieldAccessNode node, boolean thisAccess, boolean isSuper,
             FieldContext ctx) {
-        EnvironIter resolutions;
+        ScopeIterator resolutions;
         TypeNode oType = _typeVisitor.accessedObjectType(node);
         ClassDecl typeDecl;
 
@@ -471,7 +471,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         if (methodArgs == null) {
             d = JavaDecl.getDecl((NamedNode) node);
             if (d == null) { // don't repeat work
-                resolutions = typeDecl.getEnviron().lookupFirstProper(nameString, CG_FIELD);
+                resolutions = typeDecl.getScope().lookupFirstProper(nameString, CG_FIELD);
 
                 if (!resolutions.hasNext()) {
                     throw new RuntimeException ("no " + nameString + " field in " +
@@ -484,7 +484,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                 }
             }
         } else {
-            resolutions = typeDecl.getEnviron().lookupFirstProper(nameString,
+            resolutions = typeDecl.getScope().lookupFirstProper(nameString,
                     CG_METHOD);
 
             if (!resolutions.hasNext()) {
@@ -499,7 +499,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         //checkFieldAccess(d, typeDecl, thisAccess, isSuper, false, ctx, position());
     }
 
-    public MethodDecl resolveCall(EnvironIter methods, List args) {
+    public MethodDecl resolveCall(ScopeIterator methods, List args) {
 
         Decl aMethod = methods.head();
         Decl d;

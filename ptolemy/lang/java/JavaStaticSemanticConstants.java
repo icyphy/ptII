@@ -136,7 +136,7 @@ public interface JavaStaticSemanticConstants extends NodeClassID {
     /** The key that retrieves the JavaDecl associated with a TreeNode. */
     public static final Integer DECL_KEY = new Integer(4);
 
-    /** The key that retrieves the Environ associated with a TreeNode. */
+    /** The key that retrieves the Scope associated with a TreeNode. */
     public static final Integer ENVIRON_KEY = new Integer(5);
 
     /** The key that retrieves the TypeNameNode for the class associated with a ThisNode. */

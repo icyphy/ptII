@@ -78,22 +78,22 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _source = null;
     }
 
-    public final boolean hasEnviron() { return true; }
+    public final boolean hasScope() { return true; }
 
-    public final Environ getEnviron() {
+    public final Scope getEnviron() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
-            //System.out.println("getEnviron() for " + _name + ": building environment");
-            _buildEnviron();
+            //System.out.println("getScope() for " + _name + ": building environment");
+            _buildScope();
         }
-        //System.out.println("getEnviron() for " + _name + ": environment already in place");
+        //System.out.println("getScope() for " + _name + ": environment already in place");
         return _environ;
     }
 
-    public final Environ getTypeEnviron() {
+    public final Scope getTypeEnviron() {
         return _environ;
     }
 
-    public final void setEnviron(Environ environ) {
+    public final void setScope(Environ environ) {
         _environ = environ;
     }
 
@@ -185,14 +185,14 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _superClass = superClass;
     }
 
-    protected void _buildEnviron() {
-	//System.out.println("ClassDecl._buildEnviron(): Building env " +
+    protected void _buildScope() {
+	//System.out.println("ClassDecl._buildScope(): Building env " +
         //				 "for class " + fullName());
         loadSource();
 
         // builds environments for all recently loaded classes, including
 	// this one
-        StaticResolution.buildEnvironments();
+        StaticResolution.buildScopements();
 
         // If class didn't load, give it a dummy environment, etc
         if (_environ == null) {
@@ -200,7 +200,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                     "using dummy environment.");
 
             _environ =
-		new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
+		new Scope(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
             setSuperClass(StaticResolution.OBJECT_DECL);
 
@@ -218,7 +218,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     protected int  _modifiers;
     protected TreeNode  _source;
     protected JavaDecl  _container;
-    protected Environ   _environ = null;
+    protected Scope   _environ = null;
     protected List _interfaces = new LinkedList();
     protected ClassDecl _superClass;
 }

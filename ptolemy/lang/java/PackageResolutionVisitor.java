@@ -74,21 +74,21 @@ public class PackageResolutionVisitor extends JavaVisitor
         } else {
             NameNode name = (NameNode) StaticResolution.resolveAName(
                     (NameNode) pkgDeclNode,
-                    StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, CG_PACKAGE);
+                    StaticResolution.SYSTEM_PACKAGE.getScope(), null, null, CG_PACKAGE);
             thePkgDecl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
         }
 
         node.setProperty(PACKAGE_KEY, thePkgDecl);
 
         // build environment for this file
-        Environ importOnDemandEnv = new Environ(
-                StaticResolution.SYSTEM_PACKAGE.getEnviron());
+        Scope importOnDemandEnv = new Environ(
+                StaticResolution.SYSTEM_PACKAGE.getScope());
 
-        Environ pkgEnv = new Environ(importOnDemandEnv);
+        Scope pkgEnv = new Environ(importOnDemandEnv);
 
-        pkgEnv.copyDeclList(thePkgDecl.getEnviron());
+        pkgEnv.copyDeclList(thePkgDecl.getScope());
 
-        Environ environ = new Environ(pkgEnv); // the file level environment
+        Scope environ = new Environ(pkgEnv); // the file level environment
         node.setProperty(ENVIRON_KEY, environ);
 
         node.accept(new ResolvePackageVisitor(), null);

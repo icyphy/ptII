@@ -49,7 +49,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node;
-        _fileEnv = (Environ) node.getDefinedProperty(ENVIRON_KEY); // file environment
+        _fileEnv = (Scope) node.getDefinedProperty(ENVIRON_KEY); // file environment
         _importEnv = _fileEnv.parent().parent();
 
         // initialize importedPackages property
@@ -74,7 +74,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-                (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
+                (Scope) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
                 CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
@@ -97,7 +97,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-                StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, CG_PACKAGE);
+                StaticResolution.SYSTEM_PACKAGE.getScope(), null,  null, CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
@@ -126,7 +126,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         _importedPackages.add(importedPackage);
 
-        Environ pkgEnv = importedPackage.getEnviron();
+        Scope pkgEnv = importedPackage.getEnviron();
 
         Iterator envItr = pkgEnv.allProperDecls();
 
@@ -148,7 +148,7 @@ public class ResolveImportsVisitor extends JavaVisitor
         NameNode name = (NameNode) StaticResolution.makeNameNode(qualName);
 
         StaticResolution.resolveAName(name,
-                StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null,
+                StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
                 CG_PACKAGE);
 
         _importOnDemand((PackageDecl) name.getDefinedProperty(DECL_KEY));
@@ -159,10 +159,10 @@ public class ResolveImportsVisitor extends JavaVisitor
     protected CompileUnitNode _compileUnit = null;
 
     /** The file environment. */
-    protected Environ _fileEnv = null;
+    protected Scope _fileEnv = null;
 
     /** The import environment. */
-    protected Environ _importEnv = null;
+    protected Scope _importEnv = null;
 
     /** The Collection of imported packages for this compile unit. */
     protected Collection _importedPackages = null;

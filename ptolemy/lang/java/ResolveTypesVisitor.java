@@ -55,7 +55,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        Environ env = (Environ) args.get(0);
+        Scope env = (Environ) args.get(0);
 
         NameNode name = node.getName();
 
@@ -100,11 +100,11 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);
+        return _visitNodeWithScope(node);
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        return _visitNodeWithEnviron(node);
+        return _visitNodeWithScope(node);
     }
 
     /** The default visit method. Visits all child nodes with the same
@@ -119,7 +119,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     /** Get environment from this node, and pass it to the children.
      *  Only nodes that have their own environment should call this method.
      */
-    protected Object _visitNodeWithEnviron(TreeNode node) {
+    protected Object _visitNodeWithScope(TreeNode node) {
 
         // environment for this class is argument for children
         LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));

@@ -175,12 +175,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         me.setInterfaces(declInterfaceList);
 
         // add this declaration to outer class's environment, if applicable
-        _addUserTypeToEnclosingClassEnviron(args.get(1), me);
+        _addUserTypeToEnclosingClassScope(args.get(1), me);
 
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
-        childArgs.addLast(me.getEnviron());
+        childArgs.addLast(me.getScope());
 
         TNLManip.traverseList(this, childArgs, node.getMembers());
 
@@ -207,9 +207,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // Leftover from Titanium. Why??
         // dtype()->resolveClass(package, cclass, fileEnv);
 
-        Environ encEnviron = (Environ) args.get(1);
+        Scope encEnviron = (Environ) args.get(1);
 
-        Decl d = encEnviron.lookupProper(nameString, CG_FIELD);
+        Decl d = encScope.lookupProper(nameString, CG_FIELD);
 
         if (d != null) {
             throw new RuntimeException("redeclaration of " + d.getName());
@@ -218,7 +218,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         d = new FieldDecl(nameString, node.getDefType(), modifiers,
                 node, (ClassDecl) args.get(0));
 
-        encEnviron.add(d);
+        encScope.add(d);
 
         node.getName().setProperty(DECL_KEY, d);
 
@@ -278,12 +278,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         me.setInterfaces(declInterfaceList);
 
         // add this declaration to outer class's environment, if applicable
-        _addUserTypeToEnclosingClassEnviron(args.get(1), me);
+        _addUserTypeToEnclosingClassScope(args.get(1), me);
 
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
-        childArgs.addLast(me.getEnviron());
+        childArgs.addLast(me.getScope());
 
         TNLManip.traverseList(this, childArgs, node.getMembers());
 
@@ -302,7 +302,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         // Check that this constructor is legal
 
-        Environ classEnv = (Environ) args.get(1);
+        Scope classEnv = (Environ) args.get(1);
 
         NameNode name = node.getName();
         String constructorName = name.getIdent();
@@ -405,7 +405,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         // Check that this method is legal
 
-        Environ classEnv = (Environ) args.get(1);
+        Scope classEnv = (Environ) args.get(1);
 
         NameNode name = node.getName();
         String methodName = name.getIdent();
@@ -479,12 +479,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             me.setInterfaces(TNLManip.addFirst(implIFace));
         }
 
-        Environ myEnviron = me.getEnviron();
+        Scope myEnviron = me.getEnviron();
 
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
-        childArgs.addLast(myEnviron);
+        childArgs.addLast(myScope);
 
         TNLManip.traverseList(this, childArgs, node.getMembers());
 
@@ -507,12 +507,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         return null;
     }
 
-    protected void _addUserTypeToEnclosingClassEnviron(Object encClassEnvironObject,
+    protected void _addUserTypeToEnclosingClassScope(Object encClassEnvironObject,
             Decl decl) {
-        if (encClassEnvironObject != NullValue.instance) {
+        if (encClassScopeObject != NullValue.instance) {
             // this is an inner class, add to outer class's environment
-            Environ encClassEnviron = (Environ) encClassEnvironObject;
-            encClassEnviron.add(decl);
+            Scope encClassEnviron = (Environ) encClassEnvironObject;
+            encClassScope.add(decl);
         }
     }
 

@@ -82,33 +82,33 @@ public class PackageDecl extends JavaDecl
         _container = container;
     }
 
-    public final Environ getEnviron() {
-	//System.out.println("PackageDecl.getEnviron()" + getName());
+    public final Scope getEnviron() {
+	//System.out.println("PackageDecl.getScope()" + getName());
         if (_environ == null) {
-            _initEnviron();
+            _initScope();
         }
         return _environ;
     }
 
-    public final void setEnviron(Environ environ) {
+    public final void setScope(Environ environ) {
         _environ = environ;
     }
 
-    public final boolean hasEnviron() { return true; }
+    public final boolean hasScope() { return true; }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     protected JavaDecl  _container;
 
-    protected Environ _environ = null;
+    protected Scope _environ = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
 
     // Initialize the environ by adding declarations for the package.
-    private void _initEnviron() {
+    private void _initScope() {
 	/* SDFCodeGeneratorClassFactory.createPtolemyTypeIdentifier()
 	 * ptolemy.codegen.PtolemyTypeIdentifier has a static section
          * that calls
@@ -116,28 +116,28 @@ public class PackageDecl extends JavaDecl
 	 * StaticResolution has a static section that calls
 	 * StaticResolution.importPackage on java.lang.
 	 * StaticResolution.importPackage calls
-	 * StaticResolution.SYSTEM_PACKAGE.getEnviron(), which calls
-	 * PackageDecl.getEnviron(), which calls this method
+	 * StaticResolution.SYSTEM_PACKAGE.getScope(), which calls
+	 * PackageDecl.getScope(), which calls this method
 	 * 
 	 */
 
-        //System.out.println("PackageDecl._initEnviron("
+        //System.out.println("PackageDecl._initScope("
 	//			 + _container + ")");
 
         boolean empty = true;
 
         if (_container == null) {
-            //System.out.println("_initEnviron : no container");
-            _environ = new Environ(null);
+            //System.out.println("_initScope : no container");
+            _environ = new Scope(null);
         } else {
-            //System.out.println("_initEnviron : has container");
-            _environ = new Environ(_container.getEnviron());
+            //System.out.println("_initScope : has container");
+            _environ = new Scope(_container.getEnviron());
         }
 
         // Use the contents of the system jar file to get java.* etc. files 
         if (fullName().equals("") ||
                 SearchPath.systemPackageSet.contains(fullName('.'))) {
-            _initEnvironSystemPackages(SearchPath.systemClassSet,
+            _initScopeSystemPackages(SearchPath.systemClassSet,
                     SearchPath.systemPackageSet);
         }
 
@@ -145,11 +145,11 @@ public class PackageDecl extends JavaDecl
                 return;
         }
 
-	System.out.println("PackageDecl._initEnviron(): " +
+	System.out.println("PackageDecl._initScope(): " +
                "Now processing " + fullName('.'));
         // Use reflection to get at the Ptolemy Core packages.
         if (SearchPath.ptolemyCorePackageSet.contains(fullName('.'))) {
-            _initEnvironSystemPackages(SearchPath.ptolemyCoreClassSet,
+            _initScopeSystemPackages(SearchPath.ptolemyCoreClassSet,
                     SearchPath.ptolemyCorePackageSet);
 
             if (fullName('.').equals("ptolemy.data")) {
@@ -158,7 +158,7 @@ public class PackageDecl extends JavaDecl
                 // ptolemy.data.expr is not part of the core, so
                 // we need to add it by hand so that we can parse
                 // the .java files and get the bodies in to the AST.
-                //System.out.println("PackageDecl._initEnviron" +
+                //System.out.println("PackageDecl._initScope" +
                 // "Packages(): saw ptolemy/data ");
                 _environ.add(new PackageDecl("expr", this));
             }
@@ -252,11 +252,11 @@ public class PackageDecl extends JavaDecl
         }
     }
 
-    // Initialize the Environ by loading declarations for the system packages
+    // Initialize the Scope by loading declarations for the system packages
     // or ptolemy core packages.
-    private void _initEnvironSystemPackages(Set classSet, Set packageSet) {
+    private void _initScopeSystemPackages(Set classSet, Set packageSet) {
         String packageName = fullName('.');
-        //System.out.println("PackageDecl._initEnvironSystemPackages(): " +
+        //System.out.println("PackageDecl._initScopeSystemPackages(): " +
 	//	   "loading " + packageName + " _container:" + _container);
 
         Iterator classes = classSet.iterator();
@@ -269,7 +269,7 @@ public class PackageDecl extends JavaDecl
                     if (_environ.lookupProper(className, CG_USERTYPE) == null) {
                 String shortClassName =
                     className.substring(packageName.length() + 1);
-                //System.out.println("PackageDecl._initEnviron" +
+                //System.out.println("PackageDecl._initScope" +
                 //                "SystemPackages():"+
                 //                shortClassName);
 
@@ -301,7 +301,7 @@ public class PackageDecl extends JavaDecl
                 // of java/lang
                 String shortSystemPackageName =
                     systemPackageName.substring(packageName.length() + 1);
-                //System.out.println("PackageDecl._initEnvironSystem" +
+                //System.out.println("PackageDecl._initScopeSystem" +
 		//		   "Packages(): adding package: " + shortSystemPackageName);
                 _environ.add(new PackageDecl(shortSystemPackageName, this));
             } else {
@@ -309,7 +309,7 @@ public class PackageDecl extends JavaDecl
                         systemPackageName.indexOf('.') == -1 &&
                         !systemPackageName.equals("META-INF")
                     ) {
-                    //System.out.println("PackageDecl._initEnvironSystem" +
+                    //System.out.println("PackageDecl._initScopeSystem" +
                     // "Packages(): adding toplevel package: " +
                     // systemPackageName);
                 _environ.add(new PackageDecl(systemPackageName, this));

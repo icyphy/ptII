@@ -75,7 +75,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         NameContext c = new NameContext();
-        c.environ = (Environ) node.getDefinedProperty(ENVIRON_KEY);
+        c.environ = (Scope) node.getDefinedProperty(ENVIRON_KEY);
 
         LinkedList childArgs = TNLManip.addFirst(c);
 
@@ -95,7 +95,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         node.setInitExpr((TreeNode) node.getInitExpr().accept(this, args));
 
         NameContext ctx = (NameContext) args.get(0);
-        Environ env = ctx.environ;
+        Scope env = ctx.environ;
 
         NameNode name = node.getName();
         String varName = name.getIdent();
@@ -128,7 +128,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Environ newEnv1 = new Environ(ctx.environ);
+        Scope newEnv1 = new Environ(ctx.environ);
         subCtx.environ = newEnv1;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
@@ -137,7 +137,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
                 node.getParams()));
 
         TreeNode body = node.getBody();
-        subCtx.environ = new Environ(newEnv1);
+        subCtx.environ = new Scope(newEnv1);
 
         if (body != AbsentTreeNode.instance) {
             node.setBody((BlockNode) body.accept(this, childArgs));
@@ -153,7 +153,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Environ newEnv1 = new Environ(ctx.environ);
+        Scope newEnv1 = new Environ(ctx.environ);
         subCtx.environ = newEnv1;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
@@ -161,7 +161,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         node.setParams(TNLManip.traverseList(this, childArgs,
                 node.getParams()));
 
-        subCtx.environ = new Environ(newEnv1);
+        subCtx.environ = new Scope(newEnv1);
 
         node.setConstructorCall((ConstructorCallNode)
                 node.getConstructorCall().accept(this, childArgs));
@@ -177,7 +177,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        Environ env = ctx.environ;
+        Scope env = ctx.environ;
 
         NameNode name = node.getName();
         String varName = name.getIdent();
@@ -201,7 +201,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         NameContext subctx = (NameContext) ctx.clone();
-        subctx.environ = new Environ(ctx.environ);
+        subctx.environ = new Scope(ctx.environ);
 
         node.setStmts(TNLManip.traverseList(this, TNLManip.addFirst(subctx),
                 node.getStmts()));
@@ -217,7 +217,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         Decl other = ctx.environ.lookup(labelString, CG_STMTLABEL);
 
-        Environ newEnv = new Environ(ctx.environ);
+        Scope newEnv = new Environ(ctx.environ);
 
         if (other != null) {
             throw new RuntimeException("duplicate " + labelString);
@@ -245,7 +245,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         node.setExpr((ExprNode) node.getExpr().accept(this, args));
 
         subCtx.breakTarget = node;
-        subCtx.environ = new Environ(ctx.environ);
+        subCtx.environ = new Scope(ctx.environ);
 
         node.setSwitchBlocks(
                 TNLManip.traverseList(this, TNLManip.addFirst(subCtx),
@@ -262,7 +262,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         subCtx.breakTarget = node;
         subCtx.encLoop = node;
-        subCtx.environ = new Environ(ctx.environ);
+        subCtx.environ = new Scope(ctx.environ);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
         node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
@@ -275,7 +275,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
         NameContext subCtx = (NameContext) ctx.clone();
 
-        subCtx.environ = new Environ(ctx.environ);
+        subCtx.environ = new Scope(ctx.environ);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -329,7 +329,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         NameContext subCtx = (NameContext) ctx.clone();
-        subCtx.environ = new Environ(ctx.environ);
+        subCtx.environ = new Scope(ctx.environ);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -412,7 +412,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
-        ctx.environ = decl.getEnviron();
+        ctx.environ = decl.getScope();
         ctx.currentClass = decl.getDefType();
 
         LinkedList childArgs = TNLManip.addFirst(ctx);
@@ -424,7 +424,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     }
 
     protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel,
-            Environ env) {
+            Scope env) {
         TreeNode label = node.getLabel();
 
         if (label == AbsentTreeNode.instance) {
@@ -460,7 +460,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         }
 
         /** The last environment. */
-        public Environ environ = null;
+        public Scope environ = null;
 
         /** The type of the current class. */
         public TypeNameNode currentClass = null;
