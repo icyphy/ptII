@@ -201,11 +201,34 @@ public class NamedObj implements Nameable, Debuggable,
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a change listener.  If there is a container, then
+     *  delegate to the container.  Otherwise, add the listener
+     *  to the list of change listeners in this object. Each listener
+     *  will be notified of the execution (or failure) of each 
+     *  change request that is executed via the requestChange() method.
+     *  Note that in this implementation, only the top level of a
+     *  hierarchy executes changes, which is why this method delegates
+     *  to the container if there is one.
+     *  <p>
+     *  If the listener is already in the list, do not add it again.
+     *  @param listener The listener to add.
+     */
+    public synchronized void addChangeListener(ChangeListener listener) {
+	NamedObj container = (NamedObj) getContainer();
+	if(container != null) {
+            container.addChangeListener(listener);
+        } else {
+            if (!_changeListeners.contains(listener)) {
+                _changeListeners.add(listener);
+            }
+        }
+    }
+
     /** Append a listener to the current set of debug listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
      */
-    public void addDebugListener(DebugListener listener) {
+    public synchronized void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
         } else {
@@ -322,6 +345,7 @@ public class NamedObj implements Nameable, Debuggable,
             newobj._attributes = null;
             newobj._workspace = ws;
             newobj._fullNameVersion = -1;
+            newobj._changeListeners = new LinkedList();
             Iterator params = attributeList().iterator();
             while (params.hasNext()) {
                 Attribute p = (Attribute)params.next();
@@ -742,12 +766,26 @@ public class NamedObj implements Nameable, Debuggable,
         return _name;
     }
 
+    /** Remove a change listener. If there is a container, delegate the
+     *  request to the container.  If the specified listener is not
+     *  on the list of listeners, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public synchronized void removeChangeListener(ChangeListener listener) {
+	NamedObj container = (NamedObj) getContainer();
+	if(container != null) {
+            container.removeChangeListener(listener);
+        } else {
+            _changeListeners.remove(listener);
+        }
+    }
+
     /** Unregister a debug listener.  If the specified listener has not
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
      *   to which debug messages are sent.
      */
-    public void removeDebugListener(DebugListener listener) {
+    public synchronized void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
             return;
         }
@@ -756,6 +794,30 @@ public class NamedObj implements Nameable, Debuggable,
             _debugging = false;
         }
         return;
+    }
+
+    /** Request that given change request be executed.   In this base 
+     *  class, defer the change request to the container, if there is one.
+     *  If there is no container, then execute the request immediately.
+     *  In other words, the request will get passed up to the top level 
+     *  of the hierarchy and then executed.  Subclasses can override
+     *  this to queue the change request and execute it at an appropriate time.
+     *  Change listeners will be notified of success (or failure) or the
+     *  request.
+     *  @param change The requested change.
+     */
+    public void requestChange(ChangeRequest change) {
+	NamedObj container = (NamedObj) getContainer();
+	if(container == null) {
+            // Make sure the list of listeners is not being concurrently
+            // modified by making this synchronized.
+            synchronized(this) {
+                change.setListeners(_changeListeners);
+            }
+            change.execute();
+	} else {
+	    container.requestChange(change);
+	}
     }
 
     /** Set the name of the MoML element used to describe this object.
@@ -924,9 +986,11 @@ public class NamedObj implements Nameable, Debuggable,
      */
     protected final void _debug(DebugEvent event) {
         if (_debugging) {
-            Iterator listeners = _debugListeners.iterator();
-            while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).event(event);
+            synchronized(this) {
+                Iterator listeners = _debugListeners.iterator();
+                while (listeners.hasNext()) {
+                    ((DebugListener)listeners.next()).event(event);
+                }
             }
         }
     }
@@ -938,9 +1002,11 @@ public class NamedObj implements Nameable, Debuggable,
      */
     protected final void _debug(String message) {
         if (_debugging) {
-            Iterator listeners = _debugListeners.iterator();
-            while (listeners.hasNext()) {
-                ((DebugListener)listeners.next()).message(message);
+            synchronized(this) {
+                Iterator listeners = _debugListeners.iterator();
+                while (listeners.hasNext()) {
+                    ((DebugListener)listeners.next()).message(message);
+                }
             }
         }
     }
@@ -1116,6 +1182,9 @@ public class NamedObj implements Nameable, Debuggable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** A list of change listeners. */
+    protected List _changeListeners = new LinkedList();
 
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
