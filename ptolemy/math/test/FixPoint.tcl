@@ -164,3 +164,34 @@ test FixPoint-5.3 {divide} {
 } {-10.1111001111010111010001000100}
 
 ####################################################################
+
+test FixPoint-6.1 {equal} {
+    set p8  [java::new ptolemy.math.Precision "(32/5)" ]	
+    set p9  [java::new ptolemy.math.Precision "(33/5)" ]	
+    set p10 [java::new ptolemy.math.Precision "(30/4)" ]	
+
+    set c61 [java::call ptolemy.math.Quantizer round 7.5734 $p7 ]	
+    set c62 [java::call ptolemy.math.Quantizer round 7.5734 $p8 ]
+    set c63 [java::call ptolemy.math.Quantizer round 7.5734 $p9 ]
+    set c64 [java::call ptolemy.math.Quantizer round 7.5734 $p10 ]
+
+    list \
+	    [$c61 {equals ptolemy.math.FixPoint} $c61 ] \
+	    [$c61 {equals ptolemy.math.FixPoint} $c62 ] \
+	    [$c61 {equals ptolemy.math.FixPoint} $c63 ] \
+	    [$c61 {equals ptolemy.math.FixPoint} $c64 ] \
+	    [$c62 {equals ptolemy.math.FixPoint} $c61 ]
+
+
+} {1 1 1 0 1}
+
+####################################################################
+
+test FixPoint-7.1 {absolute} {
+
+    list \
+	    [[$c20 absolute] toBitString ] \
+	    [[$c21 absolute] toBitString ]\
+	    [[$c61 absolute] toBitString ]
+
+} {101.100100101101 100.1110101110 111.1001001011001010010101111010}
