@@ -136,9 +136,6 @@ public class XYPlotter extends Plotter {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        boolean hasX = false, hasY = false;
-        double xValue = 0.0;
-        double yValue = 0.0;
         int widthX = inputX.getWidth();
         int widthY = inputY.getWidth();
         if (widthX != widthY) {
@@ -147,6 +144,9 @@ public class XYPlotter extends Plotter {
         }
         int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = widthX - 1; i >= 0; i--) {
+            boolean hasX = false, hasY = false;
+            double xValue = 0.0;
+            double yValue = 0.0;
             if (inputX.hasToken(i)) {
                 xValue = ((DoubleToken)inputX.get(i)).doubleValue();
                 hasX = true;
