@@ -225,6 +225,7 @@ public class CSPReceiver implements ProcessReceiver {
     public synchronized boolean hasToken() {
         return _isPutWaiting();
     }
+
     /** Set the container of this CSPReceiver to the specified IOPort.
      *  @param parent The IOPort this receiver is to be contained by.
      */
@@ -236,14 +237,14 @@ public class CSPReceiver implements ProcessReceiver {
      *  the next time an actor tries to get or put it knows to pause.
      *  @param value The new value of the paused flag.
      */
-    public synchronized void setPause(boolean value) {
+    public synchronized void requestPause(boolean value) {
         _modelPaused = value;
     }
     /** The model has finished executing, so set a flag so that the
      *  next time an actor tries to get or put it gets a
      *  TerminateProcessException which will cause it to finish.
      */
-    public synchronized void setFinish() {
+    public synchronized void requestFinish() {
         _modelFinished = true;
         _modelPaused = false; // needed?
         // Need to reset the state of the receiver.
