@@ -11,10 +11,6 @@
 <entity name="CTCompositeActor"
         class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
 
-<!-- FIXME: Where should this be? -->
-<entity name="CTAssertion"
-        class="ptolemy.domains.ct.lib.CTAssertion"/>
-
 <input source="ptolemy/domains/ct/lib/dynamics.xml"/>
 <input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
 <input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
