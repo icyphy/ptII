@@ -77,7 +77,6 @@ PTAUXALLJAR =	ptsupport.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
-		codegen/codegen.jar \
 		copernicus/copernicus.jar \
 		domains/domains.jar
 
