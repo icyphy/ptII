@@ -29,6 +29,8 @@
 
 package ptolemy.actor.gui.ptjacl;
 
+import tcl.lang.*;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -40,6 +42,8 @@ import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.ShellInterpreter;
+import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.KernelRuntimeException;
 
 import java.awt.event.ActionEvent;
@@ -62,7 +66,7 @@ a 100% Java implementation of Tcl
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class TclShellTableau extends Tableau {
+public class TclShellTableau extends Tableau implements ShellInterpreter {
 
     /** Create a new Tcl Shell Tableau for use with Tcl commands.
      *  The tableau is itself an entity contained by the effigy
@@ -82,7 +86,49 @@ public class TclShellTableau extends Tableau {
 
 	TclShellFrame frame = new TclShellFrame((CompositeEntity)model, this);
 	setFrame(frame);
+
+	try {
+	    // FIXME: Perhaps the interpreter should be in its own thread?
+	    _tclInterp.setVar("panelShell",
+                    ReflectObject.newInstance(_tclInterp,
+                    ShellTextArea.class,
+                    this), 0);
+	    _tclInterp.eval("proc puts {s} {"
+                    + "global panelShell; "
+                    + "$panelShell appendJTextArea $s\\n}");
+	} catch (TclException e) {
+            // FIXME: Should perhaps throw an exception here?
+	    System.out.println(_tclInterp.getResult());
+	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Evaluate the specified command.
+     *  @param command The command.
+     *  @return The return value of the command, or null if there is none.
+     *  @exception Exception If something goes wrong processing the command.
+     */
+    public String evaluateCommand(String command) throws Exception {
+        _tclInterp.eval(command);
+        return _tclInterp.getResult().toString();
+    }
+
+    /** Return true if the specified command is complete (ready
+     *  to be interpreted).
+     *  @param command The command.
+     *  @return True if the command is complete.
+     */
+    public boolean isCommandComplete(String command) {
+        return _tclInterp.commandComplete(command);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The Tcl interpreter
+    private Interp _tclInterp = new Interp();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -109,17 +155,19 @@ public class TclShellTableau extends Tableau {
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-	    JPanel tclShellPanel = new JTextAreaTclShell();
+	    ShellTextArea tclShellPanel = new ShellTextArea();
+            tclShellPanel.setInterpreter(TclShellTableau.this);
 	    component.add(tclShellPanel);
             getContentPane().add(component, BorderLayout.CENTER);
 	}
+
 	///////////////////////////////////////////////////////////////////
 	////                         protected methods                 ////
 
 	protected void _help() {
 	    try {
 		URL doc = getClass().getClassLoader().getResource(
-								  "doc/coding/tcljava.htm");
+                        "doc/coding/tcljava.htm");
 		getConfiguration().openModel(null, doc, doc.toExternalForm());
 	    } catch (Exception ex) {
 		System.out.println("TclShellTableau._help(): " + ex);
