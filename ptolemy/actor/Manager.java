@@ -307,20 +307,16 @@ public class Manager extends NamedObj implements Runnable {
         System.out.println(timeAndMemory(startTime));
     }
 
-    /** If the state is not IDLE, set a flag to request that
-     *  execution stop and exit in a completely deterministic fashion
-     *  at the end of the next toplevel iteration.  This method may
-     *  be called from within an actor to stop the execution of the model.
-     *  This will result in finish() being called on the top level
-     *  CompositeActor, although not necessarily immediately.
-     *  This method sets the flag, then calls stopFire() on the
-     *  toplevel composite actor to ensure that the flag will actually get
-     *  seen.  Finally, resume() is called to ensure that the model is not
-     *  currently paused.  Note that the flag is set before
-     *  calling resume so that it is visible as
-     *  as soon as possible.  This is important since another thread may
-     *  be holding a synchronization lock on the manager, preventing
-     *  resume from running.
+    /** If the state is not IDLE, set a flag to request that execution
+     *  stop and exit in a completely deterministic fashion at the end
+     *  of the next toplevel iteration.  This method may be called
+     *  from within an actor to stop the execution of the model.  This
+     *  will result in stop() being called on the top level
+     *  CompositeActor, although not necessarily immediately.  Note
+     *  that this method is allowed to be called if the model is
+     *  paused and actors that implement the stop() method must
+     *  properly respond to that method even if the model is paused.
+     *  @see Executable#stop
      */
     public void finish() {
 
@@ -345,15 +341,6 @@ public class Manager extends NamedObj implements Runnable {
         // threaded domains will not know that a stop has been requested
         // (vs. a pause).
         ((CompositeActor)container).stop();
-
-        // Since Manager.resume() is synchronized, start a thread
-        // to call resume() in order to avoid deadlock
-//         Thread resumeThread = new PtolemyThread( new Runnable() {
-//                 public void run() {
-//                     resume();
-//                 }
-//             });
-//         resumeThread.start();
     }
 
     /** Get the analysis with the given name, or return null if no such 
@@ -879,38 +866,15 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** If the state is not IDLE, set a flag to request that
-     *  execution stop and exit gracefully and immediately.  The
-     *  result of this is non-deterministic and determining the
-     *  exact state of the model after this method is called is difficult.
-     *  However, it is guaranteed that the model will be be in a
-     *  state where it can be executed again.  Because of this, it
-     *  is not generally useful to call this method from within an actor.
-     *  This method will result in stop() being called on the top level
+     *  execution stop and exit in a completely deterministic fashion
+     *  at the end of the next toplevel iteration.  This method may
+     *  be called from within an actor to stop the execution of the model.
+     *  This will result in stop() being called on the top level
      *  CompositeActor, although not necessarily immediately.
+     *  This is basically an alias for finish().
      */
     public void stop() {
-        // Set this regardless of whether the model is running to
-        // avoid race conditions.  The model may not have gotten around
-        // to starting when finish is requested.
-        _finishRequested = true;
-        if (_state == IDLE) return;
-
-        Nameable container = getContainer();
-        if (!(container instanceof CompositeActor)) {
-            throw new InternalErrorException(
-                    "Attempted to call step() on an executing manager " +
-                    "with no associated CompositeActor model");
-        }
-        ((CompositeActor)container).stop();
-
-        // Since Manager.resume() is synchronized, start a thread
-        // to call resume() in order to avoid deadlock
-        Thread resumeThread = new PtolemyThread( new Runnable() {
-                public void run() {
-                    resume();
-                }
-            });
-        resumeThread.start();
+        finish();
     }
 
     /** Terminate the currently executing model with extreme prejudice.
