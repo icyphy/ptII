@@ -59,7 +59,7 @@ JSRCS = PNActor.java \
 	PNDirector.java \
 	PNInPort.java \
 	PNOutPort.java \
-	PNPort.java \
+	PNPort.java
 
 EXTRA_SRCS =	$(JSRCS)
 
