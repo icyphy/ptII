@@ -315,7 +315,6 @@ public class Manager extends NamedObj implements Runnable {
 	    }
 	});
 	resumeThread.start();
-
     }
 
     /** Return the top-level composite actor for which this manager
@@ -550,23 +549,30 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception ChangeFailedException If the model is idle and the
      *  change request fails.
      */
-    public void requestChange(ChangeRequest change) throws ChangeFailedException {
-        // Create the list of requests if it doesn't already exist
-        if (_changeRequests == null) {
-            _changeRequests = new LinkedList();
-        }
-        _changeRequests.add(change);
-        CompositeActor container = (CompositeActor) getContainer();
-        container.stopFire();
-	// If the model is idle (i.e., initialize() has not yet been
-	// invoked), then process the queued change requests right now.
+    public void requestChange(ChangeRequest change)
+            throws ChangeFailedException {
 	if (_state == IDLE) {
-	    try {
-		_processChangeRequests();
-                _setState(IDLE);
-	    } catch (IllegalActionException e) {
-		throw new ChangeFailedException(change, e);
-	    } 
+            change.execute();
+
+            // Inform all listeners. Of course, this won't happen
+            // if the change request failed.
+            if (_changeListeners != null) {
+                Iterator listeners = _changeListeners.iterator();
+                while(listeners.hasNext()) {
+                    ChangeListener listener
+                            = (ChangeListener)listeners.next();
+                    change.notify(listener);
+                }
+            }
+        } else {
+            // Create the list of requests if it doesn't already exist
+            if (_changeRequests == null) {
+                _changeRequests = new LinkedList();
+            }
+            _changeRequests.add(change);
+            CompositeActor container = (CompositeActor) getContainer();
+            // Request that firing stop, in case it is of long duration.
+            container.stopFire();
 	}
     }
 
