@@ -139,18 +139,6 @@ public class ImageReader extends Source {
         return newObject;
     }
 
-    /** Read in an image.
-     *  @exception IllegalActionException If an IO error occurs.
-     */
-    public boolean prefire() throws IllegalActionException {
-        StringToken URLToken = (StringToken)sourceURL.getToken();
-        if (URLToken == null) {
-            throw new IllegalActionException("sourceURL was null");
-        }
-        _image = new ImageIcon(URLToken.stringValue()).getImage();
-        return super.prefire();
-    }
-
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
@@ -163,6 +151,18 @@ public class ImageReader extends Source {
      */
     public void initialize() throws IllegalActionException {
         attributeChanged(sourceURL);
+    }
+
+    /** Read in an image.
+     *  @exception IllegalActionException If an IO error occurs.
+     */
+    public boolean prefire() throws IllegalActionException {
+        StringToken URLToken = (StringToken)sourceURL.getToken();
+        if (URLToken == null) {
+            throw new IllegalActionException("sourceURL was null");
+        }
+        _image = new ImageIcon(URLToken.stringValue()).getImage();
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
