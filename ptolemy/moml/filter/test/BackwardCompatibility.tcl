@@ -717,7 +717,7 @@ Below are original class names followed by the new class names.
 'annotation1', then add _hideName if necessary.
 } {ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
 that have been renamed.
-Below are the actors that are affected, alongwith the Parameter name 
+Below are the actors that are affected, along with the Parameter name 
 and the new name:	ptolemy.domains.pn.kernel.PNDirector
 		Initial_queue_capacity	 -> initialQueueCapacity
 } {ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
@@ -733,7 +733,7 @@ with the old port name and the new port name:	ptolemy.actor.lib.conversions.Cart
 		real	 -> x
 } {ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
 that have been renamed.
-Below are the actors that are affected, alongwith the port name
+Below are the actors that are affected, along with the port name
 and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
@@ -799,7 +799,7 @@ ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 
 ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
 that have been renamed.
-Below are the actors that are affected, alongwith the Parameter name 
+Below are the actors that are affected, along with the Parameter name 
 and the new name:	ptolemy.domains.pn.kernel.PNDirector
 		Initial_queue_capacity	 -> initialQueueCapacity
 
@@ -817,7 +817,7 @@ with the old port name and the new port name:	ptolemy.actor.lib.conversions.Cart
 
 ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
 that have been renamed.
-Below are the actors that are affected, alongwith the port name
+Below are the actors that are affected, along with the port name
 and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
