@@ -71,7 +71,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: Average.class jclass
+all: Average.class EPtolemy.properties jclass
 	@echo "To run the demo, run 'make demo'"
 
 install: all $(PTCLASSJAR)
@@ -92,7 +92,7 @@ OTHER_DEMO = 	EPtolemyB
 jxtaclean:
 	rm -rf .jxta ../$(OTHER_DEMO)/.jxta
 
-demo:
+demo: Average.class EPtolemy.properties
 	@echo "See $(PTPACKAGE).htm for instructions"
 	@echo "Don't forget to run "
 	@echo "   cd ../$(OTHER_DEMO); make demo"
