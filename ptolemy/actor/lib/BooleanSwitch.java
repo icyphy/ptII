@@ -53,7 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
    The <i>input</i> port may receive Tokens of any type.
 
    <p>If no token has ever been received on the <i>control</i> port, then
-   <i>falseOutput<i> is assumed to be the one to receive data.
+   <i>falseOutput</i> is assumed to be the one to receive data.
 
    @author Steve Neuendorffer
    @version $Id$
@@ -134,7 +134,7 @@ public class BooleanSwitch extends TypedAtomicActor {
         }
     }
 
-    /** Initialize this actor so that the <i>falseOutput<i> is written
+    /** Initialize this actor so that the <i>falseOutput</i> is written
      *  to until a token arrives on the <i>control</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
