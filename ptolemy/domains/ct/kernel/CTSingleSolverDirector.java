@@ -44,7 +44,7 @@ import collections.LinkedList;
 /**
 A CTDirector that uses only one ODE solver. The solver is a parameter
 of the director called "ODESolver". The default solver is the 
-ForwardEulerSoler.
+ForwardEulerSolver.
 The solver of this director must be able to self start, so any solver
 that uses history points can not be the solver for this director. 
 <P>
