@@ -622,8 +622,8 @@ public class Graph implements Cloneable {
             if (!hidden(edge)) {
                 result.add(edge);
             }
-        } 
-        return Collections.unmodifiableList(result); 
+        }
+        return Collections.unmodifiableList(result);
     }
 
     /** Return all the edges in this graph that have a specified weight.
@@ -725,10 +725,10 @@ public class Graph implements Cloneable {
      *  @return True if the edge is hidden in this graph.
      */
     public boolean hidden(Edge edge) {
-        return _hiddenEdgeSet.contains(edge); 
+        return _hiddenEdgeSet.contains(edge);
     }
 
-    /** Hide an edge if the edge exists in the graph and is not already hidden. 
+    /** Hide an edge if the edge exists in the graph and is not already hidden.
      *  This method removes an edge from the graph, including
      *  removal from the incidence lists of the source and sink nodes, but
      *  preserves the allocation of the edge label to the edge. This
@@ -752,7 +752,7 @@ public class Graph implements Cloneable {
             return false;
         }
     }
-     
+
 
     /** Return the number of edges that are incident to a specified node.
      *  @param node The node.
@@ -1108,7 +1108,7 @@ public class Graph implements Cloneable {
     }
 
     /** Remove a node from this graph.
-     * All edges incident to the node are also removed. This is an 
+     * All edges incident to the node are also removed. This is an
      * <em>O(n + ke)</em> operation, where <em>k</em> is the number of
      * incident edges.
      * @param node The node to be removed.
@@ -1138,7 +1138,7 @@ public class Graph implements Cloneable {
         _registerChange();
     }
 
-    /** Restore an edge if the edge exists in the graph and is presently 
+    /** Restore an edge if the edge exists in the graph and is presently
      *  hidden. This is an <em>O(1)</em> operation.
      *  @param edge The edge to restore.
      *  @return true If the edge is in the graph and was hidden.
@@ -1156,7 +1156,7 @@ public class Graph implements Cloneable {
             return false;
         }
     }
-     
+
     /** Return the number of self loop edges in this graph.
      *  @param node The node.
      *  @return The number of self loop edges.
@@ -1223,7 +1223,7 @@ public class Graph implements Cloneable {
         while (nodes.hasNext()) {
             Node node = (Node)nodes.next();
             if (!containsNode(node)) {
-                throw new IllegalArgumentException("Attempt to form an " 
+                throw new IllegalArgumentException("Attempt to form an "
                         + "induced subgraph \ncontaining a node that is not in "
                         + "the 'parent' graph.\n" + _nodeDump(node));
             }
@@ -1244,7 +1244,7 @@ public class Graph implements Cloneable {
      *  edges. Node and edge weights are preserved.
      *  In derived classes, this
      *  method returns the same type of graph as is returned by
-     *  {@link ptolemy.graph.Graph#_emptyGraph()}. 
+     *  {@link ptolemy.graph.Graph#_emptyGraph()}.
      *  @param nodes The subset of nodes; each element is an instance
      *  of {@link Node}.
      *  @param edges The subset of edges. Each element is an instance
@@ -1263,7 +1263,7 @@ public class Graph implements Cloneable {
         while (nodes.hasNext()) {
             Node node = (Node)(nodes.next());
             if (!containsNode(node)) {
-                throw new IllegalArgumentException("Attempt to form a " 
+                throw new IllegalArgumentException("Attempt to form a "
                         + "subgraph \ncontaining a node that is not in "
                         + "the 'parent' graph.\n" + _nodeDump(node));
             }
@@ -1273,7 +1273,7 @@ public class Graph implements Cloneable {
         while (edges.hasNext()) {
             Edge edge = (Edge)(edges.next());
             if (!containsEdge(edge)) {
-                throw new IllegalArgumentException("Attempt to form a " 
+                throw new IllegalArgumentException("Attempt to form a "
                         + "subgraph \ncontaining a edge that is not in "
                         + "the 'parent' graph.\n" + _edgeDump(edge));
             }
@@ -1303,10 +1303,10 @@ public class Graph implements Cloneable {
      *  If the given object is null this method returns true if it is valid
      *  to have an unweighted edge in this type of graph.
      *  This base class method returns true unconditionally.
-     *  In derived classes, the method should be 
+     *  In derived classes, the method should be
      *  overridden to take into account any restrictions on edge weights.
      *  @param object The given object.
-     *  @return True if if the given object is a valid edge weight for this 
+     *  @return True if if the given object is a valid edge weight for this
      *  graph.
      */
     public boolean validEdgeWeight(Object object) {
@@ -1319,10 +1319,10 @@ public class Graph implements Cloneable {
      *  If the given object is null this method returns true if it is valid
      *  to have an unweighted node in this type of graph.
      *  This base class method returns true unconditionally.
-     *  In derived classes, the method should be 
+     *  In derived classes, the method should be
      *  overridden to take into account any restrictions on node weights.
      *  @param object The given object.
-     *  @return True if if the given object is a valid node weight for this 
+     *  @return True if if the given object is a valid node weight for this
      *  graph.
      */
     public boolean validNodeWeight(Object object) {
@@ -1434,15 +1434,15 @@ public class Graph implements Cloneable {
         }
     }
 
-    /** Connect a given edge in this graph. The edge is assumed to be in 
+    /** Connect a given edge in this graph. The edge is assumed to be in
      *  the graph. This method performs operations that are common to
-     *  the addition of a new edge and the restoration of a hidden edge. 
+     *  the addition of a new edge and the restoration of a hidden edge.
      *  Specifically, this method connects, using {@link #_connect(Edge, Node)},
      *  the given edge to its source and sink nodes;
-     *  updates the mapping of weights into corresponding graph 
+     *  updates the mapping of weights into corresponding graph
      *  edges; and registers a change in the graph. This method should be
      *  overridden to perform additional operations that are necessary
-     *  to connect edges in derived graph classes. 
+     *  to connect edges in derived graph classes.
      *  @param edge The edge to connect.
      *  @see #hideEdge(Edge).
      *  @see #removeEdge(Edge).
@@ -1470,7 +1470,7 @@ public class Graph implements Cloneable {
     /** Disconnect an edge from a node that it is incident to.
      *  Specifically, this method removes the edge from the set of
      *  edges that are considered incident to the node in this graph.
-     *  This method does nothing if the given edge is not incident to the 
+     *  This method does nothing if the given edge is not incident to the
      *  given node.
      *  This method should be overridden to incorporate additional operations
      *  that are required to disconnect an edge from a node (see, for
@@ -1482,16 +1482,16 @@ public class Graph implements Cloneable {
         _removeIfPresent(_incidentEdgeList(node), edge);
     }
 
-    /** Disconnect a given edge in this graph. The edge is assumed to be in 
+    /** Disconnect a given edge in this graph. The edge is assumed to be in
      *  the graph and
      *  not already hidden. This method performs operations that are common to
      *  the removal of and hiding of an edge. Specifically, this method
-     *  disconnects, using {@link #_disconnect(Edge, Node)}, the given edge 
+     *  disconnects, using {@link #_disconnect(Edge, Node)}, the given edge
      *  from its source and sink nodes;
-     *  updates the mapping of weights into corresponding graph 
+     *  updates the mapping of weights into corresponding graph
      *  edges; and registers a change in the graph. This method should be
      *  overridden to perform additional operations that are necessary
-     *  to disconnect edges in derived graph classes. 
+     *  to disconnect edges in derived graph classes.
      *  @param edge The edge to disconnect.
      *  @see #hideEdge(Edge).
      *  @see #removeEdge(Edge).
@@ -1570,7 +1570,7 @@ public class Graph implements Cloneable {
         Object weight = edge.hasWeight() ? edge.getWeight() : null;
         if (!validEdgeWeight(weight)) {
             throw new RuntimeException("Invalid edge weight. The offending "
-                    + "weight: " + ((weight == null) ? "null\n" : 
+                    + "weight: " + ((weight == null) ? "null\n" :
                     ("\n" + weight.toString() + "\n")));
         }
         _edges.add(edge);
@@ -1582,7 +1582,7 @@ public class Graph implements Cloneable {
      *  data structures that are required for every node that is added
      *  to the graph.
      *  Derived classes can override this method to perform additional updates
-     *  of internal data structures. 
+     *  of internal data structures.
      *  @param node The new node.
      *  @exception RuntimeException if the weight of the given node is
      *  not valid, as determined by {@link #validNodeWeight(Object)}.
@@ -1592,7 +1592,7 @@ public class Graph implements Cloneable {
         Object weight = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(weight)) {
             throw new RuntimeException("Invalid node weight. The offending "
-                    + "weight: " + ((weight == null) ? "null\n" : 
+                    + "weight: " + ((weight == null) ? "null\n" :
                     ("\n" + weight.toString() + "\n")));
         }
         _nodes.add(node);
