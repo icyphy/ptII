@@ -108,7 +108,7 @@ public class DDEReceiver extends TimedQueueReceiver
      *  time keeper controlling this receiver. 
      */
     public synchronized void clearIgnoredTokens() {
-	System.out.println("Call to clearIgnoredTokens()");
+	// System.out.println("Call to clearIgnoredTokens()");
 	// Remove Ignored Token
 	super.get();
 
@@ -150,6 +150,14 @@ public class DDEReceiver extends TimedQueueReceiver
     public Token get() throws NoTokenException {
         DDEDirector director = (DDEDirector)
 	        ((Actor)getContainer().getContainer()).getDirector();
+	Actor actor = ((Actor)getContainer().getContainer());
+	String name = ((Nameable)actor).getName();
+	Thread aThread = Thread.currentThread();
+	if( aThread instanceof DDEThread ) {
+	    TimeKeeper tk = ((DDEThread)aThread).getTimeKeeper();
+	    System.out.println(name+".get() called at time " + tk.getCurrentTime());
+	    
+	}
 	synchronized( this ) {
 	if( hasToken() ) {
 	    Token token = super.get(); 
@@ -196,7 +204,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	    return _hasToken( workspace, director, timeKeeper );
+	    return _hasToken( workspace, director, timeKeeper, _hideNullTokens );
 	}
         System.out.println("Non-DDEThread call to DDEReceiver.hasToken()");
 	return false;
@@ -246,6 +254,19 @@ public class DDEReceiver extends TimedQueueReceiver
         DDEDirector director = (DDEDirector)
                 ((Actor)getContainer().getContainer()).getDirector();
 	String name = ((Nameable)getContainer().getContainer()).getName();
+	Thread aThread = Thread.currentThread();
+	if( aThread instanceof DDEThread ) {
+	    Actor actor = ((DDEThread)aThread).getActor();
+	    String puttingName = ((Nameable)actor).getName();
+	    boolean real = true;
+	    if( token instanceof NullToken ) {
+	        System.out.println(name+".put() called by " + puttingName 
+		    + " at time " + time + " with a null token");
+	    } else {
+	        System.out.println(name+".put() called by " + puttingName 
+		    + " at time " + time + " with a real token");
+	    }
+	}
 
 	// FIXME: Recursive call to put() breaks the 
 	// sychronization hierarchy.
@@ -324,13 +345,20 @@ public class DDEReceiver extends TimedQueueReceiver
 	_terminate = false;
     }
 
+    /**
+     */
+    public void hideNullTokens(boolean hide) {
+	_hideNullTokens = hide;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods 		   ////
 
     // This method provides the recursive 
     // functionality of hasToken()
     private synchronized boolean _hasToken(Workspace workspace,
-	    DDEDirector director, TimeKeeper timeKeeper ) {
+	    DDEDirector director, TimeKeeper timeKeeper, 
+	    boolean _hideNullTokens ) {
 
 	String name = ((Nameable)getContainer().getContainer()).getName();
 	timeKeeper.resortRcvrList();
@@ -338,38 +366,45 @@ public class DDEReceiver extends TimedQueueReceiver
 	if( name.equals("actorThru") ) {
 	    System.out.println(name + ":   hasToken being called." );
 	    double time = getRcvrTime();
-	    if( time == IGNORE ) {
-		System.out.println(name + ":   RcvrTime = IGNORE." );
-	    } else {
-		System.out.println(name + ":   RcvrTime = " + getRcvrTime() );
-	    }
 	}
         if( timeKeeper.getNextTime() == INACTIVE ) {
             requestFinish();
 	}
         if( getRcvrTime() == IGNORE ) {
 	    if( _ignoreNotSeen ) {
-		System.out.println("Ignore seen for the first time.");
 		_ignoreNotSeen = false;
 		return false;
 	    } else {
-		System.out.println("Ignore seen for the second time.");
 		_ignoreNotSeen = true;
 		clearIgnoredTokens();
-		// return _hasToken( workspace, director, timeKeeper );
+		// Call the next line since TimeKeeper.updateIgnoredReceivers()
+		// has not been called.
+		timeKeeper.setIgnoredTokens(false);
+		// return _hasToken( workspace, director, timeKeeper, _hideNullTokens );
 		return false;
 	    }
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
+	    if( name.equals("actorThru") ) {
             System.out.println("RcvrTime = "+getRcvrTime()+";   Time Keeper Time = "
             	+timeKeeper.getNextTime());
+	    }
+	    /*
+	    */
 	    return false;
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
 	    if( name.equals("actorThru") ) {
 		System.out.println(name+":  Time is minimum but not unique");
 	    }
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
-	        // System.out.println("This is not the highest priority receiver!");
+	        if( name.equals("actorThru") ) {
+	            System.out.println(name+":  This is not the highest priority receiver! The priority is " + getPriority() );
+		    if( getRcvrTime() > 20.0 ) {
+		        if( hasNullToken() ) {
+			    System.out.println(name+":  Has a null token.\n\n");
+			}
+		    }
+		}
                 timeKeeper.updateRcvrList(this);
 		return false;
 	    }
@@ -377,24 +412,29 @@ public class DDEReceiver extends TimedQueueReceiver
         if( super.hasToken() && !_terminate ) {
 	    // System.out.println(name + ": about to call hasNullToken()");
 	    if( hasNullToken() ) {
+		if( !_hideNullTokens ) {
+		    return true;
+		}
 		// System.out.println(name + ": is discarding a NullToken");
 		super.get();
 		timeKeeper.sendOutNullTokens();
-		return _hasToken(workspace, director, timeKeeper);
+		return _hasToken(workspace, director, timeKeeper, _hideNullTokens);
 		// FIXME: The following else-if is wrong!
 		// We need next rcvr time not next time keeper time.
 	    } else if ( timeKeeper.getNextTime() == IGNORE ) {
                 System.out.println("Inside of DDEReceiver._hasToken() with IGNORE");
 		super.get();
 		// FIXME: Should we call clearIgnoredTokens() here???
-		return _hasToken(workspace, director, timeKeeper);
+		return _hasToken(workspace, director, timeKeeper, _hideNullTokens);
 	    } else {
 		return true;
 	    }
 	}
-	if( name.equals("actorThru") ) {
+	/*
+	// if( name.equals("actorThru") ) {
 	    System.out.println(name + ": about to call read block()");
-	}
+	// }
+	*/
 	director.addReadBlock();
 	_readPending = true;
 	if( !super.hasToken() && !_terminate ) {
@@ -417,7 +457,7 @@ public class DDEReceiver extends TimedQueueReceiver
             director.removeReadBlock();
 	    */
 	    // System.out.println(name + ": ending call to read block()");
-            return _hasToken(workspace, director, timeKeeper);
+            return _hasToken(workspace, director, timeKeeper, _hideNullTokens);
 	}
     }
 
@@ -427,7 +467,8 @@ public class DDEReceiver extends TimedQueueReceiver
     private boolean _terminate = false; 
     private boolean _readPending = false;
     private boolean _writePending = false;
-    public boolean _ignoreNotSeen = true;
+    private boolean _ignoreNotSeen = true;
+    private boolean _hideNullTokens = true;
 }
 
 
