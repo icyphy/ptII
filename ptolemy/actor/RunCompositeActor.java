@@ -133,7 +133,7 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  of success or failure.
      *  @see #addChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
-     *  @see #setDeferChangeRequests(boolean)
+     *  @see #setDeferringChangeRequests(boolean)
      */
     public void executeChangeRequests() {
         synchronized(_changeLock) {
@@ -300,7 +300,7 @@ public class RunCompositeActor extends TypedCompositeActor {
     /** Request that given change be executed.   In this class,
      *  do not delegate the change request to the container, but
      *  execute the request immediately or record it, depending on
-     *  whether setDeferChangeRequests() has been called. If
+     *  whether setDeferringChangeRequests() has been called. If
      *  setDeferChangeRequests() has been called with a true argument,
      *  then simply queue the request until either setDeferChangeRequests()
      *  is called with a false argument or executeChangeRequests() is called.
@@ -310,7 +310,7 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  request when it is executed.
      *  @param change The requested change.
      *  @see #executeChangeRequests()
-     *  @see #setDeferChangeRequests(boolean)
+     *  @see #setDeferringChangeRequests(boolean)
      */
     public void requestChange(ChangeRequest change) {
         // Have to ensure that the _deferChangeRequests status and
