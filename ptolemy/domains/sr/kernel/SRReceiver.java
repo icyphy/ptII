@@ -162,7 +162,7 @@ public class SRReceiver extends Mailbox {
      *   different token, or if this receiver is in an absent state.
      */
     public void put(Token token) throws NoRoomException {
-        // FIXME: throw a runtime exception NonMonotonicActionException.
+        // FIXME: throw a runtime exception IllegalOutputException.
         if (token == null) {
             throw new InternalErrorException("SRReceiver.put(null) is " +
                     "invalid.");
@@ -199,7 +199,7 @@ public class SRReceiver extends Mailbox {
      *   a token.
      */
     public void setAbsent() throws NoRoomException {
-        // FIXME: throw a runtime exception NonMonotonicActionException.
+        // FIXME: throw a runtime exception IllegalOutputException.
         if (isKnown()) {
             if (hasToken()) {
                 throw new NoRoomException(getContainer(),

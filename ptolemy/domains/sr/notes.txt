@@ -5,6 +5,7 @@ outline
 find second reader
 
 FIXMEs
+NonStrict actors add an attribute instead of implementing an interface?
 write NonStrictSelect actor - prefire monotonicity
     only requires that the selected input is known
 code review
