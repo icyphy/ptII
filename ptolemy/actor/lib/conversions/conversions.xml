@@ -104,6 +104,10 @@
      </property>
   </entity>
 
+  <entity name="StringToIntArray"
+          class="ptolemy.actor.lib.conversions.StringToIntArray">
+  </entity>
+
       </group>
     ?>
   </configure>

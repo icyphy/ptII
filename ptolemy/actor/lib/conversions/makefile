@@ -64,7 +64,8 @@ JSRCS = \
 	LongToDouble.java \
 	PolarToCartesian.java \
 	PolarToComplex.java \
-	Round.java
+	Round.java \
+        StringToIntArray.java
 
 OTHER_FILES_TO_BE_JARED = \
 	conversions.xml
