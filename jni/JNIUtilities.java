@@ -1071,10 +1071,13 @@ public class JNIUtilities {
         }
         //FIXME: this is a HACK, libraryPath should not be set like this
         libraryPath = "../..";
+        String ptIIDirWithoutSpaces = StringUtilities.substitute(
+                StringUtilities.getProperty("ptolemy.ptII.dir"),
+                " ", "\\ "); 
         results
             .append("# Makefile automatically generated for JNI\n"
                     + "ROOT =\t\t"
-                    + StringUtilities.getProperty("ptolemy.ptII.dir") + "\n\n"
+                    + ptIIDirWithoutSpaces + "\n\n"
                     + "# Get configuration info\n"
                     + "CONFIG =\t$(ROOT)/mk/ptII.mk\n"
                     + "include $(CONFIG)\n\n"
