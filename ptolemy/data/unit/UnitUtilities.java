@@ -342,7 +342,7 @@ public class UnitUtilities {
     }
 
     /** Return the index assigned to the specified unit category.
-     *  @param category The unit category.
+     *  @param categoryName The unit category.
      *  @return The index assigned to the category.
      */
     public static int getUnitCategoryIndex(String categoryName) {
