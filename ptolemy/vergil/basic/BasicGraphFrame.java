@@ -319,7 +319,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
-        setModified(true);
+        boolean persistent = true;
+        if (change != null) {
+            persistent = change.isPersistent();
+        }
+        setModified(persistent);
         _graphPanner.repaint();
     }
 
