@@ -39,7 +39,8 @@ import ptolemy.actor.IOPort;
 
 import java.util.Enumeration;
 import java.util.Iterator;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// RemoveActor
@@ -86,18 +87,18 @@ public class RemoveActor extends ChangeRequest {
             }
             ComponentEntity entity = (ComponentEntity)_actor;
             Iterator ports = entity.portList().iterator();
-            LinkedList farPorts = new LinkedList();
+            List farPortList = new LinkedList();
             while (ports.hasNext()) {
                 Port port = (Port)ports.next();
                 if (port instanceof IOPort) {
-                    farPorts.appendElements(
-                            ((IOPort)port).deepConnectedInPorts());
+                    farPortList.addAll(
+				((IOPort)port).deepConnectedInPortList());
                 }
                 port.unlinkAll();
             }
-            Enumeration farPortsEnum = farPorts.elements();
-            while (farPortsEnum.hasMoreElements()) {
-                IOPort port = (IOPort)farPortsEnum.nextElement();
+            Iterator farPorts = farPortList.iterator();
+            while (farPorts.hasNext()) {
+                IOPort port = (IOPort)farPorts.next();
                 port.createReceivers();
             }
             Director director = _actor.getDirector();

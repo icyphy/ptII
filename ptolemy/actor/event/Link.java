@@ -30,11 +30,12 @@
 
 package ptolemy.actor.event;
 
-import java.util.Enumeration;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Link
@@ -91,9 +92,9 @@ public class Link extends ChangeRequest {
                     port.createReceivers();
                 }
                 if (port.isOutput()) {
-                    Enumeration ports = port.deepConnectedInPorts();
-                    while (ports.hasMoreElements()) {
-                        IOPort farPort = (IOPort)ports.nextElement();
+                    Iterator ports = port.deepConnectedInPortList().iterator();
+                    while (ports.hasNext()) {
+                        IOPort farPort = (IOPort)ports.next();
                         farPort.createReceivers();
                     }
                 }
