@@ -665,11 +665,10 @@ public class RecordType extends StructuredType {
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
                 throw new IllegalActionException("FieldType.setValue: "
-                        + "Cannot set the field type of this RecordType to"
-			+ "the new type since it violates the declared field "
-			+ "type. "
-                        + "Declared field type: " + _declaredType.toString()
-			+ " New type: " + e.toString());
+                        + "Cannot update the field type of this RecordType "
+			+ "to the new type."
+                        + " Field type: " + _declaredType.toString()
+			+ ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.NAT) {

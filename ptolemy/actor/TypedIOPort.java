@@ -764,11 +764,11 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
                 throw new IllegalActionException(
-                        "TypedIOPort$TypeTerm.setValue: The new type "
-			+ "violates the declared type of this port. "
-                        + "Port: " + _port.getFullName()
-			+ ", Port Type: " + getValue()
-			+ ", newType: " + e.toString());
+                        "TypedIOPort$TypeTerm.setValue: Cannot update the "
+			+ "type of this port to the new type."
+                        + " Port: " + _port.getFullName()
+			+ ", Port type: " + _declaredType.toString()
+			+ ", New type: " + e.toString());
             }
 
             Type oldType = _resolvedType;

@@ -1530,11 +1530,11 @@ public class Variable extends Attribute implements Typeable, Settable {
 
 	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
 	    	throw new IllegalActionException("Variable$TypeTerm.setValue: "
-		        + "The type of this variable cannot be updated to "
-			+ "the new type. "
-			+ "variable: " + _variable.getName()
-			+ " variable type: " + _declaredType.toString()
-			+ " new type: " + e.toString());
+		        + "Cannot update the type of this variable to the "
+			+ "new type."
+			+ " Variable: " + _variable.getFullName()
+			+ ", Variable type: " + _declaredType.toString()
+			+ ", New type: " + e.toString());
 	    }
 
 	    if (_declaredType == BaseType.NAT) {

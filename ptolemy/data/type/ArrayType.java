@@ -499,11 +499,10 @@ public class ArrayType extends StructuredType {
                 // this is a type conflict.
                 throw new IllegalActionException(
 		        "ArrayType$ElementTypeTerm.setValue: "
-                        + "Cannot set the element type of this array to the "
-			+ "new type since it violates the declared "
-			+ "element type. Declared element type: "
-                        + _declaredElementType.toString()
-			+ " new type: " + e.toString());
+                        + "Cannot update the element type of this array to "
+			+ "the new type."
+			+ " Element type: " + _declaredElementType.toString()
+			+ ", New type: " + e.toString());
             }
 
             if (_declaredElementType == BaseType.NAT) {
