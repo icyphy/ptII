@@ -372,7 +372,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #getModelTime()}
      */
     public double getCurrentTime() {
-        return getModelTime().getTimeValue();
+        return getModelTime().getDoubleValue();
     }
 
     /** Return the current time object of the model being executed by this 
@@ -404,7 +404,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
+        return getModelNextIterationTime().getDoubleValue();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -425,28 +425,32 @@ public class Director extends Attribute implements Executable {
         return _currentTime;
     }
 
-    /** Get the time resolution of the model. Be default, the value of
-     *  the time resolution is 1.0e-10. If this director is not at the
-     *  top level, ask the upper level director for time resolution.
+    /** Get the time resolution of the model. The time resoultion is
+     *  double with a value of 10^(scale), where the scale is the number
+     *  of the digits for the fractional part. See {@link #getTimeScale()}.
      *  @return The time resolution of the model.
      */
     public final double getTimeResolution() {
-        // FIXME: should the different hierarchy levels have the same
-        // time resolution parameter, or that of the top level? 
+        return Math.pow(10, -1*getTimeScale());
+    }
+
+    /** Get the scale, the number of digits of the fractional part of the
+     *  time value used in this model.
+     *  @return The scale value.
+     */
+    public final int getTimeScale() {
         // NOTE: The current design enforces that there is only one
-        // time resolution (that of the top level director).
-        // Also, the time resolution can not be changed during the 
-        // model executions. 
+        // level (that of the top level director) associated with a model.
         if (_isEmbedded()) {
             NamedObj container = getContainer();
             if (container instanceof CompositeActor) {
                 return ((CompositeActor)container).getExecutiveDirector()
-                    .getTimeResolution();
+                    .getTimeScale();
             }
         }
-        return _timeResolution;
+        return _timeScale;
     }
-
+    
     /** Get the start time of the model. This base class returns 
      *  a Time object with 0.0 as the value of the start time. 
      *  Subclasses need to override this method to get a different 
@@ -485,7 +489,7 @@ public class Director extends Attribute implements Executable {
      *  {@link #getModelStopTime}
      */
     public double getStopTime() {
-        return getModelStopTime().getTimeValue();
+        return getModelStopTime().getDoubleValue();
     }
 
     /** Get the stop time of the model. This base class returns
@@ -790,7 +794,7 @@ public class Director extends Attribute implements Executable {
         // FIXME: a duplicate operation also appears in the initialize method.
         _currentTime = getModelStartTime();
         _stopRequested = false;
-        _timeResolution = 1.0e-10;
+        _timeScale = 10;
                 
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
@@ -948,25 +952,31 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Set the time resolution of the model. The default value of
-     *  the time resolution is 1.0e-10. The time resolution can only
-     *  be changed when the model finishes executions. This method is
-     *  final and it can not be overridden.  
-     *  If there is no container, or the container is not an 
+    /** Set the scale, the number of digits of the fractional part of a decimal
+     *  value, to specify the time resolution of the model. The default value 
+     *  of scale is 10. 
+     * 
+     *  <p> The value of scale can not be changed when the model is running 
+     *  for the purose of preserving the consistence of time values. This 
+     *  method is final and can not be overridden.
+     * 
+     *  <p> If there is no container, or the container is not an 
      *  instance of CompositeActor, or if it has no manager, do nothing.
-     *  @param timeResolution The new time resolution.
+     *  @param timeScale The number of digits of the fractional part of time value.
+     *  @throws IllegalActionException If the model is running when this 
+     *  method is called.
      */
-    public final void setTimeResolution(double timeResolution) {
+    public final void setTimeScale(int timeScale) throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Manager manager = ((CompositeActor)container).getManager();
             if (manager != null && manager.getState() == Manager.ITERATING) {
-                throw new InternalErrorException("Can not change the " +
-                    "time resolution parameter when model is running.");
+                throw new IllegalActionException("Can not change the " +
+                    "timeScale parameter when the model is running.");
             }
-            _timeResolution = timeResolution;
+            _timeScale = timeScale;
             if (_debugging) {
-                _debug("--- Set the time resolution to: " + timeResolution);
+                _debug("--- The timeScale is set to: " + timeScale);
             }
         }
     }
@@ -1226,6 +1236,8 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The time resolution of the model, by default, the value is 1e-10. */
-    private double _timeResolution = 1e-10;
+    // The scale, the number of digits of the fractional part of a decimal
+    // value, specifies the time resolution of the model. By default, 
+    // its value is 10. 
+    private int _timeScale = 10;
 }
