@@ -124,7 +124,7 @@ public class Ramp extends SequenceSource {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == init) {
-            _stateToken = init.getToken();
+            _stateToken = output.getType().convert(init.getToken());
         } else {
             super.attributeChanged(attribute);
         }
@@ -164,7 +164,7 @@ public class Ramp extends SequenceSource {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _stateToken = init.getToken();
+        _stateToken = output.getType().convert(init.getToken());
     }
 
     /** Invoke a specified number of iterations of this actor. Each
