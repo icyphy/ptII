@@ -308,6 +308,8 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.csp.lib \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
+			ptolemy.domains.ddf.kernel \
+			ptolemy.domains.ddf.lib \
 			ptolemy.domains.hde.kernel \
 			ptolemy.domains.hde.lib \
 			ptolemy.domains.giotto.kernel \
@@ -462,6 +464,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
 			../ptolemy/domains/dde/lib/*.java \
+			../ptolemy/domains/ddf/kernel/*.java \
+			../ptolemy/domains/ddf/lib/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
