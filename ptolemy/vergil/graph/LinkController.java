@@ -90,6 +90,9 @@ public class LinkController extends EdgeController {
             Object object = f.getUserObject();
 	    if(object instanceof Port) return super.acceptHead(c, f);
 	    if(object instanceof Vertex) return super.acceptHead(c, f);
+	    if(object instanceof Location &&
+	       ((Location)object).getContainer() instanceof Port) 
+		return super.acceptHead(c, f);
 	    return false;
         }
 
@@ -97,6 +100,9 @@ public class LinkController extends EdgeController {
             Object object = f.getUserObject();
 	    if(object instanceof Port) return super.acceptTail(c, f);
 	    if(object instanceof Vertex) return super.acceptTail(c, f);
+	    if(object instanceof Location &&
+	       ((Location)object).getContainer() instanceof Port) 
+		return super.acceptHead(c, f);
 	    return false;
         }
 

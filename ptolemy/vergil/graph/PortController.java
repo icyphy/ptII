@@ -68,13 +68,14 @@ Right clicking on the port will create a context menu for the port.
 @version $Id$
 */
 
-public class PortController extends NodeController {
+public class PortController extends LocatableNodeController {
     public PortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new PortRenderer());
 	SelectionModel sm = controller.getSelectionModel();
-	NodeInteractor interactor = new NodeInteractor(controller, sm);
-	setNodeInteractor(interactor);
+	SelectionInteractor interactor =
+            (SelectionInteractor) getNodeInteractor();
+	interactor.setSelectionModel(sm);
 	_menuCreator = new MenuCreator(
 	    new EntityPortController.PortContextMenuFactory(controller));
 	interactor.addInteractor(_menuCreator);
@@ -82,7 +83,6 @@ public class PortController extends NodeController {
 
     public static class PortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-	    Port port = (Port)n;
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-6, 6);
 	    polygon.lineTo(0, 6);
@@ -97,23 +97,28 @@ public class PortController extends NodeController {
 	    // OPPOSITE direction that is used to layout the port in the
 	    // Entity Controller.
 	    int direction;
-	    if(!(port instanceof IOPort)) {
-		direction = SwingUtilities.NORTH;
-	    } else if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
-		direction = SwingUtilities.NORTH;
-	    } else if(((IOPort)port).isInput()) {
-		direction = SwingUtilities.EAST;
-	    } else if(((IOPort)port).isOutput()) {
-		direction = SwingUtilities.WEST;
-	    } else {
-		// should never happen
-		direction = SwingUtilities.NORTH;
+	    Location location = (Location)n;
+	    if(location != null) {
+		Port port = (Port)location.getContainer();
+		if(!(port instanceof IOPort)) {
+		    direction = SwingUtilities.NORTH;
+		} else if(((IOPort)port).isInput() && 
+			  ((IOPort)port).isOutput()) {
+		    direction = SwingUtilities.NORTH;
+		} else if(((IOPort)port).isInput()) {
+		    direction = SwingUtilities.EAST;
+		} else if(((IOPort)port).isOutput()) {
+		    direction = SwingUtilities.WEST;
+		} else {
+		    // should never happen
+		    direction = SwingUtilities.NORTH;
+		}
+		double normal = CanvasUtilities.getNormal(direction);	    
+		Site tsite = new PerimeterSite(figure, 0);
+		tsite.setNormal(normal);
+		tsite = new FixedNormalSite(tsite);
+		figure = new TerminalFigure(figure, tsite);
 	    }
-	    double normal = CanvasUtilities.getNormal(direction);	    
-	    Site tsite = new PerimeterSite(figure, 0);
-	    tsite.setNormal(normal);
-	    tsite = new FixedNormalSite(tsite);
-	    figure = new TerminalFigure(figure, tsite);
 	    return figure;
 	}
     }

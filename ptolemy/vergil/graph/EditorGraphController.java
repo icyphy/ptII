@@ -177,6 +177,8 @@ public class EditorGraphController extends ViewerGraphController {
             // The following is necessary because diva has something
             // truly funky that prevents the following code from working
             // if it is put inside the _execute() method above.
+	    // SN: This is because mouse events are getting handled in the
+	    // swing thread when this is executed outside of the swing thread.
             // FIXME: This creates a risk of lockup of the user
             // interface if the change request is not executed
             // for any reason.

@@ -96,8 +96,6 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
      */
     public PtolemyGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
-	_toplevel = toplevel;
-	toplevel.addChangeListener(new GraphChangeListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -151,8 +149,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     public NodeModel getNodeModel(Object node) {
 	if(node instanceof Icon) {
 	    return _iconModel;
-	} else if(node instanceof Port && 
-		  ((Port)node).getContainer().equals(getRoot())) {
+	} else if(node instanceof Location && 
+		  ((Location)node).getContainer() instanceof Port) {
 	    return _externalPortModel;
 	} else if(node instanceof Port) {
 	    return _portModel;
@@ -176,6 +174,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     public Object getSemanticObject(Object element) {
 	if(element instanceof Port) {
 	    return element;
+	} else if(element instanceof Location && 
+		  ((Location)element).getContainer() instanceof Port) {
+	    return ((Location)element).getContainer();
 	} else if(element instanceof Vertex) {
 	    return ((Vertex)element).getContainer();
 	} else if(element instanceof Icon) {
@@ -216,7 +217,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * the given node as their head.
 	 */
        	public Iterator inEdges(Object node) {
-	    ComponentPort port = (ComponentPort)node;
+	    Location location = (Location)node;
+	    ComponentPort port = (ComponentPort)location.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
 	    // FIXME inefficient if we are conneted to the same relation more
@@ -232,12 +234,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Link.class);
+	    List linkList = getToplevel().attributeList(Link.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object head = link.getHead();
-		if(head != null && head.equals(port)) {
+		if(head != null && head.equals(location)) {
 		    portLinkList.add(link);
 		}
 	    }
@@ -257,7 +259,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * tail as the given node.
 	 */
 	public Iterator outEdges(Object node) {
-	    ComponentPort port = (ComponentPort)node;
+	    Location location = (Location)node;
+	    ComponentPort port = (ComponentPort)location.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
 	    // FIXME inefficient if we are conneted to the same relation more
@@ -273,12 +276,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Link.class);
+	    List linkList = getToplevel().attributeList(Link.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
 		Object tail = link.getTail();
-		if(tail != null && tail.equals(port)) {
+		if(tail != null && tail.equals(location)) {
 		    portLinkList.add(link);
 		}
 	    }
@@ -288,20 +291,18 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	
 	/**
 	 * Set the graph parent of the given node.  
-	 * This class queues a new change request with the ptolemy model
-	 * to make this modification.
 	 * @param node The node, which is assumed to be a port contained in
 	 * the root of this graph model.
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
-	public void setParent(final Object node, final Object parent) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        PtolemyGraphModel.this, 
-		"Set Parent of external port " +  ((Port)node).getFullName()) {
-		protected void _execute() throws Exception {
-		    ((Port)node).setContainer((CompositeEntity)parent);
-		}
-	    });
+	public void setParent(Object node, final Object parent) {
+	    try {
+		Location location = (Location)node;
+		ComponentPort port = (ComponentPort)location.getContainer();
+		port.setContainer((CompositeEntity)parent);
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}	
     }
 
@@ -369,15 +370,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(final Object node, final Object parent) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        PtolemyGraphModel.this, 
-		"Set Parent of Icon " +  ((Icon)node).getFullName()) {
-		protected void _execute() throws Exception {
-		    ComponentEntity entity = 
-                        (ComponentEntity)((Icon)node).getContainer();
-		    entity.setContainer((CompositeEntity)parent);
-		}
-	    });
+	    try {
+		ComponentEntity entity = 
+		    (ComponentEntity)((Icon)node).getContainer();
+		entity.setContainer((CompositeEntity)parent);
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}
     }
 
@@ -388,11 +387,14 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  given node.
 	 *  @param edge The edge to attach, which is assumed to be a link.
 	 *  @param node The node to attach to.
-	 *  @return True if the node is a port or a vertex.
+	 *  @return True if the node is a port or a vertex, or a location
+	 *  representing a port.
 	 */
 	public boolean acceptHead(Object edge, Object node) {
 	    if (node instanceof Port ||
-		node instanceof Vertex) {
+		node instanceof Vertex ||
+		(node instanceof Location && 
+		 ((Location)node).getContainer() instanceof Port)) {
 		return true;
 	    } else
 		return false;
@@ -402,11 +404,14 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  given node.
 	 *  @param edge The edge to attach, which is assumed to be a link.
 	 *  @param node The node to attach to.
-	 *  @return True if the node is a port or a vertex.
+	 *  @return True if the node is a port or a vertex, or a location
+	 *  representing a port.
 	 */
 	public boolean acceptTail(Object edge, Object node) {
 	    if (node instanceof Port ||
-		node instanceof Vertex) {
+		node instanceof Vertex ||
+		(node instanceof Location && 
+		 ((Location)node).getContainer() instanceof Port)) {
 		return true;
 	    } else
 		return false;
@@ -443,18 +448,16 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  to make this modification.
 	 *  @param edge The edge, which is assumed to be a link.
 	 *  @param head The new head for the edge, which is assumed to
-	 *  be a port or a vertex.
+	 *  be a location representing a port, a port or a vertex.
 	 */
 	public void setHead(final Object edge, final Object head) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        PtolemyGraphModel.this,
-		"move head of link" +  ((Link)edge).getFullName()) {
-		protected void _execute() throws Exception {
-		    ((Link)edge).unlink();		
-		    ((Link)edge).setHead(head);
-		    ((Link)edge).link();
-		}
-	    });
+	    try {
+		((Link)edge).unlink();		
+		((Link)edge).setHead(head);
+		((Link)edge).link();
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}	
 	
 	/** Connect the given edge to the given tail node.
@@ -462,18 +465,16 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  to make this modification.
 	 *  @param edge The edge, which is assumed to be a link.
 	 *  @param tail The new tail for the edge, which is assumed to
-	 *  be a port or a vertex.
+	 *  be a location representing a port, a port or a vertex.
 	 */
 	public void setTail(final Object edge, final Object tail) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        PtolemyGraphModel.this, 
-		"move tail of link" +  ((Link)edge).getFullName()) {
-		protected void _execute() throws Exception {
-		    ((Link)edge).unlink();		
-		    ((Link)edge).setTail(tail);
-		    ((Link)edge).link();
-		}
-	    });
+	    try {
+		((Link)edge).unlink();		
+		((Link)edge).setTail(tail);
+		((Link)edge).link();
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}	
     }
     
@@ -525,7 +526,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Link.class);
+	    List linkList = getToplevel().attributeList(Link.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
@@ -566,7 +567,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List portLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Link.class);
+	    List linkList = getToplevel().attributeList(Link.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
@@ -587,13 +588,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(final Object node, final Object parent) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        PtolemyGraphModel.this, 
-		"Set Parent of port " +  ((Port)node).getFullName()) {
-		protected void _execute() throws Exception {
-		    ((Port)node).setContainer((CompositeEntity)parent);
-		}
-	    });
+	    try {
+		((Port)node).setContainer((CompositeEntity)parent);
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
+
 	}	
     }
 
@@ -634,7 +634,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public Iterator nodes(Object composite) {
 	    // FIXME change request.
 	    Set nodes = new HashSet();
-	    Iterator entities = _toplevel.entityList().iterator();
+	    Iterator entities = getToplevel().entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
 		List icons = entity.attributeList(Icon.class);
@@ -654,13 +654,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		}
 	    }
 	    
-	    Iterator ports = _toplevel.portList().iterator();
+	    Iterator ports = getToplevel().portList().iterator();
 	    while(ports.hasNext()) {
 		ComponentPort port = (ComponentPort)ports.next();
-		nodes.add(port);
+		nodes.add(_getLocation(port));
 	    }
 	    
-	    Iterator relations = _toplevel.relationList().iterator();
+	    Iterator relations = getToplevel().relationList().iterator();
 	    while(relations.hasNext()) {
 		ComponentRelation relation = 
                     (ComponentRelation)relations.next();
@@ -731,7 +731,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List vertexLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Link.class);
+	    List linkList = getToplevel().attributeList(Link.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
@@ -764,7 +764,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // Go through all the links, creating a list of 
 	    // those we are connected to.
 	    List vertexLinkList = new LinkedList();
-	    List linkList = _toplevel.attributeList(Link.class);
+	    List linkList = getToplevel().attributeList(Link.class);
 	    Iterator links = linkList.iterator();
 	    while(links.hasNext()) {
 		Link link = (Link)links.next();
@@ -786,15 +786,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * component relation.
 	 */
 	public void setParent(final Object node, final Object parent) {
-	    _toplevel.requestChange(new ChangeRequest(
-	        PtolemyGraphModel.this, 
-		"Set Parent of vertex " +  ((Vertex)node).getFullName()) {
-		protected void _execute() throws Exception {
-		    ComponentRelation relation =
-                        (ComponentRelation)((Vertex)node).getContainer();
-		    relation.setContainer((CompositeEntity)parent);
-		}
-	    });
+	    try {
+		ComponentRelation relation =
+		    (ComponentRelation)((Vertex)node).getContainer();
+		relation.setContainer((CompositeEntity)parent);
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}	
     }
 
@@ -807,11 +805,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     private void _updateLinks(ComponentRelation relation) {
 	List linkedPortList = relation.linkedPortList();
 	int allPortCount = linkedPortList.size();
-
+	
 	// Go through all the links that currently exist, and remove ports
 	// from the linkedPortList that already have a Link object.
 	// FIXME this could get expensive 
-	List linkList = _toplevel.attributeList(Link.class);
+	List linkList = getToplevel().attributeList(Link.class);
 	Iterator links = linkList.iterator();
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
@@ -820,21 +818,27 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // remove any ports that this link is linked to.  We don't need
 	    // to manufacture those links.
 	    Object tail = link.getTail();
+	    if(tail instanceof Location) {
+		tail = ((Location)tail).getContainer();
+	    }
 	    if(tail != null && linkedPortList.contains(tail) ) {
 		linkedPortList.remove(tail);
 	    }
 	    Object head = link.getHead();
+	    if(head instanceof Location) {
+		head = ((Location)head).getContainer();
+	    }
 	    if(head != null && linkedPortList.contains(head)) {
 		linkedPortList.remove(head);
 	    }
 	}
-
+	
 	// Count the linked ports.
 	int unlinkedPortCount = linkedPortList.size();
 	
 	// If there are no links left to create, then just return.
 	if(unlinkedPortCount == 0) return;
-
+	
 	Iterator vertexes =
 	    relation.attributeList(Vertex.class).iterator();
 	// get the Root vertex.  This is where we will manufacture links.
@@ -851,20 +855,33 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	// create a link without a vertex for the relation.
 	if(rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
 	    Port port1 = (Port)linkedPortList.get(0);
+	    Object head = null;
+	    if(port1.getContainer().equals(getRoot())) {
+		head = _getLocation(port1);
+	    } else {
+		head = port1;
+	    }
+		
 	    Port port2 = (Port)linkedPortList.get(1);
+	    Object tail = null;
+	    if(port1.getContainer().equals(getRoot())) {
+		tail = _getLocation(port2);
+	    } else {
+		tail = port2;
+	    }
+
 	    Link link;
 	    try {
-		link = new Link(_toplevel, _toplevel.uniqueName("link"));
+		link = new Link(getToplevel(), getToplevel().uniqueName("link"));
 	    } 
 	    catch (Exception e) {
-		throw new InternalErrorException(
-		    "Failed to create " +
+		throw new InternalErrorException("Failed to create " +
 		    "new link, even though one does not " +
 		    "already exist:" + e.getMessage());
 	    }
 	    link.setRelation(relation);
-	    link.setHead(port1);
-	    link.setTail(port2);
+	    link.setHead(head);
+	    link.setTail(tail);
 	} else {		  
 	    // A regular relation with a diamond.
 	    // Create a vertex if one is not found
@@ -884,10 +901,17 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    Iterator ports = linkedPortList.iterator();
 	    while(ports.hasNext()) {
 		Port port = (Port)ports.next();
+		Object head = null;
+		if(port.getContainer().equals(getRoot())) {
+		    head = _getLocation(port);
+		} else {
+		    head = port;
+		}
+		
 		Link link;
 		try {
-		    link = new Link(_toplevel, 
-				    _toplevel.uniqueName("link"));
+		    link = new Link(getToplevel(), 
+				    getToplevel().uniqueName("link"));
 		}
 		catch (Exception e) {
 		    throw new InternalErrorException(
@@ -896,17 +920,33 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			    "already exist:" + e.getMessage());
 		}
 		link.setRelation(relation);
-		link.setHead(port);
+		link.setHead(head);
 		link.setTail(rootVertex);
+	    }
+	}	 
+    }
+	
+    // Return the location contained in the given port, or
+    // a new location contained in the given port if there was no location.
+    private Location _getLocation(Port port) {
+	List locations = port.attributeList(Location.class);
+	if(locations.size() > 0) {
+	    return (Location)locations.get(0);
+	} else {
+	    try {
+		Location location = new Location(port, "_location");
+		return location;
+	    }
+	    catch (Exception e) {
+		throw new InternalErrorException("Failed to create " +
+		    "location, even though one does not exist:" +
+		    e.getMessage());
 	    }
 	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The root of this graph model, as a CompositeEntity.
-    private CompositeEntity _toplevel;
     
     // The models of the different types of nodes and edges.
     private LinkModel _linkModel = new LinkModel();

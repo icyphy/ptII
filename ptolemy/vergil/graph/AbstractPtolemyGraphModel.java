@@ -45,6 +45,7 @@ import ptolemy.vergil.toolbox.EditorIcon;
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;
+import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
 import diva.graph.toolbox.*;
 import diva.graph.modular.ModularGraphModel;
@@ -77,12 +78,105 @@ remain synchronized with the state of a mutating model.
 */
 public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 
-    public AbstractPtolemyGraphModel(Object root) {
-	super(root);
+    public AbstractPtolemyGraphModel(CompositeEntity toplevel) {
+	super(toplevel);
+	_toplevel = toplevel;
+	toplevel.addChangeListener(new GraphChangeListener());
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Add a node to the given graph and notify listeners with a
+     * NODE_ADDED event.  
+     * This method overrides the base class to 
+     * perform the operation in a ptolemy change request.
+     */
+    public void addNode(final Object eventSource, 
+			final Object node, final Object parent) {
+	ChangeRequest request = new ChangeRequest(
+            AbstractPtolemyGraphModel.this,
+	    "Add Node " + node + " to composite " + parent) {
+		protected void _execute() throws Exception {
+		    AbstractPtolemyGraphModel.super.
+		    addNode(eventSource, node, parent);
+		}
+	    };
+	_toplevel.requestChange(request);
+    }
+
+    /**
+     * Connect the given edge to the given tail and head nodes,
+     * then dispatch events to the listeners.
+     * This method overrides the base class to perform the operation
+     * in a ptolemy change request.
+     */
+    public void connectEdge(final Object eventSource, final Object edge, 
+			    final Object tailNode, final Object headNode) {
+	ChangeRequest request = new ChangeRequest(
+	    AbstractPtolemyGraphModel.this,
+	    "Connect Edge " + edge + " from " + tailNode +
+	    " to " + headNode) {
+		protected void _execute() throws Exception {
+		    AbstractPtolemyGraphModel.super.
+		    connectEdge(eventSource, edge, tailNode, headNode);
+		}
+	    };
+	_toplevel.requestChange(request);
+    }
+
+    /**
+     * Connect the given edge to the given tail and head nodes,
+     * then dispatch events to the listeners.
+     * This method overrides the base class to perform the operation
+     * in a ptolemy change request.
+      */
+    public void disconnectEdge(final Object eventSource, final Object edge) {
+	ChangeRequest request = new ChangeRequest(
+	    AbstractPtolemyGraphModel.this,
+	    "Disconnect Edge " + edge) {
+		protected void _execute() throws Exception {
+		    AbstractPtolemyGraphModel.super.
+		    disconnectEdge(eventSource, edge);
+		}
+	    };
+	_toplevel.requestChange(request);
+    }
+
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.  This first removes all the
+     * edges that are connected to the given node, or some subnode of that
+     * node, and then sets the parent of the node to null.
+     * This method overrides the base class to perform the operation
+     * in a ptolemy change request.
+     */
+    public void removeNode(final Object eventSource, final Object node) {
+	ChangeRequest request = new ChangeRequest(
+	    AbstractPtolemyGraphModel.this,
+	    "Remove Node " + node) {
+		protected void _execute() throws Exception {
+		    // Remove the edges.
+		    Iterator i = GraphUtilities.partiallyContainedEdges(node, 
+		        AbstractPtolemyGraphModel.this);
+		    while(i.hasNext()) {
+			Object edge = i.next();
+			AbstractPtolemyGraphModel.super.
+			disconnectEdge(eventSource, edge);
+		    }
+
+		    // remove the node.
+		    Object prevParent = getNodeModel(node).getParent(node);
+		    getNodeModel(node).setParent(node, null);
+		    GraphEvent e = new GraphEvent(eventSource, 
+						  GraphEvent.NODE_REMOVED,
+						  node, prevParent);
+		    dispatchGraphEvent(e);
+		}
+	    };
+	_toplevel.requestChange(request);
+    }
 
     /**
      * Return the property of the object associated with
@@ -113,6 +207,51 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     }
     
     /**
+     * Return the toplevel composite entity of this ptolemy model.
+     */
+    public CompositeEntity getToplevel() {
+	return _toplevel;
+    }
+
+    /**
+     * Connect an edge to the given head node and notify listeners
+     * with an EDGE_HEAD_CHANGED event.
+     * This method overrides the base class to perform the operation
+     * in a ptolemy change request.
+      */
+    public void setEdgeHead(final Object eventSource, 
+			    final Object edge, final Object head) {
+	ChangeRequest request = new ChangeRequest(
+	    AbstractPtolemyGraphModel.this,
+	    "Set Edge Head " + edge + " to " + head) {
+		protected void _execute() throws Exception {
+		    AbstractPtolemyGraphModel.super.
+		    setEdgeHead(eventSource, edge, head);
+		}
+	    };
+	_toplevel.requestChange(request);
+    }
+
+    /**
+     * Connect an edge to the given head node and notify listeners
+     * with an EDGE_TAIL_CHANGED event.
+     * This method overrides the base class to perform the operation
+     * in a ptolemy change request.
+      */
+    public void setEdgeTail(final Object eventSource, 
+			    final Object edge, final Object tail) {
+	ChangeRequest request = new ChangeRequest(
+	    AbstractPtolemyGraphModel.this,
+	    "Set Edge Tail " + edge + " to " + tail) {
+		protected void _execute() throws Exception {
+		    AbstractPtolemyGraphModel.super.
+		    setEdgeTail(eventSource, edge, tail);
+		}
+	    };
+	_toplevel.requestChange(request);
+    }
+	
+    /**
      * Set the property of the given graph object associated with
      * the given property name to the given value.  In this implementation
      * properties are stored in variables of the graph object (which is
@@ -122,30 +261,34 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * If the value is a string, then set the expression of the variable 
      * to that string. Otherwise create a new object token contained the
      * value and place that in the variable instead.
+     * The operation is performed in a ptolemy change request.
      * @param object The graph object.
      * @param propertyName The property name.
      * @param value The new value of the property.
      */
-    public void setProperty(Object object, String propertyName, Object value) {
-	// FIXME change request.
-	try {
-	    NamedObj namedObject = (NamedObj)object;
-	    Attribute a = namedObject.getAttribute(propertyName);
-	    if(a == null) {
-		a = new Variable(namedObject, propertyName);
-	    } 
-	    Variable v = (Variable)a;
-	    if(value instanceof String) {
-		v.setExpression((String)value);
-		v.getToken();
-	    } else {
-		v.setToken(new ObjectToken(value));
-	    }
-	}
-	catch (Exception ex) {
-	    // Ignore any errors, which will just result in the property
-	    // not being set.
-	}
+    public void setProperty(final Object object, 
+			    final String propertyName,
+			    final Object value) {
+	ChangeRequest request = new ChangeRequest(
+	    AbstractPtolemyGraphModel.this,
+	    "Set Property " + propertyName + " to " + value) {
+		protected void _execute() throws Exception {
+		    NamedObj namedObject = (NamedObj)object;
+		    Attribute a = namedObject.getAttribute(propertyName);
+		    if(a == null) {
+			a = new Variable(namedObject, propertyName);
+		    } 
+		    Variable v = (Variable)a;
+		    if(value instanceof String) {
+			v.setExpression((String)value);
+			v.getToken();
+		    } else {
+			v.setToken(new ObjectToken(value));
+		    }
+		}
+	    };
+	_toplevel.requestChange(request);
+
     }
     
     /**
@@ -213,10 +356,17 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-            // Ignore unless this is the originator.
-            if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
-                ExceptionHandler.show("Change failed", exception);
-            }
-        }
+	    // FIXME? Hmm... I believe that this is (or should be) 
+	    // handled elsewhere?
+	    ExceptionHandler.show("Change failed", exception);
+	    
+	    // Just in case something happened to the graph.
+	    dispatchGraphEvent(new GraphEvent(AbstractPtolemyGraphModel.this, 
+					      GraphEvent.STRUCTURE_CHANGED, 
+					      getRoot()));
+	}
     }
+
+    // The root of this graph model, as a CompositeEntity.
+    private CompositeEntity _toplevel;
 }

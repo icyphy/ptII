@@ -165,10 +165,10 @@ public class ViewerGraphController extends CompositeGraphController {
             return _relationController;
         } else if(object instanceof ptolemy.moml.Icon) {
             return _entityController;
+	} else if(object instanceof Location && 
+		  ((Location)object).getContainer() instanceof Port) {
+	    return _portController;
 	} else if(object instanceof Port) {
-	    if(getGraphModel().getParent(object) == getGraphModel().getRoot())
-		return _portController;
-	    else 
 		return _entityPortController;
         } else
             throw new RuntimeException(

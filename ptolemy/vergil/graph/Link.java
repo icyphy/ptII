@@ -152,36 +152,53 @@ public class Link extends Attribute {
 	ComponentRelation relation;
 	Vertex vertex;
 	CompositeEntity container = (CompositeEntity) getContainer();
-
+	
         if(_head == null || _tail == null) return;
-        if(_head instanceof ComponentPort && _tail instanceof ComponentPort) {
+	// Deal with the fact that we might be trying to attach to an 
+	// external port.
+	Object head;
+	if(_head instanceof Location &&
+	   ((Location)_head).getContainer() instanceof ComponentPort) {
+	    head = ((Location)_head).getContainer();
+	} else {
+	    head = _head;
+	}
+	Object tail;
+	if(_tail instanceof Location &&
+	   ((Location)_tail).getContainer() instanceof ComponentPort) {
+	    tail = ((Location)_tail).getContainer();
+	} else {
+	    tail = _tail;
+	}
+
+        if(head instanceof ComponentPort && tail instanceof ComponentPort) {
 	    relation = 
                 container.newRelation(container.uniqueName("relation"));
 	    setRelation(relation);
           
-	    port = (ComponentPort)_head;
+	    port = (ComponentPort)head;
             port.link(relation);
 	    _checkReceivers(container, port);
 
-	    port = (ComponentPort)_tail;
+	    port = (ComponentPort)tail;
             port.link(relation);
 	    _checkReceivers(container, port);
 	    _checkSchedule(container);
 	    return;
         }
-
-	if(_tail instanceof ComponentPort && _head instanceof Vertex) {
-	    vertex = (Vertex)_head;
-	    port = (ComponentPort)_tail;
+	    
+	if(tail instanceof ComponentPort && head instanceof Vertex) {
+	    vertex = (Vertex)head;
+	    port = (ComponentPort)tail;
 	    relation = (ComponentRelation)vertex.getContainer();
-	} else if(_tail instanceof Vertex && _head instanceof ComponentPort) {
-	    vertex = (Vertex)_tail;
-	    port = (ComponentPort)_head;
+	} else if(tail instanceof Vertex && head instanceof ComponentPort) {
+	    vertex = (Vertex)tail;
+	    port = (ComponentPort)head;
 	    relation = (ComponentRelation)vertex.getContainer();
 	} else {
 	    throw new RuntimeException("Trying to link port to relation, " +
-                    "but head is " + _head +
-                    " and tail is " + _tail);
+                    "but head is " + head +
+                    " and tail is " + tail);
 	}
         setRelation(relation);
         port.link(relation);
@@ -203,13 +220,30 @@ public class Link extends Attribute {
 	CompositeEntity container = (CompositeEntity) getContainer();
 
 	if(_head == null || _tail == null) return;
-        if(_head instanceof ComponentPort && _tail instanceof ComponentPort) {
+	// Deal with the fact that we might be trying to attach to an 
+	// external port.
+	Object head;
+	if(_head instanceof Location &&
+	   ((Location)_head).getContainer() instanceof ComponentPort) {
+	    head = ((Location)_head).getContainer();
+	} else {
+	    head = _head;
+	}
+	Object tail;
+	if(_tail instanceof Location &&
+	   ((Location)_tail).getContainer() instanceof ComponentPort) {
+	    tail = ((Location)_tail).getContainer();
+	} else {
+	    tail = _tail;
+	}
+
+        if(head instanceof ComponentPort && tail instanceof ComponentPort) {
             relation = (ComponentRelation)getRelation();
-            port = (ComponentPort)_head;
+            port = (ComponentPort)head;
             port.unlink(relation);
 	    _checkReceivers(container, port);
 	    
-	    port = (ComponentPort)_tail;
+	    port = (ComponentPort)tail;
 	    port.unlink(relation);
 	    _checkReceivers(container, port);
 	    
@@ -220,19 +254,19 @@ public class Link extends Attribute {
 	    
 	    return;
         }
-	if(_tail instanceof ComponentPort && _head instanceof Vertex) {
-	    vertex = (Vertex)_head;
-	    port = (ComponentPort)_tail;
+	if(tail instanceof ComponentPort && head instanceof Vertex) {
+	    vertex = (Vertex)head;
+	    port = (ComponentPort)tail;
 	    relation = getRelation();
-	} else if(_tail instanceof Vertex && _head instanceof ComponentPort) {
-	    vertex = (Vertex)_tail;
-	    port = (ComponentPort)_head;
+	} else if(tail instanceof Vertex && head instanceof ComponentPort) {
+	    vertex = (Vertex)tail;
+	    port = (ComponentPort)head;
 	    relation = getRelation();
 	} else {
 	    throw new RuntimeException(
 		    "Trying to unlink port from relation, " +
-                    "but head is " + _head +
-                    " and tail is " + _tail);
+                    "but head is " + head +
+                    " and tail is " + tail);
 	}
 	port.unlink(relation);
 	setRelation(null);
