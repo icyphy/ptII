@@ -59,6 +59,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -419,9 +420,39 @@ public class GeneratorTableau extends Tableau {
                                         + "code generation");
                                 // FIXME: How come the status bar
                                 // does not get updated?
-                                ptolemy.copernicus.jhdl
-                                    .Main.generate((CompositeActor)model,
-                                            targetPath);
+                                Method generateMethod = null;
+                                try {
+                                    Class jhdlMain = Class
+                                        .forName("ptolemy.copernicus.jhdl.Main");
+                                    generateMethod =
+                                        jhdlMain.getMethod("generate",
+                                                new Class [] {
+                                                    CompositeActor.class,
+                                                    String.class});
+                                } catch (Throwable throwable) {
+                                    throw new IllegalActionException(model,
+                                            throwable, 
+                                            "Could not find "
+                                            + "ptolemy.copernicus.jhdl.Main."
+                                            + "generate");
+                                }
+                                try {
+                                    // ptolemy.copernicus.jhdl
+                                    // .Main.generate((CompositeActor)model,
+                                    //        targetPath);
+                                    generateMethod.invoke(null,
+                                            new Object [] {
+                                                (CompositeActor)model,
+                                                targetPath});
+                                } catch (Throwable throwable) {
+                                    throw new IllegalActionException(model,
+                                            throwable, 
+                                            "Problem invoking"
+                                            + "ptolemy.copernicus.jhdl.Main."
+                                            + "generate(" + model + "," 
+                                            + targetPath + ")");
+                                }
+
                                 exec.updateStatusBar("JHDL Code generation "
                                         + "complete.");
 
