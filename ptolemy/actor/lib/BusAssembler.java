@@ -106,8 +106,11 @@ public class BusAssembler extends TypedAtomicActor {
     }
 
     /** Iterate through input ports and transfer data sequentially from
-        input channels to output channels, maintaining input to output
-        channel mapping */
+     *  input channels to output channels, maintaining input to output
+     *  channel mapping.
+     *  @exception IllegalActionException If calling send() or super.fire()
+     *  throws it.
+     */
     public void fire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
         TypedIOPort inputPort = (TypedIOPort)
