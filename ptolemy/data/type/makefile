@@ -52,6 +52,7 @@ JSRCS = \
 	BaseType.java \
 	FixType.java \
 	FunctionType.java \
+	MonotonicFunction.java \
 	RecordType.java \
 	SizedMatrixType.java \
 	StructuredType.java \
