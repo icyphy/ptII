@@ -207,6 +207,7 @@ public class CommandLineTemplate {
                 // FIXME: Use a JFrame listener to determine when all windows
                 // are closed.
             } catch (Exception ex) {
+                ex.printStackTrace();
                 System.out.println("startRun: " + ex);
             }
         }
