@@ -41,8 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	HysteresisApplet.java \
-	AddSubtractBroad.java
+	HysteresisApplet.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	Hysteresis.htm
