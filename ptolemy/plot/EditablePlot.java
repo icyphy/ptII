@@ -139,6 +139,8 @@ public class EditablePlot extends Plot {
         _undoStack.push(save);
         Object[] saved = (Object[])_redoStack.pop();
         _setData(((Integer)saved[0]).intValue(), (double[][])saved[1]);
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         repaint();
         _notifyListeners(_dataset);
     }
@@ -178,6 +180,8 @@ public class EditablePlot extends Plot {
         _redoStack.push(save);
         Object[] saved = (Object[])_undoStack.pop();
         _setData(((Integer)saved[0]).intValue(), (double[][])saved[1]);
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         repaint();
         _notifyListeners(_dataset);
     }
@@ -228,17 +232,21 @@ public class EditablePlot extends Plot {
                 }
             }
         }
+        
+        // Ensure replot of offscreen buffer.
+        _plotImage = null;
         repaint();
 
         // Erase the guide
-        graphics.setXORMode(_editColor);
-        for (int i = 0; i < _editSpecX.length; i++) {
-            if (_editSpecSet[i]) {
-                graphics.drawLine(_editSpecX[i], _editSpecY[i]-1,
-                        _editSpecX[i], _editSpecY[i]+1);
-            }
-        }
-        graphics.setPaintMode();
+        // I don't think we need to do this, since we call repaint().
+//         graphics.setXORMode(_editColor);
+//         for (int i = 0; i < _editSpecX.length; i++) {
+//             if (_editSpecSet[i]) {
+//                 graphics.drawLine(_editSpecX[i], _editSpecY[i]-1,
+//                         _editSpecX[i], _editSpecY[i]+1);
+//             }
+//         }
+//         graphics.setPaintMode();
 
         _notifyListeners(_dataset);
     }

@@ -1726,6 +1726,7 @@ public class Plot extends PlotBox {
             boolean connected, boolean errorBar) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
+
         _checkDatasetIndex(dataset);
 
         if (_xlog) {

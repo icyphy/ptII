@@ -326,6 +326,9 @@ public class PlotBox extends JPanel implements Printable {
      *  @param axes If true, clear the axes parameters.
      */
     public synchronized void clear(boolean axes) {
+        // We need to repaint the offscreen buffer.
+        _plotImage = null;
+
         _xBottom = Double.MAX_VALUE;
         _xTop = - Double.MAX_VALUE;
         _yBottom = Double.MAX_VALUE;
@@ -873,7 +876,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param graphics The graphics context.
      */
     public synchronized void paintComponent(Graphics graphics) {
-   //      super.paintComponent(graphics);
+       //  super.paintComponent(graphics);
 //         _drawPlot(graphics, true);
         BufferedImage newPlotImage = _plotImage;
         if(newPlotImage == null) {
@@ -1118,7 +1121,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Set the background color.
      *  @param background The background color.
      */
-    public void setBackground(Color background) {
+    public synchronized void setBackground(Color background) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1270,7 +1273,7 @@ public class PlotBox extends JPanel implements Printable {
      *  (in black and white).  Otherwise, draw it in color (the default).
      *  @param useColor False to draw in back and white.
      */
-    public void setColor(boolean useColor) {
+    public synchronized void setColor(boolean useColor) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1283,7 +1286,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param colors Array of colors to use in succession for data sets.
      *  @see #getColors()
      */
-    public void setColors(Color[] colors) {
+    public synchronized void setColors(Color[] colors) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1309,7 +1312,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Set the foreground color.
      *  @param foreground The foreground color.
      */
-    public void setForeground(Color foreground) {
+    public synchronized void setForeground(Color foreground) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1320,7 +1323,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Control whether the grid is drawn.
      *  @param grid If true, a grid is drawn.
      */
-    public void setGrid(boolean grid) {
+    public synchronized void setGrid(boolean grid) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1332,7 +1335,7 @@ public class PlotBox extends JPanel implements Printable {
      *  java.awt.Font.decode().
      *  @param name A font name.
      */
-    public void setLabelFont(String name) {
+    public synchronized void setLabelFont(String name) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1345,7 +1348,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param rectangle Rectangle space inside axes.
      *  @see #getPlotRectangle()
      */
-    public void setPlotRectangle(Rectangle rectangle) {
+    public synchronized void setPlotRectangle(Rectangle rectangle) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1363,7 +1366,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param width The width, in pixels.
      *  @param height The height, in pixels.
      */
-    public void setSize(int width, int height) {
+    public synchronized void setSize(int width, int height) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1378,7 +1381,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Set the title of the graph.
      *  @param title The title.
      */
-    public void setTitle(String title) {
+    public synchronized void setTitle(String title) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1390,7 +1393,7 @@ public class PlotBox extends JPanel implements Printable {
      *  java.awt.Font.decode().
      *  @param name A font name.
      */
-    public void setTitleFont(String name) {
+    public synchronized void setTitleFont(String name) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1406,7 +1409,7 @@ public class PlotBox extends JPanel implements Printable {
      *  or if data has been plotted, then the current fill range.
      *  @param wrap If true, wrapping of the X axis is enabled.
      */
-    public void setWrap(boolean wrap) {
+    public synchronized void setWrap(boolean wrap) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1426,7 +1429,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Set the label for the X (horizontal) axis.
      *  @param label The label.
      */
-    public void setXLabel(String label) {
+    public synchronized void setXLabel(String label) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1439,7 +1442,7 @@ public class PlotBox extends JPanel implements Printable {
      *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
      */
-    public void setXLog(boolean xlog) {
+    public synchronized void setXLog(boolean xlog) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1466,7 +1469,7 @@ public class PlotBox extends JPanel implements Printable {
     /** Set the label for the Y (vertical) axis.
      *  @param label The label.
      */
-    public void setYLabel(String label) {
+    public synchronized void setYLabel(String label) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
@@ -1479,7 +1482,7 @@ public class PlotBox extends JPanel implements Printable {
      *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
      */
-    public void setYLog(boolean ylog) {
+    public synchronized void setYLog(boolean ylog) {
         // Changing legend means we need to repaint the offscreen buffer.
         _plotImage = null;
 
