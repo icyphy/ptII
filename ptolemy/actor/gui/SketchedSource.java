@@ -149,8 +149,10 @@ public class SketchedSource extends Source
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
         SketchedSource newobj = (SketchedSource)super.clone(ws);
         newobj.length = (Parameter)newobj.getAttribute("length");
         newobj.period = (Parameter)newobj.getAttribute("period");
