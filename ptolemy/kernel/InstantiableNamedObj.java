@@ -68,8 +68,8 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @since Ptolemy II 4.0
    @see Instantiable
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Yellow (hyzheng)
+   @Pt.ProposedRating Green (eal)
+   @Pt.AcceptedRating Green (neuendor)
 */
 public class InstantiableNamedObj extends NamedObj implements Instantiable {
 
