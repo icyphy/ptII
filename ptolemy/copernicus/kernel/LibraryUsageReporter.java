@@ -153,6 +153,9 @@ public class LibraryUsageReporter extends SceneTransformer implements HasPhaseOp
             for (Iterator classes = dependedClasses.list().iterator();
                  classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
+                // Set the class to be an application class, so we can
+                // analyze it.
+                theClass.setApplicationClass();
                 writer.write(theClass.getName());
                 writer.write("\n");
             }

@@ -29,7 +29,7 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.Body;
+import soot.*;
 import soot.Hierarchy;
 import soot.RefType;
 import soot.Scene;
@@ -39,42 +39,103 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
+import soot.util.queue.*;
 import soot.jimple.ArrayRef;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
-import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.*;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.toolkits.scalar.BackwardFlowAnalysis;
 
+import java.util.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 /**
-An analysis that determines which methods in a given invoke graph
+An analysis that determines which methods in a given call graph
 have no side effects.
 */
-public class SideEffectAnalysis extends BackwardFlowAnalysis {
-    public SideEffectAnalysis(CallGraph g) {
-        super(g);
-        _reachables = new ReachableMethods(g);
+public class SideEffectAnalysis {
+    public SideEffectAnalysis() {
+        _methodToEffectFlow = new HashMap();
+        _unprocessedMethods = new ChunkedQueue();
+        Iterator methods = _unprocessedMethods.reader();
+
+        Scene.v().releaseCallGraph();
+        CallGraph callGraph = Scene.v().getCallGraph();
+        _reachables = new ReachableMethods(callGraph, 
+                EntryPoints.v().application());
         _reachables.update();
-        doAnalysis();
+        
+        // Process all the reachableMethods.
+        for(Iterator reachableMethods = _reachables.listener();
+            reachableMethods.hasNext();) {
+            _addMethod((SootMethod)reachableMethods.next());
+        }
+        
+        while(methods.hasNext()) {
+            SootMethod nextMethod = (SootMethod)methods.next();
+            EffectFlow in = _getEffectFlow(nextMethod);
+            EffectFlow out = _processMethod(nextMethod);
+            // If the flow has changed, then add all the reachable
+            // methods that invoke this method.
+            if(!in.equals(out)) {
+                _setEffectFlow(nextMethod, out);
+                for(Iterator invokers = new Sources(callGraph.edgesInto(nextMethod));
+                    invokers.hasNext();) {
+                    SootMethod invoker = (SootMethod)invokers.next();
+                    if(_reachables.contains(invoker)) {
+                        _addMethod(invoker);
+                    }
+                }
+            }
+        }        
     }
 
-    protected Object entryInitialFlow() {
-        new EffectFlow();
+    private void _addMethod(Collection set) {
+        for(Iterator i = set.iterator(); i.hasNext();) {
+            _addMethod((SootMethod)i.next());
+        }
+    }
+
+    private void _addMethod(SootMethod method) {
+        // System.out.println("adding method " + method);
+        if(_getEffectFlow(method) == null) {
+            _setEffectFlow(method, new EffectFlow());
+        }
+        _unprocessedMethods.add(method);
+    }
+
+    private EffectFlow _getEffectFlow(SootMethod method) {
+        return (EffectFlow)_methodToEffectFlow.get(method);
+    }
+    
+    // Merge the flow for the given method with the given flow.
+    // If there is no flow for the given method (i.e. it is not reachable)
+    // then set the given flow to have unknown side effects.
+    private void _mergeFlow(EffectFlow flow, SootMethod method) {
+        EffectFlow targetFlow = _getEffectFlow(method);
+        if(targetFlow != null) {
+            flow.mergeEffectFlow(targetFlow);
+        } else {
+            flow.setUnknownSideEffects();
+        }
+    }
+
+    private void _setEffectFlow(SootMethod method, EffectFlow flow) {
+        _methodToEffectFlow.put(method, flow);
     }
 
     /** Return the set of fields that the given method assigns
      *  to, or null if the side effects are unknown.
      */
     public Set getSideEffects(SootMethod method) {
-        EffectFlow flow = (EffectFlow)getFlowBefore(method);
+        EffectFlow flow = (EffectFlow)_getEffectFlow(method);
         if (flow == null) {
             if (_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
@@ -91,8 +152,8 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
      *  i.e. it assigns to any fields or arrays.
      */
     public boolean hasSideEffects(SootMethod method) {
-        EffectFlow flow = (EffectFlow)getFlowBefore(method);
-        EffectFlow flow2 = (EffectFlow)getFlowBefore(method);
+        EffectFlow flow = (EffectFlow)_getEffectFlow(method);
+        EffectFlow flow2 = (EffectFlow)_getEffectFlow(method);
         if (flow == null) {
             if (_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
@@ -105,7 +166,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
      *  on the given field.  i.e. it assigns to the given field.
      */
     public boolean hasSideEffects(SootMethod method, SootField field) {
-        EffectFlow flow = (EffectFlow)getFlowBefore(method);
+        EffectFlow flow = (EffectFlow)_getEffectFlow(method);
         if (flow == null) {
             if (_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
@@ -118,16 +179,11 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
     // are no side effects, then the flow has _hasEffects == false;
     // if _hasEffects == true, then the effectSet is the set of fields
     // that are side effected, or null if any field may be side effected.
-    protected Object newInitialFlow() {
-        return new EffectFlow();
-    }
 
-    protected void flowThrough(Object inValue, Object d, Object outValue) {
-        EffectFlow in = (EffectFlow)inValue;
-        EffectFlow out = (EffectFlow)outValue;
-        SootMethod method = (SootMethod)d;
-
-
+    private EffectFlow _processMethod(SootMethod method) {
+        EffectFlow in = _getEffectFlow(method);
+        EffectFlow out = new EffectFlow();
+       
         if (_debug) System.out.println(
                 "SideEffectAnalysis: method = " + method);
         if (_debug) System.out.println(
@@ -143,7 +199,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         if (!method.isConcrete()) {
             if (_debug) System.out.println("SideEffectAnalysis: has no body.");
             out.setUnknownSideEffects();
-            return;
+            return out;
         }
 
         if (_debug) System.out.println(
@@ -169,7 +225,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                             "SideEffectAnalysis: assigns to array.");
                     // Escape analysis might help in this case.
                     out.setUnknownSideEffects();
-                    return;
+                    return out;
                 }
             }
 
@@ -192,12 +248,8 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                         SootMethod target =
                             hierarchy.resolveSpecialDispatch(
                                     (SpecialInvokeExpr)expr, invokedMethod);
-
-                        if (!_reachables.contains(target)) {
-                            if (_debug) System.out.println(
-                                    "SideEffectAnalysis: specialInvokes method that is not in the graph");
-                            out.setUnknownSideEffects();
-                        }
+                        _mergeFlow(out, target);
+                    
                     } else if (expr instanceof InstanceInvokeExpr) {
                         Type baseType =
                             ((InstanceInvokeExpr)expr).getBase().getType();
@@ -211,18 +263,11 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                         for (Iterator targets = list.iterator();
                              targets.hasNext();) {
                             SootMethod target = (SootMethod)targets.next();
-                            if (!_reachables.contains(target)) {
-                                if (_debug) System.out.println(
-                                       "SideEffectAnalysis: virtualInvokes method that is not in the graph");
-                                out.setUnknownSideEffects();
-                            }
+                            _mergeFlow(out, target);
                         }
                     } else if (expr instanceof StaticInvokeExpr) {
-                        if (!_reachables.contains(target)) {
-                            if (_debug) System.out.println(
-                                    "SideEffectAnalysis: staticInvokes method that is not in the graph");
-                            out.setUnknownSideEffects();
-                        }
+                        SootMethod target = ((StaticInvokeExpr)expr).getMethod();
+                        _mergeFlow(out, target);
                     }
                 }
             }
@@ -230,22 +275,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         if (_debug) System.out.println(
                 "output flow = " + out.hasEffects() + " " + out.effectSet());
 
-    }
-
-    protected void copy(Object inValue, Object outValue) {
-        EffectFlow in = (EffectFlow)inValue;
-        EffectFlow out = (EffectFlow)outValue;
-        out.setEffectFlow(in);
-    }
-
-    protected void merge(Object in1Value, Object in2Value, Object outValue) {
-        EffectFlow in1 = (EffectFlow)in1Value;
-        EffectFlow in2 = (EffectFlow)in2Value;
-        EffectFlow out = (EffectFlow)outValue;
-
-        // A method has side effects if any method it uses has side effects.
-        out.setEffectFlow(in1);
-        out.mergeEffectFlow(in2);
+        return out;
     }
 
     private static class EffectFlow {
@@ -346,4 +376,6 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
     }
     private boolean _debug = false;
     private ReachableMethods _reachables = null;
+    private ChunkedQueue _unprocessedMethods = null;
+    private HashMap _methodToEffectFlow = null;
 }

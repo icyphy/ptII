@@ -57,20 +57,21 @@ JSRCS = \
 	FastForwardFlowAnalysis.java \
 	InvocationBinder.java \
 	GeneratorAttribute.java \
+	GrimpTransformer.java \
 	JimpleWriter.java \
 	KernelMain.java \
 	LibraryUsageReporter.java \
 	MakefileWriter.java \
 	NullPointerAnalysis.java \
 	PtolemyUtilities.java \
+	SideEffectAnalysis.java \
+	SideEffectFreeInvocationRemover.java \
 	SootUtilities.java \
 	TransformerAdapter.java \
 	UnusedFieldRemover.java \
 	WatchDogTimer.java 
 
 #	ImprovedDeadAssignmentEliminator.java \
-#	SideEffectAnalysis.java \
-#	SideEffectFreeInvocationRemover.java \
 #	InstanceEqualityEliminator.java \
 #	MaybeAliasAnalysis.java \
 #	MustAliasAnalysis.java \

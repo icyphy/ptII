@@ -42,9 +42,7 @@ import soot.jimple.InvokeStmt;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.VirtualInvokeExpr;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
+import soot.jimple.toolkits.callgraph.*;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
@@ -72,27 +70,24 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
+        return "";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("SideEffectFreeInvocationRemover.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        InvokeGraph invokeGraph =
-            ClassHierarchyAnalysis.newInvokeGraph();
-        MethodCallGraph methodCallGraph =
-            (MethodCallGraph)invokeGraph.newMethodGraph();
         SideEffectAnalysis analysis =
-            new SideEffectAnalysis(methodCallGraph);
-
+            new SideEffectAnalysis();
+  
+        CallGraph callGraph = Scene.v().getCallGraph();
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                _removeSideEffectFreeMethodCalls(method, invokeGraph, analysis);
+                _removeSideEffectFreeMethodCalls(method, callGraph, analysis);
             }
         }
     }
@@ -103,7 +98,8 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
      *  fields.
      */
     public static void _removeSideEffectFreeMethodCalls(SootMethod method,
-            InvokeGraph invokeGraph, SideEffectAnalysis analysis) {
+            CallGraph callGraph, SideEffectAnalysis analysis) {
+      
         Body body = method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
@@ -145,8 +141,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 // If any targets of the invocation have side effects,
                 // then they cannot be removed.
                 boolean removable = true;
-                for (Iterator i = invokeGraph.getTargetsOf(
-                        (Stmt)unit).iterator();
+                for (Iterator i = new Targets(callGraph.edgesOutOf((Stmt)unit));
                      i.hasNext() && removable;) {
 
                     SootMethod targetMethod = (SootMethod)i.next();
@@ -159,7 +154,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 if (removable) {
                     // Otherwise we've found an invocation we can remove.
                     // Remove it.
-                    //    System.out.println("SEFIR: removing " + unit);
+                    // System.out.println("SEFIR: removing " + unit);
                     body.getUnits().remove(unit);
                 }
             }

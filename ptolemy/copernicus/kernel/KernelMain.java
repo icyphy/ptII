@@ -41,6 +41,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
 import soot.HasPhaseOptions;
+import soot.options.Options;
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;
@@ -190,18 +191,13 @@ public class KernelMain {
         args[0] = "java.lang.Object";
 
         // As of soot 2.0.1, this is all that is required.
-        soot.Main.main(args);
-        
-        // soot.Main.setReservedNames();
-//         soot.Main.setCmdLineArgs(args);
-//         soot.Main main = new soot.Main();
-//         soot.ConsoleCompilationListener consoleCompilationListener =
-//             new soot.ConsoleCompilationListener();
-//         soot.Main.addCompilationListener(consoleCompilationListener);
-//         // Thread thread = new Thread(main);
-//         // thread.start();
-//         main.run();
-
+        //        soot.Main.main(args);
+        if (!Options.v().parse(args))
+            throw new KernelRuntimeException(
+                    "Option parse error");
+      
+        PackManager.v().getPack("wjtp").apply();
+  
         // Reset the state of the manager.  We haven't actually done
         // anything, but the state of the manager must be reset.
         try {
