@@ -59,8 +59,8 @@ PTCLASSALLJARS = \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
 	OrthogonalCom/OrthogonalCom.jar \
 	Sketch/Sketch.jar \
-	Spectrum/Spectrum.jar \
 	SoundSpectrum/SoundSpectrum.jar \
+	Spectrum/Spectrum.jar \
 	Type/Type.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
