@@ -114,7 +114,7 @@ public class DERealTimeSubscriber extends DEActor
     ////                         public methods                    ////
 
     /** Find the JavaSpaces and retrieve the first token. The type of
-     *  the output is infered from the type of the token
+     *  the output is inferred from the type of the token
      *  @exception IllegalActionException If the space cannot be found.
      */
     public void preinitialize() throws IllegalActionException {
