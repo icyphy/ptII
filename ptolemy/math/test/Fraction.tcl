@@ -1,6 +1,6 @@
 # Tests for the Fraction Class
 #
-# @Author: Edward A. Lee, Christopher Hylands
+# @Author: Edward A. Lee, Christopher Hylands, Adam Cataldo
 #
 # @Version: $Id$
 #
@@ -258,3 +258,13 @@ test Fraction-3.9 {check overflow negate} {
     list [$c01 toString] [$c12 toString] [$c23 toString] [$c34 toString] \
 	    [$c45 toString] [$c56 toString]
 } {-1/1 -2147483647/1 5/3 0/1 -1/2147483647 5/1}
+
+####################################################################
+test Fraction-3.10 {toDouble} {
+	set d1 [java::new ptolemy.math.Fraction]
+	set d2 [java::new ptolemy.math.Fraction 3 4]
+	set d3 [java::new ptolemy.math.Fraction -3 -4]
+	set d4 [java::new ptolemy.math.Fraction -5 8]
+	set d5 [java::new ptolemy.math.Fraction 5 -8]
+	list [$d1 toDouble] [$d2 toDouble] [$d3 toDouble] [$d4 toDouble] [$d5 toDouble] 
+} {0.0 0.75 0.75 -0.625 -0.625}
