@@ -87,7 +87,7 @@ public class PNPrimeExample {
         // myUniverse.getDirector().addMutationListener(d);
         //myUniverse.getDirector().addMutationListener(view);
 
-        exec.blockingGo();
+        exec.run();
         System.out.println("Bye World\n");
         return;
     }
