@@ -48,11 +48,12 @@ public abstract class ODFStringSource extends ODFSourceActor {
 
     /** 
      */
-    public ODFStringSource(CompositeActor container, String name)
+    public ODFStringSource(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
 	_output = new ODFIOPort( this, "output", false, true ); 
+	_output.setDeclaredType(StringToken.class);
         
     }
  

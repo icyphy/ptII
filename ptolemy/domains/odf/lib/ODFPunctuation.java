@@ -48,7 +48,7 @@ public class ODFPunctuation extends ODFStringSource {
 
     /** 
      */
-    public ODFPunctuation(CompositeActor container, String name)
+    public ODFPunctuation(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _punctuation = new LinkedList();

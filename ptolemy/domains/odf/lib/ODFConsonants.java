@@ -42,13 +42,13 @@ import collections.LinkedList;
 
 
 @author John S. Davis II
-@version %W%	%G%
+@version $Id$
 */
 public class ODFConsonants extends ODFStringSource {
 
     /** 
      */
-    public ODFConsonants(CompositeActor container, String name)
+    public ODFConsonants(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _consonants = new LinkedList();

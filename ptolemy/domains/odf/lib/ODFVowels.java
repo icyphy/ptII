@@ -48,7 +48,7 @@ public class ODFVowels extends ODFStringSource {
 
     /** 
      */
-    public ODFVowels(CompositeActor container, String name)
+    public ODFVowels(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _vowels = new LinkedList();

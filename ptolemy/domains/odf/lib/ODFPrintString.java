@@ -49,7 +49,7 @@ public class ODFPrintString extends ODFActor {
 
     /** 
      */
-    public ODFPrintString(CompositeActor container, String name)
+    public ODFPrintString(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
