@@ -49,7 +49,7 @@ import ptolemy.plot.*;
  *  @version $Id$
  */
 public class SequencePlotter extends Plotter
-         implements Placeable, SequenceActor {
+    implements Placeable, SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

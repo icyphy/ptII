@@ -161,11 +161,11 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      */
     public void report(String message, Exception ex) {
         String msg = "Exception thrown by applet.\n" + message + "\n"
-                + ex.toString();
-        System.err.println(msg);
-        ex.printStackTrace();
-        showStatus("Exception occurred.");
-        new Message(msg + "\nSee Java console for stack trace.");
+            + ex.toString();
+            System.err.println(msg);
+            ex.printStackTrace();
+            showStatus("Exception occurred.");
+            new Message(msg + "\nSee Java console for stack trace.");
     }
 
     /** Start execution of the model. This method is called by the
