@@ -43,14 +43,34 @@ import javax.swing.SwingUtilities;
  */
 public class BusContentionApplication implements ActionListener {
 
-    public BusContentionApplication() {
+    public BusContentionApplication(Manager manager, CompositeActor topLevel) {
+	_manager = manager;
+	_topLevel = topLevel;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          main method                      ////
 
     public static void main(String argv[]) {
-        BusContentionApplication app = new BusContentionApplication();
+	Manager manager = new Manager("manager");
+	CompositeActor topLevel = new CompositeActor();
+
+	try {
+            topLevel.setName("topLevel"); 
+            topLevel.setManager(manager);
+	} catch( NameDuplicationException e ) {
+	    System.err.println("NameDuplicationException thrown in the main \n" +
+		    "method. Stack trace: \n");
+            e.printStackTrace();
+	} catch( IllegalActionException e ) {
+	    System.err.println("IllegalActionException thrown in the main \n" +
+		    "method. Stack trace: \n");
+            e.printStackTrace();
+	}
+
+        BusContentionApplication app = 
+	        new BusContentionApplication( manager, topLevel );
+
 	Panel nullAppletPanel = null;
 	app.initializeDemo(nullAppletPanel);
     }
@@ -62,7 +82,7 @@ public class BusContentionApplication implements ActionListener {
      */
     public void actionPerformed(ActionEvent event) {
 	String action = event.getActionCommand();
-	if( action.equals("START") ) {
+	if( action.equals("Go") ) {
 	    try {
                 this.runDemo();
             } catch( Exception e ) {
@@ -71,7 +91,7 @@ public class BusContentionApplication implements ActionListener {
                         + e.getMessage()); 
             }
 	}
-	if( action.equals("QUIT") ) {
+	if( action.equals("Stop") ) {
 	    shutDown();
 	}
     }
@@ -119,21 +139,18 @@ public class BusContentionApplication implements ActionListener {
 
     /** Construct the Ptolemy system
      */
-    public CompositeActor constructPtolemyModel () {
-        CompositeActor topLevelActor = new CompositeActor();
-	Manager manager = new Manager("Manager");
-	Director director = new CSPDirector("Director");
+    public void constructPtolemyModel () {
         try {
-	    topLevelActor.setManager( manager );
-	    topLevelActor.setDirector( director );
+	    Director director = new CSPDirector("Director");
+	    _topLevel.setDirector( director );
 	    
             // Instantiate Actors 
-	    _contentionActor = new CSPController( topLevelActor, "controller" ); 
-	    _alarmActor = new CSPContentionAlarm( topLevelActor, "alarm" );
-            _memoryActor = new CSPMemory( topLevelActor, "memory" ); 
-	    _processActor1 = new CSPProcessor( topLevelActor, "proc1", 1 ); 
-	    _processActor2 = new CSPProcessor( topLevelActor, "proc2", 2 ); 
-	    _processActor3 = new CSPProcessor( topLevelActor, "proc3", 3 ); 
+	    _contentionActor = new CSPController( _topLevel, "controller" ); 
+	    _alarmActor = new CSPContentionAlarm( _topLevel, "alarm" );
+            _memoryActor = new CSPMemory( _topLevel, "memory" ); 
+	    _processActor1 = new CSPProcessor( _topLevel, "proc1", 1 ); 
+	    _processActor2 = new CSPProcessor( _topLevel, "proc2", 2 ); 
+	    _processActor3 = new CSPProcessor( _topLevel, "proc3", 3 ); 
 
 	    // Set up ports, relation 
 	    IOPort reqOut = (IOPort)_contentionActor.getPort("requestOut"); 
@@ -163,26 +180,26 @@ public class BusContentionApplication implements ActionListener {
 	    IORelation inReqs, outReqs, reads, writes, outContends, inContends;
 
 	    // Set up connections 
-	    inReqs = (IORelation)topLevelActor.connect(reqIn, p1_ReqOut ); 
-	    inReqs = (IORelation)topLevelActor.connect(reqIn, p2_ReqOut ); 
-	    inReqs = (IORelation)topLevelActor.connect(reqIn, p3_ReqOut ); 
+	    inReqs = (IORelation)_topLevel.connect(reqIn, p1_ReqOut ); 
+	    inReqs = (IORelation)_topLevel.connect(reqIn, p2_ReqOut ); 
+	    inReqs = (IORelation)_topLevel.connect(reqIn, p3_ReqOut ); 
 
-	    outContends = (IORelation)topLevelActor.connect(contendOut, 
+	    outContends = (IORelation)_topLevel.connect(contendOut, 
 	            _alarmIn );
-            inContends = (IORelation)topLevelActor.connect(contendIn,
+            inContends = (IORelation)_topLevel.connect(contendIn,
 	            _alarmOut );
 
-            outReqs = (IORelation)topLevelActor.connect( reqOut, p1_ReqIn ); 
-	    outReqs = (IORelation)topLevelActor.connect( reqOut, p2_ReqIn ); 
-	    outReqs = (IORelation)topLevelActor.connect( reqOut, p3_ReqIn ); 
+            outReqs = (IORelation)_topLevel.connect( reqOut, p1_ReqIn ); 
+	    outReqs = (IORelation)_topLevel.connect( reqOut, p2_ReqIn ); 
+	    outReqs = (IORelation)_topLevel.connect( reqOut, p3_ReqIn ); 
 
-	    reads = (IORelation)topLevelActor.connect( memOut, p1_MemIn ); 
-	    reads = (IORelation)topLevelActor.connect( memOut, p2_MemIn ); 
-	    reads = (IORelation)topLevelActor.connect( memOut, p3_MemIn ); 
+	    reads = (IORelation)_topLevel.connect( memOut, p1_MemIn ); 
+	    reads = (IORelation)_topLevel.connect( memOut, p2_MemIn ); 
+	    reads = (IORelation)_topLevel.connect( memOut, p3_MemIn ); 
 
-	    writes = (IORelation)topLevelActor.connect( memIn, p1_MemOut ); 
-	    writes = (IORelation)topLevelActor.connect( memIn, p2_MemOut ); 
-	    writes = (IORelation)topLevelActor.connect( memIn, p3_MemOut );
+	    writes = (IORelation)_topLevel.connect( memIn, p1_MemOut ); 
+	    writes = (IORelation)_topLevel.connect( memIn, p2_MemOut ); 
+	    writes = (IORelation)_topLevel.connect( memIn, p3_MemOut );
 
             System.out.println("Connections are complete.");
 
@@ -190,7 +207,6 @@ public class BusContentionApplication implements ActionListener {
 	    e.printStackTrace();
             throw new RuntimeException(e.toString());
         }
-        return topLevelActor;
     }
 
     /**
@@ -201,16 +217,23 @@ public class BusContentionApplication implements ActionListener {
     public void displayGraph(JGraph g, GraphModel model) {
 	Panel controlPanel = new Panel(); 
 
-	Button startButton = new Button("START"); 
+	Button startButton = new Button("Go"); 
 	startButton.addActionListener( this ); 
 	controlPanel.add(startButton, BorderLayout.WEST); 
 
-	Button quitButton = new Button("QUIT"); 
+	Button quitButton = new Button("Stop"); 
 	quitButton.addActionListener( this ); 
 	controlPanel.add(quitButton, BorderLayout.EAST); 
 
 	controlPanel.setVisible(true); 
 
+        _window = new BasicWindow("Basic Window"); 
+	_window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
+	_window.getContentPane().add(g, BorderLayout.CENTER); 
+	_window.setSize(500, 600); 
+	_window.setLocation(100, 100); 
+	_window.setVisible(true);
+	/*
 	if( _appletPanel == null ) {
             _window = new BasicWindow("Basic Window"); 
 	    _window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
@@ -225,6 +248,7 @@ public class BusContentionApplication implements ActionListener {
 	    _appletPanel.setLocation(100, 100); 
 	    _appletPanel.setVisible(true);
 	}
+	*/
 
         // Make sure we have the right renderers and then display the graph
         GraphPane gp = (GraphPane) g.getCanvasPane();
@@ -248,14 +272,19 @@ public class BusContentionApplication implements ActionListener {
 	_appletPanel = appletPanel;
 
         // Construct the Ptolemy kernel topology
-        _topLevelActor = constructPtolemyModel();
+        constructPtolemyModel();
 
         // Construct the graph representing the topology
         _model = constructDivaGraph();
 
         // Display the model in the _window
         try {
-            displayGraph(_jgraph, _model);
+	    SwingUtilities.invokeAndWait(new Runnable (){
+		public void run () {
+		    displayGraph(_jgraph, _model);
+		}
+	    });
+            // displayGraph(_jgraph, _model);
         }
         catch(Exception ex) {
             ex.printStackTrace();
@@ -274,32 +303,35 @@ public class BusContentionApplication implements ActionListener {
 	// System.out.println("Listeners set");
 
         // Run the model
- 	Manager manager = _topLevelActor.getManager();
-
 	// I'm not sure why but "manager.run()" doesn't seem to work.
-	manager.startRun();
+	_manager.startRun();
 	return;
     }
 
     /**
      */
     public void shutDown() {
-        Director director = _topLevelActor.getDirector(); 
-        Manager manager = _topLevelActor.getManager(); 
+	if( _topLevel == null ) {
+	    return;
+	}
+        Director director = _topLevel.getDirector(); 
 	try {
+	    // Eventually we will not need to call Director.wrapup()
+	    // as Manager.finish() will subsume this responsibility.
 	    director.wrapup();
-	    manager.finish();
-	    manager = null;
+	    _manager.finish();
+	    _manager = null;
 	} catch( IllegalActionException e ) {
+	    System.err.println("IllegalActionException thrown while " + 
+		    "attempting to shutDown()");
+	    e.printStackTrace();
 	}
 	if( _appletPanel == null ) {
 	    _window.setVisible(false); 
 	    _window.dispose(); 
 	    _window = null;
 
-	    // This call to System.exit will not kill browser
-	    // windows because of security permission.
-	    // System.exit(0);
+	    System.exit(0);
 	}
     }
 
@@ -330,7 +362,10 @@ public class BusContentionApplication implements ActionListener {
     CSPProcessor _processActor3;
 
     // Top Level Actor
-    CompositeActor _topLevelActor;
+    CompositeActor _topLevel;
+
+    // Manager
+    Manager _manager;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
