@@ -47,9 +47,6 @@ MISC_FILES =	internals #usersGuides #codeDoc
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc
 
-# 'make distclean' removes these files
-REALCLEAN_STUFF =
-
 # Sub directories to run make in.
 DIRS =		internals #usersGuides
 

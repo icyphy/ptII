@@ -55,9 +55,6 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-# 'make distclean' should remove tclIndex
-REALCLEAN_STUFF =
-
 all: $(EXTRA_SRCS)
 install: all
 

@@ -108,9 +108,6 @@ OPTIONAL_FILES = \
 	'Pxgraph$$HTMLButtonListener.class' \
 	'Pxgraph$$PrintButtonListener.class'
 
-# Files to be removed by 'make distclean'
-REALCLEAN_STUFF =
-
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar

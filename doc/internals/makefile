@@ -45,9 +45,6 @@ EXTRA_SRCS =	\
 
 MISC_FILES =
 
-# 'make distclean' should remove tclIndex
-REALCLEAN_STUFF =
-
 # Sub directories to run make in.
 DIRS =
 

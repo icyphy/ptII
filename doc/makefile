@@ -51,8 +51,6 @@ MISC_FILES =	$(DIRS) design img
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc
-# 'make distclean' should remove tclIndex
-REALCLEAN_STUFF =
 
 ALLJSRCS = 		ptolemy/plot/*.java \
 			ptolemy/kernel/*.java \

@@ -45,9 +45,6 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 OPTIONAL_FILES =	codeDoc
 
-# 'make distclean' should remove tclIndex
-REALCLEAN_STUFF =
-
 # Sub directories to run make in.
 DIRS =	
 
