@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Case" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
@@ -10,6 +10,8 @@
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
@@ -21,12 +23,14 @@
     <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
         <property name="_location" class="ptolemy.kernel.util.Location" value="207.0, 146.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={241, 155, 750, 466}}">
+        </property>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="163.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 145.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
@@ -34,6 +38,8 @@
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -47,7 +53,7 @@
                 </property>
                 <property name="init" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 162.0">
@@ -58,6 +64,9 @@
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
+                </port>
+                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                    <property name="input"/>
                 </port>
             </entity>
             <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
@@ -86,6 +95,8 @@
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
+                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -98,7 +109,7 @@
                 </property>
                 <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
-                <property name="step" class="ptolemy.data.expr.Parameter" value="-1">
+                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
                 </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 161.0">
@@ -109,6 +120,9 @@
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
+                </port>
+                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                    <property name="input"/>
                 </port>
             </entity>
             <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
