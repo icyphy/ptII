@@ -24,8 +24,6 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 
 package ptolemy.data.unit;

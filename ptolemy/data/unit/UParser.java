@@ -24,15 +24,13 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 
 package ptolemy.data.unit;
 
-import java.io.Reader;
-import java.io.StringReader;
+import ptolemy.kernel.util.*;
 import java.util.Vector;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////
 //// UParser.jj
@@ -42,7 +40,9 @@ JavaCC parser generator.
 
 @author Rowland R Johnson
 @version $Id$
-@since Ptolemy II 3.1
+@since Ptolemy II 4.0
+@Pt.ProposedRating Red (rowland)
+@Pt.AcceptedRating Red (rowland)
 */
 
 public class UParser implements UParserConstants {

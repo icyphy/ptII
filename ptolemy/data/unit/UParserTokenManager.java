@@ -24,11 +24,12 @@
 
                                         PT_COPYRIGHT_VERSION_3
                                         COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 
 package ptolemy.data.unit;
+import ptolemy.kernel.util.*;
+import java.util.Vector;
+import java.io.*;
 
 public class UParserTokenManager implements UParserConstants
 {
