@@ -135,8 +135,11 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
-# Set to backtrack and used in ptolemy/makefile if jrefactory.jar was found
+# Set to backtrack and used in ptolemy/makefile if Eclipse was found
 PTBACKTRACK_DIR =	@PTBACKTRACK_DIR@
+
+# Eclipse jar files used by ptolemy/backtrack 
+PTBACKTRACK_JARS =	"@PTBACKTRACK_JARS@"
 
 # Used by Mescal. Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp
@@ -160,6 +163,9 @@ COLT_DIR = @COLT_DIR@
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 CMKIT_DIR = @CMKIT_DIR@
+
+# Location of Eclipse, which is used by ptolemy/backtracking
+ECLIPSE_DIR = @ECLIPSE_DIR@
 
 # Directory that contains gc.h, used in copernicus/c
 GC_INCLUDE_DIR = @GC_INCLUDE_DIR@
@@ -259,10 +265,6 @@ JMF_JARS =	@JMF_JARS@
 # Jar file that contains Joystick interface,
 # see http://sourceforge.net/projects/javajoystick/
 JOYSTICK_JAR =	@JOYSTICK_JAR@
-
-# Jar file that contains JRefactory interface,
-# see http://jrefactory.sourceforge.net/
-JREFACTORY_JAR = @JREFACTORY_JAR@
 
 # Jython home directory that contains jython.jar, see http://www.jython.org
 JYTHON_DIR =    @JYTHON_DIR@
