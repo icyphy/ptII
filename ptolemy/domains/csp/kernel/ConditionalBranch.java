@@ -100,7 +100,7 @@ public abstract class ConditionalBranch {
      *   that this branch will try to rendezvous with.
      *  @param branch The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @exception IllegalActionException thrown if the channel has more
+     *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
