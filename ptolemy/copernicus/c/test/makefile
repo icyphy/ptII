@@ -68,7 +68,6 @@ CLEANLIB = _cleanLib.tcl
 JSIMPLE_TESTS = \
 	$(CLEANLIB) \
     Arrays.tcl\
-    CaffeineApp.tcl \
     Cases.tcl \
     CommandLine.tcl \
     Clone.tcl \
