@@ -76,9 +76,9 @@ properly typed initial value need be specified.
 
 public class SamplerWithDefault extends DETransformer {
     /* FIXME: Ideally, the Sampler should have a parameter that can be
-    specified as 'absent' to indicate no initial output.  We should
-    figure out how to make this work with the type system and
-    expression language.
+       specified as 'absent' to indicate no initial output.  We should
+       figure out how to make this work with the type system and
+       expression language.
     */
     /* FIXME2: It would be nice to have a version of this actor
        which is a Register.  The difference is that a register
