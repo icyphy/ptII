@@ -61,6 +61,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.PropertyClassChanges;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -569,7 +570,29 @@ public class Copernicus {
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
         removeGraphicalClasses.put("ptolemy.copernicus.gui.GeneratorTableauAttribute",
                 null);
+
+	// FIXME: If this is Deep codegen, then don't use Test, use CGTest
+	// because Test has a SharedParameter
+// 	removeGraphicalClasses.put("ptolemy.actor.lib.Test",
+// 		"ptolemy.copernicus.java.test.CGTest");
+
+
         _parser.addMoMLFilter(removeGraphicalClasses);
+
+
+//         PropertyClassChanges propertyClassChanges =
+//             new PropertyClassChanges();
+
+//         HashMap directorClassChanges = new HashMap();
+
+//         // Key = property name, Value = new class name
+//         directorClassChanges.put("timeResolution",
+//                 "ptolemy.data.expr.Parameter");
+
+//         directorClassChanges.put("ptolemy.domains.sdf.kernel.SDFDirector",
+//                 directorClassChanges);
+
+//         _parser.addMoMLFilter(propertyClassChanges);
 
         // Parse the model.
         CompositeActor toplevel = null;
