@@ -636,14 +636,14 @@ public class IOPort extends ComponentPort {
                 if (!isInput()) {
                     throw new IllegalActionException(this,
                             "Port is not an input port!");
-                } else { 
+                } else {
                     throw new IllegalActionException(this,
-                            "Channel index " + channelIndex 
-                            + " is out of range, because width is only " 
+                            "Channel index " + channelIndex
+                            + " is out of range, because width is only "
                             + getWidth() + ".");
                 }
             }
-            
+
             if (localReceivers[channelIndex] == null) {
                 throw new NoTokenException(this,
                         "No receiver at index: "
@@ -821,7 +821,7 @@ public class IOPort extends ComponentPort {
                 } else {
                     throw new IllegalActionException(this,
                             "Channel index " + channelIndex +
-                            " is out of range, because inside width is only " 
+                            " is out of range, because inside width is only "
                             + getWidthInside() + ".");
                 }
             }
@@ -1393,7 +1393,7 @@ public class IOPort extends ComponentPort {
      *  support this query, if this is not an input port, or if the
      *  channel index is out of range.
      */
-    public boolean hasRoomInside(int channelIndex) 
+    public boolean hasRoomInside(int channelIndex)
             throws IllegalActionException {
         boolean result = true;
         try {
@@ -1414,7 +1414,7 @@ public class IOPort extends ComponentPort {
                     "hasRoom: channel index is out of range.");
         }
         if (_debugging) {
-            _debug("hasRoomInside on channel " + channelIndex 
+            _debug("hasRoomInside on channel " + channelIndex
                    + " returns " + result);
         }
         return result;
@@ -1443,10 +1443,10 @@ public class IOPort extends ComponentPort {
             if (!isInput()) {
                 throw new IllegalActionException(this,
                         "Port is not an input port!");
-            } else { 
+            } else {
                 throw new IllegalActionException(this,
-                        "Channel index " + channelIndex 
-                        + " is out of range, because width is only " 
+                        "Channel index " + channelIndex
+                        + " is out of range, because width is only "
                         + getWidth() + ".");
             }
         }
@@ -1491,7 +1491,7 @@ public class IOPort extends ComponentPort {
             } else {
                 throw new IllegalActionException(this,
                         "Channel index " + channelIndex +
-                        " is out of range, because inside width is only " 
+                        " is out of range, because inside width is only "
                         + getWidthInside() + ".");
             }
         }
@@ -1584,8 +1584,8 @@ public class IOPort extends ComponentPort {
 
     /** Return a list of the ports connected to this port on the
      *  inside that can accept data from this port.  This includes
-     *  both input ports and opaque output ports that are 
-     *  connected on the inside to this port. This port must 
+     *  both input ports and opaque output ports that are
+     *  connected on the inside to this port. This port must
      *  be an opaque input port, otherwise return an empty list.
      *  @return A list of IOPort objects.
      */
@@ -1593,9 +1593,9 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
             Nameable container = getContainer();
-            if (!(container instanceof CompositeActor && isInput() 
+            if (!(container instanceof CompositeActor && isInput()
                     && isOpaque())) {
-                // Return an empty list, since this port cannot send data 
+                // Return an empty list, since this port cannot send data
                 // to the inside.
                 return new LinkedList();
             }
@@ -1748,7 +1748,7 @@ public class IOPort extends ComponentPort {
      *  receivers, if the port is not an output port, or if the inside
      *  channel index is out of range.
      */
-    public boolean isKnownInside(int channelIndex) 
+    public boolean isKnownInside(int channelIndex)
             throws IllegalActionException {
         boolean result = true;
         try {
@@ -2308,7 +2308,7 @@ public class IOPort extends ComponentPort {
         }
         boolean wasTransferred = false;
         for (int i = 0; i < getWidth(); i++) {
-	    // NOTE: This is not compatible with certain cases in PN, 
+	    // NOTE: This is not compatible with certain cases in PN,
             // where we don't want to block on a port if nothing is connected
             // to the port on the inside.
             try {

@@ -541,7 +541,7 @@ public class Manager extends NamedObj implements Runnable {
                         _setState(PAUSED_ON_BREAKPOINT);
 
                         _resumeNotifyWaiting = true;
-                        
+
                         // Wait until resume() is called.
                         while (_resumeNotifyWaiting) {
                             wait();
@@ -551,7 +551,7 @@ public class Manager extends NamedObj implements Runnable {
                         // execution.
                         _setState(ITERATING);
                     } else { //if (_state == ITERATING) {
-                        throw new InternalErrorException("State was changed " 
+                        throw new InternalErrorException("State was changed "
                                 + "while pauseOnBreakpoint was called.");
                     }
                 } //synchronized(this) {
@@ -628,7 +628,7 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.doneReading();
         }
     }
-    
+
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
@@ -772,10 +772,10 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** If the state is not IDLE, set a flag to request that
-     *  execution stop and exit gracefully and immediately.  The 
+     *  execution stop and exit gracefully and immediately.  The
      *  result of this is non-deterministic and determining the
      *  exact state of the model after this method is called is difficult.
-     *  However, it is guaraunteed that the model will be be in a 
+     *  However, it is guaraunteed that the model will be be in a
      *  state where it can be executed again.  Because of this, it
      *  is not generally useful to call this method from within an actor.
      *  This method will result in stop() being called on the top level
@@ -1086,8 +1086,8 @@ public class Manager extends NamedObj implements Runnable {
         //  An utter hack...
         private void setDescription(String description) {
             _description = description;
-        }             
-        
+        }
+
         /** Print out the current state.
          */
         public String toString() {

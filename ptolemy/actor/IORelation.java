@@ -137,7 +137,7 @@ public class IORelation extends ComponentRelation {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
         if (attribute instanceof Parameter &&
             "width".equals(attribute.getName())) {

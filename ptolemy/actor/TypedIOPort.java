@@ -577,7 +577,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  token into the destination receivers, this method also checks
      *  the type of the inside input port, and converts the token if
      *  necessary.  The conversion is done by calling the convert()
-     *  method of the type of the inside input port. 
+     *  method of the type of the inside input port.
      *
      *  <p> Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a

@@ -824,7 +824,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.doneReading();
         }
     }
-    
+
     /** Request that execution of the current iteration complete.
      *  If this actor is opaque, then invoke the stopFire()
      *  method of the local director. Otherwise, do nothing.
