@@ -133,19 +133,13 @@ public class Expression extends TypedAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            Expression newobj = (Expression)super.clone(ws);
-            newobj._iterationCount = 1;
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            newobj.expression = (Parameter)newobj.getAttribute("expression");
-	    newobj._time = (Variable)newobj.getAttribute("time");
-	    newobj._iteration = (Variable)newobj.getAttribute("iteration");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Expression newobj = (Expression)super.clone(ws);
+        newobj._iterationCount = 1;
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        newobj.expression = (Parameter)newobj.getAttribute("expression");
+        newobj._time = (Variable)newobj.getAttribute("time");
+        newobj._iteration = (Variable)newobj.getAttribute("iteration");
+        return newobj;
     }
 
     /** Evaluate the expression and send its result to the output.
