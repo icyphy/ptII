@@ -8,6 +8,38 @@
 <BODY>
 
 <H1>Type System Demo</H1>
+The applet below shows the topology and the parameters in the model.
+The rightmost actor is a dislay actor, it can be chosen to be a
+plotter or a printer through a checkbox. The types of the ports
+are annotated by the ports, they will be updated during type resolution.
+The type constraints are:
+<ul>
+  <li> For each Ramp, the types of the initial value and the step size 
+	are <= the output type. (4 inequalities)
+  <li> The types of the Expression inputs <= the output. (2 inequalities)
+  <li> Plus the constraints enforced by the connections. (3 inequalities)
+</ul>
+
+Some examples of type resolution are:
+<ul>
+  <li> Using the default parameters, click "go", the type on all the
+	ports of the Ramps and the Expression are resolved to Int,
+	since all the Ramp parameters are integers.
+  <li> Change the Ramp1 step size to 0.5, a double, then click "go".
+	The output of Ramp1, input1 and the output of the Expression
+	are resolved to Double.
+  <li> Change the Ramp1 initial value to the string "A", step size
+	to the string "BC". (When fires, Ramp1 will generate the
+	sequence of strings "A", "ABC", "ABCBC", ...) The output
+	of Ramp1, input1 and output of the Expression will be
+	resolved to "String", but there is a type conflict between
+	the output of Expression and the input of the plotter, as
+	indicated by the message in Java console.
+  <li> Now choose printer as the display, its input type is String.
+	The model does not have a type conflict anymore, and will
+	run correctly.
+</ul>
+	
 
 <CENTER>
 <P><APPLET name="Type"
@@ -22,3 +54,4 @@
 </CENTER>
 </BODY>
 </HTML>
+
