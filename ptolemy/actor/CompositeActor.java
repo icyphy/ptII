@@ -178,6 +178,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         for(int i = 0; i < entities.size(); i++) {
             Object actor = entities.get(i);
             if (actor instanceof CompositeActor) {
+                // Remove the composit actor and add its containees.
+                entities.remove(i);
                 entities.addAll(
                         ((CompositeActor) actor).allAtomicEntityList());
             }
