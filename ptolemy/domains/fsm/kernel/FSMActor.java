@@ -445,6 +445,11 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
+        // FIXME: why reset happens here, and 
+        // not in the preinitialize method?
+        // From Edward, if a reset transition is taken, only
+        // the initialize method is called. So, reset must be
+        // called here. 
         //System.out.println(this.getName() + "reset to initial state");
         reset();
     }
@@ -654,6 +659,12 @@ public class FSMActor extends CompositeEntity
         _inputTokenMap.clear();
         // Note: reset() (gotoInitialState()) is called from
         // initialize() now (zk 2002/09/11)`
+        // FIXME: why this is necessary?
+        // I moved reset() here because the IODependency analysis
+        // needs to catch the currentState. 
+        // In DE/ModalModel, reset() happening in the initialize method
+        // is too late. hyzheng 1/7/2004
+        reset();
     }
 
     /** Reset current state to the initial state. The name of the initial
