@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
 <class name="a" extends="ptolemy.kernel.CompositeEntity">
     <property name="p" class="ptolemy.data.expr.Parameter" value="x">
     </property>
