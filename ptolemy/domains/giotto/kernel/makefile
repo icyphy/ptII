@@ -64,6 +64,7 @@ OPTIONAL_FILES = \
 	doc \
 	'GenerateVisitor$$ClassField.class' \
 	'GenerateVisitor$$MethodSignature.class' \
+	'GiottoScheduler$$1.class' \
 	'GiottoScheduler$$GiottoActorComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

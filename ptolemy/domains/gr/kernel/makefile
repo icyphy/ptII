@@ -67,6 +67,8 @@ OPTIONAL_FILES = \
 	'GRDirector$$_DD3DActor.class' \
 	'GRDirector$$_GRActor.class' \
 	'GRDirector$$_GRIOPort.class' \
+	'GRDirector$$ContainedGRActor.class' \
+	'GRDirector$$GRIOPort.class' \
 	'GRScheduler$$1.class' \
 	'GRScheduler$$_NamedObjComparator.class' \
 	'GRDirector$$DD3DIOPort.class'
