@@ -255,6 +255,16 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             }
         }
 
+
+        // Format \0 properly, avoid gcc warnings like:
+        // 'warning: null character(s) preserved in literal'
+        for(int i = 0; i < stringConst.length(); i++) {
+            if (stringConst.charAt(i) == '\0') {
+                stringConst.replace(i,i+1, "\\0");
+                i++;
+            }
+        }
+
         _push("charArrayToString(\"" + stringConst + "\")" );
     }
 
