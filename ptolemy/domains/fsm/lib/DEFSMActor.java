@@ -38,8 +38,12 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.graph.*;
+
+import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEFSMActor
@@ -108,11 +112,11 @@ public class DEFSMActor extends FSMController implements TypedActor {
         }
     }
 
-    public Enumeration typeConstraints()  {
+    public List typeConstraintList()  {
 	try {
 	    workspace().getReadAccess();
 
-	    LinkedList result = new LinkedList();
+	    List result = new LinkedList();
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
@@ -128,16 +132,26 @@ public class DEFSMActor extends FSMController implements TypedActor {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
                                     inport.getTypeTerm(), outport.getTypeTerm());
-			    result.insertLast(ineq);
+			    result.add(ineq);
 			}
 		    }
 		}
 	    }
-	    return result.elements();
+	    return result;
 
 	}finally {
 	    workspace().doneReading();
 	}
     }
 
+    /** Return the type constraints of this actor.
+     *  This method calls typeConstraintList() and convert the result into
+     *  an enumeration.
+     *  @return An enumeration of inequalities.
+     *  @deprecated Use typeconstraintList() instead.
+     */
+    public Enumeration typeConstraints()  {
+	return Collections.enumeration(typeConstraintList());
+    }
 }
+
