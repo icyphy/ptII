@@ -54,7 +54,6 @@ JSRCS = \
 	Attribute.java \
 	ChangeListener.java \
 	ChangeRequest.java \
-	ClassFactoryAttribute.java \
 	CrossRefList.java \
 	Configurable.java \
 	ConfigurableAttribute.java \
