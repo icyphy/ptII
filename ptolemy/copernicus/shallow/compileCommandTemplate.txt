@@ -11,6 +11,6 @@
  ptolemy.copernicus.shallow.Main "@modelPath@" -d "@root@"
  -p wjtp.watchDog time:@watchDogTimeout@
  -p wjtp.mt targetPackage:@targetPackage@
- -p wjtp.writeJimple1 outDir:@root@@targetPath/jimple1
- -p wjtp.writeJimple2 outDir:@root@@targetPath/jimple2
+ -p wjtp.writeJimple1 outDir:@root@@targetPath@/jimple1
+ -p wjtp.writeJimple2 outDir:@root@@targetPath@/jimple2
  @compileOptions@
