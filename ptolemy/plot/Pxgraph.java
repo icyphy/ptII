@@ -318,7 +318,10 @@ Various compatibility issues are documented above in <b>bold</b>.
 Below are some other issues:
 <li>The original <code>xgraph</code> program allowed many formatting
 directives inside the file.  This version only supports
-<code>draw</code> and <code>move</code>.
+<code>draw</code> and <code>move</code>.  
+<li>This original <code>xgraph</code> program allowed blank lines
+to separate datasets.  This version does not.  Instead, use the
+<code>move <i>X</i> <i>Y</i></code> directive.
 <li>This version does not support X resources.
 <h2><a name="Installation Instructions">Installation Instructions</a></h2>
 The instructions below are for using the Java <CODE>pxgraph</CODE>
