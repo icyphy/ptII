@@ -539,15 +539,16 @@ public class PlotBox extends Panel {
      *  The input stream currently must be in ASCII format, although a binary
      *  format will be supported eventually.
      *  @param in The input stream.
+     *  @exception IOException If the stream cannot be read.
      */
-    public void read(InputStream in)
-            throws IOException {
+    public void read(InputStream in) throws IOException {
         try {
             // Create a decorated stream reader depending on what kind
             // of file we are reading.
-            // FIXME: peek at the stream to determine whether it's a binary
-            // file.
+            // Peek at the file...
             if (false) {
+                // FIXME: peek at the stream to determine
+                // whether it's a binary file.
                 // Reading a binary file.
                 DataInputStream din = new DataInputStream(
                         new BufferedInputStream(in));
@@ -557,7 +558,7 @@ public class PlotBox extends Panel {
                     din.close();
                 }
             } else {
-                // Reading an ASCII file
+                // Reading an ASCII file in the old file format.
 
                 // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
                 // but they provide no support like DataInputStream, nor
@@ -600,6 +601,24 @@ public class PlotBox extends Panel {
         // Empty default implementation.
     }
 
+    /** Set the background color.
+     *  @param background The background color.
+     */
+    public void setBackground(Color background) {
+        _background = background;
+        super.setBackground(_background);
+    }
+
+    /** Set the binary flag to true if we are reading pxgraph format binary
+     *  data. This method is deprecated.  Use read() instead, which recognizes
+     *  binary files.  To read pxgraph binary files, use readPxgraph()
+     *  in the derived class Plot.
+     *  @deprecated
+     */
+    public void setBinary(boolean binary) {
+        _binary = binary;
+    }
+
     /** Move and resize this component. The new location of the top-left
      *  corner is specified by x and y, and the new size is specified by
      *  width and height. This overrides the base class method to make
@@ -635,41 +654,12 @@ public class PlotBox extends Panel {
         requestFocus();
     }
 
-    /** Set the size of the plot.
-     *  @param width The width, in pixels.
-     *  @param height The height, in pixels.
+    /** If the argument is false, draw the plot without using color
+     *  (in black and white).  Otherwise, draw it in color (the default).
+     *  @param useColor False to draw in back and white.
      */
-    public void setSize(int width, int height) {
-        _width = width;
-        _height = height;
-        _buffer = createImage(width, height);
-        super.setSize(width, height);
-    }
-
-    /** Set the background color.
-     *  @param background The background color.
-     */
-    public void setBackground(Color background) {
-        _background = background;
-        super.setBackground(_background);
-    }
-
-    /** Set the foreground color.
-     *  @param foreground The foreground color.
-     */
-    public void setForeground(Color foreground) {
-        _foreground = foreground;
-        super.setForeground(_foreground);
-    }
-
-    /** Set the binary flag to true if we are reading pxgraph format binary
-     *  data. This method is deprecated.  Use read() instead, which recognizes
-     *  binary files.  To read pxgraph binary files, use readPxgraph()
-     *  in the derived class Plot.
-     *  @deprecated
-     */
-    public void setBinary(boolean binary) {
-        _binary = binary;
+    public void setColor(boolean useColor) {
+        _usecolor = useColor;
     }
 
     /** Set the file to read when init() is called.
@@ -688,6 +678,14 @@ public class PlotBox extends Panel {
         _documentBase = documentBase;
     }
 
+    /** Set the foreground color.
+     *  @param foreground The foreground color.
+     */
+    public void setForeground(Color foreground) {
+        _foreground = foreground;
+        super.setForeground(_foreground);
+    }
+
     /** Control whether the grid is drawn.
      *  @param grid If true, a grid is drawn.
      */
@@ -703,6 +701,17 @@ public class PlotBox extends Panel {
     public void setLabelFont(String name) {
         _labelFont = Font.decode(name);
         _labelFontMetrics = getFontMetrics(_labelFont);
+    }
+
+    /** Set the size of the plot.
+     *  @param width The width, in pixels.
+     *  @param height The height, in pixels.
+     */
+    public void setSize(int width, int height) {
+        _width = width;
+        _height = height;
+        _buffer = createImage(width, height);
+        super.setSize(width, height);
     }
 
     /** Set the title of the graph.
