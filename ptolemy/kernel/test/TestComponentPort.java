@@ -30,6 +30,7 @@
 package ptolemy.kernel.test;
 
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -43,11 +44,29 @@ This class is used to test protected method(s) in ComponentPort
 @version $Id$
 */
 public class TestComponentPort extends ComponentPort {
-    /** _deepConnectedPorts is deprecated, but we need to test it anyway */
+    /** Construct a TestComponentPort
+     *  @param container The container entity.
+     *  @param name The name of the port.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a port already in the container.
+     */
+    public TestComponentPort(ComponentEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
+    /** @deprecated _deepConnectedPorts is deprecated,
+        but we need to test it anyway
+    */
     public Enumeration testDeepConnectedPorts(LinkedList path) {
         return _deepConnectedPorts(path);
     }
 
+    /** @deprecated _deepInsidePorts is deprecated,
+        but we need to test it anyway
+    */
     public Enumeration testDeepInsidePorts(LinkedList path) {
         return _deepInsidePorts(path);
     }
