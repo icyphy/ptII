@@ -193,6 +193,9 @@ public class PTMLParser extends HandlerBase{
 
         // Construct the path to the DTD file
         StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
+
+        if(dtdPath.equals("UNKNOWN")) return sysID;
+        
         String fileSep = java.lang.System.getProperty("file.separator");
 
         int last = dtdPath.length()-1;
@@ -231,6 +234,9 @@ public class PTMLParser extends HandlerBase{
         if(DEBUG)
             System.out.println("Starting Element"+name);
 
+        if(name.equals("domain")) {
+            e=new Domain(attributes);
+        }
         if(name.equals("domainlibrary")) {
             e=new DomainLibrary(attributes);
         }
@@ -295,7 +301,7 @@ public class PTMLParser extends HandlerBase{
     private XMLElement current;
     private XMLElement root;
     private XmlParser parser = new XmlParser();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final String XMLLOCATION = "file:/users/neuendor/";
 
 }

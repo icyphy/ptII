@@ -106,7 +106,7 @@ public class Domain extends XMLElement {
     public void addDirector(String name, String classname) {
         XMLElement e = new XMLElement("director");
         e.setAttribute("name", name);
-        e.setAttribute("classname", classname);
+        e.setAttribute("class", classname);
         addChildElement(e);
         _directors.putAt(name, e);
     }
@@ -135,6 +135,7 @@ public class Domain extends XMLElement {
      * @return The new actor.
      */
     public Actor createActor(String actorname) {
+        //FIXME
         return null;
     }
 
@@ -145,7 +146,8 @@ public class Domain extends XMLElement {
      *  @return The new Director.
      */
     public Director createDirector(String directorname) {
-        return null;
+        //FIXME
+       return null;
     }
 
     /** Return the available Director names in an Enumeration of String.
@@ -180,6 +182,17 @@ public class Domain extends XMLElement {
         removeChildElement(e);
         _actorpackages.removeAt(actorpackage);
     }
+ 
+    /** Remove the specified director
+     *  @param director The requested director name
+     *  @exception IllegalActionException If the specified director
+     *       is not in this domain.
+     */
+    public void removeDirector(String name) {
+        XMLElement e = (XMLElement) _directors.at(name);
+        removeChildElement(e);
+        _directors.removeAt(name);
+    }
 
     /**
      * set the Description of this domain
@@ -195,6 +208,26 @@ public class Domain extends XMLElement {
         setAttribute("name",name);
     }
 
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+     void applySemanticsToChild(XMLElement e) {
+         if(e.getElementType().equals("actorpackage")) {
+            // if it's an actorpackage, add to list of actorpackages
+            _actorpackages.putAt(e.getAttribute("name"), e);
+         } else if(e.getElementType().equals("director")) {
+            // if it's a director, add to list of directors
+            _directors.putAt(e.getAttribute("name"), e);
+         } else if(e.getElementType().equals("description", e)) {
+             removeChildElement(_description);
+             _description = e;
+         }
+     }
+              
+         
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
