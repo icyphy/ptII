@@ -48,7 +48,8 @@ $0 ~ /<body.*>/ {
     print "<body>";
 }
 {
-    if (sawBody!=1) {
+    if (sawBody!=1 && $0 !~ /<link.*>/) {
+        # Ignore <link lines
 	print $0;
     } else {
 	if ($0 ~/vergilDocs/) {
