@@ -279,8 +279,9 @@ public class Expression extends TypedAtomicActor {
     // container.
     private Variable _searchIn(NamedObj container, String name) {
         Attribute result = container.getAttribute(name);
-        if (result != null && result instanceof Variable)
+        if (result != null && result instanceof Variable) {
             return (Variable)result;
+        }
         Iterator extenders =
             container.attributeList(ScopeExtender.class).iterator();
         while (extenders.hasNext()) {
