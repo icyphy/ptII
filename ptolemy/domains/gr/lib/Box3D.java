@@ -1,4 +1,4 @@
-/* A GR Shape consisting of a polyhedral box
+/* A GR Shape consisting of a polyhedral box.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -31,22 +31,25 @@ import javax.media.j3d.Node;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 import com.sun.j3d.utils.geometry.Box;
 
 //////////////////////////////////////////////////////////////////////////
 //// Box3D
-/** This actor contains the geometry and appearance specifications for a GR
+
+/** This actor contains the geometry and appearance specifications for a
     box.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
 
-    The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i> determine
-    the dimensions of box.
+    The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i>
+    determine the dimensions of box.
 
-    @author C. Fong
+    @author C. Fong, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (chf)
@@ -66,32 +69,43 @@ public class Box3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        xLength = new Parameter(this, "xLength", new DoubleToken(0.5));
-        yHeight = new Parameter(this, "yHeight", new DoubleToken(0.5));
-        zWidth = new Parameter(this, "zWidth", new DoubleToken(0.5));
+        xLength = new Parameter(this, "xLength");
+        xLength.setExpression("0.1");
+        xLength.setTypeEquals(BaseType.DOUBLE);
+        
+        yHeight = new Parameter(this, "yHeight");
+        yHeight.setExpression("0.1");
+        yHeight.setTypeEquals(BaseType.DOUBLE);
+        
+        zWidth = new Parameter(this, "zWidth");
+        zWidth.setExpression("0.1");
+        zWidth.setTypeEquals(BaseType.DOUBLE);
+        
+        zWidth.moveToFirst();
+        yHeight.moveToFirst();
+        xLength.moveToFirst();
+        
+        // The flat parameter doesn't make much sense in this case.
+        flat.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The length of the box in the x-axis.
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is the DoubleToken 0.5
+    /** The length of the box in the x-axis. This has type double
+     *  with default 0.1.
      */
     public Parameter xLength;
 
-    /** The height of the box in the y-axis.
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is the DoubleToken 0.5
+    /** The height of the box in the y-axis. This has type double
+     *  with default 0.1.
      */
     public Parameter yHeight;
 
-    /** The width of the box in the z-axis.
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is the DoubleToken 0.5
+    /** The width of the box in the z-axis. This has type double
+     *  with default 0.1.
      */
     public Parameter zWidth;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

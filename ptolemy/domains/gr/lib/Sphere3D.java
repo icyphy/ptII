@@ -52,7 +52,7 @@ import com.sun.j3d.utils.geometry.Sphere;
     graph. This actor may be used along with the Scale3D transformer to produce
     ellipsoid shapes. This actor will only have meaning in the GR domain.
 
-    @author C. Fong
+    @author C. Fong, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (chf)

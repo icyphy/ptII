@@ -30,6 +30,7 @@ package ptolemy.domains.gr.lib;
 import javax.media.j3d.Node;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -45,7 +46,7 @@ import com.sun.j3d.utils.geometry.Cone;
     cone.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
 
-    @author C. Fong
+    @author C. Fong, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
     @Pt.ProposedRating Red (chf)
@@ -73,10 +74,27 @@ public class Cone3D extends GRShadedShape {
         height = new Parameter(this, "height");
         height.setExpression("0.7");
         height.setTypeEquals(BaseType.DOUBLE);
+        
+        divisions = new Parameter(this, "divisions");
+        divisions.setExpression("roundToInt(radius * 60)");
+        divisions.setTypeEquals(BaseType.INT);
+        
+        height.moveToFirst();
+        radius.moveToFirst();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The number of divisions in the circle forming the base of the
+     *  cone. This is an integer with
+     *  default value "roundToInt(radius * 60)". This parameter
+     *  determines the resolution of the cone, which is approximated
+     *  as a surface composed of triangular facets. Increasing this
+     *  value makes the surface smoother, but also increases the cost
+     *  of rendering.
+     */
+    public Parameter divisions;
 
     /** The height of the cone. This is a double that defaults to 0.5.
      */
@@ -107,8 +125,12 @@ public class Cone3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
+        // NOTE: The "1" here is the number of "y divisions".
+        // I can't see any reason why this would need to be anything
+        // other than 1, so it's not a parameter.
+        int divisionsValue = ((IntToken)divisions.getToken()).intValue();
         _containedNode = new Cone((float)_getRadius(), (float) _getHeight(),
-                Cone.GENERATE_NORMALS, _appearance);
+                Cone.GENERATE_NORMALS, divisionsValue, 1, _appearance);
     }
 
     /**  Return the value of the height parameter

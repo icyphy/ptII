@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 package ptolemy.domains.gr.lib;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.PolygonAttributes;
@@ -117,6 +118,10 @@ abstract public class GRShadedShape extends GRActor3D {
         wireFrame = new Parameter(this,"wireFrame");
         wireFrame.setExpression("false");
         wireFrame.setTypeEquals(BaseType.BOOLEAN);
+        
+        flat = new Parameter(this,"flat");
+        flat.setExpression("false");
+        flat.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -166,6 +171,11 @@ abstract public class GRShadedShape extends GRActor3D {
      *  that defaults to false. 
      */
     public Parameter wireFrame;
+
+    /** If true, render the facets flat rather than rounded.
+     *  This is a boolean that defaults to false. 
+     */
+    public Parameter flat;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -219,6 +229,7 @@ abstract public class GRShadedShape extends GRActor3D {
         }
         _appearance.setMaterial(_material);
         
+        // Deal with transparent attributes.
         float transparent = (float)
                 ((DoubleToken)transparency.getToken()).doubleValue();
         if (transparent > 0.0) {
@@ -228,6 +239,15 @@ abstract public class GRShadedShape extends GRActor3D {
             _appearance.setTransparencyAttributes(attributes);
         }
         
+        // Deal with flat attribute.
+        if (((BooleanToken)flat.getToken()).booleanValue()) {
+            ColoringAttributes coloring
+                    = new ColoringAttributes(0.7f, 0.7f, 0.7f,
+                    ColoringAttributes.SHADE_FLAT);
+            _appearance.setColoringAttributes(coloring);
+        }
+        
+        // Deal with wireFrame attribute.
         int mode = PolygonAttributes.POLYGON_FILL;
         if (((BooleanToken)wireFrame.getToken()).booleanValue()) {
             mode = PolygonAttributes.POLYGON_LINE;
@@ -239,6 +259,7 @@ abstract public class GRShadedShape extends GRActor3D {
                 PolygonAttributes.CULL_NONE,
                 0.0f);
         _appearance.setPolygonAttributes(polygonAttributes);
+
         
         // Turn on antialiasing.
         // FIXME: Doesn't seem to work.
