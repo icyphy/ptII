@@ -67,6 +67,7 @@ public class ECSLMux extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
+        output.setMultiport(true);
     }
 
     /** FIXME: noop
