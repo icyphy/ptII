@@ -83,23 +83,6 @@ abstract public class GRShadedShape extends GRActor {
         _color = new Color3f(1.0f, 1.0f, 1.0f);
     }
 
-    /** Return false if the scene graph is already initialized.
-     *
-     *  @return false if the scene graph is already initialized.
-     *  @exception IllegalActionException Not thrown in this base class
-     */
-    public boolean prefire() throws IllegalActionException {
-        // -prefire-
-        // Note: Actors return false on prefire if they don't want to be
-        // fired and postfired in the current iteration.
-        if (_isSceneGraphInitialized) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -132,6 +115,22 @@ abstract public class GRShadedShape extends GRActor {
         _createModel();
     }
 
+
+    /** Return false if the scene graph is already initialized.
+     *
+     *  @return false if the scene graph is already initialized.
+     *  @exception IllegalActionException Not thrown in this base class
+     */
+    public boolean prefire() throws IllegalActionException {
+        // -prefire-
+        // Note: Actors return false on prefire if they don't want to be
+        // fired and postfired in the current iteration.
+        if (_isSceneGraphInitialized) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

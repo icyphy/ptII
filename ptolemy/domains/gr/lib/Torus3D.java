@@ -207,6 +207,16 @@ public class Torus3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Return the angle span of the sweep
+     *  @return the angle span of the sweep
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
+    private double _getAngleSpan() throws IllegalActionException  {
+        return ((DoubleToken) angleSpan.getToken()).doubleValue();
+
+    }
+
     /** Return the radius of the cross section
      *  @return the radius of the cross section
      *  @exception IllegalActionException If the value of some parameters can't
@@ -233,16 +243,6 @@ public class Torus3D extends GRShadedShape {
      */
     private int _getSlices() throws IllegalActionException {
         return ((IntToken) slices.getToken()).intValue();
-    }
-
-    /** Return the angle span of the sweep
-     *  @return the angle span of the sweep
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getAngleSpan() throws IllegalActionException  {
-        return ((DoubleToken) angleSpan.getToken()).doubleValue();
-
     }
 
     ///////////////////////////////////////////////////////////////////

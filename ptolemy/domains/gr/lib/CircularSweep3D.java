@@ -200,6 +200,16 @@ public class CircularSweep3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Return the angle span of the sweep
+     *  @return the angle span of the sweep
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
+    private double _getAngleSpan() throws IllegalActionException  {
+        return ((DoubleToken) angleSpan.getToken()).doubleValue();
+
+    }
+
     /** Return the polyline
      *  @return the polyline
      *  @exception IllegalActionException If the value of some parameters
@@ -217,6 +227,15 @@ public class CircularSweep3D extends GRShadedShape {
         return data;
     }
 
+    /** Return the number of slices
+     *  @return the number of slices
+     *  @exception IllegalActionException If the value of some parameters can't
+     *   be obtained
+     */
+    private int _getSlices() throws IllegalActionException {
+        return ((IntToken) slices.getToken()).intValue();
+    }
+
     /** Return the vertex count
      *  @return the vertex count
      *  @exception IllegalActionException If the value of some parameters can't
@@ -228,25 +247,6 @@ public class CircularSweep3D extends GRShadedShape {
         int numberOfElements = matrixToken.getColumnCount()/2;
 
         return numberOfElements;
-    }
-
-    /** Return the number of slices
-     *  @return the number of slices
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private int _getSlices() throws IllegalActionException {
-        return ((IntToken) slices.getToken()).intValue();
-    }
-
-    /** Return the angle span of the sweep
-     *  @return the angle span of the sweep
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getAngleSpan() throws IllegalActionException  {
-        return ((DoubleToken) angleSpan.getToken()).doubleValue();
-
     }
 
     ///////////////////////////////////////////////////////////////////

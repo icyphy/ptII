@@ -214,24 +214,25 @@ public class Translate3D extends GRTransform {
         _accumulatedZ = 0.0;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor TransformGroup
-     *
-     *  @return the Java3D TransformGroup
-     */
-    protected Node _getNodeObject() {
-        return (Node) _transformNode;
-    }
-
-
-    /** Connect other Java3D nodes as children of the encapsulated node in
-     *  this actor
+    /** Connect other Java3D nodes as children of the encapsulated
+     *  node in this actor
      *
      *  @param node The child Java3D node.
      */
     protected void _addChild(Node node) {
         _transformNode.addChild(node);
+    }
+
+    /** Return the encapsulated Java3D node of this 3D actor. The
+     *  encapsulated node for this actor TransformGroup
+     *
+     *  @return the Java3D TransformGroup
+     */
+    protected Node _getNodeObject() {
+        return (Node) _transformNode;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -68,16 +68,13 @@ public class KeyInput3D extends GRActor {
         keycode.setTypeEquals(BaseType.INT);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
     public TypedIOPort keycode;
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        userInputNode = new BranchGroup();
-        _react = new React();
-        _react.setSchedulingBounds(new BoundingSphere());
-        userInputNode.addChild(_react);
-        _hasData = false;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void fire() throws IllegalActionException  {
         super.fire();
@@ -87,6 +84,15 @@ public class KeyInput3D extends GRActor {
             //System.out.print(" "+(int)_keycode+",");
             _hasData = false;
         }
+    }
+
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        userInputNode = new BranchGroup();
+        _react = new React();
+        _react.setSchedulingBounds(new BoundingSphere());
+        userInputNode.addChild(_react);
+        _hasData = false;
     }
 
     ///////////////////////////////////////////////////////////////////
