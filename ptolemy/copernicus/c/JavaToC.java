@@ -88,6 +88,7 @@ public class JavaToC {
         Scene.v().setSootClassPath(classPath);
         Scene.v().loadClassAndSupport(className);
         RequiredFileGenerator RFG = new RequiredFileGenerator();
+        OverriddenMethodGenerator.init();
 
         if (!generateSingleClass) {
             RFG.init(classPath, className);

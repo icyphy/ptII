@@ -34,16 +34,25 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
+import java.util.HashSet;
 import java.util.Iterator;
+
 import soot.SootMethod;
 import soot.Type;
+import soot.VoidType;
+import soot.BaseType;
+import soot.ArrayType;
+import soot.RefType;
 
 
 /**
     A class that handles generation and management of Java methods that are
     over-ridden by pre-defined C code. The class allows conventional java
     methods to be replaced with pre-defined C code. This may be done for
-    platform-specificness, correctness or performance considerations.
+    platform-specificness, correctness or performance considerations. Note
+    that "overridden" here means that the code for a method is replaced
+    with either dummy or user-defined C code. It does not refer to
+    overriding methods by inheritance in java.
 
     @author Ankush Varma
     @version $Id$
@@ -51,10 +60,20 @@ import soot.Type;
 
 public class OverriddenMethodGenerator {
 
-    /** The directory containing the location of the bodies of overridden
-     * methods.
-     */
-    public static String overriddenBodyLib = "../runtime/over_bodies/";
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+     /** Return the name of the file where the C code for an overridden method
+      *  should be. This name also includes the appropriate directory path.
+      *  @param method The method.
+      *  @return The name of the file.
+      */
+     public static String fileContainingCodeFor(SootMethod method) {
+        String fileName = overriddenBodyLib + CNames.functionNameOf(method)
+                + ".c";
+
+        return fileName;
+     }
 
     /** Returns the code for a given overridden method.
      *
@@ -63,7 +82,7 @@ public class OverriddenMethodGenerator {
      */
     public static String getCode(SootMethod method) {
         StringBuffer code = new StringBuffer("/* Function that implements "
-                + "method " + method.getSubSignature() + "*/\n");
+                + "method " + method.getSignature() + "*/\n");
 
         code.append(_getHeaderCode(method) + "{\n");
         code.append(_getBodyCode(method) + "}\n");
@@ -72,15 +91,161 @@ public class OverriddenMethodGenerator {
 
     }
 
-    /** Checks if the method is overridden.
+
+    /**
+     * Perform initialization functions and set up the list of
+     * force-overridden methods.
+     */
+    public static void init() {
+        _forceOverriddenMethods = new HashSet();
+
+        ///////////// Methods replaced with dummy code ////////////
+
+        _forceOverriddenMethods.add(
+                "<java.util.ResourceBundle: java.lang.Object "
+                + "loadBundle(java.lang.ClassLoader,java.lang.String)>");
+        // Overridden it throws a warning for an unused variable.
+
+        _forceOverriddenMethods.add("<java.util.Locale: void <clinit>()>");
+        // Overridden because called and used the result from an
+        // unimplemented native.
+
+        _forceOverriddenMethods.add("<java.lang.Character: void <clinit>()>");
+        // Overridden because it threw an array error that causes a
+        // segfault.
+
+
+        _forceOverriddenMethods.add(
+                "<java.security.MessageDigest: "
+                + "java.security.MessageDigest getInstance(java.lang.String,"
+                + "java.lang.String)>");
+        // Overridden because inner classes have problems accessing private
+        // fields of outer classes. Specifically outerClass cannot call
+        // InnerClass.privateFieldOfOuterClass.
+
+
+        _forceOverriddenMethods.add(
+            "<java.security.Signature: java.security.Signature "
+            + "getInstance(java.lang.String,java.lang.String)>");
+        // Overridden because inner classes have problems accessing private
+        // fields of outer classes. Specifically outerClass cannot call
+        // InnerClass.privateFieldOfOuterClass.
+
+        _forceOverriddenMethods.add(
+            "<sun.security.util.Debug: void <clinit>()>");
+        // Overridden because Object.hashCode() is not up yet.
+
+        _forceOverriddenMethods.add(
+            "<sun.security.util.Debug: void <clinit>()>");
+        // Overridden because Object.hashCode() is not up yet.
+
+        _forceOverriddenMethods.add(
+            "<sun.misc.Version: void <clinit>()>");
+        // Overridden because it tried setProperty, which is not currently
+        // permitted.
+
+        _forceOverriddenMethods.add(
+            "<java.io.File: void <clinit>()>");
+
+        _forceOverriddenMethods.add(
+            "<java.lang.SecurityManager: "
+            + "java.lang.ThreadGroup getRootGroup()>");
+
+        _forceOverriddenMethods.add(
+            "<sun.net.InetAddressCachePolicy: void <clinit>()>");
+        // Overridden because Object.hashCode() is not up yet.
+
+        _forceOverriddenMethods.add(
+            "<java.io.ObjectOutputStream: long getUTFLength(char[],int)>");
+        // Overridden because it threw a warning.
+
+        _forceOverriddenMethods.add(
+            "<java.lang.ClassLoader: void <clinit>()>");
+        // Overridden because of the implicit "super()" it ends up calling
+        // in Stack.
+
+        _forceOverriddenMethods.add(
+            "<java.lang.System: void <clinit>()>");
+        // Overridden because nullPrintStream etc. are not up yet.
+
+        _forceOverriddenMethods.add(
+            "<sun.net.www.MimeTable: boolean "
+            + "saveAsProperties(java.io.File)>");
+        // Overridden it throws a warning for an unused variable.
+
+        _forceOverriddenMethods.add(
+            "<java.lang.reflect.Proxy: java.lang.Class "
+            + "getProxyClass(java.lang.ClassLoader,java.lang.Class[])>");
+        // Overridden it throws a warning for an unused variable.
+
+        _forceOverriddenMethods.add(
+            "<java.lang.reflect.AccessibleObject: void <clinit>()>");
+
+        _forceOverriddenMethods.add(
+            "<java.io.DataOutputStream: "
+            + "int writeUTF(java.lang.String,java.io.DataOutput)>");
+        // Overridden because it threw a warning.
+
+        _forceOverriddenMethods.add(
+            "<java.lang.InheritableThreadLocal: "
+            + "void bequeath(java.lang.Thread,java.lang.Thread)>");
+        // Overridden because call to an interface led to a statement with
+        // no effect which caused a warning.
+
+        _forceOverriddenMethods.add(
+            "<sun.security.x509.CertificateX509Key: "
+            + "void encode(java.io.OutputStream)>");
+        // Overridden because it did not compile.
+
+        _forceOverriddenMethods.add("<java.security.MessageDigest: "
+            + "java.security.MessageDigest getInstance(java.lang.String)>");
+        // Overridden because inner classes have problems accessing private
+        // fields of outer classes. Specifically outerClass cannot call
+        // InnerClass.privateFieldOfOuterClass.
+
+        _forceOverriddenMethods.add("<java.io.ObjectOutputStream: "
+            + "void writeUTFBody(char[],int)>");
+
+        _forceOverriddenMethods.add("<java.security.Signature: "
+            + "java.security.Signature getInstance(java.lang.String)>");
+        // Overridden because inner classes have problems accessing private
+        // fields of outer classes. Specifically outerClass cannot call
+        // InnerClass.privateFieldOfOuterClass.
+
+        _forceOverriddenMethods.add("<java.lang.ClassNotFoundException: "
+            + "void printStackTrace()>");
+        // Overridden because it had a statement with no effect. This was
+        // because CSwitch expects method class to be superclass of base.
+
+        ///////// Methods replaced with actual code ////////
+
+        // Methods that provide basic I/O functionality in
+        // java.io.PrintStream.
+        _forceOverriddenMethods.add(
+            "<java.io.PrintStream: void println(float)>");
+        _forceOverriddenMethods.add(
+            "<java.io.PrintStream: void println(int)>");
+        _forceOverriddenMethods.add(
+            "<java.io.PrintStream: void println(java.lang.String)>");
+
+
+        _forceOverriddenMethods.add("<java.lang.String: void <init>()>");
+        // Overridden because java.lang.Object.clone() is not implemented yet.
+
+        _forceOverriddenMethods.add(
+        "<java.lang.System: void initializeSystemClass()>");
+        // Contains initializations needed to get System.out.println() and
+        // other needed functionality to be supported.
+
+
+    }
+
+    /** Checks if the given method is overridden.
      *
      * @return True if the method is overridden.
      */
     public static boolean isOverridden(SootMethod method) {
-        // A method is overridden if the corresponding file for its body
-        // does not exist in overriddenBodyLib.
-        if (FileHandler.exists(overriddenBodyLib
-                + CNames.functionNameOf(method) + ".c")) {
+        if (_forceOverriddenMethods.contains(method.getSignature())) {
             return true;
         }
         else {
@@ -88,19 +253,73 @@ public class OverriddenMethodGenerator {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
 
-    /** Returns the code for the body of a given overridden method.
+    /** The directory containing the location of the bodies of overridden
+     * methods.
+     */
+    public static String overriddenBodyLib = "../runtime/over_bodies/";
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                   ////
+
+    /**
+     * Returns the code for the body of a given overridden method. If a
+     * file exists containing the body of this overridden method, that file
+     * is used, otherwise a dummy method stub is generated that just allows
+     * the method to be compiled correctly. Note that auto-generated dummy
+     * method stubs cannot provide correct functionality. This may lead to
+     * problems(for example, segmentation faults) due to uninitialized
+     * fields/function pointers. These problems can be solved by using a
+     * file instead of a dummy stub for the method body. A large majority
+     * of overridden methods have no problems with dummy stubs.
      *
      *  @return The code for the body of the method.
      */
-    private static String _getBodyCode(SootMethod method) {
+    protected static String _getBodyCode(SootMethod method) {
         // We're putting 4 leading spaces for indentation.
         String indent = "    ";
         StringBuffer code = new StringBuffer();
+        String cReturnType = CNames.typeNameOf(method.getReturnType());
+
         code.append(indent + "/* OVERRIDDEN METHOD */\n");
-        code.append(indent + "#include \""
-                + overriddenBodyLib
-                + CNames.functionNameOf(method) + ".c\"");
+
+        if (FileHandler.exists(fileContainingCodeFor(method))) {
+                code.append(indent + "#include \""
+                    + overriddenBodyLib
+                    + CNames.functionNameOf(method) + ".c\"");
+        }
+        else {
+            code.append(_indent(1) + "/* DUMMY METHOD STUB */\n");
+
+            if (!cReturnType.equals("void")) {
+                code.append(_indent(1) + cReturnType + " dummy;\n");
+                Type returnType = method.getReturnType();
+
+                // Initializing the variable prevents warnings from gcc -
+                // O2.
+                if (returnType instanceof BaseType) {
+                    // Allocate memory for objects. Set other data types to
+                    // 0.
+                    if (returnType instanceof RefType) {
+                        code.append(_indent(1)
+                                + "dummy = malloc(sizeof(struct "
+                                + cReturnType + "));\n");
+                    }
+                    else {
+                        code.append(_indent(1) + "dummy = 0;\n");
+                    }
+                }
+                else if (returnType instanceof ArrayType) {
+                    code.append(_indent(1) + "dummy = NULL;\n");
+                }
+
+                code.append(_indent(1) + "return dummy;\n");
+            }
+        }
+
         code.append("\n");
 
         return code.toString();
@@ -112,7 +331,7 @@ public class OverriddenMethodGenerator {
      *
      *  @return The code for the header of the method.
      */
-    private static String _getHeaderCode(SootMethod method) {
+    protected static String _getHeaderCode(SootMethod method) {
 
         StringBuffer code = new StringBuffer();
         Type returnType = method.getReturnType();
@@ -153,5 +372,29 @@ public class OverriddenMethodGenerator {
 
         return code.toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return a string that generates an indentation string (a sequence
+     *  of spaces) for the given indentation level. Each indentation
+     *  level unit is four characters wide.
+     *  @param level The indentation level.
+     *  @return The indentation string that corresponds to the given
+     *  indentation level.
+     */
+    private static String _indent(int level) {
+        StringBuffer indent = new StringBuffer();
+        int i;
+        for (i = 0; i < level; i++) {
+            indent.append("    ");
+        }
+        return indent.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    private static HashSet _forceOverriddenMethods;
 
 }

@@ -1,5 +1,6 @@
 /*******************************************************************
-Dummy C code for overridden method PrintStream.println(int) 
+Dummy C code for overridden method 
+<java.io.PrintStream: void println(int)>
 
 Copyright (c) 2001 The University of Maryland.
 

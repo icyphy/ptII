@@ -92,6 +92,9 @@ public class CWriter extends SceneTransformer {
 
         String outDir = Options.getString(options, "outDir");
 
+        // Initialize generation of overridden methods.
+        OverriddenMethodGenerator.init();
+
         // FIXME: Remove the next line if things don't break without it
         // _completedTransform = true;
 

@@ -96,7 +96,7 @@ public class NativeMethodGenerator {
         // Leading Comment.
         StringBuffer code = new StringBuffer(
                 "/* PCCG: Function that implements native method\n"
-                + method.toString() + "\n"
+                + method.getSignature() + "\n"
                 + "*/\n");
 
         code.append(_getStubHeader(method) + " {\n");

@@ -1,7 +1,6 @@
 /*******************************************************************
 Dummy C code for overridden method 
-PrintStream.println(float).
-Overridden because it accessed an inner class.
+<java.io.PrintStream: void println(float)>
 
 Copyright (c) 2001 The University of Maryland.
 

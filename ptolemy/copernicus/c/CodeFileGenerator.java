@@ -22,7 +22,7 @@ THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES
 , INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
                                         PT_COPYRIGHT_VERSION_2
@@ -93,7 +93,7 @@ public class CodeFileGenerator extends CodeGenerator {
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
         _context.addIncludeFile("<stdio.h>");
-        
+
         if (!_context.getSingleClassMode()) {
             _context.addIncludeFile("\"strings.h\"");
             _context.addIncludeFile("\"pccg_runtime.h\"");
@@ -226,7 +226,7 @@ public class CodeFileGenerator extends CodeGenerator {
         Iterator stringConstants = _context.getStringConstants();
 
         if (stringConstants.hasNext()) {
-            code.append(_indent(1) 
+            code.append(_indent(1)
                     + "/* String Constant Initialization */\n");
             SootClass stringClass = Scene.v().getSootClass("java.lang.String");
             String stringType = CNames.instanceNameOf(stringClass);
@@ -279,7 +279,7 @@ public class CodeFileGenerator extends CodeGenerator {
     /** Generate the epilogue.
      *  The method below generates epilogue for the code in a method.
      *  @param tracker
-     *  @param visitor 
+     *  @param visitor
      *  @return the code.
      */
     private String _generateEpilogue(ExceptionTracker tracker, CSwitch
@@ -310,7 +310,7 @@ public class CodeFileGenerator extends CodeGenerator {
             , CSwitch visitor) {
 
         StringBuffer code = new StringBuffer();
-                
+
         //Code for mapping an exception type to its handler.
         code.append("\n"+_indent(2)+
                     "/* Map exception_id to handler */\n");
@@ -324,9 +324,9 @@ public class CodeFileGenerator extends CodeGenerator {
                 code.append(_indent(4));
                 while (j.hasNext()) {
                         Trap currentTrap = (Trap)j.next();
-                        code.append("if (PCCG_instanceof(" 
+                        code.append("if (PCCG_instanceof("
                                 + "(PCCG_CLASS_INSTANCE*)exception_id, "
-                                + "(PCCG_CLASS*)&" 
+                                + "(PCCG_CLASS*)&"
                                 + CNames.classStructureNameOf(currentTrap
                                         .getException())
                                 + "))\n");
@@ -404,7 +404,7 @@ public class CodeFileGenerator extends CodeGenerator {
             StringBuffer code = new StringBuffer();
             JimpleBody body = (JimpleBody)(method.retrieveActiveBody());
             CSwitch visitor = new CSwitch(_context);
-            
+
             // For catching exceptions.
             ExceptionTracker tracker = new ExceptionTracker();
             tracker.init(body);
@@ -425,12 +425,12 @@ public class CodeFileGenerator extends CodeGenerator {
                     , parameterAndThisLocals, thisLocalName));
             // Generate declarations for local variables.
             code.append(_generateLocal(method, parameterAndThisLocals));
-                        
+
             code.append(_generateMethodBody(method, visitor, tracker
                     , thisLocalName));
 
-            String description = "Function that implements Method " 
-                    + method.getSubSignature();
+            String description = "Function that implements Method "
+                    + method.getSignature();
 
             code.append("} ");
             code.append(_comment(description));
@@ -448,7 +448,7 @@ public class CodeFileGenerator extends CodeGenerator {
             }
         }
     }
-  
+
     /** Generate the code for the body of a method.
      *  @param method The method for which code is needed.
      *  @param visitor The visitor.
@@ -458,7 +458,7 @@ public class CodeFileGenerator extends CodeGenerator {
      */
     private String _generateMethodBody(SootMethod method, CSwitch visitor
             , ExceptionTracker tracker, String thisLocalName) {
-        
+
         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
         visitor.indentLevel = 0;
@@ -474,10 +474,10 @@ public class CodeFileGenerator extends CodeGenerator {
         else {
            visitor.indentLevel = 1;
         }
-        
+
         code.append(_generateMethodUnitCode(tracker, visitor
                 , method, visitor.indentLevel));
-        
+
         code.append(_generateEpilogue(tracker, visitor));
 
         return code.toString();
@@ -497,9 +497,9 @@ public class CodeFileGenerator extends CodeGenerator {
         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
         String description = "Function that implements Method " +
-                method.getSubSignature();
+                method.getSignature();
         Type returnType = method.getReturnType();
-        code.append(_comment(description));            
+        code.append(_comment(description));
         code.append(CNames.typeNameOf(returnType));
         _updateRequiredTypes(returnType);
         code.append(" ");
@@ -531,7 +531,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
     /** Generate code to initialize method pointers (in the method table)
         in a structure that implements a class.
-        
+
         @param methodList The list of methods for which pointers are to be
         initialized.
 
@@ -581,10 +581,10 @@ public class CodeFileGenerator extends CodeGenerator {
         code.append(_indent(1) + "int caller_epc;\n");
         if (tracker.trapsExist()) {
 
-            code.append(_indent(1) 
+            code.append(_indent(1)
                     + "extern _EXCEPTION_INSTANCE exception_id;\n");
         }
-        
+
         code.append("\n");
         code.append(_indent(1) + "caller_epc = epc;\n");
         code.append(_indent(1) + "memcpy(caller_env, env, sizeof(jmp_buf));\n");
@@ -594,7 +594,7 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append(_indent(1) + "epc = setjmp(env);\n");
             code.append(_indent(1) + "if(epc == 0)\n");
             code.append(_indent(1) + "{\n");
-            
+
             indentLevel = 2;
         }
         else {
@@ -602,7 +602,7 @@ public class CodeFileGenerator extends CodeGenerator {
             code.append(_indent(1) + "epc = caller_epc;\n");
             indentLevel = 1;
         }
-        
+
         visitor.indentLevel = indentLevel;
 
         return code.toString();
@@ -617,7 +617,7 @@ public class CodeFileGenerator extends CodeGenerator {
      *  statement.
      *  @return The code.
      */
-    private String _generateMethodUnitCode(ExceptionTracker tracker, 
+    private String _generateMethodUnitCode(ExceptionTracker tracker,
         CSwitch visitor, SootMethod method, byte indentLevel) {
         JimpleBody body = (JimpleBody)method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
@@ -647,14 +647,14 @@ public class CodeFileGenerator extends CodeGenerator {
             StringBuffer newCode = visitor.getCode();
             if (newCode.length() > 0) {
                 code.append(_indent(indentLevel)).append(newCode + ";");
-                code.append("/* " 
+                code.append("/* "
                         + unit.toBriefString().replace('/', '@') + " */");
                 code.append("\n");
             }
 
             //Code for end unit in exceptions.
             if(handle_exceptions && tracker.isEndUnit(unit)) {
-                code.append(_indent(2)+"/* That was end unit for trap " 
+                code.append(_indent(2)+"/* That was end unit for trap "
                         + tracker.endIndexOf(unit) + " */\n");
                 tracker.endUnitEncountered(unit);
                 code.append(_indent(2)+"epc = " + tracker.getEpc() + ";\n");
@@ -671,7 +671,7 @@ public class CodeFileGenerator extends CodeGenerator {
         return code.toString();
     }
 
-    
+
     /** Initialize the labels for branch targets in the method.
      *  @param visitor The visitor design pattern.
      *  @param tracker The ExceptionTracker.
@@ -690,14 +690,14 @@ public class CodeFileGenerator extends CodeGenerator {
                 if (target != null) {
                 visitor.addTarget(target);
                 }
-            } 
+            }
             // Target of "if" statement.
             else if (unit instanceof IfStmt) {
                 target = ((IfStmt)unit).getTarget();
                 if (target != null) {
                     visitor.addTarget(target);
                 }
-            } 
+            }
             // Handler for exceptions.
             else if (tracker.isHandlerUnit(unit)){
                 target = unit;
@@ -709,7 +709,7 @@ public class CodeFileGenerator extends CodeGenerator {
             else if (unit instanceof TableSwitchStmt) {
                 Iterator targets = ((TableSwitchStmt)unit).getTargets()
                         .iterator();
-                        
+
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit)targets.next());
                 }
@@ -719,7 +719,7 @@ public class CodeFileGenerator extends CodeGenerator {
             else if (unit instanceof LookupSwitchStmt) {
                 Iterator targets = ((LookupSwitchStmt)unit).getTargets()
                         .iterator();
-                        
+
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit)targets.next());
                 }

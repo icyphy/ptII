@@ -1,6 +1,9 @@
 /*******************************************************************
 Dummy C code for overridden method 
-java.lang.System.initializeSystemClass().
+<java.lang.System: void initializeSystemClass()>
+
+Contains initializations needed to get System.out.println() and other
+needed functionality to be supported.
 
 Copyright (c) 2001 The University of Maryland.
 

@@ -1,5 +1,7 @@
 /*******************************************************************
-Dummy C code for overridden method java.lang.String.init(char[]).
+Dummy C code for overridden method 
+<java.lang.String: void <init>()>
+
 Overridden because java.lang.Object.clone() is not implemented yet.
 
 Copyright (c) 2001 The University of Maryland.
