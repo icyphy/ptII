@@ -24,31 +24,26 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli.eecs.berkeley.edu)
+@ProposedRating Yellow (eal.eecs.berkeley.edu)
 @AcceptedRating Red (johnli.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
 
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.graph.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNot
 /**
-A polymorphic logical NOT operator.
-This adder has one input port and one output port,
-neither of which are multiports.
-For now, the type of the input port is limited to
-BooleanToken, until a standard for handling non-booleans is
-resolved.  A BooleanToken that arrives in the <i>input</i>
-will be negated and passed to the <i>output</i> port for broadcasting.
-If no input token is available at all, then no output is produced.
+This actor implements a logical NOT operator.  It has one input and
+one output port, neither of which is a multiport, and both of which have
+type boolean.  A BooleanToken that arrives in the <i>input</i>
+will be negated and sent on the <i>output</i>.
+If no input token is available, then no output is produced.
 
 @author John Li
 @version $Id$
@@ -59,7 +54,7 @@ public class LogicalNot extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
-     *  @param name The name of this adder within the container.
+     *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
@@ -68,7 +63,6 @@ public class LogicalNot extends Transformer {
     public LogicalNot(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input.setMultiport(false);
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -77,14 +71,13 @@ public class LogicalNot extends Transformer {
     ////                         public methods                    ////
 
 
-    /** If there exists a token in the <i>input</i>, its negation
-     *  will be passed to the <i>output</i> port for broadcast.
-     *
+    /** Consume at most one token from the input, negate it, and send
+     *  it to the output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	if(input.hasToken(0))
+	if(input.hasToken(0)) {
             output.broadcast(((BooleanToken)input.get(0)).not());
+        }
     }
-
 }

@@ -24,48 +24,44 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (johnli@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
 
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.graph.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Equals
 /**
+A polymorphic logical equals operator.  This operator has one input
+multiport and one output port that is not a multiport. It will consume
+exactly one token from each input channel, and compare the tokens
+using the isEqualTo() method of the Token class.  If all observed
+input tokens are equal, then the output will be a true-valued boolean
+token.  If there is not at least one token on each input channel,
+then no output is produced.
+The type of the input port is undeclared and will be resolved by the type
+resolution mechanism.  Note that all input channels must resolve to the
+same type.  The type of the output port is boolean.
 
-A polymorphic logical equals operator.  This operator has two
-input ports and one output port, none of which are multiports.  The
-types on the ports are undeclared and will be resolved by the type
-resolution mechanism. A datum that arrives on the input port named
-<i>upperPort</i> will be compared for equality with a datum in the
-input port named <i>lowerPort</i>.  This distinction between operands
-is necessary to determine which method to call; data in the
-<i>upperPort</i> is comparable to being on the left side of the
-equality operator.
-<p>
-Currently, the type system is quite liberal about the resolved
-types it will permit at the inputs.
-It consumes at most one input token from each port.
-If no input tokens are available at all, then no output is produced.
-
-@author John Li
+@see Token#isEqualTo(Token)
+@author John Li and Edward A. Lee
 @version $Id$
 */
 
-public class Equals extends TypedAtomicActor {
+public class Equals extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
-     *  @param name The name of this adder within the container.
+     *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
@@ -74,46 +70,43 @@ public class Equals extends TypedAtomicActor {
     public Equals(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	upperPort = new TypedIOPort(this, "upperPort", true, false);
-        lowerPort = new TypedIOPort(this, "lowerPort", true, false);
-	output = new TypedIOPort(this, "output", false, true);
+        input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Input for the EQUALS operation.  This port represents the left
-     *  side of an equals sign.  Its type is inferred from the connections.
-     */
-    public TypedIOPort upperPort = null;
-
-    /** Input for the EQUALS operation.  This port represents the right
-     *  side of an equals sign.  Its type is inferred from the connections.
-     */
-    public TypedIOPort lowerPort = null;
-
-    /** Output port.  The type is inferred from the connections.
-     */
-    public TypedIOPort output = null;
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token in both the <i>upperPort</i> and <i>lowerPort</i>
-     *  ports, compare their equality and return the resulting
-     *  BooleanToken in the <i>output</i> port.  If one or more of the input
-     *  ports has no token, do nothing.
-     *
+    /** Consume exactly one token from each input channel, and output
+     *  the result of comparing these tokens using the isEqualTo() method
+     *  of the Token class.  If the input has width 1, then the output
+     *  is always true.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (upperPort.hasToken(0) && lowerPort.hasToken(0)) {
-            if (upperPort.get(0).isEqualTo(lowerPort.get(0)).booleanValue())
-                output.broadcast(BooleanToken.TRUE);
-            else
-                output.broadcast(BooleanToken.FALSE);
+        BooleanToken result = BooleanToken.TRUE;
+        Token previous = input.get(0);
+        for (int i = 1; i < input.getWidth(); i++) {
+            Token next = input.get(i);
+            if (!(next.isEqualTo(previous)).booleanValue()) {
+                result = BooleanToken.FALSE;
+            }
+            previous = next;
         }
+        output.broadcast(result);
+    }
+
+    /** Check that each input channel has at least one token, and if
+     *  so, return the result of the superclass prefire() method.
+     *  Otherwise, return false.
+     *  @return True if there inputs available on all input channels.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // First check that each input has a token.
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (!input.hasToken(i)) return false;
+        }
+        return super.prefire();
     }
 }

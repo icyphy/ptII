@@ -1,6 +1,6 @@
 # Test Equals.
 #
-# @Author: John Li
+# @Author: John Li and Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -66,18 +66,19 @@ test Equals-2.1 {test equality of two different constant integers} {
     set value [getParameter $const value]
     set value2 [getParameter $const2 value]
     $value2 setExpression {2.0}
+    $value setExpression {1.0}
 
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set upperPort [java::field $equals upperPort]
-    set lowerPort [java::field $equals lowerPort]
+    set input [java::field \
+            [java::cast ptolemy.actor.lib.Transformer $equals] input]
     set r1 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-       $upperPort]
+       $input]
     set r2 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $const2] output] \
-       $lowerPort]
+       $input]
       $e0 connect \
-       [java::field $equals output] \
+       [java::field [java::cast ptolemy.actor.lib.Transformer $equals] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -87,6 +88,40 @@ test Equals-2.2  {test equality of two Boolean Tokens} {
 
     $value setToken [java::new ptolemy.data.BooleanToken true]
     $value2 setToken [java::new ptolemy.data.BooleanToken true]
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {true}
+
+test Equals-3.0  {test with three inputs} {
+    set const3 [java::new ptolemy.actor.lib.Const $e0 const3]
+    set value3 [getParameter $const3 value]
+
+    set r3 [$e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $const3] output] \
+       $input]
+
+    $value setExpression 1
+    $value2 setExpression 2
+    $value3 setExpression 3
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {false}
+
+test Equals-3.1  {test with three inputs} {
+    $value setExpression 1
+    $value2 setExpression 2
+    $value3 setExpression 2
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {false}
+
+test Equals-3.2  {test with three inputs} {
+    $value setExpression 2
+    $value2 setExpression 2
+    $value3 setExpression 2
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]

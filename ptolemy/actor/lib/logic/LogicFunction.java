@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
@@ -66,24 +66,21 @@ Equivalent to the negation of <i>xor</i>.
 <p>
 NOTE: All operators have 
 a single input port, which is a multiport, and a single output port, which 
-is not a multiport.  For now, input ports are set to accept only 
-BooleanTokens, until a standard is established to handle numeric values 
-and the mixing of those and booleans.  
+is not a multiport.  All ports have type boolean.
 <p>
 This actor is not strict.  That is, it does not require that each input
 channel have a token upon firing.  As long as one channel contains a
 token, output will be produced.  If no input tokens are available at
-all, then no output is produced.  Except for the nop and not operators, these 
-operators will consume as many tokens as are available in each channel.  The
-nop and not operators consume only a single token from the input port.
+all, then no output is produced.  At most one token is consumed
+on each input channel.
 
-@author Paul Whitaker (pwhitake@eecs.berkeley.edu)
+@author Paul Whitaker
 @version $Id$
 */
 public class LogicFunction extends Transformer {
 
     /** Construct an actor with the given container and name.  Set the
-     *  logic function to the default (and).  Set the types of the ports
+     *  logic function to the default ("and").  Set the types of the ports
      *  to boolean.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -97,20 +94,16 @@ public class LogicFunction extends Transformer {
         super(container, name);
 
         // Parameters
-
         function = new StringAttribute(this, "function");
         function.setExpression("and");
         _function = _AND;
         _negate = false;
 
         // Ports
-
         input.setMultiport(true);
         output.setMultiport(false);
-
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
-        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,50 +126,51 @@ public class LogicFunction extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws  IllegalActionException {
 
-            if (attribute == function) {
-                String functionName = function.getExpression();
+        if (attribute == function) {
+            String functionName = function.getExpression();
 
-                if (functionName.equals("and")) {
-                    _function = _AND;
-                    _negate = false;
-                } else if (functionName.equals("or")) {
-                    _function = _OR;
-                    _negate = false;
-                } else if (functionName.equals("xor")) {
-                    _function = _XOR;
-                    _negate = false;
-                } else if (functionName.equals("nand")) {
-                    _function = _AND;
-                    _negate = true;
-                } else if (functionName.equals("nor")) {
-                    _function = _OR;
-                    _negate = true;
-                } else if (functionName.equals("xnor")) {
-                    _function = _XOR;
-                    _negate = true;
-                } else {
-                    throw new IllegalActionException(this,
-                            "Unrecognized logic function: " + functionName);
-                }
+            if (functionName.equals("and")) {
+                _function = _AND;
+                _negate = false;
+            } else if (functionName.equals("or")) {
+                _function = _OR;
+                _negate = false;
+            } else if (functionName.equals("xor")) {
+                _function = _XOR;
+                _negate = false;
+            } else if (functionName.equals("nand")) {
+                _function = _AND;
+                _negate = true;
+            } else if (functionName.equals("nor")) {
+                _function = _OR;
+                _negate = true;
+            } else if (functionName.equals("xnor")) {
+                _function = _XOR;
+                _negate = true;
             } else {
-                super.attributeChanged(attribute);
+                throw new IllegalActionException(this,
+                "Unrecognized logic function: " + functionName);
             }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
-    /** This computes the specified logic function of the input.
+    /** Consume at most one input token from each input channel,
+     *  and compute the specified logic function of the input.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         switch(_function) {
         case _AND:
-            _consumeAllAvailableTokens();
+            _readAndCalculate();
             break;
         case _OR:
-            _consumeAllAvailableTokens();
+            _readAndCalculate();
             break;
         case _XOR:
-            _consumeAllAvailableTokens();
+            _readAndCalculate();
             break;
         default:
             throw new InternalErrorException(
@@ -187,32 +181,31 @@ public class LogicFunction extends Transformer {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
-    /** Consume all available input tokens and produce a token 
-     *  on the output port.
+    /** Consume at most one input token from each channel, and produce a 
+     *  token on the output port.
      *  @exception IllegalActionException If there is no director.
      */
-    private void _consumeAllAvailableTokens() throws IllegalActionException {
+    private void _readAndCalculate() throws IllegalActionException {
         BooleanToken value = null;
         BooleanToken in = null;
         for (int i = 0; i < input.getWidth(); i++) {
-            while (input.hasToken(i)) {
+            if (input.hasToken(i)) {
                 in = (BooleanToken)(input.get(i));
                 if (in != null) value = _updateFunction(in, value);
             }
         }
-
-        if (_negate) value = value.not();
-        if (value != null) output.broadcast((BooleanToken)value);
+        if (value != null) {
+            if (_negate) value = value.not();
+            output.broadcast((BooleanToken)value);
+        }
     }
 
     /** Calculate the function on the given arguments.
      *  @param in The new input value.  Should never be null.
-     *  @param old The old result value.  Could be null.
+     *  @param old The old result value, or null if there is none.
      *  @return The result of applying the function.
      */
     private BooleanToken _updateFunction(BooleanToken in, BooleanToken old) {
