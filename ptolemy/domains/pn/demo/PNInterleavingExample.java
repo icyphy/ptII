@@ -70,23 +70,23 @@ class PNInterleavingExample {
         //queue = (IORelation)myUniverse.connect(portin, portout, "QPlot");
  
         portout = (PNOutPort)_redirect0.getPort("output");
-        portin = (PNInPort)_interleave.getPort("input0");
+        portin = (PNInPort)_interleave.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QY");
         //portin.getQueue().setCapacity(1);
  
 
 	//((PNOutPort)_redirect1.getPort("output")).link(queue);
         portout =(PNOutPort)_redirect1.getPort("output");
-        portin = (PNInPort)_interleave.getPort("input1");
+        portin = (PNInPort)_interleave.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QZ");
         //portin.getQueue().setCapacity(1);
  
-        portout = (PNOutPort)_alternate.getPort("output0");
+        portout = (PNOutPort)_alternate.getPort("output");
         portin = (PNInPort)_redirect0.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QT1");       
         //portin.getQueue().setCapacity(1);
  
-        portout = (PNOutPort)_alternate.getPort("output1");
+        portout = (PNOutPort)_alternate.getPort("output");
         portin = (PNInPort)_redirect1.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QT2");
         //portin.getQueue().setCapacity(1);
