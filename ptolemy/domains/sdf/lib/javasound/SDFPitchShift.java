@@ -119,7 +119,7 @@ public class SDFPitchShift extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-    /** The sampling rate to use, in Hz. The default vaule is
+    /** The sampling rate to use, in Hz. The default value is
      * 22050.
      */
     public Parameter sampleRate;

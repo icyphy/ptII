@@ -101,7 +101,7 @@ public class SDFPitchDetector extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-    /** The sampling rate to use, in Hz. The default vaule is
+    /** The sampling rate to use, in Hz. The default value is
      * 22050.
      */
     public Parameter sampleRate;
@@ -167,11 +167,20 @@ public class SDFPitchDetector extends SDFAtomicActor {
         }
 
 	double[] currPitchArray = pd.performPitchDetect(audioInDoubleArray);
+<<<<<<< SDFPitchDetector.java
 
+	
+	// Convert to DoubleToken[].
+=======
 
+>>>>>>> 1.6
+
+<<<<<<< SDFPitchDetector.java
+=======
 	// Convert to DoubleToken[].
 	// FIXME: I don't think this is very efficient. Currently
 	// creating a new token for each sample!
+>>>>>>> 1.6
 	for (i = 0; i < productionRate; i++) {
 	    audioTokenArray[i] = new DoubleToken(currPitchArray[i]);
 	}

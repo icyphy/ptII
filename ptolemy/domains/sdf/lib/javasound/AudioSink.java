@@ -197,7 +197,7 @@ public class AudioSink extends SDFAtomicActor {
 
     /** The number of audio channels to use. 1 for mono,
      *  2 for stereo, etc.
-     *  The default vaule is 1.
+     *  The default value is 1.
      */
     public Parameter channels;
 

@@ -176,7 +176,7 @@ public class AudioSource extends SDFAtomicActor {
      *  default behavior.
      *  <p>(2) A sound file loaded from a URL. To capture from
      *  this source, set <i>source</i> to "URL"
-     *  <p>(3) A soundfile loaded from the native file system. To
+     *  <p>(3) A sound file loaded from the native file system. To
      *  capture from this source, set <i>source</i> to "file"
      *  <p>
      *  For cases (1) and (2) above, parameter <i>pathName</i>
@@ -187,7 +187,7 @@ public class AudioSource extends SDFAtomicActor {
     /** The name of the file to read from. This can be a URL or a
      *  file on the file system on which the code is run.
      *  If no value is specified,
-     *  the default vaule of "soundFile.wav" will be used.
+     *  the default value of "soundFile.wav" will be used.
      *  <p> If a URL
      *  is given, parameter <i>source</i> must be set to "URL" and
      *  <i>pathName</i> must be set a a fully qualified URL.
@@ -224,7 +224,7 @@ public class AudioSource extends SDFAtomicActor {
 
     /** The number of audio channels to use. 1 for mono,
      *  2 for stereo, etc.
-     *  The default vaule is 1 (mono).
+     *  The default value is 1 (mono).
      *  <p>
      *  This parameter is automatically set when capturing from
      *  a sound file.
