@@ -309,77 +309,82 @@ public class IterateOverArray extends TypedCompositeActor
                 // change request that triggered this has completed (i.e. that
                 // the entity being added has been added.
                 synchronized(this) {
-
-                    // Entity most recently added.
-                    ComponentEntity entity = null;
-
-                    // Delete any previously contained entities.
-                    // The strategy here is a bit tricky if this IterateOverArray
-                    // is within a class definition (that is, if it has derived objects).
-                    // The key is that derived objects do not permit deletion (via
-                    // MoML) of contained entities. They cannot because this would
-                    // violate the invariant of classes where derived objects
-                    // always contain the same objects as their parents.
-                    // Thus, if this is derived, we _cannot_ delete contained
-                    // entities. Thus, we should not generate entity removal
-                    // commands.
-                    List priorEntities = entityList();
-                    Iterator priors = priorEntities.iterator();
-                    while (priors.hasNext()) {
-                        ComponentEntity prior = (ComponentEntity)priors.next();
-                        // If there is at least one more contained object,
-                        // then delete this one.
-                        // NOTE: How do we prevent the user from attempting to
-                        // override the contained object in a subclass?
-                        // It doesn't work to not remove this if the object
-                        // is derived, because then derived objects won't
-                        // track the prototype.
-                        if (priors.hasNext()) {
-                            prior.setContainer(null);
-                        } else {
-                            // The last entity in the entityList is
-                            // the one that we just added.
-                            entity = prior;
+                    try {
+                        workspace().getWriteAccess();
+                        
+                        // Entity most recently added.
+                        ComponentEntity entity = null;
+    
+                        // Delete any previously contained entities.
+                        // The strategy here is a bit tricky if this IterateOverArray
+                        // is within a class definition (that is, if it has derived objects).
+                        // The key is that derived objects do not permit deletion (via
+                        // MoML) of contained entities. They cannot because this would
+                        // violate the invariant of classes where derived objects
+                        // always contain the same objects as their parents.
+                        // Thus, if this is derived, we _cannot_ delete contained
+                        // entities. Thus, we should not generate entity removal
+                        // commands.
+                        List priorEntities = entityList();
+                        Iterator priors = priorEntities.iterator();
+                        while (priors.hasNext()) {
+                            ComponentEntity prior = (ComponentEntity)priors.next();
+                            // If there is at least one more contained object,
+                            // then delete this one.
+                            // NOTE: How do we prevent the user from attempting to
+                            // override the contained object in a subclass?
+                            // It doesn't work to not remove this if the object
+                            // is derived, because then derived objects won't
+                            // track the prototype.
+                            if (priors.hasNext()) {
+                                prior.setContainer(null);
+                            } else {
+                                // The last entity in the entityList is
+                                // the one that we just added.
+                                entity = prior;
+                            }
                         }
-                    }
-
-                    if (entity == null) {
-                        // Nothing to do.
-                        return;
-                    }
-
-                    // Set up the inside connections.
-                    // First, create all the ports.
-                    // The above execute() will have deleted all ports
-                    // (in _removeEntity()).
-                    int count = 1;
-                    Iterator entityPorts = entity.portList().iterator();
-                    while (entityPorts.hasNext()) {
-                        ComponentPort insidePort
-                                = (ComponentPort)entityPorts.next();
-                        String name = insidePort.getName();
-                        // The outside port may already exist (e.g.
-                        // as a consequence of cloning).
-                        IteratePort newPort = (IteratePort)getPort(name);
-                        if (newPort == null) {
-                            newPort = (IteratePort)newPort(name);
-                        } 
-                        if (insidePort instanceof IOPort) {
-                            IOPort castPort = (IOPort)insidePort;
-                            newPort.setMultiport(castPort.isMultiport());
-                            newPort.setInput(castPort.isInput());
-                            newPort.setOutput(castPort.isOutput());
+    
+                        if (entity == null) {
+                            // Nothing to do.
+                            return;
                         }
-
-                        // Set up inside connections.
-                        // Do this only if they are not already connected.
-                        List connectedPorts = insidePort.connectedPortList();
-                        if (!connectedPorts.contains(newPort)) {
-                            ComponentRelation relation
-                                    = newRelation(uniqueName("relation"));
-                            newPort.link(relation);
-                            insidePort.link(relation);
+    
+                        // Set up the inside connections.
+                        // First, create all the ports.
+                        // The above execute() will have deleted all ports
+                        // (in _removeEntity()).
+                        int count = 1;
+                        Iterator entityPorts = entity.portList().iterator();
+                        while (entityPorts.hasNext()) {
+                            ComponentPort insidePort
+                                    = (ComponentPort)entityPorts.next();
+                            String name = insidePort.getName();
+                            // The outside port may already exist (e.g.
+                            // as a consequence of cloning).
+                            IteratePort newPort = (IteratePort)getPort(name);
+                            if (newPort == null) {
+                                newPort = (IteratePort)newPort(name);
+                            } 
+                            if (insidePort instanceof IOPort) {
+                                IOPort castPort = (IOPort)insidePort;
+                                newPort.setMultiport(castPort.isMultiport());
+                                newPort.setInput(castPort.isInput());
+                                newPort.setOutput(castPort.isOutput());
+                            }
+    
+                            // Set up inside connections.
+                            // Do this only if they are not already connected.
+                            List connectedPorts = insidePort.connectedPortList();
+                            if (!connectedPorts.contains(newPort)) {
+                                ComponentRelation relation
+                                        = newRelation(uniqueName("relation"));
+                                newPort.link(relation);
+                                insidePort.link(relation);
+                            }
                         }
+                    } finally {
+                        workspace().doneWriting();
                     }
                 }
             }
@@ -431,6 +436,7 @@ public class IterateOverArray extends TypedCompositeActor
                     // in propagation.
                     
                     try {
+                        workspace().getWriteAccess();
                         _inAddPort = true;
                         String portName = castPort.getName();
                         Iterator entities = entityList().iterator();
@@ -462,6 +468,7 @@ public class IterateOverArray extends TypedCompositeActor
                             }
                         }
                     } finally {
+                        workspace().doneWriting();
                         _inAddPort = false;
                     }
                 }
@@ -580,7 +587,8 @@ public class IterateOverArray extends TypedCompositeActor
     }
     
     /** Override the base class to remove the ports and inside relations
-     *  of this actor.
+     *  of this actor. This method assumes the caller has write access
+     *  on the workspace.
      *  @param entity The entity being removed from this entity.
      */
     protected void _removeEntity(ComponentEntity entity) {
@@ -615,6 +623,8 @@ public class IterateOverArray extends TypedCompositeActor
 
     /** Override the base class to remove the associated port on the
      *  inside entity and the link to it, if there is one.
+     *  This method assumes the caller has write access on the
+     *  workspace.
      *  @param port The port being removed from this entity.
      */
     protected void _removePort(final Port port) {
@@ -817,17 +827,23 @@ public class IterateOverArray extends TypedCompositeActor
                     this,
                     "Add mirror port to the container.") {
                 protected void _execute() throws Exception {
-                    // The port may already exist (if we are
-                    // inside a clone() call).
-                    IteratePort newPort
-                            = (IteratePort)container.getPort(port.getName());
-                    if (newPort == null) {
-                        newPort = (IteratePort)container.newPort(port.getName());
-                    }
-                    if (port instanceof IOPort) {
-                        newPort.setInput(((IOPort)port).isInput());
-                        newPort.setOutput(((IOPort)port).isOutput());
-                        newPort.setMultiport(((IOPort)port).isMultiport());
+                    try {
+                        workspace().getWriteAccess();
+                        
+                        // The port may already exist (if we are
+                        // inside a clone() call).
+                        IteratePort newPort
+                                = (IteratePort)container.getPort(port.getName());
+                        if (newPort == null) {
+                            newPort = (IteratePort)container.newPort(port.getName());
+                        }
+                        if (port instanceof IOPort) {
+                            newPort.setInput(((IOPort)port).isInput());
+                            newPort.setOutput(((IOPort)port).isOutput());
+                            newPort.setMultiport(((IOPort)port).isMultiport());
+                        }
+                    } finally {
+                        workspace().doneWriting();
                     }
                 }
             };
