@@ -379,8 +379,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     /** Create and register all of the change listeners for this graph, and
      *  initialize the change counter of the graph.
      */
-    protected void _initializeListeners() {
-        super._initializeListeners();
+    protected void _initializeAnalyses() {
+        super._initializeAnalyses();
         _transitiveClosureListener = new Analysis(this);
     }
 

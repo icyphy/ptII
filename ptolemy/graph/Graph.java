@@ -96,7 +96,7 @@ public class Graph implements Cloneable {
     public Graph() {
         _nodes = new LabeledList();
         _edges = new LabeledList();
-        _initializeListeners();
+        _initializeAnalyses();
         _nodeWeightMap = new HashMap();
         _edgeWeightMap = new HashMap();
         _incidentEdgeMap = new HashMap();
@@ -111,7 +111,7 @@ public class Graph implements Cloneable {
     public Graph(int nodeCount) {
         _nodes = new LabeledList(nodeCount);
         _edges = new LabeledList();
-        _initializeListeners();
+        _initializeAnalyses();
         _nodeWeightMap = new HashMap(nodeCount);
         _edgeWeightMap = new HashMap();
         _incidentEdgeMap = new HashMap(nodeCount);
@@ -127,7 +127,7 @@ public class Graph implements Cloneable {
     public Graph(int nodeCount, int edgeCount) {
         _nodes = new LabeledList(nodeCount);
         _edges = new LabeledList(edgeCount);
-        _initializeListeners();
+        _initializeAnalyses();
         _nodeWeightMap = new HashMap(nodeCount);
         _edgeWeightMap = new HashMap(edgeCount);
         _incidentEdgeMap = new HashMap(nodeCount);
@@ -1165,7 +1165,7 @@ public class Graph implements Cloneable {
      *  initialize the change counter of the graph.
      *  @see Analysis.
      */
-    protected void _initializeListeners() {
+    protected void _initializeAnalyses() {
         _analysisList = new ArrayList();
         _selfLoopAnalysis = new SelfLoopAnalysis(this);
         _changeCount = 0;
