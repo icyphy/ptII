@@ -475,10 +475,19 @@ public class AudioSource extends Source {
      *   audio playback.
      */
     private synchronized void _initializeCapture() throws IllegalActionException {
-		//String sourceStr = ((StringToken)source.getToken()).toString();
+	// Stop playback, if necessary. If we were writing to a sound
+	// file, this will save it.
+	if (_soundCapture != null) {
+	    try {
+		_soundCapture.stopCapture();
+	    } catch (IOException ex) {
+		throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	    }
+	}
+	// Now initialize audio capture.
 	String modeStr = ((StringToken)pathName.getToken()).stringValue();
-	if(_debugging) _debug("AudioSource: source = " + modeStr);
-	//System.out.println("AudioSource: source = " + sourceStr2);
         if (modeStr.equals("")) {
 	    // Use live capture mode.
             int sampleRateInt =
@@ -516,7 +525,6 @@ public class AudioSource extends Source {
 		    "Cannot capture audio:\n" +
 		    ex.getMessage());
 	    }
-
             // Read the number of audio channels and set
             // parameter accordingly.
             _channels = _soundCapture.getChannels();

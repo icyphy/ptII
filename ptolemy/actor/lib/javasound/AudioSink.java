@@ -260,6 +260,9 @@ public class AudioSink extends Sink {
 	    if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
 		_audioPutArray = new double[_channels][];
 	    }
+	    for (int i = 0; i < _channels; i++) {
+		_audioPutArray[i] = new double[_putSampleSize];
+	    }
 	} else if (attribute == pathName) {
 	    // Nothing for now...
 	} else if (attribute == sampleRate) {
@@ -356,8 +359,6 @@ public class AudioSink extends Sink {
 		// putSamples() is full, then call putSamples().
 		// Array argument to putSamples() is not full yet,
 		// so write another sample for each channel.
-		double deleteMePlease = 
-		    ((DoubleToken)_inArray[m][k]).doubleValue();
 		_audioPutArray[m][_curElement] = 
 		    ((DoubleToken)_inArray[m][k]).doubleValue();
 	    }
