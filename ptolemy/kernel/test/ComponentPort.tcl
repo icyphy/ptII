@@ -154,7 +154,8 @@ test ComponentPort-3.4 {Level-crossing link error} {
     set a1 [java::new ptolemy.kernel.ComponentRelation $e2 A1]
     catch {$p1 link $a1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1: Link crosses levels of the hierarchy}}
+} {{ptolemy.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1:\
+Link crosses levels of the hierarchy}}
 
 ######################################################################
 ####
@@ -312,3 +313,50 @@ test ComponentPort-6.0 {unlinkAll} {
             [enumToNames [$p4 deepConnectedPorts]] \
             [enumToNames [$p5 deepConnectedPorts]]
 } {{} {} P5 P5 P3}
+
+test ComponentPort-7.0 {transaprent ports in a loop} {
+    set w [java::new ptolemy.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity $w A]
+    set p1 [$a newPort P1]
+    set p2 [$a newPort P2]
+    set rin [java::new ptolemy.kernel.ComponentRelation $a Rinside]
+    set rout [java::new ptolemy.kernel.ComponentRelation $w Routside]
+    $p1 link $rin
+    $p1 link $rout
+    $p2 link $rin
+    $p2 link $rout
+    catch {$p1 deepConnectedPorts} msg
+    list $msg
+} {{ptolemy.kernel.util.InvalidStateException: ..A.P2: ..A.P1: loop in topology!}}
+
+test ComponentPort-7.1 { deepInsidePorts in a loop} {
+    # Use configuration in 7.0
+    catch {$p1 deepInsidePorts} msg
+    list $msg
+} {{ptolemy.kernel.util.InvalidStateException: ..A.P2: ..A.P1: loop in topology!}}
+
+test ComponentPort-7.2 {transaprent ports in another loop} {
+    set w [java::new ptolemy.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity $w A]
+    set b [java::new ptolemy.kernel.ComponentEntity $w B]
+    set p1 [$a newPort P1]
+    set p2 [$a newPort P2]
+    set p3 [$b newPort P3]
+    set rin [java::new ptolemy.kernel.ComponentRelation $a Rinside]
+    set rout [java::new ptolemy.kernel.ComponentRelation $w Routside]
+    set rb_a [java::new ptolemy.kernel.ComponentRelation $w B_to_A]
+    $p1 link $rin
+    $p1 link $rout
+    $p2 link $rin
+    $p2 link $rout
+    $p1 link $rb_a
+    $p3 link $rb_a
+    catch {$p3 deepConnectedPorts} msg
+    list $msg
+} {{ptolemy.kernel.util.InvalidStateException: ..A.P2: ..A.P1: ..B.P3:\
+loop in topology!}}
+
+test ComponentPort-7.3 { deepInsidePorts in another loop} {
+    # Use configuration in 7.2
+    list [enumToNames [$p3 deepInsidePorts]]
+} {P3}
