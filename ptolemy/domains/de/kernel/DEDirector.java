@@ -816,20 +816,9 @@ public class DEDirector extends Director {
 
             if (actorToFire == null) {
                 // No previously seen event at this tag, so
-                // always accept the event.  Consume it from the queue.
-                _eventQueue.take();
+                // always accept the event.
 
                 currentEvent = nextEvent;
-                actorToFire = currentEvent.actor();
-
-                if (_disabledActors != null &&
-                        _disabledActors.contains(actorToFire)) {
-                    // This actor has requested that it not be fired again.
-                    if (_debugging) _debug("Skipping actor: ",
-                            ((Nameable)actorToFire).getFullName());
-                    actorToFire = null;
-                    continue;
-                }
 
                 double currentTime = currentEvent.timeStamp();
 
@@ -862,6 +851,22 @@ public class DEDirector extends Director {
                             }
                         }
                     }
+                }
+
+                // Consume the event from the queue.  The event must be
+                // obtained here, since a new event could have been injected 
+                // into the queue while the queue was waiting.
+                currentEvent = (DEEvent) _eventQueue.take();
+                currentTime = currentEvent.timeStamp();
+                actorToFire = currentEvent.actor();
+
+                if (_disabledActors != null &&
+                        _disabledActors.contains(actorToFire)) {
+                    // This actor has requested that it not be fired again.
+                    if (_debugging) _debug("Skipping actor: ",
+                            ((Nameable)actorToFire).getFullName());
+                    actorToFire = null;
+                    continue;
                 }
 
                 // Advance current time.
