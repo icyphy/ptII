@@ -1758,7 +1758,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int index = _columnNames.indexOf(ColumnNames.COL_TYPE);
             column = _portTable.getColumnModel().getColumn(index);
-            column.setPreferredWidth(50);
+            column.setPreferredWidth(70);
         }
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
