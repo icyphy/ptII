@@ -44,7 +44,7 @@ ability to be a source actor.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
     </property>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
-        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="command" class="ptolemy.actor.parameters.PortParameter" value="env">
         </property>
@@ -72,8 +72,6 @@ ability to be a source actor.</text></svg></configure>
     </entity>
     <entity name="Test - True if matched" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true}">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 210.0">
         </property>
