@@ -57,7 +57,7 @@ the display.  It can be quite expensive to generate the display, and
 by default, this actor generates it on every firing.  If
 <i>iterationsPerUpdate</i> is set to some integer greater than
 one, then it specifies how many iterations should be executed
-between updates. Thus, if <i>iterationsPerUpdate</i>, then every
+between updates. Thus, if <i>iterationsPerUpdate</i> = 2, then every
 second time this actor fires, it will update the display. That is,
 it will update its display on the first firing, the third, the
 fifth, etc. It will, however, consume its inputs on every firing.
