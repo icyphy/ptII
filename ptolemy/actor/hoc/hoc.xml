@@ -31,6 +31,14 @@
          </property>
       </entity>
 
+      <entity name="MobileFunction" class="ptolemy.actor.hoc.MobileFunction">
+        <doc>The function it applied to its input data can be dynamically defined.</doc>
+      </entity>
+
+      <entity name="MobileModel" class="ptolemy.actor.hoc.MobileModel">
+        <doc>The inside model of this composite actor can be dynamically defined.</doc>
+      </entity>
+      
       </group>
     ?>
   </configure>

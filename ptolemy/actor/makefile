@@ -73,8 +73,6 @@ JSRCS = \
 	IORelation.java \
 	Mailbox.java \
 	Manager.java \
-	MobileFunction.java \
-	MobileModel.java \
 	NoRoomException.java \
 	NoTokenException.java \
 	QueueReceiver.java \
