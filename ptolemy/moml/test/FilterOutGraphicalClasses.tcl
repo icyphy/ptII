@@ -70,3 +70,42 @@ test FilterOutGraphicalClasses-1.1 {filterAttributeValue} {
 >         <property name="_icon" class="ptolemy.kernel.util.Attribute">
 115a116
 > }}
+
+
+
+test FilterOutGraphicalClasses-2.2 {Try running old models, first check that the makefile created the compat/ directory} { 
+    if {! [file exists compat]} {
+	error "compat directory does not exist.  This could happen\
+		If you do not have access to old Ptolemy II tests"
+    } else {
+	list 1
+    }
+} {1}
+
+# createAndExecute a file with a MoMLFilter
+proc createAndExecute {file} {
+    #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    set namedObj [$parser parseFile $file]
+    set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
+    set workspace [$toplevel workspace]
+    set manager [java::new ptolemy.actor.Manager \
+	    $workspace "compatibilityChecking"]
+    $toplevel setManager $manager
+    $manager execute
+}
+
+# Find all the files in the compat directory
+
+foreach file [glob compat/*.xml] {
+    puts "------------------ testing $file"
+    test "Auto" "Automatic test in file $file" {
+        set application [createAndExecute $file]
+        list {}
+    } {{}}
+    #test "Auto-rerun" "Automatic test rerun in file $file" {
+    #	$application rerun
+    #	list {}
+    #} {{}}
+}
