@@ -54,7 +54,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
             String str = "Invalid state in sum node, number of children is";
-            str = str + "not equal to number of oprators plus one";
+            str = str + "not equal to number of operators plus one";
             throw new IllegalArgumentException(str);
         }
         ptolemy.data.Token result = childTokens[0];
@@ -73,7 +73,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
                 } else if (op.compareTo("-") == 0) {
                     result = result.subtract(childTokens[i]);
                 } else {
-                    String str = "Invlid concatenator in sum() production, ";
+                    String str = "Invalid concatenator in sum() production, ";
                     throw new IllegalArgumentException(str + "check parser");
                 }
             }

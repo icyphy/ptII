@@ -55,27 +55,27 @@ This file implements an expression parser for Ptolemy II using the
 JavaCC parser generator. It can handle all the basic arithmetic operators
 (*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
 operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using 
-reflection, all of the funcionality available in the java.lang.Math 
+reflection, all of the functionality available in the java.lang.Math 
 package. 
 <p>
 By editing the ASTFunctionNode file it is also relatively 
-easy to allow refernces to other functions. This provides an easy mechanism to 
-extend the range to the parser e.g. have a tcl(...) function 
+easy to allow references to other functions. This provides an easy mechanism 
+to extend the range to the parser e.g. have a tcl(...) function 
 that passes the string to a Tcl interpreter and retuns the result.
 <p>
-Functional if is supported via the following sytnax:
+Functional if is supported via the following syntax:
         (boolean) ? (value1) : (value2)
 <p>
 Extensibility is also supported by allowing method calls on the Tokens,
 the syntax is 
-        (value1).method(comma seperated arguments)
+        (value1).method(comma separated arguments)
 <p>
 JavaCC by itself simply generates a file (and support files) that allow an 
 input to be parsed, it does not return a parse tree. For the purposes of 
 type checking we require a parse tree, and this is obtained using JJTree, a 
 preprocesssor for JavaCC. 
 <p>
-JJtree operates by annotating the grammer file to support the generation
+JJtree operates by annotating the grammar file to support the generation
 of the parse tree. Thus the process is
 <p>
 <center>X.jjt --> JJTREE --> X.jj --> JAVACC --> X.java + support files
@@ -90,7 +90,7 @@ Anything between quotes(") is taken to be one string.
 The expressions recognized follow as close as possible the syntax of Java.
 In particular the operator precedences implemented here follow exactly 
 those in Java. Any type conversions that are performed are lossless. If 
-the user wants lossy conversions, explicit casts will be neccessary.
+the user wants lossy conversions, explicit casts will be necessary.
 <p>
 For a more thorough description of what the Parser is designed to do, 
 please consult the Ptolemy II design document (or contact nsmyth@eecs)

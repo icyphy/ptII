@@ -52,7 +52,7 @@ and value of the ptolemy.data.Token it should contain.
 When a node has more than one child nodes, the lexical tokens relating
 the child nodes are stored in the parent node. Thus if we parsed a string
 such as "2+4-9", the child nodes would be leaf nodes containing
-ptolemy.data.Token's with values 2,4 and 9, and theparent node would
+ptolemy.data.Token's with values 2,4 and 9, and the parent node would
 store the lexical tokens representing the "+" and the "-".
 <p>
 The tree is resolved in a top down manner, calling evaluateTree() on the
@@ -124,7 +124,7 @@ public class ASTPtRootNode implements Node {
      *  evaluating both the value and type of the ptToken to be stored.
      *  This method should be overridden in all subclasses which have children.
      *  @exception IllegalArgumentException Thrown when an error occurs
-     *   rying to evaluate the PtToken type and/or value to be stored in
+     *   trying to evaluate the PtToken type and/or value to be stored in
      *   the current node.
      *  @return The ptolemy.data.Token stored in this node.
      */
