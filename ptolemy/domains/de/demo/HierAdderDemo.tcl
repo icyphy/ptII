@@ -1,4 +1,4 @@
-# DE example using TclBlend
+# Type system demo.
 #
 # @Author: Yuhong Xiong
 #
@@ -31,11 +31,12 @@
 #######################################################################
 
 #######################################################################
+# This demo builds the following DE model:
 #
 #  |-------------------|
 #  |(transparent)      |
 #  |                   |
-#  | Clock1--->Ramp1---+---->Adder------------------------->Plot
+#  | Clock1--->Ramp1---+----> Adder----------------------->Plot
 #  |                   |     ^                            
 #  |-------------------|     |
 #                            |                            
@@ -46,6 +47,24 @@
 #  |                   |
 #  |-------------------|
 #
+# Ramp1 has initial value 0(int), step size 0.5(double), so its output
+# type is Double; Ramp2 has value 2(int), step size 0(int) so its output
+# type is Int. Ramp2 is used as a Const.
+# The upper Clock1+Ramp1 block is transparent, so the port on its
+# boundary is not involved in type checking. The lower block is a
+# wormhole, its port will be resolved to Int.
+#
+# The demo show the following:
+# (1) Type resolution of polymorphic actor (Adder)
+# (2) Ports with different types can be connected together:
+#     The two ports connected with the Adder input have different types.
+# (3) Run-time type conversion. The IntToken from Ramp2 is converted
+#     to DoubleToken before sent to the Adder. (This is not shown by
+#     a print message in the demo.)
+# (4) Type resolution works across transparent and opaque composite
+#     actors.
+# (5) The use of the "pure signal" type Token. The output of the clock and
+#     the trigger input of Ramp have type General (Token). 
 
 proc printPortType {port} {
     set info "[$port getFullName]: ";
@@ -73,7 +92,8 @@ $sys setManager $exec
 # Build Clock+Ramp block1
 set block1 [java::new ptolemy.actor.TypedCompositeActor $sys Block1];
 set clock1 [java::new ptolemy.domains.de.lib.DEClock $block1 Clock 1.0 1.0] 
-set ramp1 [java::new ptolemy.domains.de.lib.Ramp $block1 Ramp 0 1]
+set ramp1 [java::new {ptolemy.domains.de.lib.Ramp \
+    ptolemy.actor.TypedCompositeActor String String String} $block1 Ramp 0 0.5]
 set block1Out [java::new ptolemy.actor.TypedIOPort $block1 Output false true];
 
 set clock1Out [java::field $clock1 output]
@@ -87,7 +107,8 @@ set r2 [$block1 connect $ramp1Out $block1Out R2]
 # don't have a clone method yet.
 set block2 [java::new ptolemy.actor.TypedCompositeActor $sys Block2];
 set clock2 [java::new ptolemy.domains.de.lib.DEClock $block2 Clock 1.0 1.0] 
-set ramp2 [java::new ptolemy.domains.de.lib.Ramp $block2 Ramp 0 1]
+set ramp2 [java::new {ptolemy.domains.de.lib.Ramp \
+    ptolemy.actor.TypedCompositeActor String String String} $block2 Ramp 2 0]
 set block2Out [java::new ptolemy.actor.TypedIOPort $block2 Output false true];
 
 set clock2Out [java::field $clock2 output]
