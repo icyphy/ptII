@@ -57,7 +57,8 @@ public class DoubleToken extends ScalarToken {
 
     /** Add the value of the argument Token to this Token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
-     *  a lossless conversion. 
+     *  a lossless conversion.
+     * FIXME: what do do about long in the next six methods?
      *  @param a The token to add to this Token
      *  @exception Thrown if the passed token is not of a type that can be 
      *   added to this Tokens value in a lossless fashion.
@@ -70,7 +71,7 @@ public class DoubleToken extends ScalarToken {
             return a.add(this);
         }*/ else if (a instanceof ScalarToken) {
             _value = _value + ((DoubleToken)a).doubleValue();
-            return this;
+            return new DoubleToken(_value);
         } else {
             String str = " between " + this.getClass().getName() + " and ";
             str = str + a.getClass().getName();
@@ -88,7 +89,7 @@ public class DoubleToken extends ScalarToken {
     public Token subtract(Token a) throws IllegalActionException {
         if (a instanceof ScalarToken) {
             _value = _value - ((DoubleToken)a).doubleValue();
-            return this;
+            return new DoubleToken(_value);
         } /*else if (a instanceof ComplexToken) {
             return a.subtract(this);
         }*/  else {
@@ -108,8 +109,8 @@ public class DoubleToken extends ScalarToken {
     public Token multiply(Token a) throws IllegalActionException {
          if (a instanceof ScalarToken) {
             _value = _value * ((DoubleToken)a).doubleValue();
-            return this;
-        } /*else if (a instanceof ComplexToken) {
+            return new DoubleToken(_value);
+         } /*else if (a instanceof ComplexToken) {
             return a.multiply(this);
         }*/ else {
             String str = "supported between " + this.getClass().getName();
@@ -128,9 +129,9 @@ public class DoubleToken extends ScalarToken {
     public Token divide(Token a) throws IllegalActionException {
         if (a instanceof ScalarToken) {
             _value = _value / ((DoubleToken)a).doubleValue();
-            return this;
+            return new DoubleToken(_value);
         /*} else if (a instanceof ComplexToken) {
-            return a.divide(this);
+             // buggyy, do what???
         }*/ 
         } else {
             String str = "supported between " + this.getClass().getName();
@@ -150,7 +151,7 @@ public class DoubleToken extends ScalarToken {
     public Token modulo(Token a) throws IllegalActionException {
         if (a instanceof ScalarToken) {
             _value = _value % ((DoubleToken)a).doubleValue();
-            return this;
+            return new DoubleToken(_value);
         } else {
             String str = "supported between " + this.getClass().getName();
             str = str + " and " + a.getClass().getName();

@@ -64,6 +64,31 @@ public class StringToken extends ObjectToken {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** This method is here for the parser */
+    public Token add(Token a, Token b) throws Exception {
+        String val1 = a.toString();
+        String val2 = b.toString();
+        return new StringToken(val1 + val2);
+    }
+
+    /** This method is here for the parser */
+    public Token subtract(Token a, Token b) throws Exception {
+        System.out.println("invalid operation on string objects, sub");
+        throw new Exception();
+    }
+
+    /** This method is here for the parser */
+    public Token multiply(Token a, Token b) throws Exception {
+        System.out.println("invalid operation on string objects, mult");
+        throw new Exception();
+    }
+
+    /** This method is here for the parser */
+    public Token divide(Token a, Token b) throws Exception {
+        System.out.println("invalid operation on string objects, divide");
+        throw new Exception();
+    }
+
     /** Set the value of the token to the specified string.
      *  If the argument is null, then the value is set to an empty string
      *  rather than null.
