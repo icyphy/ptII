@@ -96,8 +96,7 @@ OPTIONAL_FILES = \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \
 	$(JARFILE)	
-echo:
-	echo $(OPTIONAL_FILES)
+
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Needed for compiling under Cygwin on NT
