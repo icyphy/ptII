@@ -271,7 +271,17 @@ proc objectsToFullNames {objlist} {
             lappend results [[java::cast ptolemy.kernel.util.Nameable $obj] \
                     getFullName]
         } else {
-            lappend results NOT_NAMEABLE.
+        	if [ java::instanceof $obj java.lang.ref.WeakReference ] {
+        		set referred [[java::cast java.lang.ref.WeakReference $obj] get]
+        		if [ java::instanceof $referred ptolemy.kernel.util.Nameable] {
+                    lappend results [[java::cast ptolemy.kernel.util.Nameable $referred] \
+                    getFullName]
+                } else {
+                    lappend results REFERENCE_NOT_NAMEABLE.
+                }
+        	} else {
+            	lappend results NOT_NAMEABLE.
+            }
         }
     }
     return $results
