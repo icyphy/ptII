@@ -67,6 +67,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Trapezoidal_Rule_Solver".
      */
     public TrapezoidalRuleSolver() {
         super();
@@ -78,11 +79,11 @@ public class TrapezoidalRuleSolver extends ODESolver{
         }
     }
 
-    /** Construct a solver in the given workspace with the given name.
+    /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Trapezoidal_Rule_Solver".
+     *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this solver.
@@ -142,7 +143,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
             pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
             double cerror = Math.abs(pstate-integrator.getTentativeState());
             if( !(cerror < dir.getValueResolution())) {
-                voteForConverge(false);
+                voteForConvergence(false);
             }
             integrator.setTentativeDerivative(f2);
         }
@@ -206,7 +207,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
     }
 
     /** Return true if the fixed point iteration is converged. This is 
-     *  the result of all voteForConverge() in the current integration
+     *  the result of all voteForConvergence() in the current integration
      *  step.
      *  @return True if all the votes are true.
      */
@@ -287,11 +288,11 @@ public class TrapezoidalRuleSolver extends ODESolver{
         return true;
     }
 
-    /** To Vote for whether a fixed point has reached. The final result 
+    /** Vote for whether a fixed point has reached. The final result 
      *  is the <i>and</i> of all votes.
      *  @param converge True if vote for converge.
      */
-    public void voteForConverge(boolean converge) {
+    public void voteForConvergence(boolean converge) {
         _converge = _converge && converge;
     }
 

@@ -1,4 +1,4 @@
-/* Base class for fixed step size (no error control) ODE solvers.
+/* Base class for fixed stepsize (no error control) ODE solvers.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,20 +23,26 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
 package ptolemy.domains.ct.kernel.solver;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.domains.ct.kernel.*;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTBaseIntegrator;
+import ptolemy.domains.ct.kernel.ODESolver;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver
 /**
 Abstract base class for fixed step size (no error control) ODE solvers.
+It provide base implementation for some methods that are shared by 
+all fixed-stepsize solvers.
+
 @author Jie Liu
 @version $Id$
 */
@@ -53,6 +59,7 @@ public abstract class FixedStepSolver extends ODESolver{
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
+     *
      *  @param name Name of this solver.
      *  @exception IllegalActionException If the name has a period.
      */
@@ -60,7 +67,7 @@ public abstract class FixedStepSolver extends ODESolver{
         super(name);
     }
 
-    /** Construct a solver in the given workspace with a null string name.
+    /** Construct a solver in the given workspace with an empty string name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
@@ -89,15 +96,23 @@ public abstract class FixedStepSolver extends ODESolver{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true always, since not error control is performed.
+    /** Return true always, since no error control is performed.
+     *  The method is final, and all extended classes should comply to 
+     *  this.
+     *
+     *  @param integrator The integrator that wants to do the test.
      *  @return True always.
      */
     public final boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
         return true;
     }
 
-    /** Return 0 always, since no step size control is performed.
-     *  @return 0 always.
+    /** Return the current step size of the director, since no step
+     *  size control is performed. The method is final, and all extended
+     *  classes should comply to this.
+     *
+     *  @param integrator The integrator that want to predict the step size.
+     *  @return The current step size of the director.
      */
     public final double integratorPredictedStepSize(
             CTBaseIntegrator integrator){

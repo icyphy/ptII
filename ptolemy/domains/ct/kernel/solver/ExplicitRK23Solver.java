@@ -30,72 +30,85 @@
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.actor.Actor;
+import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.*;
+
 import java.util.Iterator;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
 /**
 This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
-For an ODE with form: <BR>
-dx/dt = f(x, t) <BR>
-it does the following:<BR>
-K0 = f(x(n), tn);<BR>
-K1 = f(x(n)+0.5*h*K0, tn+0.5*h);<BR>
-K2 = f(x(n)+0.75*h*K1, tn+0.75*h);<BR>
-x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;<BR>
-For error control:
-K3 = f(x(n+1), tn+h); <BR>
-LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]<BR>
+For an ODE of the form: 
+<pre>
+    dx/dt = f(x, t), x(0) = x0 
+</pre>
+it does the following:
+<pre>
+    K0 = f(x(n), tn);
+    K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
+    K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
+    x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
+</pre>,
+and error control:
+<pre>
+    K3 = f(x(n+1), tn+h); 
+    LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]
+</pre>
 <P>
 If the LTE is less than the error tolerance, then this step is considered
 successful, and the next integration step is predicted as:
-h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
-<P>
+<pre>
+    h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
+<pre>
+This is a second order method, but use a third order procedure to estimate
+local truncation error.
+
 @author  Jie Liu
 @version $Id$
 */
 public class ExplicitRK23Solver extends ODESolver{
 
-
-    /** Construct a solver in the default workspace with an empty
-     *  string as name. The solver is added to the list of objects in
+    /** Construct a solver in the default workspace.
+     *  The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
      */
     public ExplicitRK23Solver() {
         super();
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(ex.getMessage());
         }
     }
 
-    /** Construct a solver in the given workspace with the given name.
+    /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
      *
-     *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this solver.
+     *  @param workspace Object for synchronization and version tracking.
      */
     public ExplicitRK23Solver(Workspace workspace) {
         super(workspace);
         try {
             setName(_DEFAULT_NAME);
         } catch (KernelException ex) {
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(ex.getMessage());
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Return 4. Four auxiliary variables are needed for this solver.
      *  @return 4.
@@ -112,8 +125,8 @@ public class ExplicitRK23Solver extends ODESolver{
         return 0;
     }
 
-    /** This method is delegated to the fire() method of the integrator.
-     *  It implements the formula in the class document.
+    /** Provide the fire() method for integrators under this solver. 
+     *  It performs the ODE solving algorithm.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If no director.
@@ -156,10 +169,12 @@ public class ExplicitRK23Solver extends ODESolver{
         integrator.output.broadcast(new DoubleToken(outvalue));
     }
 
-    /** Integrator calculate potential state and test for local
-     *  truncation error.
+    /** Return true if the integration is successful for the given 
+     *  integrator. It estimates the local truncation error for that
+     *  integrator and compare it with the error tolerance.
+     *  
      *  @param integrator The integrator of that calls this method.
-     *  @return True if the intergrator report a success on the last step.
+     *  @return True if the integration is successful.
      */
     public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
         try {
@@ -191,10 +206,13 @@ public class ExplicitRK23Solver extends ODESolver{
         }
     }
 
-    /** This method is delegated to the predictedStepSize() method of the
-     *  integrator.
+    /** Provide the  predictedStepSize() method for the integrators
+     *  under this solver. It uses the algorithm in the class comments
+     *  to predict the next step size based on the current estimation
+     *  of the local truncation error.
+     *  
      *  @param integrator The integrator of that calls this method.
-     *  @return The suggested next step by the given integrator.
+     *  @return The next step size suggested by the given integrator.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
@@ -210,11 +228,11 @@ public class ExplicitRK23Solver extends ODESolver{
         return newh;
     }
 
-    /**  Return true always.
-     *  Resolve the state of the integrators at time currentTime
+    /** Return true always.
+     *  Resolve the state of the integrators at time:
      *  CurrentTime+CurrentStepSize. It gets the state transition
      *  schedule from the scheduler and fire for one iteration,
-     *  (which consists of 4 rounds.
+     *  (which consists of 4 rounds). 
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
@@ -285,10 +303,10 @@ public class ExplicitRK23Solver extends ODESolver{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //name
+    // The name of the solver
     private static final String _DEFAULT_NAME = "CT_Runge_Kutta_2_3_Solver";
 
-    // time increase value.
+    // The ratio of time increaments within one integration step.
     private static final double[] _timeInc = {0.5, 0.25, 0.25};
 
     // B coefficients
@@ -299,6 +317,6 @@ public class ExplicitRK23Solver extends ODESolver{
     private static final double[] _E =
     {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
 
-    // order.
+    // The order of the algorithm.
     private static final double _order = 3;
 }

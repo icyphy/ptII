@@ -23,27 +23,39 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.actor.Actor;
+import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.*;
+
 import java.util.Iterator;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ForwardEulerSolver
 /**
-The Forward Euler(FE) ODE solver. For ODE<BR>
-    dx/dt = f(x, u, t), x(0) = x0;<BR>
-The FE method approximate the x(t+h) as:<BR>
-    x(t+h) =  x(t) + h * f(x(t), u(t), t)<BR>
-No error control is performed.<BR>
+The Forward Euler(FE) ODE solver. For ODE
+<pre>
+    dx/dt = f(x, u, t), x(0) = x0;
+</pre>
+The FE method approximate the x(t+h) as:
+<pre>
+    x(t+h) =  x(t) + h * f(x(t), u(t), t)
+</pre>
+No error control and step size control is performed. This is the 
+simplest algorithm for solving an ODE. It is a first order method,
+and has stability problem for some systems.
+
 @author  Jie Liu
 @version $Id$
 */
@@ -52,6 +64,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Forward_Euler_Solver".
      */
     public ForwardEulerSolver() {
         super();
@@ -62,11 +75,11 @@ public class ForwardEulerSolver extends FixedStepSolver {
         }
     }
 
-    /** Construct a solver in the given workspace with the given name.
+    /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Forward_Euler_Solver".
+     *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this solver.
@@ -83,26 +96,26 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 1 always.
+    /** Always return 1.
      *  @return 1.
      */
-    public final int getIntegratorAuxVariableCount() {
+    public int getIntegratorAuxVariableCount() {
         return 1;
     }
 
-    /** Return 0 always. No history information is needed.
+    /** Always return 0. No history information is needed.
      *  @return 0.
      */
-    public final int getHistoryCapacityRequirement() {
+    public int getHistoryCapacityRequirement() {
         return 0;
     }
 
-    /** This method is delegated to the fire() method of the integrator.
-     *  It implements the formula in the class document..
+    /** The fire() method for integrators under this solver. It performs
+     *  the ODE solving algorithm.
      *
      *  @param integrator The integrator of that calls this method.
-     *  @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     *  @exception IllegalActionException Not thrown in this
+     *  class. May be needed by derived classes if there is any.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -120,13 +133,14 @@ public class ForwardEulerSolver extends FixedStepSolver {
     }
 
 
-    /** Return true always, indicating that the states of the system
-     *  is correctly resolved.
+    /** Always return true, indicating that the states of the system
+     *  is "correctly" resolved.
      *  The resolved states are at time
      *  CurrentTime+CurrentStepSize. It gets the state transition
      *  schedule from the scheduler and fire for one iteration
      *  (which consists of 1 round).
      *
+     * @return True.
      * @exception IllegalActionException If the firing of some actors
      *       throw it.
      */

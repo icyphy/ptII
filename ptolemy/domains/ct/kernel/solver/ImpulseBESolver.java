@@ -23,34 +23,37 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 
 */
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.actor.Actor;
 import ptolemy.domains.ct.kernel.*;
 import java.util.Iterator;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImpulseBESolver
 /**
-This class implement the impulse backward Euler ODE solver. This solver
-uses two backward Euler solving process to deal with Dirac Delta functions
-appeared in a CT system. The first backward Euler process has a positive
+This class implements the impulse backward Euler ODE solver. This solver
+uses two backward Euler solving processes to handle Dirac Delta functions
+in a CT system. The first backward Euler process has a positive
 step size, h, and the second backward Euler process has a negative step
 size, -h, where h is the minimum step size.
 <P>
 By using this solver, we can find the state of the system at t+, which is
 the time at which the impulse occurs, but the effect of the impulse is
-considered.
+taken care of.
 <P>
 This ODE solver does not advance time. So it can only be used as
-a breakpoint solver in CTMultiSolverDirector.
+a breakpointSolver.
 
 @author  Jie Liu
 @version $Id$
@@ -60,6 +63,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_ImpulseBE_Solver".
      */
     public ImpulseBESolver() {
         super();
@@ -67,18 +71,17 @@ public class ImpulseBESolver extends BackwardEulerSolver {
             setName(_DEFAULT_NAME);
         } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(e.toString());
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
-    /** Construct a solver in the given workspace with the given name.
+    /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  The solver is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_ImpulseBE_Solver".
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this solver.
      */
     public ImpulseBESolver(Workspace workspace) {
         super(workspace);
@@ -86,7 +89,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
             setName(_DEFAULT_NAME);
         } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(e.toString());
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
@@ -96,25 +99,30 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     /** Perform two successive backward Euler ODE solving method, with
      *  step size h and -h, respectively, where h is the minimum
      *  step size.
-     *  @return True always.
+     *  @return True if the state is successfully resolved.
      */
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector) getContainer();
-        super.resolveStates();
+        if (super.resolveStates()) {
 
-        Iterator actors = ((CTScheduler)dir.getScheduler()
-                           ).scheduledDynamicActorList().iterator();
-        while(actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug(getFullName() + "update..."+((Nameable)next).getName());
-            next.postfire();
+            Iterator actors = ((CTScheduler)dir.getScheduler()
+                               ).scheduledDynamicActorList().iterator();
+            while(actors.hasNext()) {
+                Actor next = (Actor)actors.next();
+                _debug(getFullName() + "update..."+((Nameable)next).getName());
+                next.postfire();
+            }
+            
+            dir.setCurrentStepSize(-dir.getCurrentStepSize());
+            if (super.resolveStates()) {
+                dir.setCurrentStepSize(-dir.getCurrentStepSize());
+                return true;
+            }else {
+                return false;
+            }
+        } else {
+            return false;
         }
-
-        dir.setCurrentStepSize(-dir.getCurrentStepSize());
-        super.resolveStates();
-
-        dir.setCurrentStepSize(-dir.getCurrentStepSize());
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -30,36 +30,55 @@
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.Director;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.actor.Actor;
+import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.*;
+
 import java.util.Iterator;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DerivativeResolver
 /**
-This "odesolver" resolves the derivative with respect to the current
-state of the system. The derivative is obtained by
-firing the system for one iteration.
-This is used for preparing history for other
-methods. This is the default breakpoint solver. When this is used as
-the breakpoint solver, it assumes that the state is continuous
-after the breakpoint. This may not be true if there are impulses
-in the system. In that case, use ImpulseBESolver as the
-breakpoint solver for a better result.
+This "odesolver" resolves the derivative with respect to the current time
+and current state of the system. For example, if the ODE is
+<pre> 
+    x' = f(x,t)
+</pre>,
+the current time is t0, and 
+<pre>
+    x(t0) = x0.
+</pre>
+This method calculate 
+<pre>
+    x'(t0) = f(x(t0), t0).
+</pre> 
+
 <P>
+The derivative is obtained by
+firing the system for one iteration.
+This is used for preparing the history for other
+methods. This is typically used as a breakpoint solver.
 Note that time does not progress after one iteration of this solver.
-So it can not be used alone.
+So it can not be used as an ODESolver. 
+It assumes that the state is continuous after the breakpoint. 
+This may not be true if there are impulses in the system. 
+In that case, use ImpulseBESolver as the breakpoint solver for a better result.
+
 @author Jie Liu
 @version $Id$
 */
 public class DerivativeResolver extends ODESolver{
 
-    /** Construct a solver in the default workspace with an empty
-     *  string as name. The solver is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
+    /** Construct a solver in the default workspace with the name
+     *  "CT_Derivative_Resolver". The solver is added to the list of
+     *  objects in the workspace. 
+     *  Increment the version number of the workspace.
      */
     public DerivativeResolver() {
         super();
@@ -71,11 +90,11 @@ public class DerivativeResolver extends ODESolver{
         }
     }
 
-    /** Construct a solver in the given workspace with the given name.
+    /** Construct a solver in the given workspace with the name 
+     *  "CT_Derivative_Resolver".
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
      */
@@ -93,23 +112,21 @@ public class DerivativeResolver extends ODESolver{
     ////                         public methods                    ////
 
     /** Return 1. The integrator only need one auxiliary variable.
-     *  @return The number of auxiliary variables for the solver in each
-     *       integrator.
+     *  @return 1.
      */
     public final int getIntegratorAuxVariableCount() {
         return 1;
     }
 
-    /** Return 0 always. No history information is needed by this solver.
+    /** Return 0. No history information is needed by this solver.
      *  @return 0.
      */
     public final int getHistoryCapacityRequirement() {
         return 0;
     }
 
-    /** For the integrator, do x(n+1) = x(n)+h*x'(n+1). Test if this
-     *  calculation is
-     *  converge for this integrator.
+    /** Provides the fire() method for the given integrator.
+     *  It remembers the input token, and use it for x'(t).
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base
@@ -123,18 +140,22 @@ public class DerivativeResolver extends ODESolver{
         integrator.setTentativeDerivative(f);
     }
 
-    /** Return true always.
+    /** Return true, since there is no step size control.
+     * 
      *  @param integrator The integrator of that calls this method.
-     *  @return True if the intergrator report a success on the last step.
+     *  @return True always.
      */
     public boolean integratorIsSuccessful(CTBaseIntegrator
             integrator) {
         return true;
     }
 
-    /** Return the initial step size.
+    /** Return the initial step size of the director. Since this solver
+     *  is always used as the breakpoint solver, the next integration
+     *  step will use the initial step size.
+     *  
      *  @param integrator The integrator of that calls this method.
-     *  @return The suggested next step by the given integrator.
+     *  @return The initial step size.
      */
     public double integratorPredictedStepSize(
             CTBaseIntegrator integrator){

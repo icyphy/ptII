@@ -1,4 +1,4 @@
-/* The Fixed Step Backward Euler ODE solver.
+/* The Backward Euler ODE solver.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -30,31 +30,46 @@
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.actor.Actor;
+import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.*;
+
 import java.util.Iterator;
-import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// BackwardEulerSolver
 /**
-The backward Euler ODE solver. This solver uses the following formula to
-solve an ODE:<BR>
-x(n+1) = x(n) + h*x'(n+1)<BR>
-where x(n) is the previous state, x(n+1) is the current (to be resolved)
-state, h is the step size, and x'(n+1) is the derivative of x(n+1).
+The backward Euler ODE solver. For an ODE
+<pre>
+    x'=f(x, t), x(0)=x0
+</pre>
+This solver uses the following formula to solve it:
+<pre>
+    x(t+h) = x(t) + h*x'(t+h)
+</pre>
+where x(t) is the previous state, x(t+h) is the current (to be resolved)
+state, h is the step size, and x'(t+h) is the derivative of x(t+h).
 The formula above is an algebraic equation, and this method uses fixed
 point iteration to solve it.
-<P>This method does not perform step size control.
+<P>
+This method does not perform step size control other than reducing the 
+step sizes when the fixed-point iteration does not converge.
+
 @author Jie Liu
 @version $Id$
 */
 public class BackwardEulerSolver extends FixedStepSolver
     implements ImplicitMethodSolver{
 
-    /** Construct a solver in the default workspace with an empty
-     *  string as name. The solver is added to the list of objects in
+    /** Construct a solver in the default workspace with the
+     *  name "CT_Backward_Euler_Solver".
+     *  The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
     public BackwardEulerSolver() {
@@ -67,14 +82,13 @@ public class BackwardEulerSolver extends FixedStepSolver
         }
     }
 
-    /** Construct a solver in the given workspace with the given name.
+    /** Construct a solver in the given workspace with the name 
+     *  "CT_Backward_Euler_Solver".
      *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  The solver is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this solver.
      */
     public BackwardEulerSolver(Workspace workspace) {
         super(workspace);
@@ -90,23 +104,24 @@ public class BackwardEulerSolver extends FixedStepSolver
     ////                         public methods                    ////
 
     /** Return 1. The integrator only need one auxiliary variable.
-     *  @return The number of auxiliary variables for the solver in each
-     *       integrator.
+     * 
+     *  @return 1.
      */
-    public final int getIntegratorAuxVariableCount() {
+    public int getIntegratorAuxVariableCount() {
         return 1;
     }
 
-    /** Return 0 always. No history information is needed.
+    /** Return 0. No history information is needed.
      *  @return 0.
      */
-    public final int getHistoryCapacityRequirement() {
+    public int getHistoryCapacityRequirement() {
         return 0;
     }
 
-    /** For the integrator, do x(n+1) = x(n)+h*x'(n+1). Test if this
-     *  calculation is
-     *  converge for this integrator.
+    /** Provide the fire() method for the integrators under this solver.
+     *  For the given integrator, do x(n+1) = x(n)+h*x'(n+1). Test if this
+     *  calculation converge for this integrator and report it to the
+     *  solver by calling voteForConvergence().
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base
@@ -123,7 +138,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
         double cerror = Math.abs(pstate-integrator.getTentativeState());
         if( !(cerror < dir.getValueResolution())) {
-            voteForConverge(false);
+            voteForConvergence(false);
         }
         integrator.setTentativeState(pstate);
         integrator.setTentativeDerivative(f);
@@ -131,7 +146,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 
-    /** Return true if the vote result is true.
+    /** Return true if the overall vote result is true.
      *  @return True if all the votes are true.
      */
     public boolean isConverged() {
@@ -193,11 +208,12 @@ public class BackwardEulerSolver extends FixedStepSolver
         return true;
     }
 
-    /** Vote if a fixed point has reached. The final result is the
-     *  <i>and</i> of all votes.
-     *  @param converge True if vote for converge.
+    /** Vote for whether a fixed point has reached. The final result 
+     *  is the <i>and</i> of all votes.
+     *  
+     *  @param converge True if vote for convergence.
      */
-    public void voteForConverge(boolean converge) {
+    public void voteForConvergence(boolean converge) {
         _converge = _converge && converge;
     }
 

@@ -35,7 +35,7 @@ package ptolemy.domains.ct.kernel.solver;
 /**
 Interface for implicit method ODE solvers. Implicit ODE solving methods
 try to find a fixed point for each given time point. This interface
-defines method to let actors vote if the fixed point has reached.
+defines methods to let actors vote if the fixed point has reached.
 @author Jie Liu
 @version $Id$
 */
@@ -50,5 +50,5 @@ public interface ImplicitMethodSolver {
      *  <i>and</i> of all votes.
      *  @param converge True if vote for converge.
      */
-    public void voteForConverge(boolean converge);
+    public void voteForConvergence(boolean converge);
 }
