@@ -367,7 +367,6 @@ cd "$startdir"
 
 AC_MSG_CHECKING([ the JDK version])
 JDOCSIZE=
-JTARGET=
 UPGRADE_JVM=no
 case "$JVERSION" in
 	1.1.*) UPGRADE_JVM=yes;;
@@ -376,23 +375,6 @@ case "$JVERSION" in
 	1.4.*)
 		# If we call the jdk1.4 javadoc without -breakiterator,
 		# then we get lots of warnings
-		JDOCBREAKITERATOR=-breakiterator
-
-		AC_MSG_WARN([You are running '$JVERSION'.
-    The deep and shallow code generation facilities use Soot, which
-    does work under JDK1.4 with the default target.
-    Soot requires JDK1.3 or JDK1.3.1, or that JDK1.4 javac to be used with
-    the '-target 1.1' command line options.
-    If you do not plan on using code generation, then you may build
-    under JDK1.4 without '-target 1.1'.
-    If you plan on using code generation, then you must _build_ under
-    JDK1.3.1 or JDK1.4 with -target 1.1
-    To build under JDK1.3, set your path so that 'java -version'
-    prints 1.3 and then do
-	cd $PTII
-	rm config.*
-	./configure])
-	JTARGET="-target 1.1" 
         ;;
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
@@ -1475,9 +1457,6 @@ AC_SUBST(JINI_DIR)
 
 # If Jini is present, the set to yes, otherwise, set to no
 AC_SUBST(JINI_PRESENT)
-
-# Under JDK1.4, codegen requres javac -target 1.1 
-AC_SUBST(JTARGET)
 
 # jtclsh script, used for test suites
 AC_SUBST(JTCLSH)
