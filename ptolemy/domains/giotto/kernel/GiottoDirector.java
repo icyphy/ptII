@@ -24,7 +24,9 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cm@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
+
+// NOTE: Downgraded to red due to extensive changes.  EAL
 */
 
 package ptolemy.domains.giotto.kernel;
@@ -43,6 +45,7 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -82,6 +85,13 @@ without Giotto modes. Schedules are generated according to the Giotto
 semantics. The GiottoScheduler class contains methods to compute the
 schedules. The GiottoReceiver class implements the data flow between
 actors using double-buffering.
+<p>
+If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
+then the director will not process events until the real time elapsed
+since the model started matches the time stamp of the event.
+This ensures that the director does not get ahead of real time,
+but, of course, it does not ensure that the director keeps up with
+real time.
 
 @author  Christoph Meyer Kirsch and Edward A. Lee
 @version $Id$
@@ -144,17 +154,24 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public Parameter period;
 
+    /** Specify whether the execution should synchronize to the
+     *  real time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, then do not process events until the
+     *  elapsed real time matches the time stamp of the events.
+     *  The value defaults to false.
+     */
+    public Parameter synchronizeToRealTime;
+
     /** Code generation file name. */
     public Parameter filename;
-
-    /** synchronized to realtime */
-    public Parameter sync;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the specified attribute is <i>filename</i>, then close
      *  the current file (if there is one) and open the new one.
+     *  If the specified attribute is <i>period</i> or
+     *  <i>synchronizeToRealTime</i>, then cache the new values.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>filename</i> and the file cannot be opened.
@@ -163,6 +180,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	throws IllegalActionException {
         if (attribute == filename) {
             generateGiottoCode();
+        } else if (attribute == period) {
+	    _periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        } else if (attribute == synchronizeToRealTime) {
+            _synchronizeToRealTime =
+                ((BooleanToken)synchronizeToRealTime.getToken())
+                        .booleanValue();
         }
     }
 
@@ -1055,60 +1078,166 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	return _nextIterationTime;
     }
 
-    /** Return the system time at which the fire method of this director
-     *  has been called.
-     *  @return The real start time in terms of milliseconds counting
-     *  from 1/1/1970.
-     */
-    public long getRealStartTime() {
-	return _realStartTime;
-    }
-
-    /** Calculate the current schedule, if necessary, and iterate
-     *  the contained actors in the order given by the schedule.
-     *
+    /** Iterate the actors in the next minor cycle of the schedule.
+     *  After iterating the actors, increment time by the minor cycle time.
+     *  Also, update the receivers that are destinations of all actors that
+     *  will be invoked in the next minor cycle of the schedule.
+     *  This works because all actors in Giotto are invoked periodically,
+     *  and the ones that will be invoked in the next cycle are the ones
+     *  that are completing invocation at the end of this cycle.
      *  @exception IllegalActionException If this director does not have a
      *   container.
      */
     public void fire() throws IllegalActionException {
-	_postFireReturns = true;
-
-
 	TypedCompositeActor container = (TypedCompositeActor) getContainer();
-
-	if (container != null) {
-
-	    /* change Enumeration into Schedule */
-
-	    _periodValue = ((DoubleToken)period.getToken()).doubleValue();
-
-
-	    if (_schedule.size() == 0) {
-	        _schedule = getScheduler().getSchedule();
-	    }
-	    //System.out.println("In Fire() method: The size of _schedule is " + _schedule.size());
-
-   	    _minTimeStep = ((GiottoScheduler) getScheduler()).getMinTimeStep(_periodValue);
-	    //System.out.println(_periodValue + " + " + _minTimeStep);
-
-	    if (_debugging)
-		_debug("Giotto director firing!");
-
-	    _realStartTime = System.currentTimeMillis();
-
-	    /* have to see how to _fire(Schedule) */
-	    if (_schedule.size() == 0) {
-	        //System.out.println("_schedule is null, which is crazy!!!");
-	    } else {
-		Schedule oneTimeSchdule = (Schedule) _schedule.remove(0);
-		_postFireReturns = _fire(oneTimeSchdule);
-	    }
-
-	    if (_debugging)
-		_debug("GiottoDirector firing finished! ==========");
-
-	} else
+	if (container == null) {
 	    throw new IllegalActionException(this, "Has no container!");
+        }
+        // A schedule consists of a set of subschedules, one for each
+        // "unit" of Giotto.  If there are no more subschedules to
+        // execute, then start over with the original schedule.
+
+        if (_debugging) {
+            _debug("Giotto director firing!");
+        }
+
+        // Grab the next schedule to execute.
+        Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex++);
+        if (_unitIndex >= _schedule.size()) {
+            _unitIndex = 0;
+        }
+
+	Iterator scheduleIterator = unitSchedule.iterator();
+        while (scheduleIterator.hasNext()) {
+            Actor actor = ((Firing) scheduleIterator.next()).getActor();
+            double currentTime = getCurrentTime();
+            int actorFrequency = GiottoScheduler.getFrequency(actor);
+
+            // FIXME: This isn't right...
+            // The next iteration time should simply be the current time
+            // plus the _minTimeStep.
+            _nextIterationTime = currentTime + (_periodValue / actorFrequency);
+
+            if (_debugging) {
+                _debug("Iterating " + ((NamedObj)actor).getFullName());
+            }
+            if (actor.iterate(1) == STOP_ITERATING) {
+                // FIXME: put the actor on a no-fire hashtable.
+            }
+	}
+
+	// Update time.
+	double currentTime = getCurrentTime();
+	setCurrentTime(currentTime + _minTimeStep);
+
+	if (_synchronizeToRealTime) {
+	    long elapsedTime = System.currentTimeMillis() - _realStartTime;
+	    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+
+	    if (currentTime > elapsedTimeInSeconds) {
+		long timeToWait = (long)
+                        ((currentTime - elapsedTimeInSeconds) * 1000.0);
+		if (timeToWait > 0) {
+		    if (_debugging) {
+			_debug("Waiting for real time to pass: " + timeToWait);
+		    }
+                    // Synchronize on the scheduler.
+                    Scheduler scheduler = getScheduler();
+		    synchronized(scheduler) {
+			try {
+			    scheduler.wait(timeToWait);
+			} catch (InterruptedException ex) {
+			    // Continue executing.
+			}
+		    }
+		}
+	    }
+	}
+
+        // Find the actors that will be invoked in the next minor cycle
+        // and update the receivers that are their destinations.
+        Schedule nextTimeSchedule = (Schedule)_schedule.get(_unitIndex);
+        Iterator nextTimeIterator = nextTimeSchedule.iterator();
+        while (nextTimeIterator.hasNext()) {
+            Actor actor = ((Firing) nextTimeIterator.next()).getActor();
+            if (_debugging) {
+                _debug("Updating destination receivers of "
+                         + ((NamedObj)actor).getFullName());
+            }
+            List outputPortList = actor.outputPortList();
+            Iterator outputPorts = outputPortList.iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Receiver[][] channelArray = port.getRemoteReceivers();
+                for (int i = 0; i < channelArray.length; i++) {
+                    Receiver[] receiverArray = channelArray[i];
+                    for (int j = 0; j < receiverArray.length; j++) {
+                        GiottoReceiver receiver = 
+                                (GiottoReceiver) receiverArray[j];
+                        receiver.update();
+                    }
+                }
+            }
+	}
+    }
+
+    /** Initialize the actors associated with this director.
+     *  The order in which the actors are initialized is arbitrary.
+     *  @exception IllegalActionException If the initialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+	super.initialize();
+
+	_iterationCount = 0;
+	Iterator receivers = _receivers.iterator();
+	while(receivers.hasNext()) {
+	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
+	    receiver.reset();
+	}
+
+        // Iterate through all output ports to see if any have initialValue
+        // parameters.
+        CompositeActor compositeActor = (CompositeActor) (getContainer());
+        List actorList = compositeActor.deepEntityList();
+        ListIterator actors = actorList.listIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            List outputPortList = actor.outputPortList();
+            Iterator outputPorts = outputPortList.iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Parameter initialValueParameter = (Parameter)
+                        ((NamedObj) port).getAttribute("initialValue");
+                if (initialValueParameter != null) {
+                    Receiver[][] insideReceivers = port.getRemoteReceivers();
+                    for (int i = 0; i < port.getWidth(); i++) {
+                        Token token = initialValueParameter.getToken();
+                        
+                        if (insideReceivers != null &&
+                                insideReceivers[i] != null) {
+                            if(_debugging) {
+                                _debug(getFullName(),
+                                       ": has initial token with value "
+                                       + initialValueParameter.getExpression());
+                            }
+                            for (int j = 0; j < insideReceivers[i].length; j++){                                insideReceivers[i][j].put(token);
+                                ((GiottoReceiver)insideReceivers[i][j]).update();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Next, construct the schedule.
+        // FIXME: Note that mutations will not be supported since the
+        // schedule is constructed only once.
+        GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
+        _schedule = scheduler.getSchedule();
+        _minTimeStep = scheduler.getMinTimeStep(_periodValue);
+
+        _realStartTime = System.currentTimeMillis();
     }
 
     /** Return a new receiver consistent with the Giotto domain.
@@ -1120,125 +1249,26 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	return receiver;
     }
 
-    /** Initialize the actors associated with this director and
-     *  initialize the iteration count to zero.  The order in which
-     *  the actors are initialized is arbitrary.
-     *  @exception IllegalActionException If the preinitialize() method of
-     *   one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-	super.preinitialize();
-
-	_iteration = 0;
-
-	Iterator receivers = _receivers.iterator();
-
-	while(receivers.hasNext()) {
-	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
-	    receiver.reset();
-	}
-
-    }
-
-     public void initialize() throws IllegalActionException {
-	super.initialize();
-
-	// if the director directs several sdf actors and those actors
-	// have loop connections, we have to initialize the inputs of sdf actors.
-
-	//System.out.println("Initializing.. ");
-	CompositeActor compositeActor =
-	    (CompositeActor) (getContainer());
-
-	//System.out.println(compositeActor.getName());
-
-	List actorList = compositeActor.deepEntityList();
-
-	ListIterator actors = actorList.listIterator();
-
-	//System.out.println("actorList size is " + actorList.size());
-
-
-	while (actors.hasNext()) {
-
-	    Actor actor = (Actor) actors.next();
-
-	    // here we give a very simple criteria that we will initialize
-	    // the input of SDF actors;
-	    // however, we should first decide if there is loop for SDF
-	    // actors, which may be the only situation to need initialization.
-	    // Also, for SDF domain, will it be general idea that we always
-	    // assign some default value to the output port?
-	    // This may need the dubble-buffer reveivers.
-	    //System.out.println(actor.getDirector().getName());
-	    if (!actor.getDirector().getName().equals("SDF Director")) {
-		continue;
-	    }
-	    List outputPortList = actor.outputPortList();
-
-	    Enumeration outputPorts =
-		Collections.enumeration(outputPortList);
-
-	    while (outputPorts.hasMoreElements()) {
-		IOPort port = (IOPort) outputPorts.nextElement();
-
-		Receiver[][] insideReceivers = port.getRemoteReceivers();
-
-		//System.out.println(port.getName() + " " + insideReceivers.length);
-
-		for (int i = 0; i < port.getWidth(); i++) {
-		    try {
-			Token t = new Token();
-			Parameter defaultValuePara = (Parameter) ((NamedObj) port).getAttribute("defaultValue");
-			t = (Token) defaultValuePara.getToken();
-
-			if (insideReceivers != null &&
-			    insideReceivers[i] != null) {
-			    if(_debugging) _debug(getName(),
-						  "transferring input from " + port.getName());
-			    for (int j = 0; j < insideReceivers[i].length; j++) {
-				insideReceivers[i][j].put(t);
-				((GiottoReceiver)insideReceivers[i][j]).update();
-			    }
-			}
-
-		    } catch (NoTokenException ex) {
-			    // this shouldn't happen.
-			    throw new InternalErrorException(
-							     "Director.transferInputs: Internal error: " +
-							     ex.getMessage());
-		    }
-
-		}
-	    }
-
-
-	}
-
-
-     }
-
     /** Return false if the system has finished executing, either by
-     *  reaching the iteration limit, or having an actor in the model
+     *  reaching the iteration limit, or by having an actor in the model
      *  return false in postfire.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
-
 	int numberOfIterations =
-	    ((IntToken) (iterations.getToken())).intValue();
-
-	_iteration++;
-
-	if((numberOfIterations > 0) && (_iteration >= numberOfIterations)) {
-	    _iteration = 0;
-
+	        ((IntToken) (iterations.getToken())).intValue();
+	_iterationCount++;
+        if (_debugging) {
+            _debug("===== Director completing iteration number: "
+                    + _iterationCount);
+        }
+	if((numberOfIterations > 0)
+                && (_iterationCount >= numberOfIterations)) {
 	    return false;
 	}
-
-	return _postFireReturns;
+	return true;
     }
 
     /** Transfer data from an input port of the container to the ports
@@ -1322,159 +1352,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    filename.setTypeEquals(BaseType.STRING);
 	    filename.setExpression("\"ptolemy.giotto\"");
 
-	    sync = new Parameter(this, "synchronized");
-	    sync.setToken(new BooleanToken(false));
-
+            synchronizeToRealTime = new Parameter(this,
+                    "synchronizeToRealTime",
+                    new BooleanToken(false));
 	} catch (KernelException ex) {
 	    throw new InternalErrorException(
-					     "Cannot initialize director: " + ex.getMessage());
+                    "Cannot initialize director: " + ex.getMessage());
 	}
     }
-
-    /*  Iterate actors according to the schedule.
-     *  @param schedule of all actors represented as a tree.
-     *  @see GiottoScheduler
-     *  @return true iff all actors postfire method returned true.
-     */
-    private boolean _fire(Schedule schedule)
-	throws IllegalActionException {
-
-	boolean postfire = true;
-
-	// schedule has to make iterator to call hasNext() or next()
-	Iterator scheduleIterator = schedule.iterator();
-
-	//System.out.println("The oneTimeSchedule size is " + schedule.size());
-	if (schedule != null) {
-	    while (scheduleIterator.hasNext()) {
-
-		Actor actor = ((Firing) scheduleIterator.next()).getActor();
-
-		double currentTime = getCurrentTime();
-
-		int actorFrequency =
-		    GiottoScheduler.getFrequency(actor);
-
-		_nextIterationTime =
-		    currentTime + (_periodValue / actorFrequency);
-
-
-		if (_debugging)
-		    _debug("Prefiring " +
-			   ((NamedObj)actor).getFullName());
-
-		if (actor.prefire()) {
-		    if (_debugging)
-			_debug("Firing " +
-			       ((NamedObj)actor).getFullName());
-
-		    actor.fire();
-		}
-
-
-	    }
-	}
-
-	// Update time for every minimize time step
-	double currentTime;
-
-	currentTime = getCurrentTime();
-//        System.out.println("What is currentTime " + currentTime + " ************ " + _minTimeStep);
-
-	setCurrentTime(currentTime + _minTimeStep);
-
-	_synchronizeToRealTime = ((BooleanToken) sync.getToken()).booleanValue();
-
-	if (_synchronizeToRealTime) {
-	    long elapsedTime = System.currentTimeMillis()
-		- _realStartTime;
-
-	    //System.out.println("Firing at the realtime: " + _realStartTime);
-	    //System.out.println("Now the realtime:       " + System.currentTimeMillis());
-
-	    double elapsedTimeInSeconds =
-		((double) elapsedTime) / 1000.0;
-
-	    if (currentTime > elapsedTimeInSeconds) {
-		long timeToWait = (long) ((currentTime -
-					   elapsedTimeInSeconds) * 1000.0);
-
-		if (timeToWait > 0) {
-		    if (_debugging) {
-			_debug("Waiting for real time to pass: " +
-			       timeToWait);
-		    }
-
-		    // FIXME: Do I need to synchronize on anything?
-		    Scheduler scheduler = getScheduler();
-
-		    synchronized(scheduler) {
-			try {
-			    scheduler.wait(timeToWait);
-			} catch (InterruptedException ex) {
-			    // Continue executing.
-			}
-		    }
-		}
-	    }
-	}
-
-
-	// update output ports of the next firing actors...
-	//System.out.println("Before update, the size of _schedule is " + _schedule.size());
-
-	if (schedule != null) {
-	    if (_schedule.size() == 0) {
-	        _schedule = getScheduler().getSchedule();
-	    }
-
-	    //System.out.println(_schedule.size());
-
-	    Schedule nextTimeSchedule = (Schedule) _schedule.get(0);
-	    Iterator nextTimeIterator = nextTimeSchedule.iterator();
-
-	    while (nextTimeIterator.hasNext()) {
-		Actor actor = ((Firing) nextTimeIterator.next()).getActor();
-
-	        if (_debugging)
-		    _debug("Postfiring " +
-			   ((NamedObj)actor).getFullName());
-
-		if (!actor.postfire())
-		    postfire = false;
-
-		if (_debugging)
-		    _debug("Updating " + ((NamedObj)actor).getFullName());
-
-		List outputPortList = actor.outputPortList();
-
-		Enumeration outputPorts =
-		    Collections.enumeration(outputPortList);
-
-		while (outputPorts.hasMoreElements()) {
-		    IOPort port = (IOPort) outputPorts.nextElement();
-
-		    Receiver[][] channelArray = port.getRemoteReceivers();
-
-		    for (int i = 0; i < channelArray.length; i++) {
-			Receiver[] receiverArray = channelArray[i];
-
-			for (int j = 0; j < receiverArray.length; j++) {
-			    GiottoReceiver receiver =
-				(GiottoReceiver) receiverArray[j];
-
-			    receiver.update();
-			}
-		    }
-		}
-	    }
-	}
-
-
-
-	return postfire;
-    }
-
 
 
     ///////////////////////////////////////////////////////////////////
@@ -1487,20 +1372,20 @@ public class GiottoDirector extends StaticSchedulingDirector {
     // catch up with model time.
     private boolean _synchronizeToRealTime = false;
 
-    // The real time at which the last unit has been invoked.
+    // The real time at which the initialize() method was invoked.
     private long _realStartTime = 0;
 
     // The count of iterations executed.
-    private int _iteration = 0;
-
-    // The anded result of the values returned by actors' postfire().
-    private boolean _postFireReturns = true;
+    private int _iterationCount = 0;
 
     // List of all receivers this director has created.
     private LinkedList _receivers = new LinkedList();
 
-    // schedule of the to be excuted tasks
+    // Schedule to be excuted.
     private Schedule _schedule = new Schedule();
+
+    // Counter for minimum time steps.
+    private int _unitIndex = 0;
 
     // minimized step size for input/output ports to be uptated
     private double _minTimeStep = 0.0;

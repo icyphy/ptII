@@ -25,17 +25,18 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cm@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.giotto.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-//import ptolemy.actor.sched.Scheduler;
-//import ptolemy.actor.sched.NotSchedulableException;
-//import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.sched.*;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
@@ -136,7 +137,7 @@ public class GiottoScheduler extends Scheduler {
         }
     }
 
-    // temporarily I put the method here.
+    // FIXME: temporarily I put the method here.
     // it may be put into protected method aera...
     public double getMinTimeStep(double period) {
         return period/_lcm;
@@ -155,37 +156,28 @@ public class GiottoScheduler extends Scheduler {
     ////                         protected methods                 ////
 
     /** Return the scheduling sequence.
-     *  Overrides _schedule() method in the base class.
-     *
-     *  This method should not be called directly, rather the schedule()
-     *  method will call it when the schedule is invalid. So it is not
+     *  This method should not be called directly; rather the getSchedule()
+     *  method will call it when the schedule is invalid. It is not
      *  synchronized on the workspace.
-     *
-     *  @return An enumeration of the scheduling sequence.
-     *  @exception NotSchedulableException If the fiCompositeActor is not
+     *  @return A schedule.
+     *  @exception NotSchedulableException If the model is not
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
         StaticSchedulingDirector director =
-            (StaticSchedulingDirector) getContainer();
-
+                (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor =
-	    (CompositeActor) (director.getContainer());
-
+	        (CompositeActor) (director.getContainer());
         List actorList = compositeActor.deepEntityList();
-	//List actorList = compositeActor.entityList();
-
 	int actorCount = actorList.size();
-
-	//System.out.println("There are totally " + actorCount + " actors!");
 
 	int[] frequencyArray = new int[actorCount];
 	int[] intervalArray = new int[actorCount];
 	int[] iterateArray = new int[actorCount];
 
-	int i = 0;
 	ListIterator actorListIterator = actorList.listIterator();
 
+	int i = 0;
 	while (actorListIterator.hasNext()) {
 	    Actor actor = (Actor) actorListIterator.next();
 	    iterateArray[i] = frequencyArray[i] = getFrequency(actor);
@@ -194,7 +186,10 @@ public class GiottoScheduler extends Scheduler {
 
 	_lcm = lcm(frequencyArray);
 	_gcd = gcd(frequencyArray);
-	//System.out.println("LCM is " + _lcm + " GCD is " + _gcd);
+        if (_debugging) {
+            _debug("LCM of frequencies is " + _lcm);
+            _debug("GCD of frequencies is " + _gcd);
+        }
 
 	for (i = 0; i < actorCount; i++) {
 	  intervalArray[i] = _lcm / frequencyArray[i];
