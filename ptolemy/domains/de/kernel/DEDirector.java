@@ -1287,6 +1287,15 @@ public class DEDirector extends Director implements TimedDirector {
             _debug("## adjusting port depths based " +
                     "on the strictness constraints.");
         }
+        // FIXME: how to adjust the depths of parameter ports??
+        // One solution is to iterate each output port and find all the 
+        // parameter ports that affect it. Note that a parameter may depend
+        // on another parameter at the same level of hierarchy, which makes
+        // the analysis harder. 
+        // Check the context analysis by Steve. I prefer to leave the parameter
+        // analysis independent of the function dependency analysis. 
+        // 02/2005 hyzheng
+        
         // The rule is simple. If an output depends on several inputs directly,
         // all inputs must have the same depth, the biggest one.
         for (int i = sort.length-1; i >= 0; i--) {
