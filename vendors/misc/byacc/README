@@ -1,0 +1,28 @@
+Changes to BYACC/J 0.93 (Bob Jamison)
+
+These changes are specific to Java parser generation (C parser code
+remains the same)
+
+1) Parser values need to be cloned. Added a clone() method to the 
+   parser value class, and added a call the clone() method in the
+   parser class.
+2) Parser tables are written to ASCII .tbl files instead of inlined 
+   in the parser class code. The reason for this is the 64KB limit
+   on the size of .class files in Java. If .tbl files exist, the 
+   generated parser reads them and writes platform-independent 
+   binary .bin files, if the previous .bin files are older than the
+   .tbl files or no .bin files are found.
+3) Added the -p option to set the package of the parser and parser  
+   value classes. Example: 
+
+   yacc -j -p ptolemy.lang.java -f JavaParser jparser.y
+ 
+   where jparser.y is the definition file.
+
+The BYACC/J page can be found at:
+
+http://www.lincom-asg.com/~rjamison/byacc/
+
+Jeff Tsay    
+
+   
