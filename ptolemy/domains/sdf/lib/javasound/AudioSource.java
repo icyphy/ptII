@@ -91,12 +91,12 @@ should be used.
 <li><i>tokenProductionRate</i> may be set to optimize
 performance.
 </ul>
-<p>(2) Capture from a sound file (local or URL).
+<p>(2) Capture from a sound file (via URL).
 <p>
 The following parameters are relevant to audio capture from
 a sound file, and should be set accordingly:
 <ul>
-<li><i>source</i> should be set to "URL" or "file".
+<li><i>source</i> should be set to "URL".
 <li><i>pathName</i> should be set to the name of the file.
 <li><i>tokenProductionRate</i> may be set to optimize
 performance. The default value should result in reasonable
@@ -176,26 +176,23 @@ public class AudioSource extends SDFAtomicActor {
      *  default behavior.
      *  <p>(2) A sound file loaded from a URL. To capture from
      *  this source, set <i>source</i> to "URL"
-     *  <p>(3) A sound file loaded from the native file system. To
-     *  capture from this source, set <i>source</i> to "file"
      *  <p>
-     *  For cases (1) and (2) above, parameter <i>pathName</i>
+     *  For case (2) above, parameter <i>pathName</i>
      *  must be set to the sound file location.
      */
     public Parameter source;
 
-    /** The name of the file to read from. This can be a URL or a
-     *  file on the file system on which the code is run.
-     *  If no value is specified,
-     *  the default value of "soundFile.wav" will be used.
-     *  <p> If a URL
-     *  is given, parameter <i>source</i> must be set to "URL" and
-     *  <i>pathName</i> must be set a a fully qualified URL.
-     *  <p> If a filename is given, parameter <i>source</i> must
-     *  be set to "file".
+    /** The name of the file to read from. The path must be a valid
+     *  URL. Note that it is possible to load a file from the native
+     *  file system by using the prefix "file:///" instead of "http://". 
+     *  The sound file format is determined from the file extension. 
+     *  For example, "file:///C:/someDir/someFile.wav" will be 
+     *  interpretted as a WAVE file.
      *  <p>
-     *  This parameter does not need to be set if audio is captured from
-     *  a microphone or line-in.
+     *  To read data from a sound file,  <i>source</i> must be set 
+     *  to "URL" and <i>pathName</i> must be set a a fully qualified URL.
+     *  This parameter will be ignored if audio is captured from
+     *  a microphone or line-in (i.e., if <i>source</i> is set to "mic").
      *  <p>
      *  Note: For a list of allowable audio file formats, refer to the
      *  ptolemy.media.javasound package documentation.
@@ -398,8 +395,7 @@ public class AudioSource extends SDFAtomicActor {
             // Load audio from a URL.
             String theURL =
                 ((StringToken)pathName.getToken()).toString();
-            _soundCapture = new SoundCapture(true,
-                    theURL,
+            _soundCapture = new SoundCapture(theURL,
                     _productionRate);
 	    try {
 		// Start capturing audio.
@@ -415,27 +411,6 @@ public class AudioSource extends SDFAtomicActor {
             _channels = _soundCapture.getChannels();
             channels.setToken(new IntToken(_channels));
 
-        } else if (((StringToken)source.getToken()).toString() ==
-                "file") {
-            // Load audio from a file.
-            String theFileName =
-                ((StringToken)pathName.getToken()).toString();
-            _soundCapture = new SoundCapture(false,
-                    theFileName,
-                    _productionRate);
-            try {
-		// Start capturing audio.
-		_soundCapture.startCapture();
-	    } catch (IOException ex) {
-		throw new IllegalActionException(
-		    "Cannot capture audio:\n" +
-		    ex.getMessage());
-	    }
-
-            // Read the number of audio channels and set
-            // parameter accordingly.
-            _channels = _soundCapture.getChannels();
-            channels.setToken(new IntToken(_channels));
         } else if (((StringToken)source.getToken()).toString() ==
                 "mic") {
 

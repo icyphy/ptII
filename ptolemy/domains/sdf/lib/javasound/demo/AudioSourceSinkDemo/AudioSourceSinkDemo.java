@@ -114,7 +114,7 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	    //_sdfDirector.iterations.setToken(new IntToken(1000));
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 44100;
+	    int sampleRate = 22050;
 
 	    int channels = 2;
 	    // Set the token consumption rate and production rate to use.
@@ -129,14 +129,15 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	    // Set the production rate(a performance optimization).
 	    soundSource.tokenProductionRate.setToken(new IntToken(cPRate));
 
-            // Read audio data from a local file.
-            //soundSource.source.setToken(new StringToken("file"));
-	    //soundSource.pathName.setToken(new StringToken("22-new.aif"));
-	    // *** OR ***
+           
+	    
+	   
 
 	    // Read audio data from a URL.
 	    //soundSource.source.setToken(new StringToken("URL"));
 	    //soundSource.pathName.setToken(new StringToken("http://some-web-site/1-welcome.wav"));	
+	     // *** OR ***
+	    //soundSource.pathName.setToken(new StringToken("file:///D:/home/vogel/ptII/ptolemy/domains/sdf/lib/javasound/demo/AudioSourceSinkDemo/22-new.aif"));
 	   
 	    // *** OR ***
 
