@@ -130,7 +130,7 @@ distill *.ps
 ####################################
 echo "Generate a html file with the appropriate links"
 cat >$reviewfile <<EoF
-<!-- $Id$
+<!-- \$Id$
 
 This file should be of the form yyyymmdd-design.htm, for example
 19990402-design.htm or 19990402-code.htm
@@ -164,25 +164,19 @@ Links are relative, not absolute.
 EoF
 
 
+# Note that we are not including the .java files in the review tree (cxh 9/00)
 for file in $files
 do
-     echo "  <li><a href=\"$reviewdate/$file\"><code>$file</code></a>" >>$reviewfile
+     echo "  <li><code>$file</code></a>" >>$reviewfile
 done
 
 cat >>$reviewfile <<EOF
-  <li><a href="$reviewdate/javafiles.ps" target="_top">PostScript</a> -
-<a href="$reviewdate/javafiles.pdf" target="_top">PDF</a>
-  <li><a href="$reviewdate/javafiles2up.ps" target="_top">2 up PostScript</a> -
-<a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
+  <li><a href="$reviewdate/javafiles.pdf" target="_top">PDF</a> -
+  <a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
   </menu>
-<li> Javadoc 
-  <menu>
-  <li><a href="$reviewdate/codeDoc/index.html">HTML</a>
-  <li><a href="$reviewdate/javadocs.ps">PostScript</a> -
+<li> Javadoc:
     <a href="$reviewdate/javadocs.pdf">PDF</a>
-  <li><a href="$reviewdate/javadocs2up.ps" target="_top">2 up PostScript</a> -
-<a href="$reviewdate/javadocs2up.pdf" target="_top">2 up PDF</a>
-  </menu>
+    <a href="$reviewdate/javadocs2up.pdf" target="_top">2 up PDF</a>
 <li> <i>UML Diagram</i>
 </menu>
 
@@ -232,8 +226,8 @@ Review ended: <I>time</I>
 <br>
 <I>login of moderator and date</I>
 <br>
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
- <br>comments to: <ADDRESS><a href="mailto:ptdesign@eecs.berkeley.edu">ptdesign@eecs.berkeley.edu</a></ADDRESS>
+<p><font size="2" color="#cc0000">Last Updated: \$Date$</font>
+ <br>comments to: <address><a href="mailto:ptresearch@eecs.berkeley.edu">ptresearch@eecs.berkeley.edu</a></address>
 
 </body>
 </html>
