@@ -139,7 +139,7 @@ public class ShellTextArea extends JPanel {
 
     /** Set the interpreter.
      *  @param interpreter The interpreter.
-     *  @see getInterpreter()
+     *  @see #getInterpreter()
      */
     public void setInterpreter(ShellInterpreter interpreter) {
         _interpreter = interpreter;
