@@ -5,6 +5,9 @@
 # 3) Report public methods and variables after private or protected ones
 # 4) Make sure that each file includes a copyright, @version and @author
 # 5) Make sure that @author and @version are not @author: and @version:
+# 6) Check for spaces after commas
+# 7) Check for FIXMEs
+# 8) Check for lines with trailing spaces
 
 for file in $@
 do
@@ -17,7 +20,8 @@ do
 		echo "$results" | awk '{
 		    # If this is a constructor, then do not complain  
 		    split($2,f,"(")
-		    if (f[1] != filenm) {
+		    # Skip over comments that start with //
+		    if (f[1] != filenm && $0 !~ /^[ 	]*\/\//) {
 		        if (printedheader == 0) {
 			    print filenm".java: protected does not have a leading _"
 			    printedheader = 1
@@ -36,7 +40,8 @@ do
 		echo "$results" | awk '{
 		    # If this is a constructor, then do not complain  
 		    split($2,f,"(")
-		    if (f[1] != filenm) {
+		    # Skip over comments that start with //
+		    if (f[1] != filenm && $0 !~ /^[ 	]*\/\//) {
 		        if (printedheader == 0) {
 			    print filenm".java: private does not have a leading _"
 			    printedheader = 1
@@ -101,6 +106,27 @@ do
 	    print FILENAME": Remove trailing s from @returns" 
 	    print $0
 	}' $file
+
+	# Check that all commas have spaces
+	results=`egrep ',[^ ]' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: comma without out trailing space:"
+	    echo "$results"
+	fi
+
+	# Check for FIXME
+	results=`egrep 'FIXME' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: contains a FIXME"
+	    echo "$results"
+	fi
+
+	# Check for lines with trailing spaces
+	results=`egrep '[ 	]+$' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: contains trailing spaces or tabs, run rmtrailingspace to fix this"
+	    echo "$results"
+	fi
 
 done
 
