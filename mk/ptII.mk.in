@@ -290,6 +290,10 @@ JAVACC =	"@JAVACC@"
 # and used in $PTII/mescal/relsat
 PTGMP_INCLUDE = 	"@PTGMP_INCLUDE@"
 
+# Set to -Wl,-R$PTII/mescal/lib or -Wl,-R/usr/local/lib if the gmp
+# libraries are found and used in $PTII/mescal/relsat
+PTGMP_LD_FLAGS =        @PTGMP_LD_FLAGS@
+
 # Set to -I$PTII/mescal/lib or -I/usr/local/lib if the gmp libraries are found
 # and used in $PTII/mescal/relsat
 PTGMP_LIB =	@PTGMP_LIB@
