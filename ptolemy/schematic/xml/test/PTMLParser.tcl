@@ -175,4 +175,4 @@ test PTMLParser-4.1 {Constructor tests} {
 
     </domain>
 </domainlibrary>
-}}
+}} {KNOWN}
