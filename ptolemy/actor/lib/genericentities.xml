@@ -11,4 +11,6 @@
   <entity name="sources" class=".sources"/>
   <entity name="sinks" class=".sinks"/>
   <entity name="transformers" class=".transformers"/>
+
+  <entity name="IOPort" class="ptolemy.actor.TypedIOPort"/>
 </class>
