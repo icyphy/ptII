@@ -53,7 +53,7 @@ Any actors may be scheduled by this scheduler, which will assume
 homogenous behavior for each actor.  (i.e. each output port produces one 
 token for each firing, and each input port consumes one token on each firing,
 and no tokens are created during initialization.)  If this is not the case
-then the parameters "TokenConsumptionRate", "Token Production Rate", and
+then the parameters "TokenConsumptionRate", "TokenProductionRate", and
 "Token Init Production" must be set.   The SDFAtomicActor and 
 SDFCompositeActor classes provide easier access to these parameters.
 <p>
@@ -225,7 +225,7 @@ public class SDFScheduler extends Scheduler{
      *  rate of 1..
      */
     protected int _getTokenProductionRate(IOPort p) {
-        Parameter param = (Parameter)p.getAttribute("Token Production Rate");
+        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
         if(param == null) {
             if(p.isOutput()) 
                 return 1;
@@ -888,9 +888,9 @@ public class SDFScheduler extends Scheduler{
             param = new Parameter(port,"TokenConsumptionRate",
                     new IntToken(1)); 
         param.setToken(new IntToken(consumptionrate));
-        param = (Parameter)port.getAttribute("Token Production Rate");
+        param = (Parameter)port.getAttribute("TokenProductionRate");
         if(param == null) 
-            param = new Parameter(port,"Token Production Rate",
+            param = new Parameter(port,"TokenProductionRate",
                     new IntToken(1)); 
         param.setToken(new IntToken(productionrate));
         param = (Parameter)port.getAttribute("Token Init Production");
@@ -946,12 +946,12 @@ public class SDFScheduler extends Scheduler{
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
-            port.getAttribute("Token Production Rate");
+            port.getAttribute("TokenProductionRate");
         if(param != null) {
             param.setToken(new IntToken(rate));
         } else {
             try {
-                param = new Parameter(port,"Token Production Rate",
+                param = new Parameter(port,"TokenProductionRate",
                         new IntToken(rate));
             } 
             catch (Exception exception) {
