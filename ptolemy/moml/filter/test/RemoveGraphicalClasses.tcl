@@ -222,6 +222,8 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
