@@ -882,8 +882,9 @@ public class JNIUtilities {
         }
 
         results.append("package jni."
-                       + nativeLibrary
-                       + ";\n"
+                       + nativeLibrary + ";\n\n"
+		       + "import ptolemy.data.expr.UtilityFunctions;\n"
+		       + "import java.io.File;\n"
                        + "\n\n\n"
                        + "/* The class that interface the native function "
                        + "call\n"
@@ -902,9 +903,16 @@ public class JNIUtilities {
                        + _indent1 + "/* The loading of the native library\n"
                        + _indent1 + " */\n"
                        + _indent1 + "static {\n"
-                       + _indent2 + "System.loadLibrary(\"Jni"
-                       + interNativeLibrary
-                       + "\");\n"
+                       + _indent2 + "try {\n"
+                       + _indent3 + "UtilityFunctions.loadLibrary(\"jni\"\n"
+		       + _indent4 + "+ File.separator + \"" + nativeLibrary
+		       + "\"\n"
+		       + _indent4 + "+ File.separator + \"Jni"
+                       + interNativeLibrary + "\");\n"
+                       + _indent2 + "} catch (java.lang.UnsatisfiedLinkError ex) {\n"
+                       + _indent3 + "UtilityFunctions.loadLibrary(\"Jni"
+                       + interNativeLibrary + "\");\n"
+                       + _indent2 + "}\n"
                        + _indent1 + "}\n\n"
                        + _indent1 + "public native "
                        + returnJType
@@ -1513,4 +1521,8 @@ public class JNIUtilities {
     private static String _indent1 = StringUtilities.getIndentPrefix(1);
     // String to use to indent 2 level
     private static String _indent2 = StringUtilities.getIndentPrefix(2);
+    // String to use to indent 3 level
+    private static String _indent3 = StringUtilities.getIndentPrefix(3);
+    // String to use to indent 4 level
+    private static String _indent4 = StringUtilities.getIndentPrefix(4);
 }
