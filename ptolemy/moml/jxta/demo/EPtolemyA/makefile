@@ -49,7 +49,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	Average.class \
 	EPtolemy.properties \
-	EPtolemyA.htm \
+	$(PTPACKAGE).htm \
 	PtolemyActorExchangeGroup.adv \
 	actors.xml \
 	discoveredActors.xml \
@@ -87,14 +87,15 @@ EPtolemy.properties:
 	echo "ptPipe ptpipe.adv" >> $@
 	echo "pae.config.dir `echo "$(PTII)" | sed 's@\\\@/@g'`/$(ME)" >> $@
 
+OTHER_DEMO = 	EPtolemyB
 
 jxtaclean:
-	rm -rf .jxta ../eptolemy2/.jxta
+	rm -rf .jxta ../$(OTHER_DEMO)/.jxta
 
 demo:
-	@echo "See eptolemy.htm for instructions"
+	@echo "See $(PTPACKAGE).htm for instructions"
 	@echo "Don't forget to run "
-	@echo "   cd $PTII/ptolemy/moml/jxta/demo/eptolemy2; make demo"
+	@echo "   cd ../$(OTHER_DEMO); make demo"
 	@echo "in another window"
 	safePTII=`echo "$(PTII)" | sed 's@\\\@/@g'`; \
 	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/moml/jxta/jxta.xml" \
