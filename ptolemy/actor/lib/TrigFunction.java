@@ -146,22 +146,22 @@ public class TrigFunction extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String spec = function.getExpression();
-            if (spec.equals("acos")) {
+            String functionName = function.getExpression();
+            if (functionName.equals("acos")) {
                 _function = _ACOS;
-            } else if (spec.equals("asin")) {
+            } else if (functionName.equals("asin")) {
                 _function = _ASIN;
-            } else if (spec.equals("atan")) {
+            } else if (functionName.equals("atan")) {
                 _function = _ATAN;
-            } else if (spec.equals("cos")) {
+            } else if (functionName.equals("cos")) {
                 _function = _COS;
-            } else if (spec.equals("sin")) {
+            } else if (functionName.equals("sin")) {
                 _function = _SIN;
-            } else if (spec.equals("tan")) {
+            } else if (functionName.equals("tan")) {
                 _function = _TAN;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized trigonometric function: " + spec);
+                        "Unrecognized trigonometric function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -249,7 +249,8 @@ public class TrigFunction extends Transformer {
             throw new InternalErrorException(
                     "Invalid value for _function private variable. "
                     + "TrigFunction actor (" + getFullName()
-                    + ")");
+                    + ")"
+                    + " on function type " + _function);
         }
         return result;
     }
