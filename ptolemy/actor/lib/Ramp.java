@@ -149,15 +149,12 @@ public class Ramp extends SequenceSource {
     }
 
     /** Send the current value of the state of this actor to the output.
+     *  @exception IllegalActionException If calling send() or super.fire()
+     *  throws it.
      */
     public void fire() {
-        try {
-            super.fire();
-            output.send(0, _stateToken);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Should not be thrown because this is an output port");
-        }
+        super.fire();
+        output.send(0, _stateToken);
     }
 
     /** Set the state to equal the value of the <i>init</i> parameter.

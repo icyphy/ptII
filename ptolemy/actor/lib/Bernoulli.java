@@ -90,15 +90,12 @@ public class Bernoulli extends RandomSource {
     /** Send a random boolean to the output.
      *  This number is only changed in the prefire() method, so it will
      *  remain constant throughout an iteration.
+     *  @exception IllegalActionException If calling send() or super.fire()
+     *  throws it.
      */
-    public void fire() {
-        try {
-            super.fire();
-            output.send(0, new BooleanToken(_current));
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Should not be thrown because this is an output port");
-        }
+    public void fire() throws IllegalActionException {
+        super.fire();
+        output.send(0, new BooleanToken(_current));
     }
 
     /** Calculate the next random boolean for this iteration.
