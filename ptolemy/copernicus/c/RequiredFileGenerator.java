@@ -2,7 +2,7 @@
 A class that generates the other required files in the
 transitive closure.
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2001 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -41,31 +41,38 @@ import soot.Scene;
 import soot.SootClass;
 
 
-/*
+/**
 A class that generates the other required files in the
 transitive closure.
 
 @author Ankush Varma
 @version $Id$
 @since Ptolemy II 2.0
-
 */
 
-public class RequiredFileGenerator
-{
-    public void RequiredFileGenerator()
-    {
-        // dummy constructor
+public class RequiredFileGenerator {
+    /**
+     * dummy constructor
+     */
+    public void RequiredFileGenerator() {
+            // dummy constructor
 
-    }
+        }
 
 
+    /**
+     * generate the c files for all classes in the transitive closure of the
+     * given class.
+     * @param classPath The classPath.
+     * @param className The class for which the transitive closure is to be
+     * generated.
+     * @param compileMode The compilation mode.
+     * @param verbose Whether routine messages are to be generated.
+     */
     public static void generateTransitiveClosureOf(String classPath,
-            String className, String compileMode, boolean verbose) throws IOException
-            //generate a list of classes required for transitive closure of given class
-    {
-        if (!compileMode.equals("singleClass"))
-            {
+    String className, String compileMode, boolean verbose) throws IOException {
+
+            if (!compileMode.equals("singleClass")) {
                 Scene.v().setSootClassPath(classPath);
                 Scene.v().loadClassAndSupport(className);
 
@@ -74,108 +81,110 @@ public class RequiredFileGenerator
 
                 String nextClassName = new String();
 
-                while (i.hasNext())
-                    {
-                        nextClassName=((SootClass)i.next()).getName();
-                        generateCode(classPath, nextClassName,
-                                compileMode, verbose);
-                    }
+                while (i.hasNext()) {
+                    nextClassName=((SootClass)i.next()).getName();
+                    generateCode(classPath, nextClassName,
+                        compileMode, verbose);
+                }
             }
 
 
     }
 
-
+    /**
+     * generate all the code Files required for a given class
+     * @param classPath The class path.
+     * @param className The class for which the files should be generated.
+     * @param compileMode The compilation mode.
+     * @param verbose Whether routine messages should be generated.
+     */
     public static void generateCode(String classPath, String className,
-            String compileMode, boolean verbose) throws IOException
-    {
+        String compileMode, boolean verbose) throws IOException {
 
-        // Initialize code generation
-        Scene.v().setSootClassPath(classPath);
+            // Initialize code generation
+            Scene.v().setSootClassPath(classPath);
 
-        HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
-        CodeFileGenerator cGenerator        = new CodeFileGenerator();
-        InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
+            HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
+            CodeFileGenerator cGenerator        = new CodeFileGenerator();
+            InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
 
-        String code;
+            String code;
 
-        cGenerator.clearSingleClassMode();
-        hGenerator.clearSingleClassMode();
-        iGenerator.clearSingleClassMode();
+            cGenerator.clearSingleClassMode();
+            hGenerator.clearSingleClassMode();
+            iGenerator.clearSingleClassMode();
 
-        Scene.v().loadClassAndSupport(className);
-        SootClass sootClass = Scene.v().getSootClass(className);
-        CNames.setup();
+            Scene.v().loadClassAndSupport(className);
+            SootClass sootClass = Scene.v().getSootClass(className);
+            CNames.setup();
 
-        //Make changes in the filename
-        String fileName = new String();
-        fileName = classNameToFileName(className);
+            //Make changes in the filename
+            String fileName = new String();
+            fileName = classNameToFileName(className);
 
-        //create any parent directories
-        if (fileName.lastIndexOf('/')>0);
-        //the file requires some directories
-        {
-            if (verbose) System.out.println(className);
-            File dummyFile = new File(fileName.substring(0,
-                    fileName.lastIndexOf('/')));
-            dummyFile.mkdirs();
-        }
-
-        // Generate the .i.h file.
-        if (FileHandler.exists(fileName+".i.h"))
-            {
-                if (verbose) System.out.println( "\texists: "+fileName+".i.h");
+            //create any parent directories
+            if (fileName.lastIndexOf('/')>0) {
+            //the file requires some directories
+                if(verbose) System.out.println(className);
+                File dummyFile = new File(fileName.substring(0,
+                                            fileName.lastIndexOf('/')));
+                dummyFile.mkdirs();
             }
-        else
-            {
+
+            // Generate the _i.h file.
+            if (FileHandler.exists(fileName+"_i.h")) {
+                if(verbose) System.out.println( "\texists: "+fileName+"_i.h");
+            }
+            else {
                 code = iGenerator.generate(sootClass);
-                FileHandler.write(fileName+".i.h",code);
-                if (verbose) System.out.println( "\tcreated: "+fileName+".i.h");
+                FileHandler.write(fileName+"_i.h",code);
+                if(verbose) System.out.println( "\tcreated: "+fileName+"_i.h");
             }
 
 
-        // Generate the .h file.
-        if (FileHandler.exists(fileName+".h"))
-            {
-                if (verbose) System.out.println( "\texists: "+fileName+".h");
+            // Generate the .h file.
+            if(FileHandler.exists(fileName+".h")) {
+                if(verbose) System.out.println( "\texists: "+fileName+".h");
             }
-        else
-            {
+            else {
                 code = hGenerator.generate(sootClass);
                 FileHandler.write(fileName+".h",code);
-                if (verbose) System.out.println( "\tcreated: "+fileName+".h");
+                if(verbose) System.out.println( "\tcreated: "+fileName+".h");
             }
 
 
-        // Generate the .c file.
-        if (compileMode.equals("full"))
-            {
-                if (FileHandler.exists(fileName+".c"))
-                    {
-                        if (verbose) System.out.println( "\texists:"+fileName+".c");
-                    }
-                else
-                    {
-                        code = cGenerator.generate(sootClass);
-                        FileHandler.write(fileName+".c",code);
-                        if (verbose) System.out.println( "\tcreated: "
-                                +fileName+".c");
-                    }
+            // Generate the .c file.
+            if (compileMode.equals("full")) {
+                if (FileHandler.exists(fileName+".c")) {
+                    if(verbose) System.out.println( "\texists:"+fileName+".c");
+                }
+                else {
+                    code = cGenerator.generate(sootClass);
+                    FileHandler.write(fileName+".c",code);
+                    if(verbose) System.out.println( "\tcreated: "
+                        +fileName+".c");
+                }
             }
-    }
+        }
 
-    public static String classNameToFileName(String className)
-    {
+    /**
+     * @param className The name of a class.
+     * @return The C fileName corresponding to this class.
+     */
+    public static String classNameToFileName(String className) {
         if (isSystemClass(className)) return(System.getProperty("j2c_lib")+"/"
-                +className.replace('.', '/'));
+                    +className.replace('.', '/'));
         else return(className);
     }
 
-    public static boolean isSystemClass(String className)
-    {
+    /**
+     * @param className A class.
+     * @return True if the given class is a System class.
+     */
+    public static boolean isSystemClass(String className) {
 
         if ((className.startsWith("java."))||
-                (className.startsWith("sun."))) return (true);
+            (className.startsWith("sun."))) return (true);
         else return(false);
     }
 

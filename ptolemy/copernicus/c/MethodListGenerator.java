@@ -41,7 +41,7 @@ import java.util.LinkedList;
 import soot.SootClass;
 import soot.SootMethod;
 
-/*
+/**
    A class that extracts ordered lists of method declarations
    with an ordering convention that facilitates translation
    of methods into function pointers (e.g., for C code generation).
@@ -91,7 +91,6 @@ import soot.SootMethod;
 
    @author Shuvra S. Bhattacharyya
    @version $Id$
-   @since Ptolemy II 2.0
 
  */
 
@@ -103,8 +102,9 @@ public class MethodListGenerator {
 
     /** Given a class, return the class initializer method if it exists,
      *  or return null if the class does not have a class initializer method.
-     *  @param source the class.
-     *  @return the class initializer method.
+     *  @param source The class.
+     *  @return The class initializer method.
+     *  @since Ptolemy II 2.0
      */
     public static SootMethod getClassInitializer(SootClass source) {
         if (!_classInitializerMap.containsKey(source)) _generate(source);
@@ -112,8 +112,8 @@ public class MethodListGenerator {
     }
 
     /** Return the list of constructors for a given class.
-     *  @param source the class.
-     *  @return the list of constructors.
+     *  @param source The class.
+     *  @return The list of constructors.
      */
     public static LinkedList getConstructors(SootClass source) {
         if (!_constructorListMap.containsKey(source)) _generate(source);
@@ -121,8 +121,8 @@ public class MethodListGenerator {
     }
 
     /** Return the list of inherited methods for a given class.
-     *  @param source the class.
-     *  @return the list of inherited methods.
+     *  @param source The class.
+     *  @return The list of inherited methods.
      */
     public static LinkedList getInheritedMethods(SootClass source) {
         if (!_inheritedListMap.containsKey(source)) _generate(source);
@@ -130,8 +130,8 @@ public class MethodListGenerator {
     }
 
     /** Return the list of new methods for a given class.
-     *  @param source the class.
-     *  @return the list of new methods.
+     *  @param source The class.
+     *  @return The list of new methods.
      */
     public static LinkedList getNewMethods(SootClass source) {
         if (!_newListMap.containsKey(source)) _generate(source);
@@ -139,8 +139,8 @@ public class MethodListGenerator {
     }
 
     /** Return the list of private methods for a given class.
-     *  @param source the class.
-     *  @return the list of private methods.
+     *  @param source The class.
+     *  @return The list of private methods.
      */
     public static LinkedList getPrivateMethods(SootClass source) {
         if (!_privateListMap.containsKey(source)) _generate(source);
@@ -148,13 +148,13 @@ public class MethodListGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                  protected methods                        ////
 
     /** Given a class, construct the lists
      *  of constructors, inherited methods, new public and protected methods,
      *  and private methods. Recursively include methods from
      *  superclasses in the inherited methods list.
-     *  @param source the class.
+     *  @param source The class.
      */
     protected static void _generate(SootClass source) {
         LinkedList constructorList = new LinkedList();
@@ -179,7 +179,7 @@ public class MethodListGenerator {
                     // Static initializer for the class.
                     // Assume that there is at most one such initializer.
                     SootMethod previousEntry =
-                        (SootMethod)(_classInitializerMap.get(source));
+                            (SootMethod)(_classInitializerMap.get(source));
                     if (previousEntry == null)  {
                         _classInitializerMap.put(source, method);
                     }
@@ -198,9 +198,9 @@ public class MethodListGenerator {
                 else {
                     // Unrecognized method with name that contains '<'
                     throw new RuntimeException(
-                            "Unknown type of special method: "
-                            + method.getSubSignature() + " in class "
-                            + source.getName());
+                        "Unknown type of special method: "
+                        + method.getSubSignature() + " in class "
+                        + source.getName());
                 }
             }
             else {
@@ -242,7 +242,7 @@ public class MethodListGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                  private variables                        ////
 
     // Mapping from classes to lists of class initializer methods.
     // The keys are of type SootClass, and the values are either null

@@ -1,6 +1,6 @@
-/* a class that generates a makefile for the given class
+/* A class that generates a makefile for a given class.
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -36,22 +36,26 @@ import java.util.LinkedList;
 import soot.Scene;
 import soot.SootClass;
 
-/* A class that generates a makefile for the given class
+/** A class that generates the makefile for the given class
 
    @author Ankush Varma
    @version $Id$
    @since Ptolemy II 2.0
 */
 
-public class MakeFileGenerator
-{
-    public void MakeFileGenerator()
-    {
-        //dummy constructor
+public class MakeFileGenerator {
+    /**
+     * Dummy constructor
+     */
+    public void MakeFileGenerator() {
     }
 
-    public static void generateMakeFile(String classPath, String className)
-    {
+    /**
+     * create the MakeFile
+     * @param classPath The classPath
+     * @param className The class for which the Makefile is to be generated.
+     */
+    public static void generateMakeFile(String classPath, String className) {
         StringBuffer code = new StringBuffer();
 
         code.append("#Standard variables\n");
@@ -64,29 +68,29 @@ public class MakeFileGenerator
 
 
         //get names of all .c files in the transitive closure
-        Iterator i = _classNameList(classPath,className).iterator();
-        code.append("SOURCES = $(RUNTIME)/runtime.c $(RUNTIME)/array.c\\\n");
-        while (i.hasNext())
-            {
-                String name = _classNameToMakeFileName((String)i.next());
-                code.append("\t"+name+".c\\\n");
-            }
+        Iterator i = _classNameList(classPath, className).iterator();
+        code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
+            +"$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n");
+
+        while (i.hasNext()) {
+            String name = _classNameToMakeFileName((String)i.next());
+            code.append("\t"+name+".c\\\n");
+        }
+
         code.append("\n");//takes care of blank line for last "\"
 
 
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
         code.append(  "HEADERS = $(SOURCES:.c=.h)\n");
-        code.append( "IHEADERS = $(SOURCES:.c=.i.h)\n");
+        code.append( "IHEADERS = $(SOURCES:.c=_i.h)\n");
 
         code.append(className+".exe : $(OBJECTS)\n");
         code.append("\tgcc $(OBJECTS)\n");
 
-        code.append("makefile: $(THIS)\n");
-        code.append("\tmake depend\n\n");
-
         code.append(".c.o:\n");
-        code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $<\n\n");
+        code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $< -o $@\n\n");
 
+        code.append(".PHONY:depend\n\n");
         code.append("depend:\n");
         code.append("\t$(DEPEND) $(SOURCES)>makefile.tmp;\\\n");
         code.append("\tcat $(THIS) makefile.tmp>makefile;\\\n");
@@ -97,48 +101,55 @@ public class MakeFileGenerator
         code.append("\trm $(OBJECTS);\n");
 
         code.append("# DO NOT DELETE THIS LINE "
-                + " -- make depend depends on it.\n\n");
+                    + " -- make depend depends on it.\n\n");
 
         FileHandler.write(className+".make",code.toString());
 
     }
 
-    protected static LinkedList _classNameList(String classPath, String className)
-            //returns a list of the names of all classses in the transitive closure
-    {
+    /**
+     * @param classPath The classPath
+     * @param className The name of the class.
+     * @return A list of the names of all classses in the transitive closure of
+     * the given class.
+     */
+    protected static LinkedList _classNameList
+                        (String classPath, String className) {
         LinkedList names = new LinkedList();
 
         Scene.v().setSootClassPath(classPath);
         Scene.v().loadClassAndSupport(className);
 
         Iterator i = Scene.v().getClasses().iterator();
-        while (i.hasNext())
-            {
-                SootClass thisClass = (SootClass)i.next();
-                names.add(thisClass.getName());
-            }
+        while (i.hasNext()) {
+            SootClass thisClass = (SootClass)i.next();
+            names.add(thisClass.getName());
+        }
 
         return names;
 
     }
 
-    // finds filename corresponding to class and replaces
-    // "$" with "$$" for compatibility
-    protected static String _classNameToMakeFileName(String className)
-    {
-        StringBuffer name = new StringBuffer(
-                RequiredFileGenerator.classNameToFileName(className));
 
-        for (int j=0;j<name.length();j++)
-            {
-                if (name.charAt(j)=='$')
-                    {
-                        name.insert(j,"$");
-                        j++;
-                    }
-                //replace "$" with "$$"
-                //so that makefile interprets names correctly
+    /**
+     * finds filename corrseponding to class and replaces
+     * "$" with "$$" for compatibility with the make utility.
+     * @param className The name of the class.
+     * @return The corresponding filename as it should be written to the
+     * makeFile.
+     */
+    protected static String _classNameToMakeFileName(String className) {
+        StringBuffer name = new StringBuffer(
+            RequiredFileGenerator.classNameToFileName(className));
+
+        for(int j = 0;j<name.length();j++) {
+            if (name.charAt(j) == '$') {
+                name.insert(j,"$");
+                j++;
             }
+            //replace "$" with "$$"
+            //so that makefile interprets names correctly
+        }
 
         return name.toString();
     }

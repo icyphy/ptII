@@ -1,8 +1,8 @@
 /*
-A C code generator for generating "interface files" (.i.h files)
+A C code generator for generating "interface files" (_i.h files)
 that implement Java classes.
 
-Copyright (c) 2001-2002 The University of Maryland.
+Copyright (c) 2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -47,14 +47,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/*
-  A C code generator for generating "interface files" (.i.h files)
+/**
+  A C code generator for generating "interface files" (_i.h files)
   that implement Java classes.
 
   @author Ankush Varma
   @version $Id$
   @since Ptolemy II 2.0
-
 */
 
 // FIXME: Handle (ignore?) phantom methods and fields.
@@ -70,14 +69,10 @@ public class InterfaceFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate code for a C header file that implements declarations
-     *  associated with a class.
-     *  Code for two struct-based type definitions is generated here.
-     *  One type corresponds to the class itself (class variables,
-     *  function pointers to methods, etc.), and the other type
-     *  is for instances of the class.
-     *  @param source the class.
-     *  @return header code for the class.
+    /** Generate code for an interface header file that implements
+     *  declarations associated with a class.
+     *  @param source The class.
+     *  @return Interface header code for the class.
      */
     public String generate(SootClass source) {
         StringBuffer bodyCode = new StringBuffer();
@@ -109,19 +104,19 @@ public class InterfaceFileGenerator extends CodeGenerator {
 
         bodyCode.append("struct " + typeName + ";\n");
         bodyCode.append("typedef struct " + typeName + " *" +
-                typeName + ";\n\n");
+                        typeName + ";\n\n");
 
         bodyCode.append("/* Structure that implements " + className + " */\n");
         bodyCode.append("struct " + objectName +";\n\n");
         bodyCode.append("/* Pointer to structure that implements " +
-                className + " */\n");
+                        className + " */\n");
         bodyCode.append("typedef struct " +objectName+ " *" + objectName
-                +";\n");
+                        +";\n");
 
 
 
 
-        // Return an appropriate concatenation of the code strings.
+         // Return an appropriate concatenation of the code strings.
         return (headerCode.append(bodyCode.append(footerCode))).toString();
     }
 

@@ -40,6 +40,7 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
+import soot.ArrayType;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,7 +48,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/* A C code generator for generating "header files" (.h files) that implement
+/** A C code generator for generating "header files" (.h files) that implement
   Java classes.
 
   @author Shuvra S. Bhattacharyya, Ankush Varma
@@ -75,8 +76,8 @@ public class HeaderFileGenerator extends CodeGenerator {
      *  One type corresponds to the class itself (class variables,
      *  function pointers to methods, etc.), and the other type
      *  is for instances of the class.
-     *  @param source the class.
-     *  @return header code for the class.
+     *  @param source The class.
+     *  @return Header code for the class.
      */
     public String generate(SootClass source) {
         StringBuffer bodyCode = new StringBuffer();
@@ -100,7 +101,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         // Runtime include files
         headerCode.append("/* Runtime Include Files */\n");
-        headerCode.append("#include \"array.h\"\n\n");
+        headerCode.append("#include \"pccg_array.h\"\n\n");
 
         // FIXME: generate header code for inner classes (probably here)
 
@@ -163,15 +164,15 @@ public class HeaderFileGenerator extends CodeGenerator {
                 "Inherited/overridden methods");
         _context.clearDisableImports();
         String introducedMethods =
-            _generateMethodPointers(
-                    MethodListGenerator.getNewMethods(source),
-                    "New public and protected methods")
-            + _generateMethodPointers(
-                    MethodListGenerator.getConstructors(source),
-                    "Constructors")
-            + _generateMethodPointers(
-                    MethodListGenerator.getPrivateMethods(source),
-                    "Private methods");
+                _generateMethodPointers(
+                MethodListGenerator.getNewMethods(source),
+                "New public and protected methods")
+                + _generateMethodPointers(
+                MethodListGenerator.getConstructors(source),
+                "Constructors")
+                + _generateMethodPointers(
+                MethodListGenerator.getPrivateMethods(source),
+                "Private methods");
         if (((_context.getSingleClassMode()) || inheritedMethods.equals("")) &&
                 introducedMethods.equals("")) {
             bodyCode.append(_comment("Empty method table"));
@@ -208,7 +209,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         Iterator superClasses = _getSuperClasses(source).iterator();
         while (superClasses.hasNext()) {
             SootClass superClass = (SootClass)superClasses.next();
-            bodyCode.append(_generateInheritedFields(superClass));
+            bodyCode.append(_generateInheritedFields(source, superClass));
         }
         bodyCode.append(_generateFields(source));
 
@@ -216,11 +217,17 @@ public class HeaderFileGenerator extends CodeGenerator {
         // Terminator for declared type for class instances.
         bodyCode.append("\n};\n\n");
 
-        // Export function prototypes for all public and protected methods.
+        // Export function prototypes for all non-private
+        // methods
+
+        // FIXME: Need better support for native methods here
+        // #include native files and generate stubs
+
         Iterator methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
-            if (method.isProtected() || method.isPublic()) {
+
+            if (!method.isPrivate()) {
                 bodyCode.append("\n" + _comment(method.getSubSignature()));
                 bodyCode.append("extern " +
                         _generateMethodHeader(method) + ";\n");
@@ -243,8 +250,14 @@ public class HeaderFileGenerator extends CodeGenerator {
         // We are generating the include file for 'source', so there is
         // no need to import it.
         _removeRequiredType(source);
-        headerCode.append("#include \""+className.replace('.', '/')+".i.h\"\n");
+
+        if(source.hasSuperclass()) {
+            _updateRequiredTypes(source.getSuperclass().getType());
+        }
+
+        headerCode.append("#include \""+className.replace('.', '/')+"_i.h\"\n");
         headerCode.append(_generateIncludeDirectives());
+        headerCode.append("\n" + _generateArrayInstanceDeclarations());
         headerCode.append("\n");
 
         // Return an appropriate concatenation of the code strings.
@@ -254,7 +267,7 @@ public class HeaderFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // override method in CodeFileGenerator and generate ".i.h" files instead
+    // override method in CodeFileGenerator and include "_i.h" files instead
     // of .h files.
 
     protected String _generateIncludeDirectives() {
@@ -266,8 +279,8 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
         while (includeFiles.hasNext()) {
             headerCode.append("#include ");
-            String fileName= new String((String)includeFiles.next());
-            fileName=fileName.substring(0, fileName.length()-2)+".i.h";
+            String fileName = new String((String)includeFiles.next());
+            fileName = fileName.substring(0, fileName.length()-3)+"_i.h\"";
             headerCode.append(fileName);
             headerCode.append("\n");
         }
@@ -278,10 +291,10 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
         while (requiredTypes.hasNext()) {
             headerCode.append("#include \"");
-            String fileName= new String((String)requiredTypes.next());
-            fileName=fileName.substring(0, fileName.length()-2)+".i.h";
+            String fileName = new String((String)requiredTypes.next());
+            fileName = fileName.substring(0, fileName.length()-2)+"_i.h\"";
             headerCode.append(fileName);
-            headerCode.append("\"\n");
+            headerCode.append("\n");
         }
 
         return headerCode.toString();
@@ -294,6 +307,11 @@ public class HeaderFileGenerator extends CodeGenerator {
         // FIXME: generate any modifier-related code
         fieldCode.append(CNames.typeNameOf(field.getType()) + " ");
         _updateRequiredTypes(field.getType());
+
+        if (field.getType() instanceof ArrayType) {
+            _context.addArrayInstance(CNames.typeNameOf(field.getType()));
+        }
+
         fieldCode.append(CNames.fieldNameOf(field));
         fieldCode.append(";\n");
         return fieldCode.toString();
@@ -307,14 +325,19 @@ public class HeaderFileGenerator extends CodeGenerator {
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1)
-            + "/* Public and protected fields defined in "
-            + source.getName() + " */\n";
+                + "/* Public and protected fields defined in "
+                + source.getName() + " */\n";
 
         // Generate public and protected fields
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
+            /*
             if ((field.isPublic() || field.isProtected()) &&
-                    !(Modifier.isStatic(field.getModifiers()))) {
+                    !(Modifier.isStatic(field.getModifiers())))
+            */
+            //FIXME: Is this correct for static and native fields?
+            if ((!field.isPrivate())
+                && (!Modifier.isStatic(field.getModifiers()))) {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));
                 insertedFields++;
@@ -322,15 +345,16 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
 
         // Generate private fields
+        fieldCode.append("\n" + _indent(1)
+                + "/* Private Fields */\n");
         fields = source.getFields().iterator();
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
-            if (field.isPrivate() &&!(Modifier.isStatic(field.getModifiers())))
-                {
-                    if (insertedFields == 0) fieldCode.append(header);
-                    fieldCode.append(_generateField(field));
-                    insertedFields++;
-                }
+            if (field.isPrivate() &&!(Modifier.isStatic(field.getModifiers()))) {
+                if (insertedFields == 0) fieldCode.append(header);
+                fieldCode.append(_generateField(field));
+                insertedFields++;
+            }
         }
 
         return fieldCode.toString();
@@ -338,21 +362,44 @@ public class HeaderFileGenerator extends CodeGenerator {
 
     // Generate C declarations corresponding to all non-static fields inherited
     // from a given superclass.
-    private String _generateInheritedFields(SootClass superClass) {
+    // Rules for visiblity:
+    // Public    fields  - globally visible.
+    // Protected fields  - visible only to subclasses
+    // Private   fields  - visible only inside the class.
+    // "friendly" fields - visible in the same package.
+    private String _generateInheritedFields(SootClass source,
+            SootClass superClass) {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
         String header = "\n" + _indent(1) +
-            _comment("Fields inherited from " + superClass.getName());
+                _comment("Fields inherited from " + superClass.getName());
 
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
+
+            /*
             if ((field.isPublic() || field.isProtected()) &&
-                    !(Modifier.isStatic(field.getModifiers()))) {
+                    !(Modifier.isStatic(field.getModifiers())))
+            */
+            boolean stat = Modifier.isStatic(field.getModifiers());
+            boolean priv = field.isPrivate();
+            boolean pub  = field.isPublic();
+            boolean prot = field.isProtected();
+            boolean friendly = (!priv)&&(!pub)&&(!prot);
+            boolean samePack = (source.getPackageName().compareTo(
+                    superClass.getPackageName()) == 0);
+
+            boolean visible = (!stat)
+                && (pub || prot || (friendly && samePack)) ;
+
+            // FIXME: Is this correct for static fields?
+            if (visible) {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));
                 insertedFields++;
             }
+
         }
         return fieldCode.toString();
     }
@@ -397,6 +444,14 @@ public class HeaderFileGenerator extends CodeGenerator {
                 methodCode.append(");\n");
                 _updateRequiredTypes(method.getReturnType());
                 insertedMethods++;
+
+                // it add the method's return type to the context if it is an
+                // array
+                if (method.getReturnType() instanceof ArrayType) {
+                    _context.addArrayInstance(
+                        CNames.typeNameOf(method.getReturnType()));
+                }
+
             }
         }
         if ((insertedMethods > 0) && _context.getDisableImports())
@@ -429,7 +484,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         if (classes  == null) {
             if (source.hasSuperclass()) {
                 classes = (LinkedList)
-                    (_getSuperClasses(source.getSuperclass()).clone());
+                        (_getSuperClasses(source.getSuperclass()).clone());
                 classes.add(source.getSuperclass());
                 _superClasses.put(source, classes);
             } else {
@@ -445,12 +500,12 @@ public class HeaderFileGenerator extends CodeGenerator {
     // The end of a comment for generated code that is to be
     // commented-out.
     private static final String _closeComment =
-    "***********************************/\n";
+            "***********************************/\n";
 
     // The beginning of a comment for generated code that is to be
     // commented-out.
     private static final String _openComment =
-    "/***********************************\n";
+            "/***********************************\n";
 
     // Mapping from classes into lists of superclasses as computed by
     // {@link #_getSuperClasses(SootClass)}.
