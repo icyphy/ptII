@@ -159,7 +159,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	throws IllegalActionException {
         try {
             String file = ((StringToken)filename.getToken()).stringValue();
-            FileOutputStream fout = new FileOutputStream(file);
+            FileOutputStream fout;
+	    try {
+		fout = new FileOutputStream(file);
+	    } catch (java.lang.SecurityException ex) {
+		// If we are running Giotto within an unsigned applet, then
+		// we will not be able to write to a file.
+		System.err.println("Cannot open '" + file + "':" 
+				   + KernelException.stackTraceToString(ex));
+		return;
+	    }
             PrintStream pout = new PrintStream(fout);
 
 	    // Generate sensor list.
@@ -474,7 +483,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    pout.println("}");
 
 	} catch (IOException ex) {
-	    throw new IllegalActionException(this, ex.getMessage());
+	    throw new IllegalActionException(this, ex,
+					     "Giotto Code Generation Failed");
 	}
     }
 
