@@ -76,8 +76,13 @@ all: Average.class EPtolemy.properties jclass
 
 install: all $(PTCLASSJAR)
 
-Average.class:
+Average.class:	$(ROOT)/ptolemy/actor/lib/Average.class
 	cp $(ROOT)/ptolemy/actor/lib/Average.class .
+
+# Build Average.class if it does not yet exist.  The nightly build
+# requires this 
+$(ROOT)/ptolemy/actor/lib/Average.class: $(ROOT)/ptolemy/actor/lib/Average.java
+	(cd $(ROOT)/ptolemy/actor/lib; $(MAKE) Average.class)
 
 EPtolemy.properties:
 	echo "GroupAdvFileName PtolemyActorExchangeGroup.adv" > $@
