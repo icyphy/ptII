@@ -46,8 +46,8 @@ if {[string compare test [info procs test]] == 1} then {
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
-set manager [java::new ptolemy.actor.Manager]
-
+set w [java::new ptolemy.kernel.util.Workspace W]
+set manager [java::new ptolemy.actor.Manager $w M]
 
 ######################################################################
 ####
@@ -56,7 +56,6 @@ test Director-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.actor.Director]
     $d1 setName D1
     set d2 [java::new ptolemy.actor.Director D2]
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.actor.Director $w D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 W.D3}
@@ -69,7 +68,7 @@ test Director-3.1 {Test clone} {
     set d4 [java::cast ptolemy.actor.Director [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.D3}
+} {W.M W.D3}
 
 ######################################################################
 ####

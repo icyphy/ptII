@@ -497,16 +497,15 @@ public final class Manager extends NamedObj implements Runnable {
     ////                         protected methods                 ////
 
     /** Make this Manager the Manager of the specified composite
-     *  actor.  This method should not be called directly.  Instead, call
+     *  actor. If the CompositeActor is not null, then the Manager is 
+     *  removed from the directory of the workspace.  If the CompositeActor
+     *  is null, then the MAnager is *not* returned to the directory of the
+     *  workspace, which may result in it being garbage collected.
+     *  This method should not be called directly.  Instead, call
      *  setManager of the CompositeActor class (or a derived class).
-     *  If the argument is not the toplevel CompositeActor, then we throw
-     *  an InvalidStateException.
      */
     protected void _makeManagerOf(CompositeActor ca) {
         if (ca != null) {
-            if(ca.getContainer() != null)
-                throw new InvalidStateException("Manager's container must " +
-                        "be the toplevel CompositeActor!");
             workspace().remove(this);
         }
         _toplevel = ca;

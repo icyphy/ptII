@@ -575,10 +575,15 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Make this director the local director of the specified composite
-     *  actor.  This method should not be called directly.  Instead, call
+     *  actor.  If the CompositeActor is not null, then remove the Actor
+     *  from the workspace directory. If the CompositeActor is null, then 
+     *  the director is not added back into the directory of the Workspace, 
+     *  which could result in it being garbage collected.
+     *  This method should not be called directly.  Instead, call
      *  setDirector of the CompositeActor class (or a derived class).
      */
     protected void _makeDirectorOf(CompositeActor cast) {
+
         _container = cast;
         if (cast != null) {
             workspace().remove(this);

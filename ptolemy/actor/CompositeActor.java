@@ -557,10 +557,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  is set to null. This method is write-synchronized on the workspace.
      *
      *  @param director The Director responsible for execution.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *   but derived classes may throw it if the director is not compatible.
+     *  @exception IllegalActionException If the director is not in
+     *  the same workspace as this actor.  It may also be throw in derived
+     *  classed if the director is not compatible.
      */
     public void setDirector(Director director) throws IllegalActionException {
+        if (director != null && workspace() != director.workspace()) {
+            throw new IllegalActionException(this, director,
+                    "Cannot set director because workspaces are different.");
+        }
         try {
             workspace().getWriteAccess();
             // If there was a previous director, we need to reset it.
@@ -580,11 +585,18 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is write-synchronized on the workspace.
      *
      *  @param manager The Manager
-     *  @exception IllegalActionException If this actor has a container.
+     *  @exception IllegalActionException If this actor already has a 
+     *  container, or the manager is not in the same workspace as this 
+     *  actor.
+     *
      *  @see getManager
      */
     public void setManager(Manager manager)
             throws IllegalActionException {
+        if (manager != null && workspace() != manager.workspace()) {
+            throw new IllegalActionException(this, manager,
+                    "Cannot set manager because workspaces are different.");
+        }
         try {
             workspace().getWriteAccess();
             if (getContainer() != null && manager != null) {

@@ -93,9 +93,18 @@ test CompositeActor-3.2 {Test getDirector and getExecutiveDirector} {
 test CompositeActor-3.3 {Test failure mode of setManager} {
     # NOTE: Uses the setup above
     set m3 [java::new ptolemy.actor.Manager]
+    set m4 [java::new ptolemy.actor.Manager $w Manager]
     catch {$e5 setManager $m3} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .: Cannot set the Manager of an actor with a container.}}
+    catch {$e0 setManager $m4} msg2
+    list $msg $msg2
+} {{ptolemy.kernel.util.IllegalActionException: .E0.E3.E5 and .: Cannot set the Manager of an actor with a container.} {ptolemy.kernel.util.IllegalActionException: .E0 and W.Manager: Cannot set manager because workspaces are different.}}
+
+test CompositeActor-3.3a {Test failure mode of setDirector} {
+    # NOTE: Uses the setup above
+    set d4 [java::new ptolemy.actor.Director $w Director]
+    catch {$e0 setDirector $d4} msg
+    list $msg 
+} {{ptolemy.kernel.util.IllegalActionException: .E0 and W.Director: Cannot set director because workspaces are different.}}
 
 test CompositeActor-3.4 {Test isOpaque} {
     # NOTE: Uses the setup above
