@@ -36,7 +36,6 @@ import ptolemy.kernel.*;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
 
@@ -53,10 +52,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.InstantiationException;
 import java.lang.IllegalAccessException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.lang.SecurityException;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 
@@ -243,10 +244,6 @@ public class MoMLParser extends HandlerBase {
      *  </pre>
      *  If the first argument to parse() is null, then it is assumed that
      *  all URLs in the MoML file are absolute.
-     *  <p>
-     *  This version of the parse() method records the URL from which
-     *  the file is read in the top-level entity that is created using
-     *  the Origin attribute.  FIXME: More information here.
      *  <p>
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid MoML file.
@@ -541,6 +538,33 @@ public class MoMLParser extends HandlerBase {
                 // Read external model definition.
                 MoMLParser newParser = new MoMLParser(_workspace);
                 URL xmlFile = new URL(base, source);
+                InputStream input = null;
+                Exception thrown = null;
+                try {
+                    input = xmlFile.openStream();
+                } catch (IOException ex) {
+                    // Cannot open the file.  Iterate through the
+                    // classpath to attempt to open the file.
+                    try {
+                        // NOTE: An applet will throw a security exception here.
+                        String classpath
+                                = System.getProperty("java.class.path");
+                        String separator
+                                = System.getProperty("path.separator");
+                        // FIXME: Needs to be done.
+                        System.out.println("Classpath: " + classpath);
+                    } catch (SecurityException exception) {
+                        // Rethrow the original exception.
+                        throw ex;
+                    }
+                }
+                if (input == null) {
+                    throw new XmlException("Cannot open import file: "
+                           + source + "\nUsing base: " + base,
+                           _currentExternalEntity(),
+                           _parser.getLineNumber(),
+                           _parser.getColumnNumber());
+                }
                 NamedObj reference =
                         newParser.parse(xmlFile, xmlFile.openStream());
                 if (_imports == null) {
@@ -779,6 +803,9 @@ public class MoMLParser extends HandlerBase {
      *  @param systemId The URI for the external entity.
      */
     public void startExternalEntity (String systemId) {
+        // NOTE: The Microstar XML parser incorrectly passes the
+        // HTML file for the first external entity, rather than
+        // XML file.  So error messages typically refer to the wrong file.
         _externalEntities.push(systemId);
     }
 
@@ -792,7 +819,7 @@ public class MoMLParser extends HandlerBase {
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/moml.dtd.  If modified, it needs to be also
-    // updated at ptweb/archive/moml.dtd.
+    // updated at ptweb/xml/dtd/moml.dtd.
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1045,9 +1072,6 @@ public class MoMLParser extends HandlerBase {
 
     // List of top-level entities imported via import element.
     private List _imports;
-
-    // The manager for this model.
-    private Manager _manager;
 
     // The graphical container into which to place Placeable entities.
     private Container _panel;
