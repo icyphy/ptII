@@ -29,28 +29,49 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME =		ptolemy
+
 # Order matters here.  kernel should be first, then actors, then domains
 # so that when we compile in a directory we should have already compiled
 # any classes in other directories that we depend on.
-#
-# doc directory should be last so we get files from version control before
-# updating the docs
-# filter is not yet ready
+
 DIRS = kernel plot graph data actor automata gui math media \
 	domains schematic filter
 
 # Root of Ptolemy II directory
 ROOT =		..
 
-# $(ME) is used in ptdir.mk
-ME =		ptolemy
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
-
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	ptolemy
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Include these jars in PTAUXALLJAR
+PTAUXALLJARS = \
+		../collections/ptcollections.jar \
+		kernel/kernel.jar \
+		plot/plotapplet.jar \
+		graph/graph.jar \
+		data/data.jar \
+		actor/actor.jar
+
+# All the .class files necessary to run a Ptolemy II domain applet
+PTAUXALLJAR =	ptsupport.jar
+
+../collections/ptcollections.jar: 
+	(cd ../collections; $(MAKE) ptcollections.jar)
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		$(PTAUXALLJARS) \
+		domains/domains.jar \
+		schematic/schematic.jar 
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 EXTRA_SRCS =	PtolemyII.ptml
 
@@ -59,7 +80,7 @@ EXTRA_SRCS =	PtolemyII.ptml
 MISC_FILES = $(DIRS) filter system
 
 all: suball $(EXTRA_SRCS)
-install: subinstall
+install: subinstall jars
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk

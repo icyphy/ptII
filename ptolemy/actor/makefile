@@ -39,27 +39,31 @@
 #  Universe
 # Note that none of these classes would be relevant to FSMs, for example.
 
+ME =		ptolemy/actor
+
+DIRS = 		util sched process lib test # doc
+ 
 # Root of the Ptolemy II directory
 ROOT =		../..
 
-
+CLASSPATH =	$(ROOT)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		util sched process lib test # doc
-
-CLASSPATH = ../..
-
-# Used to build zip files
-PTPACKAGE = 	ptolemy.actor
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/actor
-PTVERSION =	1.0
+# Used to build jar files
+PTPACKAGE = 	actor
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	lib/lib.jar \
+	process/process.jar \
+	sched/sched.jar \
+	util/util.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -100,7 +104,7 @@ OPTIONAL_FILES =	#codeDoc
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass javadocs $(PTCLASSJAR)
+install: jclass javadocs jars
 docs: javadocs
 
 depend:
