@@ -36,6 +36,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Mailbox;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
@@ -199,27 +201,16 @@ public class FSMDirector extends Director {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
-        if(_debugging) _debug(getName(), " fire.");
-        if (_firstFire) {
-            Actor[] actors = getController().currentState().getRefinement();
-            _enabledRefinements = new LinkedList();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (actors[i].prefire()) {
-                        _enabledRefinements.add(actors[i]);
-                    }
-                }
-            }
-            _firstFire = false;
-        }
-       FSMActor ctrl = getController();
+        if (_debugging) _debug(getName(), " fire.");
+
+	FSMActor ctrl = getController();
         ctrl._setInputVariables();
-        if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
+        if (_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
-        if (tr != null) {
-
+        
+	if (tr != null) {
 	    Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -229,15 +220,17 @@ public class FSMDirector extends Director {
                     }
                 }
             }
-    
             return;
         }
-	Iterator actors = _enabledRefinements.iterator();
-	while (actors.hasNext()) {
-	    TypedActor actor = (TypedActor)actors.next();
-            if(_debugging) _debug(getName(), " fire refinement",
-                    ((ptolemy.kernel.util.NamedObj)actor).getName());
-	    actor.fire();
+
+	Actor[] actors = st.getRefinement();
+	if (actors != null) {
+	    for (int i = 0; i < actors.length; ++i) {
+		if (actors[i].prefire()) {
+		    actors[i].fire();
+		    actors[i].postfire();
+		}
+	    }
 	}
 	ctrl._setInputsFromRefinement();
         ctrl._chooseTransition(st.nonpreemptiveTransitionList());
@@ -348,6 +341,33 @@ public class FSMDirector extends Director {
         return super.getNextIterationTime();
     }
 
+    /** Return a receiver that is a one-place buffer. A token put into the
+     *  receiver will override any token already in the receiver.
+     *  @retrun A receiver that is a one-place buffer.
+     */
+    public Receiver newReceiver() {
+        return new Mailbox() {
+		public boolean hasRoom() {
+		    return true;
+		}
+
+		public void put(Token token) {
+		    try {
+			if (hasToken() == true) {
+			    get();
+			}
+			super.put(token);
+		    } catch (NoRoomException ex) {
+			throw new InternalErrorException("One-place buffer: "
+				+ ex.getMessage());
+		    } catch (NoTokenException ex) {
+			throw new InternalErrorException("One-place buffer: "
+				+ ex.getMessage());
+		    }
+		}
+	    };
+    }
+
     /** Return true if the mode controller wishes to be scheduled for
      *  another iteration. Postfire the refinement of the current state
      *  of the mode controller if it is ready to fire in the current
@@ -372,13 +392,13 @@ public class FSMDirector extends Director {
 	}
         boolean result = true;
 	Transition tr = ctrl._lastChosenTransition;
-	if (tr == null || !tr.isPreemptive()) {
+	/*if (tr == null || !tr.isPreemptive()) {
 	    Iterator actors = _enabledRefinements.iterator();
 	    while (actors.hasNext()) {
 		TypedActor actor = (TypedActor)actors.next();
 		actor.postfire();
 	    }
-	}
+	    }*/
 
 	boolean ctrlPostfire = ctrl.postfire();
         result = result && ctrlPostfire;
