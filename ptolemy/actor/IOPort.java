@@ -27,6 +27,8 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review vectorized methods.
+Review get/send/hasRoom/hasToken
+Review setInput/setOutput/setMultiport.
 */
 
 package ptolemy.actor;
@@ -1066,7 +1068,7 @@ public class IOPort extends ComponentPort {
                 if (!farReceivers[channelIndex][j].hasRoom()) return false;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This might be thrown if the port is not an input port.
+            // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
                     "hasRoom: channel index is out of range.");
         }
@@ -1135,7 +1137,7 @@ public class IOPort extends ComponentPort {
                 if (receivers[channelIndex][j].hasToken(tokens)) return true;
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This might be thrown if the port is not an input port.
+            // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
                     "hasToken: channel index is out of range.");
         }
