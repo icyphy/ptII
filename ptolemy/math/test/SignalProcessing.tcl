@@ -731,35 +731,38 @@ test SignalProcessing-13.1 {sampleWave line} {
 
 ####################################################################
 test SignalProcessing-13.2 {sampleWave raisedCosine with + excess} {
-    set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.6]
-    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
-    1.0 $rcGen]
+    set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 7.2 5.0]
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -2.2 \
+    1.1 $rcGen]
     epsilonDiff [$rcOut getrange 0] { \
-    -0.10185916357881 0.04864983309571 0.41157317310039 0.81942678059631 \
-    1.0 0.81942678059631 0.41157317310039 0.04864983309571 -0.10185916357881 \
-    -0.07789903503424} 
+    -0.0089215619743 0.531662991957 1.0 0.531662991957}  
+} {}
+
+####################################################################
+test SignalProcessing-13.3 {sampleWave raisedCosine with 0 excess} {
+    set rcGen [java::new ptolemy.math.SignalProcessing\$RaisedCosineSampleGenerator 3.2 0.0]
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -2.2 \
+    1.1 $rcGen]
+    epsilonDiff [$rcOut getrange 0] { \
+    0.38496726931971 0.816652384808 1.0 0.816652384808}
 } {}
 
 ####################################################################
 test SignalProcessing-14.1 {sampleWave sqrtRaisedCosine excess 0} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$SqrtRaisedCosineSampleGenerator 3.2 0.0]
-    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -1.0 \
     1.0 $rcGen]
     epsilonDiff [$rcOut getrange 0] { \
-	    -0.100658424209 0.0370287956785 0.263033138349 0.473447140821 \
-	    0.559016994375 0.473447140821 0.263033138349 0.0370287956785 \
-	    -0.100658424209 -0.111693796116}
+    0.47344714082124 0.55901699437495 0.47344714082124 0.26303313834852}
 } {}
 
 ####################################################################
 test SignalProcessing-14.2 {sampleWave sqrtRaisedCosine with + excess} {
     set rcGen [java::new ptolemy.math.SignalProcessing\$SqrtRaisedCosineSampleGenerator 3.2 0.6]
-    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 10 -4.0 \
+    set rcOut [java::call ptolemy.math.SignalProcessing sampleWave 4 -1.0 \
     1.0 $rcGen]
     epsilonDiff [$rcOut getrange 0] { \
-	    -0.0406721453381 -0.0235772000761 0.082087519139 3.48646058424 \
-	    0.6506643238 3.48646058424 0.082087519139 -0.0235772000761 \
-	    -0.0406721453381 -0.0046891701544}
+    0.498065797749 0.6506643238 0.498065797749 0.180592542106}
 } {}
 
 ####################################################################
