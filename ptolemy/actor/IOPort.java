@@ -783,6 +783,22 @@ public class IOPort extends ComponentPort {
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    // description variables.
+    // FIXME: consider move them into pt.kernel.Nameable.java
+
+    /**
+     * The description() method returns the receivers of this port.
+     */ 
+    public static final int RECEIVERS = 7;
+
+    /**
+     * The description() method returns the remote receivers of this port.
+     */ 
+    public static final int REMOTE_RECEIVERS = 8;
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
     /** Return the sums of the widths of the relations linked on the inside,
@@ -962,17 +978,4 @@ public class IOPort extends ComponentPort {
 
     // The local receivers, indexed by relation.
     private Hashtable _localReceiversTable;
-
-    // description variables.
-    // FIXME: consider move them into pt.kernel.Nameable.java
-
-    /**
-     * The description() method returns the receivers of this port.
-     */ 
-    public static final int RECEIVERS = 7;
-
-    /**
-     * The description() method returns the remote receivers of this port.
-     */ 
-    public static final int REMOTE_RECEIVERS = 8;
 }
