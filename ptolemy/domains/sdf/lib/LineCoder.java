@@ -67,7 +67,7 @@ public class LineCoder extends SDFTransformer {
 
         table = new Parameter(this, "table");
         table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        table.setExpression("[-1.0, 1.0]");
+        table.setExpression("{-1.0, 1.0}");
         attributeChanged(table);
 
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
