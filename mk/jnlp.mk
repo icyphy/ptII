@@ -85,6 +85,8 @@ CORE_JNLP_JARS = \
 	ptolemy/domains/domains.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	$(DOC_CODEDOC_JAR)
@@ -113,6 +115,17 @@ DSP_JNLP_JARS =	\
 # Jar files that will appear in a HyVisual only JNLP Ptolemy II Runtime.
 # This list is used to create the ptII/signed directory, so each
 # jar file should be named once in one of the *ONLY_JNLP_JARS
+#  - rather than including domains.jar, we include only ct.jar, fsm.jar
+#  - hybrid/configure.xml includes actor/lib/math.xml which includes
+#    sdf.lib.DotProduct
+#  - hybrid/configure.xml includes
+#    actor/lib/conversions/conversions.xml
+#    which includes
+#    sdf.lib.BitsToInt
+#    sdf.lib.IntToBits
+#
+# The full version of Vergil should not include any of the jar files below
+# because the hsif conversion does not work here
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
@@ -123,17 +136,8 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar
 
-
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
-
-#  - hybrid/configure.xml includes actor/lib/math.xml which includes
-#    sdf.lib.DotProduct
-#  - hybrid/configure.xml includes
-#    actor/lib/conversions/conversions.xml
-#    which includes
-#    sdf.lib.BitsToInt
-#    sdf.lib.IntToBits
 
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
@@ -144,14 +148,21 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar
+	ptolemy/vergil/vergil.jar \
+        ptolemy/matlab/demo/demo.jar \
+        lib/matlab.jar
+
+
 
 #######
 # Ptiny
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
+	lib/jython.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
+        ptolemy/actor/lib/python/python.jar \
+        ptolemy/actor/lib/python/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
@@ -160,6 +171,10 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/pn/demo/demo.jar \
+	ptolemy/domains/pn/doc/doc.jar \
+        ptolemy/domains/pn/doc/doc.jar \
+
 	ptolemy/moml/demo/demo.jar
 
 PTINY_MAIN_JAR = \
@@ -204,14 +219,11 @@ FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	$(PTJACL_JARS) \
-	lib/jython.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
-	ptolemy/actor/lib/python/python.jar \
-	ptolemy/actor/lib/python/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
 	ptolemy/caltrop/caltrop.jar \
@@ -230,11 +242,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
-	ptolemy/domains/tm/doc/doc.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar \
-	lib/ptjacl.jar \
-        ptolemy/actor/gui/ptjacl/ptjacl.jar
+	ptolemy/domains/tm/doc/doc.jar
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -243,7 +251,6 @@ FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
-	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(FULL_ONLY_JNLP_JARS)
 
@@ -326,6 +333,13 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+        if [ ! -f $(SIGNED_DIR)/$(DSP_MAIN_JAR) ]; then \
+                echo "$(SIGNED_DIR)$(DSP_MAIN_JAR) does not"; \
+                echo "   exist yet, but we need the size"; \
+                echo "   so copy it now and sign it later"; \
+                mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
+                cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`;\
+        fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -355,6 +369,14 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+        if [ ! -f $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR) ]; then \
+                echo "$(SIGNED_DIR)$(HYBRID_SYSTEMS_MAIN_JAR) does not"; \
+                echo "   exist yet, but we need the size"; \
+                echo "   so we copy it now and sign it later"; \
+                mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
+                cp -p $(HYBRID_SYSTEMS_MAIN_JAR) \
+                        `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
+        fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -381,6 +403,14 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+        if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
+                echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
+                echo "   exist yet, but we need the size"; \
+                echo "   so we copy it now and sign it later"; \
+                mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
+                cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR\
+)`; \
+        fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -408,6 +438,14 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+        if [ ! -f $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR) ]; then \
+                echo "$(SIGNED_DIR)$(PTINY_SANDBOX_MAIN_JAR) does not"; \
+                echo "   exist yet, but we need the size"; \
+                echo "   so we copy it now and sign it later"; \
+                mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
+                cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_
+SANDBOX_MAIN_JAR)`; \
+        fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
@@ -435,6 +473,13 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			$< > $@
+        if [ ! -f $(SIGNED_DIR)/$(FULL_MAIN_JAR) ]; then \
+                echo "$(SIGNED_DIR)$(FULL_MAIN_JAR) does not"; \
+                echo "   exist yet, but we need the size"; \
+                echo "   so we copy it now and sign it later"; \
+                mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
+	        cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR); \
+        fi
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
