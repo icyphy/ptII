@@ -110,8 +110,7 @@ public class MakefileWriter extends SceneTransformer {
             " _generatorAttributeFileName outDir targetPackage templateDirectory";
     }
 
-    /** Return the list of C files that will appear in the makefile.
-     *  The default is the empty string.
+    /** Add a makefile substitution from the given name to the given value.
      */
     public static void addMakefileSubstitution(String name, String value) {
         _addedSubstitutions.put(name, value);

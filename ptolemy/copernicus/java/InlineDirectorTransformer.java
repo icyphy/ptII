@@ -32,6 +32,7 @@ package ptolemy.copernicus.java;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.*;
+import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
@@ -126,6 +127,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
         }
 
+        MakefileWriter.addMakefileSubstitution("@extraClassPath@", "");
+        
         if(model.getDirector() instanceof SDFDirector) {
             _inlineSDFDirector(model, modelClass, phaseName, options);
         } else if(model.getDirector() instanceof HSDirector ||
@@ -178,6 +181,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
     private void _inlineGiottoDirector(
             CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {
+
+        // FIXME: what if giotto is someplace else?
+        MakefileWriter.addMakefileSubstitution("@extraClassPath@", 
+                "$(CLASSPATHSEPARATOR)$(ROOT)/vendors/giotto/giotto.jar");
+        
         GiottoPortInliner portInliner = 
             new GiottoPortInliner(modelClass, model, options);
         InlinePortTransformer.setPortInliner(model, portInliner);
@@ -185,7 +193,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         // Create the Giotto communication buffers so we can reference
         // them here.
         portInliner.createBuffers();
-
+    
         GiottoDirector director = (GiottoDirector) model.getDirector();
         
         System.out.println("Inlining director for " + model.getFullName());
@@ -196,11 +204,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 //         modelClass.addField(postfireReturnsField);
 
         // First, write out Giotto Code for the model.
+        String directory = Options.getString(options, "outDir");
         try {
             String giottoCode = 
                 ptolemy.domains.giotto.kernel.GiottoCodeGenerator.generateCode(
                         (TypedCompositeActor)model);
-            String directory = Options.getString(options, "outDir");
             FileWriter writer = new FileWriter(
                     directory + "/" + model.getName() + ".giotto");
             writer.write(giottoCode);
@@ -758,8 +766,17 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
 
             // Start the Emachine...
-      //       {
-//                 // Fire the controller.
+            {
+                // Fire the controller.
+                SootClass emulatorClass = Scene.v().loadClassAndSupport("platform.emachine.Emulator");
+                SootMethod theRunMethod = emulatorClass.getMethodByName("runAndWait");
+                String fileName = directory + "/out.ecd";
+                 units.insertBefore(
+                         Jimple.v().newInvokeStmt(
+                                 Jimple.v().newStaticInvokeExpr(theRunMethod,
+                                         StringConstant.v(fileName))),
+                         insertPoint);
+            
 //                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
 //                 body.getLocals().add(actorLocal);
 //                 String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -781,7 +798,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 //                                 Jimple.v().newVirtualInvokeExpr(actorLocal,
 //                                         actorFireMethod)),
 //                         insertPoint);
-//             }
+            }
 
             // Transfer outputs from output ports
             for(Iterator ports = model.outputPortList().iterator();
@@ -918,7 +935,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
         }
-
+        
         {
             // populate the wrapup method
             SootMethod classMethod =
@@ -958,7 +975,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setActiveFastHierarchy(new FastHierarchy());
     }
-
+        
     private void _inlineHSDirector(CompositeActor model, SootClass modelClass,
             String phaseName, Map options) {
         InlinePortTransformer.setPortInliner(model,

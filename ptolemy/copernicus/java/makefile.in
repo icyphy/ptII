@@ -32,7 +32,7 @@
 # Root of the Java directory
 ROOT =		@ptII@
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/diva.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/sun/commapi/comm.jar$(AUXCLASSPATH)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/diva.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/sun/commapi/comm.jar$(AUXCLASSPATH)@extraClassPath@
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
