@@ -44,16 +44,27 @@ import java.io.Serializable;
 Token is the base class for data capsules.  Tokens are immutable,
 meaning that their value cannot change after construction.  They have
 a set of polymorphic methods providing a set of basic arithmetic and
-logical operations.  This base class implements these polymorphic
-methods so that lossless type conversion is performed to convert the
-tokens to the same type.  After performing type conversion, the actual
-operations are performed by a set of protected methods.  This ensures
-that type conversions are performed consistently across all data
-types.  Generally, derived classes should override the protected
-method to implement type specific operations that make sense for a
+logical operations.  Generally, derived classes should override the
+methods to implement type specific operations that make sense for a
 given type.  For operations that are non-sensical for a given type,
 such as division of matrices, the implementation of this base class
 can be used, which simply throws an exception.
+
+<p> Generally, it is painful to implement both the operation and
+operationReverse methods of this class.  It is also painful to
+implement tokens that are automatically converted to other tokens in a
+consistent fashion.  As such, there are several subclasses of this
+class that implement these methods and provide a somewhat nicer
+abstraction.  The ScalarToken derived class is useful for many types
+that are losslessly convertible to other types and may be associated
+with units, such as IntToken.  The MatrixToken derived class is useful
+for implementing matrices of ScalarTokens, such as IntMatrixToken.
+The AbstractNotConvertible derived class is useful for implementing
+tokens that are not losslessly convertible to a token in implemented
+in another class, such as ArrayToken.  Lastly,
+AbstractConvertibleToken is useful for implementing tokens that are
+losslessly convertible to a token in another class, but don't have
+units, such as BooleanToken.
 
 <p> Instances of this base class can be used to represent pure events,
 i.e., to indicate that an event is present. To support this use, the
@@ -64,6 +75,10 @@ Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 
+@see ScalarToken
+@see AbstractConvertibleToken
+@see AbstractNotConvertibleToken
+@see MatrixToken
 */
 public class Token implements Serializable {
 
@@ -265,11 +280,12 @@ public class Token implements Serializable {
                 notSupportedMessage("multiplyReverse", this, leftArgument));
     }
 
-    /** Return a string with an error message that states that
-     *  operation is not supported between two tokens.
+    /** Return a string with an error message that states that the
+     *  given operation is not supported between two tokens.
      *  @param operation A string naming the unsupported token
+     *  operation.
      *  @param firstToken The first token in the message.
-     *  @param secondToken The first token in the message.
+     *  @param secondToken The second token in the message.
      *  @return A string error message.
      */
     public static String notSupportedMessage(String operation,
@@ -301,12 +317,14 @@ public class Token implements Serializable {
                 + typeString + ".");
     }
 
-    /** Return a string with an error message that states that
-     *  operation is not supported between two tokens, because they
-     *  have incomparable types and cannot be converted to the same type.
+    /** Return a string with an error message that states that the
+     *  given operation is not supported between two tokens, because
+     *  they have incomparable types and cannot be converted to the
+     *  same type.
      *  @param operation A string naming the unsupported token
+     *  operation.
      *  @param firstToken The first token in the message.
-     *  @param secondToken The first token in the message.
+     *  @param secondToken The second token in the message.
      *  @return A string error message.
      */
     public static String notSupportedIncomparableMessage(String operation,
@@ -322,7 +340,7 @@ public class Token implements Serializable {
     }
 
     /** Return a string with an error message that states that
-     *  the given token cannot be converted a given token type.
+     *  the given token cannot be converted to the given token type.
      *  @param token The token being converted.
      *  @param typeString A string representing the type that is being
      *  converted to.

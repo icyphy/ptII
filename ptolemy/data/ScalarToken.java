@@ -47,29 +47,30 @@ import java.util.Arrays;
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
 /**
-Abstract base class for tokens that contain a scalar.  This class
-defines methods for type conversion among different scalar tokens. The
-implementation in this base class just throws an exception.  Derived
-class should override the methods that the corresponding conversion
-can be achieved without loss of information.
+Abstract base class for tokens that contain a scalar.  This base class
+extends the Token class to properly implement type conversion and the
+units portion of the standard operations for scalar tokens.  It also
+adds methods for querying the natural ordering between scalars.
 
-<p> Instances of ScalarToken may also have units. In the arithmetic
-methods add(), modulo(), and subtract(), the two operands must have the same
+<p> This class has a number of protected abstract methods that subclasses
+must implement.  These methods need only implement the numerical
+portion of the operation between two tokens of the same type.  This
+base class will handle the conversion of tokens from different types
+to the same type before calling the protected method, and the proper
+computation of the units of the returned token afterwards.
+
+<p> In general, any instance of a scalar token may be optionally
+associated with a set of units.  In the arithmetic methods add(),
+modulo(), and subtract(), the two operands must have the same
 units. Otherwise, an exception will be thrown. In the methods
 multiply() and divide(), the units of the resulting token will be
-computed automatically.  The methods in this class properly compute the
-units and derived classes to not need ot compute them separately.  However,
-it is important in some cases that derived classes actually return a new
-token, since the units may be different.  For instance, multiplication by
-one cannot generally be optimized to simply return the input token without
-performing the multiplication, since the one may actually change the units
-of the token.
-
-<p> The operation methods from the Token base class are implemented in
-this class to perform the proper units conversion for all scalar
-types.  This class in turn defines a new set of protected methods that
-scalar tokens should override to inherit the proper type conversion
-and unit conversion operations.
+computed automatically.  IMPORTANT: The protected methods implemented
+in derived classes are expected to return a new token in the case of
+multiply and divide.  This new token will automatically have its units
+set correctly by this base class implementation.  Certain cases, such
+as multiplication by one, cannot be optimized to simply return an the
+input token without performing the multiplication, since the units of
+the result may be different than the units of either input token.
 
 @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
 @version $Id$
@@ -86,9 +87,9 @@ public abstract class ScalarToken extends Token {
      *  returned.  Note that it is explicitly allowable to return this
      *  token, since the units are the same.  This method defers to
      *  the _absolute() method to perform the operation, and derived
-     *  classes should override that method to provide type-specific
-     *  behavior
-     *  @return A ScalarToken of the same units, and likely to be of
+     *  classes should implement that method to provide type-specific
+     *  behavior.
+     *  @return A ScalarToken with the same units, and likely to be of
      *  the same type as this token.
      */
     public final ScalarToken absolute() {
@@ -102,7 +103,7 @@ public abstract class ScalarToken extends Token {
      *  operation is performed at the least type necessary to ensure
      *  precision.  The returned type is the same as the type chosen
      *  for the operation, which is the higher of the type of this
-     *  token and the argument type.  Subclasses should override the
+     *  token and the argument type.  Subclasses should implement the
      *  protected _add() method to perform the correct type-specific
      *  operation.
      *  @param rightArgument The token to add to this token.
@@ -114,14 +115,12 @@ public abstract class ScalarToken extends Token {
     public final Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
-            Token result = _doAdd(rightArgument);
-            return result;
+            return _doAdd(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                Token result = _doAdd(convertedArgument);
-                return result;
+                return _doAdd(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -130,8 +129,7 @@ public abstract class ScalarToken extends Token {
                         notSupportedMessage("add", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            Token result = rightArgument.addReverse(this);
-            return result;
+            return rightArgument.addReverse(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("add",
@@ -144,7 +142,7 @@ public abstract class ScalarToken extends Token {
      *  operation is performed at the least type necessary to ensure
      *  precision.  The returned type is the same as the type chosen
      *  for the operation, which is the higher of the type of this
-     *  token and the argument type.  Subclasses should override the
+     *  token and the argument type.  Subclasses should implement the
      *  protected _add() method to perform the correct type-specific
      *  operation.
      *  @param leftArgument The token to add this token to.
@@ -157,13 +155,12 @@ public abstract class ScalarToken extends Token {
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
         // We would normally expect this to be LOWER, since this will almost
-        // always be called by subtract, so put that case first.
+        // always be called by add, so put that case first.
         if (typeInfo == CPO.LOWER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(leftArgument);
             try {
-                Token result = convertedArgument._doAdd(this);
-                return result;
+                return convertedArgument._doAdd(this);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -173,11 +170,9 @@ public abstract class ScalarToken extends Token {
                                 this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((ScalarToken)leftArgument)._doAdd(this);
-            return result;
+            return ((ScalarToken)leftArgument)._doAdd(this);
         } else if (typeInfo == CPO.HIGHER) {
-            Token result = leftArgument.add(this);
-            return result;
+            return leftArgument.add(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("addReverse",
@@ -185,14 +180,24 @@ public abstract class ScalarToken extends Token {
         }
     }
 
+    /** Return the value in the token as a byte.
+     *  In this base class, we just throw an exception.
+     *  @return The byte value contained in this token.
+     *  @exception IllegalActionException Always thrown.
+     */
+    public byte byteValue() throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "byte"));
+    }
+
     /** Return the value of this token as a Complex.
      *  In this base class, we just throw an exception.
      *  @return A Complex
-     *  @exception IllegalActionException Always thrown
+     *  @exception IllegalActionException Always thrown.
      */
     public Complex complexValue() throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert the value in " +
-                getClass().getName() + " to a Complex losslessly.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "Complex"));
     }
 
     /** Return a new token whose value is the value of this token
@@ -200,9 +205,10 @@ public abstract class ScalarToken extends Token {
      *  also occurs here, so that the operation is performed at the
      *  least type necessary to ensure precision.  The returned type
      *  is the same as the type chosen for the operation, which is the
-     *  higher of the type of this token and the argument type.
-     *  Subclasses should override the protected _divide() method to
-     *  perform the correct type-specific operation.
+     *  higher of the type of this token and the argument type.  The
+     *  returned token will also have the correct units.  Subclasses
+     *  should implement the protected _divide() method to perform the
+     *  correct type-specific operation.
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -213,15 +219,13 @@ public abstract class ScalarToken extends Token {
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if(typeInfo == CPO.SAME) {
-            Token result = _doDivide(rightArgument);
-            return result;
+            return _doDivide(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
 
             try {
-                Token result = _doDivide(convertedArgument);
-                return result;
+                return _doDivide(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -230,8 +234,7 @@ public abstract class ScalarToken extends Token {
                         notSupportedMessage("divide", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            Token result = rightArgument.divideReverse(this);
-            return result;
+            return rightArgument.divideReverse(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divide",
@@ -240,14 +243,15 @@ public abstract class ScalarToken extends Token {
     }
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token.  Type conversion
+     *  divided into the value of the argument token.  Type conversion
      *  also occurs here, so that the operation is performed at the
      *  least type necessary to ensure precision.  The returned type
      *  is the same as the type chosen for the operation, which is the
-     *  higher of the type of this token and the argument type.
-     *  Subclasses should override the protected _divide() method to
-     *  perform the correct type-specific operation.
-     *  @param leftArgument The token to be divided by the value of
+     *  higher of the type of this token and the argument type.  The
+     *  returned token will also have the correct units.  Subclasses
+     *  should implement the protected _divide() method to perform the
+     *  correct type-specific operation.
+     *  @param leftArgument The token to be divided into the value of
      *  this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -258,13 +262,12 @@ public abstract class ScalarToken extends Token {
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
         // We would normally expect this to be LOWER, since this will almost
-        // always be called by subtract, so put that case first.
+        // always be called by divide, so put that case first.
         if (typeInfo == CPO.LOWER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(leftArgument);
             try {
-                Token result = convertedArgument._doDivide(this);
-                return result;
+                return convertedArgument._doDivide(this);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -274,11 +277,9 @@ public abstract class ScalarToken extends Token {
                                 this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((ScalarToken)leftArgument)._doDivide(this);
-            return result;
+            return ((ScalarToken)leftArgument)._doDivide(this);
         } else if (typeInfo == CPO.HIGHER) {
-            Token result = leftArgument.divide(this);
-            return result;
+            return leftArgument.divide(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divideReverse",
@@ -292,16 +293,15 @@ public abstract class ScalarToken extends Token {
      *  @exception IllegalActionException Always thrown
      */
     public double doubleValue() throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert the value in " +
-                getClass().getName() + " to a double losslessly.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "double"));
     }
 
-    /** Return the type of this token.
+    /** Return the type of this token.  Subclasses must implement this method
+     *  to return the correct type.
      *  @return BaseType.SCALAR
      */
-    public Type getType() {
-        return BaseType.SCALAR;
-    }
+    public abstract Type getType();
 
     /** Return the value of this token as a FixPoint.
      *  In this base class, we just throw an exception.
@@ -309,15 +309,15 @@ public abstract class ScalarToken extends Token {
      *  @exception IllegalActionException Always thrown.
      */
     public FixPoint fixValue() throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert the value in " +
-                getClass().getName() + " to a FixPoint losslessly.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "fixedpoint"));
     }
 
-    /** Test that the value of this Token is close to the argument
+    /** Test whether the value of this Token is close to the argument
      *  Token.  The argument and this token are converted to
      *  equivalent types, and then compared.  Generally, this is the
      *  higher of the type of this token and the argument type.
-     *  Subclasses should override the protected _isCloseTo() method
+     *  Subclasses should implement the protected _isCloseTo() method
      *  to perform the correct type-specific operation.
      *
      *  @see #isEqualTo
@@ -328,7 +328,8 @@ public abstract class ScalarToken extends Token {
      *  units of this token and the argument token are the same, and their
      *  values are close.
      *  @exception IllegalActionException If the argument token is not
-     *  of a type that can be compared with this token.
+     *  of a type that can be compared with this token, or the units
+     *  are not the same.
      */
     public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
@@ -339,26 +340,25 @@ public abstract class ScalarToken extends Token {
         // straight to isEqualTo().  Also, these methods might introduce
         // exceptions because of type conversion issues.
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doIsCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                BooleanToken result = _doIsCloseTo(convertedArgument, epsilon);
-                return result;
+                return _doIsCloseTo(convertedArgument, epsilon);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("closeness", this, rightArgument));
+                        notSupportedMessage("isCloseTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isCloseTo(this, epsilon);
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("closeness",
+                    notSupportedIncomparableMessage("isCloseTo",
                             this, rightArgument));
         }
     }
@@ -367,8 +367,8 @@ public abstract class ScalarToken extends Token {
      *  Token.  The argument and this token are converted to
      *  equivalent types, and then compared.  Generally, this is the
      *  higher of the type of this token and the argument type.  This
-     *  method defers to the _isEqualTo method to perform a
-     *  type-specific equality check.  Derived classes should override
+     *  method defers to the _isEqualTo() method to perform a
+     *  type-specific equality check.  Derived classes should implement
      *  that method to provide type specific actions for equality
      *  testing.
      *
@@ -382,66 +382,66 @@ public abstract class ScalarToken extends Token {
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doIsEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                BooleanToken result = _doIsEqualTo(convertedArgument);
-                return result;
+                return _doIsEqualTo(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                        notSupportedMessage("equality", this, rightArgument));
+                        notSupportedMessage("isEqualTo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isEqualTo(this);
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("equality",
+                    notSupportedIncomparableMessage("isEqualTo",
                             this, rightArgument));
         }
     }
 
     /** Return the value of this token as an int.
      *  In this base class, we just throw an exception.
-     *  @return The value of this token.
+     *  @return The value of this token as an int.
      *  @exception IllegalActionException Always thrown.
      */
     public int intValue() throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert the value in " +
-                getClass().getName() + " to an int losslessly.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "int"));
     }
 
     /** Check whether the value of this token is strictly greater than
      *  that of the argument token.  The argument and this token are
      *  converted to equivalent types, and then compared.  Generally,
      *  this is the higher of the type of this token and the argument
-     *  type.  This method defers to the _isLessThan method to perform
+     *  type.  This method defers to the _isLessThan() method to perform
      *  a type-specific equality check.  Derived classes should
-     *  override that method to provide type specific actions for
+     *  implement that method to provide type specific actions for
      *  equality testing.
      *
      *  @param rightArgument The token to compare against.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A boolean token with value true if this token is
-     *  strictly greater than the argument.
+     *  @return A boolean token with value true if this token has the
+     *  same units as the argument, and is strictly greater than the
+     *  argument.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or have different units,
+     *  or the operation does not make sense for the given types.
      */
     public final BooleanToken isGreaterThan(ScalarToken rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return rightArgument._doIsLessThan(this);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                BooleanToken result = convertedArgument._doIsLessThan(this);
-                return result;
+                return convertedArgument._doIsLessThan(this);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -459,33 +459,33 @@ public abstract class ScalarToken extends Token {
         }
     }
 
-
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.  The argument and this token are converted to
      *  equivalent types, and then compared.  Generally, this is the
      *  higher of the type of this token and the argument type.  This
-     *  method defers to the _isLessThan method to perform a
-     *  type-specific equality check.  Derived classes should override
+     *  method defers to the _isLessThan() method to perform a
+     *  type-specific equality check.  Derived classes should implement
      *  that method to provide type specific actions for equality
      *  testing.
      *
      *  @param rightArgument The token to compare against.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A boolean token with value true if this token is
-     *  strictly less than the argument.
+     *  @return A boolean token with value true if this token has the
+     *  same units as the argument, and is strictly less than the
+     *  argument.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or have different units,
+     *  or the operation does not make sense for the given types.
      */
     public final BooleanToken isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doIsLessThan(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                BooleanToken result = _doIsLessThan(convertedArgument);
-                return result;
+                return _doIsLessThan(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -507,29 +507,28 @@ public abstract class ScalarToken extends Token {
      *  must be the same as that of this token, otherwise, an exception will
      *  be thrown. The returned token is unitless.
      *  @param units A scalar token that represents a unit.
-     *  @return A scalar token that do not have a unit.
+     *  @return A scalar token that does not have a unit.
      *  @exception IllegalActionException If the unit category of the
-     *   argument token is not the same as that of this one.
+     *  argument token is not the same as that of this one.
      */
     public ScalarToken inUnitsOf(ScalarToken units)
             throws IllegalActionException {
         if ( !_areUnitsEqual(units)) {
-            throw new IllegalActionException("ScalarToken.inUnitsOf: "
-                    + "The units of this token: " + unitsString()
-                    + " are not the same as the units of the argument: "
-                    + units.unitsString());
+            throw new IllegalActionException(
+                    notSupportedMessage("inUnitsOf", this, units) +
+                    " because the units are not the same.");
         }
         return (ScalarToken)this.divide(units);
     }
 
     /** Return the value of this token as a long integer.
      *  In this base class, we just throw an exception.
-     *  @return A long
+     *  @return The value of this token as a long.
      *  @exception IllegalActionException Always thrown.
      */
     public long longValue() throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert the value in " +
-                getClass().getName() + " to a long losslessly.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "long"));
     }
 
     /** Return a new token whose value is the value of this token
@@ -538,7 +537,7 @@ public abstract class ScalarToken extends Token {
      *  type necessary to ensure precision.  The returned type is the
      *  same as the type chosen for the operation, which is the higher
      *  of the type of this token and the argument type.  Subclasses
-     *  should override the protected _modulo() method to perform the
+     *  should implement the protected _modulo() method to perform the
      *  correct type-specific operation.
      *  @param rightArgument The token to modulo with this token.
      *  @return A new token containing the result.
@@ -549,15 +548,13 @@ public abstract class ScalarToken extends Token {
     public final Token modulo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
-            Token result = _doModulo(rightArgument);
-            return result;
+        if (typeInfo == CPO.SAME) {
+            return _doModulo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                Token result = _doModulo(convertedArgument);
-                return result;
+                return _doModulo(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -566,8 +563,7 @@ public abstract class ScalarToken extends Token {
                         notSupportedMessage("modulo", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            Token result = rightArgument.moduloReverse(this);
-            return result;
+            return rightArgument.moduloReverse(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("modulo",
@@ -581,7 +577,7 @@ public abstract class ScalarToken extends Token {
      *  type necessary to ensure precision.  The returned type is the
      *  same as the type chosen for the operation, which is the higher
      *  of the type of this token and the argument type.  Subclasses
-     *  should override the protected _modulo() method to perform the
+     *  should implement the protected _modulo() method to perform the
      *  correct type-specific operation.
      *  @param leftArgument The token to apply modulo to by the value
      *  of this token.
@@ -599,8 +595,7 @@ public abstract class ScalarToken extends Token {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(leftArgument);
             try {
-                Token result = convertedArgument._doModulo(this);
-                return result;
+                return  convertedArgument._doModulo(this);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -610,11 +605,9 @@ public abstract class ScalarToken extends Token {
                                 this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((ScalarToken)leftArgument)._doModulo(this);
-            return result;
+            return ((ScalarToken)leftArgument)._doModulo(this);
         } else if (typeInfo == CPO.HIGHER) {
-            Token result = leftArgument.modulo(this);
-            return result;
+            return leftArgument.modulo(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("moduloReverse",
@@ -628,7 +621,7 @@ public abstract class ScalarToken extends Token {
      *  performed at the least type necessary to ensure precision.
      *  The returned type is the same as the type chosen for the
      *  operation, which is the higher of the type of this token and
-     *  the argument type.  Subclasses should override the protected
+     *  the argument type.  Subclasses should implement the protected
      *  _multiply() method to perform the correct type-specific
      *  operation.
      *  @param rightArgument The token to multiply this token by.
@@ -641,14 +634,12 @@ public abstract class ScalarToken extends Token {
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if(typeInfo == CPO.SAME) {
-            Token result = _doMultiply(rightArgument);
-            return result;
+            return _doMultiply(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                Token result = _doMultiply(convertedArgument);
-                return result;
+                return _doMultiply(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -657,8 +648,7 @@ public abstract class ScalarToken extends Token {
                         notSupportedMessage("multiply", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            Token result = rightArgument.multiplyReverse(this);
-            return result;
+            return rightArgument.multiplyReverse(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiply",
@@ -672,7 +662,7 @@ public abstract class ScalarToken extends Token {
      *  performed at the least type necessary to ensure precision.
      *  The returned type is the same as the type chosen for the
      *  operation, which is the higher of the type of this token and
-     *  the argument type.  Subclasses should override the protected
+     *  the argument type.  Subclasses should implement the protected
      *  _multiply() method to perform the correct type-specific
      *  operation.
      *  @param leftArgument The token to be multiplied by the value of
@@ -691,8 +681,7 @@ public abstract class ScalarToken extends Token {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(leftArgument);
             try {
-                Token result = convertedArgument._doMultiply(this);
-                return result;
+                return convertedArgument._doMultiply(this);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -702,11 +691,9 @@ public abstract class ScalarToken extends Token {
                                 this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((ScalarToken)leftArgument)._doMultiply(this);
-            return result;
+            return ((ScalarToken)leftArgument)._doMultiply(this);
         } else if (typeInfo == CPO.HIGHER) {
-            Token result = leftArgument.multiply(this);
-            return result;
+            return leftArgument.multiply(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("multiplyReverse",
@@ -714,8 +701,14 @@ public abstract class ScalarToken extends Token {
         }
     }
 
-    /** Set the unit category this token belongs to.
+    /** Set the unit category this token belongs to.  This method is
+     *  called from within the units system to create tokens
+     *  representing base units.  This method should not be called by
+     *  user code.
      *  @param index The unit category index.
+     *  @deprecated We need a better way of manufacturing the tokens
+     *  for base units, since this method violates the immutability of
+     *  tokens.
      */
     // FIXME: shouldn't this be protected???  it violates the immutability of
     // tokens.
@@ -731,7 +724,7 @@ public abstract class ScalarToken extends Token {
      *  performed at the least type necessary to ensure precision.
      *  The returned type is the same as the type chosen for the
      *  operation, which is the higher of the type of this token and
-     *  the argument type.  Subclasses should override the protected
+     *  the argument type.  Subclasses should implement the protected
      *  _subtract() method to perform the correct type-specific
      *  operation.
      *  @param rightArgument The token to subtract from this token.
@@ -744,14 +737,12 @@ public abstract class ScalarToken extends Token {
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if(typeInfo == CPO.SAME) {
-            Token result = _doSubtract(rightArgument);
-            return result;
+            return _doSubtract(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
             try {
-                Token result = _doSubtract(convertedArgument);
-                return result;
+                return _doSubtract(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -760,8 +751,7 @@ public abstract class ScalarToken extends Token {
                         notSupportedMessage("subtract", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
-            Token result = rightArgument.subtractReverse(this);
-            return result;
+            return rightArgument.subtractReverse(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtract",
@@ -775,7 +765,7 @@ public abstract class ScalarToken extends Token {
      *  performed at the least type necessary to ensure precision.
      *  The returned type is the same as the type chosen for the
      *  operation, which is the higher of the type of this token and
-     *  the argument type.  Subclasses should override the protected
+     *  the argument type.  Subclasses should implement the protected
      *  _subtract() method to perform the correct type-specific
      *  operation.
      *  @param leftArgument The token to subtract this token from.
@@ -793,8 +783,7 @@ public abstract class ScalarToken extends Token {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(leftArgument);
             try {
-                Token result = convertedArgument._doSubtract(this);
-                return result;
+                return convertedArgument._doSubtract(this);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
@@ -804,11 +793,9 @@ public abstract class ScalarToken extends Token {
                                 this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
-            Token result = ((ScalarToken)leftArgument)._doSubtract(this);
-            return result;
+            return ((ScalarToken)leftArgument)._doSubtract(this);
         } else if (typeInfo == CPO.HIGHER) {
-            Token result = leftArgument.subtract(this);
-            return result;
+            return leftArgument.subtract(this);
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtractReverse",
@@ -838,15 +825,15 @@ public abstract class ScalarToken extends Token {
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is
      *  returned.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same. Derived classes must implement
-     *  this method in a type-specific fashion
+     *  token, since the units are the same.  Derived classes must implement
+     *  this method in a type-specific fashion.
      *  @return A ScalarToken, which is likely, but not required to be
      *  the same type as this token.
      */
     protected abstract ScalarToken _absolute();
 
     /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token.  It is assumed that
+     *  token added to the value of this token.  It is assumed that
      *  the type of the argument is the same as the type of this
      *  class.  This method should be overridden in derived classes to
      *  provide type-specific operation and return a token of the
@@ -854,7 +841,7 @@ public abstract class ScalarToken extends Token {
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A new Token containing the result.
+     *  @return A new token containing the result.
      */
     protected abstract ScalarToken _add(ScalarToken rightArgument)
             throws IllegalActionException;
@@ -873,7 +860,7 @@ public abstract class ScalarToken extends Token {
     /** Return a copy of the unit category exponents array. If this
      *  token does not have a unit, return null;
      *  @return An int array that is a copy of the unit category
-     *   exponents of this token.
+     *  exponents of this token.
      */
     protected int[] _copyOfCategoryExponents() {
         return UnitUtilities.copyUnitsArray(_unitCategoryExponents);
@@ -1033,8 +1020,8 @@ public abstract class ScalarToken extends Token {
      *  the type of the argument is the same as the type of this class
      *  and has the same units as this token.  The resulting token
      *  will also have the same type and units.  This method defers to
-     *  the _add method that takes a ScalarToken.  Derived classes
-     *  should override that method instead to provide type-specific
+     *  the _add() method that takes a ScalarToken.  Derived classes
+     *  should implement that method instead to provide type-specific
      *  operation.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If the units are not
@@ -1048,9 +1035,7 @@ public abstract class ScalarToken extends Token {
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("add", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+                    + " because the units are not the same.");
         }
         ScalarToken result = _add(convertedArgument);
         result._unitCategoryExponents = _copyOfCategoryExponents();
@@ -1062,12 +1047,11 @@ public abstract class ScalarToken extends Token {
      *  that the type of the argument is the same as the type of this
      *  class.  The resulting token will also have the same type and
      *  appropriate units.  This method defers to the _divide method
-     *  that takes a ScalarToken.  Derived classes should override
+     *  that takes a ScalarToken.  Derived classes should implement
      *  that method instead to provide type-specific operation.
      *  @param rightArgument The token to divide this token by.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
      */
     private Token _doDivide(Token rightArgument)
             throws IllegalActionException {
@@ -1079,17 +1063,16 @@ public abstract class ScalarToken extends Token {
         return result;
     }
 
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is the
-     *  same as the type of this class.  This class overrides the base
-     *  class to return BooleanToken.FALSE if the units of this token
-     *  and the given token are not identical.  This method may defer
-     *  to the _isCloseTo method that takes a ScalarToken.  Derived
-     *  classes should override that method instead to provide
-     *  type-specific operation.
-     *  @param rightArgument The token with which to test equality.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
+    /** Test for closeness of the values of this Token and the
+     *  argument Token.  It is assumed that the type and units of the
+     *  argument is the same as the type of this class. This method
+     *  may defer to the _isCloseTo() method that takes a ScalarToken.
+     *  Derived classes should implement that method instead to
+     *  provide type-specific operation.
+     *  @param rightArgument The token with which to test closeness.
+     *  @exception IllegalActionException If the units of the argument
+     *  are not the same as the units of this token, or the method is
+     *  not supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
     private BooleanToken _doIsCloseTo(
@@ -1099,9 +1082,7 @@ public abstract class ScalarToken extends Token {
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("isCloseTo", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+                    + " because the units are not the same.");
         }
 
         return _isCloseTo(convertedArgument, epsilon);
@@ -1112,8 +1093,8 @@ public abstract class ScalarToken extends Token {
      *  same as the type of this class.  This method returns
      *  BooleanToken.FALSE if the units of this token and the given
      *  token are not identical.  This method may defer to the
-     *  _isEqualTo method that takes a ScalarToken.  Derived classes
-     *  should override that method instead to provide type-specific
+     *  _isEqualTo() method that takes a ScalarToken.  Derived classes
+     *  should implement that method instead to provide type-specific
      *  operation.
      *  @param rightArgument The token with which to test equality.
      *  @exception IllegalActionException If this method is not
@@ -1131,16 +1112,15 @@ public abstract class ScalarToken extends Token {
     }
 
     /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is the
-     *  same as the type of this class.  This method returns
-     *  BooleanToken.FALSE if the units of this token and the given
-     *  token are not identical.  This method may defer to the
-     *  _isLessThan method that takes a ScalarToken.  Derived classes
-     *  should override that method instead to provide type-specific
-     *  operation.
+     *  Token.  It is assumed that the type and units of the argument
+     *  is the same as the type of this class.  This method may defer
+     *  to the _isLessThan() method that takes a ScalarToken.  Derived
+     *  classes should implement that method instead to provide
+     *  type-specific operation.
      *  @param rightArgument The token with which to test ordering.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
+     *  @exception IllegalActionException If the units of the argument
+     *  are not the same as the units of this token, or the method is
+     *  not supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
     private BooleanToken _doIsLessThan(Token rightArgument)
@@ -1149,9 +1129,7 @@ public abstract class ScalarToken extends Token {
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("isLessThan", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+                    + " because the units are not the same.");
         }
 
         return _isLessThan(convertedArgument);
@@ -1162,8 +1140,8 @@ public abstract class ScalarToken extends Token {
      *  the type of the argument is the same as the type of this class
      *  and has the same units as this token.  The resulting token
      *  will also have the same type and units.  This method defers to
-     *  the _modulo method that takes a ScalarToken.  Derived classes
-     *  should override that method instead to provide type-specific
+     *  the _modulo() method that takes a ScalarToken.  Derived classes
+     *  should implement that method instead to provide type-specific
      *  operation.
      *  @param rightArgument The token to modulo this token by.
      *  @exception IllegalActionException If the units are not
@@ -1174,14 +1152,12 @@ public abstract class ScalarToken extends Token {
     private Token _doModulo(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
-        ScalarToken result = _modulo(convertedArgument);
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("modulo", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+                    + " because the units are not the same.");
         }
+        ScalarToken result = _modulo(convertedArgument);
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
@@ -1190,13 +1166,12 @@ public abstract class ScalarToken extends Token {
      *  multiplied by the value of the argument token.  It is assumed
      *  that the type of the argument is the same as the type of this
      *  class.  The resulting token will also have the same type and
-     *  appropriate units.  This method defers to the _multiply method
-     *  that takes a ScalarToken.  Derived classes should override
+     *  appropriate units.  This method defers to the _multiply() method
+     *  that takes a ScalarToken.  Derived classes should implement
      *  that method instead to provide type-specific operation.
      *  @param rightArgument The token to multiply this token by.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
      *  @return A new Token containing the result.
      */
     private Token _doMultiply(Token rightArgument)
@@ -1215,7 +1190,7 @@ public abstract class ScalarToken extends Token {
      *  class and has the same units as this token.  The resulting
      *  token will also have the same type and units.  This method
      *  defers to the _subtract method that takes a ScalarToken.
-     *  Derived classes should override that method instead to provide
+     *  Derived classes should implement that method instead to provide
      *  type-specific operation.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If the units are not
@@ -1226,14 +1201,12 @@ public abstract class ScalarToken extends Token {
     private Token _doSubtract(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
-        ScalarToken result = _subtract(convertedArgument);
         if ( !_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(
                     notSupportedMessage("subtract", this, rightArgument)
-                    + " because the units of this token: " + unitsString()
-                    + " are not the same as those of the argument: "
-                    + convertedArgument.unitsString());
+                    + " because the units are not the same.");
         }
+        ScalarToken result = _subtract(convertedArgument);
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
