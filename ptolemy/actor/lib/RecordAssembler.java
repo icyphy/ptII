@@ -80,10 +80,10 @@ public class RecordAssembler extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
 
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-5\" y=\"-30\" width=\"10\" "
-                + "height=\"60\" style=\"fill:red\"/>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" width=\"6\" " +
+                "height=\"40\" style=\"fill:red\"/>\n" +
+                "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
