@@ -62,7 +62,7 @@ import diva.gui.BasicFrame;
 
 /** This tutorial shows how to use Connectors.
  *
- * <img src="../../../../packages/canvas/tutorial/images/ConnectorTutorial.gif" align="right">
+ * <img src="doc-files/ConnectorTutorial.gif" align="right">
  *
  * Connectors are objects
  * that connect locations on two different figures. These locations
