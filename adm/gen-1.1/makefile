@@ -344,6 +344,7 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
 		remote1distclean \
 		remote1configure \
+		remote1doc \
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build
@@ -527,6 +528,17 @@ remote1distjsrestore:
 		done ; \
 	fi
 
+
+# Remove the JavaScope instrumentation
+remote1doc:
+	@echo "#"
+	@echo "# Now running make in $(REMOTE1PTIIDIST)/doc"
+	@echo "# on `hostname`"
+	@echo "# We run make in the doc directory early so that"
+	@echo "# the website link checker will find files in doc/codeDoc"
+	@echo "#"
+	@echo `date`
+	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE))
 
 # Remove the JavaScope instrumentation
 remote1build:
