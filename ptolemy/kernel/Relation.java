@@ -164,7 +164,7 @@ public class Relation extends NamedObj {
      *  its version number.
      *  @param port
      */
-    public void unlink(Relation port) {
+    public void unlink(Port port) {
         synchronized(workspace()) {
             _portList.unlink(port);
             workspace().incrVersion();
