@@ -84,6 +84,7 @@ MISC_FILES = data $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	TwoPlotExample.class \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

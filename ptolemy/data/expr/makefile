@@ -107,7 +107,9 @@ OPTIONAL_FILES =  \
 	JJPtParserCalls.class \
 	PtParser.java \
 	PtParser.jj \
-	'PtParser$$JJCalls.class message.txt'
+	'PtParser$$JJCalls.class' \
+	'Variable$$1.class' \
+	'Variable$$TypeTerm.class'
 
 JCLASS =  \
 	$(JSRCS:%.java=%.class) \

@@ -78,7 +78,17 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'FilterView$$ViewWinAdapter.class' \
+	'FreqView$$FreqPlotPanel.class' \
+	'IIRFiltSetView$$FiltSet.class' \
+	'InteractPlot$$ChangeXY.class' \
+	'Plot$$Format.class' \
+	'PlotBox$$DragListener.class' \
+	'PlotBox$$FillButtonListener.class' \
+	'PlotBox$$ZoomListener.class' \
+	'PoleZeroView$$NewPoleZeroBox.class' \
+	'TransFunctView$$TransPane.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

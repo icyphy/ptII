@@ -65,7 +65,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'FilterApplication$$FiltTypeSet.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -70,7 +70,9 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = #codeDoc
+OPTIONAL_FILES = \
+	'PtolemyApplet$$GoButtonListener.class' \
+	'PtolemyApplet$$StopButtonListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

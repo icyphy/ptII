@@ -69,6 +69,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'InequalitySolver$$1.class' \
 	'InequalitySolver$$Info.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -63,7 +63,12 @@ MISC_FILES =	#$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	demo \
+	'Message$$1.class' \
+	'Message$$2.class' \
+	'Query$$CheckBoxListener.class' \
+	'Query$$LineListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -66,7 +66,9 @@ MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc \
+	'ChangeRequestTest$$1.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

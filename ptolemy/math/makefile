@@ -68,7 +68,17 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	filter \
+	$(PTCLASSJAR) \
+	'ArrayStringFormat$$ExprArrayStringFormat.class' \
+	'ArrayStringFormat$$JavaArrayStringFormat.class' \
+	'SignalProcessing$$GaussianSampleGenerator.class' \
+	'SignalProcessing$$LineSampleGenerator.class' \
+	'SignalProcessing$$RaisedCosineSampleGenerator.class' \
+	'SignalProcessing$$SawtoothSampleGenerator.class' \
+	'SignalProcessing$$SincSampleGenerator.class' \
+	'SignalProcessing$$SinusoidSampleGenerator.class' \
+	'SignalProcessing$$SqrtRaisedCosineSampleGenerator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
