@@ -72,10 +72,7 @@ test FixToDouble-1.1 {Test FixToDouble} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-     # note that the conversion rounded the fix point value
-     # to 2.0, while in fact it is 1.99993896484375
-
-} {2.0}
+} {1.999939}
 
 ######################################################################
 #### Test FixToDouble in an SDF model
