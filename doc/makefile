@@ -150,6 +150,7 @@ COPERNICUSPACKAGES = \
 
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
+			ptolemy.actor.lib.javasound \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
@@ -162,6 +163,7 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
+			ptolemy.media.javasound \
 			ptolemy.vergil.fsm.modal
 
 
@@ -186,20 +188,10 @@ PTINYPACKAGES = \
 #GRPACKAGES =		ptolemy.domains.gr.kernel \
 #			ptolemy.domains.gr.lib
 
-# Javasound is not part of JDK1.2
-JAVASOUNDPACKAGES =	ptolemy.actor.lib.javasound \
-			ptolemy.media.javasound
-
-# tm domain uses java.util.Timer, which is not present in JDK1.2
-TMPACKAGES =		ptolemy.domains.tm.kernel \
-			ptolemy.domains.tm.lib
-
 ALLPACKAGES =		$(COMMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
-			$(JAVASOUNDPACKAGES) \
-			$(TMPACKAGES) \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
@@ -225,6 +217,8 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.domains.petrinet.kernel \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
+			ptolemy.domains.tm.kernel \
+			ptolemy.domains.tm.lib \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
