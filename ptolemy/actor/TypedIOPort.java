@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -208,8 +208,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  read access on the workspace before calling put.
      *
      *  @param token The token to send
-     *  @exception IllegalActionException If the port is not an output, or
-     *   the token to be sent cannot be converted to the type of this port
+     *  @exception IllegalActionException If the token to be sent cannot
+     *   be converted to the type of this port
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
@@ -237,27 +237,22 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
-        try {
             for (int i = 0; i < farReceivers.length; i++) {
                 if (farReceivers[i] == null) continue;
 
-                for (int j = 0; j < farReceivers[i].length; j++) {
-                    TypedIOPort port =
-                        (TypedIOPort)farReceivers[i][j].
-                        getContainer();
-                    Type farType = port.getType();
+            for (int j = 0; j < farReceivers[i].length; j++) {
+                TypedIOPort port =
+                    (TypedIOPort)farReceivers[i][j].
+                    getContainer();
+                Type farType = port.getType();
                     
-                    if (farType.equals(token.getType())) {
-                        farReceivers[i][j].put(token);
-                    } else {
-                        Token newToken = farType.convert(token);
-                        farReceivers[i][j].put(newToken);
-                    }
+                if (farType.equals(token.getType())) {
+                    farReceivers[i][j].put(token);
+                } else {
+                    Token newToken = farType.convert(token);
+                    farReceivers[i][j].put(newToken);
                 }
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
         }
     }   
 
@@ -319,39 +314,33 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
-        try {
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) continue;
+        for (int i = 0; i < farReceivers.length; i++) {
+            if (farReceivers[i] == null) continue;
                 
-                for (int j = 0; j < farReceivers[i].length; j++) {
-                    TypedIOPort port =
-                        (TypedIOPort)farReceivers[i][j].getContainer();
-                    Type farType = port.getType();
+            for (int j = 0; j < farReceivers[i].length; j++) {
+                TypedIOPort port =
+                    (TypedIOPort)farReceivers[i][j].getContainer();
+                Type farType = port.getType();
 
-		    boolean needConversion = false;
-		    for (int k=0; k<tokenArray.length; k++) {
-                        if ( !farType.equals(tokenArray[k].getType())) {
-			    needConversion = true;
-			}
+                boolean needConversion = false;
+                for (int k=0; k<tokenArray.length; k++) {
+                    if ( !farType.equals(tokenArray[k].getType())) {
+	                needConversion = true;
 		    }
+		}
 
-		    if (!needConversion) {
-                        // Good, no conversion necessary.
-                        farReceivers[i][j].putArray(tokenArray, vectorLength);
-                    } else {
-                        // Note: This is very bad for performance!
-                        // For better efficiency, make sure
-                        // all ports have the same type.
-                        for (int k = 0; k < vectorLength; k++) {
-                            farReceivers[i][j].put(
-                                    farType.convert(tokenArray[k]));
-                        }
+		if (!needConversion) {
+                    // Good, no conversion necessary.
+                    farReceivers[i][j].putArray(tokenArray, vectorLength);
+                } else {
+                    // Note: This is very bad for performance!
+                    // For better efficiency, make sure
+                    // all ports have the same type.
+                    for (int k = 0; k < vectorLength; k++) {
+                       farReceivers[i][j].put(farType.convert(tokenArray[k]));
                     }
                 }
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
         }
     }
 
@@ -542,8 +531,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
         }
     }
 
@@ -600,27 +589,27 @@ public class TypedIOPort extends IOPort implements Typeable {
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
         Token token = null;
-        try {
+	try {
             try {
                 _workspace.getReadAccess();
-		// check types
-		for (int i=0; i<tokenArray.length; i++) {
+                // check types
+	        for (int i=0; i<tokenArray.length; i++) {
                     token = tokenArray[i];
                     int compare = TypeLattice.compare(token.getType(),
                                                       _resolvedType);
                     if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         throw new IllegalActionException(
-                                "Run-time type checking failed. Token type: "
-                                + token.getType().toString() + ", port: "
-                                + getFullName() + ", port type: "
-                                + getType().toString());
+                            "Run-time type checking failed. Token type: "
+                            + token.getType().toString() + ", port: "
+                            + getFullName() + ", port type: "
+                            + getType().toString());
                     }
-		}
+	        }
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
                 if (farReceivers == null ||
-                        farReceivers[channelIndex] == null) {
+		    farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
@@ -631,30 +620,30 @@ public class TypedIOPort extends IOPort implements Typeable {
                     (TypedIOPort)farReceivers[channelIndex][j].getContainer();
                 Type farType = port.getType();
 
-		boolean needConversion = false;
-		for (int k=0; k<tokenArray.length; k++) {
+                boolean needConversion = false;
+	        for (int k=0; k<tokenArray.length; k++) {
                     if ( !farType.equals(tokenArray[k].getType())) {
-		        needConversion = true;
-		    }
-		}
+	                needConversion = true;
+	            }
+	        }
 
                 if ( !needConversion) {
                     // Good, no conversion necessary.
                     farReceivers[channelIndex][j].putArray(tokenArray,
-                            vectorLength);
+                                                           vectorLength);
                 } else {
-		    // Note: This is very bad for performance!
+                    // Note: This is very bad for performance!
 		    // For better efficiency, make sure
 		    // all ports have the same type.
-		    for (int i = 0; i < vectorLength; i++) {
-			farReceivers[channelIndex][j].put(
+	    	    for (int i = 0; i < vectorLength; i++) {
+	    	        farReceivers[channelIndex][j].put(
                                 farType.convert(tokenArray[i]));
-		    }
+                    }
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
         }
     }
 
@@ -754,6 +743,9 @@ public class TypedIOPort extends IOPort implements Typeable {
         boolean wasTransferred = false;
         Receiver[][] insideReceivers = this.deepGetReceivers();
         for (int i = 0; i < this.getWidth(); i++) {
+	    // NOTE: tokens on a channel are consumed only if the
+	    // corresponding inside reciever is not null. This behavior
+	    // should be OK for all of the current domains.
             if (insideReceivers != null && insideReceivers[i] != null) {
                 try {
                     if (this.isKnown(i)) {

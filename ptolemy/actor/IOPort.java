@@ -201,7 +201,7 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling put.
      *
      *  @param token The token to send
-     *  @exception IllegalActionException If the port is not an output.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
@@ -219,17 +219,12 @@ public class IOPort extends ComponentPort {
         }
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
-        try {
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) continue;
+        for (int i = 0; i < farReceivers.length; i++) {
+            if (farReceivers[i] == null) continue;
 
-                for (int j = 0; j < farReceivers[i].length; j++) {
-                    farReceivers[i][j].put(token);
-                }
+            for (int j = 0; j < farReceivers[i].length; j++) {
+                farReceivers[i][j].put(token);
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
         }
     }
 
@@ -275,17 +270,12 @@ public class IOPort extends ComponentPort {
         }
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
-        try {
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) continue;
+        for (int i = 0; i < farReceivers.length; i++) {
+            if (farReceivers[i] == null) continue;
                 
-                for (int j = 0; j < farReceivers[i].length; j++) {
-                    farReceivers[i][j].putArray(tokenArray, vectorLength);
-                }
+            for (int j = 0; j < farReceivers[i].length; j++) {
+                farReceivers[i][j].putArray(tokenArray, vectorLength);
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
         }
     }
 
@@ -303,7 +293,7 @@ public class IOPort extends ComponentPort {
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling put.
      *
-     *  @exception IllegalActionException If the port is not an output.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
      */
@@ -321,17 +311,12 @@ public class IOPort extends ComponentPort {
         }
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
-        try {
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) continue;
+        for (int i = 0; i < farReceivers.length; i++) {
+            if (farReceivers[i] == null) continue;
 
-                for (int j = 0; j < farReceivers[i].length; j++) {
-                    farReceivers[i][j].setAbsent();
-                }
+            for (int j = 0; j < farReceivers[i].length; j++) {
+                farReceivers[i][j].setAbsent();
             }
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
         }
     }
 
@@ -1558,8 +1543,8 @@ public class IOPort extends ComponentPort {
                 farReceivers[channelIndex][j].put(token);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
         }
     }
 
@@ -1611,8 +1596,8 @@ public class IOPort extends ComponentPort {
                     putArray(tokenArray, vectorLength);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
         }
     }
 
@@ -1656,8 +1641,8 @@ public class IOPort extends ComponentPort {
                 farReceivers[channelIndex][j].setAbsent();
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
-            // NOTE: This may occur if the port is not an output port.
-            // Ignore...
+            // NOTE: This may occur if the channel index is out of range.
+            // This is allowed, just do nothing.
         }
     }
 
@@ -1795,6 +1780,9 @@ public class IOPort extends ComponentPort {
         boolean wasTransferred = false;
         Receiver[][] insideReceivers = this.deepGetReceivers();
         for (int i = 0; i < this.getWidth(); i++) {
+	    // NOTE: tokens on a channel are consumed only if the
+	    // corresponding inside reciever is not null. This behavior
+	    // should be OK for all of the current domains.
             if (insideReceivers != null && insideReceivers[i] != null) {
                 try {
                     if (this.isKnown(i)) {
