@@ -93,15 +93,6 @@ public class DEServerAlt extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     */
-    public void initialize() throws IllegalActionException {
-        input.allowPendingTokens(true);
-        _busyUntil = Double.NEGATIVE_INFINITY;
-    }
-
-
-
     /** Produce the output event according to whether the server is busy or
      *  not.
      *
@@ -117,6 +108,14 @@ public class DEServerAlt extends DEActor {
             output.broadcast(inputToken, _serviceTime);
             _busyUntil = getCurrentTime() + _serviceTime;
         }
+    }
+
+    /** Initialize the state of the actor.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        input.allowPendingTokens(true);
+        _busyUntil = Double.NEGATIVE_INFINITY;
     }
 
     /** Indicate whether this actor is ready to fire.
@@ -135,7 +134,6 @@ public class DEServerAlt extends DEActor {
             return false;
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -71,6 +71,7 @@ JSRCS = \
 	DEPassGate.java \
 	DEPlot.java \
 	DEPoisson.java \
+	DEProcessor.java \
 	DEPseudoPlot.java \
 	DERegister.java \
 	DESampler.java \
@@ -80,6 +81,7 @@ JSRCS = \
 	DEWaitingTime.java \
 	DEWaveForm.java \
 	DEXORGate.java \
+	InterruptibleServer.java \
 	Not.java \
 	TestLevel.java \
 	Ramp.java

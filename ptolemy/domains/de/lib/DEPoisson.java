@@ -1,4 +1,4 @@
-/* An actor that generates events according to Poisson process.
+ /* An actor that generates events according to Poisson process.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -80,7 +80,7 @@ public class DEPoisson extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setDeclaredType(Token.class);
         _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
         _value = new Parameter(this, "value", value);
     }
@@ -102,7 +102,7 @@ public class DEPoisson extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setDeclaredType(Token.class);
         _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
         _value = new Parameter(this, "value", new DoubleToken(value));
     }
