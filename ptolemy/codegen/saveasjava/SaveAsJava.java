@@ -111,7 +111,6 @@ class SaveAsJava {
                         _importList);
         _insertIfUnique("ptolemy.kernel.util.NameDuplicationException",
                         _importList);
-        _insertIfUnique("ptolemy.actor.TypedIORelation", _importList);
         try {
             Iterator iter = _importList.iterator();
             while (iter.hasNext()) {
@@ -142,18 +141,20 @@ class SaveAsJava {
 
     /** Generate Java code that creates attributes, if necessary,
      *  and initializes them with their initial values.
-     *  @param component The component with attributes.
+     *  Since attributes can themselves have attrivbutes, this
+     *  routine is recursive.
+     *  @param object The object with attributes.
      *  @return The Java code defining attributes for the specified
-     *   component.
+     *   object.
      */
-    protected String _generateAttributes(NamedObj component) {
+    protected String _generateAttributes(NamedObj object) {
         StringBuffer result = new StringBuffer();
-        Iterator attributes = component.attributeList().iterator();
-        // The name of the component when it is referenced as a container
+        Iterator attributes = object.attributeList().iterator();
+        // The name of the object when it is referenced as a container
         // of an attribute in the generated code.
         String nameAsContainer;
-        if (component.getContainer() == null) nameAsContainer = "this";
-        else nameAsContainer = _name(component); 
+        if (object.getContainer() == null) nameAsContainer = "this";
+        else nameAsContainer = _name(object); 
 
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
@@ -164,7 +165,7 @@ class SaveAsJava {
             // the attribute is transient.
             String moml = attribute.exportMoML();
             if (moml.length() > 0) {
-                if (!_isPublicMember(attribute, component)) {
+                if (!_isPublicMember(attribute, object)) {
                     String attributeClass = _getClassName(attribute);
                     String attributeName = _name(attribute);
                     result.append(_indent(3));
@@ -191,6 +192,8 @@ class SaveAsJava {
                         result.append("\");\n");
                     }
                 }
+                // Recursively generate any nested attributes 
+                result.append(_generateAttributes(attribute));
             }
         }
         return result.toString();
@@ -271,11 +274,14 @@ class SaveAsJava {
                  // Explicitly instantiate the relation, and generate 
                  // a link() call for each port associated with the relation.
                  else {
-                     // FIXME: hardcoded relation type specifier
+                     String relationClassName = _getClassName(relation);
                      code += _indent(3)
-                             + "TypedIORelation "
+                             + relationClassName
+                             + " "
                              + _name(relation);
-                     code += " = new TypedIORelation("
+                     code += " = new "
+                             + relationClassName
+                             + "("
                              + nameAsContainer;
                      code += ", \""
                              + _name(relation)
@@ -297,9 +303,10 @@ class SaveAsJava {
        
     }
 
-    /** Generate Java code that defines ports, if necessary.
+    /** Generate Java code that defines ports, if necessary, and
+     *  that sets up the attributes of each port.
      *  Ports are defined if they are not public members of the specified
-     *  component.
+     *  component. 
      *  @param component The component with ports.
      *  @return The Java code defining ports for the specified
      *   component.
@@ -335,6 +342,9 @@ class SaveAsJava {
                 result.append("\");");
                 result.append("\n");
             }
+
+            // Generate the attributes of the port
+            result.append(_generateAttributes(port));
         }
         return result.toString();
     }
