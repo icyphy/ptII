@@ -47,7 +47,9 @@ PTPACKAGE = 	FIR2
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 #PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = 
+JSRCS = \
+	Const.java \
+	Writer.java
 
 EXTRA_SRCS =	$(JSRCS)
 
