@@ -216,8 +216,10 @@ public class ViterbiDecoder extends Transformer {
             _shiftRegLength = 0;
             int regLength = 1;
             while (regLength <= _maxPolyValue) {
-                regLength = regLength << _inputNumber;
-                _shiftRegLength = _shiftRegLength + _inputNumber;
+                //regLength = regLength << _inputNumber;
+                //_shiftRegLength = _shiftRegLength + _inputNumber;
+                regLength = regLength << 1;
+                _shiftRegLength ++;
             }
             if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
