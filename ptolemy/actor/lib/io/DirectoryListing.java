@@ -163,6 +163,14 @@ public class DirectoryListing extends Source implements FilenameFilter {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        
+        if (directoryOrURLPort.getWidth() > 0
+                && directoryOrURLPort.hasToken(0)) {
+            String newValue
+                    = ((StringToken)directoryOrURLPort.get(0)).stringValue();
+            directoryOrURL.setExpression(newValue);
+        }
+
         URL sourceURL = directoryOrURL.asURL();
 
         if (sourceURL == null) {
