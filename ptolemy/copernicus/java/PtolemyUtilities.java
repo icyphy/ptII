@@ -610,6 +610,9 @@ public class PtolemyUtilities {
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
 
+    // SootClass representing java.lang.Object.
+    public static SootClass objectClass;
+    
     // Soot Class representing the ptolemy.kernel.ComponentPort class.
     public static SootClass portClass;
 
@@ -653,7 +656,7 @@ public class PtolemyUtilities {
     public static SootMethod variableConstructorWithToken;
 
     static {
-        SootClass objectClass =
+        objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
         toStringMethod = objectClass.getMethod("java.lang.String toString()");
       

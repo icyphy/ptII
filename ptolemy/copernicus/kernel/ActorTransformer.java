@@ -166,9 +166,9 @@ public class ActorTransformer extends SceneTransformer {
 
             SootClass theClass = (SootClass)entityInstanceClass;
             SootClass superClass = theClass.getSuperclass();
-            while(superClass != objectClass &&
-                    superClass != actorClass &&
-                    superClass != compositeActorClass) {
+            while(superClass != PtolemyUtilities.objectClass &&
+                    superClass != PtolemyUtilities.actorClass &&
+                    superClass != PtolemyUtilities.compositeActorClass) {
                 superClass.setLibraryClass();
                 SootUtilities.foldClass(theClass);
                 superClass = theClass.getSuperclass();
