@@ -71,8 +71,7 @@ OTHER_FILES_TO_BE_JARED = \
 	vergilGraphEditorHelp.htm \
 	whatsNew.htm \
 	whatsNew4.0.htm \
-	whatsNew3.0.2.htm \
-	whatsNew4.0-alpha.htm
+	whatsNew3.0.2.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
