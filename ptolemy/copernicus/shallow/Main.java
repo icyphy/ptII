@@ -116,9 +116,12 @@ public class Main extends KernelMain {
         // this instead of using soot's -O flag so that we can
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-    
+
+
+        // Disable the watch dog timer
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true"));
+
     }
 
     /** Add transforms corresponding to the standard soot optimizations
@@ -173,6 +176,11 @@ public class Main extends KernelMain {
 
         // Print out memory usage info
 	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
+
+
+        // For some reason, we need to call exit here, perhaps because
+        // the WatchDog timer thread is still running in the background?
+        System.exit(0);
     }
 }
 
