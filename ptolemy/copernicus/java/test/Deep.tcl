@@ -56,14 +56,6 @@ if {[info procs sootCodeGeneration] == "" } then {
 proc autoDeepCG {autoDirectory} {
     foreach file [glob $autoDirectory/*.xml] {
 	puts "---- testing $file"
-	if { [regexp {expression_bug.xml} $file] \
-	    || [regexp {Expression14.xml} $file] \
-	     } {
-	    test "Auto" "Automatic test in file $file" {
-		error "$file is a known failure, skipping"
-	    } {{}}
-	    continue
-	}
 	#set time [java::new Long [java::call System currentTimeMillis]]
 	test "Auto" "Automatic test in file $file" {
 	    set elapsedTime [time {sootCodeGeneration $file "Deep" 1000}]
