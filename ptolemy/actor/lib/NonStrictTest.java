@@ -120,7 +120,7 @@ public class NonStrictTest extends Sink {
         tolerance.setExpression("1.0E-9");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
-        trainingMode = new SharedParameter(this, "trainingMode", NonStrictTest.class, "false");
+        trainingMode = new SharedParameter(this, "trainingMode", getClass(), "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
 
         input.setMultiport(false);
