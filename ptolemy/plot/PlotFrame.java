@@ -303,18 +303,25 @@ public class PlotFrame extends Frame {
         }
         boolean originalColor = plot.getColor();
         narrowQuery.addCheckBox("color", "Use Color", originalColor);
-        boolean originalXLog = plot.getXLog();
-        narrowQuery.addCheckBox("xlog", "X Log", originalXLog);
-        if (originalXTicks != null) {
-            narrowQuery.setBoolean("xlog", false);            
-            narrowQuery.setEnabled("xlog", false);
-        }
-        boolean originalYLog = plot.getYLog();
-        narrowQuery.addCheckBox("ylog", "Y Log", originalYLog);
-        if (originalYTicks != null) {
-            narrowQuery.setBoolean("ylog", false);            
-            narrowQuery.setEnabled("ylog", false);
-        }
+
+        // FIXME: setXLog() and setYLog() cause problems with
+        // dropped data if they are toggled after data is read in.
+        // This is because the log axis facility modifies the datasets
+        // in addPlotPoint() in Plot.java.  When this is fixed
+        // we can add the XLog and YLog facility to the Format menu
+        //
+        //boolean originalXLog = plot.getXLog();
+        //narrowQuery.addCheckBox("xlog", "X Log", originalXLog);
+        //if (originalXTicks != null) {
+        //    narrowQuery.setBoolean("xlog", false);            
+        //    narrowQuery.setEnabled("xlog", false);
+        //}
+        //boolean originalYLog = plot.getYLog();
+        //narrowQuery.addCheckBox("ylog", "Y Log", originalYLog);
+        //if (originalYTicks != null) {
+        //    narrowQuery.setBoolean("ylog", false);            
+        //    narrowQuery.setEnabled("ylog", false);
+        //}
 
         // Attach listeners.
         wideQuery.addQueryListener(new QueryListener() {
@@ -330,21 +337,23 @@ public class PlotFrame extends Frame {
                 } else if (name.equals("xticks")) {
                     String spec = wideQuery.stringValue("xticks").trim();
                     plot.read("XTicks: " + spec);
-                    if(spec.equals("")) {
-                        narrowQuery.setEnabled("xlog", true);
-                    } else {
-                        narrowQuery.setBoolean("xlog", false);
-                        narrowQuery.setEnabled("xlog", false);
-                    }
+                    // FIXME: log axis format temporarily disable, see above.
+                    // if(spec.equals("")) {
+                    //    narrowQuery.setEnabled("xlog", true);
+                    // } else {
+                    //    narrowQuery.setBoolean("xlog", false);
+                    //    narrowQuery.setEnabled("xlog", false);
+                    // }
                 } else if (name.equals("yticks")) {
                     String spec = wideQuery.stringValue("yticks").trim();
                     plot.read("YTicks: " + spec);
-                    if(spec.equals("")) {
-                        narrowQuery.setEnabled("ylog", true);
-                    } else {
-                        narrowQuery.setBoolean("ylog", false);
-                        narrowQuery.setEnabled("ylog", false);
-                    }
+                    // FIXME: log axis format temporarily disable, see above.
+                    // if(spec.equals("")) {
+                    //    narrowQuery.setEnabled("ylog", true);
+                    // } else {
+                    //    narrowQuery.setBoolean("ylog", false);
+                    //    narrowQuery.setEnabled("ylog", false);
+                    // }
                 } else if (name.equals("yrange")) {
                     plot.read("YRange: " + wideQuery.stringValue("yrange"));
                 } else if (name.equals("marks")) {
@@ -363,10 +372,11 @@ public class PlotFrame extends Frame {
                     plot.repaint();
                 } else if (name.equals("color")) {
                     plot.setColor(narrowQuery.booleanValue("color"));
-                } else if (name.equals("xlog")) {
-                    plot.setXLog(narrowQuery.booleanValue("xlog"));
-                } else if (name.equals("ylog")) {
-                    plot.setYLog(narrowQuery.booleanValue("ylog"));
+                // FIXME: log axis format temporarily disable, see above.
+                // } else if (name.equals("xlog")) {
+                //    plot.setXLog(narrowQuery.booleanValue("xlog"));
+                // } else if (name.equals("ylog")) {
+                //    plot.setYLog(narrowQuery.booleanValue("ylog"));
                 } else if (name.equals("connected")) {
                     _setConnected(narrowQuery.booleanValue("connected"));
                 }
@@ -388,30 +398,32 @@ public class PlotFrame extends Frame {
             plot.read("YRange: " + wideQuery.stringValue("yrange"));
             plot.setGrid(narrowQuery.booleanValue("grid"));
             plot.setColor(narrowQuery.booleanValue("color"));
-            plot.setXLog(narrowQuery.booleanValue("xlog"));
-            plot.setYLog(narrowQuery.booleanValue("ylog"));
+            // FIXME: log axis format temporarily disable, see above.
+            // plot.setXLog(narrowQuery.booleanValue("xlog"));
+            // plot.setYLog(narrowQuery.booleanValue("ylog"));
             if (plot instanceof Plot) {
                 Plot cplot = (Plot)plot;
                 cplot.setMarksStyle(wideQuery.stringValue("marks"));
                 cplot.setImpulses(narrowQuery.booleanValue("stems"));
                 _setConnected(narrowQuery.booleanValue("connected"));
             }
-            String spec = wideQuery.stringValue("xticks").trim();
-            plot.read("XTicks: " + spec);
-            if(spec.equals("")) {
-                narrowQuery.setEnabled("xlog", true);
-            } else {
-                narrowQuery.setBoolean("xlog", false);
-                narrowQuery.setEnabled("xlog", false);
-            }
-            spec = wideQuery.stringValue("yticks").trim();
-            plot.read("YTicks: " + spec);
-            if(spec.equals("")) {
-                narrowQuery.setEnabled("ylog", true);
-            } else {
-                narrowQuery.setBoolean("ylog", false);
-                narrowQuery.setEnabled("ylog", false);
-            }
+            // FIXME: log axis format temporarily disable, see above.
+            // String spec = wideQuery.stringValue("xticks").trim();
+            // plot.read("XTicks: " + spec);
+            // if(spec.equals("")) {
+            //    narrowQuery.setEnabled("xlog", true);
+            // } else {
+            //    narrowQuery.setBoolean("xlog", false);
+            //    narrowQuery.setEnabled("xlog", false);
+            // }
+            // spec = wideQuery.stringValue("yticks").trim();
+            // plot.read("YTicks: " + spec);
+            // if(spec.equals("")) {
+            //    narrowQuery.setEnabled("ylog", true);
+            // } else {
+            //    narrowQuery.setBoolean("ylog", false);
+            //    narrowQuery.setEnabled("ylog", false);
+            // }
         } else {
             // Restore original values.
             plot.setTitle(originalTitle);
@@ -421,28 +433,30 @@ public class PlotFrame extends Frame {
             plot.setYRange(originalYRange[0], originalYRange[1]);
             plot.setGrid(originalGrid);
             plot.setColor(originalColor);
-            plot.setXLog(originalXLog);
-            plot.setYLog(originalYLog);
+            // FIXME: log axis format temporarily disable, see above.
+            // plot.setXLog(originalXLog);
+            // plot.setYLog(originalYLog);
             if (plot instanceof Plot) {
                 Plot cplot = (Plot)plot;
                 cplot.setMarksStyle(originalMarks);
                 cplot.setImpulses(originalStems);
                 _restoreConnected(originalConnected);
             }
-            plot.read("XTicks: " + originalXTicksSpec);
-            if(originalXTicksSpec.equals("")) {
-                narrowQuery.setEnabled("xlog", true);
-            } else {
-                narrowQuery.setBoolean("xlog", false);
-                narrowQuery.setEnabled("xlog", false);
-            }
-            plot.read("YTicks: " + originalYTicksSpec);
-            if(originalYTicksSpec.equals("")) {
-                narrowQuery.setEnabled("ylog", true);
-            } else {
-                narrowQuery.setBoolean("ylog", false);
-                narrowQuery.setEnabled("ylog", false);
-            }
+            // FIXME: log axis format temporarily disable, see above.
+            // plot.read("XTicks: " + originalXTicksSpec);
+            // if(originalXTicksSpec.equals("")) {
+            //    narrowQuery.setEnabled("xlog", true);
+            // } else {
+            //   narrowQuery.setBoolean("xlog", false);
+            //    narrowQuery.setEnabled("xlog", false);
+            // }
+            // plot.read("YTicks: " + originalYTicksSpec);
+            // if(originalYTicksSpec.equals("")) {
+            //    narrowQuery.setEnabled("ylog", true);
+            // } else {
+            //    narrowQuery.setBoolean("ylog", false);
+            //    narrowQuery.setEnabled("ylog", false);
+            // }
         }
         plot.repaint();
     }
