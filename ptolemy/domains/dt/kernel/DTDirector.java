@@ -947,14 +947,14 @@ public class DTDirector extends SDFDirector {
                     _isFiringAllowed = false;
                     _shouldDoInternalTransferOutputs = true;
                 } else {
-                    // firing at a time when transferOutputs should not be called
-
+                    // firing at a time when transferOutputs should
+                    // not be called
                     for(int i = 0; i < port.getWidth(); i++) {
                         for(int j = 0;
                             j < insideReceivers[i].length; j++) {
                             DTReceiver receiver;
                             receiver = (DTReceiver) insideReceivers[i][j];
-                            receiver.overrideHasToken=true;
+                            receiver.overrideHasToken = true;
                         }
             	    }
                     _debug("******* nonfractional fire ratio "
