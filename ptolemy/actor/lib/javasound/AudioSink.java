@@ -281,9 +281,10 @@ public class AudioSink extends Sink {
                 ((IntToken)bufferSize.getToken()).intValue();
 	    if (intBufferSize < _putFactor) {
 		throw new IllegalActionException(this,
-                        "Attempt to set bufferSize parameter to an illegal " +
-                        "value of: " +  intBufferSize + " . The value must be " +
-                        "greater than " + _putFactor + ".");
+                        "Attempt to set bufferSize parameter to an illegal "
+                        + "value of: " + intBufferSize
+                        + " . The value must be greater than "
+                        + _putFactor + ".");
 	    }
 	    _putSampleSize = intBufferSize/_putFactor;
 	    for (int i = 0; i < _channels; i++) {
@@ -450,7 +451,8 @@ public class AudioSink extends Sink {
      *  @exception IllegalActionException If there is a problem initializing
      *   audio playback.
      */
-    private synchronized void _initializePlayback() throws IllegalActionException {
+    private synchronized void _initializePlayback()
+            throws IllegalActionException {
 	if(_debugging) _debug("AudioSink: _initializePlayback() invoked.");
 	//System.out.println("AudioSink: _initializePlayback() invoked.");
 	// Stop playback. Close any open sound files. Free
