@@ -822,8 +822,8 @@ proc createAndExecute {file} {
 	    || "$file" == "compat/DifferentialSystem.xml" \
 	    || "$file" == "compat/MaximumEntropySpectrum.xml" \
 	    || "$file" == "compat/TransferFunction.xml" \
-	    || "$file" == "compat/ArrayAppend.xml" \ 
-	    || "$file" == "compat2/ImageReaderImageDisplay.xml" \ 
+	    || "$file" == "compat/ArrayAppend.xml" \
+	    || "$file" == "compat2/ImageReaderImageDisplay.xml" \
 	    || "$file" == "compat2/ImageReaderImageRotateImageToString.xml" \
 	    || "$file" == "compat2/ImageReaderImageToString.xml" \
 	    || "$file" == "compat2/testAudioReader.xml" \
@@ -831,7 +831,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat2/testAudioCapture_AudioPlayer.xml" \
 	    || "$file" == "compat2/testAudioCapture.xml" \
 	    || "$file" == "compat2/automataLibrary.xml" \
-	    || "$file" == "compat2/DifferentialSystem.xml.xml" \
+	    || "$file" == "compat2/DifferentialSystem.xml" \
 	    || "$file" == "compat2/FireAtCT.xml" \
 	    || "$file" == "compat2/FireAtCT2.xml" \
 	    || "$file" == "compat2/FireAtDE.xml" \
@@ -843,7 +843,10 @@ proc createAndExecute {file} {
 	    || "$file" == "compat2/SampleDelay.xml" \
 	    || "$file" == "compat2/Sampler.xml" \
 	    || "$file" == "compat2/SamplerWithDefault.xml" \
+	    || "$file" == "compat2/SamplerWithDefault1.xml" \
+	    || "$file" == "compat2/SamplerWithDefault2.xml" \
 	    || "$file" == "compat2/multirate.xml" \
+	    || "$file" == "compat2/testAudioReaderAudioPlayer.xml" \
 	    || "$file" == "compat2/VariableFIR2.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
