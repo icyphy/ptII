@@ -423,3 +423,15 @@ test DoubleArrayMath-14.2 {normalize} {
     set r [java::call ptolemy.math.DoubleArrayMath normalize $a1]
     jdkPrintArray $r
 } {0.000966307504363 -0.00172368365643 7.83492571105e-08 -0.99999768492 -0.000851656424791}
+
+####################################################################
+test DoubleArrayMath-14.3.1 {sum} {
+    set r [java::call ptolemy.math.DoubleArrayMath sum $a0]
+    list $r
+} 0.0
+
+####################################################################
+test DoubleArrayMath-14.3.2 {sum} {
+    set r [java::call ptolemy.math.DoubleArrayMath sum $a3]
+    list $r
+} 5096.49
