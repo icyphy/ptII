@@ -132,8 +132,9 @@ import java.applet.Applet;
  * The "move" command causes a break in connected points, if lines are
  * being drawn between points. The numbers <i>x</i> and <i>y</i> are
  * arbitrary numbers as supported by the Double parser in Java.
-@author: Edward A. Lee
-@version: $Id$
+ *
+ * @author: Edward A. Lee
+ * @version: $Id$
  */
 public class Plot extends PlotBox {
 

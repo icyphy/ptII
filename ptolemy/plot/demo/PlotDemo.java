@@ -1,8 +1,5 @@
 /* Demo for a signal plotter.
 
-@Author: Edward A. Lee
-@Version: $Id$
-
 @Copyright (c) 1997 The Regents of the University of California.
 All rights reserved.
 
@@ -37,6 +34,9 @@ import java.applet.Applet;
 //// PlotDemo
 /** 
  * Plot a variety of test signals.
+ *
+ * @author: Edward A. Lee
+ * @version: $Id$
  */
 public class PlotDemo extends Plot {
 

@@ -1,8 +1,5 @@
 /* A live signal plotter.
 
-@Author: Edward A. Lee
-@Version: $Id$
-
 @Copyright (c) 1997 The Regents of the University of California.
 All rights reserved.
 
@@ -63,6 +60,9 @@ import java.applet.Applet;
  * initialization, this reads a file given by a URL if the dataurl
  * applet parameter is specified.  Thus, the initial configuration can
  * be specified in a separate file rather than in Java code.
+ *
+ * @author: Edward A. Lee
+ * @version: $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
