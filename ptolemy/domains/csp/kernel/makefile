@@ -59,7 +59,7 @@ JSRCS = \
 	CSPCompositeActor.java \
 	CSPDirector.java \
 	CSPReceiver.java \
-	TerminateProcessException
+	TerminateProcessException.java
 
 
 EXTRA_SRCS =	$(JSRCS)
