@@ -61,7 +61,7 @@ public class Inequality {
     public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
 	if (lesserTerm == null || greaterTerm == null) {
 	    throw new IllegalArgumentException("Inequality.Inequality: " +
-                    "lesserTerm of greaterTerm is null.");
+                    "lesserTerm or greaterTerm is null.");
 	}
 
         _lesserTerm = lesserTerm;
