@@ -211,7 +211,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  Throw an exception if the array is of length 0, or if the
      *  sample standard deviation is taken on an array of length less than 2.
      *  @param array An array of doubles.
-     *  @param sample True if the sample standard devation is desired.
+     *  @param sample True if the sample standard deviation is desired.
      *  @return A double.
      */
     public static double standardDeviation(double[] array, boolean sample) {
