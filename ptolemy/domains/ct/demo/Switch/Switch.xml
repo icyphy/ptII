@@ -86,6 +86,8 @@ with value "DISCRETE", and the "output" port has a parameter
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 220.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    </property>
     <entity name="EventSource" class="ptolemy.domains.ct.lib.EventSource">
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
@@ -178,6 +180,10 @@ with value "DISCRETE", and the "output" port has a parameter
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 85.0">
@@ -199,6 +205,14 @@ with value "DISCRETE", and the "output" port has a parameter
         </configure>
     </entity>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+            </property>
+        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
@@ -303,6 +317,8 @@ with value "DISCRETE", and the "output" port has a parameter
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
@@ -320,6 +336,8 @@ with value "DISCRETE", and the "output" port has a parameter
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="const.incomingPort" relation="relation3"/>
@@ -507,11 +525,11 @@ with value "DISCRETE", and the "output" port has a parameter
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="270.0, 165.0">
+        <vertex name="vertex1" value="270.0, 165.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="50.0, 210.0">
+        <vertex name="vertex1" value="50.0, 210.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
