@@ -148,6 +148,8 @@ test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "sink" 1]
 
     $fBack setDelay 4.0
+    set realDelay [java::cast ptolemy.data.expr.Parameter [$fBack getAttribute realDelay]]
+    $realDelay setToken [java::new ptolemy.data.BooleanToken true]
 
     set rcvrIn [$actorRcvr getPort "input"]
     set clockOut [$clock getPort "output"]
