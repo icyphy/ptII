@@ -420,7 +420,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The general data type: The top of the lattice.  */
     public static class GeneralType extends BaseType {
         private GeneralType() {
-            super(GeneralToken.class, "general");
+            super(Token.class, "general");
         }
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?
