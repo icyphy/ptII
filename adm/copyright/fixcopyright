@@ -1,10 +1,23 @@
 #!/bin/sh
 # Fix the copyright date
-#-[Tue Jan  7 14:54:55 2003 by cxh]-
+#-[Thu Jan  9 12:35:23 2003 by cxh]-
 #
-# The way to run this is to use $PTII/adm/bin/ptIIfiles to generate
+# The way to run this is to use $PTII/adm/bin/ptIItxtfiles to generate
 # a list of files and then run this script on that over and over
 # again until all the bogus copyrights have been found
+
+# 1. Check out a fresh tree in a separate directory 
+# 2. Remove ptII/vendors
+# 3. Generate a list of text files
+#   cd ptII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
+# 4. Update the script
+#    - Update the year regex in the lines marked 'EVERY_YEAR' below
+# 5. Run the script in testing mode:
+#    cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
+# 6. Check the output in /tmp/fc.txt
+# 7. Run it for real:
+#    cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
+# 8. Do a clean checkout somewhere and rebuild and test
 
 printonly=no
 
@@ -86,22 +99,32 @@ LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
+# EVERY_YEAR: update the regex to get last-year's changes
+
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[01]/Copyright (c) \1-2003/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[012]/Copyright (c) \1-2003/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
-EGREPMATCH='Copyright \(c\) 199[0-9]-200[01]'
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+EGREPMATCH='Copyright \(c\) 199[0-9]-200[012]'
 LOGMESSAGE="Changed copyright to 2003"
 
 search $@
 
+# EVERY_YEAR: update the regex to get last-year's changes
+
 doit() {
-    sed 's/Copyright (c) 2000-2001 /Copyright (c) 2000-2003 /' \
+    sed 's/Copyright (c) \(200[012]\)-200[012] /Copyright (c) \1-2003 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
-EGREPMATCH='Copyright \(c\) 2000-2001 '
+
+# EVERY_YEAR: update the regex to get last-year's changes
+
+EGREPMATCH='Copyright \(c\) 200[012]-200[012]'
 LOGMESSAGE="Changed copyright to 2003"
 
 search $@
