@@ -219,12 +219,17 @@ public class VisualModelReference
         }
     }
 
-    /** Override the base class to ensure that private variables are reset to null.
+    /** Clone this actor into the specified workspace.
+     *  Override the base class to ensure that private variables are
+     *  reset to null.
      *  @return A new instance of VisualModelReference.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        VisualModelReference newActor = (VisualModelReference) super.clone(workspace);
+        VisualModelReference newActor =
+            (VisualModelReference) super.clone(workspace);
         newActor._tableau = null;
         return newActor;
     }
@@ -339,6 +344,7 @@ public class VisualModelReference
      *  AWT event thread completes the close.  This creates the possibility
      *  of a deadlock.
      *  @return Whatever the superclass returns (probably true).
+     *  @exception IllegalActionException Thrown if a parent class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         // Call this first so execution stops before closing.

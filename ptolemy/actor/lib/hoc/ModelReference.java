@@ -548,6 +548,7 @@ public class ModelReference
 
     /** Override the base class to perform requested postfire actions.
      *  @return Whatever the superclass returns (probably true).
+     *  @exception IllegalActionException Thrown if a parent class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         if (_postfireActionValue == _STOP_EXECUTING
