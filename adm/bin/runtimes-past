@@ -39,7 +39,10 @@ echo "Running on `echo $dates | wc -w` different versions"
 base=runtime-past
 
 # Just to make sure that we remove these space hogs
-rm -rf 	$runtimedir/*/ptolemy/apps $runtimedir/*/doc/design
+rm -rf 	$runtimedir/*/ptolemy/apps \
+	$runtimedir/*/doc/design \
+	$runtimedir/*/doc/uml \
+	$runtimedir/*/vendors
 
 for date in $dates
 do
@@ -68,7 +71,7 @@ do
 	cvs -d :ext:gigasource:/home/cvs co -D $date ptII >> $cvslogfile 2>&1
 	echo "$base: cvs co finished `date`" >> $cvslogfile 
 	echo "$base: removing ptolemy/apps doc/design directory because of space issues (`date`)"
-	rm -rf ptII/ptolemy/apps ptII/doc/design
+	rm -rf ptII/ptolemy/apps ptII/doc/design ptII/doc/uml ptII/vendors
 	mv ptII ptII${year}${month}${day}
     fi
 
