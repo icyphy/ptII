@@ -29,7 +29,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 121.5}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demostrates that a NonStrictDelay actor &#10;breaks a feedback loop in a SR model.&#10;&#10;Author: Haiyang Zheng">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that a NonStrictDelay actor &#10;breaks a feedback loop in a SR model.&#10;&#10;Author: Haiyang Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 165.0]">
         </property>
