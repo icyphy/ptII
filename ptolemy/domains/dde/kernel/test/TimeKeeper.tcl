@@ -84,9 +84,9 @@ test TimeKeeper-3.1 {getNextTime()} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
-    $keeper updateRcvrList $rcvr3
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
+    $keeper updateReceiverList $rcvr3
 
     set newrcvr [$keeper getFirstRcvr]
 
@@ -107,9 +107,9 @@ test TimeKeeper-3.2 {getNextTime()} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
-    $keeper updateRcvrList $rcvr3
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
+    $keeper updateReceiverList $rcvr3
 
     set newrcvr [$keeper getFirstRcvr]
 
@@ -128,8 +128,8 @@ test TimeKeeper-3.3 {getNextTime()} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
 
     set newrcvr [$keeper getFirstRcvr]
 
@@ -148,8 +148,8 @@ test TimeKeeper-3.4 {getNextTime()} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
 
     set newrcvr [$keeper getFirstRcvr]
 
@@ -210,8 +210,8 @@ test TimeKeeper-5.1 {Ignore Tokens} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
 
     $keeper removeAllIgnoreTokens
 
@@ -245,8 +245,8 @@ test TimeKeeper-5.2 {Ignore Tokens} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
 
     $keeper removeAllIgnoreTokens
 
@@ -281,8 +281,8 @@ test TimeKeeper-5.3 {Ignore Tokens} {
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    $keeper updateRcvrList $rcvr1
-    $keeper updateRcvrList $rcvr2
+    $keeper updateReceiverList $rcvr1
+    $keeper updateReceiverList $rcvr2
 
     $keeper removeAllIgnoreTokens
 
