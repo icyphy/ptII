@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t,e)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e)
 */
 
 package ptolemy.data;
@@ -33,7 +33,9 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.type.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
 
@@ -101,10 +103,8 @@ public class ComplexToken extends ScalarToken {
 
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-            String msg = "add method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("add", this, token));
         } else if (compare == CPO.LOWER) {
             return token.addReverse(this);
         } else {
@@ -176,8 +176,8 @@ public class ComplexToken extends ScalarToken {
 
 	compare = TypeLattice.compare(BaseType.DOUBLE, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    DoubleToken doubletoken = (DoubleToken)DoubleToken.convert(token);
-	    return new ComplexToken(doubletoken.complexValue());
+	    DoubleToken doubleToken = (DoubleToken)DoubleToken.convert(token);
+	    return new ComplexToken(doubleToken.complexValue());
 	}
 
 	// The argument is below ComplexToken in the type hierarchy,
@@ -213,8 +213,8 @@ public class ComplexToken extends ScalarToken {
             return divisor.divideReverse(this);
         } else {
 	    // argument type is lower or the same as Complex.
-	    ComplexToken comptoken = (ComplexToken)convert(divisor);
-            Complex result = _value.divide(comptoken.complexValue());
+	    ComplexToken complexToken = (ComplexToken)convert(divisor);
+            Complex result = _value.divide(complexToken.complexValue());
             return new ComplexToken(result);
         }
     }
@@ -386,10 +386,8 @@ public class ComplexToken extends ScalarToken {
 
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-            String msg = "multiply method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("multiply", this, token));
         } else if (compare == CPO.LOWER) {
             return token.multiplyReverse(this);
         } else {
@@ -457,8 +455,8 @@ public class ComplexToken extends ScalarToken {
             return rightArgument.subtractReverse(this);
         } else {
 	    // argument type is lower or the same as Complex.
-	    ComplexToken comptoken = (ComplexToken)convert(rightArgument);
-            Complex result = _value.subtract(comptoken.complexValue());
+	    ComplexToken complexToken = (ComplexToken)convert(rightArgument);
+            Complex result = _value.subtract(complexToken.complexValue());
             return new ComplexToken(result);
         }
     }

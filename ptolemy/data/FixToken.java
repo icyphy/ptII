@@ -144,10 +144,8 @@ public class FixToken extends ScalarToken {
 
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-            String msg = "add method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("add", this, token));
         } else if (compare == CPO.LOWER) {
             return token.addReverse(this);
         } else {
@@ -351,10 +349,8 @@ public class FixToken extends ScalarToken {
             throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-            String msg = "multiply method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("multiply", this, token));
         } else if (compare == CPO.LOWER) {
             return token.multiplyReverse(this);
         } else {

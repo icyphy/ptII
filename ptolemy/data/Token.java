@@ -25,13 +25,14 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t,e)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e), _notSupportedMessage()
 */
 
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 
 import java.io.Serializable;
 
@@ -316,7 +317,7 @@ public class Token implements Serializable {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  This method should be overriden by derived classes.
+     *  This method should be overridden by derived classes.
      *  In this base class, return the String "present" to indicate
      *  that an event is present.
      *  @return The String "present".
@@ -335,5 +336,23 @@ public class Token implements Serializable {
         throw new IllegalActionException(
                 "Token.zero: Additive identity not supported on "
                 + this.getClass().getName() + ".");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a string with an error message that states that
+     *  operation is not supported between two tokens.
+     *  @param operation A string naming the unsupported token
+     *  @param firstToken The first token in the message.
+     *  @param secondToken The first token in the message.
+     *  @returns A string error message
+     */
+    protected String _notSupportedMessage(String operation,
+            Token firstToken, Token secondToken) {
+        // We use this method to factor out a very common message
+        return (operation + " method not supported between "
+                + firstToken.getClass().getName() + " and "
+                + secondToken.getClass().getName());
     }
 }

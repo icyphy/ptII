@@ -101,10 +101,8 @@ public class BooleanMatrixToken extends MatrixToken {
 	int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE || compare == CPO.HIGHER ||
                 compare == CPO.SAME) {
-            String msg = "add method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("add", this, token));
         } else {
             return token.addReverse(this);
         }

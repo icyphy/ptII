@@ -189,9 +189,7 @@ public class LongToken extends ScalarToken {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(
-                    "divide method not supported between "
-                    + this.getClass().getName() + " and "
-                    + divisor.getClass().getName()
+                    _notSupportedMessage("divide", this, divisor)
                     + ": " + ex.getMessage());
         }
     }
@@ -246,10 +244,9 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "equality method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException(
+                    _notSupportedMessage("equality", this, token) 
+                    + ": " + ex.getMessage());
         }
     }
 
@@ -321,10 +318,9 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "modulo method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException(
+                    _notSupportedMessage("modulo", this, token)
+                    + ": " + ex.getMessage());
         }
     }
 
@@ -369,10 +365,9 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "multiply method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightFactor.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException(
+                    _notSupportedMessage("multiply", this, rightFactor)
+                    + ": " + ex.getMessage());
         }
     }
 
@@ -425,10 +420,9 @@ public class LongToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "subtract method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArgument.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalActionException(
+                    _notSupportedMessage("subtract", this, rightArgument)
+                    + ": " + ex.getMessage());
         }
     }
 

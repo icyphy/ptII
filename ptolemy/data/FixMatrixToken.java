@@ -113,10 +113,8 @@ public class FixMatrixToken extends MatrixToken {
     public Token add(Token token) throws IllegalActionException {
 	int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-	    String msg = "add method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-	    throw new IllegalActionException(msg);
+	    throw new IllegalActionException(
+                    _notSupportedMessage("add", this, token));
 	} else if (compare == CPO.LOWER) {
 	    return token.addReverse(this);
 	} else {

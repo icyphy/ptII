@@ -1200,7 +1200,8 @@ public class Variable extends Attribute implements Typeable, Settable {
             throw new IllegalActionException(this,
                     "Error evaluating expression \""
                     + _currentExpression
-                    + "\":\n" + ex);
+                    + "\":\n"
+                    + KernelException.stackTraceToString(ex));
         } finally {
 	    _dependencyLoop = false;
 	    workspace().doneReading();

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t,e)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) isCloseTo(t), isCloseTo(t, e)
 */
 
 package ptolemy.data;
@@ -33,7 +33,9 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
-import ptolemy.data.type.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
 
 import java.text.DecimalFormat;
 

@@ -179,10 +179,8 @@ public class StringToken extends Token {
                 return new BooleanToken(false);
             }
         } else {
-            String str = "equality method not supported between ";
-            str = str + this.getClass().getName();
-            str = str + " and " + token.getClass().getName();
-            throw new IllegalActionException(str);
+            throw new IllegalActionException(
+                    _notSupportedMessage("equality", this, token));
         }
     }
 

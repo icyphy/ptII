@@ -123,10 +123,8 @@ public class LongMatrixToken extends MatrixToken {
     public Token add(Token token) throws IllegalActionException {
 	int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-	    String msg = "add method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-	    throw new IllegalActionException(msg);
+	    throw new IllegalActionException(
+                    _notSupportedMessage("add", this, token));
 	} else if (compare == CPO.LOWER) {
 	    return token.addReverse(this);
 	} else {
@@ -346,10 +344,8 @@ public class LongMatrixToken extends MatrixToken {
 
         int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
-            String msg = "multiply method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("multiply", this, token));
         } else if (compare == CPO.LOWER) {
             return token.multiplyReverse(this);
         } else {
@@ -483,10 +479,8 @@ public class LongMatrixToken extends MatrixToken {
             throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
-            String msg = "subtract method not supported between " +
-                this.getClass().getName() + " and " +
-                token.getClass().getName();
-            throw new IllegalActionException(msg);
+            throw new IllegalActionException(
+                    _notSupportedMessage("subtract", this, token));
         } else if (compare == CPO.LOWER) {
             Token me = token.convert(this);
             return me.subtract(token);
