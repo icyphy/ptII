@@ -132,7 +132,16 @@ public class ColorFinder extends TypedAtomicActor {
             JMFImageToken jmfImageToken = (JMFImageToken) input.get(0);
             Buffer in = jmfImageToken.getValue();
             VideoFormat videoFormat = (VideoFormat)in.getFormat();
-            YUVFormat yuvFormat = (YUVFormat) videoFormat;
+            YUVFormat yuvFormat = null;
+            try {
+                yuvFormat = (YUVFormat) videoFormat;
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this, ex, "Failed to cast "
+                        + videoFormat.getClass() + ":\n" 
+                        + videoFormat + "\nto YUVFormat\n"
+                        + "in.getFormat() was: " + in.getFormat().getClass
+                        + "\nPerhaps the video source is not generating YUV?");
+            }
             byte[] data = (byte[])in.getData();
             if (data != null) {
                 System.arraycopy(data, yuvFormat.getOffsetY(),
