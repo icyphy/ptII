@@ -730,7 +730,7 @@ public class CommandLineTransformer extends SceneTransformer {
                                 System.out.println("inlining stmt = " + stmt);
 
                                 box.setValue(Evaluator
-                                        getConstantValueOf(newValue));
+                                        .getConstantValueOf(newValue));
                             }
                         }
 
