@@ -34,7 +34,6 @@ import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import java.util.Enumeration;
 
-//import gui.DynamicGraphView;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNPrimeExample
@@ -52,11 +51,9 @@ public class PNPrimeExample {
         CompositeActor myUniverse = new CompositeActor();
         myUniverse.setName("Prime_example");
 	Manager exec = new Manager("exec");
-        // FIXME FIXME FIXME
 	myUniverse.setManager(exec);
 	PNDirector local = new PNDirector("Local");
 	myUniverse.setDirector(local);
-        //myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
@@ -69,23 +66,6 @@ public class PNPrimeExample {
 	portout = (IOPort)sieve.getPort("output");
         portin = (IOPort)sink.getPort("input");
 	myUniverse.connect(portin, portout, "plot_queue");
-
-        //PNPlot plot = new PNPlot(myUniverse, "plotter");
-        //portout = (PNOutPort)sieve.getPort("output");
-        //portin = (PNInPort)plot.getPort("input");
-        //myUniverse.connect(portin, portout, "plot_queue");
-        //portin.getQueue(portout).setCapacity(1);
-
-        //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
-
-        //DynamicGraphView view = DynamicGraphView.makeView(
-	//       "Sieve of Eratosthenes", 800, 600);
-
-        //view.loadPtolemyGraph(myUniverse);
-
-        // DebugMutationListener d = new DebugMutationListener();
-        // myUniverse.getDirector().addMutationListener(d);
-        //myUniverse.getDirector().addMutationListener(view);
 
         exec.run();
         System.out.println("Bye World\n");
