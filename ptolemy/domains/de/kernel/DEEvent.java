@@ -165,6 +165,18 @@ public final class DEEvent implements Comparable {
         return _receiverDepth;
     }
 
+    /** Compare the tag of this event with the specified and return true
+     *  if they are equal and false otherwise.  This is provided along
+     *  with compareTo() because it is slightly faster when all you need
+     *  to know is whether the events are simultaneous.
+     *  @param event The event to compare against.
+     */
+    public final boolean isSimultaneousWith(DEEvent event) {
+        return ( _timeStamp == event._timeStamp) &&
+            ( _microstep == event._microstep) &&
+            ( _receiverDepth == event._receiverDepth);
+    }
+
     /** Return the microstep.
      *  @return The microstep.
      */
@@ -178,18 +190,6 @@ public final class DEEvent implements Comparable {
      */
     public final DEReceiver receiver() {
         return _receiver;
-    }
-
-    /** Compare the tag of this event with the specified and return true
-     *  if they are equal and false otherwise.  This is provided along
-     *  with compareTo() because it is slightly faster when all you need
-     *  to know is whether the events are simultaneous.
-     *  @param event The event to compare against.
-     */
-    public final boolean isSimultaneousWith(DEEvent event) {
-        return ( _timeStamp == event._timeStamp) &&
-            ( _microstep == event._microstep) &&
-            ( _receiverDepth == event._receiverDepth);
     }
 
     /** Return the time stamp.
