@@ -42,6 +42,7 @@
 
 <!-- ========================================================== -->
 <!-- root element -->
+<!-- Generates the comments and analyzes the root element -->
 <!-- ========================================================== -->
 
 <xsl:template match="/">
@@ -50,7 +51,12 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- DNHA element -->
+<!-- DNHA element 						-->
+<!-- Construct a CT domain as top level, iterates the Hybrid	-->
+<!-- Automata, the global variables, parameters, the channels 	-->
+<!-- in HSIF to build Modal models, input/output ports,		-->
+<!-- parameters in Ptolemy. Construct the relations based on    -->
+<!-- all the ports and link ports. 				-->
 <!-- ========================================================== -->
 
 <xsl:template match="DNHA">
@@ -137,7 +143,13 @@
 </xsl:template>   
 
 <!-- ========================================================== -->
-<!-- HybridAutomaton -->
+<!-- HybridAutomaton 						-->
+<!-- Construct a Modal model for a Hybrid Automaton 		-->
+<!-- including a FSM _Controller. 				-->
+<!-- Iterates the local variables, parameters, the discrete 	-->
+<!-- states the transitions in HSIF to build ports, parameters, -->
+<!-- states and refinements in Ptolemy. 			-->
+<!-- Construct the relations and link the according ports. 	-->
 <!-- ========================================================== -->
 
 <xsl:template match="HybridAutomaton">
@@ -236,7 +248,8 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Composite Entity -->
+<!-- Composite Entity 						-->
+<!-- The compositor with different directors. 			-->
 <!-- ========================================================== -->
 
 <xsl:template name="composite">
@@ -255,7 +268,8 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Directors -->
+<!-- Directors 							-->
+<!-- Different directors for different domains. 		-->
 <!-- ========================================================== -->
 
 <!-- CT MixedDirector -->
@@ -292,6 +306,10 @@
 
 <!-- ========================================================== -->
 <!-- Controller in Modal Model incluidng States and Transitions -->
+<!-- A FSM in control of the transitions between states. 	-->
+<!-- Iterate the variables to build input ports and input/output-->
+<!-- ports. The ports are refinement ports. 			-->
+<!-- Iterate the states and transitions in HSIF to build FSM. 	-->
 <!-- ========================================================== -->
 
 <!-- Controller for Modal Model -->
@@ -473,7 +491,9 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Refinements -->
+<!-- Refinements 						-->
+<!-- Construct the invariants and flow equations in HSIF. 	-->
+<!-- Construct ports and relations and link ports. 		-->
 <!-- ========================================================== -->
 
 <!-- Discrete State as State in FSM-->
@@ -606,7 +626,7 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Link _Controller, Refinements via relations-->
+<!-- Link _Controller, Refinements via relations		-->
 <!-- ========================================================== -->
 
 <xsl:template name="relation">
@@ -632,7 +652,7 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Parameters -->
+<!-- Parameters 						-->
 <!-- ========================================================== -->
 <xsl:template name="parameter">
     <xsl:element name="property">
@@ -653,7 +673,7 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Variables -->
+<!-- Variables 							-->
 <!-- ========================================================== -->
 <xsl:template name="variable">
     <xsl:param name="portType" select="'Default PortType'"/>
@@ -702,7 +722,7 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Values -->
+<!-- Values 							-->
 <!-- ========================================================== -->
 <xsl:template name="value">
     <xsl:choose>
@@ -761,10 +781,11 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Expressions, Invariants, DiffEquations, UpdateActions, SendActions -->
+<!-- Expressions, Invariants, DiffEquations,			-->
+<!-- UpdateActions, SendActions 				-->
 <!-- ========================================================== -->
-<!-- Expression -->
 
+<!-- Expression -->
 <xsl:template match="Expr" mode="expr">
     <xsl:for-each select="LExpr">
         <xsl:variable name="index" select="position()"/>
