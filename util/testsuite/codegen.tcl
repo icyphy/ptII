@@ -317,6 +317,15 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
     # See ptII/util/testsuite/removeGraphicalClasses.tcl
     removeGraphicalClasses $parser
 
+    # if { ${codeGenType} == "Deep" } {
+    #	# If this is Deep codegen, then don't use Test, use CGTest
+    #	# because Test has a SharedParameter
+    #	set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    #	$filter put "ptolemy.actor.lib.Test" \
+    #		"ptolemy.copernicus.java.test.CGTest"
+    #	$parser addMoMLFilter $filter
+    #}
+
     set toplevel [$parser parseFile $modelPath]
 
     # Strip off the leading .
