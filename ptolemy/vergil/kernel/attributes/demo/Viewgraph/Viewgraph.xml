@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
     </property>
-    <property name="image2" class="ptolemy.vergil.actor.lib.ImageAttribute">
+    <property name="image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="source" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/ptIIplanet.gif">
@@ -52,7 +52,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 190.0">
         </property>
     </property>
-    <property name="rectangle" class="ptolemy.vergil.actor.lib.RectangleAttribute">
+    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -98,7 +98,7 @@ attributes with visual elements.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 490.0">
         </property>
     </property>
-    <property name="line2" class="ptolemy.vergil.actor.lib.LineAttribute">
+    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
@@ -114,7 +114,7 @@ attributes with visual elements.</text></svg></configure>
     </property>
     <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
     </property>
-    <property name="ellipse" class="ptolemy.vergil.actor.lib.EllipseAttribute">
+    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">

@@ -136,7 +136,7 @@ public class ClassChanges implements MoMLFilter {
 
     static {
         ///////////////////////////////////////////////////////////
-        // Actors that have properties that have changed class.
+        // Actors and attributes that have changed names.
         _classChanges = new HashMap();
 
         // Location
@@ -154,5 +154,9 @@ public class ClassChanges implements MoMLFilter {
         // New in 3.1-devel
         _classChanges.put("ptolemy.domains.fsm.lib.RelationList",
                 "ptolemy.domains.fsm.kernel.RelationList");
+                
+        // Renamed in 3.1-devel
+        _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
+                "ptolemy.vergil.icon.ImageIcon");
     }
 }

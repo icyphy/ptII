@@ -37,7 +37,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="ellipse" class="ptolemy.vergil.actor.lib.EllipseAttribute">
+    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">

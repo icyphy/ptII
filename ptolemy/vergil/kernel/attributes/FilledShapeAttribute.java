@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.actor.lib;
+package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Color;
 import java.awt.Shape;

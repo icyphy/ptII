@@ -1,4 +1,4 @@
-/* An attribute with a reference to a line.
+/* An attribute with a reference to an ellipse.
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -28,28 +28,25 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.actor.lib;
+package ptolemy.vergil.kernel.attributes;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-import java.awt.Shape;
-import java.awt.geom.Line2D;
-
 //////////////////////////////////////////////////////////////////////////
-//// LineAttribute
+//// EllipseAttribute
 /**
-This is an attribute that is rendered as a line.
+This is an attribute that is rendered as an ellipse.
+Unlike the base class, by default, an ellipse is centered on its origin.
 <p>
 @author Edward A. Lee
 @version $Id$
 */
-public class LineAttribute extends ShapeAttribute {
+public class EllipseAttribute extends FilledShapeAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -64,66 +61,38 @@ public class LineAttribute extends ShapeAttribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public LineAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public EllipseAttribute(NamedObj container, String name)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        x = new Parameter(this, "x");
-        x.setTypeEquals(BaseType.DOUBLE);
-        x.setExpression("100.0");
-        
-        y = new Parameter(this, "y");
-        y.setTypeEquals(BaseType.DOUBLE);
-        y.setExpression("0.0");
-
-        // FIXME: controller for resizing.
-        // Create a custom controller.
-        // new ImageAttributeControllerFactory(this, "_controllerFactory");
+        centered.setExpression("true");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The horizontal extent.
-     *  This is a double that defaults to 100.0.
-     */
-    public Parameter x;
-    
-    /** The y extent.
-     *  This is a double that defaults to 0.0.
-     */
-    public Parameter y;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** React to a changes in the attributes by changing
-     *  the icon.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (should not be thrown).
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == x || attribute == y) {      
-            double xValue
-                   = ((DoubleToken)x.getToken()).doubleValue();
-            double yValue
-                   = ((DoubleToken)y.getToken()).doubleValue();
-            _icon.setShape(new Line2D.Double(
-                   0.0, 0.0, xValue, yValue));
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /** Return a line.
-     *  @return A line.
+    /** Return a circle.
+     *  @return A Circle.
      */
     public Shape _getDefaultShape() {
-        return new Line2D.Double(0.0, 0.0, 20.0, 20.0);
+        return new Ellipse2D.Double(0.0, 0.0, 20.0, 20.0);
+    }
+
+    /** Return the a new ellipse given a new width and height.
+     *  @param width The new width.
+     *  @param height The new height.
+     *  @return A new shape. 
+     */
+    protected Shape _newShape() {
+        if (_centeredValue) {
+            double halfWidth = _widthValue * 0.5;
+            double halfHeight = _heightValue * 0.5;
+            return new Ellipse2D.Double(
+                -halfWidth,
+                -halfHeight,
+                _widthValue,
+                _heightValue);
+        } else {
+            return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
+        }
     }
 }

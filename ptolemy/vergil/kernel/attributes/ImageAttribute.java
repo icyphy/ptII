@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.actor.lib;
+package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.icon.ImageEditorIcon;
+import ptolemy.vergil.icon.ImageIcon;
 import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ public class ImageAttribute extends Attribute {
         // Hide the name.
         new Attribute(this, "_hideName");
 
-        _icon = new ImageEditorIcon(this, "_icon");
+        _icon = new ImageIcon(this, "_icon");
         
         source = new FileAttribute(this, "source");
         source.setExpression("$CLASSPATH/doc/img/ptIIplanetIcon.gif");
@@ -131,5 +131,5 @@ public class ImageAttribute extends Attribute {
     ////                         private members                   ////
 
     // The image icon.
-    private ImageEditorIcon _icon;
+    private ImageIcon _icon;
 }

@@ -1,6 +1,6 @@
-# Makefile for the ptolemy/vergil/actor/lib package
+# Makefile for the ptolemy/vergil/kernel/attributes package
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -29,8 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-
-ME =		ptolemy/vergil/actor/lib
+ME =		ptolemy/vergil/kernel/attributes
 
 DIRS =		
 
@@ -49,10 +48,15 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	MonitorImage.java
+	EllipseAttribute.java \
+	FilledShapeAttribute.java \
+	ImageAttribute.java \
+	LineAttribute.java \
+	RectangleAttribute.java \
+	ShapeAttribute.java
 
 OTHER_FILES_TO_BE_JARED = \
-	interactive.xml
+	decorative.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

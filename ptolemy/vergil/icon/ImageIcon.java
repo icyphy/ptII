@@ -49,7 +49,7 @@ import java.util.ListIterator;
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageEditorIcon
+//// ImageIcon
 
 /**
 An icon that displays a specified java.awt.Image.
@@ -61,7 +61,7 @@ represented in the MoML file.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ImageEditorIcon extends EditorIcon implements ImageObserver {
+public class ImageIcon extends EditorIcon implements ImageObserver {
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -71,7 +71,7 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ImageEditorIcon(NamedObj container, String name)
+    public ImageIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -196,8 +196,8 @@ public class ImageEditorIcon extends EditorIcon implements ImageObserver {
                 // the returned size is not positive, then it is not correct,
                 // and imageUpdate() will be called later. So in that case,
                 // we do nothing.
-                int width = _image.getWidth(ImageEditorIcon.this);
-                int height = _image.getHeight(ImageEditorIcon.this);
+                int width = _image.getWidth(ImageIcon.this);
+                int height = _image.getHeight(ImageIcon.this);
                 if (width > 0 && height > 0) {
                     int newWidth = (int) Math.round(
                            width * _scalePercentage/100.0);

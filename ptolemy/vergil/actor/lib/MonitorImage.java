@@ -36,7 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.ImageEditorIcon;
+import ptolemy.vergil.icon.ImageIcon;
 
 import java.awt.Image;
 
@@ -66,7 +66,7 @@ public class MonitorImage extends Sink {
 
         input.setTypeEquals(BaseType.OBJECT);
 
-        _icon = new ImageEditorIcon(this, "_icon");
+        _icon = new ImageIcon(this, "_icon");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -90,5 +90,5 @@ public class MonitorImage extends Sink {
     ////                         private members                   ////
 
     // The image icon.
-    private ImageEditorIcon _icon;
+    private ImageIcon _icon;
 }
