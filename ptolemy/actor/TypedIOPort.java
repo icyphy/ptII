@@ -925,11 +925,11 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
                 throw new IllegalActionException(
-                        "TypedIOPort$TypeTerm.setValue: Cannot update the "
-			+ "type of this port to the new type."
-                        + " Port: " + _port.getFullName()
-			+ ", Port type: " + _declaredType.toString()
-			+ ", New type: " + e.toString());
+                        "Type conflict on port " + _port.getFullName() + ".\n"
+			+ "Declared type is " + _declaredType.toString()
+			+ ".\n"
+                        + "The connection or type constraints, however, "
+			+ "requires type " + e.toString());
             }
 
             Type oldType = _resolvedType;
