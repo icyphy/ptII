@@ -1627,12 +1627,13 @@ public class Variable extends Attribute
          */
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
-                    throw new IllegalActionException("TypeTerm.setValue: The " +
-                        "type is not settable.");
+                    throw new IllegalActionException("TypeTerm.setValue: The "
+                        + "type is not settable.");
             }
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-                    throw new IllegalActionException("Variable$TypeTerm.setValue: "
+                    throw new IllegalActionException("Variable$TypeTerm"
+                        + ".setValue: "
                         + "Cannot update the type of this variable to the "
                         + "new type."
                         + " Variable: " + Variable.this.getFullName()
