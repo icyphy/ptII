@@ -28,7 +28,7 @@
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.PtinyApplication">
 	<argument>ptolemy/configs/vergilConfigurationPtiny.xml</argument>
-	<argument>ptolemy/configs/introDSP.htm</argument>
+	<argument>ptolemy/configs/introPtiny.htm</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>
