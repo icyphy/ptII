@@ -8,29 +8,36 @@
 <body>
 <h1>Code Generation</h1>
 <h2>Contents</h2>
-<menu>
+
+<font color="red">Ptolemy II 2.0-beta: Note that the hyperlinks below
+do not work from within Vergil.  This is because the Java URL class
+does not handle fragments very well.  We are working on a fix.</font>
+See the comment in
+<code>$PTII/ptolemy/actor/gui/Configuration.java</code> for details.
+
+<ul>
 <li><a href="#overview">Overview</a>
 <li><a href="#deep">Deep Code Generation</a>
- <menu>
+ <ul>
  <li><a href="#deepDemo">Deep Code Generation Demonstration</a>
  <li><a href="#treeShaking">Tree Shaking</a>
  <li><a href="#gcj">GCJ</a>
- </menu>
+ </ul>
 <li><a href="#shallow">Shallow Code Generation</a>
- <menu>
+ <ul>
  <li><a href="#shallowDemo">Shallow Code Generation Demonstration</a>
- </menu>
+ </ul>
 <li><a href="#applet">Applet Code Generation</a>
- <menu>
+ <ul>
  <li><a href="#appletDemo">Applet Code Generation Demonstration</a>
- </menu>
+ </ul>
 <li><a href="#interpreted">Interpreted Code Generation</a>
 <li><a href="#ui">The Code Generator User Interface</a>
 <li><a href="#history">Code Generation History</a>
 <li><a href="#soot">Soot</a>
 <li><a href="#future">Future Plans</a>
 <li><a href="#resources">Resources</a>
-</menu>
+</ul>
 
 <h2><a name="overview">Overview</a></h2>
 <p>
@@ -66,7 +73,7 @@ cases.</font>  It is at the stage of being a concept demonstration
 only.  We expect it to mature considerably in the near future.
 <p>The following <a name="limitations">limitations</a>
 apply to all of the code generators:
-<menu>
+<ul>
 <li> The code generators uses <a href="#soot">Soot</a> to analyze a
 model and generate a set of Java .class files.  Soot will not
 work with JDK1.4, it requires JDK1.3
@@ -79,13 +86,13 @@ the <a href="#userInterfaceLimitations">User Interface Limitations</a>
 section.
 <li> The limitations for the individual code generators are 
 discussed below:
-  <menu>
+  <ul>
   <li> <a href="#deepLimitations">Deep Limitations</a>
   <li> <a href="#shallowLimitations">Shallow Limitations</a>
   <li> <a href="#appletLimitations">Applet Limitations</a>
   <li> <a href="#interpretedLimitations">Interpreted Limitations</a>
-  </menu>
-</menu>
+  </ul>
+</ul>
 
 <h2><a name="deep">Deep Code Generation</a></h2>
 Deep code generation is by the most interesting of the code generators
@@ -118,7 +125,7 @@ the reports on the Ptolemy II website at
 
 <p><a name="deepLimitations">Deep code generation has the following
 limitations:</a>
-<menu>
+<ul>
 <li> Deep code generation still requires the <code>ptolemy.math</code>
 and <code>ptolemy.data</code> packages.
 
@@ -150,7 +157,7 @@ that information is lost.
 <li> Deep code generation does not work under Mac OSX because
 the deep code generator cannot find the Java <CODE>rt.jar</CODE>
 
-</menu>
+</ul>
 
 
 <p><a name="deepDemo">Below is a simple demonstration:</a>
@@ -192,19 +199,19 @@ All Done.
 
 The last line is the most significant, it indicates that the run
 
-<menu>
+<ul>
  <li> took 280 milliseconds
  <li> Consumed at most 1984K of memory
  <li> Before garbage collection at the end of the run, there was
  1741K or 88% memory free.  That means that before
  garbage collection, the model consumed 243K (1984K-1741K) of memory.
  <li> The remaining three numbers are somewhat more subjective:
-  <menu>
+  <ul>
   <li> 179K of Memory was allocated during construction of the model
   <li> 1K was allocated while the model was running
   <li> 63K of data that was garbage collected.
-  </menu>
-</menu>
+  </ul>
+</ul>
 <li>To run the generated code again, click on the <code>compile</code>
 radio button and turn it off, then hit the <code>Generate</code>
 button.  This will show and run the generated code without rerunning
@@ -213,7 +220,7 @@ the 90 second long generator process.
 </ol>
 
 Things to note:
-<menu>
+<ul>
 <li> After a model is run, Ptolemy II prints out the amount of time
 and memory the model consumed.  Usually, this output goes to standard
 out, which could be hidden if Vergil was started by clicking on an
@@ -223,59 +230,27 @@ runtime statistics in the code generator tableau window.  To
 run the interpreted code generator:
  <ol>
  <li>Go to the code generator window and change <code>codeGenerator</code>
- to <code>interpreted</code>
- <li> Hit the Generate Button
+ to <code>interpreted</code></li>
+ <li> Hit the Generate Button</li>
  </ol>
- <p>
-For 20 iterations, the interpreted code generator will print out
-<pre>
-OrthogonalCom: Stats before execution:    1722 ms. Memory: 1984K Free: 1104K (56%)
-0
-0
-1
-0
-<i>etc.</i>
-0
-410 ms. Memory: 1984K Free: 1215K (61%)
-OrthogonalCom: Execution stats:           2273 ms. Memory: 1984K Free: 1214K (61%)
-OrthogonalCom: After Garbage Collection:  3425 ms. Memory: 1984K Free: 1519K (77%)
-OrthogonalCom: construction size:         1984K - 1104K = 880K
-OrthogonalCom: model alloc. while exec. : 1104K - 1519K = -415K
-OrthogonalCom: model alloc. runtime data: 1519K - 1214K = 305K
-2273 ms. Memory: 1984K Free: 1214K (61%) Stat: 880K StatRT: -415K DynRT: 305
-</pre>
-The most significant line is the last line.
-
-<p>The 2273 ms. represents the amount of time in milliseconds
-that was required to read in the model, parse it and run it.
-
-<p>The 410 ms. represents the amount of time the model ran for.
-
-From the above, we can see that for 20 iterations, 
-the deep code generator took 280 ms. overall to run, whereas the
-interpreted version too 2273 ms.  The difference in times
-is primarily consumed by the MoML parser, which is fairly
-complex.
-
-<p>The actual run times, after parsing, were 280 ms. for the deep code
-generation version and 410 ms. for the interpreted version.  
+</li>
 
 <li> Deep codegen shows a more significant improvement in speed when
-the model is run for a larger number of iterations.
+the model is run for a larger number of iterations.</li>
 
 To increase the number of iterations in the model:
 <ol>
 <li>Close the code generator window and go to the
-graph editor
+graph editor</li>
 <li> Click on the green SDF Director Icon and change the number
-of iterations from 20 to 2000.
-<li> Save the model with File -&gt; Save
+of iterations from 20 to 2000.</li>
+<li> Save the model with File -&gt; Save</li>
 <li> Bring up the code generator with
-View -&gt; Code Generator -&gt; Generate.
-<li> Run the model using the interpreted code generator
+View -&gt; Code Generator -&gt; Generate.</li>
+<li> Run the model using the interpreted code generator</li>
 by goin to the code generator window and change <code>codeGenerator</code>
- to <code>interpreted</code>
-<li> Hit the Generate Button
+ to <code>interpreted</code></li>
+<li> Hit the Generate Button</li>
 <li> You should see times like:
 <pre>
 3254 ms. Memory: 1984K Free: 1412K (71%)
@@ -286,9 +261,9 @@ OrthogonalCom: model alloc. while exec. : 1104K - 1519K = -415K
 OrthogonalCom: model alloc. runtime data: 1519K - 1411K = 108K
 5097 ms. Memory: 1984K Free: 1411K (71%) Stat: 880K StatRT: -415K DynRT: 108
 </pre>
-
-<li> Change the <code>codeGenerator</code> to <code>java</code>
-<li> Hit the Generate Button
+</li>
+<li> Change the <code>codeGenerator</code> to <code>java</code></li>
+<li> Hit the Generate Button</li>
 <li> You should see statistics like
 <pre>
 OrthogonalCom: Execution stats:           941 ms. Memory: 1984K Free: 1494K (75%)
@@ -298,6 +273,7 @@ OrthogonalCom: model alloc. while exec. : 1805K - 1804K = 1K
 OrthogonalCom: model alloc. runtime data: 1804K - 1494K = 310K
 941 ms. Memory: 1984K Free: 1494K (75%) Stat: 179K StatRT: 1K DynRT: 310K
 </pre>
+</li>
 </ol>
 Comparing the run times for 2000 iterations, we can see that the
 interpreted version took 5097 ms. compared with the deep code generation
@@ -308,9 +284,9 @@ roughly 5 times faster than the regular interpreted version.
 convert the .class files back to .java files.  Unfortunately, there
 are various reasons that the resulting .java files will not compile.
 See the <a href="#disassemblers">Disassemblers</a> section for
-information about disassemblers.
+information about disassemblers.</li>
 
-</menu>
+</ul>
 
 <h3><a name="treeShaking">Tree Shaking</a></h3>
 Tree shaking is a form of optimization where a system is run
@@ -428,7 +404,7 @@ the generated code will end up in the directory listed in the
 </ol>
 
 Things to note:
-<menu>
+<ul>
 
 <li> When the MoML version Orthogonal Communcation model is run
 through shallow code generation and a .class file is created, then
@@ -439,7 +415,7 @@ the MoML parser is not invoked.
 361 ms. Memory: 1984K Free: 1145K (58%)
 </pre>
 Which is almost half the 661 ms. that the interpreted version ran for
-</menu>
+</ul>
 
 <h3><a name="#shallowLimitations">Shallow Limitations</a></h3>
 The shallow code generator does not have any shallow specific limitations.
@@ -542,7 +518,7 @@ handle missing classes at runtime.
 
 
 <h3><a name="#appletLimitations">Applet Limitations</a></h3>
-<menu>
+<ul>
 
 <li> Under Web Start, you may need to add classes to the
 <CODE>necessaryClasses</CODE> parameter so that
@@ -574,7 +550,7 @@ the <code><i>xxx</i>Model.htm</code> file.
 annotations from the MoML file and use them as comments.
 <li>If the model is a FSM modal Model, then diva.jar
 is not included automatically.
-</menu>
+</ul>
 
 <h2><a name="interpreted">Interpreted Code Generation</a></h2>
 The interpreted code generator is really not a code generator.
@@ -652,7 +628,7 @@ so that the code generator can be run without requiring the
 <h3><a name="userInterfaceLimitations">User Interface Limitations</a></h3>
 
 Unfortunately, this UI has many design issues:
-<menu>
+<ul>
 <li> The interface is cluttered because there are many different
 possible parameters to set.  It is fairly easy to make have an
 interface that generates code in a default directory with default
@@ -666,7 +642,7 @@ that simple strings need to be enclosed in double quotes.
 <li> It would be nice if there was an easier way to see what a
 parameter evaluated to.
 
-</menu>
+</ul>
  
 <h2><a name="history">Code Generation History</a></h2>
 
@@ -791,26 +767,26 @@ processor by either writing a new back end, or using a native Java
 compiler like gcj.
 
 <h2><a name="future">Future Plans</a></h2>
-<menu>
+<ul>
 <li> Deep code generation needs to have the tokens unboxed so
 that it no longer depends on ptolemy.data
 <li> Generating C code from a Ptolemy Model is in progress.
 <li> We have demonstrated that the Ptolemy code generation framework can
 be used to generate FGPA code using
 JHDL from Brigham Young University (<a href="http://www.jhdl.org" target="_top"><code>http://www.jhdl.org</code></a>)
-</menu>
+</ul>
 
 <h2><a name="resources">Resources</a></h2>
 Below are links to various resources:
 
 Soot uses jasmin
-<menu>
+<ul>
 <li> <a href="http://found.cs.nyu.edu/meyer/jasmin/" target="_top">Jasmin</a> 
 a Java Assembler Interface (1997)
 <li> <a
 href="http://www.geocrawler.com/archives/3/338/1996/8/0/1876595/" target="_top">Jasmin
 emacs mode</a>
-</menu>
+</ul>
 
 <h3><a name="disassemblers">Disassemblers</a></h3>
 Soot works with byte codes.  A Java decompiler or disassembler 
@@ -873,9 +849,9 @@ $PTII/bin/jode ptolemy.copernicus.java.cg.OrthogonalCom.Main
 </dl>
 
 Other possibilities:
-<menu>
+<ul>
 <li> <a href="http://bcel.sourceforge.net/" target="_top"><CODE>http://bcel.sourceforge.net/</CODE></a>
-</menu>
+</ul>
 
 
 <h3>Java To C converters</h3>
@@ -886,11 +862,11 @@ Other possibilities:
 <dt> GCJ - The GNU Compiler for Java
 <dd> <a href="http://gcc.gnu.org/java/" target="_top"><CODE>http://gcc.gnu.org/java/</CODE></a>: JDK1.2 compliant
 <BLOCKQUOTE>
-<menu>
+<ul>
 <li> Java source code directly to native machine code, 
 <li> Java source code to Java bytecode (class files), 
 <li>  and Java bytecode to native machine code. 
-</menu>
+</ul>
 </BLOCKQUOTE>
 
 
