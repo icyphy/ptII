@@ -332,7 +332,7 @@ public class PlotBox extends Panel {
      *  @return The preferred size.
      */
     public Dimension getPreferredSize() {
-       return new Dimension(_width, _height);
+        return new Dimension(_width, _height);
     }
 
     /** Initialize the component, creating the fill button and parsing
@@ -363,7 +363,7 @@ public class PlotBox extends Panel {
      *  @deprecated
      */
     public void parseFile(String filespec) {
-       parseFile(filespec, (URL)null);
+        parseFile(filespec, (URL)null);
     }
 
     /** Open up the input file, which could be stdin, a URL, or a file.
@@ -427,7 +427,7 @@ public class PlotBox extends Panel {
             }
 
             BufferedReader din = new BufferedReader(
-                new InputStreamReader(in));
+                    new InputStreamReader(in));
             String line = din.readLine();
             while (line != null) {
                 _parseLine(line);
@@ -494,7 +494,7 @@ public class PlotBox extends Panel {
             if (false) {
                 // Reading a binary file.
                 DataInputStream din = new DataInputStream(
-                    new BufferedInputStream(in));
+                        new BufferedInputStream(in));
                 try {
                     // FIXME: read the binary data.
                 } finally {
@@ -509,7 +509,7 @@ public class PlotBox extends Panel {
                 // here in a strange mixture.
 
                 BufferedReader din = new BufferedReader(
-                    new InputStreamReader(in));
+                        new InputStreamReader(in));
 
                 try {
                     String line = din.readLine();
@@ -842,411 +842,411 @@ public class PlotBox extends Panel {
 
         ///////////////////// vertical axis
 
-        // Number of y tick marks.
-        // NOTE: subjective spacing factor.
-        int ny = 2 + height/(labelheight+10);
-        // Compute y increment.
-        double yStep=_roundUp((_ytickMax-_ytickMin)/(double)ny);
+            // Number of y tick marks.
+            // NOTE: subjective spacing factor.
+            int ny = 2 + height/(labelheight+10);
+            // Compute y increment.
+            double yStep=_roundUp((_ytickMax-_ytickMin)/(double)ny);
 
-        // Compute y starting point so it is a multiple of yStep.
-        double yStart=yStep*Math.ceil(_ytickMin/yStep);
-
-        // NOTE: Following disables first tick.  Not a good idea?
-        // if (yStart == _ytickMin) yStart+=yStep;
-
-        // Define the strings that will label the y axis.
-        // Meanwhile, find the width of the widest label.
-        // The labels are quantized so that they don't have excess resolution.
-        int widesty = 0;
-
-        // These do not get used unless ticks are automatic, but the
-        // compiler is not smart enough to allow us to reference them
-        // in two distinct conditional clauses unless they are
-        // allocated outside the clauses.
-        String ylabels[] = new String[ny];
-        int ylabwidth[] = new int[ny];
-
-        int ind = 0;
-        if (_yticks == null) {
-            Vector ygrid = null;
-            if (_ylog) {
-                ygrid = _gridInit(yStart, yStep, true, null);
-            }
-
-            // automatic ticks
-            // First, figure out how many digits after the decimal point
-            // will be used.
-            int numfracdigits = _numFracDigits(yStep);
-
-            // NOTE: Test cases kept in case they are needed again.
-            // System.out.println("0.1 with 3 digits: " + _formatNum(0.1, 3));
-            // System.out.println("0.0995 with 3 digits: " +
-            //                    _formatNum(0.0995, 3));
-            // System.out.println("0.9995 with 3 digits: " +
-            //                    _formatNum(0.9995, 3));
-            // System.out.println("1.9995 with 0 digits: " +
-            //                    _formatNum(1.9995, 0));
-            // System.out.println("1 with 3 digits: " + _formatNum(1, 3));
-            // System.out.println("10 with 0 digits: " + _formatNum(10, 0));
-            // System.out.println("997 with 3 digits: " + _formatNum(997, 3));
-            // System.out.println("0.005 needs: " + _numFracDigits(0.005));
-            // System.out.println("1 needs: " + _numFracDigits(1));
-            // System.out.println("999 needs: " + _numFracDigits(999));
-            // System.out.println("999.0001 needs: "+_numFracDigits(999.0001));
-            // System.out.println("0.005 integer digits: " +
-            //                    _numIntDigits(0.005));
-            // System.out.println("1 integer digits: " + _numIntDigits(1));
-            // System.out.println("999 integer digits: " + _numIntDigits(999));
-            // System.out.println("-999.0001 integer digits: " +
-            //                    _numIntDigits(999.0001));
-
-            double yTmpStart = yStart;
-            if (_ylog)
-                yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
-
-            for (double ypos = yTmpStart; ypos <= _ytickMax;
-                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
-                // Prevent out of bounds exceptions
-                if (ind >= ny) break;
-                String yticklabel;
-                if (_ylog) {
-                    yticklabel = _formatLogNum(ypos, numfracdigits);
-                } else {
-                    yticklabel = _formatNum(ypos, numfracdigits);
-                }
-                ylabels[ind] = yticklabel;
-                int lw = _labelFontMetrics.stringWidth(yticklabel);
-                ylabwidth[ind++] = lw;
-                if (lw > widesty) {widesty = lw;}
-            }
-        } else {
-            // explicitly specified ticks
-            Enumeration nl = _yticklabels.elements();
-            while (nl.hasMoreElements()) {
-                String label = (String) nl.nextElement();
-                int lw = _labelFontMetrics.stringWidth(label);
-                if (lw > widesty) {widesty = lw;}
-            }
-        }
-
-        // Next we do the horizontal spacing.
-        if (_ylabel != null) {
-            _ulx = widesty + _labelFontMetrics.stringWidth("W") + _leftPadding;
-        } else {
-            _ulx = widesty + _leftPadding;
-        }
-        int legendwidth = _drawLegend(graphics,
-                drawRect.width-_rightPadding, _uly);
-        _lrx = drawRect.width-legendwidth-_rightPadding;
-        int width = _lrx-_ulx;
-        _xscale = width/(_xMax - _xMin);
-        _xtickscale = width/(_xtickMax - _xtickMin);
-
-        // Background for the plotting rectangle.
-        // Always use a white background because the dataset colors
-        // were designed for a white background.
-        graphics.setColor(Color.white);
-        graphics.fillRect(_ulx, _uly, width, height);
-
-        graphics.setColor(_foreground);
-        graphics.drawRect(_ulx, _uly, width, height);
-
-        // NOTE: subjective tick length.
-        int tickLength = 5;
-        int xCoord1 = _ulx+tickLength;
-        int xCoord2 = _lrx-tickLength;
-
-        if (_yticks == null) {
-            // auto-ticks
-            Vector ygrid = null;
-            double yTmpStart = yStart;
-            if (_ylog) {
-                ygrid = _gridInit(yStart, yStep, true, null);
-                yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
-                ny = ind;
-            }
-            ind = 0;
-            // Set to false if we don't need the exponent
-            boolean needExponent = _ylog;
-            for (double ypos=yTmpStart; ypos <= _ytickMax;
-                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
-                // Prevent out of bounds exceptions
-                if (ind >= ny) break;
-                int yCoord1 = _lry - (int)((ypos-_ytickMin)*_ytickscale);
-                // The lowest label is shifted up slightly to avoid
-                // colliding with x labels.
-                int offset = 0;
-                if (ind > 0 &&  ! _ylog) offset = halflabelheight;
-                graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
-                graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
-                if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
-                    graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
-                    graphics.setColor(_foreground);
-                }
-                // Check to see if any of the labels printed contain
-                // the exponent.  If we don't see an exponent, then print it.
-                if (_ylog && ylabels[ind].indexOf('e') != -1 )
-                    needExponent = false;
-
-                // NOTE: 4 pixel spacing between axis and labels.
-                graphics.drawString(ylabels[ind],
-                        _ulx-ylabwidth[ind++]-4, yCoord1+offset);
-            }
-
-            if (_ylog) {
-                // Draw in grid lines that don't have labels.
-                Vector unlabeledgrid  = _gridInit(yStart, yStep, false, ygrid);
-                if (unlabeledgrid.size() > 0) {
-                    // If the step is greater than 1, clamp it to 1 so that
-                    // we draw the unlabeled grid lines for each
-                    //integer interval.
-                    double tmpStep = (yStep > 1.0)? 1.0 : yStep;
-
-                    for (double ypos = _gridStep(unlabeledgrid , yStart,
-                            tmpStep, _ylog);
-                         ypos <= _ytickMax;
-                         ypos = _gridStep(unlabeledgrid, ypos,
-                                 tmpStep, _ylog)) {
-                        int yCoord1 = _lry -
-                            (int)((ypos-_ytickMin)*_ytickscale);
-                        if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
-                            graphics.setColor(Color.lightGray);
-                            graphics.drawLine(_ulx+1, yCoord1,
-                                    _lrx-1, yCoord1);
-                            graphics.setColor(_foreground);
-                        }
-                    }
-                }
-
-                if (needExponent) {
-                    // We zoomed in, so we need the exponent
-                    _yExp = (int)Math.floor(yTmpStart);
-                } else {
-                    _yExp = 0;
-                }
-            }
-
-            // Draw scaling annotation for y axis.
-            if (_yExp != 0) {
-                graphics.drawString("x10", 2, titley);
-                graphics.setFont(_superscriptfont);
-                graphics.drawString(Integer.toString(_yExp),
-                        _labelFontMetrics.stringWidth("x10") + 2,
-                        titley-halflabelheight);
-                graphics.setFont(_labelfont);
-            }
-        } else {
-            // ticks have been explicitly specified
-            Enumeration nt = _yticks.elements();
-            Enumeration nl = _yticklabels.elements();
-            while (nl.hasMoreElements()) {
-                String label = (String) nl.nextElement();
-                double ypos = ((Double)(nt.nextElement())).doubleValue();
-                if (ypos > _yMax || ypos < _yMin) continue;
-                int yCoord1 = _lry - (int)((ypos-_yMin)*_yscale);
-                int offset = 0;
-                if (ypos < _lry - labelheight) offset = halflabelheight;
-                graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
-                graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
-                if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
-                    graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
-                    graphics.setColor(_foreground);
-                }
-                // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label,
-                        _ulx - _labelFontMetrics.stringWidth(label) - 3,
-                        yCoord1+offset);
-            }
-        }
-
-        ///////////////////// horizontal axis
-
-        int yCoord1 = _uly+tickLength;
-        int yCoord2 = _lry-tickLength;
-        if (_xticks == null) {
-            // auto-ticks
-
-            // Number of x tick marks.
-            // Need to start with a guess and converge on a solution here.
-            int nx = 10;
-            double xStep = 0.0;
-            int numfracdigits = 0;
-            int charwidth = _labelFontMetrics.stringWidth("8");
-            if (_xlog) {
-                // X axes log labels will be at most 6 chars: -1E-02
-                nx = 2 + width/((charwidth * 6) + 10);
-            } else {
-                // Limit to 10 iterations
-                int count = 0;
-                while (count++ <= 10) {
-                    xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
-                    // Compute the width of a label for this xStep
-                    numfracdigits = _numFracDigits(xStep);
-                    // Number of integer digits is the maximum of two endpoints
-                    int intdigits = _numIntDigits(_xtickMax);
-                    int inttemp = _numIntDigits(_xtickMin);
-                    if (intdigits < inttemp) {
-                        intdigits = inttemp;
-                    }
-                    // Allow two extra digits (decimal point and sign).
-                    int maxlabelwidth = charwidth *
-                        (numfracdigits + 2 + intdigits);
-                    // Compute new estimate of number of ticks.
-                    int savenx = nx;
-                    // NOTE: 10 additional pixels between labels.
-                    // NOTE: Try to ensure at least two tick marks.
-                    nx = 2 + width/(maxlabelwidth+10);
-                    if (nx - savenx <= 1 || savenx - nx <= 1) break;
-                }
-            }
-            xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
-            numfracdigits = _numFracDigits(xStep);
-
-            // Compute x starting point so it is a multiple of xStep.
-            double xStart=xStep*Math.ceil(_xtickMin/xStep);
+            // Compute y starting point so it is a multiple of yStep.
+            double yStart=yStep*Math.ceil(_ytickMin/yStep);
 
             // NOTE: Following disables first tick.  Not a good idea?
-            // if (xStart == _xMin) xStart+=xStep;
+            // if (yStart == _ytickMin) yStart+=yStep;
 
-            Vector xgrid = null;
-            double xTmpStart = xStart;
-            if (_xlog) {
-                xgrid = _gridInit(xStart, xStep, true, null);
-                //xgrid = _gridInit(xStart, xStep);
-                xTmpStart = _gridRoundUp(xgrid, xStart);
+            // Define the strings that will label the y axis.
+            // Meanwhile, find the width of the widest label.
+            // The labels are quantized so that they don't have excess resolution.
+            int widesty = 0;
+
+            // These do not get used unless ticks are automatic, but the
+            // compiler is not smart enough to allow us to reference them
+            // in two distinct conditional clauses unless they are
+            // allocated outside the clauses.
+            String ylabels[] = new String[ny];
+            int ylabwidth[] = new int[ny];
+
+            int ind = 0;
+            if (_yticks == null) {
+                Vector ygrid = null;
+                if (_ylog) {
+                    ygrid = _gridInit(yStart, yStep, true, null);
+                }
+
+                // automatic ticks
+                // First, figure out how many digits after the decimal point
+                // will be used.
+                int numfracdigits = _numFracDigits(yStep);
+
+                // NOTE: Test cases kept in case they are needed again.
+                // System.out.println("0.1 with 3 digits: " + _formatNum(0.1, 3));
+                // System.out.println("0.0995 with 3 digits: " +
+                //                    _formatNum(0.0995, 3));
+                // System.out.println("0.9995 with 3 digits: " +
+                //                    _formatNum(0.9995, 3));
+                // System.out.println("1.9995 with 0 digits: " +
+                //                    _formatNum(1.9995, 0));
+                // System.out.println("1 with 3 digits: " + _formatNum(1, 3));
+                // System.out.println("10 with 0 digits: " + _formatNum(10, 0));
+                // System.out.println("997 with 3 digits: " + _formatNum(997, 3));
+                // System.out.println("0.005 needs: " + _numFracDigits(0.005));
+                // System.out.println("1 needs: " + _numFracDigits(1));
+                // System.out.println("999 needs: " + _numFracDigits(999));
+                // System.out.println("999.0001 needs: "+_numFracDigits(999.0001));
+                // System.out.println("0.005 integer digits: " +
+                //                    _numIntDigits(0.005));
+                // System.out.println("1 integer digits: " + _numIntDigits(1));
+                // System.out.println("999 integer digits: " + _numIntDigits(999));
+                // System.out.println("-999.0001 integer digits: " +
+                //                    _numIntDigits(999.0001));
+
+                double yTmpStart = yStart;
+                if (_ylog)
+                    yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
+
+                for (double ypos = yTmpStart; ypos <= _ytickMax;
+                     ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
+                    // Prevent out of bounds exceptions
+                    if (ind >= ny) break;
+                    String yticklabel;
+                    if (_ylog) {
+                        yticklabel = _formatLogNum(ypos, numfracdigits);
+                    } else {
+                        yticklabel = _formatNum(ypos, numfracdigits);
+                    }
+                    ylabels[ind] = yticklabel;
+                    int lw = _labelFontMetrics.stringWidth(yticklabel);
+                    ylabwidth[ind++] = lw;
+                    if (lw > widesty) {widesty = lw;}
+                }
+            } else {
+                // explicitly specified ticks
+                Enumeration nl = _yticklabels.elements();
+                while (nl.hasMoreElements()) {
+                    String label = (String) nl.nextElement();
+                    int lw = _labelFontMetrics.stringWidth(label);
+                    if (lw > widesty) {widesty = lw;}
+                }
             }
 
-            // Set to false if we don't need the exponent
-            boolean needExponent = _xlog;
+            // Next we do the horizontal spacing.
+            if (_ylabel != null) {
+                _ulx = widesty + _labelFontMetrics.stringWidth("W") + _leftPadding;
+            } else {
+                _ulx = widesty + _leftPadding;
+            }
+            int legendwidth = _drawLegend(graphics,
+                    drawRect.width-_rightPadding, _uly);
+            _lrx = drawRect.width-legendwidth-_rightPadding;
+            int width = _lrx-_ulx;
+            _xscale = width/(_xMax - _xMin);
+            _xtickscale = width/(_xtickMax - _xtickMin);
 
-            // Label the x axis.  The labels are quantized so that
-            // they don't have excess resolution.
-            for (double xpos = xTmpStart;
-                 xpos <= _xtickMax;
-                 xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
-                String xticklabel;
-                if (_xlog) {
-                    xticklabel = _formatLogNum(xpos, numfracdigits);
-                    if (xticklabel.indexOf('e') != -1 )
+            // Background for the plotting rectangle.
+            // Always use a white background because the dataset colors
+            // were designed for a white background.
+            graphics.setColor(Color.white);
+            graphics.fillRect(_ulx, _uly, width, height);
+
+            graphics.setColor(_foreground);
+            graphics.drawRect(_ulx, _uly, width, height);
+
+            // NOTE: subjective tick length.
+            int tickLength = 5;
+            int xCoord1 = _ulx+tickLength;
+            int xCoord2 = _lrx-tickLength;
+
+            if (_yticks == null) {
+                // auto-ticks
+                Vector ygrid = null;
+                double yTmpStart = yStart;
+                if (_ylog) {
+                    ygrid = _gridInit(yStart, yStep, true, null);
+                    yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
+                    ny = ind;
+                }
+                ind = 0;
+                // Set to false if we don't need the exponent
+                boolean needExponent = _ylog;
+                for (double ypos=yTmpStart; ypos <= _ytickMax;
+                     ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
+                    // Prevent out of bounds exceptions
+                    if (ind >= ny) break;
+                    int yCoord1 = _lry - (int)((ypos-_ytickMin)*_ytickscale);
+                    // The lowest label is shifted up slightly to avoid
+                    // colliding with x labels.
+                    int offset = 0;
+                    if (ind > 0 &&  ! _ylog) offset = halflabelheight;
+                    graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
+                    graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
+                    if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
+                        graphics.setColor(Color.lightGray);
+                        graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
+                        graphics.setColor(_foreground);
+                    }
+                    // Check to see if any of the labels printed contain
+                    // the exponent.  If we don't see an exponent, then print it.
+                    if (_ylog && ylabels[ind].indexOf('e') != -1 )
                         needExponent = false;
-                } else {
-                    xticklabel = _formatNum(xpos, numfracdigits);
+
+                    // NOTE: 4 pixel spacing between axis and labels.
+                    graphics.drawString(ylabels[ind],
+                            _ulx-ylabwidth[ind++]-4, yCoord1+offset);
                 }
-                xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
-                graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
-                graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-                if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-                    graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
-                    graphics.setColor(_foreground);
-                }
-                int labxpos = xCoord1 -
-                    _labelFontMetrics.stringWidth(xticklabel)/2;
-                // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(xticklabel, labxpos,
-                        _lry + 3 + labelheight);
-            }
 
-            if (_xlog) {
-                // Draw in grid lines that don't have labels.
+                if (_ylog) {
+                    // Draw in grid lines that don't have labels.
+                    Vector unlabeledgrid  = _gridInit(yStart, yStep, false, ygrid);
+                    if (unlabeledgrid.size() > 0) {
+                        // If the step is greater than 1, clamp it to 1 so that
+                        // we draw the unlabeled grid lines for each
+                        //integer interval.
+                        double tmpStep = (yStep > 1.0)? 1.0 : yStep;
 
-                // If the step is greater than 1, clamp it to 1 so that
-                // we draw the unlabeled grid lines for each
-                // integer interval.
-                double tmpStep = (xStep > 1.0)? 1.0 : xStep;
-
-                // Recalculate the start using the new step.
-                xTmpStart=tmpStep*Math.ceil(_xtickMin/tmpStep);
-
-                Vector unlabeledgrid  = _gridInit(xTmpStart, tmpStep,
-                        false, xgrid);
-                if (unlabeledgrid.size() > 0 ) {
-                    for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
-                            tmpStep, _xlog);
-                         xpos <= _xtickMax;
-                         xpos = _gridStep(unlabeledgrid, xpos,
-                                 tmpStep, _xlog)) {
-                        xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
-                        if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-                            graphics.setColor(Color.lightGray);
-                            graphics.drawLine(xCoord1, _uly+1,
-                                    xCoord1, _lry-1);
-                            graphics.setColor(_foreground);
+                        for (double ypos = _gridStep(unlabeledgrid , yStart,
+                                tmpStep, _ylog);
+                             ypos <= _ytickMax;
+                             ypos = _gridStep(unlabeledgrid, ypos,
+                                     tmpStep, _ylog)) {
+                            int yCoord1 = _lry -
+                                (int)((ypos-_ytickMin)*_ytickscale);
+                            if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
+                                graphics.setColor(Color.lightGray);
+                                graphics.drawLine(_ulx+1, yCoord1,
+                                        _lrx-1, yCoord1);
+                                graphics.setColor(_foreground);
+                            }
                         }
+                    }
+
+                    if (needExponent) {
+                        // We zoomed in, so we need the exponent
+                        _yExp = (int)Math.floor(yTmpStart);
+                    } else {
+                        _yExp = 0;
                     }
                 }
 
-                if (needExponent) {
-                    _xExp = (int)Math.floor(xTmpStart);
+                // Draw scaling annotation for y axis.
+                if (_yExp != 0) {
+                    graphics.drawString("x10", 2, titley);
                     graphics.setFont(_superscriptfont);
-                    graphics.drawString(Integer.toString(_xExp), xSPos,
-                            ySPos - halflabelheight);
-                    xSPos -= _labelFontMetrics.stringWidth("x10");
+                    graphics.drawString(Integer.toString(_yExp),
+                            _labelFontMetrics.stringWidth("x10") + 2,
+                            titley-halflabelheight);
                     graphics.setFont(_labelfont);
-                    graphics.drawString("x10", xSPos, ySPos);
-                } else {
-                    _xExp = 0;
+                }
+            } else {
+                // ticks have been explicitly specified
+                Enumeration nt = _yticks.elements();
+                Enumeration nl = _yticklabels.elements();
+                while (nl.hasMoreElements()) {
+                    String label = (String) nl.nextElement();
+                    double ypos = ((Double)(nt.nextElement())).doubleValue();
+                    if (ypos > _yMax || ypos < _yMin) continue;
+                    int yCoord1 = _lry - (int)((ypos-_yMin)*_yscale);
+                    int offset = 0;
+                    if (ypos < _lry - labelheight) offset = halflabelheight;
+                    graphics.drawLine(_ulx, yCoord1, xCoord1, yCoord1);
+                    graphics.drawLine(_lrx, yCoord1, xCoord2, yCoord1);
+                    if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
+                        graphics.setColor(Color.lightGray);
+                        graphics.drawLine(xCoord1, yCoord1, xCoord2, yCoord1);
+                        graphics.setColor(_foreground);
+                    }
+                    // NOTE: 3 pixel spacing between axis and labels.
+                    graphics.drawString(label,
+                            _ulx - _labelFontMetrics.stringWidth(label) - 3,
+                            yCoord1+offset);
                 }
             }
 
+            ///////////////////// horizontal axis
 
-        } else {
-            // ticks have been explicitly specified
-            Enumeration nt = _xticks.elements();
-            Enumeration nl = _xticklabels.elements();
-            while (nl.hasMoreElements()) {
-                String label = (String) nl.nextElement();
-                double xpos = ((Double)(nt.nextElement())).doubleValue();
-                if (xpos > _xMax || xpos < _xMin) continue;
-                xCoord1 = _ulx + (int)((xpos-_xMin)*_xscale);
-                graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
-                graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-                if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
-                    graphics.setColor(Color.lightGray);
-                    graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
-                    graphics.setColor(_foreground);
-                }
-                int labxpos = xCoord1 - _labelFontMetrics.stringWidth(label)/2;
-                // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label, labxpos, _lry + 3 + labelheight);
-            }
-        }
+                                     int yCoord1 = _uly+tickLength;
+                                     int yCoord2 = _lry-tickLength;
+                                     if (_xticks == null) {
+                                         // auto-ticks
 
-        ///////////////////// Draw title and axis labels now.
+                                         // Number of x tick marks.
+                                         // Need to start with a guess and converge on a solution here.
+                                         int nx = 10;
+                                         double xStep = 0.0;
+                                         int numfracdigits = 0;
+                                         int charwidth = _labelFontMetrics.stringWidth("8");
+                                         if (_xlog) {
+                                             // X axes log labels will be at most 6 chars: -1E-02
+                                             nx = 2 + width/((charwidth * 6) + 10);
+                                         } else {
+                                             // Limit to 10 iterations
+                                             int count = 0;
+                                             while (count++ <= 10) {
+                                                 xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+                                                 // Compute the width of a label for this xStep
+                                                 numfracdigits = _numFracDigits(xStep);
+                                                 // Number of integer digits is the maximum of two endpoints
+                                                 int intdigits = _numIntDigits(_xtickMax);
+                                                 int inttemp = _numIntDigits(_xtickMin);
+                                                 if (intdigits < inttemp) {
+                                                     intdigits = inttemp;
+                                                 }
+                                                 // Allow two extra digits (decimal point and sign).
+                                                 int maxlabelwidth = charwidth *
+                                                     (numfracdigits + 2 + intdigits);
+                                                 // Compute new estimate of number of ticks.
+                                                 int savenx = nx;
+                                                 // NOTE: 10 additional pixels between labels.
+                                                 // NOTE: Try to ensure at least two tick marks.
+                                                 nx = 2 + width/(maxlabelwidth+10);
+                                                 if (nx - savenx <= 1 || savenx - nx <= 1) break;
+                                             }
+                                         }
+                                         xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+                                         numfracdigits = _numFracDigits(xStep);
 
-        // Center the title and X label over the plotting region, not
-        // the window.
-        graphics.setColor(_foreground);
+                                         // Compute x starting point so it is a multiple of xStep.
+                                         double xStart=xStep*Math.ceil(_xtickMin/xStep);
 
-        if (_title != null) {
-            graphics.setFont(_titlefont);
-            int titlex = _ulx +
-                (width - _titleFontMetrics.stringWidth(_title))/2;
-            graphics.drawString(_title, titlex, titley);
-        }
+                                         // NOTE: Following disables first tick.  Not a good idea?
+                                         // if (xStart == _xMin) xStart+=xStep;
 
-        graphics.setFont(_labelfont);
-        if (_xlabel != null) {
-            int labelx = _ulx +
-                (width - _labelFontMetrics.stringWidth(_xlabel))/2;
-            graphics.drawString(_xlabel, labelx, ySPos);
-        }
+                                         Vector xgrid = null;
+                                         double xTmpStart = xStart;
+                                         if (_xlog) {
+                                             xgrid = _gridInit(xStart, xStep, true, null);
+                                             //xgrid = _gridInit(xStart, xStep);
+                                             xTmpStart = _gridRoundUp(xgrid, xStart);
+                                         }
 
-        int charcenter = 2 + _labelFontMetrics.stringWidth("W")/2;
-        int charheight = labelheight;
-        if (_ylabel != null) {
-            // Vertical label is fairly complex to draw.
-            int yl = _ylabel.length();
-            int starty = _uly + (_lry-_uly)/2 - yl*charheight/2 + charheight;
-            for (int i = 0; i < yl; i++) {
-                String nchar = _ylabel.substring(i, i+1);
-                int cwidth = _labelFontMetrics.stringWidth(nchar);
-                graphics.drawString(nchar, charcenter - cwidth/2, starty);
-                starty += charheight;
-            }
-        }
+                                         // Set to false if we don't need the exponent
+                                         boolean needExponent = _xlog;
+
+                                         // Label the x axis.  The labels are quantized so that
+                                         // they don't have excess resolution.
+                                         for (double xpos = xTmpStart;
+                                              xpos <= _xtickMax;
+                                              xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
+                                             String xticklabel;
+                                             if (_xlog) {
+                                                 xticklabel = _formatLogNum(xpos, numfracdigits);
+                                                 if (xticklabel.indexOf('e') != -1 )
+                                                     needExponent = false;
+                                             } else {
+                                                 xticklabel = _formatNum(xpos, numfracdigits);
+                                             }
+                                             xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
+                                             graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                                             graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
+                                             if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                                                 graphics.setColor(Color.lightGray);
+                                                 graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
+                                                 graphics.setColor(_foreground);
+                                             }
+                                             int labxpos = xCoord1 -
+                                                 _labelFontMetrics.stringWidth(xticklabel)/2;
+                                             // NOTE: 3 pixel spacing between axis and labels.
+                                             graphics.drawString(xticklabel, labxpos,
+                                                     _lry + 3 + labelheight);
+                                         }
+
+                                         if (_xlog) {
+                                             // Draw in grid lines that don't have labels.
+
+                                             // If the step is greater than 1, clamp it to 1 so that
+                                             // we draw the unlabeled grid lines for each
+                                             // integer interval.
+                                             double tmpStep = (xStep > 1.0)? 1.0 : xStep;
+
+                                             // Recalculate the start using the new step.
+                                             xTmpStart=tmpStep*Math.ceil(_xtickMin/tmpStep);
+
+                                             Vector unlabeledgrid  = _gridInit(xTmpStart, tmpStep,
+                                                     false, xgrid);
+                                             if (unlabeledgrid.size() > 0 ) {
+                                                 for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
+                                                         tmpStep, _xlog);
+                                                      xpos <= _xtickMax;
+                                                      xpos = _gridStep(unlabeledgrid, xpos,
+                                                              tmpStep, _xlog)) {
+                                                     xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
+                                                     if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                                                         graphics.setColor(Color.lightGray);
+                                                         graphics.drawLine(xCoord1, _uly+1,
+                                                                 xCoord1, _lry-1);
+                                                         graphics.setColor(_foreground);
+                                                     }
+                                                 }
+                                             }
+
+                                             if (needExponent) {
+                                                 _xExp = (int)Math.floor(xTmpStart);
+                                                 graphics.setFont(_superscriptfont);
+                                                 graphics.drawString(Integer.toString(_xExp), xSPos,
+                                                         ySPos - halflabelheight);
+                                                 xSPos -= _labelFontMetrics.stringWidth("x10");
+                                                 graphics.setFont(_labelfont);
+                                                 graphics.drawString("x10", xSPos, ySPos);
+                                             } else {
+                                                 _xExp = 0;
+                                             }
+                                         }
+
+
+                                     } else {
+                                         // ticks have been explicitly specified
+                                         Enumeration nt = _xticks.elements();
+                                         Enumeration nl = _xticklabels.elements();
+                                         while (nl.hasMoreElements()) {
+                                             String label = (String) nl.nextElement();
+                                             double xpos = ((Double)(nt.nextElement())).doubleValue();
+                                             if (xpos > _xMax || xpos < _xMin) continue;
+                                             xCoord1 = _ulx + (int)((xpos-_xMin)*_xscale);
+                                             graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
+                                             graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
+                                             if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                                                 graphics.setColor(Color.lightGray);
+                                                 graphics.drawLine(xCoord1, yCoord1, xCoord1, yCoord2);
+                                                 graphics.setColor(_foreground);
+                                             }
+                                             int labxpos = xCoord1 - _labelFontMetrics.stringWidth(label)/2;
+                                             // NOTE: 3 pixel spacing between axis and labels.
+                                             graphics.drawString(label, labxpos, _lry + 3 + labelheight);
+                                         }
+                                     }
+
+                                     ///////////////////// Draw title and axis labels now.
+
+                                                              // Center the title and X label over the plotting region, not
+                                                              // the window.
+                                                              graphics.setColor(_foreground);
+
+                                                              if (_title != null) {
+                                                                  graphics.setFont(_titlefont);
+                                                                  int titlex = _ulx +
+                                                                      (width - _titleFontMetrics.stringWidth(_title))/2;
+                                                                  graphics.drawString(_title, titlex, titley);
+                                                              }
+
+                                                              graphics.setFont(_labelfont);
+                                                              if (_xlabel != null) {
+                                                                  int labelx = _ulx +
+                                                                      (width - _labelFontMetrics.stringWidth(_xlabel))/2;
+                                                                  graphics.drawString(_xlabel, labelx, ySPos);
+                                                              }
+
+                                                              int charcenter = 2 + _labelFontMetrics.stringWidth("W")/2;
+                                                              int charheight = labelheight;
+                                                              if (_ylabel != null) {
+                                                                  // Vertical label is fairly complex to draw.
+                                                                  int yl = _ylabel.length();
+                                                                  int starty = _uly + (_lry-_uly)/2 - yl*charheight/2 + charheight;
+                                                                  for (int i = 0; i < yl; i++) {
+                                                                      String nchar = _ylabel.substring(i, i+1);
+                                                                      int cwidth = _labelFontMetrics.stringWidth(nchar);
+                                                                      graphics.drawString(nchar, charcenter - cwidth/2, starty);
+                                                                      starty += charheight;
+                                                                  }
+                                                              }
     }
 
     /** Put a mark corresponding to the specified dataset at the
@@ -1396,7 +1396,7 @@ public class PlotBox extends Panel {
                         + (Double)_xticks.elementAt(i) + ", ");
             }
             output.println("\"" + (String)_xticklabels.elementAt(last) + "\" "
-                        + (Double)_xticks.elementAt(last));
+                    + (Double)_xticks.elementAt(last));
         }
         if (_yticks != null && _yticks.size() > 0) {
             output.print("YTicks: ");
@@ -1406,7 +1406,7 @@ public class PlotBox extends Panel {
                         + (Double)_yticks.elementAt(i) + ", ");
             }
             output.println("\"" + (String)_yticklabels.elementAt(last) + "\" "
-                        + (Double)_yticks.elementAt(last));
+                    + (Double)_yticks.elementAt(last));
         }
         if (_xlog) output.println("XLog: on");
         if (_ylog) output.println("YLog: on");
@@ -1678,7 +1678,7 @@ public class PlotBox extends Panel {
             double gridval = i * 1.0/ngrid * 10;
             double logval = _LOG10SCALE*Math.log(gridval);
             if (logval == Double.NEGATIVE_INFINITY)
-              logval = 0.0;
+                logval = 0.0;
 
             // If oldgrid is not null, then do not draw lines that
             // were already drawn in oldgrid.  This is necessary
@@ -1698,8 +1698,8 @@ public class PlotBox extends Panel {
                     // Using == on doubles is bad if the numbers are close,
                     // but not exactly equal.
                     if (Math.abs(
-                          ((Double)oldgrid.elementAt(oldgridi)).doubleValue() -
-                          logval) > 0.00001) {
+                            ((Double)oldgrid.elementAt(oldgridi)).doubleValue() -
+                            logval) > 0.00001) {
                         grid.addElement(new Double(logval));
                     }
                 } else {
@@ -1919,14 +1919,14 @@ public class PlotBox extends Panel {
             max += 0.1;
         }
         //        if (_yRangeGiven) {
-            // The user specified the range, so don't pad.
+        // The user specified the range, so don't pad.
         //            _yMin = min;
         //            _yMax = max;
         //        } else {
-            // Pad slightly so that we don't plot points on the axes.
-            _yMin = min - ((max - min) * _PADDING);
-            _yMax = max + ((max - min) * _PADDING);
-            //        }
+        // Pad slightly so that we don't plot points on the axes.
+        _yMin = min - ((max - min) * _PADDING);
+        _yMax = max + ((max - min) * _PADDING);
+        //        }
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_yMin), Math.abs(_yMax));
@@ -2077,7 +2077,7 @@ public class PlotBox extends Panel {
                 // Draw a new box if necessary.
                 if (y > _zoomy) {
                     _zoomxn = x;
-                      _zoomyn = y;
+                    _zoomyn = y;
                     int minx = Math.min(_zoomx, _zoomxn);
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
