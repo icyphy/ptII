@@ -60,7 +60,8 @@ MISC_FILES = $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	Agilent \
-	Saber
+	Saber \
+	jspaces
 
 JCLASS = $(JSRCS:%.java=%.class)
 
