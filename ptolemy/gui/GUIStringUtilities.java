@@ -141,9 +141,15 @@ public class GUIStringUtilities {
         // Parse the command into tokens
 	List commandList = new LinkedList();
 
+        System.out.println("GUIStringUtilities: " + inputString);
 	StreamTokenizer streamTokenizer =
 	    new StreamTokenizer(new StringReader(inputString));
 
+        // We reset the syntax so that we don't convert to numbers,
+        // otherwise, if PTII is "d:\\tmp\\ptII\ 2.0", then
+        // we have no end of problems.
+        streamTokenizer.resetSyntax();
+        streamTokenizer.whitespaceChars(0 , 32);
 	streamTokenizer.wordChars(33, 127);
 
 	// We can't use quoteChar here because it does backslash
@@ -152,6 +158,8 @@ public class GUIStringUtilities {
 	// overkill.
 	// streamTokenizer.quoteChar('"');
 	streamTokenizer.ordinaryChar('"');
+
+        streamTokenizer.eolIsSignificant(true);
 
 	streamTokenizer.commentChar('#');
 
@@ -175,14 +183,17 @@ public class GUIStringUtilities {
 		    token += singleToken + streamTokenizer.sval;
 		} else {
 		    token = singleToken + streamTokenizer.sval;
+                    System.out.println("GUIStringUtilities: token" +
+                            token);
 		    commandList.add(token);
 		}
 		singleToken = "";
 		break;
 	    case StreamTokenizer.TT_NUMBER:
-		token = Double.toString(streamTokenizer.nval);
-		commandList.add(token);
-		break;
+                throw new RuntimeException("Internal error: Found TT_NUMBER: '"
+                        + streamTokenizer.nval + "'.  We should not be "
+                        + "tokenizing numbers");
+		//break;
 	    case StreamTokenizer.TT_EOL:
 		break;
 	    case StreamTokenizer.TT_EOF:
