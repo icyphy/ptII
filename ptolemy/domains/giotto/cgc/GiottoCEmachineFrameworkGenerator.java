@@ -127,83 +127,83 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     public void writeGiottoCode(TypedCompositeActor model, File directory)
                 throws IllegalActionException, NameDuplicationException {
 
-    String modelName = StringUtilities.sanitizeName(model.getName());
-    String giottoDirectoryName = directory.getAbsolutePath() + "/" + modelName + "/";
-
-    File outDirFile = new File(giottoDirectoryName);
-    if (!outDirFile.isDirectory()) {
-        outDirFile.mkdirs();
+        String modelName = StringUtilities.sanitizeName(model.getName());
+        String giottoDirectoryName = directory.getAbsolutePath() + "/" + modelName + "/";
+    
+        File outDirFile = new File(giottoDirectoryName);
+        if (!outDirFile.isDirectory()) {
+            outDirFile.mkdirs();
+        }
+    
+        File writeGiottoFile = new File(giottoDirectoryName, modelName + ".giotto");
+        try {
+            FileWriter giottoWriter = new FileWriter(writeGiottoFile);
+            giottoWriter.write(generateGiottoCode(model));
+            giottoWriter.close();
+        } catch (IOException e) {
+            throw new IllegalActionException(model, e,
+                    "Failed to open file " + modelName + ".giotto" + " for writing.");
+        }
     }
-
-    File writeGiottoFile = new File(giottoDirectoryName, modelName + ".giotto");
-    try {
-        FileWriter giottoWriter = new FileWriter(writeGiottoFile);
-        giottoWriter.write(generateGiottoCode(model));
-        giottoWriter.close();
-    } catch (IOException e) {
-        throw new IllegalActionException(model, e,
-                "Failed to open file " + modelName + ".giotto" + " for writing.");
-    }
-}
-
-/** Generate the Framework code for the given model. It creates the
- *  directory "directory"/"model_name"/c_functionality/fcode with the
- * files f_code.c, f_code.h and task_code.h in it.
- *  @param model The model for which the Framework code is to be generated
- *  @param directory The directory into which the generated files
- *                   are to be written
- *  @exception IllegalActionException If any of the files cannot be opened 
- *  @exception NameDuplicationException If any actor name coincides with
- *   the name of another actor already in the model.
- */
-public void writeFrameworkCode(TypedCompositeActor model, File directory)
-                throws IllegalActionException, NameDuplicationException {
-
-    dataTypes = new HashSet(); // Creating a set of all the unique types used
-        
-    FHfuncVarDeclString = "";  // Contains the declaration of functions defined in the C file
-    FCoutDriversImplString = ""; // Contains the code for the initialization of output drivers
-    FCinDriversImplString = ""; // Contains functions to implement the input drivers
-    THfuncDeclString = ""; // Contains the declaration of the task functions
-    TCfuncImplString = ""; // Contains the skeleton code for the task functions
-    FCVarInitString = ""; // Contains the initialization function f_code_init
-        
-    _generateCodeStrings(model);
-
-    String fcodeDirectoryName =  directory.getAbsolutePath() + "/"
-    + StringUtilities.sanitizeName(model.getName()) + "/c_functionality/fcode/";
+    
+    /** Generate the Framework code for the given model. It creates the
+     *  directory "directory"/"model_name"/c_functionality/fcode with the
+     * files f_code.c, f_code.h and task_code.h in it.
+     *  @param model The model for which the Framework code is to be generated
+     *  @param directory The directory into which the generated files
+     *                   are to be written
+     *  @exception IllegalActionException If any of the files cannot be opened 
+     *  @exception NameDuplicationException If any actor name coincides with
+     *   the name of another actor already in the model.
+     */
+    public void writeFrameworkCode(TypedCompositeActor model, File directory)
+                    throws IllegalActionException, NameDuplicationException {
+    
+        dataTypes = new HashSet(); // Creating a set of all the unique types used
             
-    File outDirFile = new File(fcodeDirectoryName);
-    if (!outDirFile.isDirectory()) {
-        outDirFile.mkdirs();
-    }
-
-    File writeFCFile = new File(fcodeDirectoryName, "f_code.c");
-    File writeFHFile = new File(fcodeDirectoryName, "f_code.h");
-    //File writeTCFile = new File(directoryName, "task_code.c"); // This file is unneeded once we have the function declarations in the header file
-    File writeTHFile = new File(fcodeDirectoryName, "task_code.h");
-    try {
-        FileWriter FCwriter = new FileWriter(writeFCFile);
-        FCwriter.write(_generateFrameworkImplementationCode(model));
-        FCwriter.close();
-
-        FileWriter FHwriter = new FileWriter(writeFHFile);
-        FHwriter.write(_generateFrameworkHeaderCode(model));
-        FHwriter.close();
+        FHfuncVarDeclString = "";  // Contains the declaration of functions defined in the C file
+        FCoutDriversImplString = ""; // Contains the code for the initialization of output drivers
+        FCinDriversImplString = ""; // Contains functions to implement the input drivers
+        THfuncDeclString = ""; // Contains the declaration of the task functions
+        TCfuncImplString = ""; // Contains the skeleton code for the task functions
+        FCVarInitString = ""; // Contains the initialization function f_code_init
             
-        //FileWriter TCwriter = new FileWriter(writeTCFile);
-        //TCwriter.write(_generateTaskImplementationCode(model));
-        //TCwriter.close();
-
-        FileWriter THwriter = new FileWriter(writeTHFile);
-        THwriter.write(_generateTaskHeaderCode(model));
-        THwriter.close();
-    } catch (IOException e) {
-        throw new IllegalActionException(model, e,
-                "Failed to open file for writing.");
+        _generateCodeStrings(model);
+    
+        String fcodeDirectoryName =  directory.getAbsolutePath() + "/"
+        + StringUtilities.sanitizeName(model.getName()) + "/c_functionality/fcode/";
+                
+        File outDirFile = new File(fcodeDirectoryName);
+        if (!outDirFile.isDirectory()) {
+            outDirFile.mkdirs();
+        }
+    
+        File writeFCFile = new File(fcodeDirectoryName, "f_code.c");
+        File writeFHFile = new File(fcodeDirectoryName, "f_code.h");
+        //File writeTCFile = new File(directoryName, "task_code.c"); // This file is unneeded once we have the function declarations in the header file
+        File writeTHFile = new File(fcodeDirectoryName, "task_code.h");
+        try {
+            FileWriter FCwriter = new FileWriter(writeFCFile);
+            FCwriter.write(_generateFrameworkImplementationCode(model));
+            FCwriter.close();
+    
+            FileWriter FHwriter = new FileWriter(writeFHFile);
+            FHwriter.write(_generateFrameworkHeaderCode(model));
+            FHwriter.close();
+                
+            //FileWriter TCwriter = new FileWriter(writeTCFile);
+            //TCwriter.write(_generateTaskImplementationCode(model));
+            //TCwriter.close();
+    
+            FileWriter THwriter = new FileWriter(writeTHFile);
+            THwriter.write(_generateTaskHeaderCode(model));
+            THwriter.close();
+        } catch (IOException e) {
+            throw new IllegalActionException(model, e,
+                    "Failed to open file for writing.");
+        }
     }
-}
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -804,28 +804,28 @@ public void writeFrameworkCode(TypedCompositeActor model, File directory)
     protected String TCfuncImplString; // Contains the skeleton code for the task functions
 
     protected String copyrightString = "/*" + _endLine + _endLine+
-" Copyright (c) 2001 The Regents of the University of California." + _endLine +
-" All rights reserved." + _endLine +
-" Permission is hereby granted, without written agreement and without" + _endLine +
-" license or royalty fees, to use, copy, modify, and distribute this" + _endLine +
-" software and its documentation for any purpose, provided that the above" + _endLine +
-" copyright notice and the following two paragraphs appear in all copies" + _endLine +
-" of this software." + _endLine +
-"" + _endLine +
-" IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY" + _endLine +
-" FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES" + _endLine +
-" ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF" + _endLine +
-" THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF" + _endLine +
-" SUCH DAMAGE." + _endLine +
-"" + _endLine +
-" THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES," + _endLine +
-" INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF" + _endLine +
-" MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE" + _endLine +
-" PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF" + _endLine +
-" CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES," + _endLine +
-" ENHANCEMENTS, OR MODIFICATIONS." + _endLine +
-"" + _endLine +
-"*/" + _endLine;
+        " Copyright (c) 2001 The Regents of the University of California." + _endLine +
+        " All rights reserved." + _endLine +
+        " Permission is hereby granted, without written agreement and without" + _endLine +
+        " license or royalty fees, to use, copy, modify, and distribute this" + _endLine +
+        " software and its documentation for any purpose, provided that the above" + _endLine +
+        " copyright notice and the following two paragraphs appear in all copies" + _endLine +
+        " of this software." + _endLine +
+        "" + _endLine +
+        " IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY" + _endLine +
+        " FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES" + _endLine +
+        " ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF" + _endLine +
+        " THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF" + _endLine +
+        " SUCH DAMAGE." + _endLine +
+        "" + _endLine +
+        " THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES," + _endLine +
+        " INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF" + _endLine +
+        " MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE" + _endLine +
+        " PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF" + _endLine +
+        " CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES," + _endLine +
+        " ENHANCEMENTS, OR MODIFICATIONS." + _endLine +
+        "" + _endLine +
+        "*/" + _endLine;
  
     
     ///////////////////////////////////////////////////////////////////
