@@ -6,12 +6,13 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 3.0.1 Release Notes</title>
+<title>Ptolemy II 3.0.2 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor="#faf0e6">
 <!--whatsnew-->
-<h2>Major Features that are new in Ptolemy 3.0.1 </h2>
+<h2>Major Features that are new in Ptolemy II 3.0.2 </h2>
+Below are new features that were not present in Ptolemy II 2.x
 <menu>
 
 <li> Continuous Time (CT) domain rework for improved mixed signal and
@@ -98,7 +99,7 @@ This uses
 a Java implementation of Python.
 </menu>
 
-<h2>Other Features that are new in Ptolemy II 3.0.1</h2>
+<h2>Other Features that are new in Ptolemy II 3.0.2</h2>
 
 <ul>
 
@@ -207,7 +208,7 @@ down slightly.
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	 Discrete Event
  <menu>
- <li> <a href="../ptolemy/actor/hoc/demo/HocDE/HocDE.xml">HOC DE</a>  (New in Ptolemy II 3.0.1)
+ <li> <a href="../ptolemy/actor/hoc/demo/HocDE/HocDE.xml">HOC DE</a>  (New in Ptolemy II 3.0.2)
  </menu>
 
 
@@ -237,6 +238,16 @@ down slightly.
 
 <dl>
 
+<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMaximum.html"><code>ArrayMaximum</code></a>
+<dd> (Mark Oliver)
+Extract maximum element from an array. (New in Ptolemy II 3.0.2)
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMinimum.html"><code>ArrayMinimum</code></a>
+<dd> (Mark Oliver, Edward A. Lee)
+Extract minimum element from an array. (New in Ptolemy II 3.0.2)
+
+
+
 <dt> <a href="codeDoc/ptolemy/actor/lib/BusAssembler.html"><code>BusAssembler</code></a>
 <dd> (Zoltan Kemenczy, Research in Motion Limited)
 Assemble input port channels into output bus.
@@ -244,7 +255,6 @@ Assemble input port channels into output bus.
 <dt> <a href="codeDoc/ptolemy/actor/lib/BusDisassembler.html"><code>BusDisassembler</code></a>
 <dd> (Zoltan Kemenczy, Research in Motion Limited)
 split input bus channels onto output port channels.
-
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/Rician.html"><code>Rician</code></a>
 <dd> (Rachel Zhou)
@@ -321,10 +331,27 @@ Actors that use the Java Media Framework
 </ul>
 
 
+<h2>Changes between Ptolemy II 3.0.1 and 3.0.2</h2>
+Ptolemy II 3.0.1 was an interim release with a narrow distribution.
+<br>The following changes occurred between 3.0.1 and 3.0.2
+
+<h3>Actors that were added between Ptolemy II 3.0.1 and 3.0.2</h3>
+<dl>
+<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMaximum.html"><code>ArrayMaximum</code></a>
+<dd> (Mark Oliver)
+Extract maximum element from an array.
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/ArrayMinimum.html"><code>ArrayMinimum</code></a>
+<dd> (Mark Oliver, Edward A. Lee)
+Extract minimum element from an array.
+
+</dl>
+
+
 <h2>Backward compatibility issues</h2>
 
 Most models developed under Ptolemy II 1.0.1 or
-2.0.1 or HyVisual 2.2-beta should run under Ptolemy II 3.0.1.
+2.0.1 or HyVisual 2.2-beta should run under Ptolemy II 3.0.2.
 The MoMLParser includes a list of backward
 compatibility filters that make certain changes on models
 when read, handling such issues as actors being moved or renamed
