@@ -54,9 +54,11 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	Domain.java \
 	EntityType.java \
 	Icon.java \
 	IconLibrary.java \
+	PtolemySystem.java \
 	Schematic.java \
 	SchematicElement.java \
 	SchematicEntity.java \
