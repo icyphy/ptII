@@ -103,7 +103,6 @@ public class MouseInput3D extends GRActor {
     private class _React extends Behavior {
         
         public void initialize() {
-            System.out.println("where are you now?");
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
         }
         
