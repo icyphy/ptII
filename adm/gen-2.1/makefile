@@ -550,7 +550,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis \
-	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
@@ -585,6 +584,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/jni \
+	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
 
