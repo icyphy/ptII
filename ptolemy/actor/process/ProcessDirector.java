@@ -266,13 +266,13 @@ public class ProcessDirector extends Director {
         
         // (Re)Start BranchControllers 
         Thread thread = null;
-        if( _inputBranchController.isStopped() ) {
+        if( _inputBranchController.isBlocked() ) {
             _inputBranchController.restart();
         } else if( _inputBranchController.hasBranches() ) {
             thread = new Thread(_inputBranchController);
             thread.start();
         }
-        if( _outputBranchController.isStopped() ) {
+        if( _outputBranchController.isBlocked() ) {
             _outputBranchController.restart();
         } else if( _outputBranchController.hasBranches() ) {
             thread = new Thread(_outputBranchController);
@@ -652,24 +652,24 @@ public class ProcessDirector extends Director {
     }
 
     /** 
-     */
     protected synchronized void _controllerStopped(BranchController cntlr) {
         if( cntlr.isStopped() ) {
             notifyAll();
         }
     }
+     */
 
     /** 
-     */
     protected synchronized boolean _isInputControllerStopped() {
         return _inputBranchController.isStopped(); 
     }
+     */
 
     /** 
-     */
     protected synchronized boolean _isOutputControllerStopped() {
         return _outputBranchController.isStopped(); 
     }
+     */
 
     /** 
      */

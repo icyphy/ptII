@@ -67,6 +67,15 @@ Once isActive() returns false, then the BranchController will die,
 as will all Branches that it controls, and the BranchController 
 reference should be set to null.
 
+There are several methods of this class that reveal internal state. 
+The names of these methods all begin with the verb "is" or "are" 
+and have boolean return types. These state methods are organized in 
+a partial ordering. A method is considered
+to be "subordinate" with respect to a "dominant" method if the return value
+of the subordinate method is directly impacted by the return value of the
+dominant method. All state methods methods are subordinate to isActive().
+If isActive()
+
 
 @author John S. Davis II
 @version $Id$
@@ -88,162 +97,42 @@ public class BranchController implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the CompositeActor that creates the branch 
-     *  and owns this controller.
-     *  @return The CompositeActor that owns this controller.
+    /** Activate the branches that are managed by this Branch
+     *  Controller. This method should be invoked once when
+     *  a BranchController first starts the Branches it controls.
+     *  Invokation of this method will cause the Branches to
+     *  begin iterating. Each iteration will last until all
+     *  branch engagements for that iteration are complete. 
+     *  To begin a subsequent iteration, call startIteration().
      */
-    public CompositeActor getParent() {
-        return _parentActor;
-    }
-
-    /**
-     */
-    public void setMaximumEngagements(int maxEngagements) {
-	_maxEngagements = maxEngagements;
-    }
-
-    /**
-     */
-    public void setMaximumEngagers(int maxEngagers) {
-	_maxEngagers = maxEngagers;
-    }
-
-    /** Called by ConditionalSend and ConditionalReceive to check if
-     *  the calling branch is the first branch to be ready to rendezvous.
-     *  If it is, it sets a private variable to its branch ID so that
-     *  subsequent calls to this method by other branches know that they
-     *  are not first.
-     *  @param branchNumber The ID assigned to the calling branch
-     *   upon creation.
-     *  @return True if the calling branch is the first branch to try
-     *   to rendezvous, otherwise false.
-     */
-    public boolean canBranchEngage(Branch branch) {
+    public void activateBranches() {
         synchronized(this) {
-	    if( !_engagementsAllowed || !isActive() ) {
-		return false;
-	    }
-            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
-                return true;
+            if( !hasBranches() ) {
+                return;
             }
-            
-            if( _engagements.contains(branch) ) {
-                if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
-                    return true;
-                } 
-                return false;
-            } else if( _engagements.size() < _maxEngagers ) {
-            	_engagements.add( branch );
-                return true;
+            setActive(true);
+            LinkedList threadList = new LinkedList();
+            BranchThread bThread = null;
+            Branch branch = null;
+            for( int i=0; i < _branches.size(); i++ ) {
+                branch = (Branch)_branches.get(i);
+                bThread = new BranchThread( branch );
+                threadList.add(bThread);
+                // FIXME: should we optimize for a single branch?
             }
-            return false;
-        }
-    }
+                
+            Iterator threads = threadList.iterator();
+            while( threads.hasNext() ) {
+                bThread = (BranchThread)threads.next();
+                branch = bThread.getBranch();
+                branch.reset();
+                bThread.start();
+            }
 
-    /**
-     */
-    public synchronized void endIteration() {
-    	_engagementsAllowed = false;
-        _engagements.clear();
-        notifyAll();
+	    // _engagementsAllowed = true;
+        }
     }
     
-    /**
-     */
-    public boolean hasInputPorts() {
-    	if( _ports == null ) {
-            return false;
-        }
-        Iterator ports = _ports.iterator();
-        while( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
-            return port.isInput();
-        }
-        return false;
-    }
-    
-    /**
-     */
-    public boolean hasOutputPorts() {
-    	if( _ports == null ) {
-            return false;
-        }
-        Iterator ports = _ports.iterator();
-        while( ports.hasNext() ) {
-            IOPort port = (IOPort)ports.next();
-            return port.isOutput();
-        }
-        return false;
-    }
-    
-    /** Return true if all of the branches controlled by this
-     *  controller are stopped. Stopped branches are defined
-     *  as either being locked or waiting for the next
-     *  iteration. If this controller has no branches, then
-     *  return true.
-     * @return True if all branches controlled by this 
-     *  controller are stopped or if there are no branches;
-     *  return false otherwise.
-     */
-    public boolean isStopped() {
-        if( !hasBranches() ) {
-            return true;
-        }
-        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
-            if( _branchesStopped > 0 ) {
-                return true;
-            }
-            if( _branchesBlocked > 0 ) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /** Return true if all of the branches controlled by this
-     *  controller are stopped and at least one of the branches
-     *  is blocked or if this controller has no branches. Stopped 
-     *  branches are defined as either being locked or waiting 
-     *  for the next iteration. Note that this method is a special 
-     *  case of isStopped().
-     * @return True if all branches controlled by this 
-     *  controller are stopped and at least one branch is
-     *  blocked or if there are no branches; return false otherwise.
-     */
-    public boolean isBlocked() {
-        if( !hasBranches() ) {
-            return true;
-        }
-        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
-            if( _branchesBlocked > 0 ) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /** Return true if this controller controls one or more branches;
-     *  return false otherwise.
-     * @return True if this controller controls one or more branche;
-     *  return false otherwise.
-     */
-    public boolean hasBranches() {
-        return _branches.size() > 0;
-    }
-    
-    /** Return true if this controller is not in the midst of an
-     *  iteration. This controller is not in an iteration if it
-     *  is not active or if all engagement attempts are complete.
-     * @return True if this controller is not active or if all
-     *  engagements are complete.
-     */
-    public boolean isIterationOver() {
-	if( !isActive() ) {
-	    return true;
-	}
-	return areEngagementsComplete();
-    }
-
     /** Add branches corresponding to the channels of the port
      *  argument. The port must be contained by the same actor
      *  that contains this controller. If branches corresponding
@@ -278,12 +167,12 @@ public class BranchController implements Runnable {
         }
         // Careful; maintain order of following test in case
         // Java is like C
-        if( hasInputPorts() && !port.isInput() ) {
+        if( _hasInputPorts() && !port.isInput() ) {
 	    throw new IllegalActionException("BranchControllers "
             	    + "must contain only input ports or only output "
                     + "ports; not both");
         }
-        if( hasOutputPorts() && !port.isOutput() ) {
+        if( _hasOutputPorts() && !port.isOutput() ) {
 	    throw new IllegalActionException("BranchControllers "
             	    + "must contain only input ports or only output "
                     + "ports; not both");
@@ -314,6 +203,53 @@ public class BranchController implements Runnable {
 	}
     }
 
+    /**
+    public synchronized boolean areEngagementsComplete() {
+        if( !_engagementsAllowed || !isActive() ) {
+            return true;
+        }
+	if( _engagements.size() == _maxEngagers ) {
+	    Iterator engagements = _engagements.iterator();
+	    Branch branch = null;
+	    while( engagements.hasNext() ) {
+		branch = (Branch)engagements.next();
+		if( branch.numberOfCompletedEngagements() 
+			< _maxEngagements ) {
+		    _engagementsAllowed = true;
+		    return false;
+		}
+	    }
+	    _engagementsAllowed = false;
+	    return true;
+	}
+	_engagementsAllowed = true;
+	return false;
+    }
+     */
+
+    /** Terminate abruptly any threads created by this actor. Note that
+     *  this method does not allow the threads to terminate gracefully.
+     */
+    public synchronized void deactivateBranches() {
+	setActive(false);
+        Iterator branches = _branches.iterator();
+        Branch branch = null;
+        BoundaryReceiver bRcvr = null;
+        while (branches.hasNext()) {
+            branch = (Branch)branches.next();
+            branch.setActive(false);
+            bRcvr = branch.getConsReceiver();
+            synchronized(bRcvr) {
+                bRcvr.notifyAll();
+            }
+            bRcvr = branch.getProdReceiver();
+            synchronized(bRcvr) {
+                bRcvr.notifyAll();
+            }
+        }
+	notifyAll();
+    }
+
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -339,17 +275,30 @@ public class BranchController implements Runnable {
         }
     }
 
-    /** Register the calling branch as having successfully completed
-     *  an engagement. It reduces the count of active branches, and 
-     *  notifies chooseBranch()
-     *  that a branch has succeeded. The chooseBranch() method then
-     *  proceeds to terminate the remaining branches. It is called by
-     *  the first branch that succeeds with a rendezvous.
-     *  @param branch The calling Branch.
+    /** End the current iteration of this branch controller. Clear
+     *  all engagements that were successful for the iteration that
+     *  is ending.
+     */
+    public synchronized void endIteration() {
+        _iterationIsOverCache = true;
+    	// _engagementsAllowed = false;
+        _engagements.clear();
+        notifyAll();
+    }
+    
+    /** Register the branch passed as an argument as having 
+     *  successfully completed an engagement. If the number
+     *  of engagements permitted during an iteration of this
+     *  branch controller is bounded, then increment the
+     *  number of completed engagements for the branch. If
+     *  the number of engagements per iteration is unbounded
+     *  then or this controller is not active, then simply 
+     *  return.
+     *  @param branch The Branch with a successful engagement.
      */
     public void engagementSucceeded(Branch branch) {
         synchronized(this) {
-            if( !_engagementsAllowed || !isActive() ) {
+            if( !isActive() ) {
                 // FIXME: Should we throw an exception?
                 return;
             }
@@ -358,7 +307,9 @@ public class BranchController implements Runnable {
             }
             
             if( !_engagements.contains(branch) ) {
-                // throw exception here.
+                // FIXME: throw exception here.
+            } else if( _iterationIsOverCache ) {
+                // FIXME: throw exception here.
             }
             
             if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
@@ -370,96 +321,125 @@ public class BranchController implements Runnable {
         }
     }
 
-    /** Activate the branches that are managed by this Branch
-     *  Controller. This method should be invoked once when
-     *  a BranchController first starts the Branches it controls.
-     *  Invokation of this method will cause the Branches to
-     *  begin iterating. Each iteration will last until all
-     *  branch engagements for that iteration are complete. 
-     *  To begin a subsequent iteration, call startIteration().
+    /** Return the CompositeActor that creates the branch 
+     *  and owns this controller.
+     *  @return The CompositeActor that owns this controller.
      */
-    public void activateBranches() {
-        synchronized(this) {
-            if( !hasBranches() ) {
-                return;
-            }
-            setActive(true);
-            LinkedList threadList = new LinkedList();
-            BranchThread bThread = null;
-            Branch branch = null;
-            for( int i=0; i < _branches.size(); i++ ) {
-                branch = (Branch)_branches.get(i);
-                bThread = new BranchThread( branch );
-                threadList.add(bThread);
-                // FIXME: should we optimize for a single branch?
-            }
-                
-            Iterator threads = threadList.iterator();
-            while( threads.hasNext() ) {
-                bThread = (BranchThread)threads.next();
-                branch = bThread.getBranch();
-                branch.reset();
-                bThread.start();
-            }
+    public CompositeActor getParent() {
+        return _parentActor;
+    }
 
-	    _engagementsAllowed = true;
-        }
+    /** Return true if this controller controls one or more branches;
+     *  return false otherwise.
+     * @return True if this controller controls one or more branche;
+     *  return false otherwise.
+     */
+    public boolean hasBranches() {
+        return _branches.size() > 0;
     }
     
-    /** Restart this controller by resetting the branches that
-     *  it controls and setting flags so engagements can take
-     *  place. If this controller is inactive, do nothing. This
-     *  method is synchronized and will notify any threads that
-     *  are synchronized to this object.
+    /** Return true if this controller is active; return false 
+     *  otherwise.
+     * @return True if this controller is active; false otherwise.
      */
-    public synchronized void restart() {
-        if( !isActive() ) {
-            return;
-        }
-	_engagementsAllowed = false;
-	_engagements.clear();
-
-	_branchesBlocked = 0;
-        _branchesActive = 0;
-
-	Iterator branches = _branches.iterator();
-	Branch branch = null;
-	while( branches.hasNext() ) {
-	    branch = (Branch)branches.next();
-	    branch.reset();
-	}
-
-	_engagementsAllowed = true;
-	notifyAll();
+    public boolean isActive() {
+	return _active;
     }
 
-    /** Terminate abruptly any threads created by this actor. Note that
-     *  this method does not allow the threads to terminate gracefully.
+    /** Return true if all of the branches controlled by this
+     *  controller are stopped and at least one of the branches
+     *  is blocked or if this controller has no branches. Stopped 
+     *  branches are defined as either being blocked or waiting 
+     *  for the next iteration. 
+     * @return True if all branches controlled by this 
+     *  controller are stopped and at least one branch is
+     *  blocked or if there are no branches; return false otherwise.
      */
-    public synchronized void deactivateBranches() {
-	setActive(false);
-        if (_branches != null) {
-            Iterator branches = _branches.iterator();
-            Branch branch = null;
-            BoundaryReceiver bRcvr = null;
-            while (branches.hasNext()) {
-                branch = (Branch)branches.next();
-                branch.setActive(false);
-                bRcvr = branch.getConsReceiver();
-                synchronized(bRcvr) {
-                    bRcvr.notifyAll();
-                }
-                bRcvr = branch.getProdReceiver();
-                synchronized(bRcvr) {
-                    bRcvr.notifyAll();
-                }
+    public boolean isBlocked() {
+        if( !hasBranches() ) {
+            return true;
+        }
+        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
+            if( _branchesBlocked > 0 ) {
+                return true;
             }
         }
-	notifyAll();
+        return false;
+    }
+    
+    /**
+    public synchronized boolean isDeadlocked() {
+        if( _branchesBlocked == _branchesActive ) {
+            return true;
+        } 
+        return false;
+    }
+     */
+    
+    /** Called by ConditionalSend and ConditionalReceive to check if
+     *  the calling branch is the first branch to be ready to rendezvous.
+     *  If it is, it sets a private variable to its branch ID so that
+     *  subsequent calls to this method by other branches know that they
+     *  are not first.
+     *  @param branchNumber The ID assigned to the calling branch
+     *   upon creation.
+     *  @return True if the calling branch is the first branch to try
+     *   to rendezvous, otherwise false.
+     */
+    public boolean isEngagementEnabled(Branch branch) {
+        synchronized(this) {
+	    if( !_iterationIsOverCache || !isActive() ) {
+		return false;
+	    }
+            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
+                return true;
+            }
+            
+            if( _engagements.contains(branch) ) {
+                if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
+                    return true;
+                } 
+                return false;
+            } else if( _engagements.size() < _maxEngagers ) {
+            	_engagements.add( branch );
+                return true;
+            }
+            return false;
+        }
+    }
+
+    /** Return true if this controller is not in the midst of an
+     *  iteration. This controller is not in an iteration if it
+     *  is not active or if all engagement attempts are complete.
+     * @return True if this controller is not active or if all
+     *  engagements are complete.
+     */
+    public synchronized boolean isIterationOver() {
+	if( !isActive() ) {
+	    return true;
+	} else if( _iterationIsOverCache ) {
+	    return true;
+        }
+	// return areEngagementsComplete();
+	if( _engagements.size() == _maxEngagers ) {
+	    Iterator engagements = _engagements.iterator();
+	    Branch branch = null;
+	    while( engagements.hasNext() ) {
+		branch = (Branch)engagements.next();
+		if( branch.numberOfCompletedEngagements() 
+			< _maxEngagements ) {
+		    // _engagementsAllowed = true;
+		    return false;
+		}
+	    }
+	    // _engagementsAllowed = false;
+	    return true;
+	}
+	// _engagementsAllowed = true;
+	return false;
     }
 
     /**
-     */
     public synchronized boolean areEngagementsComplete() {
         if( !_engagementsAllowed || !isActive() ) {
             return true;
@@ -481,26 +461,62 @@ public class BranchController implements Runnable {
 	_engagementsAllowed = true;
 	return false;
     }
-
-    /**
      */
-    public synchronized boolean isDeadlocked() {
-        if( _branchesBlocked == _branchesActive ) {
+
+    /** Return true if all of the branches controlled by this
+     *  controller are stopped. Stopped branches are defined
+     *  as either being locked or waiting for the next
+     *  iteration. If this controller has no branches, then
+     *  return true.
+     * @return True if all branches controlled by this 
+     *  controller are stopped or if there are no branches;
+     *  return false otherwise.
+    public boolean isStopped() {
+        if( !hasBranches() ) {
             return true;
-        } 
+        }
+        if( _branchesStopped + _branchesBlocked >= _branches.size() ) {
+            if( _branchesStopped > 0 ) {
+                return true;
+            }
+            if( _branchesBlocked > 0 ) {
+                return true;
+            }
+        }
         return false;
     }
+     */
     
-    /**
+    /** Restart this controller by resetting the branches that
+     *  it controls and setting flags so engagements can take
+     *  place. If this controller is inactive, do nothing. This
+     *  method is synchronized and will notify any threads that
+     *  are synchronized to this object.
      */
-    public boolean isActive() {
-	return _active;
-    }
+    public synchronized void restart() {
+        /*
+        if( !isActive() ) {
+            return;
+        }
+        */
+	// _engagementsAllowed = false;
+        
+        
+	_iterationIsOverCache = true;
+	_engagements.clear();
 
-    /**
-     */
-    public void setActive(boolean active) {
-	_active = active;
+	_branchesBlocked = 0;
+        _branchesActive = 0;
+
+	Branch branch = null;
+	Iterator branches = _branches.iterator();
+	while( branches.hasNext() ) {
+	    branch = (Branch)branches.next();
+	    branch.reset();
+	}
+
+	_iterationIsOverCache = false;
+	notifyAll();
     }
 
     /**
@@ -513,8 +529,8 @@ public class BranchController implements Runnable {
 		    while( !isIterationOver() ) {
 			wait();
 
-			if( isDeadlocked() && !isIterationOver() ) {
-			    while( isDeadlocked() && 
+			if( isBlocked() && !isIterationOver() ) {
+			    while( isBlocked() && 
 				    !isIterationOver() ) {
 				_getDirector()._controllerBlocked(this);
 				wait();
@@ -535,6 +551,24 @@ public class BranchController implements Runnable {
 		// Do something
 	    }
 	}
+    }
+
+    /**
+     */
+    public void setActive(boolean active) {
+	_active = active;
+    }
+
+    /**
+     */
+    public void setMaximumEngagements(int maxEngagements) {
+	_maxEngagements = maxEngagements;
+    }
+
+    /**
+     */
+    public void setMaximumEngagers(int maxEngagers) {
+	_maxEngagers = maxEngagers;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -560,7 +594,9 @@ public class BranchController implements Runnable {
      */
     protected void _branchUnBlocked(ProcessReceiver rcvr) {
         synchronized(this) {
-            _branchesBlocked--;
+            if( _branchesBlocked > 0 ) {
+                _branchesBlocked--;
+            }
 	    _blockedReceivers.remove(rcvr);
 	    notifyAll();
         }
@@ -587,6 +623,34 @@ public class BranchController implements Runnable {
 	}
     }
 
+    /**
+     */
+    private boolean _hasInputPorts() {
+    	if( _ports == null ) {
+            return false;
+        }
+        Iterator ports = _ports.iterator();
+        while( ports.hasNext() ) {
+            IOPort port = (IOPort)ports.next();
+            return port.isInput();
+        }
+        return false;
+    }
+    
+    /**
+     */
+    private boolean _hasOutputPorts() {
+    	if( _ports == null ) {
+            return false;
+        }
+        Iterator ports = _ports.iterator();
+        while( ports.hasNext() ) {
+            IOPort port = (IOPort)ports.next();
+            return port.isOutput();
+        }
+        return false;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -617,5 +681,7 @@ public class BranchController implements Runnable {
     private boolean _engagementsAllowed = false;
 
     private LinkedList _blockedReceivers = new LinkedList();
+    
+    private boolean _iterationIsOverCache = false;
 
 }

@@ -98,18 +98,27 @@ public class Branch {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Begin an engagement with the controller of this Branch.
+     *  This method should be called prior to attempts to 
+     *  transfer a token between a pair of receivers.
      */
     public void beginEngagement() {
 	if( !_currentlyEngaged ) {
 	    _currentlyEngaged = true;
-	} else {
-	    throw new TerminateBranchException("Can not begin "
-		    + "an engagement if currently engaged.");
 	}
     }
 
-    /** 
+    /** Complete an engagement with the controller of this Branch.
+     *  This method should be called at the completion of a token
+     *  transfer between a pair of receivers. Calls to this method
+     *  must be made in an alternating fashion with beginEngagement().
+     *  If this method is called successively without an intervening
+     *  call to beginEngagement(), a TerminateBranchException will
+     *  be thrown.
+     * @exception TerminateBranchException If this method is called
+     *  is called successively without an intervening call to
+     *  beginEngagement.
+     * @see beginEngagement
      */
     public void completeEngagement() {
 	if( _currentlyEngaged ) {
@@ -162,9 +171,9 @@ public class Branch {
         } catch( IllegalActionException e ) {
             // FIXME
             // This should not be thrown but for 
-            // let's ignore.
+            // now let's ignore.
         }
-        if( _controller.canBranchEngage(this) ) {
+        if( _controller.isEngagementEnabled(this) ) {
             return true;
         }
     	return false;
@@ -204,13 +213,13 @@ public class Branch {
 	if( !isActive() ) {
 	    return false;
 	}
-	return _isIterationOver;
+	return _iterationIsOverCache;
     }
 
     /**
      */
     public synchronized void endIteration() {
-	_isIterationOver = true;
+	_iterationIsOverCache = true;
 	// FIXME: Here I wake up the branch; What about the receiver?
         BoundaryReceiver rcvr = null;
         rcvr = getProdReceiver();
@@ -221,6 +230,7 @@ public class Branch {
         synchronized(rcvr) {
             rcvr.notifyAll();
         }
+        notifyAll();
     }
 
     /** 
@@ -274,6 +284,6 @@ public class Branch {
     private int _completedEngagements = 0;
     private boolean _currentlyEngaged = false;
     // private boolean _stopped = false;
-    private boolean _isIterationOver = false;
+    private boolean _iterationIsOverCache = false;
 
 }

@@ -92,9 +92,9 @@ public class TestProcessDirector extends ProcessDirector {
 
 
     /** Record the firing and force postfire to return false.
-     */
     public void fire() {
     }
+     */
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
