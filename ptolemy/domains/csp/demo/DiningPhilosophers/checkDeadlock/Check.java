@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (yuhong)
-@AcceptedRating Red (reviewmoderator)
 */
 
 package ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock;
@@ -56,14 +54,16 @@ import ptolemy.moml.MoMLParser;
    <pre>
    java ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <numberOfPhilosophers> <useSimple>
    </pre>
-   The useSimple argument is either "simple" or "full", indicating if the simple
-   or the full conditional send model is used. This argument is optional. The
-   default is simple.
+
+   The useSimple argument is either "simple" or "full", indicating if
+   the simple or the full conditional send model is used. This
+   argument is optional. The default is simple.
 
    @author Yuhong Xiong
    @version $Id$
+   @Pt.ProposedRating Red (yuhong)
+   @Pt.AcceptedRating Red
 */
-
 public class Check {
     /** Load the base automata.
      *  @param numberOfPhilosophers The number of philosophers.
