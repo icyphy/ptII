@@ -1128,7 +1128,7 @@ public class Graph implements Cloneable {
             return false;
         }
         _edges.remove(edge);
-        if (!hidden(edge)) { 
+        if (!hidden(edge)) {
             _disconnectEdge(edge);
         }
         return true;
