@@ -163,8 +163,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Transition tr;
         
         // only check transition during event generating phase.
-        if (getExecutionPhase() == 
-            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) {
+        if ((getExecutionPhase() == 
+            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) ||
+            (getExecutionPhase() == 
+            CTExecutionPhase.GENERATINGEVENTS_PHASE)) {
             tr = _ctrl._chooseTransition(_st.preemptiveTransitionList());
         } else {
             tr = null;
@@ -214,8 +216,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl._readOutputsFromRefinement();
 
         // only check transition during event generating phase.
-        if (getExecutionPhase() == 
-            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) {
+        if ((getExecutionPhase() == 
+            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) ||
+            (getExecutionPhase() == 
+            CTExecutionPhase.GENERATINGEVENTS_PHASE)) {
             // Note that the output actions associated with the transition
             // are executed.
             tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
@@ -675,6 +679,15 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl = getController();
         _st = _ctrl.currentState();
 
+        Actor[] actors = _st.getRefinement();
+        _enabledRefinements = new LinkedList();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; ++i) {
+                if (actors[i].prefire()) {
+                    _enabledRefinements.add(actors[i]);
+                }
+            }
+        }
         return super.prefire();
     }
 
