@@ -158,19 +158,21 @@ public class SoundTracker extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                    private methods                        ////
 
-    /** FIXME
-     * @param result
-     * @param x1
-     * @param y1
-     * @param t1
-     * @param x2
-     * @param y2
-     * @param t2
-     * @param x3
-     * @param y3
-     * @param t3
-     * @return
-     */
+    //  Check whether the calculated location and time of a sound event is
+    //  consistent with the observations.
+    // @param result The calculated location and time of a sound event.
+    // @param x1 The x-coordinate of the first observation.
+    // @param y1 The y-coordinate of the first observation.
+    // @param t1 The time of the first observation.
+    // @param x2 The x-coordinate of the second observation.
+    // @param y2 The y-coordinate of the second observation.
+    // @param t2 The time of the second observation.
+    // @param x3 The x-coordinate of the third observation.
+    // @param y3 The y-coordinate of the third observation.
+    // @param t3 The time of the third observation.
+    // @param v The speed of sound propagation.
+    // @return True if the calculated location and time is consistent with the
+    //  observations.
     private static boolean _checkResult(double[] result,
             double x1, double y1, double t1, 
             double x2, double y2, double t2, 
@@ -205,6 +207,36 @@ public class SoundTracker extends TypedAtomicActor {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     }
 
+    /** Calculate the location and time of a sound event from the given
+     *  observations of the event. In the returned array, the first element
+     *  is the x-coordinate of the event, the second is the y-coordinate,
+     *  and the third is the time of the event. These are obtained by
+     *  solving the following equations:
+     *  <pre>
+     *  distance(x, y, x1, y1)/v = t1 - t
+     *  distance(x, y, x2, y2)/v = t2 - t
+     *  distance(x, y, x3, y3)/v = t3 - t
+     *  </pre>
+     *  If there is no valid solution to these equations, possible when the
+     *  observations are of different sound events, the returned values
+     *  are all negative infinity (Double.NEGATIVE_INFINITY). It is also
+     *  possible that a valid solution to the equations exists even though
+     *  the observations are of different sound events. This algorithm
+     *  does not rule out such false positives.
+     *
+     * @param x1 The x-coordinate of the first observation.
+     * @param y1 The y-coordinate of the first observation.
+     * @param t1 The time of the first observation.
+     * @param x2 The x-coordinate of the second observation.
+     * @param y2 The y-coordinate of the second observation.
+     * @param t2 The time of the second observation.
+     * @param x3 The x-coordinate of the third observation.
+     * @param y3 The y-coordinate of the third observation.
+     * @param t3 The time of the third observation.
+     * @param v The speed of sound propagation.
+     * @return The location and time of the sound event consistent with
+     *  the observations.
+     */
     private static double[] _locate(
             double x1, double y1, double t1,
             double x2, double y2, double t2,

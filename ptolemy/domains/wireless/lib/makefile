@@ -50,10 +50,13 @@ JSRCS = \
 	AcousticChannel.java \
 	DelayChannel.java \
 	ErasureChannel.java \
+	GraphicalLocator.java \
 	LimitedRangeChannel.java \
+	Locator.java \
 	RadioChannel.java
 
 OTHER_FILES_TO_BE_JARED = \
+	actors.xml \
 	channels.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

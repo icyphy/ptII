@@ -45,7 +45,6 @@ PTPACKAGE = 	WirelessSoundDetection
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	SoundSensor.java \
 	SoundTracker.java
 
 OTHER_FILES_TO_BE_JARED = \

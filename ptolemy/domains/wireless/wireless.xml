@@ -9,16 +9,10 @@
   
   <input source="lib/channels.xml"/>
 
+  <input source="lib/actors.xml"/>
+  
   <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
   </property>
-
-  <entity name="SoundSensor" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
-  </entity>
-  
-  <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-	<!-- The inside MUST have a director, so we create one. -->
-	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
-  </entity>
 
       </group>
     ?>
