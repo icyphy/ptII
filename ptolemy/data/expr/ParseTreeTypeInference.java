@@ -124,7 +124,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             // variable reference.
             Type type = _getTypeForName(node.getFunctionName());
             if(type instanceof FunctionType) {
-                // Hack?: unify the function type with argument types we have.
                 FunctionType functionType = (FunctionType)type;
                 _setType(node, ((FunctionType)type).getReturnType());
                 return;
@@ -213,7 +212,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 public Type getType(String name) 
                         throws IllegalActionException {
                     Type type = (Type)map.get(name);
-                    if(type == null) {
+                    if(type == null && currentScope != null) {
                         return currentScope.getType(name);
                     } else {
                         return type;

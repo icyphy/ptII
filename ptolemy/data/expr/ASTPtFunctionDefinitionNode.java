@@ -36,7 +36,7 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-
+import ptolemy.data.type.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -88,7 +88,7 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
         return _argList;
     }
     
-    /** Return the list of argument types.
+    /** Return the parse tree of the expression for this function.
      */
     public ASTPtRootNode getExpressionTree() {
         // The first children are the arguments.

@@ -414,7 +414,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ExpressionFunction definedFunction =
             new ExpressionFunction(node.getArgumentNameList(),
                     (ASTPtRootNode)node.getExpressionTree(), constantsScope);
-        FunctionToken result = new FunctionToken(definedFunction);
+        // Infer the return type.
+        if(_typeInference == null) {
+            _typeInference = new ParseTreeTypeInference();
+        }
+        _typeInference.inferTypes(node, _scope);
+        FunctionType type = (FunctionType)node.getType();
+        FunctionToken result = new FunctionToken(definedFunction, type);
         node.setToken(result);
         return;
     }

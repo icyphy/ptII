@@ -62,24 +62,16 @@ public class FunctionToken extends Token {
         Token token = tree.evaluateParseTree();
         if(token instanceof FunctionToken) {
             _function = ((FunctionToken)token)._function;
+            _type = ((FunctionToken)token)._type;
         } else {
             throw new IllegalActionException("A function token cannot be"
                     + " created from the expression '" + init + "'");
         }
-        Type[] argTypes = new Type[_function.getNumberOfArguments()];
-        for(int i = 0; i < _function.getNumberOfArguments(); i++) {
-            argTypes[i] = BaseType.UNKNOWN;
-        }
-        _type = new FunctionType(argTypes, BaseType.UNKNOWN);
     }
 
-    public FunctionToken(Function f) {
+    public FunctionToken(Function f, FunctionType type) {
         _function = f;
-        Type[] argTypes = new Type[_function.getNumberOfArguments()];
-        for(int i = 0; i < _function.getNumberOfArguments(); i++) {
-            argTypes[i] = BaseType.UNKNOWN;
-        }
-        _type = new FunctionType(argTypes, BaseType.UNKNOWN);
+        _type = type;
     }
     
     ///////////////////////////////////////////////////////////////////
