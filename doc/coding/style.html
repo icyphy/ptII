@@ -22,6 +22,7 @@ Please submit comments or suggestions to eal@eecs.berkeley.edu.
 <li><a href="#global variables">Global variables</a>
 <li><a href="#java exceptions conventions">Java exceptions conventions</a>
 <li><a href="#documentation conventions">Documentation conventions</a>
+<li><a href="#applet conventions">Applet conventions</a>
 <li><a href="#copyright conventions">Copyright and acknowledgements</a>
 <li><a href="#proofreading">Proofreading </a>
 </ol>
@@ -215,6 +216,26 @@ a mutation request failed. There is no reasonable
 and checkable precondition for calling this method,
 therefore MutationFailedException is a regular
 exception.
+
+
+
+<h2><a name="applet conventions">Applet conventions</a></h2>
+Applets should have the same look and feel as other HTML pages.
+
+<menu>
+<li> The title should be a <CODE>h1</CODE> type header and should
+not be centered
+<li> Any subheadings should be <CODE>h2</CODE>
+<li> All of the essential parts of the applet should be visible
+if the browser is set to fill the screen of an XGA display.
+The essential parts of the demo include the controls and any output
+widgets, such as plots.
+
+<li> The explanation of the demo should follow the applet.
+
+<li> It is best if the applet does not bring up separate windows, all of 
+the activity should occur within the main browser window.
+</menu>
 
 
 
