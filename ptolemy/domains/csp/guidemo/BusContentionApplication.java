@@ -10,19 +10,20 @@ import diva.graph.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
-import diva.canvas.connector.*;
 import diva.canvas.toolbox.*;
+import diva.canvas.connector.*;
 import diva.util.gui.BasicWindow;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.csp.lib.*;
-import ptolemy.actor.process.*;
-import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.actor.process.*;
+import ptolemy.domains.csp.lib.*;
+import ptolemy.domains.csp.kernel.*;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.SwingConstants;
@@ -32,14 +33,14 @@ import javax.swing.SwingUtilities;
 //// BusContentionApplication
 
 /**
- * This demo shows a PN universe with thread states.
+ * This demo shows a CSP universe with thread states.
  *
  * @author John S. Davis II (davisj@eecs.berkeley.edu)
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
  * @version $Revision$
  * @rating Red
  */
-public class BusContentionApplication {
+public class BusContentionApplication implements ActionListener {
 
     public BusContentionApplication() {
     }
@@ -49,9 +50,7 @@ public class BusContentionApplication {
 
     public static void main(String argv[]) {
         BusContentionApplication app = new BusContentionApplication();
-
 	app.initializeDemo();
-	app.runDemo();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -59,47 +58,23 @@ public class BusContentionApplication {
 
     /**
      */
-    public void initializeDemo() {
-        _nodeMap = new HashMap();
-        _jgraph = new JGraph();
-
-        // Construct the Ptolemy kernel topology
-        _topLevelActor = constructPtolemyModel();
-
-        // Construct the graph representing the PN topology
-        GraphModel model = constructDivaGraph();
-
-        // Display the model in the _window
-        try {
-            displayGraph(_jgraph, model);
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-            System.exit(0);
-        }
-    }
- 
-    /**
-     */
-    public void runDemo() {
-        // Add the State Listener
-        StateListener listener = 
-	        new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_processActor1.addListeners(listener);
-	_processActor2.addListeners(listener);
-	_processActor3.addListeners(listener);
-
-        // Run the model
-	System.out.println("Connections made");
- 	_topLevelActor.getManager().run();
-        System.out.println("Bye World\n");
-	return;
+    public void actionPerformed(ActionEvent event) {
+	String action = event.getActionCommand();
+	if( action.equals("START") ) {
+	    try {
+                this.runDemo();
+            } catch( Exception e ) {
+	        e.printStackTrace(); 
+	        throw new InternalErrorException("Error in GoButton: " 
+                        + e.getMessage()); 
+            }
+	}
+	if( action.equals("QUIT") ) {
+	    shutDown();
+	}
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /**  Construct the graph representing the PN topology.
+    /**  Construct the graph representing the topology.
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
      */
@@ -222,16 +197,27 @@ public class BusContentionApplication {
      * and then set the model once the _window is showing.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-        _window = new BasicWindow("CSP Bus Contention Demo");
-        
-        // Display the window
-        _window.getContentPane().add("Center", g);
-        _window.setSize(500, 500);
-        _window.setLocation(100, 100);
-        _window.setVisible(true);
+        _window = new BasicWindow("Basic Window"); 
+	Panel controlPanel = new Panel(); 
 
-        // Make sure we have the right renderers 
-	// and then display the graph
+	Button startButton = new Button("START"); 
+	startButton.addActionListener( this ); 
+	controlPanel.add(startButton, BorderLayout.WEST); 
+
+	Button quitButton = new Button("QUIT"); 
+	quitButton.addActionListener( this ); 
+	controlPanel.add(quitButton, BorderLayout.EAST); 
+
+	controlPanel.setVisible(true); 
+	_window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
+
+	_window.getContentPane().add(g, BorderLayout.CENTER); 
+
+	_window.setSize(500, 600); 
+	_window.setLocation(100, 100); 
+	_window.setVisible(true);
+
+        // Make sure we have the right renderers and then display the graph
         GraphPane gp = (GraphPane) g.getCanvasPane();
         GraphView gv = gp.getGraphView();
         gv.setNodeRenderer(new ThreadRenderer());
@@ -245,6 +231,57 @@ public class BusContentionApplication {
         gp.repaint();
     }
 
+    /**
+     */
+    public void initializeDemo() {
+        _nodeMap = new HashMap();
+        _jgraph = new JGraph();
+
+        // Construct the Ptolemy kernel topology
+        _topLevelActor = constructPtolemyModel();
+
+        // Construct the graph representing the topology
+        _model = constructDivaGraph();
+
+        // Display the model in the _window
+        try {
+            displayGraph(_jgraph, _model);
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+            System.exit(0);
+        }
+    }
+ 
+    /**
+     */
+    public void runDemo() {
+        StateListener listener = 
+	        new StateListener((GraphPane)_jgraph.getCanvasPane());
+	_processActor1.addListeners(listener);
+	_processActor2.addListeners(listener);
+	_processActor3.addListeners(listener);
+	System.out.println("Listeners set");
+
+        // Run the model
+ 	Manager manager = _topLevelActor.getManager();
+
+	// I'm not sure why but "manager.run()" doesn't seem to work.
+	manager.startRun();
+        System.out.println("Goodbye.\n");
+	return;
+    }
+
+    /**
+     */
+    public void shutDown() {
+        Manager manager = _topLevelActor.getManager(); 
+	manager.terminate(); 
+	_window.setVisible(false); 
+	// FIXME:  _window.displose(); 
+	_window =  null;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
@@ -254,10 +291,13 @@ public class BusContentionApplication {
     // The JGraph where we display stuff
     private JGraph _jgraph;
 
+    // The Diva graph model
+    private GraphModel _model;
+
     // The window to display in
     private BasicWindow _window;
 
-    // The actors
+    // The Actors
     CSPController _contentionActor;
     CSPContentionAlarm _alarmActor;
     CSPMemory _memoryActor;
@@ -265,6 +305,7 @@ public class BusContentionApplication {
     CSPProcessor _processActor2;
     CSPProcessor _processActor3;
 
+    // Top Level Actor
     CompositeActor _topLevelActor;
 
     ///////////////////////////////////////////////////////////////////
@@ -283,7 +324,7 @@ public class BusContentionApplication {
         // The Pane
         GraphPane _graphPane;
 
-        /* Create a listener on the given graph pane
+        /** Create a listener on the given graph pane
          */
         public StateListener (GraphPane pane) {
             _graphPane = pane;
@@ -302,7 +343,7 @@ public class BusContentionApplication {
             final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 
-            // Color it!
+            // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable () {
                     public void run () {
