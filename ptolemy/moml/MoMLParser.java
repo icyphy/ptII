@@ -1746,7 +1746,8 @@ public class MoMLParser extends HandlerBase {
                     // Java might throw a ClassFormatError, but
                     // we usually get and XmlException
                     errorMessage.append("\n-- "
-                            + className + ": " + error.getMessage()
+                            + className + ": Invalid Java Class? "
+                            + error.getMessage()
                             + "\n   If there is an error in the code "
                             + "generator, "
                             + "then an Error might be thrown here.\n");
