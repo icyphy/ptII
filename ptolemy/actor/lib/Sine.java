@@ -153,7 +153,7 @@ public class Sine extends Transformer {
      *  @exception IllegalActionException If iterating cannot be
      *  performed.
      */
-    public boolean iterate(int count) throws IllegalActionException {
+    public int iterate(int count) throws IllegalActionException {
 	// Check if we need to reallocate the output token array.
 	if (count > _resultArray.length) {
 	    _resultArray = new DoubleToken[count];
@@ -172,7 +172,7 @@ public class Sine extends Transformer {
 	    }
             output.send(0, _resultArray, count);
         }
-	return (true);
+	return COMPLETED;
     }
 
     ///////////////////////////////////////////////////////////////////
