@@ -107,15 +107,22 @@ public class Render extends PlotBox {
                     setXRange(-1.0, 1.0);
                     setYRange(-1.0, 1.0);
 
-                    _topPadding = 0;
-                    _bottomPadding = 0;
-                    _rightPadding = 0;
-                    _leftPadding = 0;
 
-//                     System.out.println("_xlowgiven = " +_xlowgiven);
-//                     System.out.println("_xhighgiven = " +_xhighgiven);
+                    // I thought that this would remove the padding from the
+                    // plot rectangle, but it didn't.
+//                     _topPadding = 0;
+//                     _bottomPadding = 0;
+//                     _rightPadding = 0;
+//                    _leftPadding = 0;
+
+//                     System.out.println();
+//                     System.out.println("_xlowgiven = " + _xlowgiven);
+//                     System.out.println("_xhighgiven = " + _xhighgiven);
 //                     System.out.println("_ylowgiven = " + _ylowgiven);
 //                     System.out.println("_yhighgiven = " + _yhighgiven);
+//                     System.out.println();
+//                     System.out.println("yhigh - ylow = " +
+//                                        (_yhighgiven - _ylowgiven));
 //                     System.out.println();
 //                     System.out.println("_height = " + _height);
 // 
@@ -140,7 +147,7 @@ public class Render extends PlotBox {
                     
 
                     // Add the stripes to the data structure.
-                    for (int i = 1; i <= 5; i++) {
+                    for (int i = 1; i <= 500; i++) {
                         addStripe((double)i - .5, stripe1);
                         addStripe((double)i + .5, stripe2);
                     }
@@ -184,10 +191,27 @@ public class Render extends PlotBox {
         super._drawPlot(graphics, clearfirst);
 
 
+//        System.out.println();
+//        System.out.println("_xlowgiven = " + _xlowgiven);
+//        System.out.println("_xhighgiven = " + _xhighgiven);
+//        System.out.println("  _ylowgiven = " + _ylowgiven);
+//        System.out.println("       _yMin = " + _yMin);
+//        System.out.println(" _yhighgiven = " + _yhighgiven);
+//        System.out.println("       _yMax = " + _yMax);
+//        System.out.println();
+//        System.out.println("yhigh - ylow = " +
+//                           (_yhighgiven - _ylowgiven));
+//        System.out.println(" yMax - yMin = " +
+//                           (_yMax - _yMin));
+//        System.out.println();
+//        System.out.println("_height = " + _height);
+
+
 
         ListIterator imageDataIterator = _imageData.listIterator(0);
 
-        int x = _ulx + (int)((-1.1 - _xMin) * _xscale) + 1; //(_ulx + 1);
+        double x = (double)_ulx + (double)((-1.1 - _xMin) * _xscale) + 1.0;
+        //(_ulx + 1);
 
 //         System.out.println("The width of the area is " + (_xMax - _xMin) +
 //                            " units.");
@@ -205,7 +229,7 @@ public class Render extends PlotBox {
 //                            + " pixels per stripe.");
 
 
-        int width = (int)(2.2 * _xscale) / _imageData.size();
+        double width = (double)(2.2 * _xscale) / (double)_imageData.size();
         // divided by the
         // number of stripes (i.e _imageData.size())
 
@@ -216,7 +240,18 @@ public class Render extends PlotBox {
             // System.out.println("x = " + x);
             x += width;
         }
-           
+         
+        // Draw an oval centered at zero, with width 1 and height 1/2.
+//         int ulyOval = _lry - (int)((0.5 - _yMin) * _yscale);
+//         int ulxOval = _ulx + (int) ((-1 - _xMin) * _xscale);
+//         int ovalWidth = (int)(2 * _xscale);
+//         int ovalHeight = (int)(1 * _yscale);
+// 
+//         graphics.setColor(java.awt.Color.magenta);
+//         graphics.drawOval(ulxOval,ulyOval,ovalWidth, ovalHeight);
+
+
+  
             // Indicate that the plot is showing.
             _showing = true;
     }
@@ -228,7 +263,12 @@ public class Render extends PlotBox {
      */
 
      private void _drawStripe(Graphics graphics, int[] stripe,
-                              double x, int width) {
+                              double x, double width) {
+
+         // The stripe needs to be at least one pixel wide.
+         if (width < 1.0) {
+             width = 1.0;
+         }
 
          // Draw the stripe one patch at a time.
 
@@ -236,12 +276,13 @@ public class Render extends PlotBox {
 
  
          // Draw the stripe one patch (data element) at a time.
-         int y = _lry - (int)((1.0 - _yMin) * _yscale) + 1; //(_uly + 1);
+         double y = _lry - (int)((1.1 - _yMin) * _yscale) + 1; //(_uly + 1);
 
-         int height = (int)((2.0 * _yscale) / length); 
+         double height = (double)(2.2 * _yscale) / (double)length; 
 
          for (int i = 0; i < length; i++) {
-             _drawPatch(graphics, (int)x, y, width, height, stripe[i]);
+             _drawPatch(graphics, (int)x, (int)y, (int)width, (int)height,
+                        stripe[i]);
 
              // Increment the y value so the next patch is printed in the
              // right place.
