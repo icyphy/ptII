@@ -116,6 +116,31 @@ public class InequalitySolver {
         }
     }
 
+    /** Returns an Enumeration of the variables whose current values are
+     *  the bottom of the underlining CPO. If none of the variables have
+     *  the current value set to bottom, an empty Enumeration is returned.
+     *  @return an Enumeration of InequalityTerm
+     *  @exception InvalidStateException the underlining CPO does not have
+     *   a bottom element.
+     */
+    public Enumeration bottomVariables() {
+	Object bottom = _cpo.bottom();
+	if (bottom == null) {
+	    throw new InvalidStateException("InequalitySolver.bottomVariables:"
+			+ " The underlining CPO does not have a bottom"
+			+ " element.");
+	}
+
+	LinkedList result = new LinkedList();
+	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+	    InequalityTerm variable = (InequalityTerm)e.nextElement();
+	    if (variable.value().equals(bottom)) {
+		result.insertLast(variable);
+	    }
+	}
+	return result.elements();
+    }
+
     /** Solves the set of inequalities and updates the variables.
      *  If the set of inequalities is satisfiable, this method returns
      *  <code>true</code> and the variables are set to the least or
@@ -124,8 +149,7 @@ public class InequalitySolver {
      *  the set of inequalities is not satisfiable, this method returns
      *  <code>false</code>; if the set of inequalities is not definite,
      *  a <code>false</code> return value doesn't guarantee the set of
-     *  inequalities is not satisfiable.  In the case this method
-     *  returns <code>false</code>, the variable values are random.
+     *  inequalities is not satisfiable. 
      *  @param least if <code>true</code>, this method will try to
      *   find the least solution; otherwise, this method will try to find
      *   the greatest solution.
@@ -265,6 +289,48 @@ public class InequalitySolver {
             }
         }
         return true;
+    }
+
+    /** Returns an Enumeration of the variables whose current values are
+     *  the top of the underlining CPO. If none of the variables have
+     *  the current value set to top, an empty Enumeration is returned.
+     *  @return an Enumeration of InequalityTerm
+     *  @exception InvalidStateException the underlining CPO does not have
+     *   a top element.
+     */
+    public Enumeration topVariables() {
+	Object top = _cpo.top();
+	if (top == null) {
+	    throw new InvalidStateException("InequalitySolver.topVariables:"
+			+ " The underlining CPO does not have a top element.");
+	}
+
+	LinkedList result = new LinkedList();
+	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+	    InequalityTerm variable = (InequalityTerm)e.nextElement();
+	    if (variable.value().equals(top)) {
+		result.insertLast(variable);
+	    }
+	}
+	return result.elements();
+    }
+
+    /** Returns an enumeration of Inequality that are not satisfied under
+     *  the current value of variables. This method can be called regardless
+     *  of whether <code>solve()</code> is called or not. If all the
+     *  inequalities are satisfied, an empty Enumeration is returned.
+     *  @return an Enumeration of Inequality
+     */
+    public Enumeration unsatisfiedIneq() {
+	LinkedList result = new LinkedList();
+
+        for (int i = 0; i < _Ilist.size(); i++) {
+	    Info info = (Info)_Ilist.elementAt(i);
+            if ( !info._ineq.satisfied(_cpo)) {
+                result.insertLast(info._ineq);
+	    }
+        }
+	return result.elements();
     }
 
     ////////////////////////////////////////////////////////////////////////
