@@ -187,8 +187,8 @@ public class KernelRuntimeException extends RuntimeException {
      *
      *  @return The error message.
      */
-     public String getMessage() {
-            return _message;
+    public String getMessage() {
+        return _message;
     }
 
     /** Print the following to stderr:
