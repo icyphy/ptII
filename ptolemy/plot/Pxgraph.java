@@ -556,7 +556,8 @@ public class Pxgraph extends Frame {
 	System.out.println("The following pxgraph features are not supported:");
 	System.out.println(" * Directives in pxgraph input files");
 	System.out.println(" * Xresources");
-	System.out.println(" * More than one input file");
+	System.out.println(" For complete documentation, see the "+
+			   "Pxgraph Java class documentation.");
 	System.exit(1);
     }
 
