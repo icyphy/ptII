@@ -505,22 +505,27 @@ public class CTScheduler extends Scheduler {
             }
             continuousActorSchedule.add(new Firing(actor));
             // We test for sinks in the continuous cluster. These actors
-            // are used to generate the output schedule.
-            List successorList = successorList(actor);
-            if(successorList.isEmpty()) {
+            // are used to generate the output schedule. Event generators
+            // in the continuous cluster are treated as sink actors.
+            if (actor instanceof CTEventGenerator) {
                 sinkActors.add(actor);
             } else {
-                Iterator successors = successorList.iterator();
-                boolean isSink = true;
-                while (successors.hasNext()) {
-                    Actor successor = (Actor)successors.next();
-                    if (continuousActors.contains(successor)) {
-                        isSink = false;
-                        break;
-                    }
-                }
-                if (isSink) {
+                List successorList = successorList(actor);
+                if(successorList.isEmpty()) {
                     sinkActors.add(actor);
+                } else {
+                    Iterator successors = successorList.iterator();
+                    boolean isSink = true;
+                    while (successors.hasNext()) {
+                        Actor successor = (Actor)successors.next();
+                        if (continuousActors.contains(successor)) {
+                            isSink = false;
+                            break;
+                        }
+                    }
+                    if (isSink) {
+                        sinkActors.add(actor);
+                    }
                 }
             }
 
