@@ -360,14 +360,15 @@ REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 # Log file to save the results in
 REMOTE1LOG = $(GENLOGDIR)/remote1.out
 
+JSHOME = $(HOME)
 # JavaScope database, gets removed every night
 # Note that this must be a directory called jsdatabase in the user's
 # home directory.  Overriding this is tricky, it requires setting
 # up a javascope.properties file that can be read at runtime
-JSDATABASE=/users/ptII/jsdatabase
+JSDATABASE=$(JSHOME)/jsdatabase
 
 # Directory to place output in
-JSOUTDIR=/users/ptII/public_html/nightly/js
+JSOUTDIR=$(JSHOME)/public_html/nightly/js
 
 # Create a separate tree and run the test suite with code coverage
 # on REMOTE1HOST
@@ -461,6 +462,7 @@ remote1distjavadocs:
 # it hangs
 #
 JSALLDIRS = \
+	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
 	$(REMOTE1PTIIDIST)/ptolemy/data \
@@ -503,7 +505,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
-	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
@@ -524,11 +525,12 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/configs
+
+#	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces
+#	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util
 
 
 # Directories to run tests in outside of JavaScope
@@ -679,6 +681,9 @@ remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	ssh $(REMOTE2HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) \
+		PTIIHOME=$(PTIIHOME) \
+		PTIIADM=$(PTIIADM) \
 		remote2nuke remote2ptiidist remote2distclean \
 		remote2distjdk1.4 remote2distjdk1.4test remote2done \
 		>& $(REMOTE2LOG)" &
@@ -772,6 +777,9 @@ remote3cvs:  $(GENLOGDIR)
 	# so we do the cvs co locally
 	cd $(GENDIR); make remote3ptiidist >> $(REMOTE3LOG) 2>&1
 	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) \
+		PTIIHOME=$(PTIIHOME) \
+		PTIIADM=$(PTIIADM) \
 		remote3distclean \
 		remote3distbuild remote3distbuild remote3done \
 		>>& $(REMOTE3LOG)" &
@@ -919,6 +927,9 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) \
+		PTIIHOME=$(PTIIHOME) \
+		PTIIADM=$(PTIIADM) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
 		remote4javatest \
@@ -979,7 +990,7 @@ remote4javatest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test;	PTII=$(REMOTE4PTIIDIST) $(MAKE))
+	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test;	PTII=$(REMOTE4PTIIDIST) $(MAKE) test_long)
 
 
 ##########################################################################
@@ -1011,6 +1022,9 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
+		USER=$(USER) \
+		PTIIHOME=$(PTIIHOME) \
+		PTIIADM=$(PTIIADM) \
 		remote5nuke remote5ptiidist remote5configure \
 		remote5build \
 		remote5shallowtest \
@@ -1055,7 +1069,7 @@ remote5shallowtest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE))
+	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE) test_long)
 
 
 
