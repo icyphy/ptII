@@ -1,4 +1,4 @@
-/* A signal plotter.
+* A signal plotter.
 
 @Copyright (c) 1997-1999 The Regents of the University of California.
 All rights reserved.
@@ -450,7 +450,7 @@ public class Plot extends PlotBox {
     }
 
     /** Return the actual number of data sets.
-     *  @returns The number of data sets that have been created.
+     *  @return The number of data sets that have been created.
      */
     public int getNumDataSets() {
         return _points.size();

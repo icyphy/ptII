@@ -326,7 +326,7 @@ public class PlotBox extends Panel {
     }
 
     /** Return whether the plot uses color.
-     *  @returns True if the plot uses color.
+     *  @return True if the plot uses color.
      */
     public boolean getColor() {
         return _usecolor;
@@ -419,7 +419,7 @@ public class PlotBox extends Panel {
     }
 
     /** Get the title of the graph, or an empty string if there is none.
-     *  @returns The title.
+     *  @return The title.
      */
     public String getTitle() {
         if (_title == null) return "";
@@ -428,14 +428,14 @@ public class PlotBox extends Panel {
 
     /** Get the label for the X (horizontal) axis, or null if none has
      *  been set.
-     *  @returns The X label.
+     *  @return The X label.
      */
     public String getXLabel() {
         return _xlabel;
     }
 
     /** Return whether the X axis is drawn with a logarithmic scale.
-     *  @returns True if the X axis is logarithmic.
+     *  @return True if the X axis is logarithmic.
      */
     public boolean getXLog() {
         return _xlog;
@@ -474,14 +474,14 @@ public class PlotBox extends Panel {
 
     /** Get the label for the Y (vertical) axis, or null if none has
      *  been set.
-     *  @returns The Y label.
+     *  @return The Y label.
      */
     public String getYLabel() {
         return _ylabel;
     }
 
     /** Return whether the Y axis is drawn with a logarithmic scale.
-     *  @returns True if the Y axis is logarithmic.
+     *  @return True if the Y axis is logarithmic.
      */
     public boolean getYLog() {
         return _ylog;
