@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (johnr@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
@@ -131,7 +132,7 @@ public class TopologyEvent extends java.util.EventObject {
      * the given client (i.e. actor or similar), composite entity,
      * and component entity.
      */
-    public TopologyEvent (int id, Object client,
+    public TopologyEvent(int id, Object client,
             CompositeEntity compositeEntity,
             ComponentEntity componentEntity) {
         super(client);
@@ -144,7 +145,7 @@ public class TopologyEvent extends java.util.EventObject {
      * the given client (i.e. actor or similar), entity,
      * and port.
      */
-    public TopologyEvent (int id, Object client,
+    public TopologyEvent(int id, Object client,
             Entity entity,
             Port port) {
         super(client);
@@ -157,7 +158,7 @@ public class TopologyEvent extends java.util.EventObject {
      * the given client (i.e. actor or similar), composite entity,
      * and component relation.
      */
-    public TopologyEvent (int id, Object client,
+    public TopologyEvent(int id, Object client,
             CompositeEntity compositeEntity,
             ComponentRelation componentRelation) {
         super(client);
@@ -170,7 +171,7 @@ public class TopologyEvent extends java.util.EventObject {
      * the given client (i.e. actor or similar), relation,
      * and port.
      */
-    public TopologyEvent (int id, Object client,
+    public TopologyEvent(int id, Object client,
             Relation relation,
             Port port) {
         super(client);
@@ -308,7 +309,7 @@ public class TopologyEvent extends java.util.EventObject {
      *  @exception IllegalActionException If the topology change has not
      *   yet been implemented.
      */
-    public void notifyListeners (TopologyListener listener)
+    public void notifyListeners(TopologyListener listener)
             throws IllegalActionException {
         if(!_mutationDone) {
             throw new IllegalActionException("TopologyEvent.notifyListeners()"

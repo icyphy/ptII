@@ -26,6 +26,7 @@
 
 @ProposedRating Red (johnr@eecs.berkeley.edu)
 @AcceptedRating Red
+@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
@@ -71,7 +72,7 @@ public abstract class TopologyChangeRequest {
     /** Construct a new mutation request with the given client. The
      * client should be the object that is creating this object.
      */
-    public TopologyChangeRequest (Object client) {
+    public TopologyChangeRequest(Object client) {
         this._client = client;
     }
 
@@ -96,7 +97,7 @@ public abstract class TopologyChangeRequest {
      * @exception IllegalActionException If any topology change in
      *  sequence of mutation events has not yet been implemented.
      */
-    public void notifyListeners (TopologyListener listener)
+    public void notifyListeners(TopologyListener listener)
             throws IllegalActionException {
         Enumeration elts = _events.elements();
         while (elts.hasMoreElements()) {
@@ -118,7 +119,7 @@ public abstract class TopologyChangeRequest {
      * @exception IllegalActionException If the change has already
      *   been implemented.
      */
-    public void performRequest () throws TopologyChangeFailedException,
+    public void performRequest() throws TopologyChangeFailedException,
             IllegalActionException {
         Enumeration elts = _events.elements();
         LinkedList doneEvents = new LinkedList();
@@ -169,7 +170,7 @@ public abstract class TopologyChangeRequest {
      *
      * @return An enumeration of the events in this request.
      */
-    public Enumeration queuedEvents () {
+    public Enumeration queuedEvents() {
         return _events.elements();
     }
 
@@ -180,7 +181,7 @@ public abstract class TopologyChangeRequest {
      * @param compositeEntity The future container
      * @param entity The future containee
      */
-    public final void queueEntityAddedEvent (
+    public final void queueEntityAddedEvent(
             CompositeEntity compositeEntity,
             ComponentEntity componentEntity) {
         _events.insertLast(new TopologyEvent(
@@ -214,7 +215,7 @@ public abstract class TopologyChangeRequest {
      * @param entity The future container
      * @param port The future containee
      */
-    public final void queuePortAddedEvent (Entity entity, Port port) {
+    public final void queuePortAddedEvent(Entity entity, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_ADDED,
                 _client,
@@ -229,7 +230,7 @@ public abstract class TopologyChangeRequest {
      * @param relation The relation to be linked
      * @param port The port to be linked
      */
-    public final void queuePortLinkedEvent (Relation relation, Port port) {
+    public final void queuePortLinkedEvent(Relation relation, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_LINKED,
                 _client,
@@ -244,7 +245,7 @@ public abstract class TopologyChangeRequest {
      * @param entity The current container
      * @param port The current containee
      */
-    public final void queuePortRemovedEvent (Entity entity, Port port) {
+    public final void queuePortRemovedEvent(Entity entity, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_REMOVED,
                 _client,
@@ -259,7 +260,7 @@ public abstract class TopologyChangeRequest {
      * @param relation The relation to be unlinked
      * @param port The port to be unlinked
      */
-    public final void queuePortUnlinkedEvent (Relation relation, Port port) {
+    public final void queuePortUnlinkedEvent(Relation relation, Port port) {
         _events.insertLast(new TopologyEvent(
                 TopologyEvent.PORT_UNLINKED,
                 _client,
@@ -274,7 +275,7 @@ public abstract class TopologyChangeRequest {
      * @param compositeEntity The future container
      * @param relation The future containee
      */
-    public final void queueRelationAddedEvent (
+    public final void queueRelationAddedEvent(
             CompositeEntity compositeEntity,
             ComponentRelation componentRelation) {
         _events.insertLast(new TopologyEvent(
@@ -291,7 +292,7 @@ public abstract class TopologyChangeRequest {
      * @param compositeEntity The current container
      * @param relation The current containee
      */
-    public final void queueRelationRemovedEvent (
+    public final void queueRelationRemovedEvent(
             CompositeEntity compositeEntity,
             ComponentRelation componentRelation) {
         _events.insertLast(new TopologyEvent(

@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnr@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
@@ -55,7 +56,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param listener An object that listens to topology events
      */
-    public void addTopologyListener (TopologyListener listener) {
+    public void addTopologyListener(TopologyListener listener) {
         _listeners.insertLast(listener);
     }
 
@@ -65,7 +66,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void entityAdded (TopologyEvent event) {
+    public void entityAdded(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).entityAdded(event);
         }
@@ -77,7 +78,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void entityRemoved (TopologyEvent event) {
+    public void entityRemoved(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).entityRemoved(event);
         }
@@ -89,7 +90,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void portAdded (TopologyEvent event) {
+    public void portAdded(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).portAdded(event);
         }
@@ -101,7 +102,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void portRemoved (TopologyEvent event) {
+    public void portRemoved(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).portRemoved(event);
         }
@@ -115,7 +116,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param listener An object that listens to topology events
      */
-    public void removeTopologyListener (TopologyListener listener) {
+    public void removeTopologyListener(TopologyListener listener) {
         _listeners.removeOneOf(listener);
     }
 
@@ -125,7 +126,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void relationAdded (TopologyEvent event) {
+    public void relationAdded(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).relationAdded(event);
         }
@@ -137,7 +138,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void relationRemoved (TopologyEvent event) {
+    public void relationRemoved(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).relationRemoved(event);
         }
@@ -149,7 +150,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void portLinked (TopologyEvent event) {
+    public void portLinked(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).portLinked(event);
         }
@@ -161,7 +162,7 @@ public class TopologyMulticaster implements TopologyListener {
      *
      * @param event The topology event
      */
-    public void portUnlinked (TopologyEvent event) {
+    public void portUnlinked(TopologyEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((TopologyListener) e.nextElement()).portUnlinked(event);
         }

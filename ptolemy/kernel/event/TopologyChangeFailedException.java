@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnr@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
@@ -51,7 +52,20 @@ will also be set.
 public class TopologyChangeFailedException extends KernelException {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public fields                    ////
+    ////                         constructors                      ////
+
+    /** Create a new TopologyChangeFailedException containing the event
+     * which failed and the exception it threw.
+     */
+    public TopologyChangeFailedException(
+            TopologyEvent failedEvent,
+            Exception thrownException) {
+        this.failedEvent = failedEvent;
+        this.thrownException = thrownException;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The mutation event that failed.
      */
@@ -69,19 +83,4 @@ public class TopologyChangeFailedException extends KernelException {
      */
     public Exception thrownExceptionOnUndo;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructors                      ////
-
-    /** Create a new TopologyChangeFailedException containing the event
-     * which failed and the exception it threw.
-     */
-    public TopologyChangeFailedException (
-            TopologyEvent failedEvent,
-            Exception thrownException) {
-        this.failedEvent = failedEvent;
-        this.thrownException = thrownException;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 }

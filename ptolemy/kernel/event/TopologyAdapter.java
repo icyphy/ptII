@@ -25,6 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (johnr@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
@@ -53,7 +54,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void entityAdded (TopologyEvent event) {}
+    public void entityAdded(TopologyEvent event) {}
 
     /** Notify that an entity has been removed from a composite.
      * The <b>compositeEntity</b> and <b>entity</b> fields of the
@@ -61,7 +62,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void entityRemoved (TopologyEvent event) {}
+    public void entityRemoved(TopologyEvent event) {}
 
     /** Notify that a port has been added to an entity.
      * The <b>entity</b> and <b>port</b> fields of the
@@ -69,7 +70,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void portAdded (TopologyEvent event) {}
+    public void portAdded(TopologyEvent event) {}
 
     /** Notify that a port has been removed from a entity.
      * The <b>entity</b> and <b>port</b> fields of the
@@ -77,7 +78,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void portRemoved (TopologyEvent event) {}
+    public void portRemoved(TopologyEvent event) {}
 
     /** Notify that a relation has been added to a composite.
      * The <b>compositeEntity</b> and <b>relation</b> fields of the
@@ -85,7 +86,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void relationAdded (TopologyEvent event) {}
+    public void relationAdded(TopologyEvent event) {}
 
     /** Notify that a relation has been removed from a composite.
      * The <b>compositeEntity</b> and <b>relation</b> fields of the
@@ -93,7 +94,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void relationRemoved (TopologyEvent event) {}
+    public void relationRemoved(TopologyEvent event) {}
 
     /** Notify that a port has been linked to a relation.
      * The <b>relation</b> and <b>port</b> fields of the
@@ -101,7 +102,7 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void portLinked (TopologyEvent event) {}
+    public void portLinked(TopologyEvent event) {}
 
     /** Notify that a port has been unlinked from a relation.
      * The <b>relation</b> and <b>port</b> fields of the
@@ -109,5 +110,5 @@ public class TopologyAdapter implements TopologyListener {
      *
      * @param event The mutation event
      */
-    public void portUnlinked (TopologyEvent event) {}
+    public void portUnlinked(TopologyEvent event) {}
 }
