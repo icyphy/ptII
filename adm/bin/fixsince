@@ -23,8 +23,9 @@ if [ ! -f $diffOutput ]; then
 fi
 
 newJavaFiles=/tmp/fixsince.newJavaFiles.$$
+newJavaFiles=/tmp/fixsince.newJavaFiles
 if [ ! -f $newJavaFiles ]; then
-    egrep "^Only in ptII$newVersion" $diffOutput | 
+    egrep "^Only in ptII: " $diffOutput | 
         egrep '.java$' |
         sed -e 's/Only in //' -e 's@: @/@' |
 	grep -v DEThreadActor.java |
@@ -36,4 +37,30 @@ if [ ! -f $newJavaFiles ]; then
     exit 9 
 fi
 
-# 1. The file is new between releases and has no tag
+files=`cat $newJavaFiles`
+for file in $files
+do
+  grep @since $file >& /dev/null 
+  retval=$?
+  tmpfile=/tmp/fixsince.tmpfile
+  if [ $retval = 1 ]; then
+    echo "$file does not have an @since tag"
+    awk '{  if ($0 ~ @version) {
+	       print $0
+	       print "@since Ptolemy II 4.0"
+	    } else {
+	       print $0
+            }
+         }' <$file >$tmpfile
+  else
+    echo $file  
+    sed -e 's/@since.*/@since Ptolemy II 4.0/' \
+	$file > $tmpfile
+
+  fi
+    sed -e 's/Copyright (c) 200[0-9]-200[0-9]/Copyright (c) 2003-2004/' \
+	-e 's/Copyright (c) 199[0-9]-200[0-9]/Copyright (c) 2003-2004/' \
+	< $tmpfile > $tmpfile2
+    diff $file $tmpfile
+
+done
