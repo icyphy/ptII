@@ -379,7 +379,7 @@ public class IntervalChain {
 //  		Object sort[] = _graph.topologicalSort();
 //  		for (int i=0;i<sort.length;i++) {
 //  		    Node n = (Node) sort[i];
-		Collection sort = _graph.attemptTopologicalSort(_graph.nodes());
+		Collection sort = _graph.topologicalSort(_graph.nodes());
 		for (Iterator i=sort.iterator();i.hasNext();) {
 		    Node n = (Node) i.next();
 

@@ -198,7 +198,7 @@ public class DominatorHashMap extends HashMap {
 	    _root = _graph.source();
 	}
 
-	Collection sortedNodes = _graph.attemptTopologicalSort(_graph.nodes());
+	Collection sortedNodes = _graph.topologicalSort(_graph.nodes());
 	if (_postDominates)
 	    sortedNodes = _reverseList(sortedNodes);
 

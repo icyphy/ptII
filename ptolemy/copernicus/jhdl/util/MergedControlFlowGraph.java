@@ -138,7 +138,7 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	Map nodeToLabel = new HashMap();
 	SuperBlock sorted[]=null;
 	
-	Object []temp=attemptTopologicalSort(nodes()).toArray();
+	Object []temp=topologicalSort(nodes()).toArray();
 	sorted=new SuperBlock[temp.length];   
 	for (int i=0; i < temp.length; i++){
 	    sorted[i]=(SuperBlock)((Node)temp[i]).weight();

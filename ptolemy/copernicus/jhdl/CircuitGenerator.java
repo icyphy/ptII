@@ -130,7 +130,7 @@ public class CircuitGenerator {
 	// (this is a single basic block, so it should be acyclic)
 	Collection c;
 	try {
-	    c = bdfg.attemptTopologicalSort(bdfg.nodes());
+	    c = bdfg.topologicalSort(bdfg.nodes());
 	} catch (IllegalActionException e) {
 	    throw new JHDLUnsupportedException(e.getMessage());
 	}
