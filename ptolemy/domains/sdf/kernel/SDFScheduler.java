@@ -448,6 +448,174 @@ public class SDFScheduler extends Scheduler {
         _firingVectorValid = true;
     }
 
+    /** Solve the balance equations for the list of connected Actors.
+     *  For each actor, determine the ratio that determines the rate at
+     *  which it should fire relative to the other actors for the graph to
+     *  be live and operate within bounded memory. This ratio is known as the
+     *  fractional firing of the actor.
+     *
+     *  @param container The container that is being scheduled.
+     *  @param actorList The actors that we are interested in.
+     *  @param externalRates A map from external ports of container to
+     *  the fractional rates of that port.  This starts out initialized with
+     *  Fraction.ZERO and will be populated during this method.
+     *  @return A map from each actor to its fractional
+     *  firing.
+     *  @exception NotSchedulableException If the graph is not consistent
+     *  under the synchronous dataflow model, or if the graph is not connected.
+     *  @exception IllegalActionException If any called method throws it.
+     */
+    protected Map _solveBalanceEquations(CompositeActor container,
+            List actorList, Map externalRates)
+            throws NotSchedulableException, IllegalActionException {
+
+        // The map that we will return.
+        // This will be populated with the fraction firing ratios for
+        // each actor.
+        Map firings = new TreeMap(new NamedObjComparator());
+
+        // The pool of Actors that have not been
+        // touched yet. (i.e. all their firings are still set to Fraction
+        // equal to -1/1)
+        LinkedList remainingActors = new LinkedList();
+
+        // The pool of actors that have their firings set,
+        // but have not had their ports explored yet.
+        LinkedList pendingActors = new LinkedList();
+
+        // Initialize remainingActors to contain all the actors we were given .
+        remainingActors.addAll(actorList);
+
+        // Initialize firings for each actor to -1.
+        for (Iterator actors = remainingActors.iterator();
+             actors.hasNext();) {
+            ComponentEntity entity = (ComponentEntity) actors.next();
+            firings.put(entity, _minusOne);
+        }
+
+        if (remainingActors.size() == 0) {
+            // If we've been given
+            // no actors to do anything with, return an empty Map.
+            return firings;
+        }
+
+        StaticSchedulingDirector director =
+            (StaticSchedulingDirector)getContainer();
+
+        boolean allowDisconnectedGraphs = false;
+        if (director instanceof SDFDirector) {
+            Token token =
+                ((SDFDirector)director).allowDisconnectedGraphs.getToken();
+            allowDisconnectedGraphs = ((BooleanToken)token).booleanValue();
+        }
+
+        if (allowDisconnectedGraphs) {
+            // Ned Stoffel's change to support disconnected graphs:
+
+            // Finally, the schedule can jump from one island to
+            // another among the disconnected graphs. There is nothing
+            // to force the scheduler to finish executing all actors
+            // on one island before firing actors on another
+            // island. However, the order of execution within an
+            // island should be correct.
+
+            while (!remainingActors.isEmpty()) {
+                ComponentEntity actor =
+                    _pickZeroRatePortActor(remainingActors);
+                if (actor == null) {
+                    actor = (ComponentEntity)remainingActors.removeFirst();
+                } else {
+                    remainingActors.remove(actor);
+                }
+
+                firings.put(actor, new Fraction(1));
+                pendingActors.addLast(actor);
+
+                while (!pendingActors.isEmpty()) {
+                    Actor currentActor = (Actor) pendingActors.removeFirst();
+                    Iterator AllPorts =
+                        ((ComponentEntity) currentActor).portList().iterator();
+                    while (AllPorts.hasNext()) {
+                        IOPort currentPort = (IOPort) AllPorts.next();
+                        _propagatePort(container, currentPort, firings,
+                                externalRates, remainingActors, pendingActors);
+                    }
+                }
+            }
+            return firings;
+        }
+
+        // Pick an actor as a reference
+        // Should pick the reference actor to be one
+        // that contains 0-valued ports, if there exists one.
+        ComponentEntity actor = _pickZeroRatePortActor(remainingActors);
+        if (actor == null) {
+            // We did not find an actor with any 0-rate ports,
+            // so just pick a reference actor arbitrarily.
+            actor = (ComponentEntity)remainingActors.removeFirst();
+        } else {
+            // We found an actor with at least one 0-rate port.
+            remainingActors.remove(actor);
+        }
+        // Set it's rate to one per iteration
+        firings.put(actor, new Fraction(1));
+        // Start the list to recurse over.
+        pendingActors.addLast(actor);
+
+        // Loop until we run out of actors that have not been
+        // propagated.
+        while (!pendingActors.isEmpty()) {
+            if (_debugging && VERBOSE) {
+                _debug("pendingActors: ");
+                _debug(pendingActors.toString());
+            }
+            // Get the next actor to recurse over
+            Actor currentActor = (Actor) pendingActors.removeFirst();
+            if (_debugging && VERBOSE) {
+                _debug("Balancing from " +
+                        ((ComponentEntity) currentActor).getName());
+            }
+
+            // Traverse all the input and output ports, setting the firings
+            // for the actor(s)???? connected to each port relative
+            // to currentActor.
+            Iterator AllPorts =
+                ((ComponentEntity) currentActor).portList().iterator();
+            while (AllPorts.hasNext()) {
+                IOPort currentPort = (IOPort) AllPorts.next();
+                _propagatePort(container, currentPort, firings, externalRates,
+                        remainingActors, pendingActors);
+            }
+        }
+        if (!remainingActors.isEmpty()) {
+            // If there are any actors left that we didn't get to, then
+            // this is not a connected graph, and we throw an exception.
+            StringBuffer messageBuffer =
+                new StringBuffer("SDF scheduler found disconnected actors! "
+                        + "Usually, disconnected actors in an SDF model "
+                        + "indicates an error.  If this is not an error, try "
+                        + "setting the SDFDirector parameter "
+                        + "allowDisconnectedGraphs to true.\n"
+                        + "Reached Actors:\n");
+            List reachedActorList = new LinkedList();
+            reachedActorList.addAll(actorList);
+            reachedActorList.removeAll(remainingActors);
+            for (Iterator actors = reachedActorList.iterator();
+                 actors.hasNext();) {
+                Entity entity = (Entity)actors.next();
+                messageBuffer.append(entity.getFullName() + "\n");
+            }
+            messageBuffer.append("Unreached Actors:\n");
+            Iterator unreachedActors = remainingActors.iterator();
+            while (unreachedActors.hasNext()) {
+                NamedObj unreachedActor = (NamedObj)(unreachedActors.next());
+                messageBuffer.append(unreachedActor.getFullName() + " ");
+            }
+            throw new NotSchedulableException(messageBuffer.toString());
+        }
+        return firings;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -839,7 +1007,7 @@ public class SDFScheduler extends Scheduler {
             while (connectedPorts.hasNext()) {
                 IOPort connectedPort = (IOPort) connectedPorts.next();
 
-                // connectPort might be connected on the inside to the
+                // connectedPort might be connected on the inside to the
                 // currentPort, which is legal.  The container argument
                 // is always the container of the director, so any port
                 // that has that container must be connected on the inside.
@@ -1064,7 +1232,7 @@ public class SDFScheduler extends Scheduler {
      *  that port during the course of an iteration.
      *  @param actorList The actors that need to be scheduled.
      *  @param allActorList All the actors, including those that do
-     *  not need to be scheduled.  These actors will still me
+     *  not need to be scheduled.  These actors will still be
      *  initialized, which means we must take their initial tokens
      *  into account when calculating buffer sizes.
      *  @return An instance of the Schedule class, indicating the order
@@ -1143,7 +1311,6 @@ public class SDFScheduler extends Scheduler {
                 }
                 waitingTokens.put(outputPort, tokenCount);
             }
-
 
             // simulate the creation of initialization tokens (delays).
             for (Iterator actors = allActorList.iterator();
@@ -1818,7 +1985,7 @@ public class SDFScheduler extends Scheduler {
                     // transparent hierarchy... just ignore.
                     continue;
                 }
-
+                
                 if (_debugging && VERBOSE) {
                     _debug("destination receivers for relation "
                             + relation.getName() + " channel "
@@ -1894,173 +2061,7 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    /** Solve the balance equations for the list of connected Actors.
-     *  For each actor, determine the ratio that determines the rate at
-     *  which it should fire relative to the other actors for the graph to
-     *  be live and operate within bounded memory.   This ratio is known as the
-     *  fractional firing of the actor.
-     *
-     *  @param container The container that is being scheduled.
-     *  @param actorList The actors that we are interested in.
-     *  @param externalRates A map from external ports of container to
-     *  the fractional rates of that port.  This starts out initialized with
-     *  Fraction.ZERO and will be populated during this method.
-     *  @return A map from each actor to its fractional
-     *  firing.
-     *  @exception NotSchedulableException If the graph is not consistent
-     *  under the synchronous dataflow model, or if the graph is not connected.
-     *  @exception IllegalActionException If any called method throws it.
-     */
-    private Map _solveBalanceEquations(CompositeActor container,
-            List actorList, Map externalRates)
-            throws NotSchedulableException, IllegalActionException {
 
-        // The map that we will return.
-        // This will be populated with the fraction firing ratios for
-        // each actor.
-        Map firings = new TreeMap(new NamedObjComparator());
-
-        // The pool of Actors that have not been
-        // touched yet. (i.e. all their firings are still set to Fraction
-        // equal to -1/1)
-        LinkedList remainingActors = new LinkedList();
-
-        // The pool of actors that have their firings set,
-        // but have not had their ports explored yet.
-        LinkedList pendingActors = new LinkedList();
-
-        // Initialize remainingActors to contain all the actors we were given .
-        remainingActors.addAll(actorList);
-
-        // Initialize firings for each actor to -1.
-        for (Iterator actors = remainingActors.iterator();
-             actors.hasNext();) {
-            ComponentEntity entity = (ComponentEntity) actors.next();
-            firings.put(entity, _minusOne);
-        }
-
-        if (remainingActors.size() == 0) {
-            // If we've been given
-            // no actors to do anything with, return an empty Map.
-            return firings;
-        }
-
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector)getContainer();
-
-        boolean allowDisconnectedGraphs = false;
-        if (director instanceof SDFDirector) {
-            Token token =
-                ((SDFDirector)director).allowDisconnectedGraphs.getToken();
-            allowDisconnectedGraphs = ((BooleanToken)token).booleanValue();
-        }
-
-        if (allowDisconnectedGraphs) {
-            // Ned Stoffel's change to support disconnected graphs:
-
-            // Finally, the schedule can jump from one island to
-            // another among the disconnected graphs. There is nothing
-            // to force the scheduler to finish executing all actors
-            // on one island before firing actors on another
-            // island. However, the order of execution within an
-            // island should be correct.
-
-            while (!remainingActors.isEmpty()) {
-                ComponentEntity actor =
-                    _pickZeroRatePortActor(remainingActors);
-                if (actor == null) {
-                    actor = (ComponentEntity)remainingActors.removeFirst();
-                } else {
-                    remainingActors.remove(actor);
-                }
-
-                firings.put(actor, new Fraction(1));
-                pendingActors.addLast(actor);
-
-                while (!pendingActors.isEmpty()) {
-                    Actor currentActor = (Actor) pendingActors.removeFirst();
-                    Iterator AllPorts =
-                        ((ComponentEntity) currentActor).portList().iterator();
-                    while (AllPorts.hasNext()) {
-                        IOPort currentPort = (IOPort) AllPorts.next();
-                        _propagatePort(container, currentPort, firings,
-                                externalRates, remainingActors, pendingActors);
-                    }
-                }
-            }
-            return firings;
-        }
-
-        // Pick an actor as a reference
-        // Should pick the reference actor to be one
-        // that contains 0-valued ports, if there exists one.
-        ComponentEntity actor = _pickZeroRatePortActor(remainingActors);
-        if (actor == null) {
-            // We did not find an actor with any 0-rate ports,
-            // so just pick a reference actor arbitrarily.
-            actor = (ComponentEntity)remainingActors.removeFirst();
-        } else {
-            // We found an actor with at least one 0-rate port.
-            remainingActors.remove(actor);
-        }
-        // Set it's rate to one per iteration
-        firings.put(actor, new Fraction(1));
-        // Start the list to recurse over.
-        pendingActors.addLast(actor);
-
-        // Loop until we run out of actors that have not been
-        // propagated.
-        while (!pendingActors.isEmpty()) {
-            if (_debugging && VERBOSE) {
-                _debug("pendingActors: ");
-                _debug(pendingActors.toString());
-            }
-            // Get the next actor to recurse over
-            Actor currentActor = (Actor) pendingActors.removeFirst();
-            if (_debugging && VERBOSE) {
-                _debug("Balancing from " +
-                        ((ComponentEntity) currentActor).getName());
-            }
-
-            // Traverse all the input and output ports, setting the firings
-            // for the actor(s)???? connected to each port relative
-            // to currentActor.
-            Iterator AllPorts =
-                ((ComponentEntity) currentActor).portList().iterator();
-            while (AllPorts.hasNext()) {
-                IOPort currentPort = (IOPort) AllPorts.next();
-                _propagatePort(container, currentPort, firings, externalRates,
-                        remainingActors, pendingActors);
-            }
-        }
-        if (!remainingActors.isEmpty()) {
-            // If there are any actors left that we didn't get to, then
-            // this is not a connected graph, and we throw an exception.
-            StringBuffer messageBuffer =
-                new StringBuffer("SDF scheduler found disconnected actors! "
-                        + "Usually, disconnected actors in an SDF model "
-                        + "indicates an error.  If this is not an error, try "
-                        + "setting the SDFDirector parameter "
-                        + "allowDisconnectedGraphs to true.\n"
-                        + "Reached Actors:\n");
-            List reachedActorList = new LinkedList();
-            reachedActorList.addAll(actorList);
-            reachedActorList.removeAll(remainingActors);
-            for (Iterator actors = reachedActorList.iterator();
-                 actors.hasNext();) {
-                Entity entity = (Entity)actors.next();
-                messageBuffer.append(entity.getFullName() + "\n");
-            }
-            messageBuffer.append("Unreached Actors:\n");
-            Iterator unreachedActors = remainingActors.iterator();
-            while (unreachedActors.hasNext()) {
-                NamedObj unreachedActor = (NamedObj)(unreachedActors.next());
-                messageBuffer.append(unreachedActor.getFullName() + " ");
-            }
-            throw new NotSchedulableException(messageBuffer.toString());
-        }
-        return firings;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private classes                   ////
