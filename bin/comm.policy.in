@@ -1,0 +1,33 @@
+// $PTII/bin/comm.policy 
+// @version: $Id$
+//
+// This file is used by vergil -sandbox to run in a secure sandbox that
+// permits access to the serial port.
+
+// Currently this will only work under Windows
+
+// In theory, you can use policytool, which is shipped with the JDK
+// to edit this file.  However, if you do use policytool, then
+// any comments will be lost.	
+
+grant {
+  // Connect to any host on port 80 so that we can download models.
+  permission java.net.SocketPermission "*:80", "connect";
+
+  // Needed by File.getCanonicalPath(), which is called by
+  // MoMLApplication.specToURL()
+  permission java.util.PropertyPermission "user.dir", "read";
+
+  // These permissions are used under Windows to allow access to the
+  // serial port.
+  permission java.util.PropertyPermission "javax.comm.properties", "read";
+  permission java.util.PropertyPermission "java.home", "read";
+  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/javax.comm.properties", "read";
+  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/javax.comm.properties", "delete";
+  permission java.lang.RuntimePermission "loadLibrary.win32com";
+  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/ext/x86/win32com.dll", "read";
+  permission java.io.FilePermission "@PTJAVA_DIR@/jre/lib/ext/win32com.dll", "read";
+};
+
+
+

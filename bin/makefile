@@ -81,6 +81,7 @@ EXTRA_SRCS = \
 	policy.all \
 	ptinvoke.in \
 	sandbox.policy \
+	comm.policy.in \
 	startjini \
 	mkjnlp
 
