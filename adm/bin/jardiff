@@ -13,8 +13,11 @@
 # make install
 # $PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/actor/lib/lib.jar" "$PTII/ptolemy/actor/lib/lib.jar"
 
-#or 
-#$PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/ptsupport.jar" "$PTII/ptolemy/ptsupport.jar"
+# or 
+# $PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/ptsupport.jar" "$PTII/ptolemy/ptsupport.jar"
+
+# or
+# $PTII/adm/bin/jardiff /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0/ptII1.0/ptolemy/ptsupport.jar $PTII/ptolemy/ptsupport.jar
 
 if [ $# -ne 2 ]; then
     echo "$0: Wrong number of arguments, got $#, expected 2"
