@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -95,39 +95,35 @@ This class is a non-modal dialog for configuring the ports of an entity.
 @since Ptolemy II 1.0
 */
 public class PortConfigurerDialog
-    extends PtolemyDialog
-    implements ChangeListener {
+        extends
+            PtolemyDialog implements ChangeListener {
 
-    /** Construct a dialog that presents the ports as a table.
-     *  Each row of the table corresponds to one port. The user modifies the
-     *  table to specify changes in the ports. When the apply button is pressed
-     *  the contents of the table is used to update the ports. When Commit is
-     *  pressed an apply is done before exiting.
-     *  <p>
-     *  This dialog is is not modal. In particular, changes can be undone by
-     *  clicking Edit->Undo, and the help screen can be manipulated while this
-     *  dialog exists. The dialog is placed relative to the owner.
-     *  @param owner The object that, per the user, appears to be
-     *   generating the dialog.
-     *  @param target The object whose ports are being configured.
-     *  @param configuration The configuration to use to open the
-     *   help screen (or null if help is not supported).
+    /**
+     * Construct a dialog that presents the ports as a table. Each row of the
+     * table corresponds to one port. The user modifies the table to specify
+     * changes in the ports. When the apply button is pressed the contents of
+     * the table is used to update the ports. When Commit is pressed an apply
+     * is done before exiting.
+     * <p>
+     * This dialog is is not modal. In particular, changes can be undone by
+     * clicking Edit->Undo, and the help screen can be manipulated while this
+     * dialog exists. The dialog is placed relative to the owner.
+     *
+     * @param owner
+     *            The object that, per the user, appears to be generating the
+     *            dialog.
+     * @param target
+     *            The object whose ports are being configured.
+     * @param configuration
+     *            The configuration to use to open the help screen (or null if
+     *            help is not supported).
      */
-    public PortConfigurerDialog(
-        DialogTableau tableau,
-        Frame owner,
-        Entity target,
-        Configuration configuration) {
-        super(
-            "Configure ports for " + target.getName(),
-            tableau,
-            owner,
-            target,
-            configuration);
-
+    public PortConfigurerDialog(DialogTableau tableau, Frame owner,
+            Entity target, Configuration configuration) {
+        super("Configure ports for " + target.getName(), tableau, owner,
+                target, configuration);
         // Listen for changes that may need to be reflected in the table.
         getTarget().addChangeListener(this);
-
         // Create the JComboBox that used to select the location of the port
         _portLocationComboBox = new JComboBox();
         _portLocationComboBox.addItem("DEFAULT");
@@ -135,32 +131,28 @@ public class PortConfigurerDialog
         _portLocationComboBox.addItem("EAST");
         _portLocationComboBox.addItem("SOUTH");
         _portLocationComboBox.addItem("WEST");
-
         _portTable = new JTable();
         _portTable.setPreferredScrollableViewportSize(new Dimension(600, 70));
-
         // Listen for selections on the table. There can only be one row
         // selected. When a row is selected, the Remove button will show the
         // port name associated with the row.
         ListSelectionModel rowSM = _portTable.getSelectionModel();
         rowSM.addListSelectionListener(_rowSelectionListener);
-
         // Create the TableModel and set certain cell editors and renderers
         _setupTableModel();
         _initColumnSizes();
-
         setContents(_portTable);
-
         // The following sets up a listener for mouse clicks on the header cell
         // of the Show Name column. A click causes the values in this column to
         // all change.
         _jth = _portTable.getTableHeader();
         _jth.addMouseListener(new MouseAdapter() {
+
             public void mouseClicked(MouseEvent me) {
-                Rectangle headerShowNameRect =
-                    _jth.getHeaderRect(PortTableModel.COL_SHOW_NAME);
-                Rectangle headerHidePortRect =
-                    _jth.getHeaderRect(PortTableModel.COL_HIDE);
+                Rectangle headerShowNameRect = _jth
+                        .getHeaderRect(PortTableModel.COL_SHOW_NAME);
+                Rectangle headerHidePortRect = _jth
+                        .getHeaderRect(PortTableModel.COL_HIDE);
                 if (headerShowNameRect.contains(me.getPoint())) {
                     _portTableModel.toggleShowAllNames();
                 }
@@ -169,13 +161,13 @@ public class PortConfigurerDialog
                 }
             }
         });
-
         pack();
         setVisible(true);
     }
-
     // The table model for the table.
-    class PortTableModel extends AbstractTableModel {
+    class PortTableModel
+            extends
+                AbstractTableModel {
 
         // Populates the _ports Vector. Each element of _ports represents
         // a TypedIOPort on the Entity that is having its ports configured.
@@ -183,7 +175,6 @@ public class PortConfigurerDialog
         // methods in this class that need to materialize an element of the
         // _ports Vector use the variable Object portInfo[7].
         public PortTableModel(List portList) {
-
             Iterator ports = portList.iterator();
             int index = 0;
             _ports = new Vector();
@@ -195,59 +186,55 @@ public class PortConfigurerDialog
                     portInfo[COL_NAME] = port.getName();
                     portInfo[COL_INPUT] = Boolean.valueOf(port.isInput());
                     portInfo[COL_OUTPUT] = Boolean.valueOf(port.isOutput());
-                    portInfo[COL_MULTIPORT] =
-                        Boolean.valueOf(port.isMultiport());
-                    TypeAttribute _type =
-                        (TypeAttribute) (port.getAttribute("_type"));
+                    portInfo[COL_MULTIPORT] = Boolean.valueOf(port
+                            .isMultiport());
+                    TypeAttribute _type = (TypeAttribute) (port
+                            .getAttribute("_type"));
                     if (_type != null) {
                         portInfo[COL_TYPE] = _type.getExpression();
                     } else {
                         portInfo[COL_TYPE] = "unknown";
                     }
                     String _direction;
-                    StringAttribute _cardinal =
-                        (StringAttribute) (port.getAttribute("_cardinal"));
+                    StringAttribute _cardinal = (StringAttribute) (port
+                            .getAttribute("_cardinal"));
                     if (_cardinal != null) {
                         _direction = _cardinal.getExpression().toUpperCase();
                     } else {
                         _direction = "DEFAULT";
                     }
                     portInfo[COL_DIRECTION] = _direction;
-
-                    Attribute _show =
-                        (Attribute) (port.getAttribute("_showName"));
+                    Attribute _show = (Attribute) (port
+                            .getAttribute("_showName"));
                     if (_show == null) {
                         portInfo[COL_SHOW_NAME] = Boolean.FALSE;
                     } else {
                         portInfo[COL_SHOW_NAME] = Boolean.TRUE;
                     }
-
                     Attribute hide = (Attribute) (port.getAttribute("_hide"));
                     if (hide == null) {
                         portInfo[COL_HIDE] = Boolean.FALSE;
                     } else {
                         portInfo[COL_HIDE] = Boolean.TRUE;
                     }
-
                     String _units = "";
-                    UnitAttribute _unitsAttribute =
-                        (UnitAttribute) port.getAttribute("_units");
+                    UnitAttribute _unitsAttribute = (UnitAttribute) port
+                            .getAttribute("_units");
                     if (_unitsAttribute != null) {
                         _units = _unitsAttribute.getExpression();
                     }
                     portInfo[COL_UNITS] = _units;
-
                     portInfo[COL_ACTUAL_PORT] = port;
-
                     _ports.add(portInfo);
                 }
             }
         }
 
-        /** Add a port
-        *  The new port gets added with a name of <NewPort>. It is assumed that
-        *  the user will change this to the real name at some point.
-        */
+        /**
+         * Add a port The new port gets added with a name of <NewPort>. It is
+         * assumed that the user will change this to the real name at some
+         * point.
+         */
         public void addNewPort() {
             Object portInfo[] = new Object[getColumnCount() + 1];
             portInfo[COL_NAME] = "";
@@ -265,38 +252,48 @@ public class PortConfigurerDialog
             fireTableRowsInserted(getRowCount(), getRowCount());
         }
 
-        /** Removes a port.
+        /**
+         * Removes a port.
          *
          */
         public void removePort() {
-            // First remove it from the _ports, and then tell the GUI that it is
+            // First remove it from the _ports, and then tell the GUI that it
+            // is
             // gone so that it can update itself.
             _ports.remove(_selectedRow);
             fireTableRowsDeleted(_selectedRow, _selectedRow);
         }
 
-        /** Get the number of columns.
+        /**
+         * Get the number of columns.
+         *
          * @see javax.swing.table.TableModel#getColumnCount()
          */
         public int getColumnCount() {
             return _columnNames.length;
         }
 
-        /** Get the number of rows.
+        /**
+         * Get the number of rows.
+         *
          * @see javax.swing.table.TableModel#getRowCount()
          */
         public int getRowCount() {
             return _ports.size();
         }
 
-        /** Get the column header
+        /**
+         * Get the column header
+         *
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
         public String getColumnName(int col) {
             return _columnNames[col];
         }
 
-        /** Get the value at a particular row and column
+        /**
+         * Get the value at a particular row and column
+         *
          * @param row
          * @param col
          * @see javax.swing.table.TableModel#getValueAt(int, int)
@@ -306,7 +303,9 @@ public class PortConfigurerDialog
             return portInfo[col];
         }
 
-        /** Set the value at a particular row and column
+        /**
+         * Set the value at a particular row and column
+         *
          * @param row
          * @param col
          * @return value
@@ -319,8 +318,9 @@ public class PortConfigurerDialog
             _setDirty(true);
         }
 
-        /** Get the Java Class associated with a column
-         * param column
+        /**
+         * Get the Java Class associated with a column param column
+         *
          * @return class
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
@@ -328,7 +328,9 @@ public class PortConfigurerDialog
             return getValueAt(0, c).getClass();
         }
 
-        /** Is a cell editable
+        /**
+         * Is a cell editable
+         *
          * @param row
          * @param col
          * @return editable
@@ -342,11 +344,9 @@ public class PortConfigurerDialog
             Object portInfo[] = (Object[]) (_ports.elementAt(row));
             Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
             if (port != null
-                && port.isClassElement()
-                && (col == COL_NAME
-                    || col == COL_INPUT
-                    || col == COL_OUTPUT
-                    || col == COL_MULTIPORT)) {
+                    && port.isClassElement()
+                    && (col == COL_NAME || col == COL_INPUT
+                            || col == COL_OUTPUT || col == COL_MULTIPORT)) {
                 return false;
             }
             return true;
@@ -367,7 +367,6 @@ public class PortConfigurerDialog
                 setValueAt(_hide, i, COL_HIDE);
             }
         }
-
         // The columns of portInfo[].
         public final static int COL_NAME = 0;
         public final static int COL_INPUT = 1;
@@ -379,23 +378,18 @@ public class PortConfigurerDialog
         public final static int COL_HIDE = 7;
         public final static int COL_UNITS = 8;
         public final static int COL_ACTUAL_PORT = 9;
-
     }
-
     class PortBooleanCellRenderer
-        extends JCheckBox
-        implements TableCellRenderer {
+            extends
+                JCheckBox implements TableCellRenderer {
 
         public PortBooleanCellRenderer() {
             super();
         }
-        public Component getTableCellRendererComponent(
-            JTable table,
-            Object value,
-            boolean isSelected,
-            boolean hasFocus,
-            int row,
-            int col) {
+
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row,
+                int col) {
             if (value == Boolean.TRUE) {
                 setSelected(true);
             } else {
@@ -409,19 +403,17 @@ public class PortConfigurerDialog
             return this;
         }
     }
-
-    class StringCellRenderer extends JLabel implements TableCellRenderer {
+    class StringCellRenderer
+            extends
+                JLabel implements TableCellRenderer {
 
         public StringCellRenderer() {
             super();
         }
-        public Component getTableCellRendererComponent(
-            JTable table,
-            Object value,
-            boolean isSelected,
-            boolean hasFocus,
-            int row,
-            int col) {
+
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row,
+                int col) {
             setOpaque(true);
             setText((String) value);
             if (!table.isCellEditable(row, col))
@@ -431,10 +423,9 @@ public class PortConfigurerDialog
             return this;
         }
     }
-
     class PortStringCellEditor
-        extends AbstractCellEditor
-        implements TableCellEditor, ActionListener {
+            extends
+                AbstractCellEditor implements TableCellEditor, ActionListener {
 
         Popup popup;
         String currentLabel;
@@ -451,12 +442,8 @@ public class PortConfigurerDialog
             return currentLabel;
         }
 
-        public Component getTableCellEditorComponent(
-            JTable table,
-            Object value,
-            boolean isSelected,
-            int row,
-            int col) {
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected, int row, int col) {
             _jTable = table;
             currentLabel = (String) value;
             button.setText(currentLabel);
@@ -496,10 +483,12 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Notify the listener that a change has been successfully executed.
-     *  @param change The change that has been executed.
+    //// public methods ////
+    /**
+     * Notify the listener that a change has been successfully executed.
+     *
+     * @param change
+     *            The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is the originator or if this is a change
@@ -514,10 +503,14 @@ public class PortConfigurerDialog
         _setupTableModel();
     }
 
-    /** Notify the listener that a change has resulted in an exception.
-    *  @param change The change that was attempted.
-    *  @param exception The exception that resulted.
-    */
+    /**
+     * Notify the listener that a change has resulted in an exception.
+     *
+     * @param change
+     *            The change that was attempted.
+     * @param exception
+     *            The exception that resulted.
+     */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // TODO Determine best way to handle failed change request. This method
         // _should_ never be invoked if the source is this. For now, at least,
@@ -531,9 +524,7 @@ public class PortConfigurerDialog
 
     public boolean close() {
         if (_isDirty()) {
-            int option =
-                JOptionPane.showConfirmDialog(
-                    getOwner(),
+            int option = JOptionPane.showConfirmDialog(getOwner(),
                     "Save port modifications on " + getTarget().getFullName(),
                     "Unsaved Port Modifications",
                     JOptionPane.YES_NO_CANCEL_OPTION);
@@ -557,9 +548,9 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** apply any changes that may have been made in the table.
+    //// protected methods ////
+    /**
+     * apply any changes that may have been made in the table.
      *
      */
     protected void _apply() {
@@ -569,41 +560,33 @@ public class PortConfigurerDialog
         // them here.
         String portNameInTable[] = new String[_portTableModel.getRowCount()];
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
-            portNameInTable[i] =
-                (String) (_portTableModel
-                    .getValueAt(i, PortTableModel.COL_NAME));
+            portNameInTable[i] = (String) (_portTableModel.getValueAt(i,
+                    PortTableModel.COL_NAME));
         }
-
         //  Do some basic checks on table for things that are obviously
         // incorrect. First, make sure all the new ports have names other than
         // the empty string.
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             if (portNameInTable[i].equals("")) {
-                JOptionPane.showMessageDialog(
-                    this,
-                    "All Ports need to have a name");
+                JOptionPane.showMessageDialog(this,
+                        "All Ports need to have a name");
                 return;
             }
         }
-
         //  Now, make sure all port names are unique
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             for (int j = i + 1; j < _portTableModel.getRowCount(); j++) {
                 if (portNameInTable[i].equals(portNameInTable[j])) {
-                    JOptionPane.showMessageDialog(
-                        this,
-                        portNameInTable[i]
+                    JOptionPane.showMessageDialog(this, portNameInTable[i]
                             + " is a duplicate port name.\n"
                             + "Please remove all but one");
                     return;
                 }
             }
         }
-
         //   Determine which ports have been removed. If a port exists on the
         //   target but is not represented by a row in the table then it needs
         //   to be removed.
-
         Vector portsToBeRemoved = new Vector();
         portIterator = getTarget().portList().iterator();
         actualPort = null;
@@ -614,9 +597,8 @@ public class PortConfigurerDialog
                 actualPort = ((TypedIOPort) candidate);
                 for (int i = 0; i < _ports.size(); i++) {
                     Object portInfo[] = (Object[]) (_ports.elementAt(i));
-                    if (actualPort
-                        == ((TypedIOPort) portInfo[PortTableModel
-                            .COL_ACTUAL_PORT])) {
+                    if (actualPort == ((TypedIOPort) portInfo[PortTableModel
+                                             .COL_ACTUAL_PORT])) {
                         foundPort = true;
                         break;
                     }
@@ -626,7 +608,6 @@ public class PortConfigurerDialog
                 }
             }
         }
-
         Iterator actualPorts = portsToBeRemoved.iterator();
         while (actualPorts.hasNext()) {
             StringBuffer moml = new StringBuffer();
@@ -635,41 +616,32 @@ public class PortConfigurerDialog
             // container above this port in the hierarchy
             // that defers its MoML definition, or the
             // immediate parent if there is none.
-
             NamedObj container = (NamedObj) actualPort.getContainer();
             NamedObj composite = (NamedObj) container.getContainer();
             if (composite != null) {
-                moml.append(
-                    "<deletePort name=\""
-                        + actualPort.getName()
-                        + "\" entity=\""
-                        + container.getName()
-                        + "\" />");
+                moml.append("<deletePort name=\"" + actualPort.getName()
+                        + "\" entity=\"" + container.getName() + "\" />");
             } else {
-                moml.append(
-                    "<deletePort name=\""
-                        + actualPort.getName(container)
-                        + "\" />");
+                moml.append("<deletePort name=\""
+                        + actualPort.getName(container) + "\" />");
             }
             // NOTE: the context is the composite entity containing
             // the entity if possible
             MoMLChangeRequest request = null;
             if (composite != null) {
-                request =
-                    new MoMLChangeRequest(this, composite, moml.toString());
-
+                request = new MoMLChangeRequest(this, composite, moml
+                        .toString());
             } else {
-                request =
-                    new MoMLChangeRequest(this, container, moml.toString());
+                request = new MoMLChangeRequest(this, container, moml
+                        .toString());
             }
             request.setUndoable(true);
             container.addChangeListener(this);
             if (_debug)
-                System.out.println(
-                    "RequestChange on " + container.toString() + " " + moml);
+                System.out.println("RequestChange on " + container.toString()
+                        + " " + moml);
             container.requestChange(request);
         }
-
         //   Iterate over the table rows that represent ports. If a row
         // corresponds to an actual port then look to see if that row is
         // different from the actual port. If it is, then update that actual
@@ -679,107 +651,96 @@ public class PortConfigurerDialog
         boolean haveSomeUpdate = false;
         for (int i = 0; i < _ports.size(); i++) {
             Object portInfo[] = (Object[]) (_ports.elementAt(i));
-
             portIterator = getTarget().portList().iterator();
-            // actualPort will be the TypedIOPort found on the _target, if there
+            // actualPort will be the TypedIOPort found on the _target, if
+            // there
             // is one.
             actualPort =
                 (TypedIOPort) (portInfo[PortTableModel.COL_ACTUAL_PORT]);
-
             boolean updates[] = new boolean[_portTableModel.getColumnCount()];
-
             if (actualPort != null) {
-                // actualPort is a TypeIOPort found on the _target. Check to see
+                // actualPort is a TypeIOPort found on the _target. Check to
+                // see
                 // if the actualPort is different and needs to be updated.
                 for (int updateNum = 0; updateNum < 7; updateNum++) {
                     updates[updateNum] = false;
                 }
                 boolean havePortUpdate = false;
-
-                if (!(actualPort
-                    .getName()
-                    .equals((String) (portInfo[PortTableModel.COL_NAME])))) {
+                if (!(actualPort.getName()
+                       .equals((String) (portInfo[PortTableModel.COL_NAME])))) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_NAME] = true;
                 }
-
-                if (actualPort.isInput()
-                    != (((Boolean) (portInfo[PortTableModel.COL_INPUT]))
+                if (actualPort.isInput() !=
+                    (((Boolean) (portInfo[PortTableModel.COL_INPUT]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_INPUT] = true;
                 }
-
-                if (actualPort.isOutput()
-                    != (((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
+                if (actualPort.isOutput() !=
+                    (((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_OUTPUT] = true;
                 }
-
-                if (actualPort.isMultiport()
-                    != (((Boolean) (portInfo[PortTableModel.COL_MULTIPORT]))
+                if (actualPort.isMultiport() !=
+                    (((Boolean) (portInfo[PortTableModel.COL_MULTIPORT]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_MULTIPORT] = true;
                 }
-
-                Attribute _show =
-                    (Attribute) (actualPort.getAttribute("_showName"));
-                if ((_show == null)
-                    == (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
+                Attribute _show = (Attribute) (actualPort
+                        .getAttribute("_showName"));
+                if ((_show == null) ==
+                    (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_SHOW_NAME] = true;
                 }
-
                 Attribute hide = actualPort.getAttribute("_hide");
-                if ((hide == null)
-                    == (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
+                if ((hide == null) ==
+                    (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_HIDE] = true;
                 }
-
                 String Type = "unknown";
-                TypeAttribute _type =
-                    (TypeAttribute) (actualPort.getAttribute("_type"));
+                TypeAttribute _type = (TypeAttribute) (actualPort
+                        .getAttribute("_type"));
                 if (_type != null) {
                     Type = _type.getExpression();
                 }
                 if (!((String) (portInfo[PortTableModel.COL_TYPE]))
-                    .equals(Type)) {
+                        .equals(Type)) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_TYPE] = true;
                 }
-
                 // Look for a change in direction
                 String _direction = null;
                 String direction =
                     (String) (portInfo[PortTableModel.COL_DIRECTION]);
-                StringAttribute _cardinal =
-                    (StringAttribute) (actualPort.getAttribute("_cardinal"));
+                StringAttribute _cardinal = (StringAttribute) (actualPort
+                        .getAttribute("_cardinal"));
                 if (_cardinal != null)
                     _direction = _cardinal.getExpression().toUpperCase();
                 if (((_direction == null) && !direction.equals("DEFAULT"))
-                    || ((_direction != null)
-                        && (!direction.equals(_direction)))) {
+                        || ((_direction != null) && (!direction
+                                .equals(_direction)))) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_DIRECTION] = true;
                 }
-
                 String _units = null;
-                UnitAttribute _unitsAttribute =
-                    (UnitAttribute) actualPort.getAttribute("_units");
+                UnitAttribute _unitsAttribute = (UnitAttribute) actualPort
+                        .getAttribute("_units");
                 if (_unitsAttribute != null) {
                     _units = _unitsAttribute.getExpression();
                 }
-                if ((_units == null
-                    && (!((String) (portInfo[PortTableModel.COL_UNITS]))
+                if ((_units == null &&
+                        (!((String) (portInfo[PortTableModel.COL_UNITS]))
                         .equals("")))
-                    || ((_units != null)
-                        && (!((String) (portInfo[PortTableModel.COL_UNITS]))
-                            .equals(_units)))) {
+                        || ((_units != null) &&
+                               (!((String) (portInfo[PortTableModel.COL_UNITS]))
+                                .equals(_units)))) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_UNITS] = true;
                 }
@@ -793,10 +754,10 @@ public class PortConfigurerDialog
                         _createMoMLUpdate(
                             updates,
                             portInfo,
-                            (String) (((TypedIOPort) (portInfo[PortTableModel
-                                .COL_ACTUAL_PORT]))
-                                .getName()),
-                            (String) (portInfo[PortTableModel.COL_NAME])));
+                           (String) (((TypedIOPort) (portInfo[PortTableModel.
+                               COL_ACTUAL_PORT]))
+                               .getName()),
+                           (String) (portInfo[PortTableModel.COL_NAME])));
                     haveSomeUpdate = true;
                 }
             } else {
@@ -819,28 +780,23 @@ public class PortConfigurerDialog
                 } else {
                     updates[PortTableModel.COL_DIRECTION] = false;
                 }
-                moml.append(
-                    _createMoMLUpdate(
-                        updates,
-                        portInfo,
-                        (String) (portInfo[PortTableModel.COL_NAME]),
-                        null));
+                moml.append(_createMoMLUpdate(updates, portInfo,
+                        (String) (portInfo[PortTableModel.COL_NAME]), null));
                 haveSomeUpdate = true;
             }
         }
-
         if (haveSomeUpdate) {
             moml.append("</group>");
             if (_debug)
-                System.out.println(
-                    "RequestChange on " + getTarget().toString() + " " + moml);
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, getTarget(), moml.toString(), null);
+                System.out.println("RequestChange on " + getTarget().toString()
+                        + " " + moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    getTarget(), moml.toString(), null);
             request.setUndoable(true);
             // NOTE: There is no need to listen for completion
             // or errors in this change request, since, in theory,
-            // it will just work.  Will someone report the error
-            // if one occurs?  I hope so...
+            // it will just work. Will someone report the error
+            // if one occurs? I hope so...
             getTarget().requestChange(request);
             _populateActualPorts();
         }
@@ -862,12 +818,11 @@ public class PortConfigurerDialog
     }
 
     // The button semantics are
-    // Add    - Add a new port.
+    // Add - Add a new port.
     protected void _processButtonPress(String button) {
         if (button.equals("Add")) {
             _portTableModel.addNewPort();
-        } else if (
-            (button.length() > 5)
+        } else if ((button.length() > 5)
                 && (button.substring(0, 6).equals("Remove"))) {
             _portTableModel.removePort();
         } else {
@@ -876,123 +831,97 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
-
+    //// private methods ////
     // Create the MoML expression that represents the update.
-    private String _createMoMLUpdate(
-        boolean updates[],
-        Object portInfo[],
-        String currentPortName,
-        String newPortName) {
-        StringBuffer momlUpdate =
-            new StringBuffer("<port name=\"" + currentPortName + "\">");
+    private String _createMoMLUpdate(boolean updates[], Object portInfo[],
+            String currentPortName, String newPortName) {
+        StringBuffer momlUpdate = new StringBuffer("<port name=\""
+                + currentPortName + "\">");
         if (updates[PortTableModel.COL_NAME]) {
             momlUpdate.append("<rename name=\"" + newPortName + "\"/>");
         }
-
         if (updates[PortTableModel.COL_INPUT]) {
             if (((Boolean) (portInfo[PortTableModel.COL_INPUT]))
-                .booleanValue()) {
+                           .booleanValue()) {
                 momlUpdate.append("<property name=\"input\"/>");
             } else {
                 momlUpdate.append("<property name=\"input\" value=\"false\"/>");
             }
         }
-
         if (updates[PortTableModel.COL_OUTPUT]) {
             if (((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
-                .booleanValue()) {
+                    .booleanValue()) {
                 momlUpdate.append("<property name=\"output\"/>");
             } else {
-                momlUpdate.append(
-                    "<property name=\"output\" value=\"false\"/>");
+                momlUpdate
+                        .append("<property name=\"output\" value=\"false\"/>");
             }
         }
-
         if (updates[PortTableModel.COL_MULTIPORT]) {
             if (((Boolean) (portInfo[PortTableModel.COL_MULTIPORT]))
-                .booleanValue()) {
+                    .booleanValue()) {
                 momlUpdate.append("<property name=\"multiport\"/>");
             } else {
-                momlUpdate.append(
-                    "<property name=\"multiport\" value=\"false\"/>");
+                momlUpdate
+                      .append("<property name=\"multiport\" value=\"false\"/>");
             }
         }
-
         if (updates[PortTableModel.COL_TYPE]) {
             String type = (String) (portInfo[PortTableModel.COL_TYPE]);
-            momlUpdate.append(
-                "<property name=\"_type\" "
-                    + "class = \"ptolemy.actor.TypeAttribute\" "
-                    + "value = \""
-                    + StringUtilities.escapeForXML(type)
-                    + "\"/>");
+            momlUpdate.append("<property name=\"_type\" "
+                    + "class = \"ptolemy.actor.TypeAttribute\" " + "value = \""
+                    + StringUtilities.escapeForXML(type) + "\"/>");
         }
-
         if (updates[PortTableModel.COL_DIRECTION]) {
             String direction =
                 ((String) (portInfo[PortTableModel.COL_DIRECTION]));
             if (direction.equals("DEFAULT")) {
                 momlUpdate.append("<deleteProperty name=\"_cardinal\" />");
             } else {
-                momlUpdate.append(
-                    "<property name=\"_cardinal\" "
+                momlUpdate.append("<property name=\"_cardinal\" "
                         + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                        + "value = \""
-                        + direction
-                        + "\"/>");
+                        + "value = \"" + direction + "\"/>");
             }
         }
-
         if (updates[PortTableModel.COL_SHOW_NAME]) {
             if (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
-                .booleanValue()) {
-                momlUpdate.append(
-                    "<property name=\"_showName\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    .booleanValue()) {
+                momlUpdate.append("<property name=\"_showName\""
+                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
             } else {
                 momlUpdate.append("<deleteProperty name=\"_showName\" />");
             }
         }
         if (updates[PortTableModel.COL_HIDE]) {
             if (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
-                .booleanValue()) {
-                momlUpdate.append(
-                    "<property name=\"_hide\" class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                                .booleanValue()) {
+                momlUpdate
+                    .append("<property name=\"_hide\""
+                       + " class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
             } else {
                 momlUpdate.append("<deleteProperty name=\"_hide\" />");
             }
         }
         if (_units && updates[PortTableModel.COL_UNITS]) {
-            momlUpdate.append(
-                "<property name=\"_units\" "
+            momlUpdate.append("<property name=\"_units\" "
                     + "class = \"ptolemy.data.unit.UnitAttribute\" "
                     + "value = \""
-                    + ((String) (portInfo[PortTableModel.COL_UNITS]))
-                    + "\"/>");
+                    + ((String) (portInfo[PortTableModel.COL_UNITS])) + "\"/>");
         }
-
         momlUpdate.append("</port>");
         return momlUpdate.toString();
     }
-
-    private final static String[] _columnNames =
-        {
-            "Name",
-            "Input",
-            "Output",
-            "Multiport",
-            "Type",
-            "Direction",
-            "Show Name",
-            "Hide",
-            "Units" };
-
+    private final static String[] _columnNames = {"Name", "Input", "Output",
+            "Multiport", "Type", "Direction", "Show Name", "Hide", "Units"};
     // The Listener that is sensitive to selection changes in the table.
     // When a row is selected change the label in the Remove button to
     // show that the associated port is the one that will be removed when
     // the Remove button is pressed.
     private ListSelectionListener _rowSelectionListener =
-        new ListSelectionListener() {
+                         new ListSelectionListener() {
+
+        ///////////////////////////////////////////////////////////////////
+        //// inner class ////
         public void valueChanged(ListSelectionEvent e) {
             if (e.getValueIsAdjusting())
                 return;
@@ -1004,8 +933,8 @@ public class PortConfigurerDialog
                 _selectedRow = -1;
             } else {
                 _selectedRow = lsm.getMinSelectionIndex();
-                String portName =
-                    ((String) ((Object[]) (_ports.elementAt(_selectedRow)))[0]);
+                String portName = ((String) ((Object[]) (_ports
+                        .elementAt(_selectedRow)))[0]);
                 if (portName.length() < 10) {
                     portName += "          ";
                     portName = portName.substring(0, 9);
@@ -1020,22 +949,22 @@ public class PortConfigurerDialog
 
     private void _initColumnSizes() {
         TableColumn column = null;
-        column =
-            _portTable.getColumnModel().getColumn(PortTableModel.COL_INPUT);
+        column = _portTable.getColumnModel()
+                .getColumn(PortTableModel.COL_INPUT);
         column.setPreferredWidth(30);
-        column =
-            _portTable.getColumnModel().getColumn(PortTableModel.COL_OUTPUT);
+        column = _portTable.getColumnModel().getColumn(
+                PortTableModel.COL_OUTPUT);
         column.setPreferredWidth(30);
-        column =
-            _portTable.getColumnModel().getColumn(PortTableModel.COL_MULTIPORT);
+        column = _portTable.getColumnModel().getColumn(
+                PortTableModel.COL_MULTIPORT);
         column.setPreferredWidth(40);
         column = _portTable.getColumnModel().getColumn(PortTableModel.COL_TYPE);
         column.setPreferredWidth(50);
-        column =
-            _portTable.getColumnModel().getColumn(PortTableModel.COL_DIRECTION);
+        column = _portTable.getColumnModel().getColumn(
+                PortTableModel.COL_DIRECTION);
         column.setPreferredWidth(50);
-        column =
-            _portTable.getColumnModel().getColumn(PortTableModel.COL_SHOW_NAME);
+        column = _portTable.getColumnModel().getColumn(
+                PortTableModel.COL_SHOW_NAME);
         column.setPreferredWidth(70);
         column = _portTable.getColumnModel().getColumn(PortTableModel.COL_HIDE);
         column.setPreferredWidth(30);
@@ -1072,24 +1001,17 @@ public class PortConfigurerDialog
     private void _setupTableModel() {
         _portTableModel = new PortTableModel(getTarget().portList());
         _portTable.setModel(_portTableModel);
-        _portTable.setDefaultRenderer(
-            Boolean.class,
-            new PortBooleanCellRenderer());
+        _portTable.setDefaultRenderer(Boolean.class,
+                new PortBooleanCellRenderer());
         _portTable.setDefaultRenderer(String.class, new StringCellRenderer());
         _portTable.setDefaultEditor(String.class, new PortStringCellEditor());
         _enableApplyButton(false);
-
-        TableColumn _portLocationColumn =
-            ((TableColumn) (_portTable
-                .getColumnModel()
-                .getColumn(PortTableModel.COL_DIRECTION)));
-        _portLocationColumn.setCellEditor(
-            new DefaultCellEditor(_portLocationComboBox));
-
-        TableColumn _portTypeColumn =
-            ((TableColumn) (_portTable
-                .getColumnModel()
-                .getColumn(PortTableModel.COL_TYPE)));
+        TableColumn _portLocationColumn = ((TableColumn) (_portTable
+                .getColumnModel().getColumn(PortTableModel.COL_DIRECTION)));
+        _portLocationColumn.setCellEditor(new DefaultCellEditor(
+                _portLocationComboBox));
+        TableColumn _portTypeColumn = ((TableColumn) (_portTable
+                .getColumnModel().getColumn(PortTableModel.COL_TYPE)));
         final PortStringCellEditor portTypeEditor = new PortStringCellEditor();
         _portTypeColumn.setCellEditor(portTypeEditor);
         portTypeEditor.addCellEditorListener(new CellEditorListener() {
@@ -1102,7 +1024,6 @@ public class PortConfigurerDialog
                 // TODO Auto-generated method stub
             }
         });
-
         TableColumn _portUnitColumn = ((TableColumn) (_portTable
                 .getColumnModel().getColumn(PortTableModel.COL_UNITS)));
         final PortStringCellEditor portUnitEditor = new PortStringCellEditor();
@@ -1124,24 +1045,21 @@ public class PortConfigurerDialog
             }
         });
     }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
+    //// private variables ////
     private boolean _hideAllPorts = false;
     // Following is true if we have full units capability.
     private boolean _units = true;
-
     // The combination box used to select the location of a port.
     private JComboBox _portLocationComboBox;
     JTable _portTable;
     // Port TableModel
     PortTableModel _portTableModel = null;
     JTableHeader _jth;
-    // Each element of _ports is a row in the table that PortTableModel is based
+    // Each element of _ports is a row in the table that PortTableModel is
+    // based
     // on.
     Vector _ports = null;
-
     private int _selectedRow = -1;
     private boolean _showAllNames = false;
     // The various buttons.
