@@ -68,7 +68,9 @@ JSRCS = \
 	WaitingTime.java
 
 OTHER_FILES_TO_BE_JARED = \
-	deentities.xml
+	deentities.xml \
+	TimedDelayIcon.xml \
+	VariableDelayIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
