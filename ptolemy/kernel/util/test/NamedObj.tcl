@@ -34,7 +34,7 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source [file join $TYCHO kernel test testDefs.tcl]
+    source testDefs.tcl
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
