@@ -92,6 +92,20 @@ public class TimedQueueReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                        public variables                   ////
+
+    // This time value indicates that the receiver is no longer active.
+    public static final double INACTIVE = -2.0;
+
+    // This time value indicates that the receiver contents should
+    // be ignored.
+    public static final double IGNORE = -1.0;
+
+    // This time value indicates that the receiver has not begun
+    // activity.
+    public static final double NOTSTARTED = -5.0;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Take the the oldest token off of the queue and return it.
@@ -99,7 +113,9 @@ public class TimedQueueReceiver {
      *  other tokens left on the queue after this removal, then set
      *  the receiver time of this receiver to equal that of the next 
      *  oldest token. Update the TimeKeeper that manages this 
-     *  TimedQueueReceiver.
+     *  TimedQueueReceiver. If there are any receivers in the 
+     *  TimeKeeper with receiver times of TimedQueueReceiver.IGNORE,
+     *  remove the first token from these receivers.
      * @exception NoTokenException If the queue is empty.
      */
     public Token get() {
@@ -114,7 +130,8 @@ public class TimedQueueReceiver {
             }
 	    token = event.getToken();
 	    if( thread instanceof DDEThread ) {
-	        TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+	        TimeKeeper timeKeeper = 
+		        ((DDEThread)thread).getTimeKeeper();
 	        timeKeeper.setCurrentTime( event.getTime() );
 	    }
 
@@ -123,11 +140,19 @@ public class TimedQueueReceiver {
 	        _rcvrTime = nextEvent.getTime();
             }
 
-	    // Call updateRcvrList() even if _queue.size()==0, so that
-	    // the triple is no longer in front.
+	    // Call updateRcvrList() even if _queue.size()==0,
+	    // so that the triple is no longer in front.
 	    if( thread instanceof DDEThread ) {
-		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	        timeKeeper.updateRcvrList(this);
+		TimeKeeper timeKeeper = 
+		        ((DDEThread)thread).getTimeKeeper();
+
+		if( !timeKeeper.searchingForIgnoredTokens() ) {
+		    timeKeeper.setSearchForIgnoredTokens( true );
+		    timeKeeper.updateIgnoredReceivers();
+		}
+		if( !timeKeeper.searchingForIgnoredTokens() ) {
+	            timeKeeper.updateRcvrList(this);
+		}
 	    }
 	}
         return token;
@@ -203,8 +228,10 @@ public class TimedQueueReceiver {
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
+	    /*
 	    System.out.println("Time in the past: " + time + 
 			       "\t_lastTime:" + _lastTime);
+	    */
 	    IOPort port = (IOPort)getContainer(); 
 	    NamedObj actor = (NamedObj)port.getContainer(); 
 	    // Note: Maintain the following IllegalArgumentException
@@ -266,18 +293,19 @@ public class TimedQueueReceiver {
         _priority = priority;
     }
 
+    /** Set the receiver time of this receiver to the specified 
+     *  value. If this queue is not empty, then the receiver 
+     *  time will not be set to the specified value.
+     * @param time The new rcvr time.
+     */
+    synchronized void setRcvrTime(double time) {
+	if( !hasToken() ) {
+            _rcvrTime = time;
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // This time value indicates that the receiver is no longer active.
-    public static final double INACTIVE = -2.0;
-
-    // This time value indicates that the receiver contents should
-    // be ignored.
-    public static final double IGNORE = -1.0;
-
-    // This time value indicates that the receiver is no longer active.
-    protected static double NOTSTARTED = -5.0;
 
     // The time stamp of the newest token to be placed in the queue.
     private double _lastTime = 0.0;
@@ -296,15 +324,6 @@ public class TimedQueueReceiver {
 
     // The IOPort which contains this receiver.
     private IOPort _container;
-
-    // The thread controlling the actor that contains this receiver.
-    private DDEThread _controllingThread;
-
-    // The time keeper for the actor that receives through this receiver.
-    private TimeKeeper _rcvingTimeKeeper;
-
-    // The time keeper for the actor that sends through this receiver.
-    private TimeKeeper _sendingTimeKeeper;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
