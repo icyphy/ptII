@@ -150,12 +150,32 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throws IllegalActionException {
     }
 
+    /** Return the buffer size of a given port, which is the maximum of
+     *  the bufferSizes of each channel of the given port.
+     *  @param port The given port.
+     *  @return The buffer size of the given port.
+     *  @exception IllegalActionException If the getBufferSize(IOPort, int)
+     *   method throws it.
+     */
+    public int getBufferSize(IOPort port) 
+            throws IllegalActionException {
+        int bufferSize = 1;
+        for (int i = 0; i < port.getWidth(); i ++) {
+            int channelBufferSize = getBufferSize(port, i);
+            if (channelBufferSize > bufferSize) {
+                bufferSize = channelBufferSize;
+            }
+        }
+        return bufferSize;
+    }
+
     /** Get the buffer size of the given port of this actor.
      *  @param port The given port.
      *  @return The buffer size of the given port of this actor.
      */
-    public int getBufferSize(IOPort port) {
-        return ((Integer) _bufferSizes.get(port)).intValue();
+    public int getBufferSize(IOPort port, int channelNumber) {
+        Channel channel = getChannel(port, channelNumber);
+        return ((Integer) _bufferSizes.get(channel)).intValue();
     }
 
     /** Get the channel object in the channel hashmap given the port
@@ -267,7 +287,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     channelNumber = new Integer(channelAndOffset[0]).intValue();
                 }
                 //Channel channel = getChannel(port, channelNumber);
-                if (!channelAndOffset[1].equals("") && getBufferSize(port) > 1) {
+                if (!channelAndOffset[1].equals("")
+                            && getBufferSize(port) > 1) {
                     //int temp = _firingCount * DFUtilities.getRate(port);
                     //String offset = channelAndOffset[1] + " + " + temp;
                     //String temp = getOffset(port) + " + " + channelAndOffset[1];
@@ -277,13 +298,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 .intValue();
                         offset = offset
                                 + (new Integer(channelAndOffset[1])).intValue();
-                        offset = offset % getBufferSize(port);
+                        offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
                         temp = (String) getOffset(port, channelNumber);
                         temp = "(" + temp
                             + (new Integer(channelAndOffset[1])).intValue()
-                            + ")%" + getBufferSize(port); 
+                            + ")%" + getBufferSize(port, channelNumber); 
                     }
                     result.append("[" + temp + "]");
                 } else if (getBufferSize(port) > 1) {
@@ -293,11 +314,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     if (getOffset(port, channelNumber) instanceof Integer) {
                         int offset = ((Integer) getOffset(port, channelNumber))
                                 .intValue();
-                        offset = offset % getBufferSize(port);
+                        offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
                         temp = (String) getOffset(port, channelNumber);
-                        temp = temp + "%" + getBufferSize(port);
+                        temp = temp + "%" + getBufferSize(port, channelNumber);
                     }
                     result.append("[" + temp + "]");
                 }
@@ -322,54 +343,59 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 String[] channelAndOffset = _getChannelAndOffset(name);
                 
                 List sinkChannels = new LinkedList();
-                if (channelAndOffset[0].equals("")) {
-                    sinkChannels = getSinkChannels(port, 0);
-                } else {
-                    int channelNumber
+                int channelNumber = 0;
+                if (!channelAndOffset[0].equals("")) {
+                    channelNumber
                             = (new Integer(channelAndOffset[0])).intValue();
-                    sinkChannels = getSinkChannels(port, channelNumber);
                 }
+                sinkChannels = getSinkChannels(port, channelNumber);
                 for (int i = 0; i < sinkChannels.size(); i ++) {
                     Channel channel = (Channel) sinkChannels.get(i);
                     IOPort sinkPort = (IOPort) channel.port;
-                    int channelNumber = channel.channelNumber;
+                    int sinkChannelNumber = channel.channelNumber;
                     if (i != 0) {
                         result.append(" = ");
                     }
                     result.append(sinkPort.getFullName().replace('.', '_'));
                     if (sinkPort.isMultiport()) {
-                        result.append("[" + channelNumber + "]");
+                        result.append("[" + sinkChannelNumber + "]");
                     }
                     
-                    if (!channelAndOffset[1].equals("") && getBufferSize(port) > 1) {
+                    if (!channelAndOffset[1].equals("")
+                            && getBufferSize(port, channelNumber) > 1) {
                         // FIXME: This is a hack. It is using the offset of the
-                        // output port (channel 0) to substitute the offsets of
+                        // output port to substitute the offsets of
                         // its downstream input ports.
+                        // FIXME: It is also using the buffer size of the output
+                        // port to substitute the buffer sizes of the sink input
+                        // ports, which is not correct.
+                        // For those buffer sizes increased to more than 1, set
+                        // an attribute on the sink port so we can create an extra dimension.
                         //String temp = getOffset(port) + " + " + channelAndOffset[1];
                         // Specified offset.
                         String temp = "";
                         if (getOffset(port, 0) instanceof Integer) {
                             int offset = ((Integer)(getOffset(port, 0))).intValue() 
                                 + (new Integer(channelAndOffset[1])).intValue();
-                            offset = offset % getBufferSize(port);
+                            offset = offset % getBufferSize(port, channelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             temp = "(" + (String) getOffset(port, 0)
                                 + (new Integer(channelAndOffset[1])).intValue()
-                                + ")%" + getBufferSize(port);
+                                + ")%" + getBufferSize(port, channelNumber);
                         }
                         result.append("[" + temp + "]");
-                    } else if (getBufferSize(port) > 1) {
+                    } else if (getBufferSize(port, channelNumber) > 1) {
                         // Did not specify offset, so the receiver buffer size is 1.
                         // This is multiple firing.
                         String temp = "";
                         if (getOffset(port, 0) instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0)).intValue();
-                            offset = offset % getBufferSize(port);
+                            offset = offset % getBufferSize(port, channelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             temp = (String) getOffset(port, 0) + "%"
-                                    + getBufferSize(port);
+                                    + getBufferSize(port, channelNumber);
                         }
                         result.append("[" + temp + "]");
                     }
@@ -617,8 +643,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param port The given port.
      *  @param bufferSize The buffer size to be set to that port.
      */
-    public void setBufferSize(IOPort port, int bufferSize) {
-        _bufferSizes.put(port, new Integer(bufferSize));
+    public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
+        Channel channel = getChannel(port, channelNumber);
+        _bufferSizes.put(channel, new Integer(bufferSize));
     }
 
     /** Set the offset in a buffer of a given channel to which a token should

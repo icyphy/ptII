@@ -104,21 +104,24 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            ComponentCodeGenerator helperObject = _getHelper((NamedObj)actor);
-            // Set the buffer sizes and offsets of each port of the actor.
+            CodeGeneratorHelper helperObject 
+                    = (CodeGeneratorHelper) _getHelper((NamedObj)actor);
+            code.append(helperObject.generateInitializeCode());
+            // Set the buffer sizes of each port of the actor.
             Set inputAndOutputPortsSet = new HashSet();
             inputAndOutputPortsSet.addAll(actor.inputPortList());
             inputAndOutputPortsSet.addAll(actor.outputPortList());
             Iterator inputAndOutputPorts = inputAndOutputPortsSet.iterator();
             while (inputAndOutputPorts.hasNext()) {
                 IOPort port = (IOPort) inputAndOutputPorts.next();
-                int bufferSize = getBufferSize(port);
-                ((CodeGeneratorHelper) helperObject)
-                        .setBufferSize(port, bufferSize);
+                for (int i = 0; i < port.getWidth(); i ++) {
+                    int bufferSize = getBufferSize(port, i);
+                    helperObject.setBufferSize(port, i, bufferSize);
+                }
             }
 
             //((CodeGeneratorHelper)helperObject).resetOffsets();
-            code.append(helperObject.generateInitializeCode());
+            //code.append(helperObject.generateInitializeCode());
         }
         return code.toString();
     }
