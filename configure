@@ -1092,18 +1092,18 @@ fi
 #--------------------------------------------------------------------
 
 # We only need to look for kvm if $PTII/ptolemy/kvm exists
-JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/CarTracking"
+JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/jspaces/CarTracking"
 JINI_VERSION=jini1_0_1
 JINI_PRESENT=no
 # PTJSPACES_DIR is set to jspaces and used in 
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
-    echo "$ac_t""$JINI_USER_DIR is not present, so we need not
-find Jini" 1>&6
+    echo "$ac_t""$JINI_USER_DIR
+  is not present, so we need not find Jini" 1>&6
     # We don't use JINI_VERSION here so that we don't expand PTII
     # in the makefile	
-    JINI_DIR='$(PTII)/vendors/sun/jini/jini1_0_1'
+    JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
 else
     echo $ac_n "checking for jini directory""... $ac_c" 1>&6
 echo "configure:1110: checking for jini directory" >&5
@@ -1122,7 +1122,7 @@ fi
 	# Subdirectory that contains Java spaces specific code
 	PTJSPACES_DIR=jspaces
     else    
-	JINI_DIR='$(PTII)'/vendors/sun/$JINI_VERSION
+	JINI_DIR='$PTII'/vendors/sun/jini/$JINI_VERSION
     fi    
     if test "$JINI_PRESENT" = "no"; then
         echo "configure: warning: 'Failed to find $JINI_DIR/lib/jini-core.jar
