@@ -46,3 +46,16 @@ include $(CONFIG)
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/tydir.mk
+
+# Glimpse is a tool that prepares an index of a directory tree.
+# glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
+GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
+glimpse: .glimpse_exclude
+	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
+	rm -f glimpse_exclude
+	cp .glimpse_exclude glimpse_exclude
+	rm -f .glimpse*
+	cp  glimpse_exclude .glimpse_exclude
+	$(GLIMPSEINDEX) -H `pwd` `pwd`
+	chmod a+r .glimpse_*
+	rm -f glimpse_exclude
