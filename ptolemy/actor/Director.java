@@ -199,6 +199,11 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    /** Adds a new Mutation Listener to the list of listeners to be informed
+     *  about any mutation that occurs in the graph for which this director
+     *  is responsible
+     * @param listener is the new MutationListener
+     */
     public void addMutationListener(MutationListener listener) {
         synchronized(workspace()) {
             if (_mutationListeners == null) {
@@ -208,12 +213,23 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    /** This removes the Mutation listener that does not want to be informed
+     *  of any future mutations by this director. This does not do anything 
+     *  if the listener was not listed with this director
+     * @param listener is the MutationListener to be removed
+     */
     public void removeMutationListener(MutationListener listener) {
         synchronized(workspace()) {
             _mutationListeners.removeOneOf(listener);
         }
     }
 
+    /** This adds a mutation object to the director queue. These mutations
+     *  are finally incorporated when the processPendingMutations() is called
+     * @param mutation The new Mutation objects that contains a list of 
+     *  mutations that should be executed later
+     * @see-also processPendingMutations()
+     */
     public void queueMutation(Mutation mutation) {
         synchronized(workspace()) {
             if (_pendingMutations == null) {
@@ -223,6 +239,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
+    /** This does all the mutations and informs the listeners of the mutations
+     */
     public final void processPendingMutations() {
         synchronized(workspace()) {
             Mutation m;
