@@ -48,7 +48,7 @@ PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
+JSRCS = DEActor.java \
 	DECQEventQueue.java \
 	DEDirector.java \
 	DEEvent.java \
