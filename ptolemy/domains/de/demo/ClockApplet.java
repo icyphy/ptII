@@ -54,11 +54,12 @@ public class ClockApplet extends Applet {
      */	
     public void init() {
         // The applet has two panels, stacked vertically
+        setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        add(appletPanel);
+        add(appletPanel, "Center");
 
         _plot = new Plot();
-        _plot.setSize(new Dimension(450, 200));
+        _plot.setSize(new Dimension(450, 150));
         _plot.setTitle("DE Demo");
         _plot.setButtons(true);
         _plot.addLegend(0, "Bus arrivals");
@@ -66,7 +67,7 @@ public class ClockApplet extends Applet {
         _plot.addLegend(2, "Waiting time");
 
         Panel controlPanel = new Panel();
-        add(controlPanel);
+        add(controlPanel, "West");
 
         controlPanel.add(_stopTimeBox);
         _stopTimeBox.addActionListener(new StopTimeListener());
@@ -134,7 +135,7 @@ public class ClockApplet extends Applet {
         public void actionPerformed(ActionEvent evt) {
             try {
                 _localDirector.setStopTime(_stopTime);
-                _executiveDirector.run();
+                _executiveDirector.go();
             } catch (Exception ex) {
                 System.err.println("Run failed: " + ex.getMessage());
                 ex.printStackTrace();
