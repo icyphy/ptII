@@ -98,18 +98,38 @@ building, and hence doesn't require the following nightmare.</p>
         <ul>
           <li> If you are running Windows XP or Windows 2000, you can either:
             <ul>
-              
-              <li> Download the
+              <li> Download winavr
+   	       <ol> 
+	       <li>Go to 
+	       <a href="http://winavr.sourceforge.net/" target="_top"><code>http://winavr.sourceforge.net/</code></a>              
+	       <li>Click on "Package"
+	       <li>Download the latest release
+	       <br> The link should be at the top of the page 
+	       and have a name like "WinAVR 20040404"
+	       <li>Install Winavr in any directory 
+	       <i>Directories with spaces in the pathname might not work?</i>
+               </ol>
+
+              <li> <b>Or</b>
+              <br>Download the
 	       <a href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tinyos/windows/tinyos-1.1.0-1is.exe">TinyOS Installshield Wizard</a>.
 	      Run the wizard, and choose
-              "Custom" install.  Install only the AVR tools.  <b>Do
+              "Custom" install.  Install only the AVR tools.  
+	      <br><b>Do
               not choose the "cygwin" install option (it will overwrite
               and corrupt your current cygwin installation) or the
               "TinyOS" install option (you will install this later from
-              CVS as a separate step).</b> This will install all of
-              the above rpms for you.
+              CVS as a separate step).</b>
+	      <br>This will install all of the rpms below for you
 
-              <li> Or you can download the rpms separately from
+              <li> <b>Or</b>
+	      <br><b>If your Cygwin is installed so your 'Default Text
+	      File Type' is Unix, you can use these rpms</b>
+	      <br><b>Note</b>: If you select 'Default Text File Type' of 
+	      Unix instead of DOS, then you will likely have
+	      <a href="http://www.gigascale.org/softdevel/faq/23.html">Cygwin CR/NL problems</a> with CVS.
+	      <br>So, if your 'Default Text File Type' is Unix,
+	      you can download the rpms separately from
 	      <a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/" target="_top">here</a>.  More convenient links are included here:
                 <ul>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm</a>
