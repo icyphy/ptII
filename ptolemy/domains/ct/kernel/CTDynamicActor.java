@@ -41,14 +41,14 @@ Typically, integrators, analog filters, and anything that can be written
 as<BR>
 dx/dt = f(x, u, t)<BR>
 y=g(x, u, t)<BR>
-are dynamic actors. 
+are dynamic actors.
 <P>
 There is one method defined in this interface, which is
 emitTentativeOutput(). The tentative output is the output of the actor
-after each iteration (but before the states are updated). They are 
+after each iteration (but before the states are updated). They are
 emitted for exciting the event generating and the output schedule.
 The tentative output is the output if the current integration step is
-acceptable. It may not be the "real" output, if there is an "missed" event 
+acceptable. It may not be the "real" output, if there is an "missed" event
 reported by some event detectors.
 @author Jie Liu
 @version $Id$

@@ -83,7 +83,7 @@ public class CTPeriodicSampler extends CTActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
-    
+
     /** The single input port with type double.
      */
     public TypedIOPort input;
@@ -92,7 +92,7 @@ public class CTPeriodicSampler extends CTActor
      */
     public TypedIOPort output;
 
-    /** The parameter for the sampling period; the type is double; the 
+    /** The parameter for the sampling period; the type is double; the
      *  default value is 1.0.
      */
     public Parameter SamplePeriod;
@@ -102,7 +102,7 @@ public class CTPeriodicSampler extends CTActor
     ////                         public methods                         ////
 
 
-    /** Emit the current event, which has the token of the latest input 
+    /** Emit the current event, which has the token of the latest input
      *  token.
      */
     public void emitCurrentEvents() {
@@ -117,7 +117,7 @@ public class CTPeriodicSampler extends CTActor
                 throw new InternalErrorException("Token mismatch.");
             }
         }
-    } 
+    }
 
     /** If the current time is the event time, set the flag indicating
      *  that there is a current event.
@@ -151,8 +151,8 @@ public class CTPeriodicSampler extends CTActor
     }
 
     /** Return true always. If the current time is greater than the next
-     *  sampling time, increase the next sample time until it is 
-     *  greater than the current time. Request a director refire at the 
+     *  sampling time, increase the next sample time until it is
+     *  greater than the current time. Request a director refire at the
      *  next sampling time.
      *  @return True always.
      *  @exception IllegalActionException If parameter update throws it.
@@ -161,7 +161,7 @@ public class CTPeriodicSampler extends CTActor
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         boolean hasjump = false;
-        while (_nextSamplingTime < 
+        while (_nextSamplingTime <
                 (dir.getCurrentTime()-dir.getTimeResolution())) {
             hasjump = true;
             _nextSamplingTime += _samplePeriod;

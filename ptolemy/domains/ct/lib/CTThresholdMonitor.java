@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -38,10 +38,10 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTThresholdMonitor
-/** 
+/**
 Monitor integration steps so that the threshold is not crossed in one step.
 This actor has one input port, but no output port. If functionality is
-solely devoted to controlling the integration step size. It has two 
+solely devoted to controlling the integration step size. It has two
 parameters "ThresholdWidth" and "ThresholdCenter", which have default
 value 1e-2 and 0, respectively.
 @author  Jie Liu
@@ -49,8 +49,8 @@ value 1e-2 and 0, respectively.
 */
 //FIXME: need to use the new parameter mechanism.
 
-public class CTThresholdMonitor extends CTActor 
-    implements CTStepSizeControlActor{ 
+public class CTThresholdMonitor extends CTActor
+    implements CTStepSizeControlActor{
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -71,13 +71,13 @@ public class CTThresholdMonitor extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setTypeEquals(DoubleToken.class);
-        
+
         _thWidth = (double)1e-2;
-        ThresholdWidth = new Parameter(this, "ThresholdWidth", 
+        ThresholdWidth = new Parameter(this, "ThresholdWidth",
                 new DoubleToken(_thWidth));
 
         _thCenter = (double)0.0;
-        ThresholdCenter = new Parameter(this, "ThresholdCenter", 
+        ThresholdCenter = new Parameter(this, "ThresholdCenter",
                 new DoubleToken(_thCenter));
 
         _lowerBound = -5e-3;
@@ -94,9 +94,9 @@ public class CTThresholdMonitor extends CTActor
     /** The parameter for the width of the threshold.
      */
     public Parameter ThresholdWidth;
-    
+
     /** The parameter for the center of the threshold.
-     */ 
+     */
     public  Parameter ThresholdCenter;
 
     ///////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public class CTThresholdMonitor extends CTActor
 
     /** Setup the internal variables so that there is no history.
      *  @exception IllegalActionException If thrown by the super class.
-     */	
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _first = true;
@@ -145,7 +145,7 @@ public class CTThresholdMonitor extends CTActor
         return true;
     }
 
-    /** Return java.lang.Double.MAX_VALUE, since this actor does not predict 
+    /** Return java.lang.Double.MAX_VALUE, since this actor does not predict
      *  step sizes.
      *  @return java.lang.Double.MAX_VALUE.
      */
@@ -154,7 +154,7 @@ public class CTThresholdMonitor extends CTActor
     }
 
     /** Return half the current step size if the step is not successful.
-     *  Otherwise, return the current step size. 
+     *  Otherwise, return the current step size.
      *  @return Half the current step size if the step is not successful.
      */
     public double refinedStepSize() {
@@ -167,7 +167,7 @@ public class CTThresholdMonitor extends CTActor
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException If there is no token in the 
+     *  @exception IllegalActionException If there is no token in the
      *  parameter.
      */
     public void updateParameters() throws IllegalActionException {
@@ -202,7 +202,7 @@ public class CTThresholdMonitor extends CTActor
 
     // last input token value
     private double _lastInput;
-    
+
     // this input token value.
     private double _thisInput;
 }

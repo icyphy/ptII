@@ -49,11 +49,11 @@ breakpoints), the history information is useless for further calculation.
 For ODE solvers that depends on history points, it is essential to switch
 to use low order implicit method
 with minimum step size to rebuild the history points. For input signals
-that contains Dirac impulses, it is also essential to switch to the 
+that contains Dirac impulses, it is also essential to switch to the
 impulse backward Euler solver to deal with them.
 <P>
 This class has one additional parameters than the CTSingleSolverDirector,
-which is "breakpointODESolver". The value of the 
+which is "breakpointODESolver". The value of the
 parameter is a String that specifies the full class name of ODE solvers.
 The default "ODESolver" is ExplicitRK23Solver. The default
 "breakpointODESolver" is the BackwardEulerSolver.
@@ -133,7 +133,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
 
     /** This does the initialization for the entire subsystem. This
      *  is called exactly once at the start of the entire execution.
-     *  It checks if it container and its scheduler is correct. 
+     *  It checks if it container and its scheduler is correct.
      *  Otherwise throw an exception. It then calls _initialize()
      *  method to initialize parameters and times.
      *
@@ -177,7 +177,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     /** clear obsolete breakpoints, switch to breakpointODESolver if this
      *  is the first fire after a breakpoint, and adjust step sizes
      *  accordingly.
-     *  @exception IllegalActionException If breakpoint solver is not 
+     *  @exception IllegalActionException If breakpoint solver is not
      *     illegal.
      */
     protected void _processBreakpoints() throws IllegalActionException  {
@@ -199,7 +199,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                     breakPoints.removeFirst();
                     _setCurrentODESolver(_breakpointSolver);
                     setCurrentStepSize(getMinStepSize());
-                    _debug(getFullName() + 
+                    _debug(getFullName() +
                             "IN BREAKPOINT iteration.");
                     _setIsBPIteration(true);
                     break;
@@ -225,13 +225,13 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             CTScheduler sched = (CTScheduler)getScheduler();
             Enumeration sscs = sched.stateTransitionSSCActors();
             while (sscs.hasMoreElements()) {
-                CTStepSizeControlActor a = 
+                CTStepSizeControlActor a =
                     (CTStepSizeControlActor) sscs.nextElement();
                 predictedstep = Math.min(predictedstep, a.predictedStepSize());
             }
             sscs = sched.outputSSCActors();
             while (sscs.hasMoreElements()) {
-                CTStepSizeControlActor a = 
+                CTStepSizeControlActor a =
                     (CTStepSizeControlActor) sscs.nextElement();
                 predictedstep = Math.min(predictedstep, a.predictedStepSize());
             }
@@ -240,7 +240,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             return getInitialStepSize();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -257,5 +257,5 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     private String _breakpointsolverclass;
     // The default solver.
     private ODESolver _breakpointSolver = null;
-   
+
 }

@@ -159,7 +159,7 @@ public class CTSquareWave extends CTActor {
         _debug(getFullName() + " updates parameters..");
         _maxValue = ((DoubleToken)MaxValue.getToken()).doubleValue();
         _minValue = ((DoubleToken)MinValue.getToken()).doubleValue();
-        
+
         double f  = ((DoubleToken)Frequency.getToken()).doubleValue();
         if(f < 0) {
             throw new IllegalActionException (this,

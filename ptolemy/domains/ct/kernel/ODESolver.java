@@ -35,11 +35,11 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
 /**
-Abstract base class for ODE solvers. The key method for the class is 
+Abstract base class for ODE solvers. The key method for the class is
 resolveState(), which executes the integration method for one
 step. This method does not consider any breakpoint affect. In general,
-resolveState() will resolve the integrators' new states. 
-Step size control (including error control) is performed by the 
+resolveState() will resolve the integrators' new states.
+Step size control (including error control) is performed by the
 director, but solvers may provide support for it.
 How the states are resolved and how the errors are controlled are
 solver dependent.  Derived classes
@@ -49,7 +49,7 @@ solving algorithm.
 The behavior of the integrators also changes
 when changing ODE solver, so this class provides the some methods
 for the integrators too, including the fire() method, and the step size
-control related methods. CTBaseIntegrator delegated its corresponding 
+control related methods. CTBaseIntegrator delegated its corresponding
 methods to this class.
 <P>
 An integer called "round" is used to indicate the number of firing rounds
@@ -130,7 +130,7 @@ public abstract class ODESolver extends NamedObj {
     /** Abstract method returns the number of auxiliary variable number
      *  needed by the
      *  integrators when solving the ODE.
-     *  @return The number of auxiliary variables 
+     *  @return The number of auxiliary variables
      */
     public abstract int getIntegratorAuxVariableCount();
 
@@ -143,7 +143,7 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** The isThisStepSuccessful() method of the integrator is delegated to 
+    /** The isThisStepSuccessful() method of the integrator is delegated to
      *  this method.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.

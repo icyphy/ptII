@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
@@ -39,12 +39,12 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTTestValueSink
-/** 
+/**
 A sink actor that test its last consumed token value with its parameter
 "Value" value (default value 1.0).
-If they are equal within a given threshold (1e-1), then 
+If they are equal within a given threshold (1e-1), then
 the test is considered successful, i.e. the isSuccessful() method returns
-true. Otherwise, the method returns false. 
+true. Otherwise, the method returns false.
 @author  Jie Liu
 @version $Id$
 
@@ -53,7 +53,7 @@ public class CTTestValueSink extends TypedAtomicActor {
     /** Constructor
      *  @param container The container.
      *  @param name The name.
-     */	
+     */
     public CTTestValueSink(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -72,7 +72,7 @@ public class CTTestValueSink extends TypedAtomicActor {
     /** The single-input port.
      */
     public TypedIOPort input;
-    
+
     /** Parameter for the value to be tested.
      */
     public Parameter testValue;
@@ -109,11 +109,11 @@ public class CTTestValueSink extends TypedAtomicActor {
         }
         return true;
     }
-    
+
     /** Wrapup. Compare the last token with 1.0. For correct integration,
      *  the last token should be very close to it.
      *  We take 1e-10 as the value resolution.
-     *  
+     *
      */
     public void wrapup() {
         _debug(getName() + " wrapping up.");

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -101,11 +101,11 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
             throw new IllegalActionException(this, "Has no container.");
         }
         if (!(ca instanceof CTCompositeActor)) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
                     "must be the director of a CTCompositeActor.");
         }
         if (ca.getExecutiveDirector() == null) {
-            throw new IllegalActionException(this, 
+            throw new IllegalActionException(this,
             "Can not be top-level director.");
         }
         CTScheduler sch = (CTScheduler)getScheduler();
@@ -128,7 +128,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     /** fire
      */
     public void fire() throws IllegalActionException {
-       
+
         _eventPhaseExecution();
         _prefireSystem();
         ODESolver solver = getCurrentODESolver();
@@ -136,28 +136,28 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
             _stateAcceptable = false;
             //_debug(getFullName() + "resolve state failed.");
         }
-        
+
         _debug(getFullName() + " current time after" +
                     " solver.resolveStates() is " + getCurrentTime());
         //setCurrentTime(getIterEndTime());
         produceOutput();
     }
     /** Return true if this is an embedded director and the current fire
-     *  is successful. The success is determined by asking all the 
-     *  step size control actors in the output schedule. If this is a 
+     *  is successful. The success is determined by asking all the
+     *  step size control actors in the output schedule. If this is a
      *  top level director, then return true always.
      *  @return True if the current step is successful.
      */
     public boolean isThisStepSuccessful() {
         try {
             if (!_isStateAcceptable()) {
-                //_debug(getFullName() + 
-                //        " current step not successful because of STATE."); 
+                //_debug(getFullName() +
+                //        " current step not successful because of STATE.");
                 _stateAcceptable = false;
                 return false;
             } else if(!_isOutputAcceptable()) {
-                //_debug(getFullName() + 
-                //        " current step not successful because of OUTPUT."); 
+                //_debug(getFullName() +
+                //        " current step not successful because of OUTPUT.");
                 _outputAcceptable = false;
                 return false;
             } else {
@@ -166,7 +166,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                 return true;
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException ( 
+            throw new InternalErrorException (
                     "Nothing to schedule with out make schedule invalid." +
                     ex.getMessage());
         }
@@ -175,7 +175,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     /** If this is a top-level director, returns true if the current time
      *  is less than the stop time, otherwise, return true always.
      *  If this is a top-level director, and the current time is greater
-     *  than the stop time, an InvalidStateException is thrown. 
+     *  than the stop time, an InvalidStateException is thrown.
      *  @return True if this is not a top-level director, or the simulation
      *     is not finished.
      *  @exception IllegalActionException Never thrown.
@@ -193,7 +193,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                     bp = ((Double)breakPoints.first()).doubleValue();
                     if(bp < getCurrentTime() + getTimeResolution()) {
                         breakPoints.removeFirst();
-                    } else { 
+                    } else {
                         // break point in the future, register to the outside.
                         CompositeActor ca = (CompositeActor)getContainer();
                         Director exe = ca.getExecutiveDirector();
@@ -201,7 +201,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                         break;
                     }
                 }
-            }    
+            }
         }
         return true;
     }
@@ -212,13 +212,13 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         try {
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException ( 
+            throw new InternalErrorException (
                     "Nothing to schedule with out make schedule invalid." +
                     ex.getMessage());
         }
     }
 
-    /** prefire, 
+    /** prefire,
      */
     public boolean prefire() throws IllegalActionException {
         _debug(this.getFullName() + "prefire.");
@@ -251,7 +251,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                     getCurrentTime());
         }
         */
-       
+
         // if break point now, change solver.
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
@@ -260,15 +260,15 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                 bp = ((Double)breakPoints.first()).doubleValue();
                 if(Math.abs(bp - getCurrentTime()) < getTimeResolution()) {
                     _setCurrentODESolver(getBreakpointSolver());
-                    //_debug(getFullName() + 
-                    //        " Change to break point solver " + 
+                    //_debug(getFullName() +
+                    //        " Change to break point solver " +
                     //        getCurrentODESolver().getFullName());
                     break;
                 } else {
                     break;
                 }
             }
-        }    
+        }
         setCurrentTime(_outsideTime);
         _outsideStepSize = nextIterTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
@@ -293,7 +293,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                 return Double.MAX_VALUE;
             }
         } catch( IllegalActionException ex) {
-            throw new InternalErrorException ( 
+            throw new InternalErrorException (
                     "Nothing to schedule with out make schedule invalid." +
                     ex.getMessage());
         }
@@ -308,26 +308,26 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         _iterEndTime = endTime;
     }
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private double _outsideStepSize;
 
     private boolean _outputAcceptable;
-    
+
     private boolean _stateAcceptable;
-    
+
     private double _outsideTime;
-    
+
     private double _iterEndTime;
 
     // whether in the emit event phase;
     private boolean _eventPhase = false;
 
-    // If this fire is successful (not interrupted by events) 
+    // If this fire is successful (not interrupted by events)
     private boolean _isFireSuccessful = true;
-    
+
     // The refined step size if this fire is not successful
     private double _refinedStep;
 

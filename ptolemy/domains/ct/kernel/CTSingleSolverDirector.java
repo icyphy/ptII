@@ -43,15 +43,15 @@ import collections.LinkedList;
 //// CTSingleSolverDirector
 /**
 A CTDirector that uses only one ODE solver. The solver is a parameter
-of the director called "ODESolver". The default solver is the 
+of the director called "ODESolver". The default solver is the
 ForwardEulerSolver.
 The solver of this director must be able to self start, so any solver
-that uses history points can not be the solver for this director. 
+that uses history points can not be the solver for this director.
 <P>
 This director can handle explicit breakpoints, which are breakpoints
-that are registered in the breakpoint table. It does not handle 
+that are registered in the breakpoint table. It does not handle
 unexpected breakpoints like event detections.  This director can
-only be a top-level director. Since impulse backward Euler method 
+only be a top-level director. Since impulse backward Euler method
 does not advance time, it should not be used as the solver for this
 director. As a result, if the system contains impulse sources,
 this director is not applicable. Please use CTMultiSolverDirector with
@@ -61,7 +61,7 @@ Each iteration of the director simulates the system for one step.
 It recruit ODE solver to solve the tentative new state, and then
 control the step size according to error control and/or unpredicatable
 breakpoint.
-The size of the step is determined by the ODE solver as well as 
+The size of the step is determined by the ODE solver as well as
 the breakpoints. After each iteration, the execution control will be
 returned to the manager, where possible mutations are taken care of.
 At the end of the simulation, the postfire() method will return false,
@@ -122,7 +122,7 @@ public class CTSingleSolverDirector extends CTDirector {
             throws IllegalActionException {
         if(param == ODESolver) {
             _debug(getFullName() + " solver updating...");
-            _solverclass = 
+            _solverclass =
                 ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclass);
             _setCurrentODESolver(_defaultSolver);
@@ -137,14 +137,14 @@ public class CTSingleSolverDirector extends CTDirector {
      *   it only produces the output, since the initial states are
      *   the "real" states of the system, and no more resolving is needed.
      *   The step size of one iteration is determined by the suggested
-     *   next step size and the breakpoints. If the first breakpoint in 
+     *   next step size and the breakpoints. If the first breakpoint in
      *   the breakpoint table is in the middle of the "intended" step.
      *   Then the current step size is reduced to breakpoint - current
      *   time. The result of such a step is the left limit of the states
-     *   at the breakpoint. 
+     *   at the breakpoint.
      *   <P>
-     *   All the actors are prefired before an iteration is begun. If 
-     *   any one of them returns false, then the iteration is 
+     *   All the actors are prefired before an iteration is begun. If
+     *   any one of them returns false, then the iteration is
      *   cancelled, and the function returns.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
@@ -169,7 +169,7 @@ public class CTSingleSolverDirector extends CTDirector {
                 + " using solver " + getCurrentODESolver().getName());
         _fireOneIteration();
     }
-    
+
     /** Return the ODE solver.
      *  @return The default ODE solver
      */
@@ -179,17 +179,17 @@ public class CTSingleSolverDirector extends CTDirector {
 
     /** Initialization for the entire system. This
      *  is called exactly once at the start of the entire execution.
-     *  It set the current time to the start time and the suggested 
+     *  It set the current time to the start time and the suggested
      *  next step size to the initial step size.
      *  It invoke the initialize() method for all the Actors in the
-     *  system. Parameters are updated, so that the parameters 
+     *  system. Parameters are updated, so that the parameters
      *  set after the creation of the actors are evaluated and ready
      *  for use. The stop time is registered as a breakpoint.
-     *  This method checks whether there is a composite actor for this 
+     *  This method checks whether there is a composite actor for this
      *  director to direct, and whether there is a proper scheduler for this
-     *  director. If not, an exception is throw. 
+     *  director. If not, an exception is throw.
      *  The ODE solver is instantiated.
-     *  
+     *
      *  @exception IllegalActionException If there's no scheduler or
      *       thrown by a contained actor.
      */
@@ -215,12 +215,12 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     /** Return false if the simulation stop time is reached.
-     *  Test if the current time is 
+     *  Test if the current time is
      *  the stop time. If so, return false ( for stop further simulation).
      *  Otherwise, returns true.
      *  @return false If the simulation is finished.
-     *  @exception IllegalActionException If thrown by registering 
-     *  breakpoint 
+     *  @exception IllegalActionException If thrown by registering
+     *  breakpoint
      */
     public boolean postfire() throws IllegalActionException {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
@@ -286,12 +286,12 @@ public class CTSingleSolverDirector extends CTDirector {
                     ((Nameable)nextoutputactor).getName());
             nextoutputactor.fire();
         }
-    } 
+    }
 
     /** Call postfire() on all actors. For a correct CT simulation,
      *  the state of an actor can only change at this stage of an
      *  iteration.
-     *  @exception IllegalActionException If any of the actors 
+     *  @exception IllegalActionException If any of the actors
      *      throws it.
      */
     public void updateStates() throws IllegalActionException {
@@ -307,7 +307,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  includes the number of step simulated, the number of function
      *  evaluations (firing all actors in the state transition schedule),
      *  and the number of failed steps (due to error control).
-     *  
+     *
      *  @exception IllegalActionException Never thrown.
      */
     public void wrapup() throws IllegalActionException{
@@ -356,9 +356,9 @@ public class CTSingleSolverDirector extends CTDirector {
                         " returns" + ready);
         }
         return ready;
-    }        
-    
-    /** Clean old breakpoints in the breakpoint table, and adjust 
+    }
+
+    /** Clean old breakpoints in the breakpoint table, and adjust
      *  the the current step size according to it.
      *  @exception IllegalActionException Not thrown in this class,
      *      may be thrown by derived classes.
@@ -392,10 +392,10 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     /** Fire one iteration. Return directly if any actors return false
-     *  in their prefire() method. The the time is advanced by the 
+     *  in their prefire() method. The the time is advanced by the
      *  current step size.
      */
-    protected void _fireOneIteration() throws IllegalActionException {   
+    protected void _fireOneIteration() throws IllegalActionException {
         _debug(this.getFullName() +"Fire one iteration from " +
                     getCurrentTime() + " step size" +
                     getCurrentStepSize());
@@ -409,7 +409,7 @@ public class CTSingleSolverDirector extends CTDirector {
                         setCurrentTime(getIterationBeginTime());
                         setCurrentStepSize(_refinedStepWRTState());
                         _debug("execute the system from "+
-                                    getCurrentTime() +" step size" + 
+                                    getCurrentTime() +" step size" +
                                     getCurrentStepSize());
                         if(STAT) {
                             NFAIL++;
@@ -459,7 +459,7 @@ public class CTSingleSolverDirector extends CTDirector {
             _defaultSolver = _instantiateODESolver(_solverclass);
             //}
         // set time
-        _debug(this.getFullName() + 
+        _debug(this.getFullName() +
                 "_init get State Time " + getStartTime());
 
         setCurrentTime(getStartTime());
@@ -504,7 +504,7 @@ public class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a = 
+            CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             successful = successful && a.isThisStepSuccessful();
         }
@@ -523,13 +523,13 @@ public class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.outputSSCActors();
         while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a = 
+            CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             successful = successful && a.isThisStepSuccessful();
         }
         return successful;
     }
-    
+
     /** Predict the next step size. This method should be called if the
      *  current integration step is acceptable. The predicted step size
      *  is the minimum of all predictions from step size control actors.
@@ -540,19 +540,19 @@ public class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a = 
+            CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             predictedstep = Math.min(predictedstep, a.predictedStepSize());
         }
         sscs = sched.outputSSCActors();
         while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a = 
+            CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             predictedstep = Math.min(predictedstep, a.predictedStepSize());
         }
         return predictedstep;
     }
-        
+
     /** Return the refined the step size with respected to the new state.
      *  It asks all the step size control actors in the state transition
      *  and dynamic schedule for the refined step size, and take the
@@ -566,7 +566,7 @@ public class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a = 
+            CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             _debug(((Nameable)a).getName() + "refine..."
                         + a.refinedStepSize());
@@ -587,7 +587,7 @@ public class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.outputSSCActors();
         while (sscs.hasMoreElements()) {
-            CTStepSizeControlActor a = 
+            CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
         }

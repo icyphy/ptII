@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
@@ -36,18 +36,18 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
-/** 
+/**
 Composite actor in the CT domain. This class is derived from CompositeActor
 and implements the CTStepSizeControlActor interface. If the director of
-this composite actor is an instance of CTEmbeddedDirector, then the 
+this composite actor is an instance of CTEmbeddedDirector, then the
 CTStepSizeControlActor calls will be delegated to its local director.
-Otherwise, it returns default values. 
+Otherwise, it returns default values.
 <P>
 Note: This class is still under development.
 @author  Jie Liu
 @version $Id$
 */
-public class CTCompositeActor extends TypedCompositeActor 
+public class CTCompositeActor extends TypedCompositeActor
         implements CTStepSizeControlActor {
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
@@ -101,7 +101,7 @@ public class CTCompositeActor extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This method is delegated to the local director if the local 
+    /** This method is delegated to the local director if the local
      *  director is an instance of CTEmbeddedDirector. Otherwise,
      *  return true.
      */
@@ -113,7 +113,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** This method is delegated to the local director if the local 
+    /** This method is delegated to the local director if the local
      *  director is an instance of CTEmbeddedDirector. Otherwise,
      *  return java.long.Double.MAX_VALUE.
      */
@@ -125,7 +125,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return java.lang.Double.MAX_VALUE;
     }
 
-    /** This method is delegated to the local director if the local 
+    /** This method is delegated to the local director if the local
      *  director is an instance of CTEmbeddedDirector. Otherwise,
      *  return the current step size of the executive director.
      */

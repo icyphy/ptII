@@ -49,7 +49,7 @@ The parameter will be updated in the updateParams() method, if the
 <code>paramChanged</code> flag is set.  In this base class,
  the updateParams() happens at the prefire()
 stage of the iteration, so that the parameters are keep consistent
-during the iteration. 
+during the iteration.
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.TypedAtomicActor
@@ -96,13 +96,13 @@ public class CTActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
-    
-    /** Set a flag so that at the prefire stage of the next iteration, the 
+
+    /** Set a flag so that at the prefire stage of the next iteration, the
      *  changed attribute can be updated. Notice that the Parameter token
      *  is already changed. What we need to update here is the local copy
-     *  of the token. The IllegalActionException may be thrown by the 
+     *  of the token. The IllegalActionException may be thrown by the
      *  super class.
-     *  @param att The attribute changed. 
+     *  @param att The attribute changed.
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void attributeChanged(Attribute att) throws IllegalActionException{
@@ -111,7 +111,7 @@ public class CTActor extends TypedAtomicActor {
     }
 
     /** Update the parameters if they have been changed in the last
-     *  iteration. 
+     *  iteration.
      *  @return True always.
      *  @exception IllegalActionException Not thrown in this base class.
      *       May be needed by the derived classes.
@@ -131,12 +131,12 @@ public class CTActor extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      *     May be needed by derived classes for indicating wrong parameter
      *     types or values.
-     */ 
+     */
     public void updateParameters() throws IllegalActionException {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // flag for parameter changes.
     private boolean _attChanged = false;
 

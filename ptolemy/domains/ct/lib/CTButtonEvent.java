@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -41,11 +41,11 @@ import java.util.Enumeration;
 /**
 This is a continuous time actor that response to button clicks.
 It is not an event generator. It outputs a continuous signal with value
-true or false. At the beginning of the execution it outputs false. If the 
+true or false. At the beginning of the execution it outputs false. If the
 parameter "Button" is changed, it will output true in the next iteration.
 I.e. there is, at most, one step size delay of responding the button event.
 The true value will be kept for one iteration, after that the output goes
-back to false.   
+back to false.
 @author  Jie Liu
 @version $Id$
 
@@ -91,7 +91,7 @@ public class CTButtonEvent extends CTActor {
      *  The new parameter will be used only after this method is called.
      */
     public void updateParameters() throws IllegalActionException{
-        boolean b = 
+        boolean b =
             ((BooleanToken)paramButtonClicked.getToken()).booleanValue();
         if (!_buttonClicked && b) {
             _buttonClicked = true;
@@ -100,11 +100,11 @@ public class CTButtonEvent extends CTActor {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected members                      ////
- 
+
     /** The single output port with type boolean.
      */
     public TypedIOPort output;
- 
+
     /** The parameter for the button click; the type is boolean; the default
      *  value is false.
      */
@@ -112,6 +112,6 @@ public class CTButtonEvent extends CTActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    
+
     boolean _buttonClicked;
 }

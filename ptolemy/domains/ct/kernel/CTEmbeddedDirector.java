@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -31,7 +31,7 @@ package ptolemy.domains.ct.kernel;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
-/** 
+/**
 Interface for CT embedded directors. It defines three methods to support the
 outside CTDirector. The methods are about step size control. After the internal
 CT subsystem finishes one integration step, its step size control information
@@ -44,14 +44,14 @@ possible.
 
 */
 public interface CTEmbeddedDirector {
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return true if the current integration step is successful.
      *  @return True if the current step is successful
-     */	
+     */
     public boolean isThisStepSuccessful();
 
     /** Return the predicted next step size if this step is successful.

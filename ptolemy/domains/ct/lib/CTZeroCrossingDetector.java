@@ -37,12 +37,12 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTZeroCrossingDetector
 /**
-This is a event detector that monitors the signal coming in from the 
+This is a event detector that monitors the signal coming in from the
 "trigger" input. If the trigger is zero, then output the token from
 the "input." port.
-This actor controls the integration step size to accurately resolve 
+This actor controls the integration step size to accurately resolve
 the time that the zero crossing happens.
-It has a parameter "ErrorTolerance," which controls how accurate the 
+It has a parameter "ErrorTolerance," which controls how accurate the
 zero crossing is defined.
 @author Jie Liu
 @version $Id$
@@ -55,7 +55,7 @@ public class CTZeroCrossingDetector extends CTActor
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  The actor has two input, "trigger" and "input", and one output,
-     *  "output." Both of them are single ports. All the ports has type 
+     *  "output." Both of them are single ports. All the ports has type
      *  DoubleToken.
      *
      *  @param container The subsystem that this actor is lived in
@@ -84,7 +84,7 @@ public class CTZeroCrossingDetector extends CTActor
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _errorTolerance = (double)1e-4;
-        ErrorTolerance = new Parameter(this, "ErrorTolerance", 
+        ErrorTolerance = new Parameter(this, "ErrorTolerance",
                 new DoubleToken(_errorTolerance));
 
     }
@@ -119,9 +119,9 @@ public class CTZeroCrossingDetector extends CTActor
      */
     public void emitCurrentEvents() throws IllegalActionException{
         _debug(this.getFullName() + " checking for current event...");
-    
+
         if(_eventNow) {
-            _debug(getFullName() + " Emitting event: " + 
+            _debug(getFullName() + " Emitting event: " +
                     _inputToken.stringValue());
             output.broadcast(_inputToken);
             _eventNow = false;
@@ -129,7 +129,7 @@ public class CTZeroCrossingDetector extends CTActor
     }
 
     /** Consume the input token and the trigger token. The trigger token
-     *  will be used for finding the zero crossing in isThisStepSuccessful() 
+     *  will be used for finding the zero crossing in isThisStepSuccessful()
      *  method.
      *  @exception IllegalActionException If no token is available.
      */
@@ -138,7 +138,7 @@ public class CTZeroCrossingDetector extends CTActor
         _debug(getFullName() + "consumming trigger Token" +  _thisTrg);
         _inputToken = input.get(0);
     }
-                            
+
     /** Return true if there is an event at the current time.
      *  @return True if there is an event at the current time.
      */
@@ -148,7 +148,7 @@ public class CTZeroCrossingDetector extends CTActor
 
     /** Set up parameters and internal state, so that it has no history
      *  before the first firing.
-     *  
+     *
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void initialize() throws IllegalActionException {
@@ -158,9 +158,9 @@ public class CTZeroCrossingDetector extends CTActor
         _debug(getFullName() + "initialize");
     }
 
-    /** Return true if this step does not cross zero. The current trigger 
-     *  token will be compared to the history trigger token. If they 
-     *  cross the zero threshold, this step is not successful. 
+    /** Return true if this step does not cross zero. The current trigger
+     *  token will be compared to the history trigger token. If they
+     *  cross the zero threshold, this step is not successful.
      *  A special case is taken care such that if the history trigger
      *  and the current trigger are both zero, then no new event is
      *  triggered. If this step crosses zero, then the refined integration
@@ -177,7 +177,7 @@ public class CTZeroCrossingDetector extends CTActor
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
                 _eventNow = true;
-                _debug(getFullName() + " detected event at " 
+                _debug(getFullName() + " detected event at "
                         + getDirector().getCurrentTime());
                 _enabled = false;
             }
@@ -188,12 +188,12 @@ public class CTZeroCrossingDetector extends CTActor
                 _enabled = true;
             } else {
                 if ((_lastTrg * _thisTrg) < 0.0) {
-                    
+
                     CTDirector dir = (CTDirector)getDirector();
                     _eventMissed = true;
                     _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
                         (_thisTrg-_lastTrg);
-                    _debug(getFullName() + " Event Missed: refined step at" + 
+                    _debug(getFullName() + " Event Missed: refined step at" +
                             _refineStep);
                     return false;
                 }
@@ -213,8 +213,8 @@ public class CTZeroCrossingDetector extends CTActor
         }
         return true;
     }
-    
-    /** Return the maximum Double, since this actor does not predict 
+
+    /** Return the maximum Double, since this actor does not predict
      *  step size.
      *  @return java.Double.MAX_VALUE.
      */
@@ -229,7 +229,7 @@ public class CTZeroCrossingDetector extends CTActor
     public double refinedStepSize() {
         if(_eventMissed) {
             return _refineStep;
-        } 
+        }
         return ((CTDirector)getDirector()).getCurrentStepSize();
     }
 
@@ -254,7 +254,7 @@ public class CTZeroCrossingDetector extends CTActor
 
     // flag for indicating a missed event
     private boolean _eventMissed = false;
-    
+
     // refined step size.
     private double _refineStep;
 
@@ -267,7 +267,7 @@ public class CTZeroCrossingDetector extends CTActor
     // flag indicating if the event detection is enable for this step
     private boolean _enabled;
 
-    // flag indicating if there is an event at the current time. 
+    // flag indicating if there is an event at the current time.
     private boolean _eventNow = false;
 
     // flag indicating if this is the first iteration in the execution,

@@ -39,9 +39,9 @@ import ptolemy.data.*;
 An actor that convert event into continuous signal. This class act
 as the zero order hold. It consume the token when the consumeCurrentEvent()
 is called. This value will be hold and emitted every time it is
-fired, until the next consumeCurrentEvent() is called. This actor has one 
+fired, until the next consumeCurrentEvent() is called. This actor has one
 single input port of type DoubleToken, one single output port of type
-DoubleToken, and no parameter. 
+DoubleToken, and no parameter.
 
 @author Jie Liu
 @version $Id$
@@ -49,7 +49,7 @@ DoubleToken, and no parameter.
 
 //FIXME: Consider make it type polymorphic.
 
-public class CTZeroOrderHold extends TypedAtomicActor 
+public class CTZeroOrderHold extends TypedAtomicActor
     implements CTEventInterpreter{
 
     /** Construct an actor in the specified container with the specified
@@ -95,7 +95,7 @@ public class CTZeroOrderHold extends TypedAtomicActor
 
     /** consume the input event if there is any. This event will be
      *  hold for further firings until this method is called for the
-     *  next time. If there is no input event, do nothing and 
+     *  next time. If there is no input event, do nothing and
      *  the old token will be held.
      */
     public void consumeCurrentEvents() throws IllegalActionException{
@@ -103,7 +103,7 @@ public class CTZeroOrderHold extends TypedAtomicActor
             _lastToken = input.get(0);
             CTDirector dir = (CTDirector) getDirector();
             _debug(getFullName() + " receives an event at: " +
-                    dir.getCurrentTime() + 
+                    dir.getCurrentTime() +
                     " with token " + _lastToken.toString());
         }
     }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -33,8 +33,8 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IPCInterface
-/** 
-Interface for actors that support inter-process communication. 
+/**
+Interface for actors that support inter-process communication.
 @author  Jie Liu, William Wu
 @version $Id$
 */

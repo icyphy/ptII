@@ -35,22 +35,22 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// CTStatefulActor
 /**
-An interface for actors that have state. The state of the actor can be 
+An interface for actors that have state. The state of the actor can be
 marked (saved). The saved state can be restored so that the actor goes
 back to its previously marked state. This feature is used for rolling
 back the simulation when needed, which is essential when embedding
 CT subsystem in an event based system.
 <P>
 The interface defines two methods, markState() and goToMarkedState().
-If the markState() method is called, the current state of the actor, 
-for example values of the local variables, should be remembered. When the 
-goToMarkedState() method is called after that, the marked states 
-should be restored. 
+If the markState() method is called, the current state of the actor,
+for example values of the local variables, should be remembered. When the
+goToMarkedState() method is called after that, the marked states
+should be restored.
 @author  Jie Liu
 @version $Id$
 */
 public interface CTStatefulActor extends Actor{
-    
+
     /** Go to the marked state. If there's no marked state, throws
      *  an exception.
      *  @exception IllegalActionException If there were no marked state.

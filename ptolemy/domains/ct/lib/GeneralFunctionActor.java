@@ -53,7 +53,7 @@ FIXME: Remove. Consider use actor.lib.Expression.
 */
 public class GeneralFunctionActor extends TypedAtomicActor {
 
-    /** Create a general function actor with the specified container and 
+    /** Create a general function actor with the specified container and
      *  name.
      */
     public GeneralFunctionActor(TypedCompositeActor container, String name)
@@ -75,7 +75,7 @@ public class GeneralFunctionActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the actor does not have an
      *   output port with the given name.
      */
-    public void setOutputExpression(String name, String expr) 
+    public void setOutputExpression(String name, String expr)
             throws IllegalActionException {
         try {
             IOPort port = (IOPort)getPort(name);
@@ -127,7 +127,7 @@ public class GeneralFunctionActor extends TypedAtomicActor {
         while (inports.hasMoreElements()) {
             IOPort inport = (IOPort)inports.nextElement();
             if (inport.hasToken(0)) {
-                Variable var = 
+                Variable var =
                     (Variable)_inputVarList.getAttribute(inport.getName());
                 var.setToken(inport.get(0));
             }
@@ -150,7 +150,7 @@ public class GeneralFunctionActor extends TypedAtomicActor {
 
     public static final String INPUT_VAR_LIST = "_InputVarList";
     public static final String OUTPUT_VAR_LIST = "_OutputVarList";
-     
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -36,8 +36,8 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// CTEventInterpreter
 /**
-Interface for CT actors that generates continuous signals (waveforms) from 
-discrete events. Typical implementations of event interpreters are 
+Interface for CT actors that generates continuous signals (waveforms) from
+discrete events. Typical implementations of event interpreters are
 zero-order holds and impulses.
 
 @author Jie Liu
@@ -54,7 +54,7 @@ public interface CTEventInterpreter extends Actor{
      */
     public void consumeCurrentEvents() throws IllegalActionException;
 
-    /** FIXME: Consider a method that tells if there's unconsumed event 
+    /** FIXME: Consider a method that tells if there's unconsumed event
      *  at current time.
      */
 

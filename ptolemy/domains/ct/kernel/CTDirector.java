@@ -55,14 +55,14 @@ by directors or its ODE solvers.
 <P>
 CTDirectors has a CTScheduler which provides the schedule for firing
 the actors in different phase of the execution.
-<P> 
+<P>
 CTDirectors may have one or more ODE solvers. In each iteration, one
 of the ODE solvers is taking charge of solving the ODEs. This solver
 is called the <I>current ODE solver</I>.
-<P>  
-This base class maintains a list of parameters that may be used by 
+<P>
+This base class maintains a list of parameters that may be used by
 ODE solvers. These parameters are: <Br>
-<LI> start time (<code>StartTime</code>): The start time of the 
+<LI> start time (<code>StartTime</code>): The start time of the
 simulation. The parameter should only be affective if the director
 is at the top level. Default value is 0.0.</LI><BR>
 <LI> stop time (<code>StopTime</code>): The stop time of the simulation.
@@ -81,13 +81,13 @@ the simulation speed. Default value is 1.0.
 </LI><Br>
 <LI> maximum iteration per step (<code>MaxIterations</code>):
 Used only in implicit ODE solvers. This is the maximum number of
-iterations for finding the fixed point at one time point. 
+iterations for finding the fixed point at one time point.
 Default value is 20. </LI><Br>
 <LI> local truncation error tolerance (<code>ErrorTolerance</code>):
-This used for controlling the local truncation error 
+This used for controlling the local truncation error
 in variable step size ODE solvers. If the local truncation error
-at some error control actors are greater than this tolerance, then the 
-integration step is considered failed, and should be restarted with 
+at some error control actors are greater than this tolerance, then the
+integration step is considered failed, and should be restarted with
 a reduced step size. Default value 1e-4. </LI><Br>
 <LI> value resolution for convergence (<code>ValueResolution</code>):
  This is used to control the convergence of fixed point iteration.
@@ -179,7 +179,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  is to be collected.
      */
     public static boolean STAT = false;
-    
+
     /** The number of integration steps.
      */
     public  int NSTEP = 0;
@@ -200,15 +200,15 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in an attribute. If the changed attribute 
-     *  matches a parameter of the director, then the corresponding 
+    /** React to a change in an attribute. If the changed attribute
+     *  matches a parameter of the director, then the corresponding
      *  private copy of the
      *  parameter value will be updated.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.
      */
-    public void attributeChanged(Attribute attr) 
+    public void attributeChanged(Attribute attr)
             throws IllegalActionException {
         _debug(attr.getName() + " updating.");
         if(attr == StopTime) {
@@ -308,7 +308,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public final double getMaxStepSize() {
         return _maxStepSize;
-    } 
+    }
 
     /** Return the minimum step size used in variable step size
      *  ODE solvers.
@@ -316,7 +316,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public final double getMinStepSize() {
         return _minStepSize;
-    } 
+    }
 
     /** Return the current step size plus the current time.
      *  @return The current time plus the current step size.
@@ -340,8 +340,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Return the suggested next step size. The suggested step size is
-     *  the step size that the step-size-control actors suggested 
-     *  at the end of last integration step. It is the prediction 
+     *  the step size that the step-size-control actors suggested
+     *  at the end of last integration step. It is the prediction
      *  of the new step size.
      *  @return The suggested next step size.
      */
@@ -377,13 +377,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the time if before
      *  the current time
      */
-    public void fireAt(Actor actor, double time) 
+    public void fireAt(Actor actor, double time)
             throws IllegalActionException{
         if(_breakPoints == null) {
             _breakPoints = new TotallyOrderedSet(new DoubleComparator());
         }
         if(time < getCurrentTime()-getTimeResolution()) {
-            throw new IllegalActionException((Nameable)actor, 
+            throw new IllegalActionException((Nameable)actor,
                     "Requested an Fire time " + time + " is earlier than" +
                     " the current time." + getCurrentTime() );
         }
@@ -391,8 +391,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Return true if this is a breakpoint iteration. A breakpoint
-     *  iteration is the iteration just after a breakpoint. In a 
-     *  breakpoint iteration, the ODE solver is the breakpoint 
+     *  iteration is the iteration just after a breakpoint. In a
+     *  breakpoint iteration, the ODE solver is the breakpoint
      *  ODE solver, and the step size is the minimum step size.
      *  @return True if this is a breakpoint iteration.
      */
@@ -425,16 +425,16 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _currentTime = tnow;
     }
 
-    /** Set the start time for the simulation. The start time is not 
+    /** Set the start time for the simulation. The start time is not
      *  registered as a breakpoint in this method. The extended director
      *  should do it themselves if needed.
-     *  @param tstart The start time. 
+     *  @param tstart The start time.
      */
     public void setStartTime(double tstart) {
         _startTime = tstart;
     }
 
-    /** Set the stop time for the simulation.  The stopt time is not 
+    /** Set the stop time for the simulation.  The stopt time is not
      *  registered as a breakpoint in this method. The extended director
      *  should do it themselves if needed.
      *  @param tstop The stop time for the simulation.
@@ -443,7 +443,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _stopTime = tstop;
     }
 
- 
+
     /** Set the suggested next step size.
      *  @param nextstep The suggested next step size.
      */
@@ -484,13 +484,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             MaxStepSize = new Parameter(
                 this, "MaximumStepSize", new DoubleToken(_maxStepSize));
             MaxIterations = new Parameter(
-                this, "MaximumIterationsPerStep", 
+                this, "MaximumIterationsPerStep",
                 new IntToken(_maxIterations));
             ErrorTolerance =  new Parameter(
                 this, "ErrorTolerance",
                 new DoubleToken(_lteTolerance));
             ValueResolution =  new Parameter(
-                this, "ConvergeValueResolution", 
+                this, "ConvergeValueResolution",
                 new DoubleToken(_valueResolution));
             TimeResolution= new Parameter(
                 this, "TimeResolution", new DoubleToken(_timeResolution));
@@ -504,11 +504,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Instantiate ODESolver from its classname. Given the solver's full 
+    /** Instantiate ODESolver from its classname. Given the solver's full
      *  class name, this method will try to instantiate it by looking
      *  for the java class.
      *  @param solverclass The solver's full class name.
-     *  @exception IllegalActionException If the solver is unable to be 
+     *  @exception IllegalActionException If the solver is unable to be
      *       created.
      */
     protected ODESolver _instantiateODESolver(String solverclass)
@@ -552,7 +552,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _bpIteration = bp;
     }
 
-    /** Returns false, indicating that this director does not need to 
+    /** Returns false, indicating that this director does not need to
      *  modify the topology during the execution.
      *
      *  @return False.
@@ -582,7 +582,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public Parameter StopTime;
     public Parameter InitStepSize;
     public Parameter MinStepSize;
-    public Parameter MaxStepSize;    
+    public Parameter MaxStepSize;
     public Parameter MaxIterations;
     public Parameter ErrorTolerance;
     public Parameter ValueResolution;
@@ -594,7 +594,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     private double _stopTime;
     private double _initStepSize;
     private double _minStepSize;
-    private double _maxStepSize;    
+    private double _maxStepSize;
     private int _maxIterations;
     private double _lteTolerance;
     private double _valueResolution;
@@ -602,7 +602,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     //indicate whether this is a breakpoint iteration.
     private boolean _bpIteration = false;
-    
+
     // Simulation progress variables.
     private double _currentTime;
     private double _currentStepSize;

@@ -39,7 +39,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
 /**
-Base class for integrators for continuous time simulation. 
+Base class for integrators for continuous time simulation.
 An integrator has one input port and one output port. Conceptually,
 the input is the differential of the output. So an ordinary
 differential equation dx/dt = f(x,t) can be represented by:
@@ -61,30 +61,30 @@ An integrator
 is a dynamic actor that emit a token (internal state) at the beginning
 of the simulation. An integrator is an step size actor that can control
 the accuracy of the ODE solution by adjusting step sizes. An integrator has
-one memory, which is its state. 
+one memory, which is its state.
 <P>
 To help resolving the new state, a set of variables are used:<BR>
 state: This is the new state at a time point, which has beed confirmed
 by all the step size control actors.
 tentative state: This is the resolved state which has not been confirmed.
-It is a starting point for other actor to control the successfulness 
+It is a starting point for other actor to control the successfulness
 of this integration step.
-history: The previous states, which may be used by some integration method. 
+history: The previous states, which may be used by some integration method.
 <P>
 For different ODE solving methods, the functionality
 of a integrator could be different. This class provide a basic
 implementation of the integrator, so some solver-dependent methods are
 delegated to the current ODE solver.
 <P>
-An integrator has one parameter: <code>initialState</code>. At the 
-initialization stage of the simulation, the state of the integrator is 
+An integrator has one parameter: <code>initialState</code>. At the
+initialization stage of the simulation, the state of the integrator is
 set to the initial state. The initialState will not impact the simulation
 after the simulation starts. The default value of the parameter is 0.
 An integrator can possibly have several auxiliary variables--
 <code>_auxVariables</code>. The number of <code>_auxVariables</code> is get
-from the ODE solver. 
+from the ODE solver.
 <P>
-The integrator remembers the history states and 
+The integrator remembers the history states and
 their derivatives for the past several steps. The history is used for
 multistep methods.
 
@@ -178,7 +178,7 @@ public class CTBaseIntegrator extends CTActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Fire() method in the execution sequence. It in turn calls
      *  the integratorFire() of the current ODE solver.
      *
@@ -211,9 +211,9 @@ public class CTBaseIntegrator extends CTActor
     }
 
     /** Return the history information of the last index-th step.
-     *  The history array is a two dimensional array, in which 
+     *  The history array is a two dimensional array, in which
      *  the first dimension is the capacity of the history,
-     *  and the second dimension has length 2.<BR> 
+     *  and the second dimension has length 2.<BR>
      *  history[*][0] is the state at the last index-th step;<Br>
      *  history[*][1] is its derivative.<Br>
      *  @param index The index
@@ -274,7 +274,7 @@ public class CTBaseIntegrator extends CTActor
 
     /** Emit the tentative output, which is the tentative state of the
      *  integrator.
-     *  @exception IllegalActionException If the data transfer is not 
+     *  @exception IllegalActionException If the data transfer is not
      *  completed.
      */
     public void emitTentativeOutputs() throws IllegalActionException {
@@ -292,7 +292,7 @@ public class CTBaseIntegrator extends CTActor
         return _successful;
     }
 
-    /** Postfire method in the execution sequence. It updates the 
+    /** Postfire method in the execution sequence. It updates the
      *  the states and push the current state and its derivative
      *  into history.
      *  @return True always.
@@ -405,7 +405,7 @@ public class CTBaseIntegrator extends CTActor
      *  the ODE solver think to be the new state for the integrator.
      *  It may not
      *  be the final state due to the event detection.
-     *  @param value The value to be set. 
+     *  @param value The value to be set.
      */
      public final void setTentativeState(double value) {
          _tentativeState = value;
@@ -415,7 +415,7 @@ public class CTBaseIntegrator extends CTActor
      *  is the derivative of the state that
      *  the ODE solver think to be at the fixed point. This may not
      *  be the final derivative due to the event detection.
-     *  @param value The value to be set. 
+     *  @param value The value to be set.
      */
     public final void setTentativeDerivative(double value) {
          _tentativeDerivative = value;

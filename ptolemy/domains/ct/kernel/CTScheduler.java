@@ -40,7 +40,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
 /**
-Clustered graph sorting scheduler for CT domain. 
+Clustered graph sorting scheduler for CT domain.
 A CT (sub)system can be represented mathematically as:<Br>
     dx/dt = f(x, u, t)<Br>
     y = g(x, u, t)<BR>
@@ -52,25 +52,25 @@ and h() is the event generation map. This formulation adds the
 event generation map to the usual continuous time modeling
 to specifically handle the interaction with discrete domains.
 <P>
-The system is built by actors. That is, all the functions, f(), g(), 
-and h() are built by chains of actors. The scheduler will cluster and 
-sort the system topology, and will provide the firing order for 
-evaluating f(), g(). The firing order for evaluating f() is 
+The system is built by actors. That is, all the functions, f(), g(),
+and h() are built by chains of actors. The scheduler will cluster and
+sort the system topology, and will provide the firing order for
+evaluating f(), g(). The firing order for evaluating f() is
 called the <I> state transition schedule</I>; the firing order for
-evaluating g() is called the <I> output schedule</I>; and 
-the firing order for all the dynamic actors is called the 
+evaluating g() is called the <I> output schedule</I>; and
+the firing order for all the dynamic actors is called the
 <I>dynamic actor schedule</I>.
 <P>
 To help the scheduling, a system topology is partitioned into
 several clusters:
-the <I>arithmetic actors</I>, the <I>dynamic actors</I>, 
+the <I>arithmetic actors</I>, the <I>dynamic actors</I>,
 the <I>step size control actors</I>, the <I>sink actors</I>,
 the <I>stateful actors</I>, the <I> event generator</I>,
 and the <I> event interpreters</I>.
 <P>
-Arithmetic actors are actors that has no integrators in its 
+Arithmetic actors are actors that has no integrators in its
 function. Dynamic actors is the opposite of arithmetic actors,
-i.e. it has integrators. The most common dynamic actors are 
+i.e. it has integrators. The most common dynamic actors are
 integrators, whose output is the state x of the system.
 <P>
 The state schedule is a list of dynamic actors (integrators or actors
@@ -80,11 +80,11 @@ topological order.
 The state transition schedule is the actors in f() function sorted
 in the topological order, such that, after the integrators emit their
 state x, a chain of firings according to the schedule evaluates the
-f() function and returns a token corresponding to dx/dt to the 
+f() function and returns a token corresponding to dx/dt to the
 integrators.
 <P>
 The output schedule is the actors in g() function sorted in the topological
-order. 
+order.
 
 If there are loops of arithmetic actors or loops of integrators,
 then the (sub)system is not schedulable, and a NotSchedulableException
@@ -158,83 +158,83 @@ public class CTScheduler extends Scheduler{
         list = arithmaticActors();
         try {
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    dynamicActors {\n";
             list = dynamicActors();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    stateTransitionSSCActors {\n";
             list = stateTransitionSSCActors();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    outputSSCActors {\n";
             list = outputSSCActors();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    eventGenerators {\n";
             list = eventGenerators();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    eventInterpreters {\n";
             list = eventInterpreters();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
-            res += "    }\n";        
+            res += "    }\n";
             res += "    statefulActors {\n";
             list = statefulActors();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    sinkActors {\n";
             list = sinkActors();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    dynamicActorSchedule {\n";
             list = dynamicActorSchedule();
             while(list.hasMoreElements()) {
-            res += "\t" + 
+            res += "\t" +
                 ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    stateTransitionSchedule {\n";
             list = stateTransitionSchedule();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "    outputSchedule {\n";
             list = outputSchedule();
             while(list.hasMoreElements()) {
-                res += "\t" + 
+                res += "\t" +
                     ((NamedObj)list.nextElement()).getFullName() + "\n";
             }
             res += "    }\n";
             res += "}\n";
         } catch (IllegalActionException ex) {
-            throw new InvalidStateException(this, 
+            throw new InvalidStateException(this,
                     "Failed to generate CT schedule.");
         }
         return res;
@@ -265,7 +265,7 @@ public class CTScheduler extends Scheduler{
      *  If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
      *  Otherwise, it will be reconstructed and cached.
-     *  The dynamic actor schedule lists all the integrators and 
+     *  The dynamic actor schedule lists all the integrators and
      *  dynamic actors
      *  in the reverse topology order. This order is considered safe
      *  for both implicit methods and explicit methods. For implicit
@@ -338,7 +338,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Return an enumeration of step size control (SSC) actors in the output
-     *  schedule. These are the step size control actors in the 
+     *  schedule. These are the step size control actors in the
      *  y = g(x,u,t) equations.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
@@ -347,7 +347,7 @@ public class CTScheduler extends Scheduler{
      *  This method read-synchronizes on the workspace.
      *  @return An enumeration of step size control actors.
      *  @exception IllegalActionException If thrown by the schedule() method.
-     * 
+     *
      */
     public Enumeration outputSSCActors() throws IllegalActionException {
         try {
@@ -436,7 +436,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of step size control (SSC) actors in the 
+    /** Return an enumeration of step size control (SSC) actors in the
      *  state and state transition schedule. These are the step size
      *  control actors in the dx/dt=f(x,u,t) equations.
      *  This enumeration is locally
@@ -446,9 +446,9 @@ public class CTScheduler extends Scheduler{
      *  This method read-synchronizes on the workspace.
      *  @return An enumeration of step size control actors.
      *  @exception IllegalActionException If thrown by the schedule() method.
-     * 
+     *
      */
-    public Enumeration stateTransitionSSCActors() 
+    public Enumeration stateTransitionSSCActors()
             throws IllegalActionException {
         try {
 	    workspace().getReadAccess();
@@ -501,9 +501,9 @@ public class CTScheduler extends Scheduler{
             _sink = new LinkedList();
             _dynam = new LinkedList();
             _arith = new LinkedList();
-            _evgen = new LinkedList(); 
-            _evint = new LinkedList(); 
-            _stateful = new LinkedList(); 
+            _evgen = new LinkedList();
+            _evint = new LinkedList();
+            _stateful = new LinkedList();
         }else {
             _sink.clear();
             _dynam.clear();
@@ -534,8 +534,8 @@ public class CTScheduler extends Scheduler{
             } else {
                 _arith.insertLast(a);
             }
-            // Step size control (SSC) actors are classified according to 
-            // their location in the schedule. So they are assigned 
+            // Step size control (SSC) actors are classified according to
+            // their location in the schedule. So they are assigned
             // in the _schedule() method.
 
             //FIXME: Should also do the following checks:
@@ -550,7 +550,7 @@ public class CTScheduler extends Scheduler{
 
     /** Return the predecessor actors of the given actor in the topology.
      *  If the argument is null, returns null.
-     *  If the actor is a source, returns null. 
+     *  If the actor is a source, returns null.
      *  @param The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors,  unordered.
      */
@@ -629,7 +629,7 @@ public class CTScheduler extends Scheduler{
                 }
             }
             _scheList.insertLast(_stateschedule);
-            
+
             // State transition map
             Object[] fx = g.backwardReachableNodes(dynactors);
             Object[] fxsort = g.topologicalSort(fx);
@@ -647,7 +647,7 @@ public class CTScheduler extends Scheduler{
 
         // construct an array of sink actors.
         int numofsink = _sink.size();
-       
+
         if(numofsink > 0) {
             Object[] sinkactors = new Object[numofsink];
             Enumeration enumsinks = _sink.elements();
@@ -675,7 +675,7 @@ public class CTScheduler extends Scheduler{
             }
             // add sinks to the output schedule
             _outputschedule.appendElements(_sink.elements());
-            
+
             _scheList.insertLast(_outputschedule);
         }
 
@@ -684,7 +684,7 @@ public class CTScheduler extends Scheduler{
 
     /** Return the successor actors of the given actor in the topology.
      *  If the argument is null, returns null.
-     *  If the actor is a sink, returns null. 
+     *  If the actor is a sink, returns null.
      *  @param The specified actor. If the actor is null, returns null.
      *  @return The enumerations of predecessors.
      */
@@ -711,7 +711,7 @@ public class CTScheduler extends Scheduler{
     /** Convert the given actors to a directed acyclic graph.
      *  CTDynamicActors are treated as sinks.
      *  Each actor
-     *  in the given enumeration is a node in the graph, 
+     *  in the given enumeration is a node in the graph,
      *  each link between a pair
      *  of actors is a edge between the
      *  corresponding nodes unless the source node is a dynamic actor.
@@ -739,7 +739,7 @@ public class CTScheduler extends Scheduler{
         Enumeration allactors = actorlist.elements();
         while (allactors.hasMoreElements()) {
             Actor a = (Actor) allactors.nextElement();
- 
+
             if(!(a instanceof CTDynamicActor)) {
                 // Find the successors of a
                 Enumeration successors = _successors(a);
@@ -757,7 +757,7 @@ public class CTScheduler extends Scheduler{
     /** Convert the given actors to a directed acyclic graph.
      *  CTDynamicActors are NOT treated as sinks.
      *  Each actor
-     *  in the given enumeration is a node in the graph, 
+     *  in the given enumeration is a node in the graph,
      *  each link between a pair
      *  of actors is a edge between the
      *  corresponding nodes unless the source node is a dynamic actor.
@@ -785,7 +785,7 @@ public class CTScheduler extends Scheduler{
         Enumeration allactors = actorlist.elements();
         while (allactors.hasMoreElements()) {
             Actor a = (Actor) allactors.nextElement();
- 
+
             // Find the successors of a
             Enumeration successors = _successors(a);
             while (successors.hasMoreElements()) {
