@@ -169,7 +169,7 @@ fast:
 		done ; \
 	fi
 	@if [ "x$(JSRCS)" != "x" ]; then \
-		echo "fast build with 'CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) *.java' in `pwd`"; \
+		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" $(JAVAC) $(JFLAGS) *.java' in `pwd`"; \
 		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) *.java; \
 	fi
 # "make sources" will do SCCS get on anything where SCCS file is newer.
