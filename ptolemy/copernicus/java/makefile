@@ -109,7 +109,10 @@ MODEL = OrthogonalCom
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
-TARGETPACKAGE = ptolemy.copernicus.java.cg
+# Dump the .class files for each model in a separate directory
+# so as to make debugging easier
+TARGETPACKAGE = ptolemy.copernicus.java.cg.$(MODEL)
+
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 
 JVM_SIZE = -Xmx256m
