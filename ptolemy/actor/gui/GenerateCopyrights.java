@@ -227,7 +227,7 @@ public class GenerateCopyrights {
                     + "only copyright."
                     + "<table>\n"
                     + "  <tr><th>Feature</th>\n"
-                    + "      <th>Copyright of package used by the eature</th>\n"
+                    + "      <th>Copyright of package used by the feature</th>\n"
                     + "  </tr>\n");
 
             while (copyrights.hasNext()) {
