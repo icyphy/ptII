@@ -12,21 +12,21 @@
 <attribute name="init" value="0"/>
 <attribute name="step" value="4"/>
     <rendition class="ptolemy.schematic.util.LibraryIcon">
-	<location x="20"/>
+	<location x="50" y="50"/>
         <configure>generic.source</configure>
     </rendition>
 </entity>
 
 <entity name="Plotter1" class="ptolemy.actor.gui.SequencePlotter">
     <rendition class="ptolemy.schematic.util.LibraryIcon">
-	<location x="100"/>
+	<location x="150" y="50"/>
        	<configure>generic.sink</configure>
     </rendition>
 </entity>
 
 <relation name="R1" class="ptolemy.actor.TypedIORelation">
 <vertex name="root">
-<location x="50"/>
+<location x="100" y="50"/>
 </vertex>
 </relation>
 
