@@ -501,10 +501,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     " the current time." + getCurrentTime() );
         }
         // FIXME
-        if(Math.abs(time - getCurrentTime()) < getTimeResolution() 
-                && actor != null 
+        if(Math.abs(time - getCurrentTime()) < getTimeResolution()
+                && actor != null
                 && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
-            if(_debugging) _debug(((Nameable)actor).getName(), 
+            if(_debugging) _debug(((Nameable)actor).getName(),
                     "requests refire at current time" + getCurrentTime());
             // These actors will be fired in the discrete phase
             // at the current time.
@@ -525,11 +525,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-     
+
     /** Initialization after type resolution.
      *  In addition to calling the initialize() method of its super class,
-     *  this method record the current system time as the "real" starting 
-     *  time of the execution. This starting time is used when the 
+     *  this method record the current system time as the "real" starting
+     *  time of the execution. This starting time is used when the
      *  execution is synchronized to real time.
      *
      *  @exception IllegalActionException If the super class throws it.
@@ -617,7 +617,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         super.preinitialize();
     }
-   
+
     /** Fire all the actors in the output schedule.
      *  @exception IllegalActionException If the actor in the output
      *      schedule throws it.
@@ -647,10 +647,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  For a correct CT simulation,
      *  the state of an actor can only change at this stage of an
      *  iteration.
-     *  FIXME: If the <i>synchronizeToRealTime</i> parameter is evaluated 
+     *  FIXME: If the <i>synchronizeToRealTime</i> parameter is evaluated
      *  to true,
      *  then this method will block until the real time catches the
-     *  current modeling time. 
+     *  current modeling time.
      *  @exception IllegalActionException If any of the actors
      *      throws it.
      */
@@ -659,12 +659,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             long realTime = System.currentTimeMillis()-_timeBase;
             long simulationTime = (long)((getCurrentTime()-getStartTime())
                     *1000);
-            if(_debugging) _debug("real time " + realTime, 
+            if(_debugging) _debug("real time " + realTime,
                     "simulation time " + simulationTime);
             long timeDifference = simulationTime-realTime;
             if(timeDifference > 20) {
                 try {
-                    if(_debugging) _debug("Sleep for " + timeDifference 
+                    if(_debugging) _debug("Sleep for " + timeDifference
                             + "ms");
                     Thread.sleep(timeDifference - 20);
                 }  catch (Exception e) {
@@ -676,7 +676,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                         " cannot achieve real-time performance",
                         " at simulation time " + getCurrentTime());
             }
-        } 
+        }
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors = schedule.get(
                 CTSchedule.CONTINUOUS_ACTORS).actorIterator();
@@ -767,11 +767,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             timeResolution = new Parameter(this, "timeResolution",
                     new DoubleToken(_timeResolution));
             timeResolution.setTypeEquals(BaseType.DOUBLE);
-            synchronizeToRealTime = new Parameter(this, 
+            synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime");
             synchronizeToRealTime.setToken(new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-            
+
 
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
@@ -865,8 +865,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // A list of actors that requested to refire at the current time.    
-    protected LinkedList _refireActors; 
+    // A list of actors that requested to refire at the current time.
+    protected LinkedList _refireActors;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

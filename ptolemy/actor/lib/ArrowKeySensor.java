@@ -71,7 +71,7 @@ import java.awt.event.KeyEvent;
 //// ArrowKeySensor
 
 /**
-When this actor is preinitialized, it pops up a new JFrame window on 
+When this actor is preinitialized, it pops up a new JFrame window on
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
@@ -85,10 +85,10 @@ coresponding output.  Upon each key release, the integer 0 is
 output.<p>
 
 This actor contains a private inner class which generated the JFrame.
-The frame sets up callbacks which react to the keystrokes.  When called, 
-these call the director's fireAtCurrentTime() method.  This causes 
-the director to call fire() on the actor.   The actor then broadcasts 
-tokens from one or both outputs depending on which keystroke(s) have 
+The frame sets up callbacks which react to the keystrokes.  When called,
+these call the director's fireAtCurrentTime() method.  This causes
+the director to call fire() on the actor.   The actor then broadcasts
+tokens from one or both outputs depending on which keystroke(s) have
 occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
@@ -235,7 +235,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_upKeyReleased = true;
 			_upKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    } 
+		    }
 	    };
 
 	    // left-arrow callbacks
@@ -252,7 +252,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_leftKeyReleased = true;
 			_leftKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    } 
+		    }
 	    };
 
 	    // right-arrow callbacks
@@ -269,7 +269,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_rightKeyReleased = true;
 			_rightKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    } 
+		    }
 	    };
 
 	    // down-arrow callbacks
@@ -286,7 +286,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_downKeyReleased = true;
 			_downKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    } 
+		    }
 	    };
 
             getContentPane().setLayout(new BorderLayout());
@@ -301,46 +301,46 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	    // See javax.swing.Jcomponent.registerKeyboardAction().
 
 	    // Registration of up-arrow callbacks.
-            label.registerKeyboardAction(myUpPressedListener, 
+            label.registerKeyboardAction(myUpPressedListener,
                     "UpPressed",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_UP, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myUpReleasedListener, 
+            label.registerKeyboardAction(myUpReleasedListener,
                     "UpReleased",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_UP, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of left-arrow callbacks.
-            label.registerKeyboardAction(myLeftPressedListener, 
+            label.registerKeyboardAction(myLeftPressedListener,
                     "LeftPressed",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_LEFT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myLeftReleasedListener, 
+            label.registerKeyboardAction(myLeftReleasedListener,
                     "LeftReleased",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_LEFT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of right-arrow callbacks.
-            label.registerKeyboardAction(myRightPressedListener, 
+            label.registerKeyboardAction(myRightPressedListener,
                     "RightPressed",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_RIGHT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myRightReleasedListener, 
+            label.registerKeyboardAction(myRightReleasedListener,
                     "RightReleased",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_RIGHT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of down-arrow callbacks.
-            label.registerKeyboardAction(myDownPressedListener, 
+            label.registerKeyboardAction(myDownPressedListener,
                     "DownPressed",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_DOWN, 0, false),

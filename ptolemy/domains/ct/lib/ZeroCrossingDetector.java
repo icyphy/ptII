@@ -77,6 +77,6 @@ public class ZeroCrossingDetector extends LevelCrossingDetector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _removeAttribute(level);
-        _level = 0;   
+        _level = 0;
     }
 }

@@ -851,8 +851,8 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
     }
 
-    /** Mark the contained token to be unknown if the specified value is 
-     *  true, or mark the contained token to be known if the specified value 
+    /** Mark the contained token to be unknown if the specified value is
+     *  true, or mark the contained token to be known if the specified value
      *  is false.
      *  @param value A boolean value.
      */

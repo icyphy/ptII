@@ -71,7 +71,7 @@ import java.awt.event.KeyEvent;
 //// KeystrokeSensor
 
 /**
-When this actor is preinitialized, it pops up a new JFrame window on 
+When this actor is preinitialized, it pops up a new JFrame window on
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
@@ -80,10 +80,10 @@ This actor senses only two keystrokes, control-C (copy) and control-V
 (paste).  This actor is designed to work with SystemClipboard.java<p>
 
 This actor contains a private inner class which generated the JFrame.
-The frame sets up callbacks which react to the keystrokes.  When called, 
-these call the director's fireAtCurrentTime() method.  This causes 
-the director to call fire() on the actor.   The actor then broadcasts 
-tokens from one or both outputs depending on which keystroke(s) have 
+The frame sets up callbacks which react to the keystrokes.  When called,
+these call the director's fireAtCurrentTime() method.  This causes
+the director to call fire() on the actor.   The actor then broadcasts
+tokens from one or both outputs depending on which keystroke(s) have
 occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
@@ -197,7 +197,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
 			    throw new RuntimeException("-fireAt* catch-");
 			}
 			if (_debugging) _debug("pasteFrom.. has completed");
-		    } 
+		    }
 	    };
 
             getContentPane().setLayout(new BorderLayout());

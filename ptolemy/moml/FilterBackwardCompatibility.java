@@ -41,18 +41,18 @@ import java.util.HashMap;
 method, it will cause MoMLParser to filter so that models from
 earlier releases will run in the current release.
 
-<p>This class will filter for actors that have had port name changes, and 
+<p>This class will filter for actors that have had port name changes, and
 for classes with property where the class name has changed
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
 */
 public class FilterBackwardCompatibility implements MoMLFilter {
-        
+
     /**  If the attributeName is "class" and attributeValue names a
      *	class that has had its port names changed between releases,
      *  then substitute in the new port names.
-     *  
+     *
      *  @param container  The container for this attribute.
      *  in this method.
      *  @param attributeName The name of the attribute.
@@ -70,7 +70,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    // that first
             return null;
 	}
-	if (attributeName.equals("name")) { 
+	if (attributeName.equals("name")) {
 	    // Save the name of the for later use if we see a "class"
 	    _lastNameSeen = attributeValue;
 	}
@@ -83,7 +83,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	// possible, and we try to compare against booleans first
 	// so as to avoid more expensive string comparisons.
 
-	if (attributeName.equals("class")) { 
+	if (attributeName.equals("class")) {
 	    // Look for lines like:
 	    // <entity name="ComplexToCartesian1"
 	    //   class="ptolemy.actor.lib.conversions.ComplexToCartesian">
@@ -119,9 +119,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// Only return the new class once, but we might
 		// have other properties that need changing
 		//_currentlyProcessingActorWithPropertyClassChanges = false;
-		
+
 		String temporaryNewClass = _newClass;
-		_newClass = null;    
+		_newClass = null;
 		return temporaryNewClass;
 	    } else if ( (_currentlyProcessingActorWithPortNameChanges
 			 || _currentlyProcessingActorWithPropertyClassChanges)
@@ -166,7 +166,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 				  containerName + "." + newPort
 				  );
 	    _debug("filterAttributeValue: return1 ("
-	    		       + containerName + "." + attributeValue + ", " 
+	    		       + containerName + "." + attributeValue + ", "
 	    		       +  containerName + "." + newPort + ") "
 	    		       + newPort);
 	    return newPort;
@@ -188,7 +188,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _newClass = null;
 		}
 	    }
-	} else if (_doneProcessingActorWithPortNameChanges 
+	} else if (_doneProcessingActorWithPortNameChanges
 		   && attributeName.equals("port")
 		   && _containerPortMap.containsKey(container.getFullName()
 						 + "." + attributeValue)) {
@@ -206,22 +206,22 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 	    newPort =
 		newPort.substring(container.getFullName().length() + 1);
-					
-	    _debug("filterAttributeValue: return2 " 
+
+	    _debug("filterAttributeValue: return2 "
 		   + newPort);
 	    return newPort;
-	} 
+	}
         return attributeValue;
-    } 
+    }
 
     /** Given the elementName, perform any filter operations
      *  that are appropriate for the MOMLParser.endElement() method.
      *  @param container  The container for this attribute.
      *  in this method.
-     *  @param elementName The element type name. 
-     *  @return the filtered element name, or null if 
+     *  @param elementName The element type name.
+     *  @return the filtered element name, or null if
      *  MoMLParser.endElement() should immediately return.
-     */  
+     */
     public String filterEndElement(NamedObj container, String elementName)
 	throws Exception {
 	return elementName;
@@ -243,7 +243,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     private static HashMap _actorsWithPropertyClassChanges;
 
     // Map of old container.port to new container.newPort;
-    private static HashMap _containerPortMap; 
+    private static HashMap _containerPortMap;
 
     // The the full name of the actor we are currently processing
     private static String _currentActorFullName;
@@ -251,18 +251,18 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPropertyClassChanges = false; 
+	_currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPortNameChanges = false; 
+	_currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are done processing an actor.
     private static boolean _doneProcessingActorWithPortNameChanges = false;
 
     // Last "name" value seen, for use if we see a "class".
-    private static String _lastNameSeen; 
+    private static String _lastNameSeen;
 
     // The new class name for the property we are working on.
     private static String _newClass;
@@ -280,7 +280,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	// Actors with port name changes.
 	_actorsWithPortNameChanges = new HashMap();
 	_containerPortMap = new HashMap();
-	
+
 	// ComplexToCartesian: real is now x, imag is now y.
 	HashMap cartesianPorts = new HashMap();
 	cartesianPorts.put("real", "x");
@@ -310,7 +310,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	sourceURLClassChanges.put("sourceURL", "ptolemy.data.expr.Parameter");
 
 	_actorsWithPropertyClassChanges
-	    .put("ptolemy.actor.lib.javasound.AudioReader", 
+	    .put("ptolemy.actor.lib.javasound.AudioReader",
 		 sourceURLClassChanges);
 
 	// ImagePartition

@@ -74,11 +74,11 @@ public class NonStrictDelay extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
-        
+
         initialValue = new Parameter(this, "initialValue");
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 

@@ -38,11 +38,11 @@ import diva.util.java2d.ShapeUtilities;
  *  Shape.  The figure can have a fill with optional compositing (for
  *  translucency), and a stroke with a different fill.  With this
  *  class, simple objects can be created on-the-fly simply by passing
- *  an instance of java.awt.Shape to the constructor.  
+ *  an instance of java.awt.Shape to the constructor.
  *
- *  This figure is versatile because it can happily take a PaintedObject 
- *  in addition to specific shapes.  This class takes care of the 
- *  complications with all the different types of PaintedObject types, 
+ *  This figure is versatile because it can happily take a PaintedObject
+ *  in addition to specific shapes.  This class takes care of the
+ *  complications with all the different types of PaintedObject types,
  *  such as PaintedShape, PaintedString, and PaintedPath.
  *
  * @deprecated Will be moved from Diva to ptolemy/vergil/icon.
@@ -50,13 +50,13 @@ import diva.util.java2d.ShapeUtilities;
  * @version $Revision$
  * @author  Nick Zamora
  */
-public class VersatileFigure extends AbstractFigure 
+public class VersatileFigure extends AbstractFigure
     implements ShapedFigure, Cloneable {
 
     /** The color compositing operator
      */
     private Composite _composite = AlphaComposite.SrcOver; // opaque
-    
+
     /** The painted shape that we use to draw the connector.
      */
     private PaintedObject _paintedObject = null;
@@ -160,9 +160,9 @@ public class VersatileFigure extends AbstractFigure
     public PaintedObject getPaintedObject () {
         return _paintedObject;
     }
-      
-    /** Get the shape of this figure.  Note that IF this object 
-     *  represents a PaintedString, this method is the same as 
+
+    /** Get the shape of this figure.  Note that IF this object
+     *  represents a PaintedString, this method is the same as
      *  getBounds()
      */
     public Shape getShape () {
@@ -198,7 +198,7 @@ public class VersatileFigure extends AbstractFigure
 	}
     }
 
-    /** Get the stroke paint pattern of this figure if it is a 
+    /** Get the stroke paint pattern of this figure if it is a
      *  painted shape or painted path.  Otherwise, return null.
      */
     public Paint getStrokePaint () {
@@ -287,10 +287,10 @@ public class VersatileFigure extends AbstractFigure
     }
 
    /** Set the line width of this figure. If the width is zero,
-    * then the stroke will be removed.  Note that if this is a 
-    * painted string, then the size of the font will be changed 
-    * to approximately the same size.  
-    * 
+    * then the stroke will be removed.  Note that if this is a
+    * painted string, then the size of the font will be changed
+    * to approximately the same size.
+    *
     */
     public void setLineWidth (float lineWidth) {
       repaint ();
@@ -308,7 +308,7 @@ public class VersatileFigure extends AbstractFigure
       repaint ();
     }
 
-    /** Set the shape of this figure.  If this is a 
+    /** Set the shape of this figure.  If this is a
      *  painted string, do nothing.
      */
     public void setShape (Shape s) {
@@ -326,7 +326,7 @@ public class VersatileFigure extends AbstractFigure
         repaint ();
     }
 
-    /** Set the stroke of this figure.  If this is a 
+    /** Set the stroke of this figure.  If this is a
      *  painted string, do nothing.
      */
     public void setStroke (Stroke s) {
@@ -344,7 +344,7 @@ public class VersatileFigure extends AbstractFigure
         repaint ();
     }
 
-    /** Set the stroke paint pattern of this figure.  If 
+    /** Set the stroke paint pattern of this figure.  If
      *  this is a painted string, do nothing.
      */
     public void setStrokePaint (Paint p) {
@@ -370,7 +370,7 @@ public class VersatileFigure extends AbstractFigure
      * modified directly. Otherwise, a general transformation is used
      * that loses the type of the shape, converting it into a
      * GeneralPath.
-     * 
+     *
      * If this is a painted string, do nothing.
      */
     public void transform (AffineTransform at) {
@@ -392,7 +392,7 @@ public class VersatileFigure extends AbstractFigure
 	repaint ();
     }
 
-    /** 
+    /**
      * Translate the figure with by the given distance.
      * As much as possible, this method attempts
      * to preserve the type of the shape: if the shape of this figure
@@ -426,8 +426,8 @@ public class VersatileFigure extends AbstractFigure
      */
     public Object clone() {
 	Shape cloneShape = ShapeUtilities.cloneShape(getShape());
-        PaintedObject object = 
-	    new PaintedShape(cloneShape, getFillPaint(), 
+        PaintedObject object =
+	    new PaintedShape(cloneShape, getFillPaint(),
 			     getLineWidth(), getStrokePaint());
 	VersatileFigure clone = new VersatileFigure(object);
 	clone.setStroke(getStroke());

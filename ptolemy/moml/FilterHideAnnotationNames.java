@@ -1,4 +1,4 @@
-/* Filter that adds _hideName to annotations 
+/* Filter that adds _hideName to annotations
 
  Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
@@ -46,15 +46,15 @@ property for any annotations.
 @version $Id$
 */
 public class FilterHideAnnotationNames implements MoMLFilter {
-        
+
     /** If the attributeName is "name" and attributeValue ends
-     *	with "annotation", then 
+     *	with "annotation", then
      *  <pre>
      *   <property name="_hideName" class="ptolemy.data.expr.Parameter">
      *   </property>
      *  <pre>
      *  is added if it is not yet present.
-     *  
+     *
      *  @param container  The container for this attribute.
      *  in this method.
      *  @param attributeName The name of the attribute.
@@ -92,7 +92,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 		_currentlyProcessingAnnotation = false;
 		_debug("filterAttributeValue: saw _hideName");
 	    }
-	} 
+	}
 	if ( _currentlyProcessingAnnotation
 	     && container != null
 	     && !container.getFullName()
@@ -111,16 +111,16 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 	    _currentlyProcessingAnnotation = false;
 	}
 	return attributeValue;
-    } 
+    }
 
     /** Given the elementName, perform any filter operations
      *  that are appropriate for the MOMLParser.endElement() method.
      *  @param container  The container for this attribute.
      *  in this method.
-     *  @param elementName The element type name. 
-     *  @return the filtered element name, or null if 
+     *  @param elementName The element type name.
+     *  @return the filtered element name, or null if
      *  MoMLParser.endElement() should immediately return.
-     */  
+     */
     public String filterEndElement(NamedObj container, String elementName)
     throws Exception {
 	_debug("filterEndElement: " + container + "\t" + elementName);
@@ -134,7 +134,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 	    //<property name="_hideName" class="ptolemy.data.expr.Parameter">
 	    //</property>
 	    Parameter hideName = new Parameter(container, "_hideName");
-	    
+
 	    _debug("filterEndElement: added " + hideName + "\n" + hideName.exportMoML());
 	}
 	return elementName;
@@ -146,7 +146,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
     }
 
     private boolean _currentlyProcessingAnnotation = false;
-    
+
     // The the full name of the annotation we are currently processing
     private static String _currentAnnotationFullName;
 }

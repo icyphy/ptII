@@ -211,10 +211,10 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
-     */   
+     */
     public void addMoMLFilter(MoMLFilter filter) {
 	if (_filterList == null) {
-	    _filterList = new LinkedList(); 
+	    _filterList = new LinkedList();
 	}
         _filterList.add(filter);
     }
@@ -272,7 +272,7 @@ public class MoMLParser extends HandlerBase {
 		// startElement() because we already did it in
 		// attribute().
 		_skipElementIsNew = true;
-		_skipElementName = _parser.getCurrentElement(); 
+		_skipElementName = _parser.getCurrentElement();
 		// Is there ever a case when _skipElement would not
 		// be 0 here?  I'm not sure . . .
 		_skipElement++;
@@ -538,7 +538,7 @@ public class MoMLParser extends HandlerBase {
     /** Get the List of MoMLFilters used to translate names.
      *  Note that this method is static.  The returned MoMLFilters
      *  will filter all MoML for any instances of this class.
-     *  @return The MoMLFilters currently filtering. 
+     *  @return The MoMLFilters currently filtering.
      */
     public List getMoMLFilters() {
         return _filterList;

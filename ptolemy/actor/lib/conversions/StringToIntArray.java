@@ -51,13 +51,13 @@ import ptolemy.math.Complex;
 /// StringToIntArray
 
 /**
-Convert a string to an integer-array.  The output is an array of integers 
-constructed by placing one byte (i.e. one character) of the string into 
-the least significant byte of each integer.  Typically, this byte is the 
-ASCII code of the character.  NOTE: For the time being, this actor assumes 
+Convert a string to an integer-array.  The output is an array of integers
+constructed by placing one byte (i.e. one character) of the string into
+the least significant byte of each integer.  Typically, this byte is the
+ASCII code of the character.  NOTE: For the time being, this actor assumes
 an 8-bit character has been set as the Java default on the platform in use.
-This actor is designed to facilitate use of the SerialComm serial 
-communication actor which uses the same kind of integer array.  Datagram 
+This actor is designed to facilitate use of the SerialComm serial
+communication actor which uses the same kind of integer array.  Datagram
 actors can take this format as well.
 <p>
 @author Winthrop Williams

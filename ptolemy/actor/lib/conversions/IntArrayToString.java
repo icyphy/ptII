@@ -51,10 +51,10 @@ import ptolemy.math.Complex;
 /// IntArrayToString
 
 /**
-Convert an integer-array into a string.  Uses only the low order byte from 
-each integer.  NOTE: Assumes an 8-bit character set.  The output is a string 
-assembled from these bytes.  This actor is designed to facilitate use of the 
-SerialComm serial communication actor which uses the same kind of integer 
+Convert an integer-array into a string.  Uses only the low order byte from
+each integer.  NOTE: Assumes an 8-bit character set.  The output is a string
+assembled from these bytes.  This actor is designed to facilitate use of the
+SerialComm serial communication actor which uses the same kind of integer
 array format as this actor.  Datagram actors can use this format as well.
 <p>
 

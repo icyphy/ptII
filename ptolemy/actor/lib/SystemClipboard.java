@@ -72,11 +72,11 @@ import java.awt.event.KeyEvent;
 
 /**
 This actor copies, to the system clipboard, the contents of any token received
-at its <i>input</i> port.  It pastes, from the system clipboard, to the 
+at its <i>input</i> port.  It pastes, from the system clipboard, to the
 <i>output</i> port, whenever it receives a token at the <i>trigger</i>.
-If both inputs receive tokens during the same firing, the paste is done 
-before the copy.  This ordering insures that the contents of the clipboard 
-are not lost in the event of a simultaneous copy-paste operation.  This 
+If both inputs receive tokens during the same firing, the paste is done
+before the copy.  This ordering insures that the contents of the clipboard
+are not lost in the event of a simultaneous copy-paste operation.  This
 actor is designed to work with KeystrokeSensor.java.  <p>
 
 @author Winthrop Williams
@@ -96,7 +96,7 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
         trigger = new TypedIOPort(this, "trigger");
         trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setInput(true);
- 
+
         // Output
         output = new TypedIOPort(this, "output");
         output.setTypeEquals(BaseType.STRING);
@@ -150,13 +150,13 @@ public class SystemClipboard extends TypedAtomicActor implements ClipboardOwner 
     }
 
     /** Comply with the ClipboardOwner interface.  It requires a
-     *  method exist named <i>lostOwnership</i>.  
-     *  
-     *  Without this (and having the actor, or something, 
+     *  method exist named <i>lostOwnership</i>.
+     *
+     *  Without this (and having the actor, or something,
      *  implement ClipboardOwner, I get the following error:
-     *  
+     *
      *  setContents(java.awt.datatransfer.Transferable,
-     *              java.awt.datatransfer.ClipboardOwner) 
+     *              java.awt.datatransfer.ClipboardOwner)
      *           in java.awt.datatransfer.Clipboard
      *           cannot be applied to
      *             (java.awt.datatransfer.StringSelection,

@@ -48,7 +48,7 @@ run tests when there is no graphical display present.
 */
 
 public class FilterOutGraphicalClasses implements MoMLFilter {
-        
+
     /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
      *  or "ptolemy.vergile.basic.NodeControllerFactory"
      *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
@@ -56,7 +56,7 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
      *  "ptolemy.vergil.icon.BoxedValueIcon" then return null, which
      *  will cause the MoMLParser to skip the rest of the element;
      *  otherwise return the original value of the attributeValue.
-     *  
+     *
      *  @param container  The container for this attribute, ignored
      *  in this method.
      *  @param attributeName The name of the attribute, ignored
@@ -80,16 +80,16 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
             return (String) _graphicalClasses.get(attributeValue);
         }
         return attributeValue;
-    } 
+    }
 
     /** Given the elementName, perform any filter operations
      *  that are appropriate for the MOMLParser.endElement() method.
      *  @param container  The container for this attribute.
      *  in this method.
-     *  @param elementName The element type name. 
-     *  @return the filtered element name, or null if 
+     *  @param elementName The element type name.
+     *  @return the filtered element name, or null if
      *  MoMLParser.endElement() should immediately return.
-     */  
+     */
     public String filterEndElement(NamedObj container, String elementName)
 	throws Exception {
 	return elementName;

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 //// MoMLFilter
 /**
 This class filters MoML (modeling markup language) identifiers.
-It can be used to 
+It can be used to
 <menu>
 <li> Remove graphical classes for use in a non-graphical environment
 <li> Change the names of actors and ports for backward compatibility.
@@ -65,10 +65,10 @@ public interface MoMLFilter {
      *  that are appropriate for the MOMLParser.endElement() method.
      *  @param container  The container for this attribute.
      *  in this method.
-     *  @param elementName The element type name. 
-     *  @return the filtered element name, or null if 
+     *  @param elementName The element type name.
+     *  @return the filtered element name, or null if
      *  MoMLParser.endElement() should immediately return.
-     */  
+     */
     public String filterEndElement(NamedObj container, String elementName)
     throws Exception;
 }

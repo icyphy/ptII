@@ -94,14 +94,14 @@ public class LevelCrossingDetector extends Transformer
         _level = 0.0;
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
-        
+
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
-        
+
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ public class LevelCrossingDetector extends Transformer
     /** The parameter that specifies the default output event value
      *  if the input port is not connected to any thing. If the
      *  input is connected, this value is ignored.
-     *  By default, it contains a DoubleToken of value 0.0.  
+     *  By default, it contains a DoubleToken of value 0.0.
      */
     public Parameter defaultEventValue;
 
@@ -215,14 +215,14 @@ public class LevelCrossingDetector extends Transformer
         if(_debugging) _debug(getFullName() + "initialize");
     }
 
-    /** Return true if this step does not cross the threshold. 
+    /** Return true if this step does not cross the threshold.
      *  The current trigger
      *  token will be compared to the previous trigger token. If they
      *  cross the level threshold, this step is not accurate.
      *  A special case is taken care so that if the previous trigger
-     *  and the current trigger both equal to the level value, 
+     *  and the current trigger both equal to the level value,
      *  then no new event is
-     *  detected. If this step crosses the level threshold, 
+     *  detected. If this step crosses the level threshold,
      *  then the refined integration
      *  step size is computed by linear interpolation.
      *  If this is the first iteration after initialize() is called,
@@ -254,9 +254,9 @@ public class LevelCrossingDetector extends Transformer
             if(!_enabled) {  // if last step is a level, always accurate.
                 _enabled = true;
             } else {
-                if ((_lastTrigger - _level) * (_thisTrigger - _level) 
+                if ((_lastTrigger - _level) * (_thisTrigger - _level)
                         < 0.0) {
-                    
+
                     CTDirector dir = (CTDirector)getDirector();
                     _eventMissed = true;
                     // The refined step size is a linear interpolation.
@@ -350,9 +350,9 @@ public class LevelCrossingDetector extends Transformer
 
     // the current input token.
     private  Token _inputToken;
-    
+
     // Indeicating whether the 'level' value has changed.
     private boolean _levelChanged;
 
-   
+
 }

@@ -80,7 +80,7 @@ public class Sleep extends Transformer {
 
     /** The sleepTime amount, in milliseconds
      *  This parameter must contain a LongToken.
-     *  The default value of this parameter is 0, meaning 
+     *  The default value of this parameter is 0, meaning
      *  that this actor will not sleep the current thread at all.
      */
     public Parameter sleepTime;
@@ -111,7 +111,7 @@ public class Sleep extends Transformer {
 	    // Pull these out of the loop so we do not call them
 	    // more than once.
 	    int inputWidth = input.getWidth();
-	    int outputWidth = output.getWidth();		
+	    int outputWidth = output.getWidth();
 	    for (int i = 0; i < inputWidth; i++) {
 		if(input.hasToken(i)) {
 		    Token inToken = input.get(i);
@@ -128,7 +128,7 @@ public class Sleep extends Transformer {
      *  @return Whatever the superclass returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
-	_wasSleepCalledInFireYet = false; 
+	_wasSleepCalledInFireYet = false;
         return super.postfire();
     }
 
@@ -137,7 +137,7 @@ public class Sleep extends Transformer {
      *  @return Whatever the superclass returns (probably true).
      */
     public boolean prefire() throws IllegalActionException {
-	_wasSleepCalledInFireYet = false; 
+	_wasSleepCalledInFireYet = false;
         return super.prefire();
     }
 
@@ -146,5 +146,5 @@ public class Sleep extends Transformer {
 
     // True if sleep was called in fire().  Sleep should only
     // be called once in fire().
-    private boolean _wasSleepCalledInFireYet = false; 
+    private boolean _wasSleepCalledInFireYet = false;
 }

@@ -246,7 +246,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
-        // If the _refireActors list is not empty, then 
+        // If the _refireActors list is not empty, then
         // prefire, fire, and post fire these actors immediately.
         // This may happen when there are discrete event composite
         // actors that produces initial tokens. So, cloning the list,
@@ -272,7 +272,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 getCurrentTime() + " step size" + getCurrentStepSize()
                 + " using solver " + getCurrentODESolver().getName());
         _fireOneIteration();
-        
+
         // Process discrete events.
         _discretePhaseExecution();
     }
@@ -359,7 +359,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
    /**  Return true always, indicating that the system is always ready
-     *  for one iteration. 
+     *  for one iteration.
      *  Note that no actors are prefired in this method.
      *
      *  @return True Always.
@@ -436,11 +436,11 @@ public class CTMultiSolverDirector extends CTDirector {
                     actor.postfire();
                 }
                 // If the actor requires for refire at the current time,
-                // then we fire it immediately. 
-                // NOTE: We use the _refireActors list to check 
+                // then we fire it immediately.
+                // NOTE: We use the _refireActors list to check
                 // for whether a refire at current time is requested.
-                // 
-                
+                //
+
                 if(_refireActors != null && !_refireActors.isEmpty()) {
                     if(actor.prefire()) {
                         actor.fire();

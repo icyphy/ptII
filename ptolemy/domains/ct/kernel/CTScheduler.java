@@ -233,7 +233,7 @@ public class CTScheduler extends Scheduler {
         List continuousActors = _signalTypes.getContinuousActors();
         return continuousActors.contains(actor);
     }
-    
+
 
     /** Return the predecessors of the given actor in the topology within
      *  this opaque composite actor.
