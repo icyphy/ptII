@@ -157,10 +157,7 @@ public class PtParser {
  public pt.data.Token parseExpression(String stringIn) throws IllegalArgumentException {
      InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
      this.ReInit(stream);
-     // Need to reset the state of the parser
-     _scope = null;
-     _param = null;
-
+        
      String str = stringIn.replace('\n', ' ');
      System.out.print("\nParsing expression: ");
      System.out.println(str);
@@ -471,6 +468,9 @@ String tidied, x;
                 // FIXME: eventually we'll want to store the param in the
                 // node so that can _just_ reevaluate the tree each time
                 // ie the token may change, but the param won't!
+            } else { 
+                String str = " Param " + token.image + " not visible in ";
+                throw new ParseException(str + "current scope");
             }
         } else if (token.image.equalsIgnoreCase("PI")) {
             jjtThis._ptToken = new pt.data.DoubleToken(Math.PI);
@@ -480,9 +480,9 @@ String tidied, x;
             jjtThis._ptToken = new pt.data.BooleanToken(true);
         } else if (token.image.equalsIgnoreCase("FALSE")) {
             jjtThis._ptToken = new pt.data.BooleanToken(false);
-        }
-        else {
-            jjtThis._ptToken = new pt.data.StringToken(token.image);
+        } else {
+            String str = " Param " + token.image + " not visible in ";
+            throw new ParseException(str + "current scope");
         }
     }
 }
