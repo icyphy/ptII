@@ -44,25 +44,8 @@ ROOT =		../../../..
 
 ME =		java/pt/data/parser
 
-
-
 #JAVACC=java "-Dinstall.root/users/ptdesign/vendors/sun/JavaCC" COM.sun.labs.javacc.Main
 JAVAC=javac
-
-PtTreeParser: PtTreeParser.jjt
-	jjtree PtTreeParser.jjt
-	javacc PtTreeParser.jj
-	$(JAVAC) *.java
-
-PtSimpleParser : PtSimpleParser.jj
-	javacc PtSimpleParser.jj
-	$(JAVAC) *.java
-
-ptAdvancedParser : ptAdvancedParser.jj
-	$(JAVACC) ptAdvancedParser.jj
-	$(JAVAC) *.java
-
-
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -81,7 +64,15 @@ TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
-JSRCS = 
+JSRCS = \
+	PtParser.java \
+	ASTPtSimpleNode.java \
+	ASTPtSumNode.java \
+	ASTPtProductNode.java \
+	ASTPtUnaryNode.java \
+	ASTPtExpNode.java \
+	ASTPtFunctionNode.java \
+	Test.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
@@ -99,7 +90,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
 
-all: PtSimpleParser PtTreeParser
+all1: PtParser $(JCLASS)
+all:   $(JCLASS) 
 install: PTSimpleParser javadocs $(JARFILE)
 docs: javadocs
 
@@ -108,6 +100,26 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
+
+PtParser.java : PtParser.jjt
+	jjtree PtParser.jjt
+	javacc PtParser.jj
+	$(JAVAC) *.java
+
+PtTreeParser: PtTreeParser.jjt
+	jjtree PtTreeParser.jjt
+	javacc PtTreeParser.jj
+	$(JAVAC) *.java
+
+PtSimpleParser : PtSimpleParser.jj
+	javacc PtSimpleParser.jj
+	$(JAVAC) *.java
+
+ptAdvancedParser : ptAdvancedParser.jj
+	$(JAVACC) ptAdvancedParser.jj
+	$(JAVAC) *.java
+
+
 
 clean:
 	rm *.class
