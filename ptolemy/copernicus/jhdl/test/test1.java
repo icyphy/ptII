@@ -293,6 +293,28 @@ public class test1 extends TypedAtomicActor {
 	d += a + 5;
 	return d;
     }
+    public int method34_1(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	} else {
+	    d -= a;
+	}
+	d += 5;
+	return d;
+    }
+    public int method34_2(int a) {
+	int d=0;
+	int e=1;
+	if (a > 5) {
+	    d += a;
+	} else {
+	    d -= a;
+	    e += a;
+	}
+	d += 5;
+	return d;
+    }
 
     /** Used to test serial combining (one fork) **/
     public int method35(int a) {
@@ -303,6 +325,14 @@ public class test1 extends TypedAtomicActor {
 	}
 	d = d * 2 + a;
 	d += a + 5;
+	return d;
+    }
+    public int method35_1(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	}
+	d += 5;
 	return d;
     }
 
@@ -376,6 +406,16 @@ public class test1 extends TypedAtomicActor {
     }
 
     /** e is not used before block **/
+    public int method37_2_1(int a) {
+	int d = 4;	
+	d = e;
+	if (a > 5) {
+	    e = a * 2 + e;
+	}
+	return d;
+    }
+
+    /** e is not used before block **/
     public int method37_3(int a) {
 	int d = 4;	
 	e = d;
@@ -385,6 +425,11 @@ public class test1 extends TypedAtomicActor {
 	    e = a * d - e;
 	}
 	return d;
+    }
+
+    /** Use of an array **/
+    public int method50(int a[]) {
+	return a[0];
     }
 
     /* Simple method with one basic block and one operation */

@@ -98,7 +98,7 @@ public class CircuitGenerator {
 	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("orig",bdfg);
 
 	// remove all local nodes
-  	bdfg.removeLocalNodes();
+  	removeLocalNodes(bdfg);
 	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("trimmed",bdfg);
 	
 	// Find return statement node
@@ -249,6 +249,65 @@ public class CircuitGenerator {
 	    }
 	}
 
+    }
+
+    /** This method will iterate through the graph and remove Nodes 
+     * corresponding to Local references in the original byte codes.
+     **/
+    public void removeLocalNodes(BlockDataFlowGraph bdfg) throws JHDLUnsupportedException {
+	ArrayList al = new ArrayList();
+	for (Iterator i = bdfg.nodes().iterator(); i.hasNext();) {
+	    Node node = (Node) i.next();
+	    Object weight = node.weight();
+
+	    // A Node is a removable if the following conditions are met:
+	    // - it has only one direct predecessor
+	    // - it has only one direct successor
+	    // - it corresponds to a Local in the original Soot representation
+	    if (bdfg.inputEdgeCount(node) == 1
+//		&& outputEdgeCount(node) == 1
+		&& (weight instanceof soot.Local) 
+//  		&& ((Local)nvalue).getName().startsWith("$")
+		) {
+
+		// Found a stack variable.
+		//System.out.println("trim "+((Local)nvalue).getName());
+
+		// 1. Identify source node to stack variable node. Remove
+		//    edge from source node to stack variable node.
+		Node sourceNode=null;
+		for (Iterator j=bdfg.inputEdges(node).iterator();j.hasNext();) {
+ 		    Edge e = (Edge) j.next();
+		    Node s = e.source();
+		    if (sourceNode == null) {
+			sourceNode = s;
+		    } else
+			// Should never get here
+			throw new JHDLUnsupportedException("More than one source to a stack variable");
+		}
+		if (sourceNode == null)
+		    // Should never get here
+		    throw new JHDLUnsupportedException("No source to a stack variable");
+
+		// 2. Identify all outgoing edges of stack variable node. 
+		//    Remove these edges and add a new edge with same weight,
+		//    and originating from sourceNode.
+		for (Iterator j=bdfg.outputEdges(node).iterator();j.hasNext();) {
+		    Edge e = (Edge) j.next();
+		    if (e.hasWeight())
+			bdfg.addEdge(sourceNode,e.sink(),e.weight());
+		    else
+			bdfg.addEdge(sourceNode,e.sink());
+		}
+		// 3. Remove stack variable node
+		al.add(node);
+ 	    } 
+	}
+	// Now, remove all nodes that have been saved.
+	for (Iterator i=al.iterator();i.hasNext();) {
+	    Node n = (Node) i.next();
+	    bdfg.removeNode(n);
+	}
     }
 
     public Wire createPrimaryInput(String name, int width) {

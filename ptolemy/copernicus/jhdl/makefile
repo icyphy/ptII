@@ -62,7 +62,8 @@ JSRCS = \
 	DirectedAcyclicCFG.java \
 	DominatorCFG.java \
 	IntervalChain.java \
-	IntervalDFG.java
+	IntervalDFG.java \
+	MapList.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \

@@ -29,6 +29,7 @@
 
 package ptolemy.copernicus.jhdl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
 import java.util.List;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.HashMap;
 
+import soot.SootField;
 import soot.Value;
 import soot.Body;
 import soot.Local;
@@ -85,6 +87,12 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	super((Block) ic.getRoot().weight());
 	_ic = ic;
 	
+	_processChain(requiredDefinitions);
+    }
+
+    protected void _processChain(Collection requiredDefinitions) 
+	throws JHDLUnsupportedException {
+
 	// 1. Create graph for next interval
 	// 2. Deterimine defintions for this Node
 	// 3. Merge children of fork Nodes
@@ -134,71 +142,82 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    // key=IntervalChain root Node, Value=IntervalChain
 	    Map children = _ic.getChildren();
 	    // key=Value, Value=Node
-	    Map rootLvalues = getCurrentLValues();
+	    ValueMap rootVM = new ValueMap(_locals,_instanceFieldRefs);
+
 	    // key=IntervalDFG, Value=child LValues (key=value,value=Node)
-	    HashMap childrenLValues = new HashMap(children.size());
+	    HashMap childrenValueMaps = new HashMap(children.size());
 
 	    for (Iterator i = children.values().iterator();i.hasNext();) {
 		IntervalChain childInterval = (IntervalChain) i.next();
 		IntervalDFG childDFG = 
 		    new IntervalDFG(childInterval,childrenDefinitions);
-		Map childLValues = childDFG.getCurrentLValues();
 		_requiredDefinitions.addAll(childDFG.getRequiredDefinitions());
-		mergeSerial(childDFG,rootLvalues);
-		childrenLValues.put(childDFG,childLValues);
+
+		_valueMap = (ValueMap) rootVM.clone();
+		mergeSerial(childDFG);
+		childrenValueMaps.put(childDFG,_valueMap);
 	    }
+
+	    _valueMap = rootVM;
 
 	    if (children.values().size() == 1) {
 		// Only one branch. Merge the root graph with
 		// the branch graph.
 
-		Iterator i = childrenLValues.keySet().iterator();
-		IntervalDFG child = (IntervalDFG) i.next();
-		Map childLValues = (Map) childrenLValues.get(child);
-
-		// Iterate over each defined value and create a merge
-		// node to resolve the between the root DFG and the 
-		// child DFG.
-		for (i=childLValues.keySet().iterator();i.hasNext();) {
+		Iterator i = childrenValueMaps.keySet().iterator();
+		IntervalDFG childDFG = (IntervalDFG) i.next();
+		ValueMap childMap = (ValueMap) childrenValueMaps.get(childDFG);
+		
+		for (i=childMap.getDefs().keySet().iterator();i.hasNext();) {
 		    Value origv = (Value) i.next();
-		    if (isValueDefined(origv)) {
-			Node childn = (Node) childLValues.get(origv);
-  			_multiplexWithOneChild(child,childn);
+		    Node n = (Node) childMap.getDefs().get(origv);
+//  		    System.out.println("New def="+n+" id="+
+//  				       System.identityHashCode(n));
+		    if (isRequired(origv)) {
+//  			System.out.println("def needed");
+			Node childn = childMap.getLast(origv);
+			Node parentn = getOrCreateNode(origv);
+  			_multiplexNodes(childDFG,childn,parentn);
+			//System.out.println("Multiplexing node "+childn);
 		    }
 		}
 	    } else if (children.values().size() == 2) {
+
 		// Two branches. Merge all of their outputs.		
 		// Obtain the defintions defined by both children
-		Iterator i = childrenLValues.keySet().iterator();
-		IntervalDFG child1 = (IntervalDFG) i.next();
-		IntervalDFG child2 = (IntervalDFG) i.next();
-		Map child1LValues = (Map) childrenLValues.get(child1);
-		Map child2LValues = (Map) childrenLValues.get(child2);
+		Iterator i = childrenValueMaps.keySet().iterator();
+		IntervalDFG child1DFG = (IntervalDFG) i.next();
+		IntervalDFG child2DFG = (IntervalDFG) i.next();
+		ValueMap child1Map = (ValueMap) childrenValueMaps.get(child1DFG);
+		ValueMap child2Map = (ValueMap) childrenValueMaps.get(child2DFG);
+
 		// Iterate through all of child1Values
-		for (i=child1LValues.keySet().iterator();i.hasNext();) {
+		for (i=child1Map.getDefs().keySet().iterator();i.hasNext();) {
 		    Value origv = (Value) i.next();
-		    if (isValueDefined(origv)) {
-			Node child1n = (Node) child1LValues.get(origv);
-			if (child2LValues.containsKey(origv)) {
-			    // merge two children
-			    Node child2n = (Node) child2LValues.get(origv);
-			    _multiplexTwoChildren(child1,child2,
-						  child1n,child2n);
+		    if (isRequired(origv)) {
+			Node child1n = (Node) child1Map.getDefs().get(origv);
+			if (child2Map.getDefs().containsKey(origv)) {
+			    Node child2n = (Node) child2Map.getDefs().get(origv);
+			    _multiplexNodes(child1DFG,child1n,child2n);
 			} else {
-			    // merge child1 with root			
-			    _multiplexWithOneChild(child1,child1n);
+			    Node parentn = getOrCreateNode(origv);
+			    _multiplexNodes(child1DFG,child1n,parentn);
 			}
 		    }
 		}
 		// Iterate through all of child2Values
-		for (i=child2LValues.keySet().iterator();i.hasNext();) {
+		for (i=child2Map.getDefs().keySet().iterator();i.hasNext();) {
 		    Value origv = (Value) i.next();
-		    if (isValueDefined(origv)) {
-			Node child2n = (Node) child2LValues.get(origv);
-			_multiplexWithOneChild(child2,child2n);
+		    if (isRequired(origv) && 
+			!child1Map.getDefs().containsKey(origv)) {
+			Node child2n = (Node) child2Map.getDefs().get(origv);
+			Node parentn = getOrCreateNode(origv);
+			_multiplexNodes(child2DFG,child2n,parentn);
+//  			System.out.println("Multiplexing node from parent "+
+//  					   child2n);
 		    }
 		}
- 	    } else {
+	    } else {
 		// A switch.
 		throw new JHDLUnsupportedException("Switches not yet supported");
 	    }
@@ -209,37 +228,134 @@ public class IntervalDFG extends BlockDataFlowGraph {
 
 	// add required definitions of this node
 	Vector newDefs = new Vector();
-	for (Iterator i=getLocalInputDefinitions().iterator();i.hasNext();)
+	// Get simple input definitions
+	for (Iterator i=sourceNodes().iterator();i.hasNext();)
 	    newDefs.add( ((Node) i.next()).weight() );
-	for (Iterator i=getInstanceFieldRefInputDefinitions().iterator();i.hasNext();)
+	for (Iterator i=getInstanceFieldRefInputDefinitions().iterator();
+	     i.hasNext();)
 	    newDefs.add( ((Node) i.next()).weight() );
 	_requiredDefinitions.addAll(newDefs);
 
-	System.out.print(_ic.toShortString()+" defs=");
+//  	System.out.print(_ic.toShortString()+" defs=");
 	for (Iterator i=_requiredDefinitions.iterator();i.hasNext();) {
-	    System.out.print(i.next()+" ");
+	    Object o=i.next();
+//  	    System.out.print(o+" ("+System.identityHashCode(o)+") ");
 	}
 	System.out.println();
 
 	// Connect previously created chain to this node
-	if (_next != null)
-	    mergeSerial(_next);
+	if (_next != null) { 
+	    DEBUG=true; System.out.println("*** Serial Merge ***");
+  	    mergeSerial(_next);
+	    DEBUG=false;
+	}
+    }
+
+    /** returns new lValues **/
+    public void mergeSerial(IntervalDFG dfg) {
+
+	// temporary hashmap between old nodes & new. 
+	// Used when connecting edges
+	HashMap nodeMap = new HashMap(); 
 	
+	// Add all nodes to graph
+	for (Iterator i = dfg.nodes().iterator(); i.hasNext();) {
+	    
+	    Node node = (Node) i.next();	    
+
+	    if (DEBUG) System.out.print("Adding node="+node);
+	    
+	    Node driver = findNodeDriver(dfg,node);
+	    if (driver != null)
+		nodeMap.put(node,driver);
+	    else {
+	    	if (node.weight() instanceof InstanceFieldRef) {
+		    InstanceFieldRef ifr = (InstanceFieldRef) node.weight();
+		    InstanceFieldRef nifr =
+			_getMatchingInstanceFieldRef((InstanceFieldRef) ifr);
+		    if (nifr != null) {
+			Node newnode = addNodeWeight(nifr);
+			_valueMap.addInstanceFieldRef(nifr,newnode);
+			nodeMap.put(node,newnode);
+		    } else
+			addNode(node);
+		} else
+		    addNode(node);		
+	    }
+	}
+	    
+	// Iterate through all edges and add to graph
+	for (Iterator i = dfg.edges().iterator(); i.hasNext();) {
+	    Edge e = (Edge) i.next();
+	    Node src = e.source();
+	    if (nodeMap.containsKey(src))
+		src = (Node) nodeMap.get(src);
+	    Node snk = e.sink();		
+	    if (nodeMap.containsKey(snk))
+		snk = (Node) nodeMap.get(snk);
+
+	    if (successorEdges(src,snk).size() == 0) {
+		// Add edge (avoid duplicates)
+		if (e.hasWeight())
+		    addEdge(src,snk,e.weight());
+		else
+		    addEdge(src,snk);
+		Object snkWeight = snk.weight();
+		if (snkWeight instanceof Local ||
+		    snkWeight instanceof InstanceFieldRef)
+		    _valueMap.addNewDef(snk);
+	    }
+	}	
+    }
+
+    public Node addNode(Node n) {
+
+	super.addNode(n);
+	Object weight = n.weight();
+  	if (weight instanceof Local) {
+	    _valueMap.addLocal((Local)weight,n);
+  	}
+	if (weight instanceof InstanceFieldRef) {
+	    _valueMap.addInstanceFieldRef((InstanceFieldRef)weight,n);
+	}
+	return n;
+    }
+
+    protected Node findNodeDriver(BlockDataFlowGraph dfg, Node n) {
+	
+	Object weight = n.weight();
+	if (weight instanceof Local) {
+	    if (dfg.inputEdges(n).size() == 0) {
+		// return 
+		return _valueMap.getLastLocal(weight);
+	    } else
+		return null; // Node is being driven
+	}
+	if (weight instanceof InstanceFieldRef) {
+	    InstanceFieldRef ifr = (InstanceFieldRef) weight;
+	    if (dfg.inputEdges(n).size() == 1) {
+		return _valueMap.getMatchingInstanceFieldRefNode(ifr);
+	    }
+	}
+	return null;
     }
 
     public IntervalChain getIntervalChain() { return _ic; }
 
+    /*
     public boolean isValueDefined(Value v) {
 	if (_requiredDefinitions.contains(v))
 	    return true;	
 	if (v instanceof InstanceFieldRef) {	    
-	    InstanceFieldRef d = getMatchingIFR((InstanceFieldRef)v,
-						_requiredDefinitions);
+	    InstanceFieldRef d = 
+		getMatchingInstanceFieldRef((InstanceFieldRef)v,
+					    _requiredDefinitions);
 	    if (d != null)
 		return true;
 	}
 	return false;
     }
+    */
 
     public Collection getRequiredDefinitions() {
 	return _requiredDefinitions;
@@ -249,252 +365,79 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	return _ic.toShortString();
     }
 
+    
+    protected Node _multiplexNodes(IntervalDFG child1DFG, 
+				   Node child1,
+				   Node child2) {
+	
+	Value value = (Value) child1.weight();
 
-    /**
-     * This method will merge the provided DFG into the current DFG. The
-     * inputs Nodes of the provided DFG will be driven by Nodes defined
-     * in this DFG (i.e. this preceedes im).
-     *
-     * @return This method returns a HashMap that lists all new definitions
-     * (i.e. lvalues) created by the child DFG. The key of the HashMap
-     * is a Value object as found in the original list of Units (i.e. the
-     * lvalue in the AssignStmt) and the value of the HashMap is the
-     * new Value object that was created for this new definition. This
-     * HashMap is used to determine which Nodes need to be multiplexed
-     * for a join.
-     **/
-    protected HashMap _mergeSerial(IntervalDFG im) 
-	throws JHDLUnsupportedException {
+	// Get the edges associated with the original CFG.
+	Node cNode = getConditionNode();
 
-	// temporary hashmap between old nodes & new. 
-	// Used when connecting edges
-	HashMap newNodes = new HashMap(); 
+	Node trueNode = child1;
+	Node falseNode = child2;
+	if (!isTrueNode(child1DFG)) {
+	    trueNode = child2;
+	    falseNode = child1;
+	}
+	
+	BinaryMuxNode bmn = new BinaryMuxNode(trueNode,falseNode,cNode,
+					      value.toString());
+	Node muxNode = addNodeWeight(bmn);
 
-	// key = Value object in top-level graph, 
-	// Value = new Value object in lower graph.
-	HashMap newDefinitions = new HashMap();
+	addEdge(trueNode,muxNode,"true");
+	addEdge(falseNode,muxNode,"false");
+	addEdge(cNode,muxNode,"condition");
 
-	// Iterate through all nodes and add to graph
-	for (Iterator i = im.nodes().iterator(); i.hasNext();) {
-
-	    Node node = (Node) i.next();	    
-	    Node new_node = null;
-	    Object weight = node.weight(); // all Nodes should have a weight
-
-	    Collection inEdges = im.inputEdges(node);
-
-	    if (inEdges.size() == 0) {
-		// If the given Node has no input edges, it represents
-		// a reference that must be defined by a preceeding
-		// Node in the graph. If a Node with this Value exists
-		// in the parent DFG (i.e. this), use the existing
-		// Node. If not, create a new Node in the graph.
-		new_node = _getNode(weight);
-		newNodes.put(node,new_node);
-	    } else {
-		// This Node has at least one input Edge. This represents
-		// one of two cases:
-		// - an lvalue Node (i.e. the left side of an assignment
-		//   statement)
-		// - a regular operation (non lvalue).
-		// Each case is treated differently.
-		// 
-
-		if (!im.isLValue(node)) {
-		    // This is a regular operation Node that must be copied
-		    // into this DFG. Create a new Node using the 
-		    // same weight
-		    new_node = _getNode(weight); //addNode(new Node(weight));
-		    newNodes.put(node,new_node);
-		} else {
-		    		    
-		    // LValue Node. There are two types of lvalue Nodes
-		    // in the graph:
-		    // - lvalues that are required by downstream DFGs
-		    // - lvalues that are not required by downstream DFGs
-		    // 
-		    // If the lvalue is required by a downstream DFG,
-		    // a copy of the child version must be created so
-		    // that the correct value can be multiplexed.
-		    if (_requiredDefinitions.contains(weight)) {
-			// Copy Value
-			Value newValue=_createNewValue(im,node);
-			new_node = addNode(new Node(newValue));
-			newNodes.put(node,new_node);
-			// Creates a new definition of lvalue.
-			newDefinitions.put(weight,newValue);
-		    } else {
-			// lvalue is not required downstream, create a new
-			// Node using the origional Value object.
-			new_node = addNode(new Node(weight));
-			newNodes.put(node,new_node);
-		    }
-		}
-	    } 
+	Node newValueNode=null;
+	try {
+	    newValueNode = _addLeftValue(value);
+	} catch (JHDLUnsupportedException e) {
 	}
 
-	// Iterate through all edges and add to graph
-	for (Iterator i = im.edges().iterator(); i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    Node src = e.source();
-	    Node snk = e.sink();
-	    Node new_src = (Node)newNodes.get(src);
-	    Node new_snk = (Node)newNodes.get(snk);
-	    if (e.hasWeight())
-		addEdge(new_src,new_snk,e.weight());
-	    else
-		addEdge(new_src,new_snk);
-	}
-	return newDefinitions;
+	// _addSimpleNode, _addInstanceField
+	addEdge(muxNode,newValueNode);
+	return newValueNode;
     }
-
-    /**
-     * This method will attempt to obtain the Node in the current
-     * graph that has the same weight as the passed Value object. 
-     * If no Node exists the the given weight, a new Node with that
-     * weight is created and added to the graph.
-     *
-     *
-     **/
-    protected Node _getNode(Object v) {
-
-	Node newNode=null;
-//  	if (b instanceof InstanceFieldRef) {
-//  	} else {
-	    // If the Node does not exist, create one and return it.
-	    if (!containsNodeWeight(v)) {
-		newNode = addNode(new Node(v));
-		return newNode;
+    
+    /** move to higher level **/
+    public Node getOrCreateNode(Value v) throws JHDLUnsupportedException {
+	Node newNode = _valueMap.getLast(v);
+  	System.out.println("newNode = "+newNode+" value="+v+
+  			   " id="+System.identityHashCode(v));
+	if (newNode == null) {
+  	    if (v instanceof InstanceFieldRef) {
+  		InstanceFieldRef ifr = (InstanceFieldRef) v;
+//  		InstanceFieldRef ifr_p = _getMatchingInstanceFieldRef(ifr);
+//  		newNode = _valueMap.getLast(ifr_p);
+//  		if (newNode == null)
+		newNode = _createInstanceFieldRef(ifr);
+	    } else if (v instanceof Local) {
+		newNode = _createLocal((Local)v);
 	    }
-
-	    // Obtain a collection of all Nodes with the given weight
-	    
-	    Collection nodes = nodes(v);
-	    // If there is only one Node in the graph with the given weight,
-	    // return it.
-	    if (nodes.size() == 1) {
-		newNode = (Node) nodes.iterator().next();
-		return newNode;
-	    }
-	    // There is more than one Node in the graph with the given
-	    // weight. Find the one that is preceeded by the others
-	    // (they should all be connected).
-	    for (Iterator i=nodes.iterator();i.hasNext();) {
-		Node n = (Node) i.next();
-		if (newNode == null)
-		    newNode = n;	    
-		else {
-		    // determine all the nodes that are reachable from newNode
-		    Collection rn = reachableNodes(newNode);
-		    // if n is reachable from newNode, set n as newNode
-		    if (rn.contains(n))
-			newNode = n;
-		}
-	    }	    
-//  	}
-
+	}
 	return newNode;
     }
 
-    /*
-    protected Node _getOrigValueNode(Value origValue) {
-	blah;
-	Node origNode=null;
-
-	if (!containsNodeWeight(origValue)) {
-	    origNode = addNode(new Node(origValue));
-	}
-	else {
-	    // Get Node (find one that is last in the list)
-	    Collection nodes = nodes(origValue);
-	    if (nodes.size() == 1)
-		origNode = (Node) nodes.iterator().next();
-	    else {
-		for (Iterator i=nodes.iterator();i.hasNext();) {
-		    Node n = (Node) i.next();
-		    if (origNode == null)
-			origNode = n;
-		    else if (_sortedNodes.indexOf(n) > 
-			     _sortedNodes.indexOf(origNode))
-			origNode = n;
+    public boolean isRequired(Value v) {
+	if (_requiredDefinitions.contains(v))
+	    return true;
+	if (v instanceof InstanceFieldRef) {
+	    InstanceFieldRef vifr = (InstanceFieldRef) v;
+	    for (Iterator i=_requiredDefinitions.iterator();i.hasNext();) {
+		Object o = i.next();
+		if (o instanceof InstanceFieldRef) {
+		    InstanceFieldRef oifr = (InstanceFieldRef) o;
+		    if (vifr.getBase().equals(oifr.getBase()) &&
+			vifr.getField().equals(oifr.getField()))
+			return true;
 		}
 	    }
 	}
-	return origNode;
-    }
-    */
-
-    /**
-     * This method will merge (i.e. multiplex) two Values for the case
-     * when one Value is defined by "this" DFG and the other Value is
-     * defined by one and only one child DFG.
-     * Note that this method may need to create a new Node with
-     * weight origValue in the root DFG if such a Node does not exist.
-     *
-     * @param child The DFG of the child
-     * @param origValue The Value defined in the root or "this" DFG.
-     * @param newValue The conflicting Value defined in a child DFG.
-     * @return Returns the new multiplexer Node. 
-     **/
-    protected Node _multiplexWithOneChild(IntervalDFG child, Node childNode) {
-	
-	Value value = (Value) childNode.weight();
-	Node parentNode = getOrCreateNode(value);
-
-	// Get the edges associated with the original CFG.
-	Node cNode = getConditionNode();
-
-	Node trueNode = childNode;
-	Node falseNode = parentNode;
-	if (!isTrueNode(child)) {
-	    trueNode = parentNode;
-	    falseNode = childNode;
-	}
-	
-	BinaryMuxNode bmn = new BinaryMuxNode(trueNode,falseNode,cNode,
-					      value.toString());
-	Node muxNode = addNodeWeight(bmn);
-
-	addEdge(trueNode,muxNode,"true");
-	addEdge(falseNode,muxNode,"false");
-	addEdge(cNode,muxNode,"condition");
-
-	Node newValueNode = addValueWeightedNode(value);
-	addEdge(muxNode,newValueNode);
-	return newValueNode;
+	return false;
     }
 
-    protected Node _multiplexTwoChildren(IntervalDFG child1, 
-					 IntervalDFG child2,
-					 Node child1n,
-					 Node child2n) {
-
-	Value value = (Value) child1n.weight(); // both should be same
-	
-	// Get the edges associated with the original CFG.
-	Node cNode = getConditionNode();
-
-	Node trueNode = child1n;
-	Node falseNode = child2n;
-	if (!isTrueNode(child1)) {
-	    trueNode = child2n;
-	    falseNode = child1n;
-	}
-
-	BinaryMuxNode bmn = new BinaryMuxNode(trueNode,falseNode,cNode,
-					      value.toString());
-	Node muxNode = addNodeWeight(bmn);
-
-	addEdge(trueNode,muxNode,"true");
-	addEdge(falseNode,muxNode,"false");
-	addEdge(cNode,muxNode,"condition");
-
-	Node newValueNode = addValueWeightedNode(value);
-	addEdge(muxNode,newValueNode);
-	return newValueNode;
-
-    }
-    
     /** Return the condition Value object associated with a fork Node
      **/ 
     public Node getConditionNode() {
@@ -530,29 +473,18 @@ public class IntervalDFG extends BlockDataFlowGraph {
 	    return false;
     }
 
-    /**
-     * Creates a new Value object from the Value found within the weight
-     * of Node n.
-     **/
-    protected Value _createNewValue(IntervalDFG id, Node n) 
-	throws JHDLUnsupportedException {
-
-	// Get original Value
-	Value origValue = (Value) n.weight();
-
-	// Copy Value
-	Value newValue=null;
-	if (origValue instanceof Local) {
-	    Local l=(Local) origValue;
-	    newValue = new JimpleLocal(l.getName()+"_"+
-				       id.toBriefString(),
-				       l.getType());
-	} else {
-	    // TODO: support fieldref values!
-	    throw new JHDLUnsupportedException("node for class "+origValue.getClass().getName());
-	    
+    public Collection getInstanceFieldRefInputDefinitions() {
+	ArrayList nodes = new ArrayList();
+	// iterate over all nodes in the graph
+	for (Iterator i = nodes().iterator(); i.hasNext();) {
+	    Node node = (Node) i.next();
+	    Object weight = node.weight();
+	    if (inputEdgeCount(node) == 1 &&
+		weight instanceof InstanceFieldRef) {
+		nodes.add(node);
+	    }
 	}
-	return newValue;
+	return nodes;
     }
 
     public static IntervalDFG createInternalDFG(String args[]) 
@@ -562,6 +494,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
     }
 
     public static void main(String args[]) {
+	//BlockDataFlowGraph.DEBUG=true;
 	IntervalDFG im = null;
 	try {
 	    im = createInternalDFG(args);	
@@ -588,6 +521,7 @@ public class IntervalDFG extends BlockDataFlowGraph {
      **/
     protected Collection _requiredDefinitions;
 
+    protected ValueMap _valueMap;
 }
 
 class MuxNode {
@@ -626,3 +560,68 @@ class UniqueVector extends Vector {
     }
 
 }
+
+class ValueMap {
+    public ValueMap(MapList l, MapList ifr) {
+	locals = l;
+	instanceFieldRefs = ifr;
+	newDefs = new HashMap();
+    }
+    public Object clone() {
+	MapList l = (MapList) locals.clone();
+	MapList ifrs = (MapList) instanceFieldRefs.clone();
+	ValueMap vm = new ValueMap(l,ifrs);
+	return vm;
+    }
+    public void addLocal(Local l,Node n) {
+  	locals.add(l,n);
+	//newDefs.add(n);
+    }
+    public void addInstanceFieldRef(InstanceFieldRef ifr,Node n) {
+  	instanceFieldRefs.add(ifr,n);
+	//newDefs.add(n);
+    }
+    public void addNewDef(Node n) {
+	newDefs.put(n.weight(),n);
+    }
+    public Map getDefs() { return newDefs; }
+    public Node getLast(Object v) {
+	if (v instanceof Local)
+	    return getLastLocal(v);
+	if (v instanceof InstanceFieldRef)
+	    return getLastInstanceFieldRef((InstanceFieldRef)v);
+	return null;
+    }
+    public Node getLastLocal(Object v) {
+	return (Node) locals.getLast(v);
+    }
+    public Node getLastInstanceFieldRef(InstanceFieldRef v) {
+	return (Node) instanceFieldRefs.getLast(v);
+    }
+    public Node getMatchingInstanceFieldRefNode(InstanceFieldRef ifr) {
+	SootField field = ifr.getField();
+	Value baseValue = ifr.getBase();
+	InstanceFieldRef previous=null;
+	for(Iterator it = instanceFieldRefs.keySet().iterator();it.hasNext();) {
+	    InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
+	    if (ifr_n.getBase().equals(baseValue) &&
+		ifr_n.getField().equals(field)) {
+		previous = ifr_n;
+	    }
+	}
+	return getLastInstanceFieldRef(previous);	
+    }
+
+    public MapList locals;
+    public MapList instanceFieldRefs;
+    public Map newDefs;
+}
+
+/*
+  
+  - get snapshot of definitions before mergining.
+  - use copy of snapshot before each iteration
+    (multiple copies for each branch)
+  - come up with own addNode method that updates these value maps
+
+ */

@@ -33,8 +33,7 @@ import soot.SootField;
 import soot.Value;
 import soot.Local;
 
-import soot.jimple.AssignStmt;
-import soot.jimple.InvokeStmt;
+import soot.jimple.DefinitionStmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.LookupSwitchStmt;
 
@@ -46,12 +45,18 @@ import soot.jimple.LeExpr;
 import soot.jimple.LtExpr;
 import soot.jimple.NeExpr;
 import soot.jimple.CastExpr;
+
+import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.InvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.VirtualInvokeExpr;
+import soot.jimple.InterfaceInvokeExpr;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.StaticInvokeExpr;
+
 import soot.jimple.UnopExpr;
 import soot.jimple.NegExpr;
 import soot.jimple.BinopExpr;
-import soot.jimple.InstanceInvokeExpr;
-import soot.jimple.InvokeExpr;
 import soot.jimple.FieldRef;
 import soot.jimple.Constant;
 import soot.jimple.Stmt;
@@ -60,7 +65,10 @@ import soot.jimple.ReturnVoidStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.GotoStmt;
 import soot.jimple.IdentityStmt;
+import soot.jimple.Ref;
+import soot.jimple.IdentityRef;
 import soot.jimple.InstanceFieldRef;
+import soot.jimple.ArrayRef;
 import soot.jimple.StaticFieldRef;
 
 import soot.jimple.internal.JAndExpr;
@@ -84,7 +92,6 @@ import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.BriefBlockGraph;
 import soot.toolkits.graph.Block;
-import soot.toolkits.graph.CompleteUnitGraph;
 
 import java.util.Iterator;
 import java.util.Vector;
@@ -115,15 +122,19 @@ import ptolemy.copernicus.jhdl.util.CompoundOrExpression;
  * This class will take a Soot block and create a ptolemy 
  * DirectedGraph that represents the data dependancies between Soot Values.
  * Since a single block (i.e. Basic Block) is acyclic,
- * this graph will also be acyclic.
+ * this graph will also be acyclic.<p>
  *
  * The weights of the ptolemy.graph.Node objects created for this
  * graph are the semantic objects that the Node represents. In most
  * cases, these objects are of type soot.Value. The exception to this
  * includes the Nodes associated with ReturnStmt objects - the weight
- * of these Nodes are Stmt objects, not Value objects.
+ * of these Nodes are Stmt objects, not Value objects. <p>
  *
- *
+ * Note: Following are useful methods
+ * DirectedGraph.nodes()
+ * DirectedGraph.sourceNodes()
+ * DirectedGraph.sinkNodes()
+ * 
 @author Mike Wirthlin and Matthew Koecher
 @version $Id$
 @since Ptolemy II 2.0
@@ -134,8 +145,6 @@ public class BlockDataFlowGraph extends DirectedGraph {
     /**
      * Constructor iterates through the statements found within the
      * Block to create a dataflow graph of the block behavior. 
-     * This method uses several internal (protected) methods to
-     * create this graph.
      *
      * @param block Basic block that will used to create a dataflow graph
      * @see ptolemy.copernicus.jhdl.BlockDataFlowGraph#_processAssignStmt(AssignStmt)
@@ -148,26 +157,47 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
 	super();
 	_block = block;	
-	_requiredNodeSet = new HashSet();
-	_valueMap = new HashMap();
-	_lValues = new Vector();
-	
-	// Iterate over all units within block
-	for(Iterator units = _block.iterator(); units.hasNext();) {
 
+	_locals = new HashListMap();
+	_instanceFieldRefs = new HashListMap();
+
+	// Iterate over all units within block
+	_processStmtUnits();
+    }
+
+    //////////////////////////////////////////////////
+
+    /**
+     * Loop through all the Stmt Units in the Body and create the
+     * corresponding DataFlow graph. This method will identify the
+     * appropriate statement type and call a method more specific
+     * to the statement of interest. This method is called in the
+     * constructor of this class.
+     *
+     * @see BlockDataFlowGraph#_processAssignStmt(AssignStmt)
+     * @see BlockDataFlowGraph#_processIdentityStmt(IdentityStmt)
+     * @see BlockDataFlowGraph#_processInvokeStmt(InvokeStmt)
+     * @see BlockDataFlowGraph#_processReturnStmt(ReturnStmt)
+     * @see BlockDataFlowGraph#_processIfStmt(IfStmt)
+     * @exception The JHDLUnsupportedException will be thrown if an
+     * unsupported (or unknown) Stmt object is encountered.
+     *
+     **/
+    protected void _processStmtUnits() 
+	throws JHDLUnsupportedException {
+	for(Iterator units = _block.iterator(); units.hasNext();) {
+	    
 	    // Process all Stmt units in this graph
 	    Stmt stmt = (Stmt)units.next();
-	    if (DEBUG) System.out.println("Statement "+
+	    if (DEBUG) System.out.println("Statement Class="+
 					  stmt.getClass().getName()+
-					  "="+stmt);
+					  "\n\t\""+stmt+"\"");
 	
 	    // Each statement is treated differently. Search for the
 	    // appropriate statement type and process it according
 	    // to its semantics.
-	    if(stmt instanceof AssignStmt) {
-		_processAssignStmt((AssignStmt) stmt);
-	    } else if(stmt instanceof IdentityStmt) {
-		_processIdentityStmt((IdentityStmt) stmt);
+	    if(stmt instanceof DefinitionStmt) {
+		_processDefinitionStmt((DefinitionStmt) stmt);
 	    } else if(stmt instanceof InvokeStmt) {
 		_processInvokeStmt((InvokeStmt) stmt);
 	    } else if(stmt instanceof ReturnStmt) {
@@ -194,447 +224,28 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    }
 	}
     }
-
-
-    /*
-     * Returns a Map where key= last Values currently defined in the
-     * block and value= Node corresponding to Value.
-     */
-    public Map getCurrentLValues() {
-	HashMap map = new HashMap(_lValues.size());
-	for (Iterator i=_lValues.iterator();i.hasNext();) {
-	    Value lv = (Value) i.next();
-	    map.put(lv,getLastSimpleNode(lv));
-	}
-	return map;
-    }
-
-    /**
-     * Returns a Collection of Nodes that need to be defined by 
-     * a preeceding block.
-     **/
-    public Collection getLocalInputDefinitions() {
-	ArrayList nodes = new ArrayList();
-	// iterate over all nodes in the graph
-	for (Iterator i = nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    if (inputEdgeCount(node) == 0) {
-		nodes.add(node);
-	    }
-	}
-	return nodes;
-    }
-
-    public Collection getInstanceFieldRefInputDefinitions() {
-	ArrayList nodes = new ArrayList();
-	// iterate over all nodes in the graph
-	for (Iterator i = nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    Object weight = node.weight();
-	    if (inputEdgeCount(node) == 1 &&
-		weight instanceof InstanceFieldRef) {
-		nodes.add(node);
-	    }
-	}
-	return nodes;
-    }
-
-    /**
-     * This method adds a "Value" weighted Node to the graph.
-     * In addition, this method adds the Node to the Node List
-     * associated with the given Value (see _valueMap).
-     **/
-    public Node addSimpleValueWeightedNode(Value v) {
-	List l = getNodes(v);
-	if (l == null) {
-	    l = new Vector();
-	    _valueMap.put(v,l);
-	}
-	Node n = addNodeWeight(v);
-	l.add(n);
-	return n;
-    }
-
-    /**
-     * This method creates a new Node for the given InstanceFieldRef.
-     * This method will try to find a Node associated with the Base
-     * of this FieldRef and will create a new Base reference if no
-     * Base Node can be found. Once the Base has been found or created,
-     * a new edge with the "base" label is added between the Base and
-     * the fieldref node.
-     **/
-    public Node addInstanceFieldRefNode(InstanceFieldRef ifr) {
-	// create node for new field reference
-	Node n = addSimpleValueWeightedNode(ifr);
-	// get node for base
-	Node b = getOrCreateSimpleNodeFromValue(ifr.getBase());
-	// add edge between base and ifr
-	addEdge(b,n,"base");
-	return n;
-    }
-
-    public Node addValueWeightedNode(Value v) {
-	if (v instanceof InstanceFieldRef)
-	    return addInstanceFieldRefNode((InstanceFieldRef)v);
-	else
-	    return addSimpleValueWeightedNode(v);
-    }
-
-    /**
-     * This method will search the graph to see if the given Value
-     * exists as a weight of a Node in the graph.  If it is, the
-     * *LAST* Node corresponding to the Value is returned. 
-     * If not, a new Node is created
-     * in the graph with the given Value as the Node weight. Further,
-     * the _valueMap is updated to Map the Value to the Node.
-     **/
-    public Node getOrCreateSimpleNodeFromValue(Value value) {
-	Node n=null;
-	if (!containsNodeWeight(value)) {
-	    n = addSimpleValueWeightedNode(value);
-	    return n;
-	} else {
-	    return getLastSimpleNode(value);
-	}
-    }
-
-    /**
-     * This method will find an existing Node for the given 
-     * InstanceFieldRef or it will create a new Node for the ifr
-     * if one does not exist. A InstanceFieldRef Node will only
-     * match if both the field and base are equal.
-     **/
-    protected Node getOrCreateInstanceFieldRef(InstanceFieldRef ifr) {	
-
-	Node previous = getLastFieldRefNode(ifr);
-	if (previous == null)
-	    return addInstanceFieldRefNode(ifr);
-	else
-	    return previous;
-    }
-
-    public Node getOrCreateNode(Value v) {
-	if (v instanceof InstanceFieldRef)
-	    return getOrCreateInstanceFieldRef((InstanceFieldRef)v);
-	else
-	    return getOrCreateSimpleNodeFromValue(v);
-    }
-
-    public boolean isLValue(Node n) {
-	Object v = n.weight();
-	return _lValues.contains(v);
-    }
-
-    public HashSet getRequiredNodeSet() {
-	return _requiredNodeSet;
-    }
-
-    /**
-     * Get an ordered List of Nodes associated with Value v. These
-     * Nodes are ordered based on their appearance in the graph.
-     **/
-    public List getNodes(Value v) {
-	return (List) _valueMap.get(v);
-    }
-
-    /** Returns the last (deepest) Node in the graph that contains 
-     * the weight v. This does *not* return Nodes associated with
-     * InstanceFieldRef Values. Use getLastFieldRefNode when searching
-     * for FieldRefNodes
-     **/
-    public Node getLastSimpleNode(Value v) {
-	List l = getNodes(v);
-	if (l==null)
-	    return null;
-	// return the last item in the list
-	return (Node) l.get(l.size()-1);
-    }
-
-    public Node getLastFieldRefNode(InstanceFieldRef ifr) {
-	
-	InstanceFieldRef previous = getMatchingIFR(ifr,getValues());
-	if (previous == null)
-	    return null;
-	else
-	    return getLastSimpleNode(previous);
-    }
     
-    // gets last value Node and IFR nodes
-    public Node getLastNode(Value v) {
-	if (v instanceof InstanceFieldRef)
-	    return getLastFieldRefNode((InstanceFieldRef)v);
-	else
-	    return getLastSimpleNode(v);
-    }
-
-    public Node getFirstNode(Value v) {
-	List l = getNodes(v);
-	if (l==null)
-	    return null;
-	// return the last item in the list
-	return (Node) l.get(0);
-    }
-
     /**
-     * Return all Value objects represented by this Graph.
-     **/
-    public Collection getValues() {
-	return _valueMap.keySet();
-    }
-
-    /**
-     * This method will search Collection c for instances of InstanceFieldRef
-     * that match the given ifr.
-     **/
-    // TODO: what do I do if more than one match is found?
-    public InstanceFieldRef getMatchingIFR(InstanceFieldRef ifr,
-					   Collection c) {
-	SootField field = ifr.getField();
-	Value base = ifr.getBase();
-	// See if a FieldRef with same base exists in _valueMap	    
-	// - search all previous InstanceFieldRefs and check for
-	//   same base and field
-	InstanceFieldRef previous=null;
-	for(Iterator it = c.iterator();it.hasNext();) {
-	    Object value = it.next();		
-	    if (value instanceof InstanceFieldRef) {
-		InstanceFieldRef ifr_n = (InstanceFieldRef) value;
-		if (ifr_n.getBase().equals(base) &&
-		    ifr_n.getField().equals(field)) {
-		    previous = ifr_n;
-		}
-	    }
-	}
-	return previous;
-    }
-
-
-    /** This method will iterate through the graph and remove Nodes 
-     * corresponding to Local references in the original byte codes.
-     **/
-    public void removeLocalNodes() throws JHDLUnsupportedException {
-	ArrayList al = new ArrayList();
-	for (Iterator i = nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    Object weight = node.weight();
-
-	    // A Node is a removable if the following conditions are met:
-	    // - it has only one direct predecessor
-	    // - it has only one direct successor
-	    // - it corresponds to a Local in the original Soot representation
-	    if (inputEdgeCount(node) == 1
-//		&& outputEdgeCount(node) == 1
-		&& (weight instanceof Local) 
-//  		&& ((Local)nvalue).getName().startsWith("$")
-		) {
-
-		// Found a stack variable.
-		//System.out.println("trim "+((Local)nvalue).getName());
-
-		// 1. Identify source node to stack variable node. Remove
-		//    edge from source node to stack variable node.
-		Node sourceNode=null;
-		for (Iterator j=inputEdges(node).iterator();j.hasNext();) {
- 		    Edge e = (Edge) j.next();
-		    Node s = e.source();
-		    if (sourceNode == null) {
-			sourceNode = s;
-		    } else
-			// Should never get here
-			throw new JHDLUnsupportedException("More than one source to a stack variable");
-		}
-		if (sourceNode == null)
-		    // Should never get here
-		    throw new JHDLUnsupportedException("No source to a stack variable");
-
-		// 2. Identify all outgoing edges of stack variable node. 
-		//    Remove these edges and add a new edge with same weight,
-		//    and originating from sourceNode.
-		for (Iterator j=outputEdges(node).iterator();j.hasNext();) {
-		    Edge e = (Edge) j.next();
-		    if (e.hasWeight())
-			addEdge(sourceNode,e.sink(),e.weight());
-		    else
-			addEdge(sourceNode,e.sink());
-		}
-		// 3. Remove stack variable node
-		al.add(node);
- 	    } 
-	}
-	// Now, remove all nodes that have been saved.
-	for (Iterator i=al.iterator();i.hasNext();) {
-	    Node n = (Node) i.next();
-	    removeNode(n);
-	}
-    }
-
-    public Collection getInputNodes() {
-	ArrayList nodes = new ArrayList();
-	// iterate over all nodes in the graph
-	for (Iterator i = nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    // if node has no input edges and it isn't a constant, 
-	    // it is considered an input Node
-	    if (inputEdgeCount(node) == 0 && 
-		!(node.weight() instanceof Constant) ) {
-		nodes.add(node);
-	    }
-	}
-	return nodes;
-    }
-
-    public Collection getOutputNodes() {
-	ArrayList nodes = new ArrayList();
-	// iterate over all nodes in the graph
-	for (Iterator i = nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();
-	    // if node has no input edges, it is considered an input Node
-	    if (outputEdgeCount(node) == 0)
-		nodes.add(node);
-	}
-	return nodes;
-    }
-
-    /** Combine input dataflow graph *after* current dataflow
-     * graph. Connect appropriate edges (i.e. variables)
-     **/
-    public void combineSerial(BlockDataFlowGraph block) {	
-	HashMap newNodes = new HashMap(); // a hashmap between old nodes & new
-
-	// Iterate through all nodes and add to graph
-	for (Iterator i = block.nodes().iterator(); i.hasNext();) {
-	    Node node = (Node) i.next();	    
-	    Object weight = node.weight();
-
-	    // is there a source for this weight?
-	    Node source = null;
-	    if (containsNodeWeight(weight))
-		source = node(weight);
-	    Node new_node = null;
-	    if (source == null) {
-		new_node = addNode(new Node(weight));
-		newNodes.put(node,new_node);
-	    } else {
-		newNodes.put(node,source);
-	    }
-	}
-	// Iterate through all edges and add to graph
-	for (Iterator i = block.edges().iterator(); i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    Node src = e.source();
-	    Node snk = e.sink();
-	    Node new_src = (Node)newNodes.get(src);
-	    Node new_snk = (Node)newNodes.get(snk);
-	    if (e.hasWeight())
-		addEdge(new_src,new_snk,e.weight());
-	    else
-		addEdge(new_src,new_snk);
-	}
-    }
-
-    public void mergeSerial(BlockDataFlowGraph dfg) {
-	Map lValues = getCurrentLValues();
-	mergeSerial(dfg,lValues);
-    }
-
-    /** returns new lValues **/
-    public void mergeSerial(BlockDataFlowGraph dfg, Map lValues) {
-	
-	// temporary hashmap between old nodes & new. 
-	// Used when connecting edges
-	HashMap nodeMap = new HashMap(); 
-	
-	/*
-	  for (Iterator i=lValues.keySet().iterator();i.hasNext();) {
-	  Value v = (Value) i.next();
-	  System.out.println("Value="+v+" node="+lValues.get(v));
-	  }
-	*/
-
-	Collection locals = dfg.getLocalInputDefinitions();
-	Collection ifr = dfg.getInstanceFieldRefInputDefinitions();
-
-	// Add all nodes to graph
-	    for (Iterator i = dfg.nodes().iterator(); i.hasNext();) {
-		
-	    Node node = (Node) i.next();	    
-	    Object weight = node.weight();
-	    // See if this DFG drives any of the locals. If so, add
-	    // relation. If not, add new node
-	    if (locals.contains(node)) {
-		Node driver = (Node) lValues.get(weight);
-		if (driver != null) {
-		    nodeMap.put(node,driver);
-//  		    System.out.println(" driver="+driver);
-		} else {
-		    addNode(node);
-//  		    System.out.println(" no driver");
-		}
-	    } else if (ifr.contains(node)) {
-		Node driver = getLastFieldRefNode((InstanceFieldRef)weight);
-		if (driver != null) {
-		    nodeMap.put(node,driver);
-		} else {
-		    addNode(node);
-		}
-	    } else
-		addNode(node);
-	}
-	    
-	// Iterate through all edges and add to graph
-	for (Iterator i = dfg.edges().iterator(); i.hasNext();) {
-	    Edge e = (Edge) i.next();
-	    Node src = e.source();
-	    if (nodeMap.containsKey(src))
-		src = (Node) nodeMap.get(src);
-	    Node snk = e.sink();		
-	    if (nodeMap.containsKey(snk))
-		snk = (Node) nodeMap.get(snk);
-
-	    
-	    if (successorEdges(src,snk).size() == 0) {
-		// Add edge (avoid duplicates)
-		if (e.hasWeight())
-		    addEdge(src,snk,e.weight());
-		else
-		    addEdge(src,snk);
-	    }
-	}
-	
-    }
-
-    /*
-    protected Local _uniquifyLocal(Local l) {
-	return JimpleLocal(l.getName()+"_"+
-			   _block.toBriefString(),
-			   l.getType());
-    }
-    */
-
-    /**
-     * This method will evaluate AssignStmt statements and add
-     * a new Node in the dataflow graph representing the new assigned
-     * Value.
-     * If necessary, a node will also be created for the "rightOp" of
-     * the assignment statement. Much of the work associated with
-     * this method is creating the graph structures associated with
-     * the expression represented by the "rightOp". Several 
-     * internal protected methods are used to generate dataflow
-     * graph components for the rightOp of the assignment.<p>
+     * This method will evaluate DefinitionStmt statements 
+     * (AssignStmt and IdentityStmt). This method will create a new
+     * Node that represents the Value being assigned. It will also
+     * create or find a Node representing the right operation.
      *
      * This method will also create a dependency edge between the
      * Node representing the "rightOp" and the Node representing the
      * "leftOp".
      *
+     * This method is called by _processStmtUnits()
+     *
      * @see BlockDataFlowGraph#_processUnopExpr(UnopExpr)
      * @see BlockDataFlowGraph#_processBinopExpr(BinopExpr)
      * @see BlockDataFlowGraph#_processLocal(Local)
-     * @see BlockDataFlowGraph#getOrCreateInstanceFieldRef(InstanceFieldRef)
+     * @see BlockDataFlowGraph#_getOrCreateInstanceFieldRef(InstanceFieldRef)
      * @see BlockDataFlowGraph#_processInstanceInvokeExpr(InstanceInvokeExpr)
      * @see BlockDataFlowGraph#_processConstant(Constant)
      * @see BlockDataFlowGraph#_processStaticFieldRef(StaticFieldRef)
      **/
-    protected void _processAssignStmt(AssignStmt stmt) 
+    protected void _processDefinitionStmt(DefinitionStmt stmt) 
 	throws JHDLUnsupportedException {
 	
 	// 1. Create Node for RightOp first
@@ -643,80 +254,311 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
 	// Create Node for RightOp
 	Value rightOp = stmt.getRightOp();
-	Node rightOpNode = null;
-	if (DEBUG) System.out.println("Expression " +
-				      rightOp.getClass().getName() +
-				      "=" + rightOp);
-	if (rightOp instanceof UnopExpr){
-	    rightOpNode = _processUnopExpr( (UnopExpr) rightOp);
-	} else if (rightOp instanceof BinopExpr){
-	    rightOpNode = _processBinopExpr( (BinopExpr) rightOp);
-	} else if(rightOp instanceof Local) {
-	    rightOpNode = _processLocal((Local)rightOp);
-	} else if(rightOp instanceof CastExpr) {
-	    rightOpNode = _processLocal((Local)((CastExpr)rightOp).getOp());
-	} else if(rightOp instanceof InstanceFieldRef) {
-	    rightOpNode = getOrCreateInstanceFieldRef((InstanceFieldRef) rightOp);
-	} else if(rightOp instanceof InstanceInvokeExpr) {
-	    rightOpNode = _processInstanceInvokeExpr((InstanceInvokeExpr) rightOp);
-	} else if(rightOp instanceof Constant){
-	    rightOpNode = _processConstant((Constant) rightOp);
-	} else if(rightOp instanceof StaticFieldRef){
-	    rightOpNode = _processStaticFieldRef((StaticFieldRef) rightOp);
-	} else {
-	    throw new JHDLUnsupportedException("Unsupported Assign Statement right op="+
-					     rightOp.getClass().getName());
-	}
-
-	// Create Node for LeftOp: SEE IDENTITY STMT
 	Value leftOp = stmt.getLeftOp();
-	Node leftOpNode = _processLValue(leftOp);
+	
+	Node rightOpNode = _processValue(rightOp);
+	Node leftOpNode = _addLeftValue(leftOp);
 	
 	// Add edge
 	addEdge(rightOpNode,leftOpNode);
     }
 
     /**
-     * This method will process an IdentityStmt. 
+     * This method will take a Value and create or find a Node that
+     * represents this Value. This method uses several type-specific
+     * methods to obtain this Node. 
+     *
+     * This method is called by many other methods that must obtain
+     * a Node for a given Value.
+     *
+     * @return Returns the Node associated with the given Value
      **/
-    protected void _processIdentityStmt(IdentityStmt stmt) 
+    protected Node _processValue(Value v) 
 	throws JHDLUnsupportedException {
-	Value leftOp = stmt.getLeftOp();	
-	Value rightOp = stmt.getRightOp();	
-	if (DEBUG) System.out.println("IdentityStmt left="+
-				      leftOp.getClass().getName()+
-				      " right="+rightOp.getClass().getName());
-	//Node leftOpNode= addSimpleValueWeightedNode(leftOp);
-	Node leftOpNode= _processLValue(leftOp);
-	Node rightOpNode = getOrCreateSimpleNodeFromValue(rightOp);
-	addEdge(rightOpNode, leftOpNode);
+
+	if (DEBUG) System.out.println("\tValue="+v+" class="+
+				      v.getClass().getName()+" identity="+
+				      System.identityHashCode(v));
+	Node valueNode = null;
+	if (v instanceof UnopExpr){
+	    valueNode = _processUnopExpr( (UnopExpr) v);
+	} else if (v instanceof BinopExpr){
+	    valueNode = _processBinopExpr( (BinopExpr) v);
+	} else if(v instanceof Local) {
+	    valueNode = _processLocal((Local)v);
+	} else if(v instanceof CastExpr) {
+	    valueNode = _processCastExpr((CastExpr) v);
+	} else if(v instanceof Ref) {
+	    valueNode = _processRef((Ref) v);
+	} else if(v instanceof InvokeExpr) {
+	    valueNode = _processInvokeExpr((InvokeExpr) v);
+	} else if(v instanceof Constant){
+	    valueNode = _processConstant((Constant) v);
+	} else {
+	    throw new JHDLUnsupportedException("Unsupported Value="+
+					       v.getClass().getName());
+	}
+	return valueNode;
     }
 
-    protected Node _processLValue(Value lv) throws JHDLUnsupportedException {
+    /**
+     * Process a UnopExpr and create the corresponding dataflow graph.
+     * Return a Node in the dataflow graph that represents the result.
+     * Only the NegExpr operation is supported.
+     *
+     * This method is called by the _processValue() method.
+     **/
+    protected Node _processUnopExpr(UnopExpr expr) 
+	throws JHDLUnsupportedException {
+	if (expr instanceof NegExpr){
+	    Node n = addNodeWeight(expr);
+	    Value rightValue=expr.getOp();
+	    Node rv = _processValue(rightValue);
+	    addEdge(rv,n);
+	    return n;
+	} else {
+	    throw new JHDLUnsupportedException("Unsupported Unary Operator="+
+					     expr.getClass().getName());
+	}	
+    }
+
+
+    /**
+     * Create a new Node for a binary operation expression.
+     *
+     * 1. Obtain Nodes assocaited with op1 and op2
+     * 2. Create a new Node for the binary operation
+     * 3. Add edges between op1/op2 and the new Node.
+     *
+     * This method is called by the _processValue() method.
+     *
+     * @return Returns the new Node created for the binary operation.
+     **/
+    protected Node _processBinopExpr(BinopExpr expr) 
+	throws JHDLUnsupportedException {
+	Value rightValue1=expr.getOp1();
+	Value rightValue2=expr.getOp2();
+	Node n = addNodeWeight(expr);		    
+	Node r1n = _processValue(rightValue1);
+	Node r2n = _processValue(rightValue2);
+	addEdge(r1n,n,"op1");
+	addEdge(r2n,n,"op2");
+	return n;
+    }
+
+
+    /**
+     * This method will search to see if the given 
+     * Local exists in the graph. If it exists, the last definition Node of
+     * the Local is returned. If it doesn't exist, a new Local is created.
+     *
+     * This method is called by the _processValue() method.
+     *
+     **/
+    protected Node _processLocal(Local l) {
+	Node n=null;
+	if (!_locals.containsKey(l)) {
+	    return _createLocal(l);
+	} else {
+	    return (Node) _locals.getLast(l);
+	}
+    }
+
+    /**
+     * Creates a new Node with the given Local as the weight. It also
+     * adds the new Node to the _locals MapList.
+     *
+     * This method is called by _processLocal(), _addLeftValue()
+     **/
+    protected Node _createLocal(Local l) {
+	Node n = addNodeWeight(l);
+	_locals.add(l,n);
+	return n;
+    }
+
+    /**
+     * This method ignores the Cast and simply returns a Node associated
+     * with the Value object that is casted.
+     *
+     * This method is called by the _processValue() method.
+     **/
+    protected Node _processCastExpr(CastExpr ce) 
+	throws JHDLUnsupportedException {
+	Value op = ce.getOp();
+	return _processValue(op);
+    }
+
+    /**
+     * This method processes Reference Values. This method will
+     * call type-specific methods to process each type of Ref.
+     *
+     * This method is called by the _processValue() method.
+     **/
+    protected Node _processRef(Ref cr)
+	throws JHDLUnsupportedException {
+	Node new_node = null;
+	if (cr instanceof ArrayRef) {
+	    new_node = _processArrayRef((ArrayRef) cr);
+	} else if (cr instanceof IdentityRef) {
+	    new_node = _processIdentityRef((IdentityRef) cr);
+	} else if (cr instanceof InstanceFieldRef) {
+	    new_node = _processInstanceFieldRef((InstanceFieldRef) cr);
+	} else if (cr instanceof StaticFieldRef) {
+	    new_node = _processStaticFieldRef((StaticFieldRef) cr);
+	} else {
+	    throw new JHDLUnsupportedException("Unsupported Ref="+
+					       cr.getClass().getName());
+	}
+	return new_node;
+    }
+
+    /**
+     * Includes ThisRef and ParameterRef objects.
+     **/
+    protected Node _processIdentityRef(IdentityRef tr) {
+	return _getOrCreateNode(tr);
+    }
+
+    protected Node _processArrayRef(ArrayRef ifr)
+	throws JHDLUnsupportedException {
+	throw new JHDLUnsupportedException("No support for arrays");
+    }
+
+    protected Node _processInstanceFieldRef(InstanceFieldRef ifr)
+	throws JHDLUnsupportedException {
+
+	InstanceFieldRef ifr_p = _getMatchingInstanceFieldRef(ifr);
+	if (ifr_p == null) {
+	    return _createInstanceFieldRef(ifr);	    
+	} else {
+	    return (Node) _instanceFieldRefs.getLast(ifr_p);
+	}
+    }
+    
+    protected InstanceFieldRef _getMatchingInstanceFieldRef(InstanceFieldRef ifr) {
+	SootField field = ifr.getField();
+	Value baseValue = ifr.getBase();
+	InstanceFieldRef previous=null;
+	for(Iterator it = _instanceFieldRefs.keySet().iterator();it.hasNext();) {
+	    InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
+	    if (ifr_n.getBase().equals(baseValue) &&
+		ifr_n.getField().equals(field)) {
+		previous = ifr_n;
+	    }
+	}
+	return previous;
+    }
+
+    /**
+     * Called by _processInstanceFieldRef and _addLeftValue
+     **/
+    protected Node _createInstanceFieldRef(InstanceFieldRef ifr) 
+	throws JHDLUnsupportedException {
+
+	InstanceFieldRef new_ifr = _getMatchingInstanceFieldRef(ifr);
+	if (new_ifr == null)
+	    new_ifr = ifr;
+
+	if (DEBUG) System.out.println("\tNew InstanceFieldRef Node using id="+
+				      System.identityHashCode(new_ifr));
+
+	Node base = _processValue(new_ifr.getBase());
+	Node n = addNodeWeight(new_ifr);
+	_instanceFieldRefs.add(new_ifr,n);
+
+	// add edge between base and ifr
+	addBaseEdge(base,n);
+	return n;
+    }
+
+    protected Node _processStaticFieldRef(StaticFieldRef sfr) 
+	throws JHDLUnsupportedException {
+	throw new JHDLUnsupportedException("No static field refs");
+	//	return _getOrCreateSimpleNode(sfr);
+    }
+    
+    protected Node _processInvokeExpr(InvokeExpr ie) 
+	throws JHDLUnsupportedException {
+	Node invokeNode = null;
+	if (ie instanceof InstanceInvokeExpr)
+	    invokeNode = _createInstanceInvokeExpr((InstanceInvokeExpr)ie);
+	else if (ie instanceof InterfaceInvokeExpr ||
+		 ie instanceof SpecialInvokeExpr ||
+		 ie instanceof StaticInvokeExpr ||
+		 ie instanceof VirtualInvokeExpr)
+	    throw new JHDLUnsupportedException("Unsupported InvokeExpr="+
+					      ie.getClass().getName());
+	else
+	    throw new JHDLUnsupportedException("Unsupported InvokeExpr="+
+					      ie.getClass().getName());
+
+	// add argument links
+	int argCount=0;
+	for(Iterator arguments = ie.getArgs().iterator();
+	    arguments.hasNext();) {
+	    Value argument = (Value)arguments.next();
+	    Node a_n = _processValue(argument);
+	    addEdge(a_n,invokeNode,new Integer(argCount++));
+	}
+	return invokeNode;
+    }
+    
+    protected Node _createInstanceInvokeExpr(InstanceInvokeExpr iie) 
+	throws JHDLUnsupportedException {
+	Node base = _processValue(iie.getBase());
+	Node n = addNodeWeight(iie);
+	addBaseEdge(base,n);
+	return n;
+    }
+
+    /**
+     * Process the Left Value of DefinitionStmt. This method
+     * is called by the _processDefinitionStmt method. There are two types
+     * of left Values: Locals and InstanceFieldRef. Locals are added like
+     * regular values (i.e. a single Node is added for the Value). If
+     * a Local is overwritten, there will be more than one Node associated
+     * with the Value - the last Value in the _valueMap is the last instance
+     * of the Value.
+     *
+     * InstanceFieldRef Values are treated special and are added with
+     * a call to the method _addInstanceFieldRefNode.
+     *
+     **/
+    protected Node _addLeftValue(Value lv) 
+	throws JHDLUnsupportedException {
 	Node leftOpNode = null;
+	if (DEBUG) System.out.println("\tLeft Value="+lv+" class="+
+				      lv.getClass().getName()+
+				      " identity="+
+				      System.identityHashCode(lv));
 	if (lv instanceof Local) {
-	    leftOpNode = addSimpleValueWeightedNode(lv);
+	    leftOpNode = _createLocal((Local) lv);
 	} else if(lv instanceof InstanceFieldRef) {
-	    leftOpNode = addInstanceFieldRefNode((InstanceFieldRef)lv);
+	    leftOpNode = _createInstanceFieldRef((InstanceFieldRef)lv);
 	} else {
 	    throw new JHDLUnsupportedException("Unsupported Left AssignOp=" +
 					       lv.getClass().getName());
 	}
-	_lValues.add(lv);
+	//_lValues.add(lv);
 	return leftOpNode;
     }
 
+    /**
+     * Process a Constant Value object. If a Node exists with the given
+     * constant, return the Node. Otherwise create a new Node with the
+     * constant weight.
+     **/
+    protected Node _processConstant(Constant c) {	
+	return _getOrCreateNode(c);
+    }
+
+
+    /////////////////////////////
+
     protected void _processInvokeStmt(InvokeStmt stmt) 
 	throws JHDLUnsupportedException {
-
-	Value op = stmt.getInvokeExpr();
-	if(op instanceof InstanceInvokeExpr) {
-	    _createInstanceInvokeExprNode( (InstanceInvokeExpr) op);
-	} else {
-	    throw new 
-		JHDLUnsupportedException("Unsupported Invoke Expression="+
-					 op.getClass().getName());
-	}
+	InvokeExpr ie = (InvokeExpr) stmt.getInvokeExpr();
+	_processInvokeExpr(ie);
     }
 
     /**
@@ -724,9 +566,10 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * from the Value being returned and this new ReturnStmt Node.
      * The weight of the new Node is the ReturnStmt.
      **/
-    protected Node _processReturnStmt(ReturnStmt stmt) {
+    protected Node _processReturnStmt(ReturnStmt stmt) 
+	throws JHDLUnsupportedException {
 	Value returnedValue = stmt.getOp();
-	Node returnedNode = getOrCreateSimpleNodeFromValue(returnedValue);
+	Node returnedNode = _processValue(returnedValue);
 	// NOTE: The weight of this Node is a ReturnStmt Object,
 	// not a Value!!
 	Node newNode = addNodeWeight(stmt);
@@ -763,13 +606,13 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    condition instanceof LeExpr ||
 	    condition instanceof LtExpr ||
 	    condition instanceof NeExpr) {
-	    op1n = getOrCreateSimpleNodeFromValue(op1);
-	    op2n = getOrCreateSimpleNodeFromValue(op2);
-	    n = addSimpleValueWeightedNode(condition);
+	    op1n = _processValue(op1);
+	    op2n = _processValue(op2);
+	    n = addNodeWeight(condition);
 	} else if (condition instanceof CompoundBooleanExpression) {
 	    op1n = _processConditionExpr((ConditionExpr) op1);
 	    op2n = _processConditionExpr((ConditionExpr) op2);
-	    n = addSimpleValueWeightedNode(condition);
+	    n = addNodeWeight(condition);
 	} else
 	    throw new JHDLUnsupportedException("Unknown ConditionExpr "+
 					       condition.getClass());
@@ -780,89 +623,28 @@ public class BlockDataFlowGraph extends DirectedGraph {
     }
 
     /**
-     * Process a UnopExpr and create the corresponding dataflow graph.
-     * Return a Node in the dataflow graph that represents the result.
+     * This method will search the graph to see if the given Value
+     * exists as a weight of a Node in the graph.  If it is, the
+     * *LAST* Node corresponding to the Value is returned. 
+     * If not, a new Node is created
+     * in the graph with the given Value as the Node weight. Further,
+     * the _valueMap is updated to Map the Value to the Node.
      **/
-    protected Node _processUnopExpr(UnopExpr expr) 
-	throws JHDLUnsupportedException {
-	if (expr instanceof NegExpr){
-	    Node n = addSimpleValueWeightedNode(expr);
-	    Value rightValue=expr.getOp();
-	    Node rv = getOrCreateSimpleNodeFromValue(rightValue);
-	    addEdge(rv,n);
+    protected Node _getOrCreateNode(Value value) {
+	Node n=null;
+	if (!containsNodeWeight(value)) {
+	    n = addNodeWeight(value);
 	    return n;
 	} else {
-	    throw new JHDLUnsupportedException("Unsupported Unary Operator="+
-					     expr.getClass().getName());
-	}	
-    }
-
-    /**
-     * Create a new Node for a binary operation expression.
-     *
-     * 1. Obtain Nodes assocaited with op1 and op2
-     * 2. Create a new Node for the binary operation
-     * 3. Add edges between op1/op2 and the new Node.
-     *
-     * @return Returns the new Node created for the binary operation.
-     **/
-    protected Node _processBinopExpr(BinopExpr expr) {
-	Value rightValue1=expr.getOp1();
-	Value rightValue2=expr.getOp2();
-	Node n = addSimpleValueWeightedNode(expr);		    
-	Node r1n = getOrCreateSimpleNodeFromValue(rightValue1);
-	Node r2n = getOrCreateSimpleNodeFromValue(rightValue2);
-	addEdge(r1n,n,"op1");
-	addEdge(r2n,n,"op2");
-	return n;
-    }
-
-    protected Node _processLocal(Local l) {
-	return getOrCreateSimpleNodeFromValue(l);
-    }
-
-    protected Node _processStaticFieldRef(StaticFieldRef sfr) {
-	return getOrCreateSimpleNodeFromValue(sfr);
-    }
-
-
-
-    protected Node _processInstanceInvokeExpr(InstanceInvokeExpr expr) {
-	return _createInstanceInvokeExprNode(expr);
-    }
-    
-    protected Node _processConstant(Constant c) {
-	return getOrCreateSimpleNodeFromValue(c);
-    }
-
-
-    protected Node _createInstanceInvokeExprNode(InstanceInvokeExpr iie) {
-
-	//The data flattening will start from output ports, so
-	//they are the required nodes
-	if (iie.getMethod().getName().equals("send")){
-	    System.out.println("output port");
-	    _requiredNodeSet.add(iie);
+	    return node(value);
 	}
-	    
-	// Add node 
-	Node n = addSimpleValueWeightedNode(iie);
-	Node b = getOrCreateSimpleNodeFromValue(iie.getBase());
-	// Add link to base 
-	addEdge(b,n,"base");
-
-	// add argument links
-	int argCount=0;
-	for(Iterator arguments = iie.getArgs().iterator();
-	    arguments.hasNext();) {
-	    Value argument = (Value)arguments.next();
-	    Node a_n = getOrCreateSimpleNodeFromValue(argument);
-	    addEdge(a_n,n,new Integer(argCount++));
-	}
-	return n;
     }
 
+    protected Edge addBaseEdge(Node base, Node ref) {
+	return addEdge(base,ref,"base");
+    }
 
+    //////////////////////////////////////////////////
 
     public static soot.SootMethod getSootMethod(String args[]) {
 	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
@@ -890,7 +672,6 @@ public class BlockDataFlowGraph extends DirectedGraph {
     public static BlockDataFlowGraph[] getBlockDataFlowGraphs(String args[]) {
 	soot.SootMethod testMethod = getSootMethod(args);
 	soot.Body body = testMethod.retrieveActiveBody();
-	CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
@@ -903,7 +684,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 		dataFlowGraph=new BlockDataFlowGraph(block);
 		graphs[blockNum] = dataFlowGraph;
 	    } catch (JHDLUnsupportedException e) {
-		throw new RuntimeException(e.toString());
+		e.printStackTrace();
+		throw new RuntimeException();
 	    }
 	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
 						dataFlowGraph);
@@ -912,7 +694,11 @@ public class BlockDataFlowGraph extends DirectedGraph {
     }
 
     public static void main(String args[]) {
+	BlockDataFlowGraph.DEBUG = true;
 	BlockDataFlowGraph[] graphs = getBlockDataFlowGraphs(args);
+//  	for (int i = 0;i<graphs.length;i++)
+//  	    System.out.println("Block "+i+" Value Map=\n"+
+//  			       graphs[i].getValueMap());
     }
 	
     /** The original Soot block used to create this graph **/
@@ -933,18 +719,91 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * in the graph contain a "Value" for their weight.
      *
      **/
-    protected Map _valueMap;
+    //protected HashListMap _valueMap;
 
-    /** Contains all Values that appear as left Operators in 
-     * assignment statements. These are the the Values that are 
-     * defined in the basic block. The Nodes associated with these
-     * Values can be obtained from the getNodes() method.
-     *  
-     **/
-    protected Collection _lValues;
-
-    protected HashSet _requiredNodeSet;
+    protected HashListMap _locals;
+    protected HashListMap _instanceFieldRefs;
 
     public static boolean DEBUG = false; 
+
+}
+
+class HashListMap extends HashMap implements MapList {
+    public HashListMap() { super(); }
+    public HashListMap(int i) { super(i); }
+
+    public void add(Object key, Object value) {	
+	List l = getCreateList(key);
+	l.add(value);
+    }
+
+    public List getCreateList(Object key) {
+	List l = (List) get(key);
+	if (l == null) {
+	    l = new Vector();
+	    put(key,l);
+	}
+	return l;
+    }
+
+    public Object get(Object key, int index) {
+	List l=getList(key);
+	if (l == null)
+	    return null;
+	int size = l.size();
+	if (0 <= index && index < size) {
+	    return l.get(index);
+	} else
+	    return null;
+    }
+
+    public Object getFirst(Object key) {
+	List l=getList(key);
+	if (l==null)
+	    return null;
+	int size = l.size();
+	if (size > 0) {
+	    return l.get(0);
+	} else
+	    return null;
+    }
+
+    public Object getLast(Object key) {
+	List l=getList(key);
+	if (l == null)
+	    return null;
+	int size = l.size();
+	if (size > 0) {
+	    return l.get(size-1);
+	} else
+	    return null;
+    }
+
+    public List getList(Object o) {
+	return (List) get(o);
+    }
+
+    public Object clone() {
+	HashListMap hlm = new HashListMap(size());
+	for (Iterator i=keySet().iterator();i.hasNext();) {
+	    Object o = i.next();
+	    Vector vl = (Vector) ((Vector) get(o)).clone();
+	    hlm.put(o,vl);
+	}
+	return hlm;
+    }
+
+    public String toString() {
+	StringBuffer sb = new StringBuffer();
+	for (Iterator i=keySet().iterator();i.hasNext();) {
+	    Object o = i.next();
+	    sb.append(o+":");
+	    for (Iterator j=getList(o).iterator();j.hasNext();) {
+		sb.append(j.next());
+	    }
+	    sb.append("\n");
+	}
+	return sb.toString();
+    }
 
 }

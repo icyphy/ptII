@@ -301,9 +301,10 @@ public class CircuitAnalysis {
 	    if (gn instanceof SuperBlock){
 		SuperBlock sb = (SuperBlock)gn;
 		BlockDataFlowGraph bdfg = (BlockDataFlowGraph)sb.getGraph();
-		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
-		    requiredNodeMap.put(j.next(), sb);
-		}
+		// MJW = FIX!
+//  		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
+//  		    requiredNodeMap.put(j.next(), sb);
+//  		}
 	    }
 	}
 
