@@ -30,12 +30,23 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.net.URL;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import diva.graph.GraphPane;
 
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.gui.CancelException;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.vergil.ptolemy.GraphFrame;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,6 +88,36 @@ public class FSMGraphFrame extends GraphFrame {
         // wants in the graph menu and toolbar.
         _graphMenu.addSeparator();
         _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
+
+        // Add debug menu.
+        JMenuItem[] debugMenuItems = {
+            new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
+            new JMenuItem("Animate", KeyEvent.VK_A),
+            new JMenuItem("Stop Animating", KeyEvent.VK_S),
+        };
+        // NOTE: This has to be initialized here rather than
+        // statically because this method is called by the constructor
+        // of the base class, and static initializers have not yet
+        // been run.
+        _debugMenu = new JMenu("Debug");
+        _debugMenu.setMnemonic(KeyEvent.VK_D);
+        DebugMenuListener debugMenuListener = new DebugMenuListener();
+        // Set the action command and listener for each menu item.
+        for(int i = 0; i < debugMenuItems.length; i++) {
+            debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
+            debugMenuItems[i].addActionListener(debugMenuListener);
+            _debugMenu.add(debugMenuItems[i]);
+        }
+        _menubar.add(_debugMenu);
+    }
+
+    /** Close the window.  Override the base class to remove the debug
+     *  listener, if there is one.
+     *  @return False if the user cancels on a save query.
+     */
+    protected boolean _close() {
+        getModel().removeDebugListener(_controller);
+        return super._close();
     }
 
     /** Create a new graph pane. Note that this method is called in
@@ -110,4 +151,42 @@ public class FSMGraphFrame extends GraphFrame {
     // (InterfaceAutomatonGraphFrame) can set it to a more specific
     // controller.
     protected FSMGraphController _controller;
+
+    /** Debug menu for this frame. */
+    protected JMenu _debugMenu;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public inner classes                  ////
+
+    /** Listener for debug menu commands. */
+    public class DebugMenuListener implements ActionListener {
+
+        /** React to a menu command. */
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem target = (JMenuItem)e.getSource();
+            String actionCommand = target.getActionCommand();
+            try {
+                if (actionCommand.equals("Listen to State Machine")) {
+                    Effigy effigy = (Effigy)getTableau().getContainer();
+                    // Create a new text effigy inside this one.
+                    Effigy textEffigy = new TextEffigy(effigy,
+                            effigy.uniqueName("debug listener"));
+                    DebugListenerTableau tableau =
+                            new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"));
+                    tableau.setDebuggable(getModel());
+                } else if (actionCommand.equals("Animate")) {
+                    // To support animation.
+                    getModel().addDebugListener(_controller);
+                } else if (actionCommand.equals("Stop Animating")) {
+                    getModel().removeDebugListener(_controller);
+                }
+            } catch (KernelException ex) {
+                try {
+                    MessageHandler.warning(
+                            "Failed to create debug listener: " + ex);
+                } catch (CancelException exception) {}
+            }
+        }
+    }
 }

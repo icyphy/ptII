@@ -30,108 +30,48 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+import java.awt.Color;
+
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.moml.MoMLParser;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Site;
-import diva.canvas.Figure;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.Terminal;
-import diva.canvas.interactor.SelectionModel;
-
-import diva.gui.View;
-import diva.gui.AbstractView;
-import diva.gui.Document;
-import diva.gui.toolbox.FocusMouseListener;
-
-import diva.graph.JGraph;
-
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.MutableGraphModel;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.LevelLayout;
-import diva.graph.layout.LayoutTarget;
-import diva.graph.toolbox.DeletionListener;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
-import java.awt.print.Printable;
-import java.awt.print.PrinterJob;
-import java.awt.print.PrinterException;
-import java.awt.print.PageFormat;
-
-import java.io.IOException;
-import java.io.StringWriter;
-
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.KeyStroke;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphTableau
-/**
+/** An editor tableau for finite state machines.
 
-@author  Steve Neuendorffer
+@author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 public class FSMGraphTableau extends Tableau {
 
+    /** Create a new FSM editor tableau with the specified container
+     *  and name.
+     *  @param container The container.
+     *  @param name The name.
+     *  @throws IllegalActionException If the model associated with
+     *   the container effigy is not an FSMActor.
+     *  @throws NameDuplicationException If the container already
+     *   contains an object with the specified name.
+     */
     public FSMGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	// FIXME this attribute is not used.
-	library = new StringAttribute(this, "library");
-
         NamedObj model = container.getModel();
-        if (!(model instanceof CompositeEntity)) {
+        if (!(model instanceof FSMActor)) {
             throw new IllegalActionException(this,
-                    "Cannot graphically edit a model that is not a "
-		    + "CompositeEntity.");
+                    "Cannot edit a model that is not an FSMActor.");
         }
-	CompositeEntity entity = (CompositeEntity)model;
-
-	createGraphFrame(entity);
+	createGraphFrame((FSMActor)model);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public parameters                 ////
-
-    /** The class to display. */
-    public StringAttribute library;
 
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
@@ -171,25 +111,23 @@ public class FSMGraphTableau extends Tableau {
 	    super(container, name);
 	}
 
-	/** Create a tableau in the default workspace with no name for the
-	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model proxy.  If this factory cannot create a tableau
-	 *  for the given proxy (perhaps because the proxy is not of the
-	 *  appropriate subclass) then return null.
-	 *  @param proxy The model proxy.
-	 *  @return A new FSMGraphTableau, if the proxy is a PtolemyEffigy
-	 *  that references an FSMActor or null otherwise.
+	/** Create an instance of FSMGraphTableau for the specified effigy,
+         *  if it is an effigy for an instance of FSMActor.
+	 *  @param effigy The effigy for an FSMActor.
+	 *  @return A new FSMGraphTableau, if the effigy is a PtolemyEffigy
+	 *   that references an FSMActor, or null otherwise.
 	 *  @exception Exception If an exception occurs when creating the
-	 *  tableau.
+	 *   tableau.
 	 */
-	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(!(proxy instanceof PtolemyEffigy))
+	public Tableau createTableau(Effigy effigy) throws Exception {
+	    if(!(effigy instanceof PtolemyEffigy)) {
 		return null;
-	    PtolemyEffigy effigy = (PtolemyEffigy)proxy;
-	    if(effigy.getModel() instanceof FSMActor) {
+            }
+            NamedObj model = ((PtolemyEffigy)effigy).getModel();
+	    if(model instanceof FSMActor) {
 		FSMGraphTableau tableau =
-		    new FSMGraphTableau((PtolemyEffigy)proxy,
-                            proxy.uniqueName("tableau"));
+		        new FSMGraphTableau((PtolemyEffigy)effigy,
+                        effigy.uniqueName("tableau"));
 		return tableau;
 	    } else {
 		return null;

@@ -175,6 +175,7 @@ public class CommitActionsAttribute
                     Variable destination = (Variable)nextDestination;
                     try {
                         destination.setToken(variable.getToken());
+                        destination.validate();
                     } catch (UnknownResultException ex) {
                         destination.setUnknown(true);
                     }

@@ -174,22 +174,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a listener to be notified of the current state
-     *  when it changes. Do nothing if the listener is already listed.
-     *  The listener is registered using a weak reference, so there
-     *  is no need to remove it.  In fact, there is no mechanism to
-     *  remove it.
-     *  @param listener The listener.
-     */
-    public void addStateListener(StateListener listener) {
-        if (_stateListeners == null) {
-            _stateListeners = new LinkedList();
-        }
-        if (!_stateListeners.contains(listener)) {
-            _stateListeners.add(new WeakReference(listener));
-        }
-    }
-
     /** React to a change in an attribute. If the changed attribute is
      *  the <i>initialStateName</i> attribute, record the change but do
      *  not check whether this actor contains a state with the specified
@@ -735,7 +719,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + "destination state.");
 	}
         _currentState = _lastChosenTransition.destinationState();
-        if (_stateListeners != null) _notifyListeners(_currentState);
+        if (_debugging) {
+            _debug(new StateEvent(this, _currentState));
+        }
 	BooleanToken resetToken =
 	        (BooleanToken)_lastChosenTransition.reset.getToken();
 	if (resetToken.booleanValue()) {
@@ -955,10 +941,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     "Cannot set input variables for port "
                     + "that is not input.");
         }
-        if (_debugging) {
-            _debug(this.getFullName(), "set input variables for port",
-                    port.getName());
-        }
         int width = port.getWidth();
         Variable[][] pVars = (Variable[][])_inputVariableMap.get(port);
         if (pVars == null) {
@@ -968,18 +950,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         if (port.isKnown(channel)) {
             boolean t = port.hasToken(channel);
-            if (_debugging) {
-                _debug(port.getName(), "has token: " + t);
-            }
             Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
             pVars[channel][0].setToken(tok);
             // Update the value variable if there is a token in the channel.
             if (t == true) {
                 tok = port.get(channel);
                 if (_debugging) {
-                    _debug(port.getName(), "token value:", tok.toString());
+                    _debug("---", port.getName(),
+                            "token value:", tok.toString());
                 }
                 pVars[channel][1].setToken(tok);
+            } else {
+                if (_debugging) {
+                    _debug("---", port.getName(), "has no token.");
+                }
             }
         } else {
             pVars[channel][0].setUnknown(true);
@@ -1100,7 +1084,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     private void _gotoInitialState() throws IllegalActionException {
         _currentState = getInitialState();
-        if (_stateListeners != null) _notifyListeners(_currentState);
+        if (_debugging) {
+            _debug(new StateEvent(this, _currentState));
+        }
         _setCurrentConnectionMap();
     }
 
@@ -1115,23 +1101,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
                     + ex.getMessage());
-        }
-    }
-
-    /** Notify any registered listeners of the specified new state.
-     *  This should be called only if the list of listeners is not null.
-     *  @param state The new state.
-     */
-    private void _notifyListeners(State state) {
-        Iterator listeners = _stateListeners.iterator();
-        while(listeners.hasNext()) {
-            WeakReference reference = (WeakReference)listeners.next();
-            if (reference == null || reference.get() == null) {
-                _stateListeners.remove(reference);
-            } else {
-                StateListener listener = (StateListener)reference.get();
-                listener.newState(state);
-            }
         }
     }
 
@@ -1162,7 +1131,4 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
-
-    // Listeners for state changes.
-    private List _stateListeners;
 }
