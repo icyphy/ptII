@@ -43,7 +43,9 @@ import ptolemy.kernel.util.PtolemyThread;
 /**
    A base class for threaded DE domain actors.
    <P>
-   FIXME: EXPERIMENTAL.
+   NOTE: This actor is very preliminary. It is not developed and maintained 
+   for a long time. We do not recommend using it. To try multiple threads under
+   DE semantics, use DDE domain, which is another experimental domain.
    <P>
    This actor, upon its initialization, will start another thread.
    The thread communicate with the DEDirector thread by placing
