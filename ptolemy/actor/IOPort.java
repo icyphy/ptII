@@ -1608,6 +1608,12 @@ public class IOPort extends ComponentPort {
                 throw new IllegalActionException(this,
                         "Cannot insert link at an index greater than "
                         + "zero in a port that is not a multiport.");
+            } else if (_isInsideLinkable(relation)) {
+                if (numInsideLinks() > 0) {
+                    throw new IllegalActionException(this,
+                            "Cannot insert a second inside link in a "
+                            + "port that is not a multiport.");
+                }
             } else if (numLinks() > 0) {
                 throw new IllegalActionException(this,
                         "Cannot insert a second link in a port that is not a "
