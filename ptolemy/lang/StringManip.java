@@ -54,7 +54,7 @@ public class StringManip {
         return partAfterLast(filename, File.separatorChar);
     }
 
-    /** Return the substring that follows the last occurence of the
+    /** Return the substring that follows the last occurrence of the
      *  argument character in the argument string. If the
      *  character does not occur, return the whole string.
      */
@@ -62,7 +62,7 @@ public class StringManip {
         return str.substring(str.lastIndexOf(c) + 1);
     }
 
-    /** Return the substring that precedes the last occurence of the
+    /** Return the substring that precedes the last occurrence of the
      *  argument character in the argument string. If the
      *  character does not occur, return the whole string.
      */
