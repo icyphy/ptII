@@ -105,6 +105,7 @@ public void init() {
         _s2m = new StreamToMatrix(_toplevel,"StreamToMatrix");
         _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
         _matrixViewer.place(getContentPane());
+        _matrixViewer.setSize(1,1);
 
         // Connect the network
         _toplevel.connect(_ND_6.out0, _ND_36.in1);
@@ -129,7 +130,7 @@ public void init() {
         _toplevel.connect(_s2m.output, _matrixViewer.input);
 
         _initCompleted = true;
-
+       
         // The 2 argument requests a go and stop button.
         getContentPane().add(_createRunControls(2));
 
@@ -169,80 +170,76 @@ public void init() {
      */
     public void changed(String name) {
 
-        try {
+        try{
 
             boolean done = false;
-	    if ( name == "K" ) {
-		int k = (int)_query.intValue("K");
-		if ( (k < 501) && (k>0) ) {
-		    _ND_6.parameter_K.
-                        setToken(new IntToken((int)_query.intValue("K")));
-		    _ND_14.parameter_K.
-                        setToken(new IntToken((int)_query.intValue("K")));
-		    _ND_66.parameter_K.
-                        setToken(new IntToken((int)_query.intValue("K")));
-		    _ND_36.parameter_K.
-                        setToken(new IntToken((int)_query.intValue("K")));
-		    _ND_86.parameter_K.
-                        setToken(new IntToken((int)_query.intValue("K")));
+            if ( name == "K" ) {
+                int k = (int)_query.intValue("K");
+                if ( (0<k) && (k<501) ) {
+                    _ND_6.parameter_K.
+                        setToken(new IntToken(k));
+                    _ND_14.parameter_K.
+                        setToken(new IntToken(k));
+                    _ND_66.parameter_K.
+                        setToken(new IntToken(k));
+                    _ND_36.parameter_K.                       
+                        setToken(new IntToken(k));
+                    _ND_86.parameter_K.
+                        setToken(new IntToken(k));
                     done = true;
-		} else {
-		    throw new IllegalActionException(" Select a number between 1 < K < 500 ");
-		}
-	    }
-
-	    if ( name == "N" ) {
-		int n = (int)_query.intValue("N");
-		if ( (n<17) && ( n>1) ) {
-                    _s2m.dimension.
-			setToken(new IntToken((int)_query.intValue("N")));
-                    _ND_6.parameter_N.
-			setToken(new IntToken((int)_query.intValue("N")));
-                    _ND_14.parameter_N.
-			setToken(new IntToken((int)_query.intValue("N")));
-                    _ND_66.parameter_N.
-			setToken(new IntToken((int)_query.intValue("N")));
-                    _ND_36.parameter_N.
-			setToken(new IntToken((int)_query.intValue("N")));
-                    _ND_86.parameter_N.
-			setToken(new IntToken((int)_query.intValue("N")));
-                    done = true;
-		} else {
-		    throw new IllegalActionException(" Select a number between 1 < N < 16 ");
-		}
-	    }
-
+                } else {
+                    report("Please select a value between 1 < K < 500 ");
+                }
+            } else {
+                if ( name == "N" ) {
+                    int n = (int)_query.intValue("N");
+                    if ( (1<n) && ( n<17) ) {
+                        _s2m.dimension.
+                            setToken(new IntToken(n));
+                        _ND_6.parameter_N.
+                            setToken(new IntToken(n));
+                        _ND_14.parameter_N.
+                            setToken(new IntToken(n));
+                        _ND_66.parameter_N.
+                            setToken(new IntToken(n));
+                        _ND_36.parameter_N.
+                            setToken(new IntToken(n));
+                        _ND_86.parameter_N.
+                            setToken(new IntToken(n));
+                        done = true;
+                    } else {
+                        report("Please select a value between 1 < N < 16 ");
+                    }
+                }
+            }
             if ( done ) {
                 _go();
-            }
-
-        } catch (IllegalActionException ex) {
+            }        
+        } catch (IllegalActionException ex ) {
             throw new InternalErrorException(ex.toString());
-        }
-
-    }
-
-
+        }        
+    }    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     // Flag to prevent spurious exception being thrown by _go() method.
     // If this flag is not true, the _go() method will not execute the model.
     private boolean _initCompleted = false;
-
+    
     // The actors in the QR process network
     private ND_6     _ND_6;
     private ND_66    _ND_66;
     private ND_14    _ND_14;
     private ND_36    _ND_36;
     private ND_86    _ND_86;
-
+    
     private MatrixViewer   _matrixViewer;
     private StreamToMatrix _s2m;
-
+    
     private SequencePlotter   _eventplot;
     private Query             _query;
-
+    
 }
 
 
