@@ -41,13 +41,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// BooleanMultiplexor
 /**
    A type polymorphic multiplexor with boolean valued select.
-   This actor consumes exactly one token from each input port, and sends one
-   of the tokens from either <i>trueInput</i> or <i>falseInput</i>
+   <p>If any input port has no token, the prefire method returns false and 
+   the fire method is not called. Tokens are only consumed in the fire method,
+   where exactly one token is consumed from each input port, and one
+   of the tokens from either <i>trueInput</i> or <i>falseInput</i> is sent
    to the output.  The token sent to the output
    is determined by the <i>select</i> input, which must be a boolean value.
    Because tokens are immutable, the same Token
    is sent to the output, rather than a copy.
-   The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of any type.
+   The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of 
+   any type.
+   <p> This actor is different from the BooleanSelect actor, which consumes
+   one token from the control input and another token from either the 
+   trueInput or the falseInput in each firing.
 
    @author Steve Neuendorffer
    @version $Id$
@@ -101,7 +107,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token from each input port.  If the token from the
+    /** Consume a token from each input port.  If the token from the
      *  <i>select</i> input is true, then output the token consumed from the
      *  <i>trueInput</i> port, otherwise output the token from the
      *  <i>falseInput</i> port.
@@ -111,11 +117,11 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        boolean flag = ((BooleanToken) select.get(0)).booleanValue();
+        boolean control = ((BooleanToken) select.get(0)).booleanValue();
         Token trueToken = trueInput.get(0);
         Token falseToken = falseInput.get(0);
 
-        if (flag) {
+        if (control) {
             output.send(0, trueToken);
         } else {
             output.send(0, falseToken);
@@ -124,7 +130,8 @@ public class BooleanMultiplexor extends TypedAtomicActor {
 
     /** Return false if any input channel does not have a token.
      *  Otherwise, return whatever the superclass returns.
-     *  @return False if there are not enough tokens to fire.
+     *  @return False if there are not enough tokens to fire or the prefire
+     *  method of the super class returns false.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
