@@ -31,14 +31,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.gui;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.EditablePlot;
+import ptolemy.plot.EditListener;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 
@@ -50,27 +54,26 @@ import java.awt.Container;
 This actor is a plotter that also produces as its output a
 signal that has been sketched by the user on the screen.
 The <i>length</i> parameter specifies the
-number of samples in the sketched signal.  The <i>period</i>
-parameter, if greater than zero, specifies the period with which the
-signal should be repeated (in samples).  If the period is longer than
-the length, then zeros will be inserted. If the period is less than
-the length, then the last few values will not be used.  If this
-parameter is zero or negative, then the sketched signal is produced
-exactly once, at the beginning of the execution of the model.  If the
-period is greater than zero, and the sketch is modified during
+number of samples in the sketched signal.  The <i>periodic</i>
+parameter, if true, specifies that the signal should be repeated.
+If this parameter is false, then the sketched signal is produced
+exactly once, at the beginning of the execution of the model.  If
+<i>periodic</i> is true and the sketch is modified during
 execution of the model, then the modification appears in the next
-cycle of the period after the modification has been completed.  In
+cycle after the modification has been completed.  In
 other words, the change does not appear mid-cycle.
 <p>
 This actor is also a plotter, and will plot the input signals
 on the same plot as the sketched signal.  It can be used in a
-feedback loop where the output affects the input.
+feedback loop where the output affects the input. The first batch
+of outputs is produced in the initialize() method, so it can
+be put in a feedback loop in a dataflow model.
 
 @author  Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class SketchedSource extends SequencePlotter {
+public class SketchedSource extends SequencePlotter implements EditListener {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -89,11 +92,27 @@ public class SketchedSource extends SequencePlotter {
 
         // Create the parameters.
         length = new Parameter(this, "length", new IntToken(100));
-        period = new Parameter(this, "period", new IntToken(0));
+        length.setTypeEquals(BaseType.INT);
+
+        // The initial trace is used to make the sketched value
+        // persistent, and also to provide an initial trace when
+        // an instance of the actor is first dragged onto a model.
+        initialTrace = new Parameter(this, "initialTrace");
+        initialTrace.setExpression("repeat(length, 0.0)");
+        initialTrace.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        initialTrace.setVisibility(Settable.EXPERT);
+
+        periodic = new Parameter(this, "periodic", BooleanToken.TRUE);
+        periodic.setTypeEquals(BaseType.BOOLEAN);
         yBottom = new Parameter(this, "yBottom", new DoubleToken(-1.0));
+        yBottom.setTypeEquals(BaseType.DOUBLE);
         yTop = new Parameter(this, "yTop", new DoubleToken(1.0));
+        yTop.setTypeEquals(BaseType.DOUBLE);
 
         // Fill on wrapup no longer makes sense.
+        // NOTE: This gets overridden with zero if the MoML file
+        // gives the value of this variable.  Hence, we need to
+        // reset later as well.
         fillOnWrapup.setToken(BooleanToken.FALSE);
         fillOnWrapup.setVisibility(Settable.NONE);
 
@@ -117,6 +136,12 @@ public class SketchedSource extends SequencePlotter {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The default signal to generate, prior to any user sketch.
+     *  By default, this contains an array of zeros with the length
+     *  given by the <i>length</i> parameter.
+     */
+    public Parameter initialTrace;
+
     /** The length of the output signal that will be generated.
      *  This parameter must contain an IntToken.  By default, it has
      *  value 100.
@@ -128,12 +153,10 @@ public class SketchedSource extends SequencePlotter {
     public TypedIOPort output = null;
 
     /** An indicator of whether the signal should be periodically
-     *  repeated, and if so, at what period.  If the value is negative
-     *  or zero, it is not repeated.  Otherwise, it is repeated with
-     *  the specified period.  This parameter must contain an IntToken.
-     *  By default, it has value 0.
+     *  repeated.  This parameter must contain a boolean token.
+     *  By default, it has value true.
      */
-    public Parameter period;
+    public Parameter periodic;
 
     /** The bottom of the Y range. This is a double, with default value -1.0.
      */
@@ -154,11 +177,16 @@ public class SketchedSource extends SequencePlotter {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == length) {
-            if (((IntToken)length.getToken()).intValue() < 0) {
+            int lengthValue = ((IntToken)length.getToken()).intValue();
+            if (lengthValue < 0) {
                 throw new IllegalActionException(this,
                         "length: value is required to be positive.");
             }
-            _setInitialTrace();
+            if (lengthValue != _previousLengthValue) {
+                _previousLengthValue = lengthValue;
+                _initialTraceIsSet = false;
+                _showInitialTrace();
+            }
         } else if (attribute == yBottom || attribute == yTop) {
             _setRanges();
         } else {
@@ -175,9 +203,26 @@ public class SketchedSource extends SequencePlotter {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         SketchedSource newObject = (SketchedSource)super.clone(workspace);
-        // FIXME: Anything needed here?
+        _data = null;
+        _dataModified = false;
         _count = 0;
+        _initialTraceIsSet = false;
+        _previousLengthValue = -1;
+        _settingInitialTrace = false;
         return newObject;
+    }
+
+    /** React to the fact that data in the specified plot has been modified
+     *  by a user edit action by recording the data.
+     *  @param source The plot containing the modified data.
+     *  @param dataset The data set that has been modified.
+     */
+    public void editDataModified(EditablePlot source, int dataset) {
+        if (dataset == 0 && !_settingInitialTrace) {
+            _dataModified = true;
+            _data = ((EditablePlot)plot).getData(0);
+            // FIXME: Could optionally execute the model here if it is idle.
+        }
     }
 
     /** Produce one data sample from the sketched signal on the output
@@ -188,27 +233,20 @@ public class SketchedSource extends SequencePlotter {
     public void fire() throws IllegalActionException {
         // Read the trigger input, if there is one.
         super.fire();
-        int periodValue = ((IntToken)period.getToken()).intValue();
+        boolean periodicValue
+                = ((BooleanToken)periodic.getToken()).booleanValue();
         // If this isn't periodic, then send zero only, since we already
         // sent out the entire waveform in the initialize method.
-        if (periodValue <= 0) {
+        if (!periodicValue) {
             output.send(0, _zero);
             return;
         }
-        if (_count < _data[1].length) {
-            // NOTE: X value ignored.
-            output.send(0, new DoubleToken(_data[1][_count]));
-            _count++;
-        } else {
-            output.send(0, _zero);
-            if (_count < periodValue) {
-                _count++;
-            }
-        }
-        if (_count >= periodValue) {
-            // Reread the data in case it has changed.
+        ArrayToken arrayToken = (ArrayToken)initialTrace.getToken();
+        output.send(0, arrayToken.getElement(_count));
+        _count++;
+        if (_count == arrayToken.length()) {
             _count = 0;
-            _data = ((EditablePlot)plot).getData(0);
+            _updateInitialTrace();
         }
     }
 
@@ -217,23 +255,22 @@ public class SketchedSource extends SequencePlotter {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // NOTE: This gets overridden with zero after construction
-        // if the MoML file gives the value of this variable.
+        // NOTE: These gets overridden with zero after construction
+        // if the MoML file gives the value.
         // Hence, we need to reset here as well.
         startingDataset.setToken(_one);
+        fillOnWrapup.setToken(BooleanToken.FALSE);
 
         super.initialize();
-        if (!_initialTraceSet) {
-            _setInitialTrace();
+        if (!_initialTraceIsSet) {
+            _showInitialTrace();
         }
-        _data = ((EditablePlot)plot).getData(0);
+        _updateInitialTrace();
 
         // Produce the data on the output so that this can be used in
         // feedback look in dataflow models.
-        for (int i = 0; i < _data[1].length; i++) {
-            // NOTE: X value ignored.
-            output.send(0, new DoubleToken(_data[1][i]));
-        }
+        ArrayToken arrayToken = (ArrayToken)initialTrace.getToken();
+        output.send(0, arrayToken.arrayValue(), arrayToken.length());
 
         _count = 0;
     }
@@ -243,11 +280,13 @@ public class SketchedSource extends SequencePlotter {
      */
     public void place(Container container) {
         super.place(container);
-        // Set the default signal value in the plot.
-        try {
-            _setInitialTrace();
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.getMessage());
+        if (container != null) {
+            // Set the default signal value in the plot.
+            try {
+                _showInitialTrace();
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex.getMessage());
+            }
         }
     }
 
@@ -271,31 +310,40 @@ public class SketchedSource extends SequencePlotter {
      *  @return A new editable plot object.
      */
     protected PlotBox _newPlot() {
-        return new EditablePlot();
+        EditablePlot result = new EditablePlot();
+        result.addEditListener(this);
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Set the initial value of the plot.
+    // Show the initial value on the plot.
     // If the plot is null, return without doing anything.
-    private void _setInitialTrace() throws IllegalActionException {
+    private void _showInitialTrace() throws IllegalActionException {
         if (plot == null) return;
-        _initialTraceSet = true;
-        int lengthValue = ((IntToken)length.getToken()).intValue();
-        // If the values haven't changed, return.
-        if (lengthValue == _previousLengthValue) {
-            return;
+        try {
+            // Prevent update of initialTrace parameter.
+            _settingInitialTrace = true;
+            _initialTraceIsSet = true;
+            int lengthValue = ((IntToken)length.getToken()).intValue();
+            ((Plot)plot).clear(0);
+            boolean connected = false;
+            ArrayToken defaultValues = (ArrayToken)initialTrace.getToken();
+            for (int i = 0; i < lengthValue; i++) {
+                double value = 0.0;
+                if (defaultValues != null && i < defaultValues.length()) {
+                    value = ((DoubleToken)defaultValues.getElement(i))
+                    .doubleValue();
+                }
+                ((Plot)plot).addPoint(0, (double)i, value, connected);
+                connected = true;
+            }
+            _setRanges();
+            plot.repaint();
+        } finally {
+            _settingInitialTrace = false;
         }
-        _previousLengthValue = lengthValue;
-        ((Plot)plot).clear(0);
-        boolean connected = false;
-        for (int i = 0; i < lengthValue; i++) {
-            ((Plot)plot).addPoint(0, (double)i, 0.0, connected);
-            connected = true;
-        }
-        _setRanges();
-        plot.repaint();
     }
 
     // Set the X and Y ranges of the plot.
@@ -311,6 +359,24 @@ public class SketchedSource extends SequencePlotter {
         plot.setYRange(yBottomValue, yTopValue);
     }        
 
+    // Update the initial trace parameter if the sketch on screen has
+    // been modified by the user.
+    private void _updateInitialTrace() throws IllegalActionException {
+        if (_dataModified) {
+            try {
+                // Data has been modified on screen by the user.
+                Token[] record = new Token[_data[1].length];
+                for (int i = 0; i < _data[1].length; i++) {
+                    record[i] = new DoubleToken(_data[1][i]);
+                }
+                ArrayToken newValue = new ArrayToken(record);
+                initialTrace.setToken(newValue);
+            } finally {
+                _dataModified = false;
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
@@ -320,14 +386,20 @@ public class SketchedSource extends SequencePlotter {
     /** Sketched data. */
     private double[][] _data;
 
+    /** Indicator that the user has modified the data. */
+    private boolean _dataModified = false;
+
     /** Indicator that initial trace has been supplied. */
-    private boolean _initialTraceSet = false;
+    private boolean _initialTraceIsSet = false;
 
     // Constant one.
     private static IntToken _one = new IntToken(1);
 
     // Previous value of length parameter.
-    private int _previousLengthValue;
+    private int _previousLengthValue = -1;
+
+    // Indicator that we are setting the initial trace.
+    private boolean _settingInitialTrace = false;
 
     /** Zero token. */
     private static DoubleToken _zero = new DoubleToken(0.0);
