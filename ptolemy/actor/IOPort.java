@@ -215,34 +215,28 @@ public class IOPort extends ComponentPort {
         return newobj;
     }
 
-    /** Create receivers for this port. This method should only be
+    /** Create new receivers for this port, replacing any that may
+     *  previously exist. This method should only be
      *  called on opaque ports. It should also normally only be called
      *  during the initialize and prefire methods of the director.
-     *  Receivers are created and cached for each relation connected
-     *  to this port. If, for a given relation, this port already has
-     *  the correct number of receivers, then no new receivers are
-     *  created. However if new receivers are created, then any
-     *  receivers previously associated with that relation will
-     *  be overwritten.
      *  <p>
      *  If the port is an input port, receivers are created as necessary
      *  for each relation connecting to the port from the outside.
-     *  <p>
      *  If the port is an output port, receivers are created as necessary
      *  for each relation connected to the port from the inside. Note that
      *  only composite entities will have relations connecting to ports
      *  from the inside.
+     *  If the port has zero width, then do nothing.
      *  <p>
-     *  It is <i>not</i> write-synchronized on the workspace, so the
+     *  This method is <i>not</i> write-synchronized on the workspace, so the
      *  caller should be.
      *  @exception IllegalActionException If this port is not
      *   an opaque input port or if there is no director.
      */
     public void createReceivers() throws IllegalActionException {
         if (!isOpaque()) {
-            String message =  "createReceivers: Can only create receivers";
-            message += " on opaque ports.";
-            throw new IllegalActionException(this, message);
+            throw new IllegalActionException(this,
+            "createReceivers: Can only create receivers on opaque ports.");
         }
         int portWidth = getWidth();
         if (portWidth <= 0) return;
@@ -263,29 +257,13 @@ public class IOPort extends ComponentPort {
                     (IORelation) outsideRelations.nextElement();
                 int width = relation.getWidth();
 
-                Receiver[][] result = null;
-                if(_localReceiversTable.containsKey(relation) ) {
-                    // There is a list of receivers for this relation.
-                    result = (Receiver[][])_localReceiversTable.get(relation);
-                }
+                Receiver[][] result = new Receiver[width][1];
 
-                // If there was no list of receivers for this relation, or
-                // if the width of the relation has changed, we need to
-                // create new receivers for this relation.
-                if ((result == null) || (result.length != width)) {
-                    // No valid table entry in the cache for this relation.
-                    // Create a new set of receivers compatible with the
-                    // executive director.
-                    result = new Receiver[width][1];
-
-                    for (int i = 0; i< width; i++) {
-                        // This throws an exception if there is no director.
-                        result[i][0] = _newReceiver();
-                    }
+                for (int i = 0; i< width; i++) {
+                    // This throws an exception if there is no director.
+                    result[i][0] = _newReceiver();
                 }
                 // Save it, possibly replacing a previous version.
-                // NOTE: if a previous version is replaced, then any data
-                // in the receivers is lost.
                 _localReceiversTable.put(relation, result);
             }
         }
@@ -295,37 +273,20 @@ public class IOPort extends ComponentPort {
                 IORelation relation = (IORelation)insideRelations.nextElement();
                 int width = relation.getWidth();
 
-                Receiver[][] result = null;
-                if(_localReceiversTable.containsKey(relation) ) {
-                    // There is a list of receivers for this relation.
-                    result = (Receiver[][])_localReceiversTable.get(relation);
-                }
+                Receiver[][] result = new Receiver[width][1];
 
-                // If there was no list of receivers for this relation, or
-                // if the width of the relation has changed, we need to
-                // create new receivers for this relation.
-                if ((result == null) || (result.length != width)) {
-                    result = new Receiver[width][1];
-
-                    // No valid table entry in the cache for this relation.
-                    // Create a new set of receivers compatible with the
-                    // executive director.
-                    // Inside links need to have receivers compatible
-                    // with the local director.  We need to create those
-                    // receivers here.
-                    for (int i = 0; i< width; i++) {
-                        // This throws an exception if there is no director.
-                        result[i][0] = _newInsideReceiver();
-                    }
+                // Inside links need to have receivers compatible
+                // with the local director.  We need to create those
+                // receivers here.
+                for (int i = 0; i< width; i++) {
+                    // This throws an exception if there is no director.
+                    result[i][0] = _newInsideReceiver();
                 }
                 // Save it, possibly replacing a previous version.
-                // NOTE: if a previous version is replaced, then any data
-                // in the receivers is lost.
                 _localReceiversTable.put(relation, result);
             }
         }
     }
-
 
     /** Deeply enumerate the input ports connected to this port on the
      *  outside.  This method calls deepConnectedPorts() of the super

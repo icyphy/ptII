@@ -90,9 +90,10 @@ public abstract class RandomSource extends Source {
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
      *  seed is specified.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
 	long sd = ((LongToken)(seed.getToken())).longValue();
         if(sd != (long)0) {
             _random.setSeed(sd);

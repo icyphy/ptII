@@ -107,8 +107,10 @@ public class Print extends TypedAtomicActor implements Placeable {
      *  previously existing text area.
      *  If a panel has not been specified, place the text area into
      *  its own frame.  Otherwise, place it in the specified panel.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         if (textArea == null) {
             setPanel(_panel);
         } else {

@@ -131,9 +131,10 @@ public class Expression extends TypedAtomicActor {
      *  <i>firing</i> variables.  If any input bears the name <i>time</i>
      *  or <i>firing</i>, then it will shadow these variables.
      *  @exception IllegalActionException If the expression is evaluated
-     *   immediately and is invalid.
+     *   immediately and is invalid, or if the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         // NOTE: There is lots of try...catch in this code.
         // One of these, IllegalActionException, could be passed up instead.
         _variables = new NamedList();

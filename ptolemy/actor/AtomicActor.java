@@ -116,17 +116,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return newobj;
     }
 
-    /** Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    public void createReceivers() throws IllegalActionException {
-        Enumeration inputPorts = inputPorts();
-        while (inputPorts.hasMoreElements()) {
-            IOPort inport = (IOPort)inputPorts.nextElement();
-            inport.createReceivers();
-        }
-    }
-
     /** Do nothing.  Derived classes override this method to define their
      *  their primary run-time action.
      *
@@ -173,14 +162,19 @@ public class AtomicActor extends ComponentEntity implements Actor {
 	}
     }
 
-    /** Do nothing.  Derived classes override this method to define their
-     *  initialization code, which gets executed exactly once prior to
-     *  any other action methods. This method typically initializes
-     *  internal members of an actor and produces initial output data.
+    /** Create receivers and perform domain-specific initialization,
+     *  if any.  Derived classes can override this method to
+     *  perform additional initialization functions, but they should be
+     *  to call this base class methods or create the receivers themselves.
+     *  This method gets executed exactly once prior to
+     *  any other action methods.  It cannot produce output data
+     *  since type resolution is typically not yet done.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize() throws IllegalActionException {
+        _createReceivers();
+        getDirector().initialize(this);
     }
 
     /** Return an enumeration of the input ports.
@@ -328,17 +322,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super.setContainer(container);
     }
 
-    /**  
-     * Place a bound on the execution of the fire method of this 
-     * atomic actor. Most atomic actors have bounded fire methods 
-     * and can simply ignore this.  Atomic actors with unbounded fire
-     * methods should override this method to save their state at
-     * an appropriate time, to allow the fire method to resume execution
-     * if fire() is called again.
-     * <p>
-     * In this base class, do nothing.
+    /** Request that execution of the current iteration stop. 
+     *  Most atomic actors have bounded fire() methods, so they
+     *  can simply ignore this.  Atomic actors with unbounded fire()
+     *  methods should override this method to save their state and
+     *  return from the fire() method at the next convenient point.
+     *  In this base class, do nothing.
      */
-    public void stopfire() {
+    public void stopFire() {
     }
 
     /** By default, an AtomicActor does nothing incredible in its
@@ -394,6 +385,20 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /*  Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _createReceivers() throws IllegalActionException {
+        Enumeration inputPorts = inputPorts();
+        while (inputPorts.hasMoreElements()) {
+            IOPort inport = (IOPort)inputPorts.nextElement();
+            inport.createReceivers();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

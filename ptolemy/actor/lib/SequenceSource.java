@@ -62,6 +62,20 @@ work.
 
 public class SequenceSource extends Source implements SequenceActor {
 
+    /** Construct an actor in the specified workspace.  This constructor
+     *  is used to create actors that are to be added dynamically to a
+     *  container during execution of a model.
+     *  @param workspace The workspace.
+     */
+    public SequenceSource(Workspace workspace) {
+        super(workspace);
+        try {
+            lifetime = new Parameter(this, "lifetime", new IntToken(0));
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
     /** Construct an actor with the given container and name.
      *  The <i>lifetime</i> parameter is also constructed.
      *  @param container The container.
@@ -104,9 +118,12 @@ public class SequenceSource extends Source implements SequenceActor {
     /** Initialize the iteration counter.  A derived class must call
      *  this method in its initialize() method or the <i>lifetime</i>
      *  feature will not work.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the parent class throws it,
+     *   which could occur if, for example, the director will not accept
+     *   sequence actors.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _iterCount = 0;
     }
 

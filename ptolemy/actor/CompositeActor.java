@@ -179,35 +179,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return newobj;
     }
 
-    /** Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    public void createReceivers() throws IllegalActionException {
-        Enumeration ports = getPorts();
-        while (ports.hasMoreElements()) {
-            IOPort oneport = (IOPort)ports.nextElement();
-            oneport.createReceivers();
-        }
-    }
-
-    /**  
-     * Place a bound on the execution of the fire method of this 
-     * composite actor. If this actor is opaque, then invoke the stopfire() 
-     * method of the local director. Otherwise, return. This method is 
-     * read-synchronized on the workspace. 
-     */
-    public void stopfire() {
-        try {
-            workspace().getReadAccess();
-            if (!isOpaque()) {
-		return;
-            }
-            getDirector().stopfire();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-
     /** If this actor is opaque, invoke the fire() method of its local
      *  director. Otherwise, throw an exception.
      *  This method is read-synchronized on the workspace, so the
@@ -306,8 +277,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, invoke the initialize() method of its local
+    /** If this actor is opaque, create receivers, and then
+     *  invoke the initialize() method of its local
      *  director. Otherwise, throw an exception.
+     *  Also, if this is not a top-level composite actor,
+     *  perform domain-specific initialization by calling the
+     *  initialize(Actor) method of the executive director.
      *  This method is read-synchronized on the workspace, so the initialize()
      *  method of the director need not be, assuming it is only called from
      *  here.
@@ -319,6 +294,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void initialize() throws IllegalActionException {
         try {
             workspace().getReadAccess();
+            _createReceivers();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot initialize a non-opaque actor YO.");
@@ -326,6 +302,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().initialize();
+            Director executive = getExecutiveDirector();
+            if (executive != null) {
+                executive.initialize(this);
+            }
         } finally {
             workspace().doneReading();
         }
@@ -616,6 +596,23 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    /** Request that execution of the current iteration stop. 
+     *  If this actor is opaque, then invoke the stopFire() 
+     *  method of the local director. Otherwise, do nothing.
+     *  This method is read-synchronized on the workspace. 
+     */
+    public void stopFire() {
+        try {
+            workspace().getReadAccess();
+            if (!isOpaque()) {
+		return;
+            }
+            getDirector().stopFire();
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
     /** If this is an opaque CompositeActor, then look to our director
      *  for help.   If we are transparent, then we really shouldn't have been
      *  called, so just ignore.
@@ -660,7 +657,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
-     *  implements the Actor interface. This
+     *  implements the Actor interface and to invalidate the schedule
+     *  and type resolution. This
      *  method does not alter the actor in any way.
      *  It is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -680,6 +678,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     " implement the Actor interface.");
         }
         super._addEntity(entity);
+        _director.invalidateSchedule();
+        _director.invalidateResolvedTypes();
     }
 
     /** Add a port to this actor. This overrides the base class to
@@ -780,6 +780,20 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /*  Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _createReceivers() throws IllegalActionException {
+        Enumeration ports = getPorts();
+        while (ports.hasMoreElements()) {
+            IOPort oneport = (IOPort)ports.nextElement();
+            oneport.createReceivers();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private Director _director;
@@ -791,4 +805,3 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
     private transient LinkedList _cachedOutputPorts;
 }
-

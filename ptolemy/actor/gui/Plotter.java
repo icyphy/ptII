@@ -101,8 +101,10 @@ public class Plotter extends TypedAtomicActor implements Placeable {
      *  specified but it is not an instance of Plot, then create a new
      *  instance of Plot and place the plot in that panel
      *  using its add() method.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         if (plot == null) {
             setPanel(_panel);
         } else {

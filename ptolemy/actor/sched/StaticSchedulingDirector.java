@@ -131,6 +131,22 @@ public class StaticSchedulingDirector extends Director {
         }
     }
 
+    /** Indicate that a schedule for the model may no longer be valid.
+     *  This method should be called when topology changes are made,
+     *  or for that matter when any change that may invalidate
+     *  the schedule is made.  In this base class, the method simply sets
+     *  a flag that forces scheduling to be redone at the next opportunity.
+     *  If there is no scheduler, do nothing.
+     */
+    public void invalidateSchedule() {
+        _debug("Invalidating schedule.");
+        try {
+            setScheduleValid(false);
+        } catch (IllegalActionException ex) {
+            // no scheduler.  ignore.
+        }
+    }
+
     /** Set the scheduler for this StaticSchedulingDirector.
      *  The container of the specified scheduler is set to this director.
      *  If there was a previous scheduler, the container of that scheduler
@@ -170,6 +186,7 @@ public class StaticSchedulingDirector extends Director {
      *  @param true to set the schedule to be valid.
      *  @exception IllegalActionException If there's no scheduler.
      */
+// FIXME: This should be protected.
     public void setScheduleValid(boolean valid)
             throws IllegalActionException {
         if(_scheduler == null) {

@@ -66,31 +66,6 @@ public class TestActor extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Mutation test.  Create a new instance of this test actor with
-     *  the same container using queueMutation of the director.
-     *  If there is no director, return doing nothing.
-     *  @return The new actor.
-     */
-    public void addActor(final String name) {
-        TopologyChangeRequest m = new TopologyChangeRequest(this) {
-            // Create the mutation
-            public void constructEventQueue() {
-                TestActor testactor = null;
-                try {
-                    testactor =
-                        new TestActor((CompositeActor)getContainer(), name);
-                } catch (Exception ex) {
-                    // Ignore exceptions
-                }
-                queueEntityAddedEvent((CompositeEntity)getContainer(), testactor);
-            }
-        };
-        Director dir = getDirector();
-        if (dir != null) {
-            dir.queueTopologyChangeRequest(m);
-        }
-    }
-
     /** Clear the record, and reset the iteration count to zero.
      */
     public void clear() {
@@ -110,8 +85,10 @@ public class TestActor extends AtomicActor {
     }
 
     /** Record the initialization.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _actions.append(getFullName() + ".initialize\n");
     }
 

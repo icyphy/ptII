@@ -33,6 +33,7 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 
 import collections.LinkedList;
@@ -53,16 +54,31 @@ execute the model in the calling thread or in a separate thread.
 The latter is useful when the caller wishes to remain live during
 the execution of the model.
 <p>
+A manager provides services for cleanly handling changes to the
+topology.  These include such changes as adding or removing an entity,
+port, or relation, creating or destroying a link, and changing the value
+or type of a parameter.  Collectively, such changes are called
+<i>mutations</i>. Usually, mutations
+cannot safely occur at arbitrary points in the execution of
+a model.  Models can queue changes with the director or
+the manager using the requestChange() method.  The director simply delegates
+the request to the manager, which performs the change at the earliest
+opportunity.  In this implementation of Manager, the changes are
+executed between iterations.
+<p>
+A service is also provided whereby an object can be registered with the
+director as a change listener.  A change listener is informed when
+changes that are requested via requestChange() are executed.
+<p>
 Manager can optimize the performance of an execution by making
 the workspace <i>write protected</i> during an iteration, if all
 relevant directors permit this.  This removes some of the overhead
 of obtaining read and write permission on the workspace.
-By default, directors always require write access on the work space, but
+By default, directors do not permit this, but
 many directors explicitly relenquish write access to allow faster execution.
-Note that making the workspace write protected in this manner does not prevent
-mutations.  Mutations cannot be performed directly by directors, 
-since they cannot acquire write access on the workspace, but mutations can
-still be performed by the manager between toplevel iterations.
+Such directors are declaring that they will not make changes to the
+topology during execution.  Instead, any desired changes are delegated
+to the director via the requestChange() method.
 
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 // Contributors: Mudit Goel, John S. Davis II
@@ -141,6 +157,23 @@ public final class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a change listener. The listener
+     *  will be notified of the execution of each change requested
+     *  via the requestChange() method.
+     *  If the listener is already in the list, do not add it again.
+     *  @param listener The listener to add.
+     */
+    public void addChangeListener(ChangeListener listener) {
+        if (_changeListeners == null) {
+            _changeListeners = new LinkedList();
+        } else {
+            if (_changeListeners.includes(listener)) {
+                return;
+            }
+        }
+        _changeListeners.insertLast(listener);
+    }
+
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
      */
@@ -161,8 +194,10 @@ public final class Manager extends NamedObj implements Runnable {
      *  The execution is performed in the calling thread (the current thread),
      *  so this method returns only after execution finishes.
      *  If you wish to perform execution in a new thread, use startRun() 
-     *  instead.
-     *  If you do not wish to deal with exceptions, but want to execute
+     *  instead.  Even if an exception occurs during the execution, the
+     *  wrapup() method is called (in a finally clause).  It is up to the
+     *  caller to handle (i.e. report) the exception.
+     *  If you do not wish to handle exceptions, but want to execute
      *  within the calling thread, use run().
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is already running, or
@@ -174,6 +209,7 @@ public final class Manager extends NamedObj implements Runnable {
         // Make a record of the time execution starts.
         long startTime = (new Date()).getTime();
 
+        boolean completedSuccessfully = false;
         try {            
             initialize();
             // Call iterate() until finish() is called or postfire()
@@ -191,9 +227,12 @@ public final class Manager extends NamedObj implements Runnable {
                     }
                 }
             }
-            wrapup();
-            _notifyListenersOfCompletion();
+            completedSuccessfully = true;
         } finally {
+            wrapup();
+            if (completedSuccessfully) {
+                _notifyListenersOfCompletion();
+            }
             if (_state != IDLE) {
                 _setState(IDLE);
             }
@@ -207,7 +246,7 @@ public final class Manager extends NamedObj implements Runnable {
     /** Set a flag to request that execution stop and exit gracefully.
      *  This will result in finish() being called on the top level
      *  CompositeActor, although not necessarily immediately.
-     *  This method sets the flag, then calls stopfire() on the 
+     *  This method sets the flag, then calls stopFire() on the 
      *  toplevel composite actor to ensure that the flag will actually get
      *  seen.  Finally, resume() is called to ensure that the model is not
      *  currently paused.  Note that the flag is set before
@@ -223,7 +262,7 @@ public final class Manager extends NamedObj implements Runnable {
         if(container == null) throw new InternalErrorException(
                 "Attempted to call finish on an executing manager with no" +
                 " associated model");
-        container.stopfire();
+        container.stopFire();
         resume();
     }
 
@@ -284,7 +323,8 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** Invoke one iteration of the model.  An iteration consists of
-     *  first performing mutations and type resolution, if necessary, and then
+     *  first performing changes queued with requestChange()
+     *  and type resolution, if necessary, and then
      *  invoking prefire(), fire(), and postfire(), in that
      *  order. If prefire() returns false, then fire() and postfire() are not
      *  invoked, and true is returned.
@@ -298,7 +338,7 @@ public final class Manager extends NamedObj implements Runnable {
      *
      *  @return True if postfire() returns true.
      *  @exception KernelException If the model throws it, or if there
-     *   is no container.
+     *   is no container, or if one of the requested changes fails.
      */
     public boolean iterate() throws KernelException {
         if (_container == null) {
@@ -309,7 +349,7 @@ public final class Manager extends NamedObj implements Runnable {
         try {
             workspace().getReadAccess();
 
-            // FIXME: _container mutations will occur here.
+            _processChangeRequests();
 
             if (!_typesResolved) {
                 resolveTypes();
@@ -358,7 +398,7 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** Set a flag requesting that execution pause at the next opportunity
-     *  (between iterations).  Call stopfire() on the toplevel composite 
+     *  (between iterations).  Call stopFire() on the toplevel composite 
      *  actor to ensure that the manager's execution thread becomes active 
      *  again.   The thread controlling the execution will be
      *  suspended the next time through the iteration loop.  To resume 
@@ -370,7 +410,7 @@ public final class Manager extends NamedObj implements Runnable {
         if(container == null) throw new InternalErrorException(
                 "Attempted to call finish on an executing manager with no" +
                 " associated model");
-        container.stopfire();
+        container.stopFire();
     }
 
     /** Remove a listener from the list of listeners that are notified
@@ -381,6 +421,35 @@ public final class Manager extends NamedObj implements Runnable {
     public void removeExecutionListener(ExecutionListener listener) {
         if(listener == null || _executionListeners == null) return;
         _executionListeners.exclude(listener);
+    }
+
+    /** Remove a change listener. If the specified listener is not
+     *  on the list, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeChangeListener(ChangeListener change) {
+        if (_changeListeners == null) {
+            return;
+        }
+        _changeListeners.exclude(change);
+   }
+
+    /** Queue a change request.
+     *  The indicated change will be executed at the next opportunity,
+     *  typically between top-level iterations of the model. For the
+     *  benefit of process-oriented domains, which may not have finite
+     *  iterations, this method also calls stopFire() on the top-level
+     *  composite actor, requesting that directors in such domains
+     *  return from their fire() method as soon as practical.
+     *  @param change The requested change.
+     */
+    public void requestChange(ChangeRequest change) {
+        // Create the list of requests if it doesn't already exist
+        if (_changeRequests == null) {
+            _changeRequests = new LinkedList();
+        }
+        _changeRequests.insertLast(change);
+        container.stopFire();
     }
 
     /** Check types on all the connections and resolve undeclared types.
@@ -550,14 +619,15 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Wrap up the model.
      *  @exception KernelException If the model throws it.
-     *  @exception IllegalActionException If the model is already running, or
-     *   if there is no container.
+     *  @exception IllegalActionException If the model is idle or already
+     *   wrapping up, or if there is no container.
      */
     public synchronized void wrapup()
             throws KernelException, IllegalActionException {
-        if (_state != ITERATING && _state != PAUSED && _state != INITIALIZING) {
+        if (_state == IDLE || _state == WRAPPING_UP) {
             throw new IllegalActionException(this,
-            "The model is not iterating.");
+            "Cannot wrap up. The current state is: "
+            + _state.getDescription());
         }
         if (_container == null) {
             throw new IllegalActionException(this,
@@ -651,8 +721,70 @@ public final class Manager extends NamedObj implements Runnable {
         return _writeAccessNeeded;
     }
 
+    /** Process the queued change requests that have been added with
+     *  requestChange(). Registered change
+     *  listeners are informed of each change in a series of calls
+     *  after successful completion of each request. If any queued
+     *  request itself makes requests using requestChange(), then those
+     *  requests are processed in the same way
+     *  after the first batch is completed.  If any
+     *  request fails with an exception, then the change list is cleared,
+     *  and no further requests are processed.
+     *  Note that change requests processed successfully
+     *  prior to the failed request are not undone.
+     *
+     *  @exception IllegalActionException If any of the pending requests have
+     *   already been implemented.
+     *  @exception ChangeFailedException If any of the requests fails.
+     */
+    protected void _processChangeRequests()
+            throws IllegalActionException, ChangeFailedException {
+        while (_changeRequests != null) {
+            _setState(MUTATING);
+
+            // Clone the change request list before iterating through it
+            // in case any of the changes themselves post change requests.
+            // Regrettably, LinkedList makes its clone() method protected,
+            // so we have to copy by hand...
+            LinkedList clonedList = new LinkedList();
+            Enumeration enum = _changeRequests.elements();
+            while (enum.hasMoreElements()) {
+                clonedList.insertLast(enum.nextElement());
+            }
+
+            // Clear the request queue.  We want to discard the queue even
+            // if the changes fail.
+            // Otherwise, we could get stuck not being able to do anything
+            // further with the model.
+            _changeRequests = null;
+
+            enum = clonedList.elements();
+            while (enum.hasMoreElements()) {
+                ChangeRequest request = (ChangeRequest)enum.nextElement();
+                request.execute();
+
+                // Inform all listeners. Of course, this won't happen
+                // if the change request failed
+                if (_changeListeners != null) {
+                    Enumeration listeners = _changeListeners.elements();
+                    while(listeners.hasMoreElements()) {
+                        ChangeListener listener
+                                = (ChangeListener)listeners.nextElement();
+                        request.notify(listener);
+                    }
+                }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // A list of change listeners.
+    private LinkedList _changeListeners;
+
+    // A list of pending changes.
+    private LinkedList _changeRequests;
 
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;

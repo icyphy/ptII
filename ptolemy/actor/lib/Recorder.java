@@ -34,10 +34,6 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.StringToken;
 
-// FIXME: Test suites can't use jdk 1.2 yet, so we have to use the
-// old collections package.
-// import java.util.LinkedList;
-// import java.util.ListIterator;
 import collections.*;
 import java.util.Enumeration;
 
@@ -54,8 +50,6 @@ is recorded.
 @author Edward A. Lee
 @version $Id$
 */
-
-// FIXME: This class does not support mutations.
 
 public class Recorder extends Sink {
 
@@ -90,29 +84,37 @@ public class Recorder extends Sink {
         return newobj;
     }
 
-    /** Get the record for the specified channel.
-     *  @exception NoSuchItemException If the channel is out of range.
+    /** Get the record for the specified channel number.  If in any
+     *  firing there is no such channel, or no token was read on that
+     *  channel, then a string token with value "_" is returned.
+     *  If nothing has been recorded (there have been no firings),
+     *  then return an empty enumeration.
+     *  @return An enumeration of StringToken objects.
      */
-
-     // FIXME: This should return ListIterator when tests can use jdk 1.2.
-    public Enumeration getRecord(int channel) throws NoSuchItemException {
-        if (records == null || channel < 0 || channel >= records.length) {
-            throw new NoSuchItemException(this,
-                   "No such channel: " + channel);
+    public Enumeration getRecord(int channel) {
+        LinkedList result = new LinkedList();
+        if (_records != null) {
+            Enumeration firings = _records.elements();
+            while (firings.hasMoreElements()) {
+                StringToken[] record = (StringToken[])firings.nextElement();
+                if (channel < record.length) {
+                    if (record[channel] != null) {
+                        result.insertLast(record[channel]);
+                        continue;
+                    }
+                }
+                result.insertLast(_bottom);
+            }
         }
-        // FIXME:
-        // return records[channel].listIterator(0);
-        return records[channel].elements();
+        return result.elements();
     }
 
     /** Initialize the lists used to record input data.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
-        int width = input.getWidth();
-        records = new LinkedList[width];
-        for (int i = 0; i < width; i++) {
-            records[i] = new LinkedList();
-        }
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _records = new LinkedList();
     }
 
     /** Read at most one token from each input channel and record its value.
@@ -120,20 +122,23 @@ public class Recorder extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
+        StringToken[] record = new StringToken[width];
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 StringToken token = (StringToken)input.get(i);
-                // FIXME
-                // records[i].add(token);
-                records[i].insertLast(token);
+                record[i] = token;
             }
         }
+        _records.insertLast(record);
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Array of linked lists.
-    private LinkedList[] records;
+    // A linked list of arrays.
+    private LinkedList _records;
+
+    // A token to indicate absence.
+    private static StringToken _bottom = new StringToken("_");
 }

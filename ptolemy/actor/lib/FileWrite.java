@@ -114,9 +114,11 @@ public class FileWrite extends TypedAtomicActor {
 
     /** Open the specified file, if any.  Note changes to the filename
      *  parameter during execution are ignored until the next execution.
-     *  @exception IllegalActionException If the file cannot be opened.
+     *  @exception IllegalActionException If the file cannot be opened,
+     *   or if the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         // FIXME: implement this.
     }
 

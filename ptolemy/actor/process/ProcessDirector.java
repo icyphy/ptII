@@ -136,21 +136,17 @@ public class ProcessDirector extends Director {
 	}
     }
 
-    /** Wait till the detection of a deadlock. Then handle the deadlock
-     *  and return.
+    /** Wait until a deadlock is detected. Then handle the deadlock
+     *  (by calling the protected method _handleDeadlock()) and return.
      *  @exception IllegalActionException If a derived class throws it.
      */
-    public void fire() throws IllegalActionException {
+    public synchronized void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
-	synchronized (this) {
-	    while (!_isDeadlocked()) {
-		workspace.wait(this);
-	    }
-	    _notdone = !_handleDeadlock();
-	}
-        return;
+        while (!_isDeadlocked()) {
+            workspace.wait(this);
+        }
+        _notdone = !_handleDeadlock();
     }
-
 
     /** Increases the count of paused threads and checks whether the
      *  entire model has successfully paused.
@@ -162,14 +158,12 @@ public class ProcessDirector extends Director {
 	}
     }
 
-    /** Invokes the initialize() methods of all the deeply contained
+    /** Invoke the initialize() methods of all the deeply contained
      *  actors in the container (a composite actor) of this director.
-     *  It creates a new ProcessThread for each actor. It also creates
-     *  receivers for all the ports.
-     *  <p>
-     *  The current time of execution of the container and all the
-     *  actors contained in it is set.
-     *  <p>
+     *  These are expected to call initialize(Actor), which will result
+     *  in the creation of a new thread for each actor.
+     *  Also, set current time to 0.0, or to the current time of
+     *  the executive director of the container, if there is one.
      *
      *  @exception IllegalActionException If the initialize() method
      *   of one of the deeply contained actors throws it.
@@ -187,44 +181,37 @@ public class ProcessDirector extends Director {
             //Creating receivers and threads for all actors;
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
-                actor.createReceivers();
-
-		// Reset the receivers
-                Enumeration ports = actor.inputPorts(); 
-		while (ports.hasMoreElements()) {
-		    IOPort port = (IOPort)ports.nextElement(); 
-		    Receiver[][] receivers = port.getReceivers(); 
-		    for (int i = 0; i < receivers.length; i++) {
-		       for (int j = 0; j < receivers[i].length; j++) {
-			    ((ProcessReceiver)receivers[i][j]).reset();
-			}
-		    }
-		}
-
-		// Initialize threads
-                ProcessThread processThread = _getProcessThread(actor, this);
-                _threadList.insertFirst(processThread);
-		_newthreads.insertFirst(processThread);
-
-                //Actors should be initialized after creating receivers so 
-		//that they can transmit data in their initialize methods.
                 actor.initialize();
-
             }
 
-	    CompositeActor topOfContainer = 
+	    CompositeActor containersContainer = 
 		    (CompositeActor)container.getContainer();
-	    if( topOfContainer == null ) {
+	    if( containersContainer == null ) {
 		setCurrentTime(0.0);
 	    } else {
 		double time = 
-                        topOfContainer.getDirector().getCurrentTime();
+                        containersContainer.getDirector().getCurrentTime();
                 setCurrentTime(time);
 	    }
         }
-
     }
 
+    /** Perform domain-specific initialization on the specified actor, if any.
+     *  In this base class, start a ProcessThread for each actor.
+     *  This is called by the initialize() method of the actor, and may be
+     *  called after the initialization phase of an execution.  In particular,
+     *  in the event of mutations during an execution that introduce new
+     *  actors, this method will be called as part of initializing the
+     *  new actors.
+     *  @exception IllegalActionException If the actor is not acceptable
+     *   to the domain.  Not thrown in this base class.
+     */
+    public void initialize(Actor actor) throws IllegalActionException {
+        // Initialize threads
+        ProcessThread processThread = _getProcessThread(actor, this);
+        _threadList.insertFirst(processThread);
+        _newthreads.insertFirst(processThread);
+    }
 
     /** Return false if the model has reached a deadlock and can
      *  be terminated if desired. Return true otherwise.
@@ -237,7 +224,9 @@ public class ProcessDirector extends Director {
 	return _notdone;
     }
 
-    /** Return true.
+    /** Start threads for all actors that have not had threads started
+     *  already (this might include actors initialized since the last
+     *  invocation of prefire).
      *  This starts the threads, corresponding to all the actors, that
      *  were created in the initialize() method.
      *  @return true Always returns true.
@@ -512,14 +501,13 @@ public class ProcessDirector extends Director {
      *  In derived classes, override this method to obtain domain
      *  specific handling of deadlocks. It should return true if a
      *  real deadlock has occurred and the simulation can be ended.
-     *  It should return if the simulation has data to proceed and
+     *  It should return false if the simulation has data to proceed and
      *  need not be terminated.
      *
-     *  @return true.
-     *  @exception IllegalActionException If a derived class throws it.
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected boolean _handleDeadlock()
-	    throws IllegalActionException {
+    protected boolean _handleDeadlock() throws IllegalActionException {
 	return true;
     }
 
@@ -586,7 +574,7 @@ public class ProcessDirector extends Director {
     // The threads started by this director.
     private LinkedList _threadList;
 
-    //A copy of threads started by the directors in this iteration.
+    //A copy of threads started since the last invocation of prefire().
     private LinkedList _newthreads;
 }
 

@@ -105,16 +105,21 @@ public interface Executable {
      */
     public boolean prefire() throws IllegalActionException;
 
-    /**
-     * This method is called to request the return of execution control
-     * to the manager. When this method is called, control should be 
-     * returned to the executive director or manager that is controlling
-     * this object. This method is
-     * intended to ensure that actors with unbounded execution in the
-     * fire method
-     * can be made to relenquish execution control back to the manager.     
+    /** Request that execution of the current iteration stop.  If an
+     *  iteration is always a finite computation (the usual case), i.e.
+     *  the fire() method always returns in finite time, then nothing
+     *  needs to be done in this method, except possibly to pass on the
+     *  request to any contained executable objects.  This method is used
+     *  to request that an unbounded computation suspend, returning control
+     *  to the caller.  Thus, if the fire() method does not normally return
+     *  in finite time, the this method is used to request that it return.
+     *  It should suspend execution in such a way
+     *  that if the fire() method is called again, execution will
+     *  resume at the point where it was suspended.  However, it should
+     *  not assume the fire() method will be called again.  It is possible
+     *  that the wrapup() method will be called next.
      */
-    public void stopfire(); 
+    public void stopFire(); 
     
     /** Terminate any currently executing model with extreme prejudice.
      *  This method is not intended to be used as a normal route of 

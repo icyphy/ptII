@@ -121,8 +121,10 @@ public class Show extends TypedAtomicActor implements Placeable {
      *  its own frame.  Otherwise, place it in the specified panel.
      *  If the panel is itself an instance of Table, then use that
      *  instance.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         if (_table == null) {
             setPanel(_panel);
         }

@@ -109,8 +109,10 @@ public class Average extends Transformer {
     }
 
     /** Reset the count of inputs.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _count = 1;
     }
 

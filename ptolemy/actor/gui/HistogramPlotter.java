@@ -123,8 +123,10 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
 
     /** If the histogram has not already been created, create it using
      *  setPanel().
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         if (histogram == null) {
             setPanel(_panel);
         } else {

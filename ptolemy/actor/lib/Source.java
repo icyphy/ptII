@@ -48,6 +48,20 @@ and are correctly handled in cloned actors.
 
 public abstract class Source extends TypedAtomicActor {
 
+    /** Construct an actor in the specified workspace.  This constructor
+     *  is used to create actors that are to be added dynamically to a
+     *  container during execution of a model.
+     *  @param workspace The workspace.
+     */
+    public Source(Workspace workspace) {
+        super(workspace);
+        try {
+            output = new TypedIOPort(this, "output", false, true);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
     /** Construct an actor with the given container and name.
      *  The output port is also constructed.
      *  @param container The container.

@@ -127,37 +127,3 @@ W.E0.A1.wrapup
 W.E0.E1.A2.wrapup
 }
 
-######################################################################
-####
-#
-test Director-7.1 {Test mutations (adding an actor} {
-    $a1 clear
-    $d4 initialize
-    $d4 iterate
-    $a2 addActor A3
-    $d4 iterate
-    $d4 wrapup
-    $a1 getRecord
-} {W.E0.A1.initialize
-W.E0.E1.A2.initialize
-W.E0.A1.prefire
-W.E0.E1.A2.prefire
-W.E0.A1.fire
-W.E0.E1.A2.fire
-W.E0.A1.postfire
-W.E0.E1.A2.postfire
-W.E0.A1.prefire
-W.E0.E1.A3.initialize
-W.E0.E1.A2.prefire
-W.E0.E1.A3.prefire
-W.E0.A1.fire
-W.E0.E1.A2.fire
-W.E0.E1.A3.fire
-W.E0.A1.postfire
-W.E0.E1.A2.postfire
-W.E0.E1.A3.postfire
-W.E0.A1.wrapup
-W.E0.E1.A2.wrapup
-W.E0.E1.A3.wrapup
-} {KNOWN_FAILED}
-

@@ -236,8 +236,10 @@ public class Pulse extends SequenceSource {
     }
 
     /** Set the iteration count to zero.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {      
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _iterationCount = 0;
         _indexRowCount = 0;
         _indexColCount = 0;

@@ -72,28 +72,6 @@ are provided that may or may not be useful in specific domains.   In general,
 these methods will perform domain-dependent actions, and then call the
 respective methods in all contained actors.
 <p>
-A director also provides services for cleanly handling mutations of the
-topology.  Mutations include such changes as adding or removing an entity,
-port, or relation, creating or destroying a link, and changing the value
-or type of a parameter.  Usually,
-mutations cannot safely occur at arbitrary points in the execution of
-an application.  Applications can queue mutations with the director,
-and the director will then perform the mutations at the first opportunity,
-when it is safe.  In this base-class implementation, mutations are performed
-at the beginning of each iteration by the prefire() method.
-<p>
-A service is also provided whereby an object can be registered with the
-director as a mutation listener.  A mutation listener is informed of
-mutations that occur when they occur.
-<p>
-One particular mutation listener, called an ActorListener, is added
-to a director the first time a mutation is performed.  This listener
-ignores all mutations except those that add or remove an actor.
-For those mutations, it records the addition or deletion.
-After all the mutations have been completed in the prefire() method,
-any actors that are new to the composite have their initialize() methods
-invoked. An initialize() method may queue further mutations with the director.
-<p>
 The director also provides methods to optimize the iteration portion of an
 execution. This is done by setting the workspace to be read-only during
 an iteration. In this base class, the default implementation results in
@@ -142,22 +120,6 @@ public class Director extends NamedObj implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Add a topology change listener to this director. The listener
-     * will be notified of each change in the topology that
-     * happens when the director decides it is safe to make
-     * topology changes. Change requests are queued by using
-     * the queueToplogyChangeRequest() method.
-     *
-     *  @param listener The TopologyListener to add.
-     */
-    public void addTopologyListener(TopologyListener listener) {
-        if (_topologyListeners == null) {
-            _topologyListeners = new TopologyMulticaster();
-        }
-        _topologyListeners.addTopologyListener(listener);
-    }
-
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -172,8 +134,6 @@ public class Director extends NamedObj implements Executable {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Director newobj = (Director)super.clone(ws);
         newobj._container = null;
-        newobj._queuedTopologyRequests = null;
-        newobj._topologyListeners = null;
         return newobj;
     }
 
@@ -288,13 +248,28 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                actor.createReceivers();
                 actor.initialize();
             }
         }
     }
 
-    /** Indicate that resolved types in the system may no longer be valid.
+    /** Perform domain-specific initialization on the specified actor, if any.
+     *  In this base class, do nothing.
+     *  This is called by the initialize() method of the actor, and may be
+     *  called after the initialization phase of an execution.  In particular,
+     *  in the event of mutations during an execution that introduce new
+     *  actors, this method will be called as part of initializing the
+     *  actor.  Typical actions a director might perform include starting
+     *  threads to execute the actor or checking to see whether the actor
+     *  can be managed by this director.  For example, a time-based domain
+     *  (such as CT) might reject sequence based actors.
+     *  @exception IllegalActionException If the actor is not acceptable
+     *   to the domain.  Not thrown in this base class.
+     */
+    public void initialize(Actor actor) throws IllegalActionException {
+    }
+
+    /** Indicate that resolved types in the model may no longer be valid.
      *  This will force type resolution to be redone on the next iteration.
      *  This method simply defers to the manager, notifying it.  If there
      *  is no container, or if it has no manager, do nothing.
@@ -307,6 +282,17 @@ public class Director extends NamedObj implements Executable {
                 manager.invalidateResolvedTypes();
             }
         }
+    }
+
+    /** Indicate that a schedule for the model may no longer be valid, if
+     *  there is a schedule.  This method should be called when topology
+     *  changes are made, or for that matter when any change that may
+     *  invalidate the schedule is made.  In this base class, the method
+     *  does nothing. In derived classes, it will cause any static
+     *  schedule information to be recalculated in the prefire method
+     *  of the director.
+     */
+    public void invalidateSchedule() {
     }
 
     /** Return true if this director, or any of its contained directors 
@@ -408,54 +394,44 @@ public class Director extends NamedObj implements Executable {
         return true;
     }
 
-    /** Add a mutation object to the mutation queue. These mutations
-     *  are executed when the _performTopologyChanges() method is called,
-     *  which in this base class is in the prefire() method.  This method
-     *  also arranges that all additions of new actors are recorded.
-     *  The prefire() method then invokes the initialize() method of all
-     *  new actors after the mutations have been completed.
-     *
-     *  @param mutation A object with a perform() and update() method that
-     *   performs a mutation and informs any listeners about it.
+    /** Queue a change request with the manager.
+     *  The indicated change will be executed at the next opportunity,
+     *  typically between top-level iterations of the model.
+     *  If there is no container, or if it has no manager, do nothing.
+     *  @param change The requested change.
      */
-    public void queueTopologyChangeRequest(TopologyChangeRequest request) {
-        // Create the list of requests if it doesn't already exist
-        if (_queuedTopologyRequests == null) {
-            _queuedTopologyRequests = new LinkedList();
+    public void requestChange(ChangeRequest change) {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Manager manager = container.getManager();
+            if (manager != null) {
+                manager.requestChange(change);
+            }
         }
-        _queuedTopologyRequests.insertLast(request);
     }
 
-
-
-    /** Remove a topology listener from this director.
-     *  If the listener is not attached to this director, do nothing.
-     *
-     *  @param listener The TopologyListener to be removed.
+    /** Request that execution of the current iteration stop.
+     *  In this base class, the request is simply passed on to all actors
+     *  that are deeply contained by the container of this director.
+     *  For most domains, an iteration is a finite computation, so nothing
+     *  further needs to be done here.  However, for some process-oriented
+     *  domains, the fire() method of the director is an unbounded computation.
+     *  Those domains should override this method so that when it is called,
+     *  it does whatever it needs to do to get the fire() method to return.
+     *  Typically, it will set flags that will cause all executing threads
+     *  to suspend.  These domains should suspend execution in such a way
+     *  that if the fire() method is called again, execution will
+     *  resume at the point where it was suspended.  However, they should
+     *  not assume the fire() method will be called again.  It is possible
+     *  that the wrapup() method will be called next.
      */
-    public void removeTopologyListener(TopologyListener listener) {
-        _topologyListeners.removeTopologyListener(listener);
-    }
-
-    /**
-     * Place a bound on the execution of the fire method of this director.
-     * Execution should stop at the earliest available opportunity.  The 
-     * next time the fire method is called, execution should resume at the
-     * point where it was suspended.  If the Director is not currently
-     * executing, then this method can be safely ignored.
-     * <p>
-     * In this base class, we recursively call stopfire on all directly 
-     * contained actors.  Process based domains should override this
-     * method to pause all of their currently executing threads, and 
-     * then return fire.  
-     */
-    public void stopfire() {
+    public void stopFire() {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                actor.stopfire();
+                actor.stopFire();
             }
         }
     }
@@ -479,18 +455,17 @@ public class Director extends NamedObj implements Executable {
      *  method instead. This method should be called only 
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).
-     *  <p>
-     *  After this method completes, all resources in use should be
-     *  released and any sub-threads should be killed.
-     *  However, a consistent state is not guaranteed.   The
+     *  There is no assurance that the topology will be in a consistent
+     *  state after this method returns.  The
      *  topology should probably be recreated before attempting any
      *  further operations.
-     *  This method should not be synchronized because it must
-     *  happen as soon as possible, no matter what.
      *  <p>
-     *  This base class recursively calls terminate on all associated actors.
-     *  Some domain directors may need override this method to additionally
-     *  kill any sub-threads that were created during execution.
+     *  This base class recursively calls terminate() on all actors deeply
+     *  contained by the container of this director. Derived classes should
+     *  override this method to release all resources in use and kill
+     *  any sub-threads.  Derived classes should not synchronize this
+     *  method because it should execute as soon as possible.
+     *  <p>
      */
     public void terminate() {
         CompositeActor container = ((CompositeActor)getContainer());
@@ -657,87 +632,6 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** 
-     * Return an enumeration over the actors added to the topology in
-     * the most recent call to _processTopologyRequests(). This is intended
-     * so that directors can then initialize any new actors. The enumeration
-     * is over a copy of the list, so it is safe for actors to perform
-     * additional mutations during initialization.
-     */
-    protected Enumeration _newActors() {
-        LinkedList copy = new LinkedList();
-        copy.appendElements(_newActors.elements());
-        return copy.elements();
-    }
-
-
-    /** 
-     * Process the queued topology change requests. Registered topology
-     * listeners are informed of each change in a series of calls
-     * after successful completion of each request. If any queued
-     * request fails, the request is undone, snd no further requests
-     * are processed. Note that change requests processed successfully
-     * prior to the failed request are <i>not</i> undone.
-     * <p>
-     * Any new actors added to the topology during the course of
-     * processing the mutation requests can be obtained with the
-     * _newActors() method.
-     *
-     *  @exception IllegalActionException If any of the pending requests have
-     *   already been implemented.
-     *  @exception TopologyChangeFailedException If any of the requests fails.
-     */
-    protected void _processTopologyRequests()
-            throws IllegalActionException, TopologyChangeFailedException {
-        if (_queuedTopologyRequests == null) {
-            return;
-        }
-        _newActors.clear();
-
-        Enumeration enum = _queuedTopologyRequests.elements();
-        while (enum.hasMoreElements()) {
-            TopologyChangeRequest r =
-                (TopologyChangeRequest)enum.nextElement();
-
-            // Change the topology. This might throw a
-            // TopologyChangeFailedException
-            try {
-                r.constructEventQueue();
-            } catch (Exception ex) {
-                System.out.println("constructEventQueue threw and Exception "+
-                        ex.getClass().getName() + ex.getMessage());
-            }
-            r.performRequest();
-
-            // Record any new actors that in this request
-            Enumeration events = r.queuedEvents();
-            while (events.hasMoreElements()) {
-                TopologyEvent e = (TopologyEvent) events.nextElement();
-                if (e.getID() == TopologyEvent.ENTITY_ADDED) {
-		    Entity ent = e.getComponentEntity();
-                    if (ent instanceof Actor &&
-                            !_newActors.includes(e.getEntity())) {
-			if (ent instanceof AtomicActor || 
-				(ent instanceof CompositeActor &&
-					((CompositeActor)ent).isOpaque())) 
-			    _newActors.insertLast(e.getComponentEntity());
-                    }
-                } else if (e.getID() == TopologyEvent.ENTITY_REMOVED) {
-                    // Why on earth would you want do do this???
-                    _newActors.removeOneOf(e.getComponentEntity());
-                }
-            }
-	    
-            // Inform all listeners. Of course, this won't happen
-            // if the change request failed
-            if (_topologyListeners != null) {
-                r.notifyListeners(_topologyListeners);
-            }
-        }
-        // Clear the request queue
-        _queuedTopologyRequests = null;
-    }
-
     /** Return true if this director requires write access
      *  on the workspace during execution. Most director functions 
      *  during execution do not need write access on the workpace.
@@ -762,12 +656,6 @@ public class Director extends NamedObj implements Executable {
     // The composite of which this is the local director.
     private CompositeActor _container = null;
     
+    // The current time of the model.
     private double _currentTime = 0.0;
-
-    // Support for mutations.
-    private LinkedList _queuedTopologyRequests = null;
-    private TopologyMulticaster _topologyListeners = null;
-
-    private LinkedList _newActors = new LinkedList();
-
 }

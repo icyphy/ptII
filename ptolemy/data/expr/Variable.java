@@ -577,12 +577,7 @@ public class Variable extends Attribute implements Typeable {
             }
         } else {
             // must have an initial expression
-            try {
-                setExpression(_initialExpression);
-            } catch (IllegalActionException ex) {
-                // This should not occur.
-                throw new InternalErrorException(ex.getMessage());
-            }
+            setExpression(_initialExpression);
         }
     }
 
@@ -644,16 +639,13 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Set the expression of this variable. Evaluation is deferred until
-     *  the value of the variable is accessed by getToken().  If the 
-     *  argument is null, then getToken() will return null.  The container
-     *  is notified of the value change by calling its attributeChanged()
-     *  method.  If that method throws an exception, then the previous
-     *  value of the expression is restored.
+     *  the value of the variable is accessed by getToken().  The
+     *  container is not notified of the change until then.  If you need
+     *  to notify the container right away, then call getToken().  If the 
+     *  argument is null, then getToken() will return null.
      *  @param expr The expression for this variable.
-     *  @exception IllegalActionException If the container rejects this
-     *   expression.
      */
-    public void setExpression(String expr) throws IllegalActionException {
+    public void setExpression(String expr) {
         if (expr == null) {
             _token = null;
             _castToken = null;
@@ -661,18 +653,8 @@ public class Variable extends Attribute implements Typeable {
         } else {
             _needsEvaluation = true;
         }
-        String saveExpr = _currentExpression;
         _currentExpression = expr;
         _destroyParseTree();
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            try {
-                container.attributeChanged(this);
-            } catch (IllegalActionException ex) {
-                _currentExpression = saveExpr;
-                throw ex;
-            }
-        }
     }
 
     /** Put a new token in this variable. If an expression had been
@@ -884,8 +866,7 @@ public class Variable extends Attribute implements Typeable {
      *  calling its attributeChanged() and attributeTypeChanged() methods,
      *  as appropriate. An exception is thrown
      *  if the expression is illegal, for example if a parse error occurs
-     *  or if there is a dependency loop. In such cases, the value of
-     *  the variable is left unmodified.
+     *  or if there is a dependency loop.
      *  <p>
      *  If evaluation results in a token that is not of the same type
      *  as the current type of the variable, and cannot be converted
@@ -925,8 +906,9 @@ public class Variable extends Attribute implements Typeable {
         try {
             workspace().getReadAccess();
             _buildParseTree();
-            _setToken(_parseTree.evaluateParseTree());
-            _needsEvaluation = false;
+            Token result = _parseTree.evaluateParseTree();
+            _dependencyLoop = false;
+            _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
             throw new IllegalExpressionException(ex.getMessage());
@@ -1065,6 +1047,7 @@ public class Variable extends Attribute implements Typeable {
                 "that depend on its value.");
             }
             _token = null;
+            _needsEvaluation = false;
             _castToken = null;
             return;
         }
@@ -1075,6 +1058,7 @@ public class Variable extends Attribute implements Typeable {
             int typeInfo = TypeLattice.compare(_varType, tokenType);
             if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.SAME)) {
                 _token = newToken;
+                _needsEvaluation = false;
                 _castToken = null;
                 return;
             }
@@ -1104,6 +1088,7 @@ public class Variable extends Attribute implements Typeable {
             _noTokenYet = false;
         }
         _token = newToken;
+        _needsEvaluation = false;
     }
 
     /*  Set the token value and type of the variable, and notify the

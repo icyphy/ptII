@@ -57,6 +57,25 @@ of any token type that supports addition.
 
 public class Ramp extends SequenceSource {
 
+    /** Construct an actor in the specified workspace.  This constructor
+     *  is used to create actors that are to be added dynamically to a
+     *  container during execution of a model.
+     *  @param workspace The workspace.
+     */
+    public Ramp(Workspace workspace) {
+        super(workspace);
+        try {
+            init = new Parameter(this, "init", new IntToken(0));
+            step = new Parameter(this, "step", new IntToken(1));
+            
+            // set the type constraints.
+            output.setTypeAtLeast(init);
+            output.setTypeAtLeast(step);
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameters. Initialize <i>init</i>
@@ -128,8 +147,10 @@ public class Ramp extends SequenceSource {
     /** Set the state to equal the value of the <i>init</i> parameter.
      *  The state is incremented by the value of the <i>step</i>
      *  parameter on each iteration (in the postfire() method).
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
+        super.initialize();
         _stateToken = init.getToken();
         try {
             super.initialize();

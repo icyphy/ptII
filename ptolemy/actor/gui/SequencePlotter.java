@@ -92,8 +92,9 @@ public class SequencePlotter extends Plotter
     }
 
     /** Reset the x axis counter, and call the base class.
+     *  @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         super.initialize();
         _xValue = -1.0;
     }
