@@ -122,7 +122,7 @@ test UndoRename-1.1a {Test renaming an entity is undoable} {
 
 test UndoRename-1.1b {Test renaming an entity is undoable} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -195,7 +195,7 @@ test UndoRename-1.2a {Test renaming a port is undoable} {
 
 test UndoRename-1.2b {Test renaming a port is undoable} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -268,7 +268,7 @@ test UndoRename-1.3a {Test renaming a property is undoable} {
 
 test UndoRename-1.3b {Test renaming a property is undoable} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -341,7 +341,7 @@ test UndoRename-1.4a {Test renaming a relation is undoable} {
 
 test UndoRename-1.4b {Test renaming a relation is undoable} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -427,7 +427,7 @@ test UndoRename-1.5a {Test a relation rename is updated across MoML} {
 
 test UndoRename-1.5b {Test a relation rename is updated across MoML} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -520,7 +520,7 @@ test UndoRename-1.6a {Test a vertex rename is updated across MoML} {
 
 test UndoRename-1.6b {Test a vertex rename is updated across MoML} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

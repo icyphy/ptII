@@ -123,7 +123,7 @@ test UndoProperty-1.1a {Test undoing a new property addition} {
 
 test UndoProperty-1.1b {Test undoing a new property addition} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -185,7 +185,7 @@ test UndoProperty-1.2a {Test undoing a property value change} {
 
 test UndoProperty-1.2b {Test undoing a property value change} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -247,7 +247,7 @@ test UndoProperty-1.3a {Test undoing a change to a ports "input" value} {
 
 test UndoProperty-1.3b {Test undoing a change to a ports "input" value} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -311,7 +311,7 @@ test UndoProperty-1.4a {Test undoing a change to a ports "output" value} {
 
 test UndoProperty-1.4b {Test undoing a change to a ports "output" value} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -375,7 +375,7 @@ test UndoProperty-1.5a {Test undoing a change to a ports "multiport" value} {
 
 test UndoProperty-1.5b {Test undoing a change to a ports "multiport" value} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -454,7 +454,7 @@ test UndoProperty-2.1a {Test undoing a property value change} {
 
 test UndoProperty-2.1b {Test undoing a property value change } {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

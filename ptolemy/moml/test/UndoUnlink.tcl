@@ -144,7 +144,7 @@ test UndoUnlink-1.1a {Test undoing all links to a relation} {
 
 test UndoUnlink-1.1b {Test undoing all links to a relation} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -236,7 +236,7 @@ test UndoUnlink-1.2a {Test undoing all links to a relation: link not at zero} {
 
 test UndoUnlink-1.2b {Test undoing all links to a relation: link not at zero} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -329,7 +329,7 @@ test UndoUnlink-1.3a {Test undoing an outside link: non-null} {
 
 test UndoUnlink-1.3b {Test undoing an outside link: non-null} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -422,7 +422,7 @@ test UndoUnlink-1.4a {Test undoing an inside link: non-null} {
 
 test UndoUnlink-1.4b {Test undoing an inside link: non-null} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -515,7 +515,7 @@ test UndoUnlink-1.5a {Test undoing an inside link: null link} {
 
 test UndoUnlink-1.5b {Test undoing an inside link: null link} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

@@ -118,7 +118,7 @@ test MoMLUndoable-1.1a {Test undoing an entity creation: simple name} {
 
 test MoMLUndoable-1.1b {Test undoing an entity creation: simple name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -175,7 +175,7 @@ test MoMLUndoable-1.2a {Test moving context via an entity: simple name} {
 
 test MoMLUndoable-1.2b {Test moving context via an entity: simple name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -232,7 +232,7 @@ test MoMLUndoable-1.3a {Test moving context via an entity: complex name} {
 
 test MoMLUndoable-1.3b {Test moving context via an entity: complex name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

@@ -124,7 +124,7 @@ test UndoVertex-1.1a {Test a new vertex addition} {
 
 test UndoVertex-1.1b {Test a new vertex addition} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -200,7 +200,7 @@ test UndoVertex-1.2a {Test setting the value of a previous vertex
 test UndoVertex-1.2b {Test setting the value of a previous vertex
                         attribute to null} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -265,7 +265,7 @@ test UndoVertex-1.3a {Test modifying the value of a previous vertex} {
 
 test UndoVertex-1.3b {Test modifying the value of a previous vertex} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

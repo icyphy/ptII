@@ -112,7 +112,7 @@ test MoMLUndoChangeRequest-1.1 {Test adding an entity} {
 test MoMLUndoChangeRequest-1.2 {Undo} {
     set originalMoML [$toplevel exportMoML]
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set undoChange [java::new ptolemy.kernel.util.UndoChangeRequest \
+    set undoChange [java::new ptolemy.kernel.undo.UndoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneMoML [$toplevel exportMoML]
@@ -134,7 +134,7 @@ test MoMLUndoChangeRequest-1.2 {Undo} {
 test MoMLUndoChangeRequest-1.2a {Undo again, with nothing to undo} {
     # Uses $undoneMoML from 1.2 above
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set undoChange [java::new ptolemy.kernel.util.UndoChangeRequest \
+    set undoChange [java::new ptolemy.kernel.undo.UndoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneAgainMoML [$toplevel exportMoML]
@@ -211,7 +211,7 @@ test MoMLUndoChangeRequest-2.1 {Make three changes, merge the first and the last
     set threeChangeMoML [$toplevel exportMoML]
 
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set undoChange [java::new ptolemy.kernel.util.UndoChangeRequest \
+    set undoChange [java::new ptolemy.kernel.undo.UndoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneThreeChangeMoML [$toplevel exportMoML]
