@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="giottoThrottleController" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[536, 466]">
+<entity name="etc" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 475]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[136, 94]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[72, 90]">
     </property>
     <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
         <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="deep">
@@ -121,7 +121,7 @@ Last updated February 19, 2002</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="20.0, -15.0">
+        <property name="_location" class="ptolemy.moml.Location" value="20.0, -10.0">
         </property>
     </property>
     <entity name="throttle" class="ptolemy.actor.TypedCompositeActor">
@@ -586,7 +586,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
 <xRange min="0.0" max="0.24999999999997943"/>
 <yRange min="0.6969650735916048" max="1.000774367855814"/>
 </plot>?>
-                </configure>    </entity>
+                                                </configure>    </entity>
     <entity name="controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="420.0, 345.0">
         </property>
@@ -944,7 +944,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
 <xRange min="0.0" max="0.24999999999997943"/>
 <yRange min="0.0" max="1.0"/>
 </plot>?>
-                                </configure>            </entity>
+                                                                                                </configure>            </entity>
             <entity name="user_mode" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
