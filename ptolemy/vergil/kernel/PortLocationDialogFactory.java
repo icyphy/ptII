@@ -1,32 +1,32 @@
 /* A menu item factory that opens a dialog for locating ports.
 
- Copyright (c) 1999-2001 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1999-2001 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
-*/
+   @ProposedRating Red (eal@eecs.berkeley.edu)
+   @AcceptedRating Red (johnr@eecs.berkeley.edu)
+ */
 
 package ptolemy.vergil.kernel;
 
@@ -48,12 +48,12 @@ import javax.swing.JMenuItem;
 //////////////////////////////////////////////////////////////////////////
 //// PortLocationDialogFactory
 /**
-A factory that creates a dialog to visually place ports on objects.
+   A factory that creates a dialog to visually place ports on objects.
 
-@author Mason Holding
-@version $Id$
-@since Ptolemy II 2.1
-*/
+   @author Mason Holding
+   @version $Id$
+   @since Ptolemy II 2.1
+ */
 public class PortLocationDialogFactory implements MenuItemFactory {
 
     ///////////////////////////////////////////////////////////////////
@@ -74,28 +74,28 @@ public class PortLocationDialogFactory implements MenuItemFactory {
         // ensure that we actually have a target, and that it's an Entity.
         if (!(target instanceof Entity)) return null;
         Action action = new AbstractAction(name) {
-            public void actionPerformed(ActionEvent e) {
-                // Create a dialog for configuring the object.
-                // First, identify the top parent frame.
-                // Normally, this is a Frame, but just in case, we check.
-                // If it isn't a Frame, then the edit parameters dialog
-                // will not have the appropriate parent, and will disappear
-                // when put in the background.
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog for configuring the object.
+                    // First, identify the top parent frame.
+                    // Normally, this is a Frame, but just in case, we check.
+                    // If it isn't a Frame, then the edit parameters dialog
+                    // will not have the appropriate parent, and will disappear
+                    // when put in the background.
+                    Component parent = menu.getInvoker();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
+                    }
+                    if (parent instanceof Frame) {
+                        new PortLocationDialog((Frame)parent,
+                                (Entity)target,
+                                _configuration);
+                    } else {
+                        new PortLocationDialog(null,
+                                (Entity)target,
+                                _configuration);
+                    }
                 }
-                if (parent instanceof Frame) {
-                    new PortLocationDialog((Frame)parent,
-                            (Entity)target,
-                            _configuration);
-                } else {
-                    new PortLocationDialog(null,
-                            (Entity)target,
-                            _configuration);
-                }
-            }
-        };
+            };
         return menu.add(action, name);
     }
 

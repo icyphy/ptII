@@ -1,32 +1,32 @@
 /* An action to set the icon of an Entity.
 
- Copyright (c) 2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
-*/
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
+ */
 
 package ptolemy.vergil.kernel;
 
@@ -49,13 +49,13 @@ import javax.swing.filechooser.FileFilter;
 //////////////////////////////////////////////////////////////////////////
 //// SetIconAction
 /**
-An action to set the icon of an Entity.
-An icon can be a gif, svg, or xml file.
+   An action to set the icon of an Entity.
+   An icon can be a gif, svg, or xml file.
 
-@author  Original Author Unknown, Contributor: Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.1
-*/
+   @author  Original Author Unknown, Contributor: Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.1
+ */
 public class SetIconAction extends FigureAction {
     /**
      */
@@ -107,7 +107,7 @@ public class SetIconAction extends FigureAction {
                 File file = iconChooser.getSelectedFile().getAbsoluteFile();
                 // Make sure this file is not bogus.
                 if (!file.exists()) {
-                   throw new NullPointerException("No such file");
+                    throw new NullPointerException("No such file");
                 }
 
                 String extension = getExtension(file);
@@ -121,43 +121,43 @@ public class SetIconAction extends FigureAction {
                         + ">\n <configure> ");
 
                 if (extension.equalsIgnoreCase("svg")
-                     || extension.equalsIgnoreCase("xml")) {
+                        || extension.equalsIgnoreCase("xml")) {
                     // read in the svg from a file
                     BufferedReader reader = new BufferedReader(
                             new FileReader(file));
 
-                   String temp = new String();
-                   while ((temp = reader.readLine()) != null) {
-                       moml.append(temp);
-                   }
-                   moml.append(" </configure>\n</property>\n</group> ");
-                   ChangeRequest request =
-                       new MoMLChangeRequest(object, object,
-                               moml.toString(), null);
-                   object.requestChange(request);
+                    String temp = new String();
+                    while ((temp = reader.readLine()) != null) {
+                        moml.append(temp);
+                    }
+                    moml.append(" </configure>\n</property>\n</group> ");
+                    ChangeRequest request =
+                        new MoMLChangeRequest(object, object,
+                                moml.toString(), null);
+                    object.requestChange(request);
                 }
                 else
-                {// insert the gif into svg markup
-                   moml.append (
-                           "<svg>\n<rect x=\"0\" y=\"0\" width=\"60\" "
-                           + "height=\"40\" style=\"fill:white\"></rect>"
-                           + "<image x=\"0\" y=\"0\" width=\"60\" "
-                           + "height=\"40\" xlink:href=\"file:"
-                           + file.getCanonicalPath()
-                           + "\"></image>\n</svg>\n"
-                           + " </configure>\n</property>\n</group>");
+                    {// insert the gif into svg markup
+                        moml.append (
+                                "<svg>\n<rect x=\"0\" y=\"0\" width=\"60\" "
+                                + "height=\"40\" style=\"fill:white\"></rect>"
+                                + "<image x=\"0\" y=\"0\" width=\"60\" "
+                                + "height=\"40\" xlink:href=\"file:"
+                                + file.getCanonicalPath()
+                                + "\"></image>\n</svg>\n"
+                                + " </configure>\n</property>\n</group>");
 
-                   ChangeRequest request =
-                       new MoMLChangeRequest(object, object,
-                               moml.toString(), null);
-                     object.requestChange(request);
-                }
+                        ChangeRequest request =
+                            new MoMLChangeRequest(object, object,
+                                    moml.toString(), null);
+                        object.requestChange(request);
+                    }
                 _directory = iconChooser.getCurrentDirectory();
             } catch (Exception ex) {
                 MessageHandler.error("Error reading image file", ex);
             }
         }
-      }
+    }
 
     /** Return the extension of a file.  The extension of a file
      *  is the characters after the final period ('.'), if any.
