@@ -508,9 +508,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // then they must be processed here.
         _processPendingRequests();
         
-        if (_handler != null) {
-            _handler.enableErrorSkipping(false);
-        }
         // Tidy up the undo entry
         if (_undoEnabled && _undoContext != null && _undoContext.hasUndoMoML()) {
             String undoMoML = _undoContext.getUndoMoML();
@@ -553,55 +550,61 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
         }
 
-        // Execute any change requests that might have been queued
-        // as a consequence of this change request.
-        // NOTE: This used to be done after validating parameters,
-        // but now these change requests might add to the list
-        // of parameters to validate (because of propagation).
-        // EAL 3/04
-        if (_toplevel != null) {
-            // Set the top level back to the default
-            // found in startDocument.
-            _toplevel.setDeferringChangeRequests(_previousDeferStatus);
-            _toplevel.executeChangeRequests();
-        }
+        try {
+            // Execute any change requests that might have been queued
+            // as a consequence of this change request.
+            // NOTE: This used to be done after validating parameters,
+            // but now these change requests might add to the list
+            // of parameters to validate (because of propagation).
+            // EAL 3/04
+            if (_toplevel != null) {
+                // Set the top level back to the default
+                // found in startDocument.
+                _toplevel.setDeferringChangeRequests(_previousDeferStatus);
+                _toplevel.executeChangeRequests();
+            }
 
-        // Force evaluation of parameters so that any listeners are notified.
-        // This will also force evaluation of any parameter that this variable
-        // depends on.
-        Iterator parameters = _paramsToParse.iterator();
-        while (parameters.hasNext()) {
-            Settable param = (Settable)parameters.next();
-            // NOTE: We used to catch exceptions here and issue
-            // a warning only, but this has the side effect of blocking
-            // the mechanism in PtolemyQuery that carefully prompts
-            // the user for corrected parameter values.
-            try {
-                param.validate();
+            // Force evaluation of parameters so that any listeners are notified.
+            // This will also force evaluation of any parameter that this variable
+            // depends on.
+            Iterator parameters = _paramsToParse.iterator();
+            while (parameters.hasNext()) {
+                Settable param = (Settable)parameters.next();
+                // NOTE: We used to catch exceptions here and issue
+                // a warning only, but this has the side effect of blocking
+                // the mechanism in PtolemyQuery that carefully prompts
+                // the user for corrected parameter values.
+                try {
+                    param.validate();
                 
-                // Also validate derived objects.
-                Iterator derivedParams
-                        = ((NamedObj)param).getDerivedList().iterator();
-                while (derivedParams.hasNext()) {
-                    Settable derivedParam = (Settable)derivedParams.next();
-                    derivedParam.validate();
-                }
-            } catch (Exception ex) {
-                if (_handler != null) {
-                    int reply = _handler.handleError(
-                            "<param name=\""
-                            + param.getName()
-                            + "\" value=\""
-                            + param.getExpression()
-                            + "\"/>",
-                            (NamedObj)param.getContainer(),
-                            ex);
-                    if (reply == ErrorHandler.CONTINUE) {
-                        continue;
+                    // Also validate derived objects.
+                    Iterator derivedParams
+                            = ((NamedObj)param).getDerivedList().iterator();
+                    while (derivedParams.hasNext()) {
+                        Settable derivedParam = (Settable)derivedParams.next();
+                        derivedParam.validate();
                     }
+                } catch (Exception ex) {
+                    if (_handler != null) {
+                        int reply = _handler.handleError(
+                                "<param name=\""
+                                + param.getName()
+                                + "\" value=\""
+                                + param.getExpression()
+                                + "\"/>",
+                                (NamedObj)param.getContainer(),
+                                ex);
+                        if (reply == ErrorHandler.CONTINUE) {
+                            continue;
+                        }
+                    }
+                    // No handler, or cancel button pushed.
+                    throw ex;
                 }
-                // No handler, or cancel button pushed.
-                throw ex;
+            }
+        } finally {
+            if (_handler != null) {
+                _handler.enableErrorSkipping(false);
             }
         }
     }
