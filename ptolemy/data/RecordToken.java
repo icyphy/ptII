@@ -246,11 +246,32 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @param type The type of the argument to the corresponding function.
      *  @return The type of the value returned from the corresponding function.
      */
-    public static Type mergeReturnTypeFAKE(Type type1, Type type2) {
+    public static Type mergeReturnType(Type type1, Type type2) {
         if(type1 instanceof RecordType &&
            type2 instanceof RecordType) {
-         
-            return BaseType.UNKNOWN;
+            RecordType recordType1 = (RecordType)type1;
+            RecordType recordType2 = (RecordType)type2;
+            
+            Set unionSet = new HashSet();
+            Set labelSet1 = recordType1.labelSet();
+            Set labelSet2 = recordType2.labelSet();
+            unionSet.addAll(labelSet1);
+            unionSet.addAll(labelSet2);
+            
+            Object[] labelsObjects = unionSet.toArray();
+            int size = labelsObjects.length;
+            String[] labels = new String[size];
+            Type[] types = new Type[size];
+            for (int i = 0; i < size; i++) {
+                labels[i] = (String)labelsObjects[i];
+                Type fieldType = recordType1.get(labels[i]);
+                if (fieldType != null) {
+                    types[i] = fieldType;
+                } else {
+                    types[i] = recordType2.get(labels[i]);
+                }
+            }
+            return new RecordType(labels, types);
         } else {
             return BaseType.UNKNOWN;
         }
