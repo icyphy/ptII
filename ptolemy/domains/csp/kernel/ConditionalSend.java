@@ -48,13 +48,14 @@ It is one branch of either a CDO or a CIF conditional
 communication construct. 
 <p>
 The branches used in a conditional communication construct are 
-controlled by the chooseBranch method of CSPActor. Thus any actor 
+controlled by the chooseBranch() method of CSPActor. Thus any actor 
 that wishes to use a CDO or a CIF must derive from CSPActor.
 <p>
-Each branch is created to perfrom one communication. If the guard for 
-the branch is true, then a thread is created for to try and perfrom 
+Each branch is created to perfrom one communication. If more than 
+one branch is enabled (the guard is true or absent), then a thread 
+is created for each enabled branch to try and perfrom 
 the appropriate rendezvous. If the branch 
-suceeds and is allowed to rendezvous, then it registers itself with 
+succeeds and is allowed to rendezvous, then it registers itself with 
 the parent actor and the thread it is running in dies. Otherwsise it 
 continues to trya nd rendezvous until it suceeds or it is notified that 
 another branch has suceeded in with its rendezvous, in which case this 
