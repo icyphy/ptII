@@ -55,7 +55,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// WirelessDirector
 /**
-This director is nearly identical to the DE director except that it
+Director for the wireless model of computation.
+
+<p>This director is nearly identical to the DE director except that it
 creates instances of WirelessReceiver and it has
 a set of attributes that can be used to randomize the location of wireless
 nodes on each execution.  The location of each actor that is not an
@@ -212,9 +214,10 @@ public class WirelessDirector extends DEDirector {
         }
     }
 
-    /** Set the location of the specified node.  This sets the _location
-     *  attribute, which is the location as used in Vergil, the visual editor.
-     *  Derived classes may override this to set the location differently.     *
+    /** Set the location of the specified node.  This sets the
+     *  _location attribute, which is the location as used in Vergil,
+     *  the visual editor.  Derived classes may override this to set
+     *  the location differently.
      *  @param location The specified location.
      *  @param node The node for which to set the location.
      *  @exception IllegalActionException If the location attribute

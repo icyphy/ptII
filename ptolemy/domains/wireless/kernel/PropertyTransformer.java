@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 Interface for Property Transformer.
 
 @author Yang Zhao and Edward Lee
-@version $ $
+@version $Id$
 @since Ptolemy II 3.1
 */
 public interface PropertyTransformer {

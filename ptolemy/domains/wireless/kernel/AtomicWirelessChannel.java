@@ -53,13 +53,16 @@ import ptolemy.kernel.util.ValueListener;
 //////////////////////////////////////////////////////////////////////////
 //// AtomicWirelessChannel
 /**
-This is the base class for communication channels in the wireless domain.
-To use it, place it in a model that contains wireless actors (actors
-whose ports are instances of WirelessIOPort).  Then set the
+
+The base class for communication channels in the wireless domain.
+
+<p>To use this class, place it in a model that contains wireless actors
+(actors whose ports are instances of WirelessIOPort).  Then set the
 <i>outsideChannel</i> parameter of those ports to match the name of
 this channel.  The model can also itself contain ports that are
 instances of WirelessIOPort, in which case their <i>insideChannel</i>
 parameter should contain the name of this channel.
+
 <p>
 In this base class, transmission on a channel reaches all ports at the
 same level of the hierarchy that are instances of WirelessIOPort and
@@ -255,18 +258,18 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
     }
 
-    /** Remove the dependency between the dummy port returned by
-     *  getChannelPort() and itself.
-     */
-    public void removeDependencies() {
-        removeDependency(_channelPort, _channelPort);
-    }
-
     /** Register a PropertyTransformer for a wirelessIOPort.
      */
     public void registerPropertyTransformer(WirelessIOPort port,
             PropertyTransformer transformer) {
         _portPropertyTransformer.put(port, transformer);
+    }
+
+    /** Remove the dependency between the dummy port returned by
+     *  getChannelPort() and itself.
+     */
+    public void removeDependencies() {
+        removeDependency(_channelPort, _channelPort);
     }
 
     /** Return a list of input ports that can potentially send data
@@ -384,9 +387,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             // WirelessReceiver.
             if (!(getDirector() instanceof WirelessDirector)) {
                 throw new IllegalActionException(this,
-                        "AtomicWirelessChannel can only work with a WirelessDirector.");
+                        "AtomicWirelessChannel can only work "
+                        + "with a WirelessDirector.");
             }
-            Iterator receivers = _receiversInRange(port, properties).iterator();
+            Iterator receivers =
+                _receiversInRange(port, properties).iterator();
             if (_debugging) {
                 _debug("----\nTransmitting from port: " + port.getFullName());
                 _debug("Token value: " + token.toString());

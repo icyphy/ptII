@@ -54,10 +54,13 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// WirelessIOPort
 /**
+
 This port communicates via channels without wired connections.
-Channels are instances of AtomicWirelessChannel, a subclass of TypedIORelation.
-The port references a channel by name, where the name is specified
-by either the <i>outsideChannel</i> or <i>insideChannel</i> parameter.
+Channels are instances of AtomicWirelessChannel, a subclass of
+TypedIORelation.  The port references a channel by name, where the
+name is specified by either the <i>outsideChannel</i> or
+<i>insideChannel</i> parameter.
+
 <p>
 This port can be used on the boundary of wireless domain models.
 In particular, it will use wireless communications on the inside
@@ -66,22 +69,23 @@ It will use wireless communication on the outside if an outside
 channel name is given.  If the named channel does not exist,
 then the behavior of the port reverts to that of the base class.
 Specifically, it will only communicate if it is wired.
+
 <p>
 The width of this port on either side that is using wireless
 communication is fixed at one.
+
 <p>
 When this port is used for wireless communications, nothing is
-connected to it.  Consequently, methods that access the topology
-such as connectedPortList() and deepConnectedInPortList()
-return an empty list. There
-are no deeply connected ports.  However, sinkPortList() returns
-a list of all input ports that use the same channel.  This is
-because the semantics of this method is to return all the ports
-that can potentially receive from this one.  A consequence of this
-is that type constraints are automatically set up between ports
-that send on a channel and ports that receive from the channel,
-irrespective of whether communication can actually occur (e.g.,
-a receiver may be out of range of a transmitter).
+connected to it.  Consequently, methods that access the topology such
+as connectedPortList() and deepConnectedInPortList() return an empty
+list. There are no deeply connected ports.  However, sinkPortList()
+returns a list of all input ports that use the same channel.  This is
+because the semantics of this method is to return all the ports that
+can potentially receive from this one.  A consequence of this is that
+type constraints are automatically set up between ports that send on a
+channel and ports that receive from the channel, irrespective of
+whether communication can actually occur (e.g., a receiver may be out
+of range of a transmitter).
 
 @author Edward A. Lee and Xiaojun Liu
 @version $Id$
@@ -224,14 +228,16 @@ public class WirelessIOPort
             Token value = insideTransmitProperties.getToken();
             if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                        "Expected a record for insideTransmitProperties but got: "
+                        "Expected a record for insideTransmitProperties "
+                        + "but got: "
                         + value);
             }
         } else if (attribute == outsideTransmitProperties) {
             Token value = outsideTransmitProperties.getToken();
             if (value != null && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                        "Expected a record for outsideTransmitProperties but got: "
+                        "Expected a record for outsideTransmitProperties "
+                        + "but got: "
                         + value);
             }
         } else {
@@ -393,8 +399,8 @@ public class WirelessIOPort
      *  The channel is contained by the container of the container of this
      *  port.
      *  @return A channel, or null if there is none.
-     *  @exception IllegalActionException If the <i>outsideChannel</i> parameter
-     *   value cannot be evaluated.
+     *  @exception IllegalActionException If the <i>outsideChannel</i>
+     *  parameter value cannot be evaluated.
      */
     public WirelessChannel getOutsideChannel() throws IllegalActionException {
         if (workspace().getVersion() == _outsideChannelVersion) {
@@ -565,11 +571,12 @@ public class WirelessIOPort
         }
     }
 
-    /** Return a list of the ports that can potentially accept data from
-     *  this port when it sends on the inside.  If there is an inside
-     *  channel, then this includes only the channel port. Otherwise, this includes
-     *  opaque input ports that are connected on the outside to this port
-     *  and opaque output ports that are connected on the inside to this one.
+    /** Return a list of the ports that can potentially accept data
+     *  from this port when it sends on the inside.  If there is an
+     *  inside channel, then this includes only the channel
+     *  port. Otherwise, this includes opaque input ports that are
+     *  connected on the outside to this port and opaque output ports
+     *  that are connected on the inside to this one.
      *  @return A list of IOPort objects.
      */
     public List insideSinkPortList() {
@@ -590,11 +597,11 @@ public class WirelessIOPort
     }
 
     /** Return a list of the ports that can potentially send data to
-     *  this port from the inside.  If there is an inside
-     *  channel, then this includes only the channel port.
-     *  Otherwise, this includes
-     *  opaque output ports that are connected on the outside to this port
-     *  and opaque input ports that are connected on the inside to this one.
+     *  this port from the inside.  If there is an inside channel,
+     *  then this includes only the channel port.  Otherwise, this
+     *  includes opaque output ports that are connected on the outside
+     *  to this port and opaque input ports that are connected on the
+     *  inside to this one.
      *  @return A list of IOPort objects.
      */
     public List insideSourcePortList() {
@@ -783,11 +790,12 @@ public class WirelessIOPort
         }
     }
 
-    /** Return a list of the ports that can potentially accept data from
-     *  this port when it sends on the outside.  If there is an outside
-     *  channel, then this includes only the channel port. Otherwise, this includes
-     *  opaque input ports that are connected on the outside to this port
-     *  and opaque output ports that are connected on the inside to this one.
+    /** Return a list of the ports that can potentially accept data
+     *  from this port when it sends on the outside.  If there is an
+     *  outside channel, then this includes only the channel
+     *  port. Otherwise, this includes opaque input ports that are
+     *  connected on the outside to this port and opaque output ports
+     *  that are connected on the inside to this one.
      *  @return A list of IOPort objects.
      */
     public List sinkPortList() {

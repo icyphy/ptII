@@ -43,7 +43,9 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// WirelessReceiver
 /**
-This receiver overrides the base class to handle transmit properties.
+A receiver for use in the wireless domain.
+
+<p>This receiver overrides the base class to handle transmit properties.
 This receiver works by bundling the token and its properties into a
 record token, and then unbundling at the corresponding get() methods.
 

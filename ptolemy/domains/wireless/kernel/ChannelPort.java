@@ -112,8 +112,8 @@ public class ChannelPort extends WirelessIOPort {
             super.setContainer(container);
         } else {
             throw new IllegalActionException(this,
-            "ChannelPort can only be contained by an " +
-            "instance of WirelessChannel.");
+                    "ChannelPort can only be contained by an "
+                    +  "instance of WirelessChannel.");
         }
     }
 
