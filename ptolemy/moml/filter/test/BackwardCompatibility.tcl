@@ -690,6 +690,8 @@ test BackwardCompatibility-10.1 {PNDirectory parameter named Initial_queue_capac
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="65536">
+        </property>
     </property>
 </entity>
 }}
