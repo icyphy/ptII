@@ -193,7 +193,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {
-                    _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
+                    _debug(new FiringEvent(this, actor,
+                            FiringEvent.BEFORE_ITERATE));
 		}
 
 		// FIXME: This is a hack. It does not even check if the
@@ -223,6 +224,10 @@ public class SDFDirector extends StaticSchedulingDirector {
                             "is not ready to fire.");
 		} else if (returnVal == STOP_ITERATING) {
 		    _postfirereturns = false;
+		}
+		if(_debugging) {
+                    _debug(new FiringEvent(this, actor,
+                            FiringEvent.AFTER_ITERATE));
 		}
             }
         }
