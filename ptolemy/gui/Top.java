@@ -223,7 +223,7 @@ public abstract class Top extends JFrame {
     public void report(String message, Throwable throwable) {
         if (_statusBar != null) {
             _statusBar.setMessage(MessageHandler.shortDescription(throwable)
-                                  + ". " + message);
+                    + ". " + message);
         }
         MessageHandler.error(message, throwable);
     }

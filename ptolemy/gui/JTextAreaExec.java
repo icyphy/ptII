@@ -304,7 +304,7 @@ public class JTextAreaExec extends JPanel {
                         appendJTextArea("InterruptedException: "
                                 + interrupted);
                         throw interrupted;
-                        }
+                    }
                 }
                 appendJTextArea("All Done.");
             } catch (final IOException io) {

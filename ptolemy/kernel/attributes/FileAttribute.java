@@ -310,7 +310,7 @@ public class FileAttribute extends StringAttribute {
         URL url = asURL();
         if (url == null) {
             throw new IllegalActionException(this,
-            "No file name has been specified.");
+                    "No file name has been specified.");
         }
         try {
             _reader = new BufferedReader(

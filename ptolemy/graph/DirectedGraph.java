@@ -198,7 +198,7 @@ public class DirectedGraph extends Graph {
      */
     public Object[] backwardReachableNodes(Object[] weights) {
         return weightArray(backwardReachableNodes(
-                                   nodes(Arrays.asList(weights))));
+                nodes(Arrays.asList(weights))));
     }
 
     /** Return the nodes that are in cycles. If there are multiple cycles,
@@ -709,7 +709,7 @@ public class DirectedGraph extends Graph {
     public Object[] topologicalSort(Object[] weights) throws
             GraphActionException {
         return weightArray(topologicalSort(
-                                   nodes(Arrays.asList(weights))));
+                nodes(Arrays.asList(weights))));
     }
 
     /** Return transitive closure for the graph. Transitive closure

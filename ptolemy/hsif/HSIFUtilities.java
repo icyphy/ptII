@@ -68,7 +68,7 @@ public class HSIFUtilities {
      *   @exception Exception if there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, FileWriter fileWriter)
-        throws Exception {
+            throws Exception {
         // This method takes a FileWriter so that the user can
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.
@@ -83,9 +83,9 @@ public class HSIFUtilities {
                     JNLPUtilities.jarURLEntryResource(input);
                 if (jarURL == null) {
                     throw new Exception("'" + input + "' was not a jar "
-                                        + "URL, or was not found");
+                            + "URL, or was not found");
                 }
-            inputDocument = XSLTUtilities.parse(jarURL.toString());
+                inputDocument = XSLTUtilities.parse(jarURL.toString());
             } catch (Exception ex2) {
                 // FIXME: IOException does not take a cause argument
                 throw ex;
@@ -117,7 +117,7 @@ public class HSIFUtilities {
      *   @exception Exception if there is a problem with the transformation.
      */
     public static void HSIFToMoML(String input, String output)
-        throws Exception {
+            throws Exception {
         // This method makes it much easier to test the conversion,
         FileWriter fileWriter = new FileWriter(output);
         HSIFToMoML(input, fileWriter);
@@ -137,8 +137,8 @@ public class HSIFUtilities {
     public static void main(String [] args) throws Exception {
         if (args.length != 2) {
             System.err.println("Usage: java -classpath $PTII "
-                               + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
-                               + "MoMLOutputFile");
+                    + "ptolemy.hsif.HSIFUtilities HSIFInputFile "
+                    + "MoMLOutputFile");
             System.exit(2);
         } else {
             HSIFToMoML(args[0], args[1]);

@@ -137,7 +137,7 @@ public class StandardOutTableau extends Tableau {
                     (StandardOutTableau)effigy.getEntity("standardOutTableau");
                 if (tableau == null) {
                     tableau = new StandardOutTableau(
-                        (StandardOutEffigy)effigy, "standardOutTableau");
+                            (StandardOutEffigy)effigy, "standardOutTableau");
                 }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;

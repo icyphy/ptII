@@ -78,8 +78,8 @@ public class Utilities {
             }
             int i;
             for (i = 0; (i < result.size()) &&
-                    (((String)result.get(i)).compareTo(elementString) < 0);
-                    i++);
+                     (((String)result.get(i)).compareTo(elementString) < 0);
+                 i++);
             result.add(i, elementString);
         }
         return result.toString();

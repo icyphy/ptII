@@ -119,7 +119,7 @@ public class BasicJApplet extends JApplet {
      */
     public void report(Throwable throwable) {
         report(MessageHandler.shortDescription(throwable)
-               + " thrown by applet.", throwable);
+                + " thrown by applet.", throwable);
     }
 
     /** Report a message to the user.

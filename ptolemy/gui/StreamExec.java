@@ -242,7 +242,7 @@ public class StreamExec {
                         stderr("InterruptedException: "
                                 + interrupted);
                         throw interrupted;
-                        }
+                    }
                 }
             } catch (final IOException io) {
                 stderr("IOException: " + io);

@@ -117,10 +117,10 @@ public class HSIFEffigyFactory extends EffigyFactory {
 
         // Check whether the URL refers to an HSIF file.
         if (input != null) {
-             String extension = EffigyFactory.getExtension(input);
-             if (!extension.equals("xml")) {
-                 return null;
-             }
+            String extension = EffigyFactory.getExtension(input);
+            if (!extension.equals("xml")) {
+                return null;
+            }
         }
 
         if (_isHSIF(input)) {
@@ -161,7 +161,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
                     if (index > 0) {
                         baseName = inputDirectoryBaseName
                             .substring(index,
-                                       inputDirectoryBaseName.length());
+                                    inputDirectoryBaseName.length());
                     }
 
                     File temporaryOutputFile;
@@ -175,8 +175,8 @@ public class HSIFEffigyFactory extends EffigyFactory {
                         // syntax is incorrect"
                         // FIXME: IOException does not take a cause argument?
                         throw new Exception("Could not create a temporary "
-                                            + "file based on '" + baseName
-                                            + "'", ex2);
+                                + "file based on '" + baseName
+                                + "'", ex2);
                     }
 
                     // Save the new name of the file so we can
@@ -188,21 +188,21 @@ public class HSIFEffigyFactory extends EffigyFactory {
                     } catch (IOException ex3) {
                         // FIXME: IOException does not take a cause argument?
                         throw new Exception("Could not open '"
-                                            + temporaryOutputFile
-                                            + "', also tried '"
-                                            + temporaryOutputFileName
-                                            + "' where the exception was:",
-                                            ex);
+                                + temporaryOutputFile
+                                + "', also tried '"
+                                + temporaryOutputFileName
+                                + "' where the exception was:",
+                                ex);
                     }
                 }
 
                 System.out.print("Converting HSIFToMoML ('"
-                                 + inputFileName + "' to '"
-                                 + temporaryOutputFileName + "'");
+                        + inputFileName + "' to '"
+                        + temporaryOutputFileName + "'");
 
                 // Read in from the URL so that Web Start works.
                 HSIFUtilities.HSIFToMoML(input.toString(),
-                                         outputFileWriter);
+                        outputFileWriter);
                 outputFileWriter.close();
                 System.out.println(" Done");
 
@@ -213,16 +213,16 @@ public class HSIFEffigyFactory extends EffigyFactory {
                 // for spaces.
                 Effigy effigy = ((EffigyFactory)getContainer())
                     .createEffigy(container,
-                                  temporaryOutputURL, temporaryOutputURL);
+                            temporaryOutputURL, temporaryOutputURL);
 
                 effigy.identifier.setExpression(temporaryOutputURL.toString());
                 return effigy;
-           } finally {
-               _inCreateEffigy = false;
-           }
-       }
-       return null;
-   }
+            } finally {
+                _inCreateEffigy = false;
+            }
+        }
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -240,7 +240,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
                     JNLPUtilities.jarURLEntryResource(inputURL.toString());
                 if (jarURL == null) {
                     throw new Exception("'" + inputURL + "' was not a jar "
-                                        + "URL, or was not found");
+                            + "URL, or was not found");
                 }
                 inputStream = jarURL.openStream();
             } catch (Exception ex2) {

@@ -94,8 +94,8 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
         try {
-        _query.addFileChooser(
-                "fileChooser", "FileChooser", "default", null, null);
+            _query.addFileChooser(
+                    "fileChooser", "FileChooser", "default", null, null);
         } catch ( SecurityException security) {
             System.out.println("addFileChooser failed: " + security);
         }

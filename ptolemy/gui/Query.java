@@ -602,7 +602,7 @@ public class Query extends JPanel {
         Dimension preferred = getPreferredSize();
         preferred.width = Short.MAX_VALUE;
         return preferred;
-     }
+    }
 
     /** Get the preferred width in characters to be used for entry
      *  boxes created in using addLine().  The preferred width is set
@@ -1266,7 +1266,7 @@ public class Query extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // NOTE: If the last argument is null, then choose a default dir.
             JFileChooser fileChooser
-                    = new JFileChooser(_startingDirectory);
+                = new JFileChooser(_startingDirectory);
             fileChooser.setApproveButtonText("Select");
             // FIXME: The following doesn't have any effect.
             fileChooser.setApproveButtonMnemonic('S');

@@ -118,9 +118,9 @@ public class StandardOutEffigy extends Effigy {
                     inputStream = in.openStream();
                 } catch (NullPointerException npe) {
                     throw new IOException("Failed to open '" + in
-                                          + "', base: '" + base
-                                          + "' : openStream() threw a "
-                                          + "NullPointerException");
+                            + "', base: '" + base
+                            + "' : openStream() threw a "
+                            + "NullPointerException");
                 }
                 reader = new BufferedReader(
                         new InputStreamReader(inputStream));

@@ -85,12 +85,12 @@ public class ShellTextArea extends JPanel {
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
-            public void run() {
-                _jTextArea.append(text);
-                // Scroll down as we generate text.
-                _jTextArea.setCaretPosition(_jTextArea.getText().length());
-            }
-        };
+                public void run() {
+                    _jTextArea.append(text);
+                    // Scroll down as we generate text.
+                    _jTextArea.setCaretPosition(_jTextArea.getText().length());
+                }
+            };
         SwingUtilities.invokeLater(doAppendJTextArea);
         // FIXME: There could be problems here with _promptCursor being
         // updated before the JTextArea is actually updated.
@@ -114,8 +114,8 @@ public class ShellTextArea extends JPanel {
     public static void main(String [] args) {
         JFrame jFrame = new JFrame("ShellTextArea Example");
         WindowListener windowListener = new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {System.exit(0);}
-        };
+                public void windowClosing(WindowEvent e) {System.exit(0);}
+            };
         jFrame.addWindowListener(windowListener);
 
         final ShellTextArea exec = new ShellTextArea();
@@ -130,10 +130,10 @@ public class ShellTextArea extends JPanel {
             final int start,
             final int end) {
         Runnable doReplaceRangeJTextArea = new Runnable() {
-            public void run() {
-                _jTextArea.replaceRange(text, start, end);
-            }
-        };
+                public void run() {
+                    _jTextArea.replaceRange(text, start, end);
+                }
+            };
         SwingUtilities.invokeLater(doReplaceRangeJTextArea);
     }
 
@@ -227,7 +227,7 @@ public class ShellTextArea extends JPanel {
         } else {
             _historyCursor ++;
             text = (String)_historyCommands.elementAt(
-                     _historyCommands.size() - _historyCursor);
+                    _historyCommands.size() - _historyCursor);
         }
         replaceRangeJTextArea(
                 text, _commandCursor, _jTextArea.getText().length());
@@ -273,52 +273,52 @@ public class ShellTextArea extends JPanel {
         public void keyPressed (KeyEvent keyEvent) {
             // Process keys
             switch (keyEvent.getKeyCode()) {
-                case KeyEvent.VK_ENTER:
+            case KeyEvent.VK_ENTER:
+                keyEvent.consume();
+                _evalCommand();
+                break;
+            case KeyEvent.VK_BACK_SPACE:
+                if (_jTextArea.getCaretPosition() == _promptCursor) {
+                    keyEvent.consume(); // don't backspace over prompt!
+                }
+                break;
+            case KeyEvent.VK_LEFT:
+                if (_jTextArea.getCaretPosition() == _promptCursor) {
                     keyEvent.consume();
-                    _evalCommand();
-                    break;
-                case KeyEvent.VK_BACK_SPACE:
-                    if (_jTextArea.getCaretPosition() == _promptCursor) {
-                        keyEvent.consume(); // don't backspace over prompt!
-                    }
-                    break;
-                case KeyEvent.VK_LEFT:
-                    if (_jTextArea.getCaretPosition() == _promptCursor) {
+                }
+                break;
+            case KeyEvent.VK_UP:
+                _previousCommand();
+                keyEvent.consume();
+                break;
+            case KeyEvent.VK_DOWN:
+                _nextCommand();
+                keyEvent.consume();
+                break;
+            default:
+                switch (keyEvent.getModifiers()) {
+                case InputEvent.CTRL_MASK:
+                    switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_A:
+                        _jTextArea.setCaretPosition(_promptCursor);
                         keyEvent.consume();
+                        break;
+                    case KeyEvent.VK_N:
+                        _nextCommand();
+                        keyEvent.consume();
+                        break;
+                    case KeyEvent.VK_P:
+                        _previousCommand();
+                        keyEvent.consume();
+                        break;
+                    default:
                     }
-                    break;
-                case KeyEvent.VK_UP:
-                    _previousCommand();
-                    keyEvent.consume();
-                    break;
-                case KeyEvent.VK_DOWN:
-                    _nextCommand();
-                    keyEvent.consume();
                     break;
                 default:
-                    switch (keyEvent.getModifiers()) {
-                        case InputEvent.CTRL_MASK:
-                            switch (keyEvent.getKeyCode()) {
-                                case KeyEvent.VK_A:
-                                    _jTextArea.setCaretPosition(_promptCursor);
-                                    keyEvent.consume();
-                                    break;
-                                case KeyEvent.VK_N:
-                                    _nextCommand();
-                                    keyEvent.consume();
-                                    break;
-                                case KeyEvent.VK_P:
-                                    _previousCommand();
-                                    keyEvent.consume();
-                                    break;
-                                default:
-                            }
-                            break;
-                        default:
-                            // Otherwise we got a regular character.
-                            // Don't consume it, and TextArea will
-                            // take care of displaying it.
-                    }
+                    // Otherwise we got a regular character.
+                    // Don't consume it, and TextArea will
+                    // take care of displaying it.
+                }
             }
         }
     }

@@ -93,7 +93,7 @@ public class FileChooserQuery extends JFrame
      */
     public void changed(String name) {
         System.out.println("Changed " + name + " to: "
-                           + _query.getStringValue(name));
+                + _query.getStringValue(name));
     }
 
     /** Create a FileChooserQuery and configure it
