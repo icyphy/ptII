@@ -240,11 +240,8 @@ public class TimedQueueReceiver implements Receiver {
 				" calling update at time " + _rcvrTime); 
 		    }
                     ((ODFThread)thread).updateRcvrList( triple ); 
-	            if( actor.getName().equals("printer") ) {
-			((ODFThread)thread).printRcvrList();
-		    }
 		} else {
-		    System.out.println("ERROR: Non-ODFThread calling "
+		    System.err.println("ERROR: Non-ODFThread calling "
 			    + "TimedQueueReceiver.put()");
 		}
             }
