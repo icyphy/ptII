@@ -151,19 +151,19 @@ test ArrayFIFOQueue-3.1 {Put data on a queue} {
 ####
 #
 test ArrayFIFOQueue-3.2 {Get individual items} {
-   
+
     catch {[$queue get -1]} s0
     set a0 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 0]] \
-            getName] 
+            getName]
     set a1 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
-            getName] 
+            getName]
     set a2 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 2]] \
-            getName] 
+            getName]
     set a3 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 3]] \
-            getName] 
+            getName]
     set a4 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 4]] \
-            getName] 
-    catch {[$queue get 5]} s1 
+            getName]
+    catch {[$queue get 5]} s1
     list $s0 $a0 $a1 $a2 $a3 $a4 $s1 [$queue size] [$queue isFull]
 } {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
 
@@ -196,19 +196,19 @@ test ArrayFIFOQueue-3.4 {Put array of data on a queue} {
 ####
 #
 test ArrayFIFOQueue-3.5 {Get individual items} {
-   
+
     catch {[$queue get -1]} s0
     set a0 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 0]] \
-            getName] 
+            getName]
     set a1 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
-            getName] 
+            getName]
     set a2 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 2]] \
-            getName] 
+            getName]
     set a3 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 3]] \
-            getName] 
+            getName]
     set a4 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 4]] \
-            getName] 
-    catch {[$queue get 5]} s1 
+            getName]
+    catch {[$queue get 5]} s1
     list $s0 $a0 $a1 $a2 $a3 $a4 $s1 [$queue size] [$queue isFull]
 } {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
 
@@ -307,9 +307,9 @@ test ArrayFIFOQueue-4.4 {Put array of data on a queue of bounded capacity} {
     $array1 set 3 $n4
     $array1 set 4 $n5
     set r1 [$queue putArray $array1]
-    set r2 [$queue putArray $array0] 
+    set r2 [$queue putArray $array0]
     set r3 [$queue putArray $array0]
-    set r4 [$queue put $n4] 
+    set r4 [$queue put $n4]
     list $r1 $r2 $r3 $r4 [_testEnums elements $queue]
 } {0 1 0 0 {{n1 n2 n3 n4}}}
 
@@ -319,14 +319,14 @@ test ArrayFIFOQueue-4.4 {Put array of data on a queue of bounded capacity} {
 test ArrayFIFOQueue-4.5 {Get individual items from a queue of bounded capacity} {
     catch {[$queue get -1]} s0
     set a0 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 0]] \
-            getName] 
+            getName]
     set a1 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
-            getName] 
+            getName]
     set a2 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 2]] \
-            getName] 
+            getName]
     set a3 [[java::cast ptolemy.kernel.util.NamedObj [$queue get 3]] \
-            getName] 
-    catch {[$queue get 4]} s1 
+            getName]
+    catch {[$queue get 4]} s1
     list $s0 $a0 $a1 $a2 $a3 $s1 [$queue size] [$queue isFull]
 } {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 {java.util.NoSuchElementException: No object at offset 4 in the FIFOQueue.} 4 1}
 
@@ -367,7 +367,7 @@ test ArrayFIFOQueue-4.7 {Test getting the data in the queue when the data wraps 
 #
 test ArrayFIFOQueue-4.8 {resize a queue to less than zero size} {
     catch {[$queue setCapacity -2]} msg1
-    list $msg1 
+    list $msg1
 } {{ptolemy.kernel.util.IllegalActionException: Queue Capacity cannot be negative}}
 
 ######################################################################
