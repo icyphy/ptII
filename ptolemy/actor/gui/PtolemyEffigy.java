@@ -408,7 +408,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // and.configuration.directory.user
                             // library, but this seems like overkill.
 
-                            MessageHandler.error("Failed to read " + input, e);
+                            String errorMessage = "Failed to read " + input;
+                            System.err.println(errorMessage);
+                            e.printStackTrace();
+                            MessageHandler.error(errorMessage, e);
                         } else {
                             // Let the caller handle the error.
                             throw e;
