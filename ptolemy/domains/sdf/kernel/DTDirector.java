@@ -133,10 +133,10 @@ public class DTDirector extends SDFDirector {
 	CompositeActor c = getContainer();
 	Director ed = c.getExecutiveDirector();
 	boolean iterate;
-	if(ed = null)
+	if(ed = null) {
 	    iterate=_advanceTime(_nextFiringTime);
 	    return true;
-	else {
+        } else {
 	    iterate=_advanceTime(ed.getCurrentTime());
 	}
         return iterate;
