@@ -35,9 +35,9 @@
 MAJOR_VERSION = 	4.1
 MINOR_VERSION =		devel
 
-VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
+VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	4_1_$(MINOR_VERSION)
+WINDOWS_VERSION =	4_1_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -50,7 +50,7 @@ ZIP =		/usr/sww/bin/zip
 COMPRESS =	/usr/sww/bin/gzip
 GUNZIP =	/usr/sww/bin/gunzip
 NON_GNUTAR =	/bin/tar
-SUFFIX =	gz
+SUFFIX =
 
 # Script to split tar files into smaller chunks
 SPLITTAR =	/users/ptolemy/adm/bin/splittar
@@ -66,12 +66,20 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # Use tar 1.13.20 or later so that -X works
 # Versions later than 1.13 can be found at ftp://alpha.gnu.org/gnu/tar/
 # 1.12 can be found at ftp://gatekeeper.dec.com/pub/GNU/tar/
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=/usr/local/bin/tar 
+#
+# A MSDOS version of 1.12 can be found at ftp://ftp.gnu.org/pub/gnu/tar,
+# but that binary does not understand /cygdrive/c notation, and does
+# not work well, I get:
+#   4 [main] sh 2328 proc_subproc: Couldn't duplicate my handle<0x7E0>
+#   for pid 0, Win32 error 6
+
+# 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/usr/local/bin/tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar clean
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII-4.0 PTIIADM=/tmp/cxh/ptII-4.0/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
 USER =		ptII
@@ -92,6 +100,7 @@ PTII_TOPDIR=	.cshrc \
 		.eclipse.epf \
 		README.txt \
 		bin \
+		build.xml \
 		com/JLex \
 		com/makefile \
 		com/microstar \
@@ -121,18 +130,18 @@ CVS_REPOSITORY = :ext:gigasource.eecs.berkeley.edu:/home/cvs
 ##############################################################################
 # Files to be produced
 
-PTII_FULL = 	  $(GENDIR)/ptII$(VERSION).tar.$(SUFFIX)
+PTII_FULL = 	  $(GENDIR)/ptII$(VERSION).tar$(SUFFIX)
 PTII_FULL_ZIP =    $(GENDIR)/ptII$(VERSION).src.zip
 # Source only, no .class, .jar or javadoc
-PTII_SRC =   $(GENDIR)/ptII$(VERSION).src.tar.$(SUFFIX)
+PTII_SRC =   $(GENDIR)/ptII$(VERSION).src.tar$(SUFFIX)
 PTII_SRC_JAR =   $(GENDIR)/ptII$(VERSION).src.jar
 
-VERGIL = 	  $(GENDIR)/vergil$(VERSION).src.tar.$(SUFFIX)
+VERGIL = 	  $(GENDIR)/vergil$(VERSION).src.tar$(SUFFIX)
 
 # Three forms we ship in.
 PTII_SRCS = 	$(PTII_FULL) $(basename $(PTII_FULL)) $(PTII_FULL_ZIP)
 
-PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
+PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
 
 ##############################################################################
 # Targets
@@ -172,8 +181,9 @@ $(PTIIDIST):
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	@echo "  tar -X does not seem to work under Cygwin"
-	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
-	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
+	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar
+	-find $(PTIIDIST) -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core -exec rm -rf {} \;
+	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	@echo "Regenerate the documentation with gr and javasound"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc EXPERIMENTALPACKAGES= GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
 	#@echo "Do make realclean to clean up any trash"
@@ -207,7 +217,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
 	(cd $(PTIIDIST)/..; \
-		$(TAR) -cz -X $(GENDIR)/src.ex \
+		$(TAR) -c -X $(GENDIR)/src.ex \
 		 -f $@ \
 		ptII$(VERSION))
 	#(cd $(PTIIDIST)/..; \
@@ -248,7 +258,9 @@ $(PTII_SRC): $(PTII_FULL)
 	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
-		$(TAR) -zxf $(PTII_FULL); cd ptII$(VERSION); \
+		$(TAR) -xf $(PTII_FULL); \
+		cd ptII$(VERSION); \
+		echo "About to configure `pwd`"; \
 		PTII=`pwd` ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
@@ -258,7 +270,8 @@ $(PTII_SRC): $(PTII_FULL)
 		rm -rf doc/codeDoc*; \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -zcf $(PTII_SRC) ptII$(VERSION));
+		$(TAR) -c -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
+		);
 
 ###############
 # Build a jar file for use inside the installer
@@ -280,12 +293,13 @@ $(PTII_SRC_JAR): src_jar
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
 	mkdir src_jar;
-	(cd src_jar; tar -zxf $(PTII_SRC))
+	(cd src_jar; tar -xf $(PTII_SRC))
 	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign1-intro.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign3-domains.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
+
 
 ###############
 
@@ -297,7 +311,7 @@ update_ptii_ftp:
 		messier:$(PTII_FTP)
 untar:
 	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -zxf ptII$(VERSION).tar.$(SUFFIX)"
+	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -zxf ptII$(VERSION).tar$(SUFFIX)"
 
 # Make the distribution, run htmlchek
 htmlchek:
@@ -666,7 +680,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/cgc \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hde \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
@@ -1173,6 +1186,14 @@ REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
+
+fortytwo_test: $(PTII_SRC)
+	$(MAKE) REMOTE4HOME=$(GENDIR)/test \
+		PTII_FULL=$(PTII_SRC) \
+		remote4nuke remote4ptiidist remote4configure \
+		remote4distclean remote4build \
+		remote4javatest \
+		remote4done
 
 # Create a separate tree and build on REMOTE4HOST
 remote4: $(PTII_FULL) $(GENLOGDIR)
