@@ -1,6 +1,6 @@
 # makefile to create tar files for distribution
 # Version: @(#)makefile	1.90 09/22/00
-# Copyright (c) 1994-1998 The Regents of the University of California.
+# Copyright (c) 1994-2000 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -409,8 +409,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/kernel/util \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/dd3d/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/dd3d/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/gui \
@@ -420,6 +418,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/gui \
@@ -439,6 +439,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/lang \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
+	$(REMOTE1PTIIDIST)/ptolemy/lang/java/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
