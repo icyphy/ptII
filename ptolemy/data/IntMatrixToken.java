@@ -358,6 +358,56 @@ public class IntMatrixToken extends MatrixToken {
         return _numRows;
     }
 
+    /** Return a new Token representing the left multiplicative 
+     *  identity. The returned token contains an identity matrix
+     *  whose dimension is the same as the number of rows of
+     *  the matrix contained in this token.
+     *  @return A new Token containing the left multiplicative identity.
+     */
+    public Token one() {
+	int[][] result = new int[_numRows][_numRows];
+	for (int i = 0; i < _numRows; i++) {
+	    for (int j = 0; j < _numRows; j++) {
+		result[i][j] = 0;
+	    }
+	    result[i][i] = 1;
+	}
+	return new IntMatrixToken(result);
+    }
+
+    /** Return a new Token representing the right multiplicative
+     *  identity. The returned token contains an identity matrix
+     *  whose dimension is the same as the number of columns of
+     *  the matrix contained in this token.
+     *  @return A new Token containing the right multiplicative identity.
+     */
+    public Token oneR() {
+	int[][] result = new int[_numColumns][_numColumns];
+	for (int i = 0; i < _numColumns; i++) {
+	    for (int j = 0; j < _numColumns; j++) {
+		result[i][j] = 0;
+	    }
+	    result[i][i] = 1;
+	}
+	return new IntMatrixToken(result);
+    }
+
+    /** Return a new Token representing the additive identity.
+     *  The returned token containes a matrix whose elements are
+     *  all zero, and the size of the matrix is the same as the
+     *  matrix contained in this token.
+     *  @return A new Token containing the additive identity.
+     */
+    public Token zero() {
+	int[][] result = new int[_numRows][_numColumns];
+	for (int i = 0; i < _numRows; i++) {
+	    for (int j = 0; j < _numColumns; j++) {
+		result[i][j] = 0;
+	    }
+	}
+	return new IntMatrixToken(result);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int[][] _value = null;
