@@ -295,11 +295,18 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	}
 
         CompileUnitNode unitNode = new CompileUnitNode(
-                new NameNode(AbsentTreeNode.instance, _outputPackageName),
+                StaticResolution.makeNameNode(_outputPackageName),
                 importList, TNLManip.cons(classDeclNode));
 
         String outFileName = _packageDirectoryName +  "CG_Main.java";
-
+                
+        // Remove extra imports in the source code before writing to a file,
+        // namely those for Complex and FixPoint added previously.
+        // The CompileUnitNode must first undergo pass 2.
+        unitNode.setProperty(IDENT_KEY, _packageDirectoryName + "CG_Main");
+        unitNode = StaticResolution.load(unitNode, 2);
+        unitNode.accept(new FindExtraImportsVisitor(true, null), null);
+                
         JavaCodeGenerator.writeCompileUnitNodeList(TNLManip.cons(unitNode),
                 TNLManip.cons(outFileName));
     }
@@ -876,8 +883,6 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
         return result;
     }
-
-
 
     /** The TypedCompositeActor containing the system for which to generate
      *  code.

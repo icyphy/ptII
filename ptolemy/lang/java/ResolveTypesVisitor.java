@@ -79,8 +79,9 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        TNLManip.traverseList(this,
-                TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), node.getDefTypes());
+        TNLManip.traverseList(this, 
+         TNLManip.cons(node.getDefinedProperty(ENVIRON_KEY)), 
+         node.getDefTypes());
 
         return null;
     }

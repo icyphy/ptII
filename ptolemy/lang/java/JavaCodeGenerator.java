@@ -1,5 +1,8 @@
 /*
 A JavaVisitor that regenerates Java code from the abstract syntax tree.
+For efficiency reasons, the return value of each visit method returns a 
+string list, which is a List composed of Strings or string lists. 
+_stringListToString() converts a string list into a flattened String.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -50,16 +53,30 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         super(TM_CHILDREN_FIRST);
     }
 
+    /** Return the code fragment corresponding to a node. */
+    public static String writeCodeFragment(TreeNode node) {
+        JavaCodeGenerator jcg = new JavaCodeGenerator();
+        Object retval = node.accept(jcg, null);
+     
+        if (retval instanceof String) {
+           return (String) retval;
+        } 
+
+        return _stringListToString((List) retval);
+    }
+
+    /** Write out the code files for each member of the argument list of 
+     *  CompileUnitNodes to the files with names corresponding to the members 
+     *  of the argument filename list.
+     */
     public static void writeCompileUnitNodeList(List unitList, List filenameList) {
         Iterator unitItr = unitList.iterator();
         Iterator filenameItr = filenameList.iterator();
 
-        JavaCodeGenerator jcg = new JavaCodeGenerator();
-
         while (unitItr.hasNext()) {
             CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
 
-            String outCode = (String) unitNode.accept(jcg, null);
+            String outCode = writeCodeFragment(unitNode);
 
             String outFileName = (String) filenameItr.next();
 
@@ -175,6 +192,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
             node.childReturnValueAt(node.CHILD_INDEX_TYPE), ".super"});
     }
 
+    // FIXME : This returns a String instead of a string list, as it should
+    // for consistency. However, returning a string list will break some
+    // existing code, so this change will be deferred.
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
@@ -197,6 +217,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
             retList.addLast("\n");
         }
 
+        // for new version:
+        // return retList;
+        
         return _stringListToString(retList);
     }
 

@@ -211,7 +211,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         // clear the compile unit nodes from the cache so that they may be
         // loaded again from scratch
-        _invalidateSources(classNameList);
+        _invalidateSources(classNameList, 2);
     }
 
     /** Do pass 3 transformation of actor with the given filename (renamed
@@ -266,33 +266,63 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         _rewriteSources(unitList, classNameList);
 
         // clear the compile unit nodes from the cache to free memory
-        _invalidateSources(classNameList);
+        _invalidateSources(classNameList, 2);
 
         // restore the old type personality
         StaticResolution.setDefaultTypeVisitor(oldTypeVisitor);
+        
+        // Now remove the extra imports by reloading the nodes once
+        // again. (Pass 2 must be run again because of the new
+        // types introduced by converting from Extended Java to Java.)
+        Iterator nameIterator = classNameList.iterator();
+                
+        LinkedList importFilteredList = new LinkedList();
+         
+        while (nameIterator.hasNext()) {
+            unitNode = StaticResolution.load(
+             _makeOutputFilename((String) nameIterator.next()), 2);
+             
+            // a new visitor must be created for each CompileUnitNode
+            // to clear the usage maps
+            unitNode.accept(new FindExtraImportsVisitor(true, null), null); 
+            importFilteredList.add(unitNode);
+        }
+        
+        _rewriteSources(importFilteredList, classNameList);
+
+        // clear the compile unit nodes from the cache to free memory
+        _invalidateSources(classNameList, 2);                
     }
 
     /** Invalidate the list of compile unit nodes from the cache in
-     *  the class StaticResolution.
+     *  the class StaticResolution. The pass number is passed to
+     *  StaticResolution.invalidateCompileUnit().
      */
-    protected void _invalidateSources(List classNameList) {
+    protected void _invalidateSources(List classNameList, int passNumber) {
         Iterator classNameItr = classNameList.iterator();
         while (classNameItr.hasNext()) {
-            String filename = _outputDirectoryName +
-                (String) classNameItr.next() + ".java";
+            String filename = _makeOutputFilename(
+             (String) classNameItr.next());
 
             ApplicationUtility.trace("invalidating source filename: "  +
                     filename);
 
-            if (!StaticResolution.invalidateCompileUnit(filename, 2)) {
-                ApplicationUtility.warn("failed to invalidate source filename: "
-                        + filename);
+            if (!StaticResolution.invalidateCompileUnit(filename, passNumber)) {
+                ApplicationUtility.warn("failed to invalidate source filename: "                        + filename);
             }
         }
 
         // there should be memory to reclaim now
         System.gc();
     }
+
+    /** Return the output filename of the file corresponding the the
+     *  argument class name.
+     */
+    protected String _makeOutputFilename(String className) {        
+        return _outputDirectoryName + className + ".java";            
+    }
+
 
     /** Fill in the map from port names to ports. */
     protected static void _makePortNameToPortMap(ActorCodeGeneratorInfo actorInfo) {
@@ -330,8 +360,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
     }
 
     /** Make a list of CompileUnitNodes that contain the superclasses of
-     *  the given className, while is found in the given fileName.
-     *  The list should start from the class that immediately extends a known
+     *  the given className, while is found in the given fileName. Also
+     *  make a list of strings that are the corresponding (primary) class names. 
+     *  Return both these lists in an array.
+     *  The lists should start from the class that immediately extends a known
      *  actor class (such as TypedAtomicActor), and goes to the class given
      *  by the argument className. The CompileUnitNodes are cloned from the
      *  ones returned by StaticResolution so that they may be modified.
@@ -462,10 +494,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         Iterator classNameItr = classNameList.iterator();
         while (classNameItr.hasNext()) {
-            String filename = _outputDirectoryName +
-                (String) classNameItr.next() + ".java";
-
-            filenameList.add(filename);
+            filenameList.add(_makeOutputFilename(
+            (String) classNameItr.next()));
         }
 
         JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);
@@ -509,7 +539,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         protected String _className;
     }
-
+    
     /** A factory that create instances of the domain-specific transformation
      *  classes.
      */

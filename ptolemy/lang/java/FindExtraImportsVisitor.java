@@ -40,9 +40,10 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A visitor that reports or eliminates unnecessary import statements.
- *  This visitor may not remove all unnecessary import statements, namely
- *  if fully qualified type names are used in the code, but it should not
- *  remove import statements that are necessary.
+ *  The CompileUnitNode must have gone through pass 2 resolution.  
+ *
+ *  This visitor might not report or remove all unnecessary import statements, 
+ *  but it should not report or remove import statements that are necessary.
  *
  *  @author Jeff Tsay
  */
@@ -88,10 +89,9 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
                 if (obj != NullValue.instance) {
                     // import was needed, and returned
                     neededImports.addLast(obj);
-                }
-
-                node.setImports(neededImports);
-            }
+                }                
+            }            
+            node.setImports(neededImports);            
         }
 
         return node;
@@ -119,8 +119,8 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         NameNode name = node.getName();
         PackageDecl pkgDecl = (PackageDecl) JavaDecl.getDecl(name);
 
-        if (pkgDecl == StaticResolution.JAVA_LANG_PACKAGE) {
-            // do not remove the java.lang package
+        // do not remove the java.lang package
+        if (pkgDecl == StaticResolution.JAVA_LANG_PACKAGE) {            
             return node;
         }
 
@@ -141,7 +141,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
 
         NameNode name = node.getName();
-
+        
         // find the declaration of the type. We cannot remove
         // statements importing the specific type
 
@@ -152,7 +152,7 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         // find the package that the type is in. We cannot remove statements
         // importing the specific package
 
-        PackageDecl pkgDecl = (PackageDecl) _packageOfType(classDecl);
+        PackageDecl pkgDecl = _packageOfType(classDecl);
 
         _usedPackagesSet.add(pkgDecl);
 
@@ -164,8 +164,8 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         JavaDecl container = classDecl.getContainer();
 
         if (container == null) {
-            ApplicationUtility.error("user type " + classDecl.getName() +
-                    " is has no container.");
+            ApplicationUtility.error("user type \"" + classDecl.getName() +
+                    "\" has no container.");
         }
 
         switch (container.category) {
@@ -178,8 +178,8 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
             return  _packageOfType((ClassDecl) container);
         }
 
-        ApplicationUtility.error("container of class " + classDecl.getName() +
-                " is not a package nor a user type");
+        ApplicationUtility.error("container of class \"" + 
+         classDecl.getName() + "\" is not a package nor a user type");
 
         return null;
     }
