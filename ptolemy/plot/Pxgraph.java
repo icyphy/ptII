@@ -31,6 +31,7 @@ import java.awt.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.lang.Thread;
@@ -457,6 +458,10 @@ public class Pxgraph extends Frame {
             _parseArgs(args);
         } catch (CmdLineArgException e) {
             System.err.println("Failed to parse command line arguments: " + e);
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found in command line: " + e);
+        } catch (IOException e) {
+            System.err.println("Error while reading input file: " + e);
         }
 
         show();
@@ -770,7 +775,8 @@ public class Pxgraph extends Frame {
 
     /* Parse the arguments and make calls to the plotApplet accordingly.
      */
-    private int _parseArgs(String args[]) throws CmdLineArgException {
+    private int _parseArgs(String args[]) throws CmdLineArgException,
+            FileNotFoundException, IOException {
         int i = 0, j, argsread;
         String arg;
 
