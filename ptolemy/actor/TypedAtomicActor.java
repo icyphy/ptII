@@ -145,13 +145,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                         fields[i].set(newObject,
                                 newObject.getPort(fields[i].getName()));
                 } else {
-                    // We need to check for both Parameter and StringAttribute,
-                    // both of which implement UserSettable.
-                    // A faster way would be to check to see if the
-                    // type of the field was either Parameter or
-                    // StringAttribute, but if we ever extended UserSettable
-                    // with another class, then clone() would not clone
-                    // the new class.
                     if (fields[i].get(newObject) instanceof UserSettable) {
                         fields[i].set(newObject,
                                 newObject.getAttribute(fields[i].getName()));
