@@ -35,7 +35,7 @@
 
 ME =		ptolemy/schematic
 
-DIRS = 		demo xml test 
+DIRS = 		xml test #util demo
  
 # Root of the Java directory
 ROOT =		../..
