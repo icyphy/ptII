@@ -4,6 +4,12 @@ To Do:
 run ptolemy classic SR
 add, update, and correct comments
 FIXMEs
+
+add AbstractReceiver.isKnown()
+write IOPort.isKnown()
+determine whether actors are ready to fire
+determine whether actors are done firing
+
 modify actors to work in SR
        LogicFunction shouldn't produce an output unless it has enough inputs
 fix tests
@@ -95,9 +101,20 @@ what about actors that may never fire or postfire?
 
 actors:
 hasFired()
-isReactive()
-isStrict() - ?
+isReactive() - needs at least one input present to fire
+isStrict() - needs all inputs defined to fire
 
+ports:
+isIndependent() - does not affect output in the current iteration
+
+Ready to fire means that if an actor is strict or reactive, those conditions
+are satisfied.
+
+Done firing means that an actor has defined all of its outputs.
+
+Prefire actors that are ready to fire [and not done firing].  If prefire 
+returns true, fire them.  Repeat until convergence, and then postfire all 
+actors that fired.
 
 paper:
 
