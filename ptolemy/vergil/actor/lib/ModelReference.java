@@ -187,6 +187,10 @@ FIXME: Closing the master model doesn't close open referenced models.
 FIXME: The close in vergil option seems to fail.
 <li>
 FIXME: Need options for error handling.
+<li>
+FIXME: Supporting full-screen operation creates a dependence on vergil.
+Without that, this actor could be in the actor package.  Need to figure
+out how to remove this dependence.
 </ul>
 <P>
 
