@@ -234,10 +234,10 @@ public class FixMatrixToken extends MatrixToken {
     }
 
     /** Return the type of this token.
-     *  @return BaseType.FIX_MATRIX
+     *  @return BaseType.FIXEDPOINT_MATRIX
      */
     public Type getType() {
-	return BaseType.FIX_MATRIX;
+	return BaseType.FIXEDPOINT_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified

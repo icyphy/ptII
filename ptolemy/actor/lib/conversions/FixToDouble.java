@@ -69,7 +69,7 @@ public class FixToDouble extends Transformer {
     public FixToDouble(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.FIX);
+        input.setTypeEquals(BaseType.FIXEDPOINT);
         output.setTypeEquals(BaseType.DOUBLE);
     }
 

@@ -84,7 +84,7 @@ public class DoubleToFix extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
-	output.setTypeEquals(BaseType.FIX);
+	output.setTypeEquals(BaseType.FIXEDPOINT);
 
 	precision = new Parameter(this, "precision");
         precision.setTypeEquals(BaseType.INT_MATRIX);

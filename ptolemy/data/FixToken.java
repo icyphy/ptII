@@ -236,10 +236,10 @@ public class FixToken extends ScalarToken {
     }
 
     /** Return the type of this token.
-     *  @return BaseType.FIX.
+     *  @return BaseType.FIXEDPOINT.
      */
     public Type getType() {
-	return BaseType.FIX;
+	return BaseType.FIXEDPOINT;
     }
 
     /** Test the values of this Token and the argument Token for equality.
