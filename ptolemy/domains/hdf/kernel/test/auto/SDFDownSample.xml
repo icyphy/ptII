@@ -1,13 +1,15 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SDFDownSample(PowerOfTwo)" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SDFDownSample" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="HDFTop" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="15">
         </property>
@@ -20,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 60.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 58, 815, 511}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 58, 815, 518}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -42,14 +44,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 175.0">
-        </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>
@@ -91,19 +85,11 @@ to another. Then delete this annotation.</text>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 170.0">
                 </property>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="16384">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </port>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 105.0">
-                </property>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.fsm.kernel.State">
@@ -185,6 +171,8 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -196,22 +184,10 @@ to another. Then delete this annotation.</text>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 225.0">
                 </property>
-                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </port>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 225.0">
-                </property>
-                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
                 </property>
             </port>
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -227,10 +203,6 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 225.0">
                 </property>
-                <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -239,16 +211,8 @@ to another. Then delete this annotation.</text>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </relation>
             <link port="input" relation="relation"/>
             <link port="output" relation="relation2"/>
@@ -278,6 +242,8 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -289,22 +255,10 @@ to another. Then delete this annotation.</text>
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 135.0">
                 </property>
-                <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="16384">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </port>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 135.0">
-                </property>
-                <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-                <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
                 </property>
             </port>
             <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
@@ -314,40 +268,16 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 135.0">
                 </property>
-                <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-                <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="16384">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
                 </port>
-                <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+                <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
                 </port>
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="16384">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </relation>
             <link port="input" relation="relation"/>
             <link port="output" relation="relation2"/>
@@ -377,14 +307,6 @@ to another. Then delete this annotation.</text>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 175.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="75025">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="16384">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -405,10 +327,6 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 175.0">
         </property>
-        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -416,16 +334,8 @@ to another. Then delete this annotation.</text>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="150.0, 175.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="16384">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="modal model.input" relation="relation3"/>
     <link port="modal model.output" relation="relation"/>
