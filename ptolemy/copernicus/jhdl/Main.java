@@ -66,7 +66,7 @@ public class Main extends KernelMain {
      *  @params args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options, see the superclass documentation for details.
-     *  @exception IllegalActionException if the model cannot be parsed.
+     *  @exception IllegalActionException If the model cannot be parsed.
      */
     public Main(String [] args) throws IllegalActionException {
 	// args[0] contains the MoML class name.
