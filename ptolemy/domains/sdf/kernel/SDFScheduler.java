@@ -421,16 +421,16 @@ public class SDFScheduler extends Scheduler {
         CompositeActor container = (CompositeActor)director.getContainer();
 
         // A linked list containing all the actors.
-        LinkedList actorList = new LinkedList();
+        LinkedList allActorList = new LinkedList();
         // Populate it.
         for(Iterator entities = container.deepEntityList().iterator();
             entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
 
-            // Fill actorList with the list of things that we can schedule
+            // Fill allActorList with the list of things that we can schedule
             // FIXME: What if other things can be scheduled than actors?
             if(entity instanceof Actor) {
-                actorList.addLast(entity);
+                allActorList.addLast(entity);
             }
         }
 
@@ -463,16 +463,17 @@ public class SDFScheduler extends Scheduler {
 
         // First solve the balance equations
         Map firings =
-            _solveBalanceEquations(container, actorList, externalRates);
+            _solveBalanceEquations(container, allActorList, externalRates);
 
         if(_debugging) {
             _debug("Firing Ratios: " +  firings.toString());
         }
 
         // A list that contains actors that do not fire.
-        List deadActorList = new LinkedList();
+        LinkedList deadActorList = new LinkedList();
+        LinkedList liveActorList = new LinkedList();
         // Populate deadActorList.
-        for(Iterator actors = actorList.iterator();
+        for(Iterator actors = allActorList.iterator();
             actors.hasNext();) {
             ComponentEntity actor = (ComponentEntity)actors.next();
             // Remove this actor from the firing sequence if it will
@@ -489,21 +490,9 @@ public class SDFScheduler extends Scheduler {
                             + "it is not being fired.");
                 }
                 deadActorList.add(actor);
+            } else {
+                liveActorList.add(actor);
             }
-        }
-
-        // Now remove the dead actors from the firings map and from
-        // the list of actors that are being scheduled.
-        for(Iterator deadActors = deadActorList.iterator();
-            deadActors.hasNext();) {
-            ComponentEntity deadActor =
-                (ComponentEntity)deadActors.next();
-            if(_debugging) {
-                _debug("Removing actor " + deadActor.getName() +
-                        " that does not fire from the schedule");
-            }
-            firings.remove(deadActor);
-            actorList.remove(deadActor);
         }
 
         // Normalize the number of firings for each actor using the
@@ -520,7 +509,8 @@ public class SDFScheduler extends Scheduler {
 
         // Schedule all the actors using the calculated firings.
         Schedule result =
-            _scheduleConnectedActors(minimumBufferSize, actorList);
+            _scheduleConnectedActors(minimumBufferSize,
+                    liveActorList, allActorList);
 
         if (_debugging) {
             _debug("Firing Vector:");
@@ -1065,6 +1055,10 @@ public class SDFScheduler extends Scheduler {
      *  schedule.  The map will be populated during the execution of this
      *  method.
      *  @param actorList The actors that need to be scheduled.
+     *  @param allActorList All the actors, including those that do
+     *  not need to be scheduled.  These actors will still me
+     *  initialized, which means we must take their initial tokens
+     *  into account when calculating buffer sizes.
      *  @return An instance of the Schedule class, indicating the order
      *  in which actors should fire.
      *  @exception NotSchedulableException If the algorithm encounters an SDF
@@ -1073,7 +1067,7 @@ public class SDFScheduler extends Scheduler {
      *  scheduled.
      */
     private Schedule _scheduleConnectedActors(Map minimumBufferSize,
-            LinkedList actorList)
+            LinkedList actorList, LinkedList allActorList)
             throws NotSchedulableException {
 
         // A linked list containing all the actors that have no inputs.
@@ -1099,7 +1093,7 @@ public class SDFScheduler extends Scheduler {
         try {
 	    // Initialize waitingTokens
             // at all the input ports to zero
-            for(Iterator actors = actorList.iterator();
+            for(Iterator actors = allActorList.iterator();
                 actors.hasNext();) {
 		Actor actor = (Actor)actors.next();
 
@@ -1117,7 +1111,7 @@ public class SDFScheduler extends Scheduler {
             }
 
 	    // simulate the creation of initialization tokens (delays).
-	    for(Iterator actors = actorList.iterator();
+	    for(Iterator actors = allActorList.iterator();
                 actors.hasNext();) {
 		Actor actor = (Actor)actors.next();
 
@@ -1132,7 +1126,7 @@ public class SDFScheduler extends Scheduler {
 		    if(count > 0) {
 			_simulateTokensCreated(outputPort,
                                 count,
-                                actorList,
+                                allActorList,
                                 readyToScheduleActorList,
                                 waitingTokens,
                                 minimumBufferSize);

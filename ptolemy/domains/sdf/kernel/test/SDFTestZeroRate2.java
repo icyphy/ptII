@@ -204,13 +204,13 @@ public class SDFTestZeroRate2 extends Transformer {
 
 
 	// Get the SDF Director's scheduler.
-	Scheduler s = dir.getScheduler();
-	Iterator allactors = s.getSchedule().actorIterator();
-	while (allactors.hasNext()) {
-	    Actor actor = (Actor)allactors.next();
-	    String schedActName = ((Nameable)actor).getName();
-	    System.out.println("Actor in scheduler: " + schedActName);
-	}	
+        //	Scheduler s = dir.getScheduler();
+	//Iterator allactors = s.getSchedule().actorIterator();
+	//while (allactors.hasNext()) {
+	//    Actor actor = (Actor)allactors.next();
+	//    String schedActName = ((Nameable)actor).getName();
+	//    System.out.println("Actor in scheduler: " + schedActName);
+	//}	
 
     }
 
