@@ -147,8 +147,23 @@ proc speedComparison  {xmlFile \
 
 # Generate java code for a model.  The model argument names a .xml
 # file which will be interpreted as a relative pathname
-# (MoMLParser.parse() forces this)
-proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
+# Example: 
+# sootCodeGeneration [file join $relativePathToPTII ptolemy actor lib test auto MathFunction3.xml] Deep 3
+#
+# @param modelPath The relative pathname to the .xml file that defines
+# the model. MoMLParser.parse() forces this pathname to be relative
+#
+# @param codeGenType The type of codegen to do, either "Shallow" or "Deep".
+# defaults to Shallow.
+#
+# @param defaultIterations The default number of iterations.  Defaults
+# to the empty string, which means that the model is queried for
+# the number of iterations.  If the number of iterations is 0, then a
+# warning message is printed and the iterations are set to 200.
+# If the iterations cannot be found, then a warning message is printed
+#
+proc sootCodeGeneration {modelPath {codeGenType Shallow} \
+	{defaultIterations {}} } {
     global relativePathToPTII
 
     if {[file extension $modelPath] == ""} {
@@ -237,26 +252,38 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	set modelClass Main
     }
 
-    # Take a stab at guessing the number of iterations
+    # If we this proc was called with the defaultIterations argument
+    # set, then we use it.  If it was not set, then we query
+    # the model for the iterations parameter and if the iterations
+    # parameter was set to 0, we print a message and set it to 200
+    #
     # The deep codegen makefile exepcts ITERATIONS_PARAMETER to be set to
     # somethink like ",iterations:400"
-    set iterationsParameter ""
-    set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
-    set director [$compositeActor getDirector]
-    set iterations [$director getAttribute iterations]
-    if { $iterations == [java::null] } {
-	puts "WARNING: iterations parameter not found in\n '$modelName',\n \
-		perhaps this model is not SDF?"
+    #
+    if { "$defaultIterations" != "" } {
+	puts "Using the defaultIterations parameter of '$defaultIterations'"
+	set iterationsParameter ",iterations:$defaultIterations"
     } else {
-	set iterationsValue [[java::cast ptolemy.data.IntToken \
-	    [[java::cast ptolemy.data.expr.Parameter \
-	    $iterations]  getToken]] doubleValue]
-	puts "iterationsValue = $iterationsValue"
-	if { "$iterationsValue" == "0"} {
-	    puts "WARNING: iterationsValue was 0, defaulting to 200"
-	    set iterationsValue 200
+	# Take a stab at guessing the number of iterations
+	set iterationsParameter ""
+	set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
+	set director [$compositeActor getDirector]
+	set iterations [$director getAttribute iterations]
+	if { $iterations == [java::null] } {
+	    puts "WARNING: iterations parameter not found in\n\
+		    '$modelName',\n \
+		    perhaps this model is not SDF?"
+	} else {
+	    set iterationsValue [[java::cast ptolemy.data.IntToken \
+		    [[java::cast ptolemy.data.expr.Parameter \
+		    $iterations]  getToken]] doubleValue]
+	    puts "iterationsValue = $iterationsValue"
+	    if { "$iterationsValue" == "0"} {
+		puts "WARNING: iterationsValue was 0, defaulting to 200"
+		set iterationsValue 200
+	    }
+	    set iterationsParameter ",iterations:$iterationsValue"
 	}
-	set iterationsParameter ",iterations:$iterationsValue"
     }
 
     set command compileDemo
