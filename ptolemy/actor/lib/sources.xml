@@ -26,6 +26,10 @@
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
 </entity>
 
+<entity name="DatagramReceiver"
+        class="ptolemy.actor.lib.net.DatagramReceiver">
+</entity>
+
 <entity name="DiscreteRandomSource"
         class="ptolemy.actor.lib.DiscreteRandomSource">
 </entity>
@@ -53,6 +57,10 @@
 
 <entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
 <doc>A clock producing exactly one output per clock tick</doc>
+</entity>
+
+<entity name="SerialComm"
+        class="ptolemy.actor.lib.comm.SerialComm">
 </entity>
 
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
