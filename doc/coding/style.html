@@ -5,11 +5,18 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Programming Style for Ptolemy II</h1>
+Places to go
+<menu>
+<li> <a href="rating.html">Code Rating</a>
+<li> <a href="testing.html">Testing</a>
+</menu>
+
 <p>
 The following programming style will be followed in the Ptolemy II project.
 Please submit comments or suggestions to eal@eecs.berkeley.edu.
 <ol>
 <li><a href="#indentation">Indentation</a>
+<li><a href="#spaces">Spaces</a>
 <li><a href="#comment conventions">Comment conventions</a>
 <li><a href="#naming conventions">Naming conventions</a>
 <li><a href="#global variables">Global variables</a>
@@ -66,6 +73,25 @@ In Java, you can often use the <CODE>+</CODE> operator to concatenate
 	return "This is a really " +
 	       "long string";
 </pre>
+
+<h2><a name="spaces">Spaces</a></h2>
+
+Be sure to use spaces between language elements in a consistent fashion.
+<menu>
+<li> Use a space after each comma: 
+	<ul>
+	<li> Right: <CODE>foo(a, b);</CODE>
+	<li> Wrong: <CODE>foo(a,b);</CODE>
+	</ul>
+
+<li> Use spaces around operators such as plus, minus, multiply, divide or
+equals signs:
+	<ul>
+	<li> Right: <CODE>a = b + 1;</CODE>
+	<li> Wrong: <CODE>a=b+1;</CODE>
+	</ul>
+</menu>
+
 
 <h2><a name="comment conventions">Comment conventions</a></h2>
 
@@ -192,12 +218,14 @@ people stop working on the code when it "works."  This is like stopping
 work on a paper when what it says is correct, and not worrying at all
 about how it is said.  PROOFREAD YOUR CODE AFTER YOU'VE GOT IT WORKING.
  <p>
-<a href="$PTII/util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate problems with your <CODE>.java</CODE>
+<a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> is a script that will indicate problems with your <CODE>.java</CODE>
 files.  To run it, type
 <pre>
 $PTII/util/testsuite/chkjava *.java
 </pre>
  <p>You should also spell check your code with <CODE>spell *.java</CODE>.
+See also the <a href="rating.html">Code Rating</a> and 
+<a href="testing.html">Testing</a> pages
 
 <p>
 <a href="../../doc/index.html">Ptolemy II Home Page</a><br>
