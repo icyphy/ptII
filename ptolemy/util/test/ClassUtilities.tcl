@@ -46,9 +46,11 @@ test ClassUtilities-1.1 {lookupClassAsResource} {
     set resource [java::call ptolemy.util.ClassUtilities \
 	    lookupClassAsResource \
 	    "ptolemy.util.ClassUtilities"]
-    # Check that the value returned starts with the value of PTII
+    # Check that the value returned starts with the value of PTII.
+    # If $PTII has spaces in it, substitute spaces for %20.
+    regsub {%20} $resource { } resource2
     # This might fail if ClassUtilities was found in a jar file
-    regexp $resource $PTII
+    regexp $resource2 $PTII
 } {1}
 
 ######################################################################
