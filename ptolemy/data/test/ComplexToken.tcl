@@ -79,9 +79,8 @@ test ComplexToken-2.0 {Test complexValue} {
     set c [java::new {ptolemy.math.Complex double double} 3.3 4.4]
     set p [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c]
     set res1 [$p complexValue]
-    set res2 [$p getValue]
-    list [$res1 toString] [$res2 toString]
-} {{3.3 + 4.4i} {3.3 + 4.4i}}
+    list [$res1 toString]
+} {{3.3 + 4.4i}}
 
 ######################################################################
 ####

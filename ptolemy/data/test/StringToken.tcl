@@ -60,7 +60,7 @@ test StringToken-2.1 {Create an empty instance} {
 # 
 test StringToken-2.2 {Create an empty instance and query its value} {
     set p [java::new ptolemy.data.StringToken]
-    $p getValue
+    $p stringValue
 } {}
 
 ######################################################################
@@ -68,8 +68,8 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 # 
 test StringToken-2.3 {Create an non-empty instance} {
     set p [java::new ptolemy.data.StringToken foo]
-    list [$p toString] [$p stringValue] [$p getValue]
-} {ptolemy.data.StringToken(foo) foo foo}
+    list [$p toString] [$p stringValue]
+} {ptolemy.data.StringToken(foo) foo}
 
 ######################################################################
 ####

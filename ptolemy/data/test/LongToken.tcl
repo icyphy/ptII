@@ -77,9 +77,8 @@ test LongToken-1.2 {Create an instance from a string value} {
 test LongToken-2.0 {Create a non-empty instance and query its value as an long} {
     set p [java::new {ptolemy.data.LongToken long} 3]
     set res1 [$p longValue]
-    set res2 [$p getValue]
-    list $res1 $res2
-} {3 3}
+    list $res1
+} {3}
 
 ######################################################################
 ####

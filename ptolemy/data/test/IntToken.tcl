@@ -77,9 +77,8 @@ test IntToken-1.2 {Create a non-empty instance from an String} {
 test IntToken-2.0 {Create a non-empty instance and query its value as an int} {
     set p [java::new {ptolemy.data.IntToken int} 3]
     set res1 [$p intValue]
-    set res2 [$p getValue]
-    list $res1 $res2
-} {3 3}
+    list $res1
+} {3}
 
 ######################################################################
 ####

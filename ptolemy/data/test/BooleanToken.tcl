@@ -76,7 +76,7 @@ test BooleanToken-1.2 {Create an instance from a string value} {
 # 
 test BooleanToken-2.0 {Create a non-empty instance and query its value} {
     set token [java::new {ptolemy.data.BooleanToken boolean} false]
-    $token getValue
+    $token booleanValue
 } {0}
 
 ######################################################################

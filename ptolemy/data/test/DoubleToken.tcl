@@ -86,9 +86,8 @@ test DoubleToken-2.0 {Create a non-empty instance and query its value as a Compl
 test DoubleToken-2.1 {Create a non-empty instance and query its value as a double} {
     set p [java::new {ptolemy.data.DoubleToken double} 3.3]
     set res1 [$p doubleValue]
-    set res2 [$p getValue]
-    list $res1 $res2
-} {3.3 3.3}
+    list $res1
+} {3.3}
 
 ######################################################################
 ####
