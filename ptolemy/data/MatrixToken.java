@@ -1,4 +1,4 @@
-/* Abstract base class for tokens that contain a reference to a 2-D array.
+/* A base class for tokens that contain a reference to a 2-D array.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -27,38 +27,65 @@
 
 package ptolemy.data;
 
-import ptolemy.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
 /**
-Abstract base class for tokens that contain a reference to a 2-D array.
+A base class for tokens that contain a reference to a 2-D array.
 The derived classes should override the clone() method to do a deep copy
 of the token.
+This class is not abstract to allow an instance to be created. This
+is required by the actor package where the type of an IOPort is
+represented by an instance of a specific token class.
 
 @author Yuhong Xiong
-@version $Id$
+$Id$
 */
-public abstract class MatrixToken extends Token {
+public class MatrixToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the number of rows in the matrix.
+     *  In this base class, we just throw an exception.
+     *  @exception IllegalActionException alway thrown.
      */
-    public abstract int numRows();
+    public int numRows()
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.numRow: This base "
+		+ "class does not contain an array.");
+    }
 
     /** Return the number of columns in the matrix.
+     *  In this base class, we just throw an exception.
+     *  @exception IllegalActionException alway thrown.
      */
-    public abstract int numColumns();
+    public int numColumns()
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.numColumn: This base "
+		+ "class does not contain an array.");
+    }
 
     /** Return the content in the token as a 2-D byte array.
+     *  In this base class, we just throw an exception.
+     *  @exception IllegalActionException alway thrown.
      */
-    public abstract byte[][] byteMatrix();
+    public byte[][] byteMatrix()
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.byteMatrix: This base "
+		+ "class does not contain an array.");
+    }
 
     /** Return the content in the token as a 2-D double array.
+     *  In this base class, we just throw an exception.
+     *  @exception IllegalActionException alway thrown.
      */
-    public abstract double[][] doubleMatrix();
+    public double[][] doubleMatrix()
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.doubleMatrix: This base "
+		+ "class does not contain an array.");
+    }
 
     /** Return the content in the token as a 2-D Complex array.
      */
@@ -68,14 +95,26 @@ public abstract class MatrixToken extends Token {
     /** Return the content in the token as a 2-D Fix array.
      */
     // FIXME: uncomment this method after the Complex class is implemented.
-    // public abstract Fix[][] fixMatrix();
+    // public Fix[][] fixMatrix();
 
     /** Return the content in the token as a 2-D integer array.
+     *  In this base class, we just throw an exception.
+     *  @exception IllegalActionException alway thrown.
      */
-    public abstract int[][] intMatrix();
+    public int[][] intMatrix()
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.intMatrix: This base "
+		+ "class does not contain an array.");
+    }
 
     /** Return the content in the token as a 2-D long array.
+     *  In this base class, we just throw an exception.
+     *  @exception IllegalActionException alway thrown.
      */
-    public abstract long[][] longMatrix();
+    public long[][] longMatrix()
+	    throws IllegalActionException {
+	throw new IllegalActionException("MatrixToken.longMatrix: This base "
+		+ "class does not contain an array.");
+    }
 }
 
