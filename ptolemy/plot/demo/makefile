@@ -65,6 +65,8 @@ EXTRA_SRCS = $(JSRCS) \
 	FourierSeries.html \
 	Live.html \
 	Marks.html \
+	Ptplot.html \
+	Ptplot.js \
 	Sinusoids.html \
 	bargraph.plt \
 	data.plt \
@@ -79,8 +81,8 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass #$(JZIP)
-install: sources jclass javadocs #$(JZIP) 
+all: sources jclass suball #$(JZIP)
+install: sources jclass javadocs subinstall #$(JZIP) 
 docs: javadocs
 
 tests:: $(EXTRA_SRCS)
