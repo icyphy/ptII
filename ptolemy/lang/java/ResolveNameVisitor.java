@@ -424,6 +424,10 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
             LinkedList args) {
+
+        // If necessary, ensure deep loading and rebuild scopes before proceeding.
+        if (ASTReflect.isFull(node)) ASTReflect.ensureDeepLoading(node);
+
         NameContext  ctx = new NameContext();
 
         ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
