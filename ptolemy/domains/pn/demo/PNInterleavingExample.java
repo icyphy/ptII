@@ -49,14 +49,14 @@ class PNInterleavingExample {
 	PNUniverse myUniverse = new PNUniverse();
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNInterleave _interleave = new PNInterleave(myUniverse, "interleave");
-        myUniverse.getDirector().registerNewActor(_interleave);
+        //myUniverse.getDirector().registerNewActor(_interleave);
         PNAlternate _alternate = new PNAlternate(myUniverse, "alternate");
-        myUniverse.getDirector().registerNewActor(_alternate);
+        //myUniverse.getDirector().registerNewActor(_alternate);
         PNRedirect _redirect0 = new PNRedirect(myUniverse, "redirect0");
-        myUniverse.getDirector().registerNewActor(_redirect0);
+        //myUniverse.getDirector().registerNewActor(_redirect0);
         _redirect0.setInitState(0);
         PNRedirect _redirect1 = new PNRedirect(myUniverse, "redirect1");
-        myUniverse.getDirector().registerNewActor(_redirect1);
+        //myUniverse.getDirector().registerNewActor(_redirect1);
         _redirect1.setInitState(1);
         //        PNPlot _plot = new PNPlot(myUniverse, "plot");
         //_plot.initialize();
