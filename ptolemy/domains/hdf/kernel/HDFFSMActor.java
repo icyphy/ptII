@@ -194,10 +194,10 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 	return _chooseTransition(transitionList);
     }
 
-   /** Return the current state of this actor.
-    *
-    *  @return The current state of this actor.
-    */
+    /** Return the current state of this actor.
+     *
+     *  @return The current state of this actor.
+     */
     public State getCurrentState() {
 	return _currentState;
     }
@@ -249,8 +249,8 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             throws IllegalActionException {
 	if (_debug_info) {
 	    System.out.println(this.getName() +
-			       ": _createInputVariables " +
-			       "invoked on port " + port.getName());
+                    ": _createInputVariables " +
+                    "invoked on port " + port.getName());
 	}
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
@@ -277,7 +277,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 	    ((IntToken)(tokenHistorySize.getToken())).intValue();
 	if (_debug_info) {
 	    System.out.println(this.getName() + ": tokenHistorySize = " +
-			       historySize);
+                    historySize);
 
 	}
 	Variable[][] recentlyReadVariables = new Variable[width][historySize];
@@ -292,7 +292,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 	    if (_debug_info) {
 		System.out.println("chIndex = " + chIndex);
 		System.out.println(this.getName() +
-			       ": Added Vaiable = " + vName);
+                        ": Added Vaiable = " + vName);
 	    }
             try {
                 pVars[chIndex][0] = new Variable(this, vName);
@@ -309,7 +309,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             }
 	    if (_debug_info) {
 		System.out.println(this.getName() +
-			       ": Added Vaiable = " + vName);
+                        ": Added Vaiable = " + vName);
 	    }
             try {
                 pVars[chIndex][1] = new Variable(this, vName);
@@ -333,16 +333,16 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 		}
 		if (_debug_info) {
 		    System.out.println(this.getFullName() +
-				       ": Adding variable with name = " +
-				       variableName);
+                            ": Adding variable with name = " +
+                            variableName);
 		}
 		try {
 		    recentlyReadVariables[chIndex][historyIndex]
 			= new Variable(this, variableName);
 		} catch (NameDuplicationException ex) {
 		    throw new InvalidStateException(this,
-			  "Error creating input variables for port.\n"
-						    + ex);
+                            "Error creating input variables for port.\n"
+                            + ex);
 		}
 
 	    }
@@ -382,14 +382,14 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 		    }
 		} catch (NameDuplicationException ex) {
 		    throw new InternalErrorException(getName() + ": "
-                        + "Error removing input variables for port "
-                        + port.getName() + ".\n"
-                        + ex.getMessage());
+                            + "Error removing input variables for port "
+                            + port.getName() + ".\n"
+                            + ex.getMessage());
 		} catch (IllegalActionException ex) {
 		    throw new InternalErrorException(getName() + ": "
-                        + "Error removing input variables for port "
-                        + port.getName() + ".\n"
-                        + ex.getMessage());
+                            + "Error removing input variables for port "
+                            + port.getName() + ".\n"
+                            + ex.getMessage());
 		}
 	    }
         }
@@ -416,7 +416,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      *   the token read from its corresponding channel.
      */
     protected void _setInputVariables(int firings, int firingsPerIteration)
-	throws IllegalActionException {
+            throws IllegalActionException {
         Iterator inports = inputPortList().iterator();
 
         while (inports.hasNext()) {
@@ -424,7 +424,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
 		_setInputVariables(p, channel, firings,
-				   firingsPerIteration);
+                        firingsPerIteration);
             }
         }
     }
@@ -443,7 +443,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      *   variable cannot take the token read from the channel.
      */
     protected void _setInputVariables(TypedIOPort port, int channel,
-				      int firings, int firingsPerIteration)
+            int firings, int firingsPerIteration)
             throws IllegalActionException {
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
@@ -457,8 +457,8 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
         }
         if (_debug_info) {
             System.out.println(this.getFullName() +
-			       ": setting input variables for port " +
-			       port.getName());
+                    ": setting input variables for port " +
+                    port.getName());
         }
         int width = port.getWidth();
         Variable[][] pVars = (Variable[][])_inputVariableMap.get(port);
@@ -482,7 +482,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 	    }
 	    if (_debug_info) {
 		System.out.println("FSMActor: _setInputVariables(): "
-                                + port.getName() + "has token: " + t);
+                        + port.getName() + "has token: " + t);
 	    }
 	    tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
 	    pVars[channel][0].setToken(tok);
@@ -494,7 +494,7 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             }
 	    if (_debug_info) {
 		System.out.println("FSMActor: _setInputVariables(): "
-                    + port.getName() + "token value:" + tok.toString());
+                        + port.getName() + "token value:" + tok.toString());
 	    }
             pVars[channel][1].setToken(tok);
 	    // HDF specific:

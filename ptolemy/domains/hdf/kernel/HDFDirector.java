@@ -170,74 +170,74 @@ public class HDFDirector extends SDFDirector {
      *  container.
      */
     /*
-     public void fire() throws IllegalActionException {
-	if (_debug_info) {
-	    System.out.println(getName() + " : fire() invoked.");
-	}
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+      public void fire() throws IllegalActionException {
+      if (_debug_info) {
+      System.out.println(getName() + " : fire() invoked.");
+      }
+      TypedCompositeActor container = ((TypedCompositeActor)getContainer());
 
-        if (container == null) {
-            throw new InvalidStateException("HDFDirector " + getName() +
-                    " fired, but it has no container!");
-        } else {
-	    if (_debug_info) {
-		System.out.println(getName() + " : fire(): " +
-				   " Schedule is ");
-		Schedule tSched = getSchedule();
-		Iterator tFirings = tSched.firingIterator();
-		while (tFirings.hasNext()) {
-		    Firing firing = (Firing)tFirings.next();
-		    Actor actor = (Actor)firing.getActor();
-		    System.out.println(" : " +
-				       ((NamedObj)actor).getName() +
-				       " ");
-		}
-	    }
+      if (container == null) {
+      throw new InvalidStateException("HDFDirector " + getName() +
+      " fired, but it has no container!");
+      } else {
+      if (_debug_info) {
+      System.out.println(getName() + " : fire(): " +
+      " Schedule is ");
+      Schedule tSched = getSchedule();
+      Iterator tFirings = tSched.firingIterator();
+      while (tFirings.hasNext()) {
+      Firing firing = (Firing)tFirings.next();
+      Actor actor = (Actor)firing.getActor();
+      System.out.println(" : " +
+      ((NamedObj)actor).getName() +
+      " ");
+      }
+      }
 
 
-	    Schedule sched = getSchedule();
-	    Iterator firings = sched.firingIterator();
-            while (firings.hasNext()) {
-		Firing firing = (Firing)firings.next();
-		Actor actor = (Actor)firing.getActor();
-		if (_debug_info) {
-		    System.out.println(getName() + " : fire(): " +
-				       " firing actor : " +
-				       ((NamedObj)actor).getName());
-		}
-		int iterationCount = firing.getIterationCount();
+      Schedule sched = getSchedule();
+      Iterator firings = sched.firingIterator();
+      while (firings.hasNext()) {
+      Firing firing = (Firing)firings.next();
+      Actor actor = (Actor)firing.getActor();
+      if (_debug_info) {
+      System.out.println(getName() + " : fire(): " +
+      " firing actor : " +
+      ((NamedObj)actor).getName());
+      }
+      int iterationCount = firing.getIterationCount();
 
-		// FIXME: This is a hack. It does not even check if the
-		// SDF graph contains loops, and may be far from optimal when
-		// the SDF graph contains non-homogeneous actors. However,
-		// the default value of vectorizationFactor = 1,
-		// which should be completely safe for all models.
-		// TODO: I need to modify the scheduler to generate an
-		// optimum vectorized schedule. I.e., first try to
-		// obtain a single appearance schedule. Then, try
-		// to minimize the number of actor activations.
-		int factor =
-                    ((IntToken) (vectorizationFactor.getToken())).intValue();
-		if (factor < 1) {
-		    throw new IllegalActionException(this,
-                            "The supplied vectorization factor is invalid " +
-                            "Valid values consist of positive integers. " +
-                            "The supplied value was: " + factor);
-		}
-		int returnVal =
-                    actor.iterate(factor*iterationCount);
-		if (returnVal == COMPLETED) {
-		    _postfirereturns = _postfirereturns && true;
-		} else if (returnVal == NOT_READY) {
-		    throw new IllegalActionException(this,
-                            (ComponentEntity) actor, "Actor " +
-                            "is not ready to fire.");
-		} else if (returnVal == STOP_ITERATING) {
-		    _postfirereturns = false;
-		}
-            }
-        }
-    }
+      // FIXME: This is a hack. It does not even check if the
+      // SDF graph contains loops, and may be far from optimal when
+      // the SDF graph contains non-homogeneous actors. However,
+      // the default value of vectorizationFactor = 1,
+      // which should be completely safe for all models.
+      // TODO: I need to modify the scheduler to generate an
+      // optimum vectorized schedule. I.e., first try to
+      // obtain a single appearance schedule. Then, try
+      // to minimize the number of actor activations.
+      int factor =
+      ((IntToken) (vectorizationFactor.getToken())).intValue();
+      if (factor < 1) {
+      throw new IllegalActionException(this,
+      "The supplied vectorization factor is invalid " +
+      "Valid values consist of positive integers. " +
+      "The supplied value was: " + factor);
+      }
+      int returnVal =
+      actor.iterate(factor*iterationCount);
+      if (returnVal == COMPLETED) {
+      _postfirereturns = _postfirereturns && true;
+      } else if (returnVal == NOT_READY) {
+      throw new IllegalActionException(this,
+      (ComponentEntity) actor, "Actor " +
+      "is not ready to fire.");
+      } else if (returnVal == STOP_ITERATING) {
+      _postfirereturns = false;
+      }
+      }
+      }
+      }
     */
 
     /** Return the scheduling sequence as an instance of Schedule.
@@ -294,7 +294,7 @@ public class HDFDirector extends SDFDirector {
 	    }
 	    String rateKey = rates;
 	    int cacheSize =
-		    ((IntToken)(scheduleCacheSize.getToken())).intValue();
+                ((IntToken)(scheduleCacheSize.getToken())).intValue();
 	    if (cacheSize != _cacheSize) {
 		// cache size has changed. reset the cache.
 		_scheduleCache = new HashMap();
@@ -305,7 +305,7 @@ public class HDFDirector extends SDFDirector {
 		// cache hit.
 		if (_debug_info) {
 		    System.out.println(getName() +
-				       " : Cache hit!");
+                            " : Cache hit!");
 		}
 		if (cacheSize > 0) {
 		    // Remove the key from its old position in
@@ -319,7 +319,7 @@ public class HDFDirector extends SDFDirector {
 		// cache miss.
 		if (_debug_info) {
 		    System.out.println(getName() +
-				       " : Cache miss.");
+                            " : Cache miss.");
 		}
 		if (cacheSize > 0) {
 		    while (_scheduleKeyList.size() >= cacheSize) {
@@ -442,26 +442,26 @@ public class HDFDirector extends SDFDirector {
     private List _getInputPortList() {
 	CompositeActor container =  (CompositeActor)getContainer();
 	List actors = container.deepEntityList();
-	 Iterator actorIterator = actors.iterator();
-	 List inputPortList = new LinkedList();;
-	 List inputPortRateList = new LinkedList();
-	 while (actorIterator.hasNext()) {
-	     Actor containedActor = (Actor)actorIterator.next();
-	     List temporaryInputPortList =
-		 containedActor.inputPortList();
-	     Iterator inputPortIterator =
-		 temporaryInputPortList.iterator();
-	     while (inputPortIterator.hasNext()) {
-		 IOPort inputPort = (IOPort)inputPortIterator.next();
-		 if (_debug_info) {
-		     System.out.println(getName() +
-					"Found input port : " +
-					inputPort.getName());
-		 }
-		 inputPortList.add(inputPort);
-	     }
-	 }
-	 return inputPortList;
+        Iterator actorIterator = actors.iterator();
+        List inputPortList = new LinkedList();;
+        List inputPortRateList = new LinkedList();
+        while (actorIterator.hasNext()) {
+            Actor containedActor = (Actor)actorIterator.next();
+            List temporaryInputPortList =
+                containedActor.inputPortList();
+            Iterator inputPortIterator =
+                temporaryInputPortList.iterator();
+            while (inputPortIterator.hasNext()) {
+                IOPort inputPort = (IOPort)inputPortIterator.next();
+                if (_debug_info) {
+                    System.out.println(getName() +
+                            "Found input port : " +
+                            inputPort.getName());
+                }
+                inputPortList.add(inputPort);
+            }
+        }
+        return inputPortList;
     }
 
     /** Return a list of all the output ports contained by the
@@ -472,26 +472,26 @@ public class HDFDirector extends SDFDirector {
     private List _getOutputPortList() {
 	CompositeActor container =  (CompositeActor)getContainer();
 	List actors = container.deepEntityList();
-	 Iterator actorIterator2 = actors.iterator();
-	 List outputPortList = new LinkedList();;
-	 List outputPortRateList = new LinkedList();
-	 while (actorIterator2.hasNext()) {
-	     Actor containedActor = (Actor)actorIterator2.next();
-	     List temporaryOutputPortList =
-		 containedActor.outputPortList();
-	     Iterator outputPortIterator =
-		 temporaryOutputPortList.iterator();
-	     while (outputPortIterator.hasNext()) {
-		 IOPort outputPort = (IOPort)outputPortIterator.next();
-		 if (_debug_info) {
-		     System.out.println(getName() +
-					"Found output port : " +
-					outputPort.getName());
-		 }
-		 outputPortList.add(outputPort);
-	     }
-	 }
-	 return outputPortList;
+        Iterator actorIterator2 = actors.iterator();
+        List outputPortList = new LinkedList();;
+        List outputPortRateList = new LinkedList();
+        while (actorIterator2.hasNext()) {
+            Actor containedActor = (Actor)actorIterator2.next();
+            List temporaryOutputPortList =
+                containedActor.outputPortList();
+            Iterator outputPortIterator =
+                temporaryOutputPortList.iterator();
+            while (outputPortIterator.hasNext()) {
+                IOPort outputPort = (IOPort)outputPortIterator.next();
+                if (_debug_info) {
+                    System.out.println(getName() +
+                            "Found output port : " +
+                            outputPort.getName());
+                }
+                outputPortList.add(outputPort);
+            }
+        }
+        return outputPortList;
     }
 
     // The hashmap for the schedule cache.
