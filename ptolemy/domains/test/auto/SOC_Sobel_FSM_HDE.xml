@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[159, 113]">
     </property>
-    <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+    <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90">
@@ -401,7 +401,7 @@ And Control Network Data Transfer</text></svg></configure>
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="1:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+        <entity name="1:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
             <property name="length" class="ptolemy.data.expr.Parameter" value="25">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="460.0, 275.0">
@@ -409,25 +409,25 @@ And Control Network Data Transfer</text></svg></configure>
             <port name="index" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+            <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                 </property>
             </port>
-            <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+            <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                 </property>
             </port>
-            <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+            <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+            <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
             </port>
-            <port name="serPar" class="ptolemy.actor.TypedIOPort">
+            <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
             <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -648,13 +648,13 @@ And Control Network Data Transfer</text></svg></configure>
         <link port="1:Multiplexor.input" relation="relation4"/>
         <link port="1:Multiplexor.output" relation="1:relation20"/>
         <link port="1:Multiplexor.select" relation="1:relation19"/>
-        <link port="1:ArrayMem.index" relation="1:relation32"/>
-        <link port="1:ArrayMem.dataInPar" relation="1:relation"/>
-        <link port="1:ArrayMem.dataOutPar" relation="relation"/>
-        <link port="1:ArrayMem.dataInSer" relation="1:relation20"/>
-        <link port="1:ArrayMem.serPar" relation="1:relation6"/>
-        <link port="1:ArrayMem.read" relation="1:relation16"/>
-        <link port="1:ArrayMem.write" relation="1:relation6"/>
+        <link port="1:ArrayMemory.index" relation="1:relation32"/>
+        <link port="1:ArrayMemory.dataInParallel" relation="1:relation"/>
+        <link port="1:ArrayMemory.dataOutParallel" relation="relation"/>
+        <link port="1:ArrayMemory.dataInSerial" relation="1:relation20"/>
+        <link port="1:ArrayMemory.serialOrParallel" relation="1:relation6"/>
+        <link port="1:ArrayMemory.read" relation="1:relation16"/>
+        <link port="1:ArrayMemory.write" relation="1:relation6"/>
         <link port="1:Expression.output" relation="1:relation18"/>
         <link port="1:Expression.in" relation="1:relation32"/>
         <link port="5:Const.output" relation="1:relation"/>
@@ -889,7 +889,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+            <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
@@ -938,7 +938,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+            <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
@@ -987,7 +987,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+            <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
@@ -1036,7 +1036,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+            <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
@@ -1267,7 +1267,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+            <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
@@ -1307,7 +1307,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <property name="HDE Director" class="ptolemy.domains.de.kernel.HDEDirector">
+            <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
@@ -1494,7 +1494,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
-            <entity name="4:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="4:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="715.0, 85.0">
@@ -1502,27 +1502,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1532,7 +1532,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="5:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="5:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="725.0, 180.0">
@@ -1540,27 +1540,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1570,7 +1570,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="6:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="6:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="740.0, 295.0">
@@ -1578,27 +1578,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1608,7 +1608,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="7:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="7:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="875.0, 370.0">
@@ -1616,27 +1616,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1730,34 +1730,34 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="d2" relation="relation13"/>
             <link port="d3" relation="relation14"/>
             <link port="i3" relation="relation18"/>
-            <link port="4:ArrayMem.index" relation="relation3"/>
-            <link port="4:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="4:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="4:ArrayMem.dataOutSer" relation="relation11"/>
-            <link port="4:ArrayMem.serPar" relation="relation2"/>
-            <link port="4:ArrayMem.read" relation="relation6"/>
-            <link port="4:ArrayMem.write" relation="relation"/>
-            <link port="5:ArrayMem.index" relation="relation4"/>
-            <link port="5:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="5:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="5:ArrayMem.dataOutSer" relation="relation12"/>
-            <link port="5:ArrayMem.serPar" relation="relation2"/>
-            <link port="5:ArrayMem.read" relation="relation6"/>
-            <link port="5:ArrayMem.write" relation="relation"/>
-            <link port="6:ArrayMem.index" relation="relation7"/>
-            <link port="6:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="6:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="6:ArrayMem.dataOutSer" relation="relation13"/>
-            <link port="6:ArrayMem.serPar" relation="relation2"/>
-            <link port="6:ArrayMem.read" relation="relation6"/>
-            <link port="6:ArrayMem.write" relation="relation"/>
-            <link port="7:ArrayMem.index" relation="relation18"/>
-            <link port="7:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="7:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="7:ArrayMem.dataOutSer" relation="relation14"/>
-            <link port="7:ArrayMem.serPar" relation="relation2"/>
-            <link port="7:ArrayMem.read" relation="relation6"/>
-            <link port="7:ArrayMem.write" relation="relation"/>
+            <link port="4:ArrayMemory.index" relation="relation3"/>
+            <link port="4:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="4:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="4:ArrayMemory.dataOutSerial" relation="relation11"/>
+            <link port="4:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="4:ArrayMemory.read" relation="relation6"/>
+            <link port="4:ArrayMemory.write" relation="relation"/>
+            <link port="5:ArrayMemory.index" relation="relation4"/>
+            <link port="5:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="5:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="5:ArrayMemory.dataOutSerial" relation="relation12"/>
+            <link port="5:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="5:ArrayMemory.read" relation="relation6"/>
+            <link port="5:ArrayMemory.write" relation="relation"/>
+            <link port="6:ArrayMemory.index" relation="relation7"/>
+            <link port="6:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="6:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="6:ArrayMemory.dataOutSerial" relation="relation13"/>
+            <link port="6:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="6:ArrayMemory.read" relation="relation6"/>
+            <link port="6:ArrayMemory.write" relation="relation"/>
+            <link port="7:ArrayMemory.index" relation="relation18"/>
+            <link port="7:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="7:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="7:ArrayMemory.dataOutSerial" relation="relation14"/>
+            <link port="7:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="7:ArrayMemory.read" relation="relation6"/>
+            <link port="7:ArrayMemory.write" relation="relation"/>
             <link port="SingleEvent.output" relation="relation8"/>
             <link port="Const.output" relation="1:relation9"/>
             <link port="Const.trigger" relation="relation8"/>
@@ -1855,7 +1855,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
-            <entity name="4:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="4:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="715.0, 85.0">
@@ -1863,27 +1863,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1893,7 +1893,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="5:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="5:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="725.0, 180.0">
@@ -1901,27 +1901,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1931,7 +1931,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="6:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="6:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="740.0, 295.0">
@@ -1939,27 +1939,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -1969,7 +1969,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="7:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+            <entity name="7:ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
                 <property name="length" class="ptolemy.data.expr.Parameter" value="25">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="875.0, 370.0">
@@ -1977,27 +1977,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <port name="index" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
-                <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                     </property>
                 </port>
-                <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+                <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="serPar" class="ptolemy.actor.TypedIOPort">
+                <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
                 <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -2091,34 +2091,34 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="d2" relation="relation13"/>
             <link port="d3" relation="relation14"/>
             <link port="i3" relation="relation18"/>
-            <link port="4:ArrayMem.index" relation="relation3"/>
-            <link port="4:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="4:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="4:ArrayMem.dataOutSer" relation="relation11"/>
-            <link port="4:ArrayMem.serPar" relation="relation2"/>
-            <link port="4:ArrayMem.read" relation="relation6"/>
-            <link port="4:ArrayMem.write" relation="relation"/>
-            <link port="5:ArrayMem.index" relation="relation4"/>
-            <link port="5:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="5:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="5:ArrayMem.dataOutSer" relation="relation12"/>
-            <link port="5:ArrayMem.serPar" relation="relation2"/>
-            <link port="5:ArrayMem.read" relation="relation6"/>
-            <link port="5:ArrayMem.write" relation="relation"/>
-            <link port="6:ArrayMem.index" relation="relation7"/>
-            <link port="6:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="6:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="6:ArrayMem.dataOutSer" relation="relation13"/>
-            <link port="6:ArrayMem.serPar" relation="relation2"/>
-            <link port="6:ArrayMem.read" relation="relation6"/>
-            <link port="6:ArrayMem.write" relation="relation"/>
-            <link port="7:ArrayMem.index" relation="relation18"/>
-            <link port="7:ArrayMem.dataInPar" relation="relation5"/>
-            <link port="7:ArrayMem.dataInSer" relation="1:relation9"/>
-            <link port="7:ArrayMem.dataOutSer" relation="relation14"/>
-            <link port="7:ArrayMem.serPar" relation="relation2"/>
-            <link port="7:ArrayMem.read" relation="relation6"/>
-            <link port="7:ArrayMem.write" relation="relation"/>
+            <link port="4:ArrayMemory.index" relation="relation3"/>
+            <link port="4:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="4:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="4:ArrayMemory.dataOutSerial" relation="relation11"/>
+            <link port="4:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="4:ArrayMemory.read" relation="relation6"/>
+            <link port="4:ArrayMemory.write" relation="relation"/>
+            <link port="5:ArrayMemory.index" relation="relation4"/>
+            <link port="5:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="5:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="5:ArrayMemory.dataOutSerial" relation="relation12"/>
+            <link port="5:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="5:ArrayMemory.read" relation="relation6"/>
+            <link port="5:ArrayMemory.write" relation="relation"/>
+            <link port="6:ArrayMemory.index" relation="relation7"/>
+            <link port="6:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="6:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="6:ArrayMemory.dataOutSerial" relation="relation13"/>
+            <link port="6:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="6:ArrayMemory.read" relation="relation6"/>
+            <link port="6:ArrayMemory.write" relation="relation"/>
+            <link port="7:ArrayMemory.index" relation="relation18"/>
+            <link port="7:ArrayMemory.dataInParallel" relation="relation5"/>
+            <link port="7:ArrayMemory.dataInSerial" relation="1:relation9"/>
+            <link port="7:ArrayMemory.dataOutSerial" relation="relation14"/>
+            <link port="7:ArrayMemory.serialOrParallel" relation="relation2"/>
+            <link port="7:ArrayMemory.read" relation="relation6"/>
+            <link port="7:ArrayMemory.write" relation="relation"/>
             <link port="SingleEvent.output" relation="relation8"/>
             <link port="Const.output" relation="1:relation9"/>
             <link port="Const.trigger" relation="relation8"/>
@@ -2410,7 +2410,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="10:8:Expression.output" relation="relation14"/>
             <link port="10:8:Expression.in" relation="relation"/>
         </entity>
-        <entity name="ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+        <entity name="ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
             <property name="length" class="ptolemy.data.expr.Parameter" value="25">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="720.0, 360.0">
@@ -2418,19 +2418,19 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <port name="index" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+            <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+            <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+            <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+            <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="serPar" class="ptolemy.actor.TypedIOPort">
+            <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
             <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -2982,13 +2982,13 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="neighbors.n" relation="relation11"/>
         <link port="neighbors.sw" relation="relation12"/>
         <link port="neighbors.nw" relation="relation13"/>
-        <link port="ArrayMem.index" relation="relation"/>
-        <link port="ArrayMem.dataInPar" relation="relation26"/>
-        <link port="ArrayMem.dataOutPar" relation="relation21"/>
-        <link port="ArrayMem.dataInSer" relation="relation24"/>
-        <link port="ArrayMem.serPar" relation="relation42"/>
-        <link port="ArrayMem.read" relation="relation38"/>
-        <link port="ArrayMem.write" relation="relation6"/>
+        <link port="ArrayMemory.index" relation="relation"/>
+        <link port="ArrayMemory.dataInParallel" relation="relation26"/>
+        <link port="ArrayMemory.dataOutParallel" relation="relation21"/>
+        <link port="ArrayMemory.dataInSerial" relation="relation24"/>
+        <link port="ArrayMemory.serialOrParallel" relation="relation42"/>
+        <link port="ArrayMemory.read" relation="relation38"/>
+        <link port="ArrayMemory.write" relation="relation6"/>
         <link port="newwithops.1:s" relation="relation17"/>
         <link port="newwithops.1:ne" relation="relation15"/>
         <link port="newwithops.1:se" relation="relation16"/>

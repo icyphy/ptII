@@ -6,7 +6,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[486, 359]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[179, 87]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[144, 140]">
     </property>
     <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
@@ -49,20 +49,6 @@ and the iterations perarameter for the repeat actors must be >= n+1. </text></sv
         <property name="_location" class="ptolemy.moml.Location" value="85.0, 410.0">
         </property>
     </property>
-    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="655.0, 180.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="begin" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -93,7 +79,7 @@ and the iterations perarameter for the repeat actors must be >= n+1. </text></sv
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="21">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -203,7 +189,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.moml.Location" value="95.0, 325.0">
                     </property>
                 </property>
-                <property name="fib" class="ptolemy.data.expr.Parameter" value="34">
+                <property name="fib" class="ptolemy.data.expr.Parameter" value="89">
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     </property>
                     <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -218,7 +204,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.moml.Location" value="195.0, 325.0">
                     </property>
                 </property>
-                <property name="fibm1" class="ptolemy.data.expr.Parameter" value="34">
+                <property name="fibm1" class="ptolemy.data.expr.Parameter" value="89">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -235,7 +221,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.moml.Location" value="260.0, 325.0">
                     </property>
                 </property>
-                <property name="fibm2" class="ptolemy.data.expr.Parameter" value="21">
+                <property name="fibm2" class="ptolemy.data.expr.Parameter" value="55">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
                     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -458,77 +444,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="_Controller.fibn" relation="fibnRelation"/>
             <link port="_Controller.done" relation="doneRelation"/>
         </entity>
-        <entity name="SequencePlotter5" class="ptolemy.actor.lib.gui.SequencePlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="internal start">
-            </property>
-            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="630.0, 305.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter5</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-            </configure>
-        </entity>
-        <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-            <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="420.0, 250.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="500.0, 60.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-</plot>?>
-            </configure>
-        </entity>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="195.0, 90.0">
             </vertex>
@@ -545,8 +460,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <vertex name="vertex1" value="390.0, 195.0">
             </vertex>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="n" relation="relation8"/>
         <link port="start" relation="relation9"/>
         <link port="fibnum" relation="relation3"/>
@@ -555,36 +468,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="Fibonacci FSM.start" relation="relation9"/>
         <link port="Fibonacci FSM.fibn" relation="relation3"/>
         <link port="Fibonacci FSM.done" relation="relation10"/>
-        <link port="SequencePlotter5.input" relation="relation"/>
-        <link port="BooleanToAnything.input" relation="relation9"/>
-        <link port="BooleanToAnything.output" relation="relation"/>
-        <link port="SequencePlotter.input" relation="relation3"/>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="start,fib,done">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="815.0, 225.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
@@ -733,7 +616,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="begin==true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="start=true;  n=8">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="start=true; n=8">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
@@ -880,11 +763,21 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-3,0,2,3,5,8,13,21,34,-3,0,2,3,5,8,13,21,34,55,89,-2}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="885.0, -20.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="270.0, 185.0">
         </vertex>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="440.0, 25.0">
@@ -900,20 +793,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="BooleanToAnything.input" relation="relation"/>
     <link port="begin.output" relation="relation6"/>
     <link port="sdf_fibmod.n" relation="relation5"/>
     <link port="sdf_fibmod.start" relation="relation8"/>
     <link port="sdf_fibmod.fibnum" relation="relation7"/>
     <link port="sdf_fibmod.done" relation="relation10"/>
-    <link port="TimedPlotter.input" relation="relation9"/>
-    <link port="TimedPlotter.input" relation="relation7"/>
     <link port="1:BooleanToAnything.input" relation="relation6"/>
-    <link port="1:BooleanToAnything.output" relation="relation9"/>
     <link port="n=8 then n=10.begin" relation="relation6"/>
     <link port="n=8 then n=10.done" relation="relation"/>
     <link port="n=8 then n=10.start" relation="relation8"/>
     <link port="n=8 then n=10.n" relation="relation5"/>
     <link port="TimedDelay.input" relation="relation10"/>
     <link port="TimedDelay.output" relation="relation"/>
+    <link port="Test.input" relation="relation7"/>
 </entity>
