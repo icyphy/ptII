@@ -73,7 +73,7 @@ public interface Derivable extends Nameable {
      *  @return The level above this object in the containment
      *   hierarchy where a parent-child relationship defines this object.
      *  @see Instantiable
-     *  @see setDerivedLevel(int)
+     *  @see #setDerivedLevel(int)
      */
     public int getDerivedLevel();
 
