@@ -212,13 +212,24 @@ public class FSMDirector extends Director {
             }
             _firstFire = false;
         }
-        FSMActor ctrl = getController();
+       FSMActor ctrl = getController();
         ctrl._setInputVariables();
         if(_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
         if (tr != null) {
+
+	    Actor[] actors = tr.destinationState().getRefinement();
+            if (actors != null) {
+                for (int i = 0; i < actors.length; ++i) {
+                    if (actors[i].prefire()) {
+                        actors[i].fire();
+			actors[i].postfire();
+                    }
+                }
+            }
+    
             return;
         }
 	Iterator actors = _enabledRefinements.iterator();
@@ -229,7 +240,6 @@ public class FSMDirector extends Director {
 	    actor.fire();
 	}
 	ctrl._setInputsFromRefinement();
-
         ctrl._chooseTransition(st.nonpreemptiveTransitionList());
         return;
     }
@@ -361,10 +371,13 @@ public class FSMDirector extends Director {
 	            ((CompositeActor)container).getExecutiveDirector();
 	}
         boolean result = true;
-	Iterator actors = _enabledRefinements.iterator();
-	while (actors.hasNext()) {
-	    TypedActor actor = (TypedActor)actors.next();
-	    actor.postfire();
+	Transition tr = ctrl._lastChosenTransition;
+	if (tr == null || !tr.isPreemptive()) {
+	    Iterator actors = _enabledRefinements.iterator();
+	    while (actors.hasNext()) {
+		TypedActor actor = (TypedActor)actors.next();
+		actor.postfire();
+	    }
 	}
 
 	boolean ctrlPostfire = ctrl.postfire();
@@ -547,13 +560,26 @@ public class FSMDirector extends Director {
                             if (cont == ctrl) {
 				rlist.add(r);
 			    } else {
-                                if (actors != null) {
-                                    for (int k = 0; k < actors.length; ++k) {
-                                        if (cont == actors[k]) {
-                                            rlist.add(r);
-                                            break;
-                                        }
-                                    }
+				List stateList = new LinkedList();
+				stateList.add(st);
+			        Iterator trs = st.preemptiveTransitionList().iterator();
+				while (trs.hasNext()) {
+				    Transition tr = (Transition)trs.next();
+				    stateList.add(tr.destinationState());
+				}
+				Iterator nextStates = stateList.iterator();
+				while (nextStates.hasNext()) {
+				    actors = ((State)nextStates.next()).getRefinement();
+				    if (actors != null) {
+					for (int k = 0; k < actors.length; ++k) {
+					    if (cont == actors[k]) {
+						if (!rlist.contains(r)) {
+						    rlist.add(r);
+						    break;
+						}
+					    }
+					}
+				    }
 				}
                             }
                         }

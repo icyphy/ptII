@@ -283,7 +283,7 @@ test FSMDirector-6.1 {test transferInputs} {
     set re4 [[$fsm currentState] getFullName]
     $d0 terminate
     list $re0 $re1 $re2 $re3 $re4
-} {6 0 0 6 ..e1.fsm.s0}
+} {6 0 1 6 ..e1.fsm.s0}
 
 ######################################################################
 ####

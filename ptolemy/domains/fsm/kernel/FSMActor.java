@@ -681,8 +681,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 continue;
             }
             if (result != null) {
-                throw new IllegalActionException(this, currentState(),
-                        "Multiple enabled transitions.");
+                throw new IllegalActionException(currentState(),
+                        "Multiple enabled transitions: "
+                        + result.getName() + " and " + tr.getName() + ".");
             } else {
                 result = tr;
             }
@@ -703,7 +704,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  to the destination state of the transition. Reset the refinement
      *  of the destination state if the <i>reset</i> parameter of the
      *  transition is true.
-     *  @exception IllegalActionException If any commit action throws it.
+     *  @exception IllegalActionException If any commit action throws it,
+     *   or the last chosen transition does not have a destination state.
      */
     protected void _commitLastChosenTransition()
             throws IllegalActionException {
@@ -716,6 +718,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             Action action = (Action)actions.next();
             action.execute();
         }
+	if (_lastChosenTransition.destinationState() == null) {
+	    throw new IllegalActionException(this, _lastChosenTransition,
+                    "The transition is enabled but does not have a "
+                    + "destination state.");
+	}
         _currentState = _lastChosenTransition.destinationState();
 	BooleanToken resetToken =
 	        (BooleanToken)_lastChosenTransition.reset.getToken();
