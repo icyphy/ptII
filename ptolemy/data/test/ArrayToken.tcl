@@ -64,3 +64,20 @@ test ArrayToken-1.0 {Create an int array using expression} {
     $valToken toString
 } {{1, 2, 3}}
 
+######################################################################
+####
+# 
+test ArrayToken-2.0 {test add} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{4, 5, 6}"]
+    set tadd [$t1 add $t2]
+    $tadd toString
+} {{5, 7, 9}}
+
+test ArrayToken-2.1 {test subtract} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set tadd [$t1 subtract $t2]
+    $tadd toString
+} {{0.5, 0.5, -3.0}}
+

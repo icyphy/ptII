@@ -76,20 +76,22 @@ public class ArrayToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the sum of this token and
-     *  the argument. The type of the argument must be comparable
-     *  with the type of this token. The type of the returned token is
-     *  the higher type of the two.
-     *  @param t The token to add to this token.
+    /** Return a new token whose value is the point-wise addition of the
+     *  argument Token with this Token. The argument token must be an
+     *  ArrayToken having the same length as this Token. The field types of
+     *  the argument must be comparable with the corresponding field types
+     *  of this token, and the field types of the returned token is the
+     *  higher type of the two.
+     *  @param token The token to add with this token.
      *  @return A new ArrayToken.
      *  @exception IllegalActionException If the argument is not an
      *   ArrayToken, or is an ArrayToken of different length, or calling
      *   the add method of the element token throws it.
      */
-    public Token add(Token t)
+    public Token add(Token token)
 	    throws IllegalActionException {
-	_checkArgument(t);
-	Token[] argArray = ((ArrayToken)t).arrayValue();
+	_checkArgument(token);
+	Token[] argArray = ((ArrayToken)token).arrayValue();
 	Token[] result = new Token[_value.length];
 	for (int i = 0; i < _value.length; i++) {
 	    result[i] = _value[i].add(argArray[i]);
@@ -144,17 +146,17 @@ public class ArrayToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument.
-     *  @param t The token with which to test equality.
+     *  @param token The token with which to test equality.
      *  @return A new BooleanToken which contains the result of the test.
      *  @exception IllegalActionException If the argument is not an
      *   ArrayToken, or is an ArrayToken of different length, or calling
      *   the isEqualTo method of the element token throws it.
      */
-    public BooleanToken isEqualTo(Token t)
+    public BooleanToken isEqualTo(Token token)
 	    throws IllegalActionException {
 
-	_checkArgument(t);
-	Token[] argArray = ((ArrayToken)t).arrayValue();
+	_checkArgument(token);
+	Token[] argArray = ((ArrayToken)token).arrayValue();
 	for (int i = 0; i < _value.length; i++) {
 	    BooleanToken result = _value[i].isEqualTo(argArray[i]);
 	    if (result.booleanValue() == false) {
@@ -213,6 +215,30 @@ public class ArrayToken extends Token {
 	return new ArrayToken(oneValArray);
     }
 
+    /** Return a new token whose value is the point-wise subtraction of the
+     *  argument Token from this Token. The argument token must be an
+     *  ArrayToken having the same length as this Token. The field types of
+     *  the argument must be comparable with the corresponding field types
+     *  of this token, and the field types of the returned token is the
+     *  higher type of the two.
+     *  @param token The token to subtract from this token.
+     *  @return A new ArrayToken.
+     *  @exception IllegalActionException If the argument is not an
+     *   ArrayToken, or is an ArrayToken of different length, or calling
+     *   the subtract method of the element token throws it.
+     */
+    public Token subtract(Token token)
+	    throws IllegalActionException {
+	_checkArgument(token);
+	Token[] argArray = ((ArrayToken)token).arrayValue();
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].subtract(argArray[i]);
+	}
+
+	return new ArrayToken(result);
+    }
+
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  The syntax is similar to a Matlab row vector.
@@ -254,14 +280,13 @@ public class ArrayToken extends Token {
 
     // Throw an exception if the argument is not an ArrayToken of the
     // same length.
-    private void _checkArgument(Token t)
-	    throws IllegalActionException {
-	if ( !(t instanceof ArrayToken)) {
+    private void _checkArgument(Token token) throws IllegalActionException {
+	if ( !(token instanceof ArrayToken)) {
 	    throw new IllegalActionException("The argument is not " +
-                    "an ArrayToken, its type was: " + t.getType() + ".");
+                    "an ArrayToken, its type was: " + token.getType() + ".");
 	}
 
-	int length = ((ArrayToken)t).length();
+	int length = ((ArrayToken)token).length();
 	if (_value.length != length) {
 	    throw new IllegalActionException("The argument is an " +
                     "ArrayToken of different length.");
