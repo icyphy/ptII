@@ -191,50 +191,53 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                 if (StaticResolution.traceLoading) 
                     System.out.println("ClassDecl.loadSource: Reading in user type : '" 
                             + fullName()); 
-
-                // First, make sure that the class is already loaded or that
-                // we can load the class. Otherwise,
-                // we will have problems if we later have to convert to a deep AST.
                 Class loadedClass = null;
-                try {
-                    loadedClass = Class.forName(fullName());
-                } catch (Exception exception) {}
-                if (loadedClass == null) {
-                    // Try to load the class.
-                    JavaClassLoader classLoader = new JavaClassLoader();
-                    if (StaticResolution.traceLoading) 
-                        System.out.println("loadSource: "
-                                + "trying to load class '" + fullName() + "'"
-                                + " with a JavaClassLoader");
+
+                if (StaticResolution.shallowLoading && 
+                        StaticResolution.enableShallowLoading) {
+                    // First, make sure that the class is already loaded or that
+                    // we can load the class. Otherwise,
+                    // we will have problems if we later have to convert to a deep AST.
                     try {
-                        loadedClass = classLoader.loadClass(fullName());
-                    } catch (ClassNotFoundException exception) {
-                        System.out.println("loadSource: could not load class");
+                        loadedClass = Class.forName(fullName());
+                    } catch (Exception exception) {}
+                    if (loadedClass == null) {
+                        // Try to load the class.
+                        JavaClassLoader classLoader = new JavaClassLoader();
+                        if (StaticResolution.traceLoading) 
+                            System.out.println("loadSource: "
+                                    + "trying to load class '" + fullName() + "'"
+                                    + " with a JavaClassLoader");
+                        try {
+                            loadedClass = classLoader.loadClass(fullName());
+                        } catch (ClassNotFoundException exception) {
+                            System.out.println("loadSource: could not load class");
+                        }
                     }
-                }
-                if (loadedClass != null)  {
-                    // Generate a shallow AST
-                    CompileUnitNode loadedAST = 
-                            ASTReflect.ASTCompileUnitNode(loadedClass);
-                    _source = NodeUtil.getDefinedType(loadedAST);
-                    if (loadedAST == null)
-                        throw new NullPointerException("ClassDecl.loadSource: "
-                                + "loaded AST for " + fullName() + " is null even " 
-                                + "though the corresponding class (" 
-                                + loadedClass.getClass().getName() 
-                                + ")was successfully loaded.");
-                    else {
-                        // Register the loaded class, and perform pass 0 resolution.
+                    if (loadedClass != null)  {
+                        // Generate a shallow AST
+                        CompileUnitNode loadedAST = 
+                                ASTReflect.ASTCompileUnitNode(loadedClass);
                         _source = NodeUtil.getDefinedType(loadedAST);
-                        loadedAST.setProperty(IDENT_KEY, fullName());
-                        JavaParserManip.allParsedMap.put(fullName(), loadedAST); 
-                        StaticResolution.loadCompileUnit(loadedAST, 0);
+                        if (loadedAST == null)
+                            throw new NullPointerException("ClassDecl.loadSource: "
+                                    + "loaded AST for " + fullName() + " is null even " 
+                                    + "though the corresponding class (" 
+                                    + loadedClass.getClass().getName() 
+                                    + ")was successfully loaded.");
+                        else {
+                            // Register the loaded class, and perform pass 0 resolution.
+                            _source = NodeUtil.getDefinedType(loadedAST);
+                            loadedAST.setProperty(IDENT_KEY, fullName());
+                            JavaParserManip.allParsedMap.put(fullName(), loadedAST); 
+                            StaticResolution.loadCompileUnit(loadedAST, 0);
+                        }
                     }
-                }
-                else {
+                }  // If shallow loading is enabled.
+                if (loadedClass == null) {
                     // We cannot hope to use reflection, so parse the Java source.
                     if (StaticResolution.traceLoading) 
-                        System.out.println("loadSource: calling loadFile "
+                    System.out.println("loadSource: calling loadFile "
                                 + "to perform a full AST load of " + fullName());
                     // openSource() might throw IOException if we can't
                     // get the canonical name of fileName.
@@ -246,11 +249,11 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                             " doesn't contain class or interface " +
                             fullName());
                 }
-            }
+            } // dealing with a user-defined class
             if (StaticResolution.traceLoading)
                 System.out.println("ClassDecl.loadSource: done reading in class " 
                         + fullName());
-        }
+        } // if (_source == null)
     }
 
     public ClassDecl getSuperClass() {
