@@ -52,6 +52,7 @@ JSRCS = \
 	CancelException.java \
 	CloseListener.java \
 	ComponentDialog.java \
+	GraphicalMessageHandler.java \
 	MessageHandler.java \
 	Query.java \
 	QueryListener.java \

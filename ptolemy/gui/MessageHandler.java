@@ -1,4 +1,4 @@
-/* Singleton class for displaying exceptions, warnings, and messages.
+/* Base class for displaying exceptions, warnings, and messages.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -41,71 +41,34 @@ import javax.swing.JTextArea;
 //////////////////////////////////////////////////////////////////////////
 //// MessageHandler
 /**
-This is a static class that is used to report errors.
-When an applet or application starts up, it should call setContext()
-to specify a component with respect to which the display window
-should be created.  This ensures that if the application is iconfied
-or deiconified, that the display window goes with it. If the context
-is not specified, then the display window is centered on the screen,
-but iconifying and deiconifying may not work as desired.
-<p>
-This class is based on (and contains code from) the diva GUIUtilities
-class.
+This is a class that is used to report errors.  It provides a 
+set of static methods that are called to report errors.  However, the 
+actual reporting of the errors is deferred to an instance of this class
+that is set using the setMessageHandler() method.  This base class
+implementation simply write the errors to System.err.
+When an applet or application starts up, it may wish to set a subclass
+of this class as the message handler, to allow a nicer way of 
+reporting errors.  For example, a swing application will probably
+want to report errors in a dialog box.
 
-@author  Edward A. Lee, Steve Neuendorffer, and John Reekie
+@author  Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
 public class MessageHandler {
 
-    // This constructor is private because the class is a singleton.
-    private MessageHandler() {
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a string that contains the original string, limited to the
-     *  given number of characters.  If the string is truncated, elipses
-     *  will be appended to the end of the string.
-     *  @param string The string to truncate.
-     *  @param length The length to which to truncate the string.
-     */
-    public static String ellipsis(String string, int length) {
-	if(string.length() > length) {
-	    return string.substring(0, length-3) + "...";
-	}
-	return string;
-    }
-
-    /** Show the specified error message.
+    /** Defer to the set message handler to show the specified 
+     *  error message.
      *  @param info The message.
      */
     public static void error(String info) {
-
-        // Sometimes you find that errors are reported multiple times.
-        // To find out who is calling this method, uncomment the following.
-        // System.out.println("------ reporting error:");
-        // (new Exception()).printStackTrace();
-
-        Object[] message = new Object[1];
-	String string = info;
-	message[0] = ellipsis(string, 400);
-
-        Object[] options = {"Dismiss"};
-
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Error",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                options,
-                options[0]);
+        _handler._error(info);
     }
-
-    /** Show the specified message and exception information.
+       
+    /** Defer to the set message handler to 
+     *  show the specified message and exception information.
      *  If the exception is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the exception
      *  is thrown.  The stack trace information is only shown if the
@@ -116,87 +79,33 @@ public class MessageHandler {
      *  @see CancelException
      */
     public static void error(String info, Exception exception) {
-        if (exception instanceof CancelException) return;
-
         // Sometimes you find that errors are reported multiple times.
         // To find out who is calling this method, uncomment the following.
         // System.out.println("------ reporting error:");
         // (new Exception()).printStackTrace();
 
-        Object[] message = new Object[1];
-	String string;
-	if(info != null) {
-	    string = info + "\n" + exception.getMessage();
-	} else {
-	    string = exception.getMessage();
-	}
-	message[0] = ellipsis(string, 400);
+        _handler._error(info, exception);
+    }
 
-        Object[] options = {"Dismiss", "Display Stack Trace"};
+    /** Return the message handler instance that is used by the static
+     *  methods in this class.
+     */
+    public static MessageHandler getMessageHandler() {
+        return _handler;
+    }
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Exception",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        if(selected == 1) {
-            showStackTrace(exception, info);
+    /** Set the message handler instance that is used by the static
+     *  methods in this class.  If the given handler is null, then 
+     *  do nothing.
+     */
+    public static void setMessageHandler(MessageHandler handler) {
+        if(handler != null) {
+            _handler = handler;
         }
     }
 
-    /** Set the component with respect to which the display window
-     *  should be created.  This ensures that if the application is
-     *  iconfied or deiconified, that the display window goes with it.
-     *  @param context The component context.
-     */
-    public static void setContext(Component context) {
-        _context = context;
-    }
-
-    /** Display a stack trace dialog. Eventually, the dialog should
-     *  be able to email us a bug report. The "info" argument is a
-     *  string printed at the top of the dialog instead of the Exception
-     *  message.
-     *  @param exception The exception.
-     *  @param info A message.
-     */
-    public static void showStackTrace(Exception exception, String info) {
-        // Show the stack trace in a scrollable text area.
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        exception.printStackTrace(pw);
-        JTextArea text = new JTextArea(sw.toString(), 60, 80);
-        JScrollPane stext = new JScrollPane(text);
-        stext.setPreferredSize(new Dimension(600, 300));
-        text.setCaretPosition(0);
-        text.setEditable(false);
-
-        // We want to stack the text area with another message
-        Object[] message = new Object[2];
-        String string;
-        if(info != null) {
-            string = info + "\n" + exception.getMessage();
-        } else {
-            string = exception.getMessage();
-        }
-        message[0] = ellipsis(string, 400);
-        message[1] = stext;
-
-        // Show the MODAL dialog
-        JOptionPane.showMessageDialog(
-                _context,
-                message,
-                "Stack trace",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    /** Show the specified message in a modal dialog.  If the user
+    /** Defer to the set message handler to 
+     *  show the specified message in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
@@ -205,24 +114,7 @@ public class MessageHandler {
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
     public static void warning(String info) throws CancelException {
-        Object[] message = new Object[1];
-        message[0] = info;
-        Object[] options = {"OK", "Cancel"};
-
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Warning",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        if(selected == 1) {
-            throw new CancelException();
-        }
+        _handler._warning(info);
     }
 
     /** Show the specified message and exception information
@@ -239,31 +131,67 @@ public class MessageHandler {
      */
     public static void warning(String info, Exception exception)
             throws CancelException {
-        Object[] message = new Object[1];
-        message[0] = info;
-        Object[] options = {"OK", "Display Stack Trace", "Cancel"};
+        _handler._warning(info, exception);
+    }
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Warning",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,
-                options,
-                options[0]);
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-        if(selected == 1) {
-            showStackTrace(exception, info);
-        } else if(selected == 2) {
-            throw new CancelException();
-        }
+    /** Show the specified error message.
+     *  @param info The message.
+     */
+    protected void _error(String info) {
+        System.err.println(info);
+    }
+
+    /** Show the specified message and exception information.
+     *  If the exception is an instance of CancelException, then it
+     *  is not shown.  By default, only the message of the exception
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
+     *
+     *  @param info The message.
+     *  @param exception The exception.
+     *  @see CancelException
+     */
+    protected void _error(String info, Exception exception) {
+        if (exception instanceof CancelException) return;
+        System.err.println(info);
+        exception.printStackTrace();
+    }
+
+    /** Show the specified message in a modal dialog.  If the user
+     *  clicks on the "Cancel" button, then throw an exception.
+     *  This gives the user the option of not continuing the
+     *  execution, something that is particularly useful if continuing
+     *  execution will result in repeated warnings.
+     *  @param info The message.
+     *  @exception CancelException If the user clicks on the "Cancel" button.
+     */
+    protected void _warning(String info) throws CancelException {
+        _error(info);
+    }
+
+    /** Show the specified message and exception information
+     *  in a modal dialog.  If the user
+     *  clicks on the "Cancel" button, then throw an exception.
+     *  This gives the user the option of not continuing the
+     *  execution, something that is particularly useful if continuing
+     *  execution will result in repeated warnings.
+     *  By default, only the message of the exception
+     *  is thrown.  The stack trace information is only shown if the
+     *  user clicks on the "Display Stack Trace" button.
+     *  @param info The message.
+     *  @exception CancelException If the user clicks on the "Cancel" button.
+     */
+    protected void _warning(String info, Exception exception)
+            throws CancelException {
+        _error(info, exception);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The context.
-    private static Component _context = null;
+    
+    // The message handler.
+    private static MessageHandler _handler = new MessageHandler();
 }
