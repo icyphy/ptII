@@ -94,7 +94,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'CompositeActorApplication$$StateReporter.class' \
+	'Configuration$$1.class' \
+	'Configuration$$2.class' \
 	'Configurer$$1.class' \
+	'DebugListenerTableau$$1.class' \
+	'DebugListenerTableau$$DebugListenerFrame.class' \
 	'ModelFrame$$FileMenuListener.class' \
 	'ModelFrame$$HelpMenuListener.class' \
 	'ModelPane$$1.class' \
@@ -103,7 +108,14 @@ OPTIONAL_FILES = \
 	'ModelPane$$4.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
 	'PtolemyApplet$$StopButtonListener.class' \
-	'PtolemyApplication$$1.class'
+	'PtolemyApplication$$1.class' \
+	'PtolemyEffigy$$Factory.class' \
+	'PtolemyQuery$$1.class' \
+	'PtolemyTop$$ViewMenuListener.class' \
+	'RunTableau$$Factory.class' \
+	'RunTableau$$RunFrame$$DebugMenuListener.class' \
+	'RunTableau$$RunFrame.class' \
+	'Tableau$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
