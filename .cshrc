@@ -75,7 +75,8 @@ endif
 # causes the LD_LIBRARY_PATH to be mis-set as far as THOR is concerned.
 # the following corrects for this.
 # if (! $?LD_LIBRARY_PATH) setenv LD_LIBRARY_PATH ""
-setenv LD_LIBRARY_PATH /usr/ccs/lib:/usr/lib:/usr/openwin/lib:/usr/sww/X11/lib:/usr/sww/sunos-X11R5/lib
+# /usr/local/lib needed for jv-scan, which generates complexity ratings
+setenv LD_LIBRARY_PATH /usr/ccs/lib:/usr/lib:/usr/openwin/lib:/usr/sww/X11/lib:/usr/sww/sunos-X11R5/lib:/usr/local/lib
 
 # cvs reads this variable to determine how to ssh
 setenv CVS_RSH ssh
