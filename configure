@@ -539,6 +539,11 @@ if test -z "$PTII"; then
 	if test -d "$PTOLEMY/tycho/java"; then
 	    echo "\$PTOLEMY/tycho/java exists, setting PTII to that value"
 	    PTII="$PTOLEMY/tycho/java"
+	    # We should not have to call AC_PREFIX_DEFAULT($PTII) here
+	    # but autoconf shuffles things around, so the call to
+	    # AC_PREFIX_DEFAULT($PTII) that is 15 or so lines below
+	    # actually appears at the top of configure.
+	    ac_default_prefix=$PTII
 	else
 	    exit 3
 	fi    
@@ -589,7 +594,7 @@ so we search for the java compiler." 1>&2
     # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:593: checking for $ac_word" >&5
+echo "configure:598: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVAC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -658,15 +663,15 @@ fi
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
 echo $ac_n "checking for the java runtime in $PTJAVA_DIR/bin""... $ac_c" 1>&6
-echo "configure:662: checking for the java runtime in $PTJAVA_DIR/bin" >&5
+echo "configure:667: checking for the java runtime in $PTJAVA_DIR/bin" >&5
 if test -f $PTJAVA_DIR/bin/java; then
     echo "$ac_t""$PTJAVA_DIR/bin/java" 1>&6
     echo $ac_n "checking that you have the right java in your path.""... $ac_c" 1>&6
-echo "configure:666: checking that you have the right java in your path." >&5
+echo "configure:671: checking that you have the right java in your path." >&5
     # Extract the first word of "java", so it can be a program name with args.
 set dummy java; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:670: checking for $ac_word" >&5
+echo "configure:675: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVA'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -712,15 +717,15 @@ fi
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
 echo $ac_n "checking for the java compiler in $PTJAVA_DIR/bin""... $ac_c" 1>&6
-echo "configure:716: checking for the java compiler in $PTJAVA_DIR/bin" >&5
+echo "configure:721: checking for the java compiler in $PTJAVA_DIR/bin" >&5
 if test -f $PTJAVA_DIR/bin/javac; then
     echo "$ac_t""$PTJAVA_DIR/bin/javac" 1>&6
     echo $ac_n "checking that you have the right javac in your path.""... $ac_c" 1>&6
-echo "configure:720: checking that you have the right javac in your path." >&5
+echo "configure:725: checking that you have the right javac in your path." >&5
     # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:724: checking for $ac_word" >&5
+echo "configure:729: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVAC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -766,7 +771,7 @@ fi
 #	Figure out whether to use javac -Xdepend or javac -depend
 #--------------------------------------------------------------------
 echo $ac_n "checking the Java compiler with a simple compile""... $ac_c" 1>&6
-echo "configure:770: checking the Java compiler with a simple compile" >&5
+echo "configure:775: checking the Java compiler with a simple compile" >&5
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
@@ -776,7 +781,7 @@ if $JAVAC confTest.java ; then
     echo "$ac_t""ok" 1>&6
 
     echo $ac_n "checking the value of the java.version Property ""... $ac_c" 1>&6
-echo "configure:780: checking the value of the java.version Property " >&5
+echo "configure:785: checking the value of the java.version Property " >&5
     # Strip out the JDK1.3beta messages under Solaris2.5.1
     JVERSION=`CLASSPATH=$PTII/config $JAVA confTest | 
 	grep -v "Warning! The libthread.so on your system is an older version than" |
@@ -786,14 +791,14 @@ echo "configure:780: checking the value of the java.version Property " >&5
 
     JDEPENDFLAG="-Xdepend"
     echo $ac_n "checking javac $JDEPENDFLAG""... $ac_c" 1>&6
-echo "configure:790: checking javac $JDEPENDFLAG" >&5
+echo "configure:795: checking javac $JDEPENDFLAG" >&5
     if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
 	echo "$ac_t""yes" 1>&6
     else
 	echo "$ac_t""no" 1>&6
 	JDEPENDFLAG="-depend"
 	echo $ac_n "checking javac $JDEPENDFLAG""... $ac_c" 1>&6
-echo "configure:797: checking javac $JDEPENDFLAG" >&5
+echo "configure:802: checking javac $JDEPENDFLAG" >&5
 	if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
 	    echo "$ac_t""yes" 1>&6
 	else
@@ -820,7 +825,7 @@ cd $startdir
 #	So much for write once, run everywhere.
 #--------------------------------------------------------------------
 echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
-echo "configure:824: checking for the proper CLASSPATH separator" >&5
+echo "configure:829: checking for the proper CLASSPATH separator" >&5
 case "`uname -s`" in
     CYGWIN_NT-4.0) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
@@ -842,7 +847,7 @@ find JavaCC" 1>&6
     JJTREE=jjtree
 else
     echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:846: checking for JavaCC" >&5
+echo "configure:851: checking for JavaCC" >&5
     # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
@@ -863,7 +868,7 @@ so we search for the jjtree command." 1>&2
 	    # Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:867: checking for $ac_word" >&5
+echo "configure:872: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -902,7 +907,7 @@ fi
 	if test -d "$JAVACC_DIR"; then
 	    echo "$ac_t""$JAVACC_DIR" 1>&6
 	    echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:906: checking for jjtree" >&5
+echo "configure:911: checking for jjtree" >&5
 	    if test -x "$JAVACC_DIR/bin/jjtree"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JJTREE='$(JAVACC_DIR)/bin/jjtree'
@@ -911,7 +916,7 @@ echo "configure:906: checking for jjtree" >&5
 		echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
 	    fi    
 	    echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:915: checking for javacc" >&5
+echo "configure:920: checking for javacc" >&5
 	    if test -x "$JAVACC_DIR/bin/javacc"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JAVACC='$(JAVACC_DIR)/bin/javacc'
@@ -945,7 +950,7 @@ find JavaSound" 1>&6
     JAVASOUND_LIBDIR=$PTII/vendors/sun/javasound/lib
 else
     echo $ac_n "checking for JavaSound""... $ac_c" 1>&6
-echo "configure:949: checking for JavaSound" >&5
+echo "configure:954: checking for JavaSound" >&5
     # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
@@ -991,7 +996,7 @@ if test ! -d "$PTII/util/testsuite"; then
 find Jacl" 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
-echo "configure:995: checking for ptjacl.jar" >&5
+echo "configure:1000: checking for ptjacl.jar" >&5
     # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
 if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
@@ -1004,7 +1009,7 @@ fi
     if test -f "$PTJACL_JAR"; then
 	echo "$ac_t""$PTJACL_JAR" 1>&6
 	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
-echo "configure:1008: checking for how to run jacl" >&5
+echo "configure:1013: checking for how to run jacl" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
