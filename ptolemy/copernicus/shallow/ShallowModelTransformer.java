@@ -103,6 +103,92 @@ public class ShallowModelTransformer extends SceneTransformer {
         return new ShallowModelTransformer(model);
     }
 
+    // Create and set attributes.
+    public static void createFieldsForAttributes(JimpleBody body,
+            NamedObj context,
+            Local contextLocal, NamedObj namedObj, Local namedObjLocal,
+            SootClass theClass, HashSet createdSet) {
+        // A local that we will use to set the value of our
+        // settable attributes.
+        Local attributeLocal = Jimple.v().newLocal("attribute",
+                PtolemyUtilities.attributeType);
+        body.getLocals().add(attributeLocal);
+	Local settableLocal = Jimple.v().newLocal("settable",
+                PtolemyUtilities.settableType);
+	body.getLocals().add(settableLocal);
+
+        for(Iterator attributes = namedObj.attributeList().iterator();
+	    attributes.hasNext();) {
+	    Attribute attribute = (Attribute)attributes.next();
+
+            // FIXME: This is horrible...  I guess we need an attribute for
+            // persistance?
+            if(attribute instanceof Variable &&
+                    !(attribute instanceof Parameter)) {
+                continue;
+            }
+
+            String className = attribute.getClass().getName();
+            Type attributeType = RefType.v(className);
+            String attributeName = attribute.getName(context);
+            String fieldName = getFieldNameForAttribute(attribute, context);
+
+            Local local;
+            if(createdSet.contains(attribute.getFullName())) {
+                // If the class for the object already creates the
+                // attribute, then get a reference to the existing attribute.
+                local = attributeLocal;
+                body.getUnits().add(Jimple.v().newAssignStmt(attributeLocal,
+                        Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                PtolemyUtilities.getAttributeMethod,
+                                StringConstant.v(attributeName))));
+            } else {
+                // If the class does not create the attribute,
+                // then create a new attribute with the right name.
+                local = PtolemyUtilities.createNamedObjAndLocal(
+                        body, className,
+                        namedObjLocal, attribute.getName());
+                Attribute classAttribute =
+                    (Attribute)_findDeferredInstance(attribute);
+                _updateCreatedSet(namedObj.getFullName()
+                        + "." + attribute.getName(),
+                        classAttribute, classAttribute, createdSet);
+            }
+
+            // Create a new field for the attribute, and initialize
+            // it to the the attribute above.
+	    SootUtilities.createAndSetFieldFromLocal(body, local,
+                    theClass, attributeType, fieldName);
+            // If the attribute is settable, then set its
+            // expression.
+	    if(attribute instanceof Settable) {
+		// cast to Settable.
+		body.getUnits().add(Jimple.v().newAssignStmt(
+                        settableLocal,
+                        Jimple.v().newCastExpr(
+                                local,
+                                PtolemyUtilities.settableType)));
+                String expression = ((Settable)attribute).getExpression();
+
+		// call setExpression.
+		body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newInterfaceInvokeExpr(
+                                settableLocal,
+                                PtolemyUtilities.setExpressionMethod,
+                                StringConstant.v(expression))));
+                // call validate to ensure that attributeChanged is called.
+                body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newInterfaceInvokeExpr(
+                                settableLocal,
+                                PtolemyUtilities.validateMethod)));
+	    }
+            // FIXME: configurable??
+            // recurse so that we get all parameters deeply.
+            createFieldsForAttributes(body, context, contextLocal,
+                    attribute, local, theClass, createdSet);
+	}
+    }
+
     public String getDefaultOptions() {
         return "";
     }
@@ -114,7 +200,8 @@ public class ShallowModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForEntity(Entity entity, NamedObj context) {
+    public static String getFieldNameForEntity(Entity entity,
+            NamedObj context) {
         return "E" + SootUtilities.sanitizeName(entity.getName(context));
     }
 
@@ -128,14 +215,16 @@ public class ShallowModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForAttribute(Attribute attribute, NamedObj context) {
+    public static String getFieldNameForAttribute(Attribute attribute,
+            NamedObj context) {
         return "A" + SootUtilities.sanitizeName(attribute.getName(context));
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForRelation(Relation relation, NamedObj context) {
+    public static String getFieldNameForRelation(Relation relation,
+            NamedObj context) {
         return "R" + SootUtilities.sanitizeName(relation.getName(context));
     }
 
@@ -150,6 +239,9 @@ public class ShallowModelTransformer extends SceneTransformer {
             + "_" + SootUtilities.sanitizeName(type.toString());
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ShallowModelTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
@@ -159,7 +251,8 @@ public class ShallowModelTransformer extends SceneTransformer {
             + ".CG" + SootUtilities.sanitizeName(_model.getName());
 
         EntitySootClass modelClass =
-            new EntitySootClass(PtolemyUtilities.compositeActorClass, modelClassName,
+            new EntitySootClass(PtolemyUtilities.compositeActorClass,
+                    modelClassName,
                     Modifier.PUBLIC);
         Scene.v().addClass(modelClass);
         modelClass.setApplicationClass();
@@ -179,7 +272,8 @@ public class ShallowModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, thisLocal, _model, modelClass, new HashSet());
+        _composite(body, thisLocal, _model, thisLocal,
+                _model, modelClass, new HashSet());
 
         units.add(Jimple.v().newReturnVoidStmt());
 
@@ -242,98 +336,15 @@ public class ShallowModelTransformer extends SceneTransformer {
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass, createdSet);
-        _ports(body, containerLocal, container, thisLocal, composite, modelClass, createdSet);
-        _entities(body, containerLocal, container, thisLocal, composite, modelClass, createdSet);
+        _ports(body, containerLocal, container,
+                thisLocal, composite, modelClass, createdSet);
+        _entities(body, containerLocal, container,
+                thisLocal, composite, modelClass, createdSet);
 
         // handle the communication
         _relations(body, thisLocal, composite);
         _links(body, composite);
         _linksOnPortsContainedByContainedEntities(body, composite);
-    }
-
-    // Create and set attributes.
-    public static void createFieldsForAttributes(JimpleBody body,
-            NamedObj context,
-            Local contextLocal, NamedObj namedObj, Local namedObjLocal,
-            SootClass theClass, HashSet createdSet) {
-        // A local that we will use to set the value of our
-        // settable attributes.
-        Local attributeLocal = Jimple.v().newLocal("attribute",
-                PtolemyUtilities.attributeType);
-        body.getLocals().add(attributeLocal);
-	Local settableLocal = Jimple.v().newLocal("settable",
-                PtolemyUtilities.settableType);
-	body.getLocals().add(settableLocal);
-
-        for(Iterator attributes = namedObj.attributeList().iterator();
-	    attributes.hasNext();) {
-	    Attribute attribute = (Attribute)attributes.next();
-
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistance?
-            if(attribute instanceof Variable &&
-                    !(attribute instanceof Parameter)) {
-                continue;
-            }
-
-            String className = attribute.getClass().getName();
-            Type attributeType = RefType.v(className);
-            String attributeName = attribute.getName(context);
-            String fieldName = getFieldNameForAttribute(attribute, context);
-
-            Local local;
-            if(createdSet.contains(attribute.getFullName())) {
-                // If the class for the object already creates the
-                // attribute, then get a reference to the existing attribute.
-                local = attributeLocal;
-                body.getUnits().add(Jimple.v().newAssignStmt(attributeLocal,
-                        Jimple.v().newVirtualInvokeExpr(contextLocal,
-                                PtolemyUtilities.getAttributeMethod,
-                                StringConstant.v(attributeName))));
-            } else {
-                // If the class does not create the attribute,
-                // then create a new attribute with the right name.
-                local = PtolemyUtilities.createNamedObjAndLocal(
-                        body, className,
-                        namedObjLocal, attribute.getName());
-                Attribute classAttribute =
-                    (Attribute)_findDeferredInstance(attribute);
-                _updateCreatedSet(namedObj.getFullName() + "." + attribute.getName(),
-                        classAttribute, classAttribute, createdSet);
-            }
-
-            // Create a new field for the attribute, and initialize
-            // it to the the attribute above.
-	    SootUtilities.createAndSetFieldFromLocal(body, local,
-                    theClass, attributeType, fieldName);
-            // If the attribute is settable, then set its
-            // expression.
-	    if(attribute instanceof Settable) {
-		// cast to Settable.
-		body.getUnits().add(Jimple.v().newAssignStmt(
-                        settableLocal,
-                        Jimple.v().newCastExpr(
-                                local,
-                                PtolemyUtilities.settableType)));
-                String expression = ((Settable)attribute).getExpression();
-
-		// call setExpression.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.setExpressionMethod,
-                                StringConstant.v(expression))));
-                // call validate to ensure that attributeChanged is called.
-                body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.validateMethod)));
-	    }
-            // FIXME: configurable??
-            // recurse so that we get all parameters deeply.
-            createFieldsForAttributes(body, context, contextLocal,
-                    attribute, local, theClass, createdSet);
-	}
     }
 
     // Create and set entities.
@@ -447,20 +458,20 @@ public class ShallowModelTransformer extends SceneTransformer {
                 _updateCreatedSet(entity.getFullName() + "." + port.getName(),
                         classPort, classPort, createdSet);
                 if(port instanceof TypedIOPort) {
-                    TypedIOPort ioport = (TypedIOPort)port;
-                    if(ioport.isInput()) {
+                    TypedIOPort ioPort = (TypedIOPort)port;
+                    if(ioPort.isInput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,
                                         PtolemyUtilities.setInputMethod,
                                         IntConstant.v(1))));
                     }
-                    if(ioport.isOutput()) {
+                    if(ioPort.isOutput()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,
                                         PtolemyUtilities.setOutputMethod,
                                         IntConstant.v(1))));
                     }
-                    if(ioport.isMultiport()) {
+                    if(ioPort.isMultiport()) {
                         body.getUnits().add(Jimple.v().newInvokeStmt(
                                 Jimple.v().newVirtualInvokeExpr(local,
                                         PtolemyUtilities.setMultiportMethod,
@@ -613,8 +624,8 @@ public class ShallowModelTransformer extends SceneTransformer {
      *  the given object defers to.
      */
     // FIXME: duplicate with MoMLWriter.
-    public static NamedObj _findDeferredInstance(NamedObj object) {
-        // System.out.println("findDeferred =" + object.getFullName());
+    private static NamedObj _findDeferredInstance(NamedObj object) {
+        // System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
         NamedObj.MoMLInfo info = object.getMoMLInfo();
         if(info.deferTo != null) {
@@ -687,7 +698,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                     // It really would be nice if all of
                     // our actors had workspace constructors,
                     // but version 1.0 only specified the
-                    // (container,name) constructor, and
+                    // (container, name) constructor, and
                     // now we're stuck with it.
                     String source = "<entity name=\"parsedClone\""
                         + "class=\"ptolemy.kernel.CompositeEntity\">\n"
@@ -723,7 +734,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                 }
             }
             catch (Exception ex) {
-                System.err.println("Exception occured during parsing:\n");
+                System.err.println("Exception occurred during parsing:\n");
                 ex.printStackTrace();
                 deferredObject = null;
             }
@@ -758,7 +769,7 @@ public class ShallowModelTransformer extends SceneTransformer {
             }
         }
         if(object instanceof Entity) {
-            Entity entity= (Entity) object;
+            Entity entity = (Entity) object;
             for(Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();
@@ -776,16 +787,16 @@ public class ShallowModelTransformer extends SceneTransformer {
     ////                         private variables                 ////
 
     // Map from Ports to Locals.
-    public Map _portLocalMap;
+    private Map _portLocalMap;
 
     // Map from Entitys to Locals.
-    public Map _entityLocalMap;
+    private Map _entityLocalMap;
 
     // Map from Relations to Locals.
-    public Map _relationLocalMap;
+    private Map _relationLocalMap;
 
     // The model we are generating code for.
-    public CompositeActor _model;
+    private CompositeActor _model;
 
     private static Object[] _reflectionArguments = new Object[1];
     private static Workspace _reflectionWorkspace = new Workspace();
