@@ -47,11 +47,12 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
-
+import ptolemy.domains.de.kernel.DEDirector;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.IOException;
 import java.io.Writer;
+import java.io.StringWriter;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
@@ -88,7 +89,7 @@ public class MobileModel extends TypedCompositeActor {
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(defaultValue);
-        new Director(this, "director");
+        new DEDirector(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
     }
 
@@ -112,7 +113,7 @@ public class MobileModel extends TypedCompositeActor {
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(defaultValue);
-        new Director(this, "director");
+        new DEDirector(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
     }
 
@@ -201,7 +202,7 @@ public class MobileModel extends TypedCompositeActor {
         try {
             _parser = new MoMLParser();
             _parser.setMoMLFilters(BackwardCompatibility.allFilters());
-            _parser.addMoMLFilter(new RemoveGraphicalClasses());
+            //     _parser.addMoMLFilter(new RemoveGraphicalClasses());
 
             // When no model applied, output the default value.
             Const constActor = new Const(this, "Const");
@@ -244,15 +245,23 @@ public class MobileModel extends TypedCompositeActor {
             // is because when I tried to group them in one, I got a
             // parser error...
 
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,            // originator
-                    this,          // context
-                    _model.exportMoML(), // MoML code
-                    null);
-            requestChange(request);
+ //            MoMLChangeRequest request = new MoMLChangeRequest(
+//                     this,            // originator
+//                     this,          // context
+//                     _model.exportMoML(), // MoML code
+//                     null);
+//             requestChange(request);
+
             //connect the model.
-            String moml = "<group>\n"
-                    + "<relation name=\"newR1\" "
+            StringWriter writer = new StringWriter();
+            try {
+                _model.exportMoML(writer, 1);
+            } catch (Exception ex) {
+                // FIXME: don't ignore?
+            }
+
+            String modelMoML =  writer.toString();
+            String moml = "<group>\n" + modelMoML + "<relation name=\"newR1\" "
                     + "class=\"ptolemy.actor.TypedIORelation\">\n"
                     + "</relation>\n"
                     + "<relation name=\"newR2\" "
@@ -265,6 +274,7 @@ public class MobileModel extends TypedCompositeActor {
                     + ".output\" relation=\"newR2\"/>\n"
                     + "<link port=\"output\" relation=\"newR2\"/>\n"
                     + "</group>";
+            System.out.println("moml = " + moml);
             MoMLChangeRequest request2 = new MoMLChangeRequest(
                     this,            // originator
                     this,          // context
@@ -287,7 +297,7 @@ public class MobileModel extends TypedCompositeActor {
             _debug("Invoking prefire");
         }
         if (input.hasToken(0) || modelString.hasToken(0)) {
-            return true;
+            return super.prefire();
         }
         return false;
     }
