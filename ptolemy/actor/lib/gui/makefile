@@ -81,11 +81,26 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'MatrixViewer$$MatrixAsTable.class' \
+	'ArrowKeySensor$$1.class' \
+	'ArrowKeySensor$$2.class' \
+	'ArrowKeySensor$$3.class' \
+	'ArrowKeySensor$$4.class' \
+	'ArrowKeySensor$$5.class' \
+	'ArrowKeySensor$$6.class' \
+	'ArrowKeySensor$$7.class' \
+	'ArrowKeySensor$$8.class' \
+	'ArrowKeySensor$$MyFrame.class' \
 	'Display$$1.class' \
+	'Display$$DisplayWindow.class' \
+	'Display$$DisplayWindowTableau.class' \
 	'HistogramPlotter$$1.class' \
 	'MatrixViewer$$1.class' \
+	'MatrixViewer$$DisplayWindow.class' \
+	'MatrixViewer$$MatrixAsTable.class' \
 	'Plotter$$1.class' \
+	'PlotterBase$$1.class' \
+	'PlotterBase$$PlotWindowTableau.class' \
+	'PlotterBase$$PlotterPlotFrame.class
 	'SliderSource$$1.class' \
 	'SketchedSource$$1.class'
 
