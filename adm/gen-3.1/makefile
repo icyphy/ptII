@@ -1086,7 +1086,7 @@ $(REMOTE4PTIIDIST): $(PTII_FULL)
 	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL))
 	@echo "Creating  vendors/jode"
 	(cd $(PTIIHOME); $(TAR) -cf - vendors/jode) | \
-		(cd $(REMOTE4HOME); $(TAR) -xf -)
+		(cd $(REMOTE4PTIIDIST); $(TAR) -xf -)
 
 remote4configure:
 	@echo "#"
