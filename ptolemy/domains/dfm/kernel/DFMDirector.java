@@ -55,7 +55,7 @@ domain.  Since DFM operates generally like timed-PN, except : <p>
   advanced/not advanced accordingly.
 <p> 
 @author William Wu (wbwu@eecs.berkeley.edu)
-@version: $id$ 
+@version: $Id$ 
 @date: 12/3/98
 */
 
