@@ -88,7 +88,7 @@ public class RealTimeDelay extends Transformer {
      *  each channel. If the width of the input port is less than
      *  that of the output port, the tokens in the extra channels
      *  are lost.
-     *  @exception IllegalActionException Never thrown.
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public void fire() throws IllegalActionException {
         _transferTokens();
