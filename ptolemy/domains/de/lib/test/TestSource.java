@@ -31,12 +31,13 @@ package ptolemy.domains.de.lib.test;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /**
    This actor fires itself five times at each time instant,
@@ -51,13 +52,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class TestSource extends TypedAtomicActor {
 
-    public TestSource(TypedCompositeActor container, String name)
+    public TestSource(Workspace workspace) {
+        super(workspace);
+    }
+
+    public TestSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
+
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 
     public TypedIOPort input;
