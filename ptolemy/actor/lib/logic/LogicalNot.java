@@ -1,4 +1,4 @@
-/* A polymorphic logical NOT operator.
+/* A logical NOT operator.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal.eecs.berkeley.edu)
-@AcceptedRating Red (johnli.eecs.berkeley.edu)
+@ProposedRating Green (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Red (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -71,13 +71,13 @@ public class LogicalNot extends Transformer {
     ////                         public methods                    ////
 
 
-    /** Consume at most one token from the input, negate it, and send
+    /** Consume exactly one token from the input, negate it, and send
      *  it to the output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 	if(input.hasToken(0)) {
-            output.broadcast(((BooleanToken)input.get(0)).not());
+            output.send(0,((BooleanToken)input.get(0)).not());
         }
     }
 }
