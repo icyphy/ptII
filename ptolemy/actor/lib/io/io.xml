@@ -57,10 +57,6 @@
         <doc>Write one token per line to a text file as an expression</doc>
       </entity>
 
-      <entity name="KeystrokeSensor" class="ptolemy.actor.lib.gui.KeystrokeSensor">
-        <doc>Create a JFrame for sensing Copy and Paste keystrokes</doc>
-      </entity>
-
       <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
         <doc>Read one line at a time from a text file and output as a string</doc>
       </entity>
