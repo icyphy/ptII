@@ -241,483 +241,6 @@ public class PortConfigurerDialog extends PtolemyDialog
         setVisible(true);
     }
 
-    // The table model for the table.
-    class PortTableModel extends AbstractTableModel {
-        // Populates the _ports Vector. Each element of _ports is a
-        // Hashtable that represents a Port on the Entity that is
-        // having its ports configured.  If the Port exists on the
-        // Entity, a reference to it is stored in the Hashtable with
-        // key = ColumnNames.COL_ACTUAL_PORT.
-        public PortTableModel(List portList) {
-            Iterator ports = portList.iterator();
-            _ports = new Vector();
-
-            while (ports.hasNext()) {
-                Port p = (Port) ports.next();
-                Hashtable portInfo = new Hashtable();
-
-                if (_columnNames.contains(ColumnNames.COL_NAME)) {
-                    portInfo.put(ColumnNames.COL_NAME, p.getName());
-                }
-
-                if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
-                    String _direction;
-                    StringAttribute _cardinal = (StringAttribute) (p
-                            .getAttribute("_cardinal"));
-
-                    if (_cardinal != null) {
-                        _direction = _cardinal.getExpression().toUpperCase();
-                    } else {
-                        _direction = "DEFAULT";
-                    }
-
-                    portInfo.put(ColumnNames.COL_DIRECTION, _direction);
-                }
-
-                if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
-                    boolean isShowSet = _isPropertySet(p, "_showName");
-
-                    if (isShowSet) {
-                        portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.TRUE);
-                    } else {
-                        portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.FALSE);
-                    }
-                }
-
-                if (_columnNames.contains(ColumnNames.COL_HIDE)) {
-                    boolean isHideSet = _isPropertySet(p, "_hide");
-
-                    if (isHideSet) {
-                        portInfo.put(ColumnNames.COL_HIDE, Boolean.TRUE);
-                    } else {
-                        portInfo.put(ColumnNames.COL_HIDE, Boolean.FALSE);
-                    }
-                }
-
-                if (p instanceof IOPort) {
-                    IOPort iop = (IOPort) p;
-
-                    if (_columnNames.contains(ColumnNames.COL_INPUT)) {
-                        portInfo.put(ColumnNames.COL_INPUT,
-                                Boolean.valueOf(iop.isInput()));
-                    }
-
-                    if (_columnNames.contains(ColumnNames.COL_OUTPUT)) {
-                        portInfo.put(ColumnNames.COL_OUTPUT,
-                                Boolean.valueOf(iop.isOutput()));
-                    }
-
-                    if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
-                        portInfo.put(ColumnNames.COL_MULTIPORT,
-                                Boolean.valueOf(iop.isMultiport()));
-                    }
-                }
-
-                if (p instanceof TypedIOPort) {
-                    TypedIOPort tiop = (TypedIOPort) p;
-
-                    if (_columnNames.contains(ColumnNames.COL_TYPE)) {
-                        TypeAttribute _type = (TypeAttribute) (tiop
-                                .getAttribute("_type"));
-
-                        if (_type != null) {
-                            portInfo.put(ColumnNames.COL_TYPE,
-                                    _type.getExpression());
-                        } else {
-                            portInfo.put(ColumnNames.COL_TYPE, "");
-                        }
-                    }
-                }
-
-                if (_columnNames.contains(ColumnNames.COL_UNITS)) {
-                    String units = "";
-                    UnitAttribute _unitsAttribute = (UnitAttribute) p
-                        .getAttribute("_units");
-
-                    if (_unitsAttribute != null) {
-                        units = _unitsAttribute.getExpression();
-
-                        if (units != null) {
-                            portInfo.put(ColumnNames.COL_UNITS, units);
-                        } else {
-                            portInfo.put(ColumnNames.COL_UNITS, "");
-                        }
-                    } else {
-                        // Set units to "" anyways.  If the user
-                        // doesn't change the value, nothing will be
-                        // added to the MoMLChangeRequest for units in
-                        // _apply().
-                        portInfo.put(ColumnNames.COL_UNITS, "");
-                    }
-                }
-
-                portInfo.put(ColumnNames.COL_ACTUAL_PORT, p);
-
-                _ports.add(portInfo);
-            }
-        }
-
-        /**
-         * Add a port The new port gets added with a name of "". It is
-         * assumed that the user will change this to the real name at
-         * some point.
-         */
-        public void addNewPort() {
-            Hashtable portInfo = new Hashtable();
-
-            if (_columnNames.contains(ColumnNames.COL_NAME)) {
-                portInfo.put(ColumnNames.COL_NAME, "");
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
-                portInfo.put(ColumnNames.COL_DIRECTION, "DEFAULT");
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
-                portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.FALSE);
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_HIDE)) {
-                portInfo.put(ColumnNames.COL_HIDE, Boolean.FALSE);
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_INPUT)) {
-                portInfo.put(ColumnNames.COL_INPUT, Boolean.FALSE);
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_OUTPUT)) {
-                portInfo.put(ColumnNames.COL_OUTPUT, Boolean.FALSE);
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
-                portInfo.put(ColumnNames.COL_MULTIPORT, Boolean.FALSE);
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_TYPE)) {
-                portInfo.put(ColumnNames.COL_TYPE, "");
-            }
-
-            if (_columnNames.contains(ColumnNames.COL_UNITS)) {
-                portInfo.put(ColumnNames.COL_UNITS, "");
-            }
-
-            _ports.add(portInfo);
-
-            // Now tell the GUI so that it can update itself.
-            fireTableRowsInserted(getRowCount(), getRowCount());
-        }
-
-        /**
-         * Removes a port.
-         */
-        public void removePort() {
-            // First remove it from the _ports, and then tell the GUI
-            // that it is gone so that it can update itself.
-            _ports.remove(_selectedRow);
-            fireTableRowsDeleted(_selectedRow, _selectedRow);
-            _enableApplyButton(true);
-            _setDirty(true);
-        }
-
-        /**
-         * Get the number of columns.
-         *
-         * @see javax.swing.table.TableModel#getColumnCount()
-         */
-        public int getColumnCount() {
-            return _columnNames.size();
-        }
-
-        /**
-         * Get the number of rows.
-         *
-         * @see javax.swing.table.TableModel#getRowCount()
-         */
-        public int getRowCount() {
-            return _ports.size();
-        }
-
-        /**
-         * Get the column header name.
-         *
-         * @see javax.swing.table.TableModel#getColumnName(int)
-         */
-        public String getColumnName(int col) {
-            return (String) _columnNames.get(col);
-        }
-
-        /**
-         * Get the value at a particular row and column.
-         *
-         * @param row
-         * @param col
-         * @see javax.swing.table.TableModel#getValueAt(int, int)
-         */
-        public Object getValueAt(int row, int col) {
-            Hashtable portInfo = (Hashtable) _ports.elementAt(row);
-            return portInfo.get(getColumnName(col));
-        }
-
-        /**
-         * Set the value at a particular row and column.
-         *
-         * @param row
-         * @param col
-         * @return value
-         * @see javax.swing.table.TableModel#setValueAt(Object, int, int)
-         */
-        public void setValueAt(Object value, int row, int col) {
-            Hashtable portInfo = (Hashtable) _ports.elementAt(row);
-            portInfo.put(getColumnName(col), value);
-            _enableApplyButton(true);
-            _setDirty(true);
-        }
-
-        /**
-         * Get the Java Class associated with a column param column.
-         *
-         * @return class
-         * @see javax.swing.table.TableModel#getColumnClass(int)
-         */
-        public Class getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
-
-        /**
-         * Is a cell editable
-         *
-         * @param row
-         * @param col
-         * @return true if editable
-         * @see javax.swing.table.TableModel#isCellEditable(int, int)
-         */
-        public boolean isCellEditable(int row, int col) {
-            Hashtable portInfo = (Hashtable) (_ports.elementAt(row));
-            Port port = (Port) portInfo.get(ColumnNames.COL_ACTUAL_PORT);
-
-            if (port != null) {
-                if (port.getDerivedLevel() < Integer.MAX_VALUE) {
-                    if ((col == _columnNames.indexOf(ColumnNames.COL_NAME))
-                            || (col == _columnNames.indexOf(
-                                        ColumnNames.COL_INPUT))
-                            || (col == _columnNames.indexOf(
-                                        ColumnNames.COL_OUTPUT))
-                            || (col == _columnNames.indexOf(
-                                        ColumnNames.COL_MULTIPORT))) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        /**
-         * Make the "Show Name" column values be either all true or
-         * all false.
-         */
-        public void toggleShowAllNames() {
-            _showAllNames = !_showAllNames;
-
-            Boolean show = new Boolean(_showAllNames);
-
-            for (int i = 0; i < getRowCount(); i++) {
-                setValueAt(show, i,
-                        _columnNames.indexOf(ColumnNames.COL_SHOW_NAME));
-            }
-        }
-
-        /**
-         * Make the "Hide" column values be either all true or
-         * all false.
-         */
-        public void toggleHidePorts() {
-            _hideAllPorts = !_hideAllPorts;
-
-            Boolean _hide = new Boolean(_hideAllPorts);
-
-            for (int i = 0; i < getRowCount(); i++) {
-                setValueAt(_hide, i, _columnNames.indexOf(ColumnNames.COL_HIDE));
-            }
-        }
-    }
-
-    // Strings that are available for the column names.
-    private static class ColumnNames {
-        public final static String COL_NAME = "Name";
-        public final static String COL_INPUT = "Input";
-        public final static String COL_OUTPUT = "Output";
-        public final static String COL_MULTIPORT = "Multiport";
-        public final static String COL_TYPE = "Type";
-        public final static String COL_DIRECTION = "Direction";
-        public final static String COL_SHOW_NAME = "Show Name";
-        public final static String COL_HIDE = "Hide";
-        public final static String COL_UNITS = "Units";
-        public final static String COL_ACTUAL_PORT = "9";
-    }
-
-    // TableCellRenderer for _portTable
-    // see _setupTableModel()
-    class PortBooleanCellRenderer extends JCheckBox implements TableCellRenderer {
-        public PortBooleanCellRenderer() {
-            super();
-        }
-
-        public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-            if (value == Boolean.TRUE) {
-                setSelected(true);
-            } else {
-                setSelected(false);
-            }
-
-            setHorizontalAlignment(SwingConstants.CENTER);
-
-            if (!table.isCellEditable(row, col)) {
-                setBackground(LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
-            } else {
-                setBackground(Color.white);
-            }
-
-            return this;
-        }
-    }
-
-    /**
-     * Default renderer for _portTable
-     *
-     * see _setupTableModel()
-     */
-    class StringCellRenderer extends JLabel implements TableCellRenderer {
-        public StringCellRenderer() {
-            super();
-        }
-
-        public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-            setOpaque(true);
-            setText((String) value);
-
-            if (!table.isCellEditable(row, col)) {
-                setBackground(LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
-            } else {
-                setBackground(Color.white);
-            }
-
-            return this;
-        }
-    }
-
-    abstract class CellValidator {
-        String _message = null;
-
-        public abstract boolean isValid(String value);
-
-        public void setMessage(String m) {
-            _message = m;
-        }
-
-        public String getMessage() {
-            return _message;
-        }
-    }
-
-    class StringCellEditor extends AbstractCellEditor implements TableCellEditor,
-                                                                 ActionListener {
-        String currentLabel;
-        JButton button;
-        JDialog dialog = null;
-        JTable _jTable;
-        JOptionPane pane = null;
-        CellValidator _validator;
-        JTextField valueText = null;
-
-        public StringCellEditor() {
-            button = new JButton();
-            button.setActionCommand("edit");
-            button.addActionListener(this);
-        }
-
-        public Object getCellEditorValue() {
-            return currentLabel;
-        }
-
-        public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected, int row, int col) {
-            _jTable = table;
-            currentLabel = (String) value;
-            button.setText(currentLabel);
-            return button;
-        }
-
-        public void setValidator(CellValidator validator) {
-            _validator = validator;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();
-
-            if (command.equals("edit")) {
-                Component source = (Component) e.getSource();
-                pane = new JOptionPane();
-
-                JButton[] options = new JButton[2];
-                options[0] = new JButton("OK");
-                options[0].addActionListener(this);
-                options[1] = new JButton("Cancel");
-                options[1].addActionListener(this);
-                valueText = new JTextField(currentLabel);
-                valueText.setOpaque(true);
-                valueText.setBackground(Color.white);
-                valueText.setEnabled(true);
-
-                Object[] msg = { null, valueText };
-                pane.setMessage(msg);
-                pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
-
-                pane.setOptions(options);
-
-                Point p = source.getLocation();
-                SwingUtilities.convertPointToScreen(p, _jTable);
-                dialog = pane.createDialog(source, null);
-                dialog.addWindowListener(new WindowAdapter() {
-                        public void windowClosing(WindowEvent e) {
-                            fireEditingCanceled();
-                            dialog.dispose();
-                        }
-                    });
-                dialog.setLocation(p);
-                dialog.show();
-            } else if (command.equals("OK")) {
-                String nv = valueText.getText();
-                boolean valid = true;
-
-                if (_validator != null) {
-                    valid = _validator.isValid(nv);
-                }
-
-                if (valid) {
-                    currentLabel = nv;
-                    fireEditingStopped();
-                    dialog.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(dialog,
-                            _validator.getMessage(), "alert",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-
-                return;
-            } else if (command.equals("Cancel")) {
-                fireEditingCanceled();
-                dialog.dispose();
-            }
-        }
-
-        protected String _getText() {
-            return currentLabel;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -1230,7 +753,465 @@ public class PortConfigurerDialog extends PtolemyDialog
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // The table model for the table.
+    class PortTableModel extends AbstractTableModel {
+        // Populates the _ports Vector. Each element of _ports is a
+        // Hashtable that represents a Port on the Entity that is
+        // having its ports configured.  If the Port exists on the
+        // Entity, a reference to it is stored in the Hashtable with
+        // key = ColumnNames.COL_ACTUAL_PORT.
+        public PortTableModel(List portList) {
+            Iterator ports = portList.iterator();
+            _ports = new Vector();
+
+            while (ports.hasNext()) {
+                Port p = (Port) ports.next();
+                Hashtable portInfo = new Hashtable();
+
+                if (_columnNames.contains(ColumnNames.COL_NAME)) {
+                    portInfo.put(ColumnNames.COL_NAME, p.getName());
+                }
+
+                if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
+                    String _direction;
+                    StringAttribute _cardinal = (StringAttribute) (p
+                            .getAttribute("_cardinal"));
+
+                    if (_cardinal != null) {
+                        _direction = _cardinal.getExpression().toUpperCase();
+                    } else {
+                        _direction = "DEFAULT";
+                    }
+
+                    portInfo.put(ColumnNames.COL_DIRECTION, _direction);
+                }
+
+                if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
+                    boolean isShowSet = _isPropertySet(p, "_showName");
+
+                    if (isShowSet) {
+                        portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.TRUE);
+                    } else {
+                        portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.FALSE);
+                    }
+                }
+
+                if (_columnNames.contains(ColumnNames.COL_HIDE)) {
+                    boolean isHideSet = _isPropertySet(p, "_hide");
+
+                    if (isHideSet) {
+                        portInfo.put(ColumnNames.COL_HIDE, Boolean.TRUE);
+                    } else {
+                        portInfo.put(ColumnNames.COL_HIDE, Boolean.FALSE);
+                    }
+                }
+
+                if (p instanceof IOPort) {
+                    IOPort iop = (IOPort) p;
+
+                    if (_columnNames.contains(ColumnNames.COL_INPUT)) {
+                        portInfo.put(ColumnNames.COL_INPUT,
+                                Boolean.valueOf(iop.isInput()));
+                    }
+
+                    if (_columnNames.contains(ColumnNames.COL_OUTPUT)) {
+                        portInfo.put(ColumnNames.COL_OUTPUT,
+                                Boolean.valueOf(iop.isOutput()));
+                    }
+
+                    if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
+                        portInfo.put(ColumnNames.COL_MULTIPORT,
+                                Boolean.valueOf(iop.isMultiport()));
+                    }
+                }
+
+                if (p instanceof TypedIOPort) {
+                    TypedIOPort tiop = (TypedIOPort) p;
+
+                    if (_columnNames.contains(ColumnNames.COL_TYPE)) {
+                        TypeAttribute _type = (TypeAttribute) (tiop
+                                .getAttribute("_type"));
+
+                        if (_type != null) {
+                            portInfo.put(ColumnNames.COL_TYPE,
+                                    _type.getExpression());
+                        } else {
+                            portInfo.put(ColumnNames.COL_TYPE, "");
+                        }
+                    }
+                }
+
+                if (_columnNames.contains(ColumnNames.COL_UNITS)) {
+                    String units = "";
+                    UnitAttribute _unitsAttribute = (UnitAttribute) p
+                        .getAttribute("_units");
+
+                    if (_unitsAttribute != null) {
+                        units = _unitsAttribute.getExpression();
+
+                        if (units != null) {
+                            portInfo.put(ColumnNames.COL_UNITS, units);
+                        } else {
+                            portInfo.put(ColumnNames.COL_UNITS, "");
+                        }
+                    } else {
+                        // Set units to "" anyways.  If the user
+                        // doesn't change the value, nothing will be
+                        // added to the MoMLChangeRequest for units in
+                        // _apply().
+                        portInfo.put(ColumnNames.COL_UNITS, "");
+                    }
+                }
+
+                portInfo.put(ColumnNames.COL_ACTUAL_PORT, p);
+
+                _ports.add(portInfo);
+            }
+        }
+
+        /**
+         * Add a port The new port gets added with a name of "". It is
+         * assumed that the user will change this to the real name at
+         * some point.
+         */
+        public void addNewPort() {
+            Hashtable portInfo = new Hashtable();
+
+            if (_columnNames.contains(ColumnNames.COL_NAME)) {
+                portInfo.put(ColumnNames.COL_NAME, "");
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
+                portInfo.put(ColumnNames.COL_DIRECTION, "DEFAULT");
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
+                portInfo.put(ColumnNames.COL_SHOW_NAME, Boolean.FALSE);
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_HIDE)) {
+                portInfo.put(ColumnNames.COL_HIDE, Boolean.FALSE);
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_INPUT)) {
+                portInfo.put(ColumnNames.COL_INPUT, Boolean.FALSE);
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_OUTPUT)) {
+                portInfo.put(ColumnNames.COL_OUTPUT, Boolean.FALSE);
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
+                portInfo.put(ColumnNames.COL_MULTIPORT, Boolean.FALSE);
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_TYPE)) {
+                portInfo.put(ColumnNames.COL_TYPE, "");
+            }
+
+            if (_columnNames.contains(ColumnNames.COL_UNITS)) {
+                portInfo.put(ColumnNames.COL_UNITS, "");
+            }
+
+            _ports.add(portInfo);
+
+            // Now tell the GUI so that it can update itself.
+            fireTableRowsInserted(getRowCount(), getRowCount());
+        }
+
+        /**
+         * Removes a port.
+         */
+        public void removePort() {
+            // First remove it from the _ports, and then tell the GUI
+            // that it is gone so that it can update itself.
+            _ports.remove(_selectedRow);
+            fireTableRowsDeleted(_selectedRow, _selectedRow);
+            _enableApplyButton(true);
+            _setDirty(true);
+        }
+
+        /**
+         * Get the number of columns.
+         *
+         * @see javax.swing.table.TableModel#getColumnCount()
+         */
+        public int getColumnCount() {
+            return _columnNames.size();
+        }
+
+        /** Get the number of rows.
+         * @see javax.swing.table.TableModel#getRowCount()
+         */
+        public int getRowCount() {
+            return _ports.size();
+        }
+
+        /** Get the column header name.
+         * @see javax.swing.table.TableModel#getColumnName(int)
+         */
+        public String getColumnName(int col) {
+            return (String) _columnNames.get(col);
+        }
+
+        /** Get the value at a particular row and column.
+         * @param row
+         * @param col
+         * @see javax.swing.table.TableModel#getValueAt(int, int)
+         */
+        public Object getValueAt(int row, int col) {
+            Hashtable portInfo = (Hashtable) _ports.elementAt(row);
+            return portInfo.get(getColumnName(col));
+        }
+
+        /** Set the value at a particular row and column.
+         * @param row
+         * @param col
+         * @return value
+         * @see javax.swing.table.TableModel#setValueAt(Object, int, int)
+         */
+        public void setValueAt(Object value, int row, int col) {
+            Hashtable portInfo = (Hashtable) _ports.elementAt(row);
+            portInfo.put(getColumnName(col), value);
+            _enableApplyButton(true);
+            _setDirty(true);
+        }
+
+        /** Get the Java Class associated with a column param column.
+         * @return class
+         * @see javax.swing.table.TableModel#getColumnClass(int)
+         */
+        public Class getColumnClass(int c) {
+            return getValueAt(0, c).getClass();
+        }
+
+        /** Is a cell editable?
+         *
+         * @param row
+         * @param col
+         * @return true if editable
+         * @see javax.swing.table.TableModel#isCellEditable(int, int)
+         */
+        public boolean isCellEditable(int row, int col) {
+            Hashtable portInfo = (Hashtable) (_ports.elementAt(row));
+            Port port = (Port) portInfo.get(ColumnNames.COL_ACTUAL_PORT);
+
+            if (port != null) {
+                if (port.getDerivedLevel() < Integer.MAX_VALUE) {
+                    if ((col == _columnNames.indexOf(ColumnNames.COL_NAME))
+                            || (col == _columnNames.indexOf(
+                                        ColumnNames.COL_INPUT))
+                            || (col == _columnNames.indexOf(
+                                        ColumnNames.COL_OUTPUT))
+                            || (col == _columnNames.indexOf(
+                                        ColumnNames.COL_MULTIPORT))) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /**
+         * Make the "Show Name" column values be either all true or
+         * all false.
+         */
+        public void toggleShowAllNames() {
+            _showAllNames = !_showAllNames;
+
+            Boolean show = new Boolean(_showAllNames);
+
+            for (int i = 0; i < getRowCount(); i++) {
+                setValueAt(show, i,
+                        _columnNames.indexOf(ColumnNames.COL_SHOW_NAME));
+            }
+        }
+
+        /**
+         * Make the "Hide" column values be either all true or
+         * all false.
+         */
+        public void toggleHidePorts() {
+            _hideAllPorts = !_hideAllPorts;
+
+            Boolean _hide = new Boolean(_hideAllPorts);
+
+            for (int i = 0; i < getRowCount(); i++) {
+                setValueAt(_hide, i, _columnNames.indexOf(ColumnNames.COL_HIDE));
+            }
+        }
+    }
+
+
+    /** Render a boolean cell. */
+    class PortBooleanCellRenderer extends JCheckBox implements TableCellRenderer {
+        public PortBooleanCellRenderer() {
+            super();
+        }
+
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+            if (value == Boolean.TRUE) {
+                setSelected(true);
+            } else {
+                setSelected(false);
+            }
+
+            setHorizontalAlignment(SwingConstants.CENTER);
+
+            if (!table.isCellEditable(row, col)) {
+                setBackground(LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
+            } else {
+                setBackground(Color.white);
+            }
+
+            return this;
+        }
+    }
+
+    /**
+     * Default renderer for _portTable.
+     *
+     * see _setupTableModel()
+     */
+    class StringCellRenderer extends JLabel implements TableCellRenderer {
+        public StringCellRenderer() {
+            super();
+        }
+
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+            setOpaque(true);
+            setText((String) value);
+
+            if (!table.isCellEditable(row, col)) {
+                setBackground(LocatableNodeController.CLASS_ELEMENT_HIGHLIGHT_COLOR);
+            } else {
+                setBackground(Color.white);
+            }
+
+            return this;
+        }
+    }
+
+    abstract class CellValidator {
+        String _message = null;
+
+        public abstract boolean isValid(String value);
+
+        public void setMessage(String m) {
+            _message = m;
+        }
+
+        public String getMessage() {
+            return _message;
+        }
+    }
+
+    /** Editor for a table cell that takes a string.
+     */
+    class StringCellEditor extends AbstractCellEditor implements TableCellEditor,
+                                                                 ActionListener {
+        String currentLabel;
+        JButton button;
+        JDialog dialog = null;
+        JTable _jTable;
+        JOptionPane pane = null;
+        CellValidator _validator;
+        JTextField valueText = null;
+
+        public StringCellEditor() {
+            button = new JButton();
+            button.setActionCommand("edit");
+            button.addActionListener(this);
+        }
+
+        public Object getCellEditorValue() {
+            return currentLabel;
+        }
+
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected, int row, int col) {
+            _jTable = table;
+            currentLabel = (String) value;
+            button.setText(currentLabel);
+            return button;
+        }
+
+        public void setValidator(CellValidator validator) {
+            _validator = validator;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+
+            if (command.equals("edit")) {
+                Component source = (Component) e.getSource();
+                pane = new JOptionPane();
+
+                JButton[] options = new JButton[2];
+                options[0] = new JButton("OK");
+                options[0].addActionListener(this);
+                options[1] = new JButton("Cancel");
+                options[1].addActionListener(this);
+                valueText = new JTextField(currentLabel);
+                valueText.setOpaque(true);
+                valueText.setBackground(Color.white);
+                valueText.setEnabled(true);
+
+                Object[] msg = { null, valueText };
+                pane.setMessage(msg);
+                pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
+
+                pane.setOptions(options);
+
+                Point p = source.getLocation();
+                SwingUtilities.convertPointToScreen(p, _jTable);
+                dialog = pane.createDialog(source, null);
+                dialog.addWindowListener(new WindowAdapter() {
+                        public void windowClosing(WindowEvent e) {
+                            fireEditingCanceled();
+                            dialog.dispose();
+                        }
+                    });
+                dialog.setLocation(p);
+                dialog.show();
+            } else if (command.equals("OK")) {
+                String nv = valueText.getText();
+                boolean valid = true;
+
+                if (_validator != null) {
+                    valid = _validator.isValid(nv);
+                }
+
+                if (valid) {
+                    currentLabel = nv;
+                    fireEditingStopped();
+                    dialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(dialog,
+                            _validator.getMessage(), "alert",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+                return;
+            } else if (command.equals("Cancel")) {
+                fireEditingCanceled();
+                dialog.dispose();
+            }
+        }
+
+        protected String _getText() {
+            return currentLabel;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
     // Create the MoML expression that represents the update.
     private String _createMoMLUpdate(Hashtable updates, Hashtable portInfo,
             String currentPortName, String newPortName) {
@@ -1593,10 +1574,11 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
     }
 
-    // Creates and sets the TableModel. Also arranges for some columns
-    // to have their particular renderers and/or editors. This method
-    // will be invoked when the dialog is created, and every time a
-    // change request from above causes the table to change.
+    /** Creates and sets the TableModel. Also arranges for some columns
+     * to have their particular renderers and/or editors. This method
+     * will be invoked when the dialog is created, and every time a
+     * change request from above causes the table to change.
+     */
     private void _setupTableModel() {
         _portTableModel = new PortTableModel(getTarget().portList());
         _portTable.setModel(_portTableModel);
@@ -1705,6 +1687,10 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** The combination box used to select the location of a port. */
     private JComboBox _portLocationComboBox;
+
+    /** The combination box used to select the type of a port. */
+    private JComboBox _typeComboBox;
+
     JTable _portTable;
     PortTableModel _portTableModel = null;
 
@@ -1736,4 +1722,18 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** The various buttons. */
     private JButton _removeButton;
+
+    /** Strings that are available for the column names. */
+    private static class ColumnNames {
+        public final static String COL_NAME = "Name";
+        public final static String COL_INPUT = "Input";
+        public final static String COL_OUTPUT = "Output";
+        public final static String COL_MULTIPORT = "Multiport";
+        public final static String COL_TYPE = "Type";
+        public final static String COL_DIRECTION = "Direction";
+        public final static String COL_SHOW_NAME = "Show Name";
+        public final static String COL_HIDE = "Hide";
+        public final static String COL_UNITS = "Units";
+        public final static String COL_ACTUAL_PORT = "9";
+    }
 }
