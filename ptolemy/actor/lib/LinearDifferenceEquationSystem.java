@@ -42,7 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
    Linear Difference Equation System.
 
-   <p>The linear state-space model implements a system whose behavior is defined by:
+   <p>The linear state-space model implements a system whose behavior
+   is defined by:
+
    <pre>
    x(k+1) = Ax(k) + Bu(k)
    y(k) = Cx(k) + Du(k)
@@ -66,8 +68,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    dimension <i>r</i> x 1.
 
    <P>
-   In addition to producing the output <i>y</i> through port <i>output</i>, the
-   actor also produce the state values <i>x</i> through port <i>state</i>.
+    In addition to producing the output <i>y</i> through port
+   <i>output</i>, the actor also produce the state values <i>x</i>
+   through port <i>state</i>.
 
    @author Jie Liu and Elaine Cheong
    @version $Id$
@@ -375,7 +378,6 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
     // Indicate whether the state variable is a scalar;
     private boolean _singleState;
-
 }
 
 

@@ -37,17 +37,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Source
 /**
-   Base class for simple data sources.  This class provides an output port
-   and a trigger input port, both exposed as public variables.  The trigger
-   port is a multiport with undeclared type, meaning that you can supply it
-   with any data type.  The trigger port can also be left unconnected.
-   The purpose of the trigger input is to (optionally) supply events that
-   cause the actor to fire.  For some domains, such as SDF and CT, this is
-   entirely unnecessary, as the actor will fire whether inputs are supplied
-   or not.  In such domains, the trigger input will normally be left unconnected.
-   In this base class, the fire() method reads
-   at most one token from each channel of the trigger input, if any,
-   and then discards the token.
+
+   Base class for simple data sources.  This class provides an output
+   port and a trigger input port, both exposed as public variables.
+   The trigger port is a multiport with undeclared type, meaning that
+   you can supply it with any data type.  The trigger port can also be
+   left unconnected.  The purpose of the trigger input is to
+   (optionally) supply events that cause the actor to fire.  For some
+   domains, such as SDF and CT, this is entirely unnecessary, as the
+   actor will fire whether inputs are supplied or not.  In such
+   domains, the trigger input will normally be left unconnected.  In
+   this base class, the fire() method reads at most one token from
+   each channel of the trigger input, if any, and then discards the
+   token.
+
    <p>
    Some derived classes may attach additional significance to an input
    on the trigger port. For example, they might fix the type and attach

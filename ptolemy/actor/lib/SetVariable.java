@@ -58,10 +58,12 @@ import ptolemy.util.MessageHandler;
    of value of the variable will see changes to the value
    deterministically (independent of the schedule of execution
    of the actors).
+
    <p>
    Note that the variable name is observed during preinitialize().
    If it is changed after that, the change will not take effect
    until the next time the model is executed.
+
    <p>
    The variable can be either any attribute that implements
    the Settable interface. If it is in addition an instance of
@@ -201,13 +203,15 @@ public class SetVariable extends TypedAtomicActor
                             // change will not propagate to dependents.
                             ((Variable)variable).validate();
                         } else if (variable instanceof Settable) {
-                            ((Settable)variable).setExpression(value.toString());
+                            ((Settable)variable).setExpression(
+                                    value.toString());
                             // NOTE: If we don't call validate(), then the
                             // change will not propagate to dependents.
                             ((Settable)variable).validate();
                         } else {
                             throw new IllegalActionException(SetVariable.this,
-                                    "Cannot set the value of the variable named: "
+                                    "Cannot set the value of the variable "
+                                    + "named: "
                                     + variableName.getExpression());
                         }
                     }

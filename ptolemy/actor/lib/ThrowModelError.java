@@ -111,9 +111,10 @@ public class ThrowModelError extends Sink {
             // configure the "model error" type?
 
             //handleModelError(this,
-            //        new IllegalActionException(this, message.getExpression()));
+            //      new IllegalActionException(this, message.getExpression()));
             handleModelError(this,
-                    new InvariantViolationException(this, message.getExpression()));
+                    new InvariantViolationException(this,
+                            message.getExpression()));
 
         }
         return super.postfire();

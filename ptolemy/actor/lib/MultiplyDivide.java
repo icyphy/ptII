@@ -38,34 +38,36 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// MultiplyDivide
 /**
-   A polymorphic multiplier and/or divider.
-   This adder has two input ports, both of which are multiports,
-   and one output port, which is not.
-   The types on the ports are undeclared and will be resolved by
-   the type resolution mechanism. Data that arrives on the
-   input port named <i>multiply</i> will be multiplied, and data that arrives
-   on the input port named <i>divide</i> will be divided.
-   Any token type supporting multiplication and division can be used.
-   In most domains, either input port can be left unconnected.
-   Thus, to get a simple multiplier (with no division), just leave the
-   <i>divide</i> input unconnected.
+
+   A polymorphic multiplier and/or divider.  This adder has two input
+   ports, both of which are multiports, and one output port, which is
+   not.  The types on the ports are undeclared and will be resolved by
+   the type resolution mechanism. Data that arrives on the input port
+   named <i>multiply</i> will be multiplied, and data that arrives on
+   the input port named <i>divide</i> will be divided.  Any token type
+   supporting multiplication and division can be used.  In most
+   domains, either input port can be left unconnected.  Thus, to get a
+   simple multiplier (with no division), just leave the <i>divide</i>
+   input unconnected.
+
    <p>
    Currently, the type system is quite liberal about the resolved
-   types it will permit at the inputs. In particular, it may permit the
-   <i>multiply</i> and <i>divide</i> inputs to resolve to types that cannot
-   in fact be multiplied or divided.  In these cases, a run-time error will occur.
-   In the future, we hope that the type system will intercept such errors
-   before run time.
+   types it will permit at the inputs. In particular, it may permit
+   the <i>multiply</i> and <i>divide</i> inputs to resolve to types
+   that cannot in fact be multiplied or divided.  In these cases, a
+   run-time error will occur.  In the future, we hope that the type
+   system will intercept such errors before run time.
+
    <p>
-   This actor does not require that each input
-   channel have a token upon firing. It will multiply or divide available
-   tokens at the inputs and ignore the channels that do not have tokens.
-   It consumes at most one input token from each port.
-   If no input tokens are available on the <i>multiply</i> inputs,
-   then a numerator of one is assumed for the division operations.
-   The "one" is obtained by calling the one() method of the first
-   token seen at the <i>divide</i> input.
-   If no input tokens are available at all, then no output is produced.
+   This actor does not require that each input channel have a token
+   upon firing. It will multiply or divide available tokens at the
+   inputs and ignore the channels that do not have tokens.  It
+   consumes at most one input token from each port.  If no input
+   tokens are available on the <i>multiply</i> inputs, then a
+   numerator of one is assumed for the division operations.  The "one"
+   is obtained by calling the one() method of the first token seen at
+   the <i>divide</i> input.  If no input tokens are available at all,
+   then no output is produced.
 
    @author Edward A. Lee
    @version $Id$
@@ -73,7 +75,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
-
 public class MultiplyDivide extends TypedAtomicActor {
 
     /** Construct an actor in the specified container with the specified
@@ -128,14 +129,14 @@ public class MultiplyDivide extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** If there is at least one token on the input ports, multiply
-     *  tokens from the <i>multiply</i> port, divide by
-     *  tokens from the <i>divide</i> port,
-     *  and send the result to the output port. At most one token is read
-     *  from each channel, so if more than one token is pending, the
-     *  rest are left for future firings.  If none of the input
-     *  channels has a token, do nothing.  If none of the multiply channels
-     *  have tokens, then the tokens on the divide channels are divided into
-     *  a one token of the same type as the denominator.
+     *  tokens from the <i>multiply</i> port, divide by tokens from
+     *  the <i>divide</i> port, and send the result to the output
+     *  port. At most one token is read from each channel, so if more
+     *  than one token is pending, the rest are left for future
+     *  firings.  If none of the input channels has a token, do
+     *  nothing.  If none of the multiply channels have tokens, then
+     *  the tokens on the divide channels are divided into a one token
+     *  of the same type as the denominator.
      *
      *  @exception IllegalActionException If there is no director,
      *   or if multiplication and division are not supported by the

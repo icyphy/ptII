@@ -38,12 +38,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Gaussian
 /**
-   Produce a random sequence with a Gaussian distribution.  On each iteration,
-   a new random number is produced.  The output port is of type DoubleToken.
-   The values that are generated are independent and identically distributed
-   with the mean and the standard deviation given by parameters.  In addition, the
-   seed can be specified as a parameter to control the sequence that is
-   generated.
+   Produce a random sequence with a Gaussian distribution.  On each
+   iteration, a new random number is produced.  The output port is of
+   type DoubleToken.  The values that are generated are independent
+   and identically distributed with the mean and the standard
+   deviation given by parameters.  In addition, the seed can be
+   specified as a parameter to control the sequence that is generated.
 
    @author Edward A. Lee
    @version $Id$
