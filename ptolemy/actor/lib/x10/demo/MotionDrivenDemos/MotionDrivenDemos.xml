@@ -104,6 +104,25 @@ detector and executes Ptolemy demos.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
         </property>
     </property>
+    <property name="lingerTimeInMS" class="ptolemy.data.expr.Parameter" value="60000L">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 75.0">
+        </property>
+    </property>
     <entity name="Controller" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -338,7 +357,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="running.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="running" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 516}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -372,7 +391,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
                 </property>
-                <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="60000L">
+                <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="lingerTimeInMS">
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
                 </property>
@@ -388,7 +407,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
                 </property>
-                <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="60000L">
+                <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="lingerTimeInMS">
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
                 </property>
@@ -404,7 +423,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
                 </property>
-                <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="60000L">
+                <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="lingerTimeInMS">
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
                 </property>

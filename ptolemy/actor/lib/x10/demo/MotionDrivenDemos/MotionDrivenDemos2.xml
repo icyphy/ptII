@@ -4,7 +4,7 @@
 <entity name="MotionDrivenDemos2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 592}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 36, 953, 592}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 474]">
     </property>
@@ -73,7 +73,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 50.0">
         </property>
     </property>
-    <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM2">
+    <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -140,7 +140,7 @@ detector and executes Ptolemy demos.</text></svg></configure>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 140.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -357,7 +357,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="running.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="running" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 516}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 518}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -395,9 +395,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
                 </property>
-                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil (full screen)">
                 </property>
-                <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
+                <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 170.0">
                 </property>
@@ -411,9 +411,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
                 </property>
-                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil (full screen)">
                 </property>
-                <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
+                <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 170.0">
                 </property>
@@ -427,9 +427,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="do nothing">
                 </property>
-                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil (full screen)">
                 </property>
-                <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
+                <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 260.0">
                 </property>
@@ -443,7 +443,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
                 <property name="postfireAction" class="ptolemy.data.expr.StringParameter" value="stop executing">
                 </property>
-                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+                <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil (full screen)">
                 </property>
                 <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
                 </property>
