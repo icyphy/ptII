@@ -2631,15 +2631,15 @@ public class PlotBox extends JPanel implements Printable {
             max += 1.0;
         }
 
-	if (_xRangeGiven) {
+	//if (_xRangeGiven) {
 	    // The user specified the range, so don't pad.
-	    _xMin = min;
-	    _xMax = max;
-	} else {
+	//    _xMin = min;
+	//    _xMax = max;
+	//} else {
         // Pad slightly so that we don't plot points on the axes.
         _xMin = min - ((max - min) * _PADDING);
         _xMax = max + ((max - min) * _PADDING);
-	}
+	//}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_xMin), Math.abs(_xMax));
@@ -2669,15 +2669,15 @@ public class PlotBox extends JPanel implements Printable {
             min -= 0.1;
             max += 0.1;
         }
-	if (_yRangeGiven) {
+	//if (_yRangeGiven) {
         // The user specified the range, so don't pad.
-	    _yMin = min;
-	    _yMax = max;
-	} else {
+	//    _yMin = min;
+	//    _yMax = max;
+	//} else {
         // Pad slightly so that we don't plot points on the axes.
         _yMin = min - ((max - min) * _PADDING);
         _yMax = max + ((max - min) * _PADDING);
-	}
+	//}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_yMin), Math.abs(_yMax));
