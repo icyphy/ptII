@@ -39,13 +39,13 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// NotifyThread
 /** 
-Helper thread for calling notifyAll on a LinkedList of locks.
-Since this is a new thread without any locks, calling notifyAll 
-on the locks from this thread reduces the possibility of deadlocks.
+Helper thread for calling notifyAll on a single lock or a LinkedList 
+of locks. Since this is a new thread without any locks, calling notifyAll 
+ from this thread reduces the possibility of deadlocks.
 <p>
 To use this to wake up any threads waiting on a lock, create a new instance 
-of this class with a LinkedList of lock objects to call notifyAll on, then 
-wait for this object.
+of this class with a LinkedList of lock objects (or single lock) to call 
+notifyAll on, then optionally wait for this object.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -61,6 +61,13 @@ public class NotifyThread extends Thread {
 	_locks = locks;
     }
 
+    /** Construct a thread to be used call notifyAll on a set of locks.
+     *  @param locks The set of locks to call notifyAll on.
+     */
+    public NotifyThread(Object lock) {
+	_lock = lock;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -69,14 +76,20 @@ public class NotifyThread extends Thread {
      */
     public void run() {
         synchronized(this) {
-            Enumeration objs = _locks.elements();
-            while (objs.hasMoreElements()) {
-                Object nextObj = objs.nextElement();
-                if (nextObj instanceof ProcessReceiver) {
-                    ProcessReceiver rec = (ProcessReceiver)nextObj;
+            if (_locks != null) {
+                Enumeration objs = _locks.elements();
+                while (objs.hasMoreElements()) {
+                    Object nextObj = objs.nextElement();
+                    if (nextObj instanceof ProcessReceiver) {
+                        ProcessReceiver rec = (ProcessReceiver)nextObj;
+                    }
+                    synchronized(nextObj) {
+                        nextObj.notifyAll();
+                    }
                 }
-                synchronized(nextObj) {
-                    nextObj.notifyAll();
+            } else {
+                synchronized(_lock) {
+                    _lock.notifyAll();
                 }
             }
             this.notifyAll();
@@ -87,7 +100,10 @@ public class NotifyThread extends Thread {
     ////                         private variables                 ////
     
     // The locks to call notifyAll on.
-    private LinkedList _locks;
+    private LinkedList _locks = null;
+
+    // The lock to call notifyAll on.
+    private Object _lock = null;
 }
 
 
