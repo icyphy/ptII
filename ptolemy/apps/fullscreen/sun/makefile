@@ -46,7 +46,6 @@ DIRS =
 JSRCS = \
 	CapabilitiesTest.java \
 	DisplayModeTest.java \
-	FadeDemo.java \
 	GraphicsConfigurationTest.java \
 	MultiBufferTest.java
 
@@ -87,8 +86,13 @@ demo3: MultiBufferTest.class
 demo4: GraphicsConfigurationTest.class
 	$(JAVA) -classpath . GraphicsConfigurationTest
 
+#See http://java.sun.com/products/jfc/tsc/articles/timer/
 demo5: FadeDemo.class
 	$(JAVA) -classpath . FadeDemo
+
+#See http://java.sun.com/docs/books/tutorial/2d/display/compositing.html 
+demo6: Composite.class
+	$(JAVA) -classpath . Composite
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
