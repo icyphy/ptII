@@ -260,7 +260,7 @@ public class PNDirector extends BasePNDirector {
 	super.queueTopologyChangeRequest(request);
 	synchronized(this) {
 	    _urgentMutations = true;
-	    _mutationBlock();
+	    _informOfMutationBlock();
 	    notifyAll();
 	    while(_urgentMutations) {
 		try {
@@ -269,7 +269,7 @@ public class PNDirector extends BasePNDirector {
 		    System.err.println(e.toString());
 		}
 	    }
-	    _mutationUnblock();
+	    _informOfMutationUnblock();
 	}
     }
 
