@@ -265,7 +265,19 @@ public class CTScheduler extends Scheduler {
         return successors;
     }
 
-    /** Return all the scheduling information in a Sting.
+    /** Return the SignalType as a String */
+    public String signalTypeToString(Integer signalType) {
+	if (signalType == CONTINUOUS) {
+	    return "CONTINUOUS";
+	} else if (signalType == DISCRETE) {
+	    return "DISCRETE";
+	} else if (signalType == UNKNOWN) {
+	    return "UNKNOWN";
+	}
+	return "INVALID:" + signalType + " is invalid";
+    }
+
+    /** Return all the scheduling information in a String.
      *  @return All the schedules.
      */
     public String toString() {
@@ -837,8 +849,11 @@ public class CTScheduler extends Scheduler {
                 } else if (!getType(port).equals(getType(nextPort))) {
                     throw new NotSchedulableException(
                             "Signal type conflict: "
-                            + port.getFullName() + " and "
-                            + nextPort.getFullName());
+                            + port.getFullName() + " ( of type " 
+			    + signalTypeToString(getType(port))
+			    + ") and "
+                            + nextPort.getFullName() + " ( of type "
+			    + signalTypeToString(getType(nextPort)) + ")");
                 }
             }
         }
