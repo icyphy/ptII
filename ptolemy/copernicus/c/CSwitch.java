@@ -559,9 +559,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _push(_pop().append("->").append(CNames.fieldNameOf(v.getField())));
     }
 
+/* FIXME : Is this replaced by something else?
     public void caseNextNextStmtRef(NextNextStmtRef v) {
         defaultCase(v);
     }
+*/
 
     public void caseParameterRef(ParameterRef v) {
         defaultCase(v);
