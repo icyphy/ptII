@@ -152,7 +152,7 @@ public abstract class TreeNode extends PropertyMap {
   }
 
   public Object getChild(int index) {
-     return _childList.get(0);
+    return _childList.get(0);
   }
 
   public void setChild(int index, Object child) {
@@ -186,9 +186,12 @@ public abstract class TreeNode extends PropertyMap {
     try {
       return method.invoke(v, args);
     } catch (IllegalAccessException iae) {
-      throw new RuntimeException("Illegal access error invoking method " + methodName);
+      throw new RuntimeException("Illegal access exception invoking method "
+       + methodName);
     } catch (InvocationTargetException ite) {
-      throw new RuntimeException("Invocation target error invoking method " + methodName);
+      throw new RuntimeException("Invocation target exception invoking method "
+       + methodName + " : target = " +
+       ite.getTargetException().toString());
     }
   }
 

@@ -37,7 +37,7 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-class ResolvePackageVisitor extends JavaVisitor {
+public class ResolvePackageVisitor extends JavaVisitor {
 
     ResolvePackageVisitor() {
         super(TM_CUSTOM);
@@ -45,7 +45,7 @@ class ResolvePackageVisitor extends JavaVisitor {
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         Environ environ = (Environ) node.getDefinedProperty("environ");
-        PackageDecl pkgDecl = (PackageDecl) node.getDefinedProperty("decl");
+        PackageDecl pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
 
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(pkgDecl);
@@ -71,7 +71,7 @@ class ResolvePackageVisitor extends JavaVisitor {
         Decl other = fileEnv.lookupProper(className);
 
         if (other != null) {
-           throw new RuntimeException("attempt to redefine " + other.getName() +
+           ApplicationUtility.error("attempt to redefine " + other.getName() +
            " as a class");
         }
 
@@ -79,17 +79,18 @@ class ResolvePackageVisitor extends JavaVisitor {
 
         ClassDecl ocl = (ClassDecl) pkgEnv.lookupProper(className);
 
-        if ((ocl != null) && (!ocl.hasProperty("source") ||
-             (ocl.getProperty("source") == AbsentTreeNode.instance))) {
+        if ((ocl != null) &&
+            ((ocl.getSource() == null) ||
+             (ocl.getSource() == AbsentTreeNode.instance))) {
            // Assume this is the definition of 'other'
-           ocl.setProperty("source", node);
+           ocl.setSource(node);
            ocl.setModifiers(node.getModifiers());
         } else {
            ClassDecl cl = new ClassDecl(className, JavaDecl.CG_CLASS,
             NullTypeNode.instance, node.getModifiers(), node, pkgDecl);
 
            if (ocl != null)  { // Redefinition in same package.
-              throw new RuntimeException("class name " + className +
+              ApplicationUtility.error("class name " + className +
               " conflicts with " + ocl.getName() + " in same package");
            } else {
 	           pkgEnv.add(cl);
@@ -97,7 +98,7 @@ class ResolvePackageVisitor extends JavaVisitor {
 
            ocl = cl;
         }
-        ocl.setProperty("environ", new Environ(fileEnv));
+        ocl.setEnviron(new Environ(fileEnv));
         fileEnv.add(ocl);
 
         node.getName().setProperty("decl", ocl);
@@ -114,7 +115,7 @@ class ResolvePackageVisitor extends JavaVisitor {
         Decl other = fileEnv.lookupProper(interfaceName);
 
         if (other != null) {
-           throw new RuntimeException("attempt to redefine " + other.getName() +
+           ApplicationUtility.error("attempt to redefine " + other.getName() +
            " as an interface");
         }
 
@@ -122,10 +123,11 @@ class ResolvePackageVisitor extends JavaVisitor {
 
         ClassDecl ocl = (ClassDecl) pkgEnv.lookupProper(interfaceName);
 
-        if ((ocl != null) && (!ocl.hasProperty("source") ||
-            (ocl.getProperty("source") == AbsentTreeNode.instance))) {
+        if ((ocl != null) &&
+            ((ocl.getSource() == null) ||
+             (ocl.getSource() == AbsentTreeNode.instance))) {
            // Assume this is the definition of 'other'
-           ocl.setProperty("source", node);
+           ocl.setSource(node);
            ocl.setModifiers(node.getModifiers());
 
            // should make sure it's an interface
@@ -134,7 +136,7 @@ class ResolvePackageVisitor extends JavaVisitor {
             NullTypeNode.instance, node.getModifiers(), node, pkgDecl);
 
            if (ocl != null)  {// Redefinition in same package.
-              throw new RuntimeException("interface name " + interfaceName +
+              ApplicationUtility.error("interface name " + interfaceName +
                " conflicts with " + ocl.getName() + " in same package");
            } else {
 	           pkgEnv.add(cl);
@@ -142,7 +144,7 @@ class ResolvePackageVisitor extends JavaVisitor {
 
            ocl = cl;
         }
-        ocl.setProperty("environ", new Environ(fileEnv));
+        ocl.setEnviron(new Environ(fileEnv));
         fileEnv.add(ocl);
 
         node.getName().setProperty("decl", ocl);
@@ -152,7 +154,8 @@ class ResolvePackageVisitor extends JavaVisitor {
 
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        throw new RuntimeException("ResolvePackage not defined on node type : " +
+        ApplicationUtility.error("ResolvePackage not defined on node type : " +
          node.getClass().getName());
+        return null;
     }
 }

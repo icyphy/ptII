@@ -112,7 +112,9 @@
 /* Artificial precedence rule to resolve conflicts with
  * InterfaceModifiers and ClassModifiers */
 
+/*
 %right ABSTRACT FINAL PUBLIC
+*/
 
 %{
 package ptolemy.lang.java;
@@ -164,16 +166,12 @@ import ptolemy.lang.*;
 %type<obj> ForInit ExpressionStatementsOpt ExpressionStatements
 %type<obj> ForUpdateOpt
 
-
-%type<ival> ClassModifiersOpt ClassModifiers ClassModifier
 %type<ival> FieldModifiersOpt FieldModifiers FieldModifier
-%type<ival> InterfaceModifiersOpt InterfaceModifiers InterfaceModifier
-
-
 %type<obj> ImportStatement TypeImportStatement
 %type<obj> TypeImportOnDemandStatement ClassDeclaration TypeDeclaration
 %type<obj> Parameter InterfaceDeclaration
 %type<obj> MethodDeclaration StaticInitializer ConstructorDeclaration
+%type<obj> InstanceInitializer
 %type<obj> MethodSignatureDeclaration
 
 %type<obj> ClassBody FieldDeclarationsOpt FieldDeclarations
@@ -193,9 +191,10 @@ import ptolemy.lang.*;
 %type<obj> Catch
 %type<obj> Catches
 
-
 %type<obj> VariableDeclarator
 %type<obj> VariableDeclarators
+
+%type<ival> FinalOpt
 
 %start Start
 
@@ -284,7 +283,7 @@ CompilationUnit :
 
 PackageDeclarationOpt :
 	  PACKAGE Name ';'
-		{ $$ = new PackageNode((NameNode) $2); }
+		{ $$ = $2; }
 	| empty
 		{ $$ = AbsentTreeNode.instance; }
 	;
@@ -336,9 +335,8 @@ TypeImportOnDemandStatement :
 
 /* Section 6.1 */
 
-/* $5 $6 at end */
 ClassDeclaration :
-	  ClassModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
+	  FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
 		{ $$ = new ClassDeclNode($1, (NameNode) $3, (TreeNode) $4, (LinkedList) $5,
          (LinkedList) $6); }
 	;
@@ -346,37 +344,9 @@ ClassDeclaration :
 
 /* Section 6.1.1 */
 
-ClassModifiersOpt :
-	  ClassModifiers   { }
-	| empty
-   { $$ = Modifier.NO_MOD; }
-	;
-
-ClassModifiers :
-	  InterfaceModifiers	%prec FINAL
-	| InterfaceModifiers FINAL
-		{ $$ = ($1 | Modifier.FINAL_MOD); }
-	| FINAL
-		{ $$ = Modifier.FINAL_MOD; }
-	| ClassModifiers ClassModifier
-		{
-     $$ = ($1 | $2);
-     if (($1 & $2) != 0) {
-		     yyerror("repeated modifier");
-     }
-   }
-	;
-
-
-ClassModifier :
-	  ABSTRACT
-		{ $$ = Modifier.ABSTRACT_MOD; }
-	| FINAL
-		{ $$ = Modifier.FINAL_MOD; }
-	| PUBLIC
-		{ $$ = Modifier.PUBLIC_MOD; }
-	;
-
+/* Class modifiers were here. We need to verify later that the modifiers are
+ * only abstract, final, or public for top-level classes.
+ */
 
 /* Section 6.1.2 */
 
@@ -431,7 +401,12 @@ FieldDeclaration :
 		{ $$ = cons($1); }
 	| StaticInitializer
 		{ $$ = cons($1); }
- // add instance initializer
+     /* NEW : Java 1.1 : D.1.3 : Instance initializers */
+   | InstanceInitializer
+       { $$ = cons($1); } 
+     /* NEW : Java 1.1 : D.1.1 : Inner classes */
+   | ClassDeclaration
+       { $$ = cons($1); }
 	;
 
 
@@ -508,6 +483,14 @@ FieldModifier :
 		{ $$ = Modifier.VOLATILE_MOD;  }
 	;
 
+FinalOpt :
+   /* Applicable to local variables and parameters. Java 1.1 addition : D.1.2 */
+     FINAL
+       { $$ = Modifier.FINAL_MOD;  }
+   | empty
+       { $$ = Modifier.NO_MOD;  }
+   ;
+
 /* Section 6.3.2 */
 
 /* We build these up backwards.  The resulting lists
@@ -571,15 +554,17 @@ ParameterListOpt :
 
 ParameterList :
 	  Parameter
-		       { $$ = cons($1); }
+	  { $$ = cons($1); }
 	| Parameter ',' ParameterList
-		       { $$ = cons($1, (LinkedList) $3); }
+	  { $$ = cons($1, (LinkedList) $3); }
 	;
 
 Parameter :
-	  Type SimpleName DimsOpt
-              { $$ = new ParameterNode(makeArrayType((TypeNode) $1, $3),
-                 (NameNode) $2); }
+	  FinalOpt Type SimpleName DimsOpt
+     {
+       $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
+             (NameNode) $3);
+     }
 	;
 
 
@@ -652,43 +637,24 @@ StaticInitializer :
 		{ $$ = new StaticInitNode((BlockNode) $2); }
 	;
 
-/* Add instance initializer soon */
+InstanceInitializer :
+     Block
+       { $$ = new InstanceInitNode((BlockNode) $1); }
+   ;
 
 /* Section 6.8 */
 
 InterfaceDeclaration :
-	  InterfaceModifiersOpt INTERFACE SimpleName ExtendsInterfacesOpt
+	  FieldModifiersOpt INTERFACE SimpleName ExtendsInterfacesOpt
 		InterfaceBody
 	  { $$ = new InterfaceDeclNode($1, (NameNode) $3, (LinkedList) $4, (LinkedList) $5); }
 	;
 
 /* Section 6.8.1 */
 
-InterfaceModifiersOpt :
-	  InterfaceModifiers   {  }
-	| empty
-		{ $$ = Modifier.NO_MOD; }
-	;
-
-InterfaceModifiers :
-	  InterfaceModifier 	{ $$ = $1;  }
-	| InterfaceModifiers InterfaceModifier
-		{
-     $$ = ($1 | $2);
-
-		  if (($1 & $2) != 0) {
-		      yyerror("repeated modifier");
-     }
-   }
-	;
-
-InterfaceModifier :
-	  PUBLIC
-		{ $$ = Modifier.PUBLIC_MOD; }
-	| ABSTRACT
-		{ $$ = Modifier.ABSTRACT_MOD; }
-	;
-
+/* InterfaceModifiers were here.
+ * We need to verify later that the modifiers are only public and/or abstract.
+ */
 
 /* Section 6.8.2 */
 
@@ -818,22 +784,38 @@ BlockStatement :
 
 /* Section 8.2 */
 
+// is there some way to get rid of this repetition of code??
 LocalVariableDeclarationStatement :
-   Type VariableDeclarators ';'
-   {
-     LinkedList varDecls = (LinkedList) $2;
-     LinkedList result = new LinkedList();
+     FINAL Type VariableDeclarators ';'
+     {
+       LinkedList varDecls = (LinkedList) $3;
+       LinkedList result = new LinkedList();
 
-     ListIterator itr = varDecls.listIterator();
+       ListIterator itr = varDecls.listIterator();
 
 	    while (itr.hasNext()) {
-		      DeclaratorNode decl = (DeclaratorNode) itr.next();
-		      result = cons(new VarDeclNode(
-                        makeArrayType((TypeNode) $1, decl.getDims()),
-                        decl.getName(), decl.getInitExpr()), result);
-		  }
-     $$ = result;
-   }
+		  DeclaratorNode decl = (DeclaratorNode) itr.next();
+		  result = cons(new VarDeclNode(Modifier.FINAL_MOD,
+                       makeArrayType((TypeNode) $2, decl.getDims()),
+                       decl.getName(), decl.getInitExpr()), result);
+       }
+       $$ = result;
+     }
+   | Type VariableDeclarators ';'
+     {
+       LinkedList varDecls = (LinkedList) $2;
+       LinkedList result = new LinkedList();
+
+       ListIterator itr = varDecls.listIterator();
+
+	    while (itr.hasNext()) {
+		  DeclaratorNode decl = (DeclaratorNode) itr.next();
+		  result = cons(new VarDeclNode(Modifier.NO_MOD,
+                       makeArrayType((TypeNode) $1, decl.getDims()),
+                       decl.getName(), decl.getInitExpr()), result);
+		}
+       $$ = result;
+     }
 	;
 
 /* Section 8.3 */
@@ -1318,24 +1300,25 @@ empty :
 %%
 
 protected void init(String filename) throws IOException {
-
-  _lexer = new Yylex(new FileInputStream(filename));
+  _filename = filename;
+  _lexer = new Yylex(new FileInputStream(_filename));
 }
 
 protected int yylex()
 {
+  int retval;
 
   try {
-    int retval = _lexer.yylex();
+    retval = _lexer.yylex();
 
     yylval = _lexer.getParserVal();
-
-    return retval;
 
   } catch (IOException e) {
 
     throw new RuntimeException("lexical error");
   }
+
+  return retval;
 }
 
 protected static final LinkedList cons(Object obj)
@@ -1372,9 +1355,9 @@ protected CompileUnitNode _theAST;
 
 public CompileUnitNode getAST() { return _theAST; }
 
-protected static void yyerror(String msg)
+protected void yyerror(String msg)
 {
-  throw new RuntimeException(msg);
+  throw new RuntimeException("parse error for " + _filename + ": " + msg);
 }
 
 /** An array type with given ELEMENTTYPE and DIMS dimensions.  When
@@ -1389,4 +1372,5 @@ protected static TypeNode makeArrayType(TypeNode elementType, int dims)
   return elementType;
 }
 
-protected Yylex _lexer;
+protected String _filename = null;
+protected Yylex _lexer = null;

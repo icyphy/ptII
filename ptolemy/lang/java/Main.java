@@ -1,5 +1,9 @@
 package ptolemy.lang.java;
 
+import java.util.LinkedList;
+import java.util.ListIterator;
+import ptolemy.lang.*;
+
 class Main {
   public static void main(String[] args) {
     int files = args.length;
@@ -18,6 +22,7 @@ class Main {
        System.out.println("usage : ptolemy.lang.javaMain [-d] f1.java [f2.java ...]");
     }
 
+    /*
     for (int f = 0; f < files; f++) {
         parser p = new parser();
 
@@ -37,13 +42,31 @@ class Main {
 
         System.out.println(ast.toString());
 
-        JavaVisitor v = new TypeVisitor();
 
-        ast.accept(v);
+        //JavaVisitor v = new TypeVisitor();
 
-        v = new JavaCodeGenerator();
+        //ast.accept(v);
 
-        System.out.println((String) ast.accept(v));
+        //v = new JavaCodeGenerator();
+
+        //System.out.println((String) ast.accept(v));
+
+        ast.accept(new PackageResolutionVisitor());
+    } */
+
+    ApplicationUtility.enableTrace = true;
+    
+    for (int f = 0; f < files; f++) {
+        StaticResolution.load(args[fileStart + f]);
+        StaticResolution.declResolution();
+    }
+
+    LinkedList unitList = StaticResolution.allFiles;
+    ListIterator unitItr = unitList.listIterator();
+
+    for (int f = 0; f < files; f++) {
+        CompileUnitNode ast = (CompileUnitNode) unitItr.next();
+        System.out.println(ast.toString());
     }
   }
 }

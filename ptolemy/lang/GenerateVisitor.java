@@ -471,7 +471,7 @@ class GenerateVisitor {
             _superArgs.addLast(sb.toString());
 
             _paramTypes.addLast("omitted");
-            _paramNames.addLast("omitted");            
+            _paramNames.addLast("omitted");
 
          } else {
 
@@ -543,6 +543,7 @@ class GenerateVisitor {
                  break;
 
                  case 'm':
+                 case 'h':
                  sb.append('_');
                  sb.append(nameStr);
                  sb.append(" = ");
@@ -714,6 +715,17 @@ class GenerateVisitor {
       }
     }
 
+    // a hasX() method that returns true
+    public MethodSignature(String name, int dummy) {
+      Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+
+      String partName = firstLetter.toString() + name.substring(1);
+
+      _name = "has" + partName;
+      _returnType = "boolean";
+      _methodBody = "return true;";
+    }
+
     public LinkedList accessors() {
       LinkedList retval = new LinkedList();
 
@@ -747,7 +759,11 @@ class GenerateVisitor {
             "public static final", Integer.toString(childIndex)));
            break;
 
-           case 'm':
+           case 'h': // member with hasX()
+           retval.addLast(new MethodSignature(nameStr, -1));
+           // no break;
+
+           case 'm': // member
            retval.addLast(new ClassField(typeStr, nameStr));
 
            // getter

@@ -30,28 +30,34 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 package ptolemy.lang.java;
+
+import ptolemy.lang.IVisitor;
+import java.util.LinkedList;
 </cheader>
 
 <nheader>
 import ptolemy.lang.TreeNode;
 </nheader>
 
-mplace m
+mplace h
 
 // abstract bases
-TypeDecl A JavaDecl k 2 String name {n}int category0 {p}TypeNode defType k
-TypedDecl A JavaDecl k 2 String name {n}int category0 {p}TypeNode type int modifiers k
-MemberDecl A TypedDecl k 4 String name {n}int category0 {p}TypeNode type int modifiers {p}TreeNode source {p}ClassDecl container  k
+TypeDecl A JavaDecl k 2 String name int category0 TypeNode defType k
+TypedDecl A JavaDecl k 2 String name int category0 {p}TypeNode type int modifiers k
+// container is a ClassDecl
+MemberDecl A TypedDecl k 4 String name int category0 TypeNode type int modifiers TreeNode source JavaDecl container  k
 
 // concrete decls
-PackageDecl C JavaDecl k 2 String name [ JavaDecl.CG_PACKAGE ] {p}JavaDecl container k
-LocalVarDecl C TypedDecl k 4 String name [ JavaDecl.CG_LOCALVAR ] {p}TypeNode type int modifiers {p}TreeNode source k
-FormalParameterDecl C TypedDecl k 3 String name [ JavaDecl.CG_FORMAL ] {p}TypeNode type int modifiers {p}TreeNode source k
-StmtLblDecl C JavaDecl k 2 String name [ JavaDecl.CG_STMTLABEL ] {p}TreeNode source k
-FieldDecl C MemberDecl k 6 String name [ JavaDecl.CG_FIELD ] {p}TypeNode type int modifiers {p}TreeNode source {p}ClassDecl container k
-MethodDecl C MemberDecl k 6 String name [ JavaDecl.CG_METHOD ] {p}TypeNode type int modifiers {p}TreeNode source {p}ClassDecl container k
-ClassDecl C TypeDecl k 3 String name {n}int category0 {p}TypeNode defType int modifiers {p}TreeNode source {p}JavaDecl container k
+PackageDecl C JavaDecl k 2 String name [ JavaDecl.CG_PACKAGE ] JavaDecl container k
+LocalVarDecl C TypedDecl k 4 String name [ JavaDecl.CG_LOCALVAR ] TypeNode type int modifiers TreeNode source k
+FormalParameterDecl C TypedDecl k 4 String name [ JavaDecl.CG_FORMAL ] TypeNode type int modifiers TreeNode source k
+StmtLblDecl C JavaDecl k 2 String name [ JavaDecl.CG_STMTLABEL ] TreeNode source k
+// container here is a ClassDecl
+FieldDecl C MemberDecl k 6 String name [ JavaDecl.CG_FIELD ] TypeNode type int modifiers TreeNode source JavaDecl container k
+// container here is a ClassDecl
+MethodDecl C MemberDecl k 6 String name [ JavaDecl.CG_METHOD ] TypeNode type int modifiers TreeNode source JavaDecl container k
+ClassDecl C TypeDecl k 3 String name int category0 TypeNode defType int modifiers TreeNode source JavaDecl container k
 
 // what is this for???
-PrimitiveDecl C TypeDecl k 3 String name [ JavaDecl.CG_PRIMITIVE ] {p}TypeNode defType k
+PrimitiveDecl C TypeDecl k 3 String name [ JavaDecl.CG_PRIMITIVE ] TypeNode defType k
 

@@ -112,8 +112,7 @@ ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 ClassDeclNode C ReferenceTypeNode i NamedNode i k 0 int modifiers NameNode name TreeNode superClass LinkedList interfaces LinkedList members k
 
 FieldDeclNode C TreeNode i NamedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
-// no final modifier possible yet
-VarDeclNode C TreeNode i NamedNode i k 0 TypeNode dtype NameNode name TreeNode initExpr k
+VarDeclNode C TreeNode i NamedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 
 // body may be absent
 MethodDeclNode C TreeNode i NamedNode i k 0 int modifiers LinkedList params TypeNode returnType NameNode name LinkedList throwsList TreeNode body k
@@ -123,9 +122,10 @@ ConstructorDeclNode C TreeNode k 0 int modifiers String ident LinkedList params 
 
 ThisConstructorCallNode C TreeNode k 0 LinkedList args k
 StaticInitNode C TreeNode k 0 BlockNode block k
+InstanceInitNode C TreeNode k 0 BlockNode block k
 InterfaceDeclNode C TreeNode i NamedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
 ArrayInitNode C ExprNode k 0 LinkedList initializers k
-ParameterNode C TreeNode i NamedNode i k 0 TypeNode dtype NameNode name k
+ParameterNode C TreeNode i NamedNode i k 0 int modifiers TypeNode dtype NameNode name k
 SuperConstructorCallNode C TreeNode k 0 LinkedList args k
 BlockNode C StatementNode k 0 LinkedList stmts k
 EmptyStmtNode C StatementNode c 0 c
@@ -142,10 +142,12 @@ ForNode C TreeNode k 0 LinkedList init ExprNode test LinkedList update TreeNode 
 
 // label may be absent !!!
 BreakNode C StatementNode k 0 TreeNode label k
-ContinueNode C StatementNode k 0 TreeNode label k
 // label may be absent
-ReturnNode C StatementNode k 0 TreeNode expr k
+ContinueNode C StatementNode k 0 TreeNode label k
+
 // expr may be absent
+ReturnNode C StatementNode k 0 TreeNode expr k
+
 ThrowNode C StatementNode k 0 ExprNode expr k
 SynchronizedNode C StatementNode k 0 ExprNode expr TreeNode stmt k
 CatchNode C TreeNode k 0 ParameterNode param BlockNode block k

@@ -36,7 +36,7 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-class ResolveImportsVisitor extends JavaVisitor {
+public class ResolveImportsVisitor extends JavaVisitor {
     ResolveImportsVisitor() {
         super(TM_CUSTOM);
     }
@@ -47,7 +47,7 @@ class ResolveImportsVisitor extends JavaVisitor {
         NameNode name = node.getName();
 
         StaticResolution.resolveAName(name,
-         (Environ) StaticResolution.SYSTEM_PACKAGE.getProperty("environ"),
+         (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(),
          null, false, null, JavaDecl.CG_USERTYPE);
 
         JavaDecl old = (JavaDecl) fileEnv.lookupProper(name.getIdent());
@@ -67,9 +67,9 @@ class ResolveImportsVisitor extends JavaVisitor {
 
         NameNode name = node.getName();
 
-        StaticResolution.resolveAName(name, (Environ)
-         StaticResolution.SYSTEM_PACKAGE.getProperty("environ"), null, false, null,
-         JavaDecl.CG_PACKAGE);
+        StaticResolution.resolveAName(name,
+         StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, false,
+         null, JavaDecl.CG_PACKAGE);
 
         PackageDecl decl = (PackageDecl) name.getProperty("decl");
 

@@ -3,15 +3,15 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-class PackageResolutionVisitor extends JavaVisitor {
+public class PackageResolutionVisitor extends JavaVisitor {
 
-    PackageResolutionVisitor() {
-        super(TM_CHILDREN_CUSTOM);
+    public PackageResolutionVisitor() {
+        super(TM_CUSTOM);
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
-        // initialize importedPackges property
+        // initialize importedPackages property
         if (!node.hasProperty("importedPackages")) {
            node.setProperty("importedPackages", new LinkedList());
         }
@@ -24,20 +24,20 @@ class PackageResolutionVisitor extends JavaVisitor {
         } else {
            NameNode name = (NameNode) StaticResolution.resolveAName(
             (NameNode) pkgDeclNode,
-            (Environ) StaticResolution.SYSTEM_PACKAGE.getProperty("environ"),
+            StaticResolution.SYSTEM_PACKAGE.getEnviron(),
 		     null, false, null, JavaDecl.CG_PACKAGE);
            thePkgDecl = (PackageDecl) name.getProperty("decl");
         }
 
-        node.setDefinedProperty("thePackage", thePkgDecl);
+        node.setProperty("thePackage", thePkgDecl);
 
         // build environment for this file
         Environ importOnDemandEnv = new Environ(
-         (Environ) StaticResolution.SYSTEM_PACKAGE.getDefinedProperty("environ"));
+         StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
         Environ pkgEnv = new Environ(importOnDemandEnv);
 
-        pkgEnv.copyDeclList((Environ) thePkgDecl.getDefinedProperty("environ"));
+        pkgEnv.copyDeclList(thePkgDecl.getEnviron());
 
         Environ environ = new Environ(pkgEnv); // the file level environment
 
@@ -57,7 +57,7 @@ class PackageResolutionVisitor extends JavaVisitor {
 
     /** The default visit method. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        throw new RuntimeException("ResolveImports not defined on node type : " +
+        throw new RuntimeException("PackageResolution not defined on node type : " +
          node.getClass().getName());
     }
 }

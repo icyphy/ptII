@@ -3,7 +3,7 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import java.util.LinkedList;
 
-class TypeVisitor extends JavaVisitor {
+public class TypeVisitor extends JavaVisitor {
     public TypeVisitor() {
     }
 
@@ -39,7 +39,7 @@ class TypeVisitor extends JavaVisitor {
 
     public Object visitStringLitNode(StringLitNode node, LinkedList args) {
         node.setProperty("type",
-         new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String")));;
+         new TypeNameNode(new NameNode(AbsentTreeNode.instance, "String")));
         return null;
     }
 }

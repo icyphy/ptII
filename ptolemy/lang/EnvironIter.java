@@ -1,7 +1,7 @@
 /*
 An iterator for declarations from an environment. Instead of looking up
 all matches of a declaration at once, declarations are found on an
-as-needed basis. Inspired by Paul Hilfinger's EnvironIter in Titanium.
+as-needed basis. Inspired by EnvironIter in Titanium.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -59,14 +59,19 @@ public class EnvironIter implements Iterator {
   }
 
   public boolean hasNext() {
+     ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
+
      try {
        nextDecl();
 
        // rewind to valid Decl
        _declIter.previous();
      } catch (NoSuchElementException e) {
+       ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+        " = false");     
        return false;
      }
+     ApplicationUtility.trace("EnvironIter : hasNext for " + _name + " = true");
      return true;
   }
 
@@ -75,6 +80,9 @@ public class EnvironIter implements Iterator {
   }
 
   public Decl nextDecl() {
+
+     ApplicationUtility.trace("EnvironIter : nextDecl for " + _name);
+
 
      if (_declIter == null) {
         throw new NoSuchElementException("No elements in EnvironIter.");
@@ -86,13 +94,21 @@ public class EnvironIter implements Iterator {
            Decl decl = (Decl) _declIter.next();
 
            if (decl.matches(_name, _mask)) {
+              ApplicationUtility.trace("EnvironIter : found match for " +
+               _name);
               return decl;
            }
         }
 
         if (_nextEnviron == null) {
+           ApplicationUtility.trace("EnvironIter : no more elements " +
+            "looking for " + _name);
+
            throw new NoSuchElementException("No more elements in EnvironIter.");
         }
+
+        ApplicationUtility.trace("EnvironIter : going to next environment " +
+         "looking for " + _name);
 
         _declIter = _nextEnviron.allProperDecls();
         _nextEnviron = _nextEnviron.parent();
@@ -110,10 +126,16 @@ public class EnvironIter implements Iterator {
   }
 
   public boolean moreThanOne() {
+    // FIXME
 
+    return false;
+
+    /*
     // a naive way of testing for more than one
     // a better way would be to rewind to the first element that matched,
     // instead of rewinding to the starting point
+
+    ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
 
     if (_declIter == null) {
        // empty list
@@ -140,6 +162,9 @@ public class EnvironIter implements Iterator {
        }
 
        if (matches >= 2) {
+          ApplicationUtility.trace("EnvironIter: moreThanOne = true for " +
+           _name);
+
           return true;
        }
 
@@ -147,21 +172,32 @@ public class EnvironIter implements Iterator {
        // matches == 0
 
        if (_nextEnviron == null) {
+          ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
+           _name);
           return false;
        }
 
        _declIter = _nextEnviron.allProperDecls();
        _nextEnviron = _nextEnviron.parent();
+
+       ApplicationUtility.trace("EnvironIter: moreThanOne recursing for " +
+        _name);
+
        return moreThanOne();
     }
 
     // matches == 1
 
     if (_nextEnviron == null) {
+       ApplicationUtility.trace("EnvironIter: moreThanOne: only 1 found for " +
+        _name);
        return false;
     }
 
-    return (_nextEnviron.lookup(_name, _mask) != null);
+    ApplicationUtility.trace("EnvironIter: moreThanOne: 1 found, " +
+     "checking next environment for " + _name);
+
+    return (_nextEnviron.lookup(_name, _mask) != null); */
   }
 
   public void remove() {
@@ -173,5 +209,4 @@ public class EnvironIter implements Iterator {
   protected ListIterator _declIter;
   protected String _name;
   protected int _mask;
-  protected Decl _cacheDecl = null;
 }

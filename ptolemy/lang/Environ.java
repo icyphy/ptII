@@ -1,6 +1,6 @@
 /*
 An environment for declarations, which may be contained in another
-environment. Inspired by Paul Hilfinger's environments in Titanium.
+environment. Code converted from Environ in Titanium.
 
 Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
