@@ -1,20 +1,20 @@
-/* An interactive plotting widget. 
- 
+/* An interactive plotting widget.
+
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
@@ -22,7 +22,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
- 
+
 */
 
 package ptolemy.filter.view;
@@ -32,20 +32,20 @@ import java.awt.*;
 import java.awt.event.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// InteractPlot 
+//// InteractPlot
 /**
   An interactive plotting widget.  It extends Plot class from plot package.
-  This plot support user input on the plot.  It contain a list of 
+  This plot support user input on the plot.  It contain a list of
   interact component that allow user changed the data graphically.
-  Mouse listeners are used to process the user mouse event that 
+  Mouse listeners are used to process the user mouse event that
   drag and drop the interact components.
-  After change the data, it knows how to repaint the plot, and 
+  After change the data, it knows how to repaint the plot, and
   recalculate the actual value of the interact components from coordinates.
-  <p> 
+  <p>
   The list of interactive components are not ordered, they are not
   catagorized either.  But they have a field <i> dataset </i> that
   tells which dataset the component belongs to.
-  <p> 
+  <p>
   For plot like pole-zero plot, the plot need to handle merging of those
   interact components that are very close together.  This option is set
   by <code> setMergeInteractComp() </code>.
@@ -61,8 +61,8 @@ public class InteractPlot extends Plot {
 
     /**
      * Get the editing permission on the interact plot.
-     * @return edit permission 
-     */ 
+     * @return edit permission
+     */
     public boolean getEditPermission(){
         return _editpermission;
     }
@@ -70,7 +70,7 @@ public class InteractPlot extends Plot {
     /**
      * Initialize the plot.  Set the frame for user data entry.  And set
      * up the mouse listener for select and dragging the interact objects.
-     */ 
+     */
     public void init(){
         _cxyframe = new ChangeXY();
         SelectObjectListener selectlistener = new SelectObjectListener(this);
@@ -78,20 +78,20 @@ public class InteractPlot extends Plot {
         DragObjectListener draglistener = new DragObjectListener(this);
         this.addMouseMotionListener(draglistener);
     }
-   
+
     /**
      * Set the merge flag.  When merge flag set to true, then
      * the interactcomponents that are close to each other
      * are replaced by a single component, plus a multiplicity
      * number.  This is useful for pole-zero-plot.
      * @param mergeflag merge flag.
-     */ 
+     */
     public void setMergeInteractComp(boolean mergeflag){
         _mergeflag = mergeflag;
-    } 
+    }
 
-    /** 
-     * Set the editing permission of this interact plot.  
+    /**
+     * Set the editing permission of this interact plot.
      * Sometimes the view decide to turn off the interact function
      * in interactplot.
      * @param edit edit permission
@@ -99,7 +99,7 @@ public class InteractPlot extends Plot {
     public void setEditPermission(boolean edit){
         _editpermission = edit;
     }
- 
+
     /**
      * set the "view" of the plot, that handles the changes made by plot back
      * to the subject, and vise versa. <p>
@@ -110,7 +110,7 @@ public class InteractPlot extends Plot {
     }
 
     /**
-     * Delete all interactive components 
+     * Delete all interactive components
      */
     public void eraseInteractComponents(){
         _interactComponents.removeAllElements();
@@ -119,7 +119,7 @@ public class InteractPlot extends Plot {
     /**
      * Delete interactive components by dataset.
      * @param datas given data set number where the interact object will
-     * delete. 
+     * delete.
      */
     public void eraseInteractComponents(int datas){
         Enumeration interenum = _interactComponents.elements();
@@ -133,24 +133,24 @@ public class InteractPlot extends Plot {
                  deleted.addElement(ic);
              }
         }
-        // perform the deletion 
+        // perform the deletion
         Enumeration delenum = deleted.elements();
         while (delenum.hasMoreElements()){
              _interactComponents.removeElement(delenum.nextElement());
         }
         deleted.removeAllElements();
-    } 
+    }
 
     /**
      * Add the interactive point with the given interactive
      * component.  It like <code> addPoint </code> in Plot class.
-     * <p> 
+     * <p>
      * @param interacomp the interact component to be added
      * @param dataset dataset of this interactcomponent.
      * @param x x-coordinate value
      * @param y y-coordinate value
      * @param connect if the data point will be connected.
-     */ 
+     */
     public void addInteractPoint(InteractComponent interacomp, int dataset, int index,
                                  double x, double y, boolean connect){
 
@@ -160,33 +160,33 @@ public class InteractPlot extends Plot {
          addPoint(dataset, x, y, connect);
     }
 
-    /** 
+    /**
      * Select the interact component that the coordinate is on.  And draw its
      * value on the upper left hand corner of the plot.
      * <p>
-     * @param x The X position of cursor. 
-     * @param y The Y position of cursor. 
-     */ 
+     * @param x The X position of cursor.
+     * @param y The Y position of cursor.
+     */
     public synchronized void selectInteractcomp(int x, int y){
         _selected = _findClosest(x, y);
         Graphics graphics = getGraphics();
- 
+
         // got a close one
         if (_selected != null) {
             if (_editpermission){
                 _selected.setSelected(true);
- 
+
                 // memerize the old coordinates
                 _oldx = x;
                 _oldy = y;
- 
+
                 // draw the string that represents the actual value of
                 // interact component on the upper left side of the plot
                 // display upto 5 digit precision
 
-                graphics.setColor(Color.white); 
+                graphics.setColor(Color.white);
                 _selected.drawValue(graphics, 5, 15, 5);
- 
+
                 repaint();
             } else {
                 _selected.setSelected(true);
@@ -195,15 +195,15 @@ public class InteractPlot extends Plot {
             _viewer.selectInteractComp(_selected);
         }
     }
- 
-    /** 
-     * Select the interact component that the coordinate is on for keyboard 
+
+    /**
+     * Select the interact component that the coordinate is on for keyboard
      * entry of the interact component value.  A window for data value entry
-     * will be poped out. 
+     * will be poped out.
      * <p>
-     * @param x The X position of cursor. 
-     * @param y The Y position of cursor. 
-     */ 
+     * @param x The X position of cursor.
+     * @param y The Y position of cursor.
+     */
     public synchronized void selectInteractcompAndShowValueWin(int x, int y){
 
         InteractComponent closeic = _findClosest(x, y);
@@ -213,18 +213,18 @@ public class InteractPlot extends Plot {
                 _canceldataChange();
             } else {
                return;
-            } 
+            }
 
         } else{
- 
+
            // do the selection and pop out the dialog box
- 
+
            _selected = _findClosest(x, y);
- 
+
            if (_selected != null){
- 
+
                _selected.setSelected(true);
- 
+
                _cxyframe.setInteractComponent(_selected);
                _cxyframe.setVisible(true);
                repaint();
@@ -233,17 +233,17 @@ public class InteractPlot extends Plot {
         }
     }
 
-    /** 
+    /**
      * Dragging the interact component.  First it check if the
      * selected component exists.  The movement of dragging is limited
      * by interact component's degree of freedom.
-     * The actual value of the selected component is updated as it is 
+     * The actual value of the selected component is updated as it is
      * dragged around.  It will be painted on the upper left hand corner
      * of the plot.
      * <p>
-     * @param x The X position of cursor. 
-     * @param y The Y position of cursor. 
-     */ 
+     * @param x The X position of cursor.
+     * @param y The Y position of cursor.
+     */
     public synchronized void dragInteractcomp(int x, int y){
         if (_selected!=null){ // check if any component is selected
 
@@ -253,7 +253,7 @@ public class InteractPlot extends Plot {
             if (!_cxyframe.isVisible()){
 
                 // limit the movement of the dragging, not outside
-                if (x < _ulx+10 || x > _lrx-10 
+                if (x < _ulx+10 || x > _lrx-10
                  || y < _uly+10 || y > _lry-10) return;
 
                 int xdiff = x - _oldx;
@@ -263,16 +263,16 @@ public class InteractPlot extends Plot {
 
                 // draw itself to erase the old image
                 _selected.drawSelf(graphics);
- 
-                // update the position 
+
+                // update the position
                 _selected.movePosition(xdiff, ydiff);
 
                 // draw itself at a new location
                 _selected.drawSelf(graphics);
 
-                graphics.setPaintMode(); 
+                graphics.setPaintMode();
                 // _setNormalpaintMode(); // set back the paint mode
- 
+
                 double xv = (((double)(_selected.getXPosition()-_ulx))
                             /((double)(_lrx-_ulx)))*(_xMax-_xMin) + _xMin;
                 double yv = _yMax - (((double)(_selected.getYPosition()-_uly))
@@ -283,34 +283,34 @@ public class InteractPlot extends Plot {
                 // erase the previous value
                 graphics.setColor(_background);
                 graphics.fillRect(5,5,270,15);
- 
+
                 graphics.setColor(Color.white);
                 _selected.drawValue(graphics, 5, 15, 5);
                 _oldx = x;
                 _oldy = y;
- 
+
              }
          }
     }
- 
-    /* Finishing dragging the interact object.  
+
+    /* Finishing dragging the interact object.
      * User finishes dragging the component to the desired location,
      * the selected object is unselected, the final value is calculated.
      * The view object is also notified about the change.
      * <p>
-     * @param x The X position of cursor. 
-     * @param y The Y position of cursor. 
+     * @param x The X position of cursor.
+     * @param y The Y position of cursor.
      */
     public synchronized void finishDragInteractcomp(int x, int y){
          if (_selected != null){
              if ((!_cxyframe.isVisible()) && (_editpermission)){
-                 
+
                  Graphics graphics = getGraphics();
 
                  int xdiff = x - _oldx;
                  int ydiff = y - _oldy;
                  _selected.movePosition(xdiff, ydiff);
- 
+
                  // final actual value
                  double xv = (((double)(_selected.getXPosition()-_ulx))
                              /((double)(_lrx-_ulx)))*(_xMax-_xMin) + _xMin;
@@ -320,7 +320,7 @@ public class InteractPlot extends Plot {
                  _selected.setSelected(false);
                  graphics.setColor(_background);
                  graphics.fillRect(5,5,270,15);
- 
+
                  // redraw the plot
                  repaint();
                  _viewer.moveInteractComp(_selected);
@@ -336,46 +336,46 @@ public class InteractPlot extends Plot {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** 
+    /**
      * Redraw the plot.  It will draw interactive component by calling
      * their <code> drawSelf() </code>.  But it will only draw the object
      * if it is can fit in the plot window.  Thus the the position coordinates
      * is calculated from the value coordinates of the interact components.
-     * <p> 
-     * First it checks if the merge flag is set or not, if it is set then 
+     * <p>
+     * First it checks if the merge flag is set or not, if it is set then
      * it will merge all the close interact components, set the correct
-     * multiplicity.  If ther merge flag is not set, simply draw the 
+     * multiplicity.  If ther merge flag is not set, simply draw the
      * visible interact component. <p>
      * <p>
      * This method is derived from <code> Plot._drawPlot() </code>.  The
      * first this method calls is the super class's <code> _drawPlot </code>.
      * This ensures that the non-interactive parts of the plot is drawn.
-     * <p> 
+     * <p>
      * @param graphics Graphics element to draw the plot with.
      * @param clearfirst boolean indicates if plot should be cleared before
-     *                   redraw.  
+     *                   redraw.
      */
     protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst){
 
         super._drawPlot(graphics, clearfirst);
         Color curColor = graphics.getColor();
         InteractComponent iComp;
- 
+
         Vector drawComp = new Vector();  // list of comp to be drawn
-  
+
         // list of multiplicity to each comp
         int [] multi = new int[_interactComponents.size()];
- 
-        if (_mergeflag){ 
+
+        if (_mergeflag){
             // merge the interactcomponents if they are in the same dataset
-            // and locate very close to each other. 
+            // and locate very close to each other.
             // use this for loop to calculate the location of each components,
             // and check if they need merging
             for (int i=0;i<_interactComponents.size();i++){
                  iComp = (InteractComponent) _interactComponents.elementAt(i);
- 
+
                  // find the coordinates
- 
+
                  int ptx = (int)((iComp.getXValue() - _xMin)
                           /(_xMax-_xMin)*(double)(_lrx-_ulx));
                  int pty = (int)((_yMax - iComp.getYValue())
@@ -385,16 +385,16 @@ public class InteractPlot extends Plot {
 
                       // merge and draw only those are visible
                      iComp.setNewPosition(ptx+_ulx, pty+_uly);
- 
+
                      boolean merge = false;
-                  
+
                      // don't merge if the pole/zero is in middle of dragging
                      if (iComp.getSelected() == false){
- 
+
                          // check iComp against all other interact component that
                          // is already in the draw vector
                          for (int j=0;j<drawComp.size();j++){
- 
+
                              // if they are close merge them, increment the
                              // multiplicity count.
                              InteractComponent ic = (InteractComponent) drawComp.elementAt(j);
@@ -403,14 +403,14 @@ public class InteractPlot extends Plot {
                               && (ic.getDataSetNum() == iComp.getDataSetNum())){
                                   multi[j]++;
                                   merge = true;
- 
+
                                   // break out the for loop, since one object can
                                   // only merge withe one other object.
                                   break;
                             }
                         }
                      }
- 
+
                      if (merge == false){
                          // no merge, then add it to the draw vector
                          drawComp.addElement(iComp);
@@ -419,31 +419,31 @@ public class InteractPlot extends Plot {
                  }
              }
         } else {
-             // don't merge at all 
+             // don't merge at all
              for (int i=0;i<_interactComponents.size();i++){
                   iComp = (InteractComponent) _interactComponents.elementAt(i);
                   // find the coordinates
- 
+
                   int ptx = (int)((iComp.getXValue() - _xMin)
                             /(_xMax-_xMin)*(double)(_lrx-_ulx));
                   int pty = (int)((_yMax - iComp.getYValue())
                             /(_yMax-_yMin)*(double)(_lry-_uly));
                   if (ptx>=0 && pty>=0){
-  
+
                       // draw only those are visible
                       iComp.setNewPosition(ptx+_ulx, pty+_uly);
                       drawComp.addElement(iComp);
                   }
              }
         }
-    
+
         // now draw the final interact components
         // draw the interact component that is in the draw vector
         // and their multiplicity too.
         for (int i=0;i<drawComp.size();i++){
              InteractComponent iCompdraw = (InteractComponent) drawComp.elementAt(i);
              // seleted for dragging
-             if (iCompdraw.getSelected() == true) _setXORpaintMode();  
+             if (iCompdraw.getSelected() == true) _setXORpaintMode();
 
              iCompdraw.drawSelf(graphics);
 
@@ -458,21 +458,21 @@ public class InteractPlot extends Plot {
 
         graphics.setColor(curColor);
         notify();
-    } 
+    }
 
- 
-    /** 
-     * Change the selected interact object data value. 
+
+    /**
+     * Change the selected interact object data value.
      * The selected object will get unselected.
      * <p>
-     * @param x new x-coordinate double value 
-     * @param y new y-coordinate double value 
-     */ 
+     * @param x new x-coordinate double value
+     * @param y new y-coordinate double value
+     */
     protected void _dataChange(double x, double y){
          if (_selected != null){
               _cxyframe.setVisible(false);
-              _selected.changeValue(x, y);      
-              _selected.setSelected(false);        
+              _selected.changeValue(x, y);
+              _selected.setSelected(false);
               repaint();
               _viewer.moveInteractComp(_selected);
               _selected = null;
@@ -480,9 +480,9 @@ public class InteractPlot extends Plot {
          }
     }
 
-    /** 
+    /**
      * Cancel the keyboard entry change of the selected object.
-     */ 
+     */
     protected void _canceldataChange(){
         if (_selected != null){
              _cxyframe.setVisible(false);
@@ -493,49 +493,49 @@ public class InteractPlot extends Plot {
         }
     }
 
- 
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
     /** list of interact components */
-    protected Vector _interactComponents = new Vector(); 
+    protected Vector _interactComponents = new Vector();
 
     /** the interact component that is currently selected */
-    protected InteractComponent _selected;   
+    protected InteractComponent _selected;
 
-    /** the reference to the view that contains this plot */ 
+    /** the reference to the view that contains this plot */
     protected PlotView _viewer;
 
     /** the permission to for editing on the plot */
     protected boolean _editpermission = true;
 
     /** permission to merge close interact component */
-    protected boolean _mergeflag = false; 
+    protected boolean _mergeflag = false;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
     //
-    // set the XOR paint mode, smoothing out the interact object's movement 
-    // during dragging.  This allow an object to be erased by redrawing 
-    // at the same location. 
+    // set the XOR paint mode, smoothing out the interact object's movement
+    // during dragging.  This allow an object to be erased by redrawing
+    // at the same location.
     //
     private void _setXORpaintMode(){
         getGraphics().setXORMode(_background);
     }
 
-    // 
-    // set the normal paint mode. 
+    //
+    // set the normal paint mode.
     //
     private void _setNormalpaintMode(){
         getGraphics().setPaintMode();
     }
 
-    // 
-    // Given a coordinate find the closest interact object that 
+    //
+    // Given a coordinate find the closest interact object that
     // the coordinate is in.
-    // 
+    //
     private InteractComponent _findClosest(int x, int y){
         int mindis = Integer.MAX_VALUE;
         int closest = -1;
@@ -544,7 +544,7 @@ public class InteractPlot extends Plot {
             iComp = (InteractComponent)_interactComponents.elementAt(i);
             // select the closest interact component.
             if (iComp.ifEntered(x, y) == true){
-                int d = Math.min(Math.abs(x-iComp.getXPosition()), 
+                int d = Math.min(Math.abs(x-iComp.getXPosition()),
                                  Math.abs(y-iComp.getYPosition()));
 
                 if (d < mindis) {
@@ -559,12 +559,12 @@ public class InteractPlot extends Plot {
             iComp = null;
         }
         return iComp;
-    } 
-      
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
     private int _oldx;
-    private int _oldy; 
+    private int _oldy;
     private ChangeXY _cxyframe;
     private final int CLOSE = 3;
 
@@ -575,23 +575,23 @@ public class InteractPlot extends Plot {
    // Dialog to change the value of the interact components
    // when they are selected by the interactcomponent by control-click it
    // Uses frame instead of dialog, since you can't attach a dialog to a applet
-   // without frame 
+   // without frame
    //
    class ChangeXY extends Frame implements ActionListener {
- 
+
    /**
     * Constructor.  Setup the widgets for different inputs.
     */
       public ChangeXY(){
-   
+
           super();
           _entry1 = new TextField(10);
-     
-          _p1 = new Panel(); 
+
+          _p1 = new Panel();
           _p1.setLayout(new FlowLayout(5, 5, 5));
           _p2 = new Panel();
           _p2.setLayout(new FlowLayout(5, 5, 5));
-  
+
           _ok = new Button("OK");
           _ok.setActionCommand("   OK   ");
           _ok.addActionListener(this);
@@ -600,11 +600,11 @@ public class InteractPlot extends Plot {
           _cancel.addActionListener(this);
           this.setLayout(new BorderLayout(5, 5));
 
-      } 
+      }
 
       ////                     public methods                      ////
       void setInteractComponent(InteractComponent ic){
-          
+
           _entry1 = null;
           _entry2 = null;
           String xv = String.valueOf(ic.getXValue());
@@ -627,11 +627,11 @@ public class InteractPlot extends Plot {
           } else {
               yvchop = yv;
           }
-   
-          _p1.removeAll(); 
-          _p2.removeAll(); 
-          this.removeAll(); 
-          
+
+          _p1.removeAll();
+          _p2.removeAll();
+          this.removeAll();
+
           _p1.add("Left", new Label(ic.getxlabelName()));
           if (deg != 2){
               _entry1 = new TextField(10);
@@ -640,7 +640,7 @@ public class InteractPlot extends Plot {
           } else {
               _p1.add("Center", new Label(xvchop));
           }
- 
+
           _p2.add("Left", new Label(ic.getylabelName()));
           if (deg != 1){
               _entry2 = new TextField(10);
@@ -649,29 +649,29 @@ public class InteractPlot extends Plot {
           } else {
               _p2.add("Center", new Label(yvchop));
           }
- 
+
           this.add("North", _p1);
           this.add("Center", _p2);
 
           Panel buttonpanel = new Panel();
           buttonpanel.setLayout(new FlowLayout(5, 5, 5));
-          buttonpanel.add(_ok);   
-          buttonpanel.add(_cancel);   
+          buttonpanel.add(_ok);
+          buttonpanel.add(_cancel);
           this.add("South", buttonpanel);
           this.pack();
-       }   
- 
-    // 
+       }
+
+    //
     // Reads the input from the dialog and sends to interactplot.
     //
        public void actionPerformed(ActionEvent evt){
 
           if (evt.getActionCommand().equals("OK")){
- 
+
               double x = 0.0;
               double y = 0.0;
 
-              if (_entry1 != null){ 
+              if (_entry1 != null){
                   if (_entry1.getText().equals("")){
                       x = 0.0;
                   } else {
@@ -679,7 +679,7 @@ public class InteractPlot extends Plot {
                       x = a.doubleValue();
                   }
               }
-              if (_entry2 != null){ 
+              if (_entry2 != null){
                    if (_entry2.getText().equals("")){
                        y = 0.0;
                    } else {
@@ -692,15 +692,15 @@ public class InteractPlot extends Plot {
           } else if (evt.getActionCommand().equals("CANCEL")){
                this.setVisible(false);
                _canceldataChange();
-          }     
+          }
        }
- 
+
        ////         private variables                ////
        private TextField _entry1;
        private TextField _entry2;
-       private Panel _p1, _p2; 
+       private Panel _p1, _p2;
        private Button _ok;
        private Button _cancel;
 
     }
-} 
+}

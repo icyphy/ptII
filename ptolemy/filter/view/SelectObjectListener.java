@@ -1,4 +1,4 @@
-/* This is the select object listener for InteractPlot. 
+/* This is the select object listener for InteractPlot.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -32,15 +32,15 @@ import java.awt.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SelectObjectListener
-/** 
+/**
   The select object listener for InteractPlot.  It used be an inner
 class in InteractPlot.  But it complains during compilation, but class
 files still builds ok, and it runs fine...  So it is in its
 seperate java file.
 
-@author  wbwu@eecs.berkeley.edu 
-@version $id$ 
-@see InteractPlot 
+@author  wbwu@eecs.berkeley.edu
+@version $id$
+@see InteractPlot
 */
 public class SelectObjectListener implements MouseListener {
     /** Constructor
@@ -50,7 +50,7 @@ public class SelectObjectListener implements MouseListener {
     public SelectObjectListener(InteractPlot interactPlot) {
          _interactPlot = interactPlot;
     }
-   
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -58,7 +58,7 @@ public class SelectObjectListener implements MouseListener {
     /**
      * Processing mouse click event.  For a mouse click with a control
      * down, the interact plot pop a window that shows value of the
-     * InteractComponent.  
+     * InteractComponent.
      * @param event the click mouse event
      */
     public void mouseClicked (MouseEvent event) {
@@ -68,7 +68,7 @@ public class SelectObjectListener implements MouseListener {
             }
         }
     }
- 
+
     public void mouseEntered(MouseEvent event) {
     }
 
@@ -79,7 +79,7 @@ public class SelectObjectListener implements MouseListener {
      * Process the mouse down event when the meta key is also down.
      * This is for select interact component on the plot.
      * @param event mouse down event.
-     */ 
+     */
     public void mousePressed(MouseEvent event) {
         if (event.isMetaDown()){
             _interactPlot.selectInteractcomp(event.getX(), event.getY());
@@ -90,7 +90,7 @@ public class SelectObjectListener implements MouseListener {
      * Process the mouse up event when the meta key is also down.
      * This is for unselect interact component on the plot.
      * @param event mouse up event.
-     */ 
+     */
     public void mouseReleased(MouseEvent event) {
         if (event.isMetaDown()){
             _interactPlot.finishDragInteractcomp(event.getX(), event.getY());

@@ -1,4 +1,4 @@
-/* Filter views controller 
+/* Filter views controller
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -32,16 +32,16 @@ import java.awt.*;
 import java.awt.event.*;
 
 /////////////////////////////////////////////////////////////////////////
-//// ViewController 
-/** 
- A window that hide/show the views of the current filter design.  
+//// ViewController
+/**
+ A window that hide/show the views of the current filter design.
  It is constructed by Manager, and references of view are passed in.
- User use this window to show/hide the views, like PoleZeroView, 
+ User use this window to show/hide the views, like PoleZeroView,
  FreqResponseView, ImpulseResponseView, etc.
  <p>
- When a new filter is created, this class is recreated, since there 
- could be different view for different type of filter. 
- <p> 
+ When a new filter is created, this class is recreated, since there
+ could be different view for different type of filter.
+ <p>
 @author  William Wu (wbwu@eecs.berkeley.edu)
 @version %W%    %G%
 */
@@ -70,24 +70,24 @@ public class ViewController extends Frame implements ActionListener {
               }
           }
 
-          ok = new Button("  OK  "); 
+          ok = new Button("  OK  ");
           ok.addActionListener(this);
-          ok.setActionCommand("ok");                  
-          apply = new Button("  Apply  ");                   
+          ok.setActionCommand("ok");
+          apply = new Button("  Apply  ");
           apply.addActionListener(this);
-          apply.setActionCommand("apply");                  
+          apply.setActionCommand("apply");
           cancel = new Button("  Cancel  ");
           cancel.addActionListener(this);
-          cancel.setActionCommand("cancel");                  
-        
+          cancel.setActionCommand("cancel");
+
           Panel buttonpanel = new Panel();
           buttonpanel.setLayout(new FlowLayout(5,5,5));
           buttonpanel.add(ok);
           buttonpanel.add(apply);
           buttonpanel.add(cancel);
-          
-          this.add("Center", checkboxpanel); 
-          this.add("South", buttonpanel); 
+
+          this.add("Center", checkboxpanel);
+          this.add("South", buttonpanel);
           this.setSize(350, 150);
      }
 
@@ -95,7 +95,7 @@ public class ViewController extends Frame implements ActionListener {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
     /**
-     * Handle user input on what view to show or hide.  It calls Manager  
+     * Handle user input on what view to show or hide.  It calls Manager
      * for toggling the views.
      * @param evt action event created by user.
      */
@@ -105,7 +105,7 @@ public class ViewController extends Frame implements ActionListener {
                  _manager.toggleView(_viewsname[i], _hideshow[i][0].getState());
              }
              this.setVisible(false);
-         } else if (evt.getActionCommand().equals("apply")){ 
+         } else if (evt.getActionCommand().equals("apply")){
              for (int i=0;i<_views.length;i++){
                  _manager.toggleView(_viewsname[i], _hideshow[i][0].getState());
              }
@@ -129,12 +129,12 @@ System.out.println("found same name");
                   }
               }
          }
-         repaint();           
+         repaint();
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-    private Manager _manager; 
+    private Manager _manager;
     private Checkbox [][] _hideshow;
     private CheckboxGroup [] _views;
     private String [] _viewsname;

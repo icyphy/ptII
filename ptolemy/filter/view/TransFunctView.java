@@ -1,4 +1,4 @@
-/* A transfer function view 
+/* A transfer function view
 
 @Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
@@ -35,14 +35,14 @@ import ptolemy.math.Complex;
 import ptolemy.filter.filtermodel.FilterObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// TransFunctView 
+//// TransFunctView
 /**
   A filter view that displays the transfer function.  This view simply has
   scroble panel that shows numerator, denominator and gain of the filter.
   User can save the these info by press the save button on top of the panel.
-  <p> 
-  @author William Wu (wbwu@eecs.berkeley.edu) 
-  @version: $id$ 
+  <p>
+  @author William Wu (wbwu@eecs.berkeley.edu)
+  @version: $id$
  */
 public class TransFunctView extends FilterView implements ActionListener, ItemListener {
 
@@ -78,9 +78,9 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
 
           Panel buttonpanel = new Panel();
           buttonpanel.setLayout(new FlowLayout(5,5,5));
-          buttonpanel.add(_savebutton); 
+          buttonpanel.add(_savebutton);
           buttonpanel.add(new Label("Number of Precision"));
-          buttonpanel.add(_precision); 
+          buttonpanel.add(_precision);
 
           _canvasPane = new TransPane();
           ScrollPane scrollPane = new ScrollPane();
@@ -90,7 +90,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
           _viewPanel.add("North", buttonpanel);
           _viewPanel.add("Center", scrollPane);
           _viewPanel.setSize(500,250);
-  
+
           if (_opMode == FilterView.FRAMEMODE){ // frame mode
               String name = new String("");
               if (filter != null) name = filter.getName();
@@ -106,10 +106,10 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
           // get initial transfer function value
           if (filter!= null){
               Complex [] complexnum = null;
-              Complex [] complexden = null;  
+              Complex [] complexden = null;
               double [] realnum = null;
-              double [] realden = null;  
-              Complex complexgain = null;  
+              double [] realden = null;
+              Complex complexgain = null;
               double realgain = 0.0;
               if (filter.getType()==ptolemy.math.filter.Filter.BLANK){
                   complexnum = filter.getComplexNumerator();
@@ -134,14 +134,14 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
 
             if (_curDir!=null) _saveFileDialog.setDirectory(_curDir);
             if (_curFile!=null) _saveFileDialog.setFile(_curFile);
-            _saveFileDialog.setVisible(true); 
+            _saveFileDialog.setVisible(true);
             _curDir = _saveFileDialog.getDirectory();
             _curFile = _saveFileDialog.getFile();
             if ((_curFile == null) || (_curFile.equals(""))) return;
-            _saveTransFunct();      
+            _saveTransFunct();
 
             System.out.println("saving filter transfer function");
-        } 
+        }
     }
 
 
@@ -155,10 +155,10 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
         if (_observed == null) return;
         FilterObj jf = (FilterObj) _observed;
         Complex [] complexnum = null;
-        Complex [] complexden = null;  
+        Complex [] complexden = null;
         double [] realnum = null;
-        double [] realden = null;  
-        Complex complexgain = null;  
+        double [] realden = null;
+        Complex complexgain = null;
         double realgain = 0.0;
         if (jf.getType()==ptolemy.math.filter.Filter.BLANK){
             complexnum = jf.getComplexNumerator();
@@ -187,10 +187,10 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
           if (command.equals("UpdatedFilter")){
               FilterObj jf = (FilterObj) _observed;
               Complex [] complexnum = null;
-              Complex [] complexden = null;  
+              Complex [] complexden = null;
               double [] realnum = null;
-              double [] realden = null;  
-              Complex complexgain = null;  
+              double [] realden = null;
+              Complex complexgain = null;
               double realgain = 0.0;
               if (jf.getType()==ptolemy.math.filter.Filter.BLANK){
                   complexnum = jf.getComplexNumerator();
@@ -205,7 +205,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
           }
      }
 
-      
+
      //////////////////////////////////////////////////////////////////////////
      ////                     protected methods                            ////
 
@@ -225,15 +225,15 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
                                            Complex [] complexden, double [] realden,
                                            Complex complexgain, double realgain){
          FilterObj jf = (FilterObj) _observed;
-         _realNumerator = null; 
-         _realDenominator = null; 
-         _realGain = 0.0; 
-         _complexNumerator = null; 
-         _complexDenominator = null; 
+         _realNumerator = null;
+         _realDenominator = null;
+         _realGain = 0.0;
+         _complexNumerator = null;
+         _complexDenominator = null;
          _complexGain = null;
          int size;
 
-         if (complexgain != null){ 
+         if (complexgain != null){
              _complexNumerator = new Complex[complexnum.length];
              _complexDenominator = new Complex[complexden.length];
              _complexGain = new Complex(_chop(complexgain.real, _prec),
@@ -246,7 +246,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
                   _complexDenominator[i]=new Complex(_chop(complexden[i].real, _prec),
                                        _chop(complexden[i].imag, _prec));
              }
-             size = Math.max(complexnum.length, complexden.length)*140+70; 
+             size = Math.max(complexnum.length, complexden.length)*140+70;
          } else {
              _realNumerator = new double[realnum.length];
              _realDenominator = new double[realden.length];
@@ -258,8 +258,8 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
              for (int i=0;i<realden.length;i++){
                   _realDenominator[i]= _chop(realden[i], _prec);
              }
-             size = Math.max(realnum.length, realden.length)*120+50; 
-             
+             size = Math.max(realnum.length, realden.length)*120+50;
+
          }
          _canvasPane.setSize(size, 150);
          _canvasPane.repaint();
@@ -271,7 +271,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
      private double _chop(double number, int prec){
          String strValue = String.valueOf(number);
          String strValueChop;
- 
+
          // chop the text of the value to the desired precision
          int pt = strValue.indexOf(".");
          int E = strValue.indexOf("E");
@@ -283,7 +283,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
          } else {
              strValueChop = strValue;
          }
-         return (Double.valueOf(strValueChop)).doubleValue(); 
+         return (Double.valueOf(strValueChop)).doubleValue();
      }
 
      private void _saveTransFunct(){
@@ -294,44 +294,44 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
          if (saveFile.exists()) {
              System.out.println("Warning: File "+_curFile+
                                 " exists, overwriting it now!");
-                 
+
          }
- 
+
          try {
              ptstream = new PrintWriter(new FileOutputStream(saveFile), true);
          } catch (IOException e) {
              return;
          }
-   
-         if (_realNumerator != null){ 
+
+         if (_realNumerator != null){
              ptstream.println(_realGain);
              for (int i=0;i<_realNumerator.length;i++){
                   ptstream.print(_realNumerator[i]+" ");
-             } 
+             }
              ptstream.println(" ");
              for (int i=0;i<_realDenominator.length;i++){
                   ptstream.print(_realDenominator[i]+" ");
-             } 
+             }
              ptstream.println(" ");
          }
-         ptstream.close();   
+         ptstream.close();
       }
- 
+
      ///////////////////////////////////////////////////////////////////
      ////                        private variables                  ////
 
-     private double [] _realNumerator; 
-     private double [] _realDenominator; 
-     private double _realGain; 
-     private Complex [] _complexNumerator; 
-     private Complex [] _complexDenominator; 
+     private double [] _realNumerator;
+     private double [] _realDenominator;
+     private double _realGain;
+     private Complex [] _complexNumerator;
+     private Complex [] _complexDenominator;
      private Complex _complexGain;
-     private TransPane _canvasPane; 
+     private TransPane _canvasPane;
      private Button _savebutton;
      private FileDialog _saveFileDialog;
      private String _curDir;
      private String _curFile;
-     private Choice _precision;  
+     private Choice _precision;
      protected int _prec = 5;
 
      ///////////////////////////////////////////////////////////////////
@@ -339,55 +339,55 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
      class TransPane extends Canvas {
 
           public void paint(Graphics g){
-              _drawTransferFunction(g); 
+              _drawTransferFunction(g);
           }
 
           private void _drawTransferFunction(Graphics g){
-            
+
               g.setColor(getBackground());
               int x = getSize().width;
               int y = getSize().height;
-              g.fillRect(0,0,x,y); 
-              g.setColor(getForeground()); 
+              g.fillRect(0,0,x,y);
+              g.setColor(getForeground());
 
               if (_realNumerator != null){
                   int cursor;
                   g.drawString(String.valueOf(_realGain), 10, 50);
-                  cursor = 10 + String.valueOf(_realGain).length()*7+10; 
+                  cursor = 10 + String.valueOf(_realGain).length()*7+10;
                   for (int i=0;i<_realNumerator.length;i++){
                        if ((_realNumerator[i]>0) && (i>0)){
                            g.drawString("+", cursor, 40);
                            cursor = cursor + 9;
-                       } 
-                       g.drawString(String.valueOf(_realNumerator[i]), cursor, 40);
-                       cursor = cursor + String.valueOf(_realNumerator[i]).length()*8+5; 
-                       if (i>0){
-                           g.drawString("z", cursor, 40); 
-                           cursor = cursor + 7;
-                           g.drawString("-", cursor, 35); 
-                           cursor = cursor + 10;
-                           g.drawString(String.valueOf(i), cursor, 35); 
-                           cursor = cursor + String.valueOf(i).length()*8+7; 
                        }
-                  }    
-                  cursor = 10 + String.valueOf(_realGain).length()*7+10; 
+                       g.drawString(String.valueOf(_realNumerator[i]), cursor, 40);
+                       cursor = cursor + String.valueOf(_realNumerator[i]).length()*8+5;
+                       if (i>0){
+                           g.drawString("z", cursor, 40);
+                           cursor = cursor + 7;
+                           g.drawString("-", cursor, 35);
+                           cursor = cursor + 10;
+                           g.drawString(String.valueOf(i), cursor, 35);
+                           cursor = cursor + String.valueOf(i).length()*8+7;
+                       }
+                  }
+                  cursor = 10 + String.valueOf(_realGain).length()*7+10;
                   g.drawLine(cursor, 50, cursor+_realDenominator.length*120, 50);
                   for (int i=0;i<_realDenominator.length;i++){
                        if ((_realDenominator[i]>0) && (i>0)){
                            g.drawString("+", cursor, 70);
                            cursor = cursor + 9;
-                       } 
+                       }
                        g.drawString(String.valueOf(_realDenominator[i]), cursor, 70);
-                       cursor = cursor + String.valueOf(_realDenominator[i]).length()*7+5; 
+                       cursor = cursor + String.valueOf(_realDenominator[i]).length()*7+5;
                        if (i>0){
-                           g.drawString("z", cursor, 70); 
+                           g.drawString("z", cursor, 70);
                            cursor = cursor + 7;
-                           g.drawString("-", cursor, 65); 
+                           g.drawString("-", cursor, 65);
                            cursor = cursor + 10;
-                           g.drawString(String.valueOf(i), cursor, 65); 
-                           cursor = cursor + String.valueOf(i).length()*8+7; 
-                       }   
-                  } 
+                           g.drawString(String.valueOf(i), cursor, 65);
+                           cursor = cursor + String.valueOf(i).length()*8+7;
+                       }
+                  }
               } else {
 
               }

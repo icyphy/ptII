@@ -1,5 +1,5 @@
-/* Plot View object, view that use plot to represent data.  
- 
+/* Plot View object, view that use plot to represent data.
+
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
@@ -7,13 +7,13 @@ license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY 
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES 
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF 
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF 
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
@@ -32,35 +32,35 @@ import java.awt.*;
 import java.applet.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// PlotView 
+//// PlotView
 
-/** 
+/**
   This type of view uses plot (the Ptolemy plot package) to display
   data.  Since there could be more than one plot for a view, thus an array
-  of plots is stored in _plots.  The plot could be interactive.  Thus each 
-  interactive component will correspond to a data element, by using array of 
-  hashtables, _crossref, with interact component as the keys.  
-  This is an abstract class.  The derived class must 
-  implement moveInteractComp(), to process the change done on plot, and 
+  of plots is stored in _plots.  The plot could be interactive.  Thus each
+  interactive component will correspond to a data element, by using array of
+  hashtables, _crossref, with interact component as the keys.
+  This is an abstract class.  The derived class must
+  implement moveInteractComp(), to process the change done on plot, and
   notify the observed filter about the changes.
   <p>
-   
+
   @author: William Wu (wbwu@eecs.berkeley.edu)
   @version: %W%   %G%
   @date: 3/2/98
-*/ 
+*/
 
 
 public abstract class PlotView extends FilterView {
 
 
     /**
-     * Constructor.  
+     * Constructor.
      */
     public PlotView(String viewname, FilterObj filter){
          super(viewname, filter);
     }
- 
+
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
     /**
@@ -76,10 +76,10 @@ public abstract class PlotView extends FilterView {
         }
 
     }
- 
+
     /**
      * Process the movement of an interactive component.  The underlying data
-     * is changed accordingly and notify the observed filter in the derived  
+     * is changed accordingly and notify the observed filter in the derived
      * class.
      * <p>
      * @param ic the changed InteractComponent.
@@ -87,21 +87,21 @@ public abstract class PlotView extends FilterView {
     public abstract void moveInteractComp(InteractComponent ic);
 
     /**
-     * Process the selection of an interactive component.  
+     * Process the selection of an interactive component.
      * The derived class need to provide the implementation.
      * @param ic the selected InteractComponent.
      */
     public abstract void selectInteractComp(InteractComponent ic);
- 
+
     /**
-     * Process the disselection of an interactive component.  
+     * Process the disselection of an interactive component.
      * The derived class need to provide the implementation.
      * @param ic the unselected InteractComponent.
      */
     public abstract void unselectInteractComp(InteractComponent ic);
- 
+
     /**
-     * Process the deletion of an interactive component.  
+     * Process the deletion of an interactive component.
      * The derived class need to provide the implementation.
      * @param ic the InteractComponent to be deleted.
      */
@@ -113,9 +113,9 @@ public abstract class PlotView extends FilterView {
     /** array of plots */
     protected Plot [] _plots;
 
-    /** These hashtables stores the cross ref link between interact 
+    /** These hashtables stores the cross ref link between interact
         component and underlying data. */
-    protected Hashtable [] _crossref; 
+    protected Hashtable [] _crossref;
     protected Color _plotBack = Color.black;
     protected Color _plotFore = Color.gray;
     protected Color _plotText = Color.white;

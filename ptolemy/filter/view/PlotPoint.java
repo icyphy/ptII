@@ -32,7 +32,7 @@ package ptolemy.filter.view;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotPoint
-/** 
+/**
  * A simple structure for storing a plot point.
  * @author Edward A. Lee
  * @version @(#)PlotPoint.java	1.10    02/08/98
@@ -41,7 +41,7 @@ public class PlotPoint {
 
     /////////////////////////////////////////////////////////////////////////
     ////                         public variables                        ////
-   
+
     public double x,y;
 
     /** Error bar Y low value. */

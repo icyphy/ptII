@@ -1,20 +1,20 @@
 /* Impulse response view object
- 
+
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
@@ -22,27 +22,27 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
- 
+
 */
 
 package ptolemy.filter.view;
 
-import ptolemy.math.Complex; 
+import ptolemy.math.Complex;
 import ptolemy.filter.filtermodel.FilterObj;
 
 import java.util.*;
 import java.awt.*;
- 
+
 //////////////////////////////////////////////////////////////////////////
 //// ImpulseView
 /**
-  Impulse response view of the observed filter object.  This view 
+  Impulse response view of the observed filter object.  This view
   is specificly for the impulse response plot of a filter.  Currently
   the impulse response is not interactive, since it doesn't make sense
   to change the impulse response during IIR filter design process (FIR
   is not yet supported).  However the plot is still an InteractivePlot
   class, so later on this class can be modified to design FIR filter.
- 
+
   @author: William Wu (wbwu@eecs.berkeley.edu)
   @version: %W% %G%
   @date: 3/2/98
@@ -52,13 +52,13 @@ public class ImpulseView extends PlotView {
 
     /**
      * Constructor.  Plot is created, then added to the frame, if the operation
-     * mode is frame mode.  Data is requested from the filter and passed to 
+     * mode is frame mode.  Data is requested from the filter and passed to
      * the plot by calling <code> update() </code> method.
      *
      * @param filter observed filter object
      * @param mode operation mode
      * @param viewname name of thie view
-     */ 
+     */
     public ImpulseView(FilterObj filter, int mode, String viewname){
           super(viewname, filter);
 
@@ -81,8 +81,8 @@ public class ImpulseView extends PlotView {
           _viewPanel = new Panel();
           _viewPanel.setSize(300,350);
           _viewPanel.add("Center", plot);
-          _viewPanel.setBackground(_plotBack); 
-          _viewPanel.setForeground(_plotFore); 
+          _viewPanel.setBackground(_plotBack);
+          _viewPanel.setForeground(_plotFore);
 
           if (_opMode == FilterView.FRAMEMODE){ // frame mode
               String name = new String("");
@@ -95,18 +95,18 @@ public class ImpulseView extends PlotView {
               plot.init();
           }
 
-          // get initial data 
+          // get initial data
           if (filter != null) {
               Complex [] complexdata = null;
               double [] realdata = null;
               if (filter.getType() == ptolemy.math.filter.Filter.BLANK){
                   complexdata = filter.getComplexImpulse();
-              } else {    
+              } else {
                   realdata = filter.getRealImpulse();
               }
               _setViewImpulse(complexdata, realdata);
           }
-     }  
+     }
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ public class ImpulseView extends PlotView {
      * <p>
      * Impulse response could be complex so there will be two impulses for
      * each impulse response data point, one for the real part and one for
-     * imaginary part. 
+     * imaginary part.
      * <p>
      * @param observed observed filter object
      * @param arg message passed by filter object
@@ -138,7 +138,7 @@ public class ImpulseView extends PlotView {
               double [] realdata = null;
               if (jf.getType() == ptolemy.math.filter.Filter.BLANK){
                   complexdata = jf.getComplexImpulse();
-              } else {    
+              } else {
                   realdata = jf.getRealImpulse();
               }
               _setViewImpulse(complexdata, realdata);
@@ -146,12 +146,12 @@ public class ImpulseView extends PlotView {
      }
 
      /**
-      * New changes have been made on the plot.  View passes the new 
+      * New changes have been made on the plot.  View passes the new
       * data to the filter.
       * <p>
-      * So currently it does not perform any operation.      
+      * So currently it does not perform any operation.
       * This method is only needed at FIR filter design, since it is
-      * unlikely to modify the impulse response during IIR design. 
+      * unlikely to modify the impulse response during IIR design.
       */
      public void moveInteractComp(InteractComponent ic){
           return;
@@ -180,21 +180,21 @@ public class ImpulseView extends PlotView {
                  for (int i=0;i<complexdata.length;i++){
                      // create two vertical line segment, one for real part,
                      // one for imaginary part
-                     _plots[0].addPoint(1, 2*i+1, complexdata[i].imag, false); 
-                     _plots[0].addPoint(1, 2*i+1, 0, true); 
-                     _plots[0].addPoint(0, 2*i, complexdata[i].real, false); 
-                     _plots[0].addPoint(0, 2*i, 0, true); 
+                     _plots[0].addPoint(1, 2*i+1, complexdata[i].imag, false);
+                     _plots[0].addPoint(1, 2*i+1, 0, true);
+                     _plots[0].addPoint(0, 2*i, complexdata[i].real, false);
+                     _plots[0].addPoint(0, 2*i, 0, true);
                  }
              } else {
                  for (int i=0;i<realdata.length;i++){
                      // create two vertical line segment, one for real part,
                      // one for imaginary part
-                     _plots[0].addPoint(0, i, realdata[i], false); 
-                     _plots[0].addPoint(0, i, 0, true); 
+                     _plots[0].addPoint(0, i, realdata[i], false);
+                     _plots[0].addPoint(0, i, 0, true);
                  }
              }
          }
-         _plots[0].repaint();            
+         _plots[0].repaint();
      }
 
 

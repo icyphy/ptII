@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -32,22 +32,22 @@ import java.awt.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DragObjectListener
-/** 
+/**
    Drag object listener for filter interact plot.  It was an inner class
    of InteractPlot, but it complains during compilation, but class
    files still builds ok, and it run fine...  So it is in its
    seperate java file.
    <p>
-   This class is meant be used with  
-@author wbwu@eecs.berkeley.edu 
-@version $id$ 
-@see InteractPlot 
+   This class is meant be used with
+@author wbwu@eecs.berkeley.edu
+@version $id$
+@see InteractPlot
 */
 public class DragObjectListener implements MouseMotionListener {
     /** Constructor
-     * @param interactPlot the interact plot that this drag object 
-     * listener is in. 
-     */	
+     * @param interactPlot the interact plot that this drag object
+     * listener is in.
+     */
     public DragObjectListener(InteractPlot interactPlot) {
         _interactPlot = interactPlot;
     }
@@ -56,8 +56,8 @@ public class DragObjectListener implements MouseMotionListener {
     ////                         public methods                    ////
 
     /** Calls InteractPlot's <code> dragInteractcomp() </code>
-     * @param event the mouse event 
-     */	
+     * @param event the mouse event
+     */
     public void mouseDragged (MouseEvent event) {
          if (event.isMetaDown()){
              if (_interactPlot.getEditPermission()){

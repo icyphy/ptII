@@ -2143,7 +2143,7 @@ public class PlotBox extends Panel {
 
     /** @serial Set to true if we are reading in pxgraph format binary data.
      * @deprecated
-     */ 
+     */
     private boolean _binary = false;
 
     /** @serial The range of the plot as labeled

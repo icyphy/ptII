@@ -1,4 +1,4 @@
-/* Filter model object in the model/view design pattern 
+/* Filter model object in the model/view design pattern
 
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
@@ -9,10 +9,10 @@ software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY 
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES 
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF 
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF 
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
@@ -32,20 +32,20 @@ import ptolemy.math.*;
 import ptolemy.math.filter.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// FilterObj 
-/** 
+//// FilterObj
+/**
   Filter model in the model/view design pattern.  It is uses the existing
   object oriented model/view paradigm in java by be derived from
   Observable class in java.util.  Views are the PoleZeroView, FreqView,
   etc, in the ptolemy.filter.view package.  Views can request info
   about the filter characteristics by calling the various <i> get </i>
   methods in the class.  View can also send changed data or new data
-  back to filter object by calling the variouse <i> update </i> methods.  
+  back to filter object by calling the variouse <i> update </i> methods.
   <p>
   When a the filter object is changed, (like after redesigning with
   new spec), all the View objects will get notified by <code> notifyObservers()
-  </code>.  Then View know what to query on the Filter object. 
-         
+  </code>.  Then View know what to query on the Filter object.
+
   This object stores various design parameters that will be used
   to design digital filter.  These parameters include:<p>
   - type of digital filter: IIR, FIR, etc <p>
@@ -55,13 +55,13 @@ import ptolemy.math.filter.*;
   - band type: low pass, high pass, band stop, band pass. <p>
   - edge frequencies and gain. <p>
   - ripple heights can be represent by gain. <p>
-  <p> 
+  <p>
   FilterObj also uses class DigitalFilter (either ReadDigitalFilter or
-  ComplexDigitalFilter) to store different sets of data that represents 
-  the designed filter.  Data like pole/zero sets, frequency response, 
-  impulse reponse, numerator/denominator, etc.   
-  <p> 
-  
+  ComplexDigitalFilter) to store different sets of data that represents
+  the designed filter.  Data like pole/zero sets, frequency response,
+  impulse reponse, numerator/denominator, etc.
+  <p>
+
   @author: William Wu
   @version: %W% %G%
   @date: 3/2/98
@@ -72,7 +72,7 @@ public class FilterObj extends Observable {
 
     /**
      * Constructor
-     */ 
+     */
     public FilterObj(){
         super();
     }
@@ -82,14 +82,14 @@ public class FilterObj extends Observable {
 
     /**
      * Initialize the filter with a name and type.
-     * Manager calls this function to set up the basic parameter 
-     * like name, and type.  For all accepted type refer to 
+     * Manager calls this function to set up the basic parameter
+     * like name, and type.  For all accepted type refer to
      * the enum on filter type in ptolemy.math.Filter.
      * Type BLANK will create a ComplexDigitalFilter, while all others
      * will create a RealDigitalFilter. <p>
      * @param name name of the filter
-     * @param type type of the filter 
-     */ 
+     * @param type type of the filter
+     */
     public void init(String name, int type){
          this._type = type;
          _fname = new String(name);
@@ -127,8 +127,8 @@ public class FilterObj extends Observable {
            return ((RealDigitalFilter)_filter).getFactorWithPole(pole).getPoles();
         } else {
            return null;
-        } 
-        
+        }
+
     }
 
     public Complex [] getFamilyPoleWithZero(Complex zero){
@@ -136,7 +136,7 @@ public class FilterObj extends Observable {
            return ((RealDigitalFilter)_filter).getFactorWithZero(zero).getPoles();
         } else {
            return null;
-        } 
+        }
     }
 
     public Complex [] getFamilyZeroWithPole(Complex pole){
@@ -144,7 +144,7 @@ public class FilterObj extends Observable {
            return ((RealDigitalFilter)_filter).getFactorWithPole(pole).getZeroes();
         } else {
            return null;
-        } 
+        }
     }
 
     public Complex [] getFamilyZeroWithZero(Complex zero){
@@ -152,23 +152,23 @@ public class FilterObj extends Observable {
            return ((RealDigitalFilter)_filter).getFactorWithZero(zero).getZeroes();
         } else {
            return null;
-        } 
+        }
     }
 
 
     /**
      * Returns the critical frequency values.
-     * For lowpass/highpass filter, there are two critical frequencies that 
-     * define the width of transiton band.  While for bandpass/bandstop, 
+     * For lowpass/highpass filter, there are two critical frequencies that
+     * define the width of transiton band.  While for bandpass/bandstop,
      * there are three, the first two describe the transition band, while
-     * the second and third one describes the width of passband (bandpass 
+     * the second and third one describes the width of passband (bandpass
      * filter), or stopband (bandstop filter).  <p>
-     * @return critical frequencies   
+     * @return critical frequencies
      */
     public double [] getFreqBand(){
         return _band;
     }
-  
+
     /**
      * Returns the gains at critical frequencies.
      * For bandpass/bandstop there is no gain value at the third critical
@@ -181,11 +181,11 @@ public class FilterObj extends Observable {
 
     /**
      * Returns the complex gain of the filter.  It is used for complex
-     * digital filter.  For real filter use <code> getRealGain() </code>. 
-     * @return complex gain of the filter. 
+     * digital filter.  For real filter use <code> getRealGain() </code>.
+     * @return complex gain of the filter.
      */
     public Complex getComplexGain(){
-        if (_type == Filter.BLANK){ 
+        if (_type == Filter.BLANK){
          //   return ((ComplexDigitalFilter) _filter).getGain();
           return null;
         } else {
@@ -195,12 +195,12 @@ public class FilterObj extends Observable {
     }
 
     /**
-     * Returns the real gain of the filter.  It is used for real  
-     * digital filter.  For complex filter use <code> getComplexGain() </code>. 
-     * @return real gain of the filter. 
+     * Returns the real gain of the filter.  It is used for real
+     * digital filter.  For complex filter use <code> getComplexGain() </code>.
+     * @return real gain of the filter.
      */
     public double getRealGain(){
-        if (_type != Filter.BLANK){ 
+        if (_type != Filter.BLANK){
             return ((RealDigitalFilter) _filter).getGain();
         } else {
             // throw an exception here..
@@ -211,51 +211,51 @@ public class FilterObj extends Observable {
 
     /**
      * Returns the poles in z-plane.
-     * @return poles on z-plane  
+     * @return poles on z-plane
      */
     public Complex [] getPole(){
         return _filter.getPoles();
     }
 
     /**
-     * Returns the zeros in z-plane 
-     * @return zeroes on z-plane  
+     * Returns the zeros in z-plane
+     * @return zeroes on z-plane
      */
     public Complex [] getZero(){
         return _filter.getZeroes();
     }
 
     /**
-     * Returns the frequency response data. 
-     * @return frequency response data.  
+     * Returns the frequency response data.
+     * @return frequency response data.
      */
     public Complex [] getFrequency(){
         return _filter.getFrequencyResponse();
     }
 
     /**
-     * Returns the complex impulse response data.  If the 
+     * Returns the complex impulse response data.  If the
      * filter is a complex filter, then this is method is used.
      * For real filter use <code> getRealImpulse() </code>.
      * @return complex impulse response data.
      */
     public Complex [] getComplexImpulse(){
-        if (_type == Filter.BLANK){ 
+        if (_type == Filter.BLANK){
        //     return ((ComplexDigitalFilter)_filter).getImpulseResponse();
             return null;
         } else {
             return null;
         }
     }
-  
+
     /**
-     * Returns the real impulse response data.  If the 
+     * Returns the real impulse response data.  If the
      * filter is a real filter, then this is method is used.
      * For complex filter use <code> getComplexImpulse() </code>.
      * @return real impulse response data.
      */
     public double [] getRealImpulse(){
-        if (_type != Filter.BLANK){ 
+        if (_type != Filter.BLANK){
             return ((RealDigitalFilter)_filter).getImpulseResponse();
         } else {
             return null;
@@ -266,24 +266,24 @@ public class FilterObj extends Observable {
     /**
      * Returns the complex filter'e numerator.
      * Real filter uses <code> getRealNumerator() </code>.
-     * @return complex filter numerator 
+     * @return complex filter numerator
      */
     public Complex [] getComplexNumerator(){
-        if (_type == Filter.BLANK){ 
+        if (_type == Filter.BLANK){
        //     return ((ComplexDigitalFilter)_filter).getNumerator();
             return null;
         } else {
             return null;
         }
     }
-  
+
     /**
      * Returns the real filter'e numerator.
      * Complex filter uses <code> getComplexNumerator() </code>.
-     * @return real filter numerator 
+     * @return real filter numerator
      */
     public double [] getRealNumerator(){
-        if (_type != Filter.BLANK){ 
+        if (_type != Filter.BLANK){
             return ((RealDigitalFilter)_filter).getNumerator();
         } else {
             return null;
@@ -292,12 +292,12 @@ public class FilterObj extends Observable {
 
 
     /**
-     * Returns the complex filter's denominator. 
+     * Returns the complex filter's denominator.
      * Real filter uses <code> getRealDenominator() </code>.
-     * @return complex filter denominator 
+     * @return complex filter denominator
      */
     public Complex [] getComplexDenominator(){
-        if (_type == Filter.BLANK){ 
+        if (_type == Filter.BLANK){
        //     return ((ComplexDigitalFilter)_filter).getDenominator();
             return null;
         } else {
@@ -306,12 +306,12 @@ public class FilterObj extends Observable {
     }
 
     /**
-     * Returns the real filter's denominator. 
+     * Returns the real filter's denominator.
      * Real filter uses <code> getComplexDenominator() </code>.
-     * @return real filter denominator 
+     * @return real filter denominator
      */
     public double [] getRealDenominator(){
-        if (_type != Filter.BLANK){ 
+        if (_type != Filter.BLANK){
             return ((RealDigitalFilter)_filter).getDenominator();
         } else {
             return null;
@@ -320,15 +320,15 @@ public class FilterObj extends Observable {
 
     /**
      * Returns the IIR parameters as a Vector.  If the current type
-     * is not IIR then null is returned.  The Vector is formed like this: 
-     * <p> first element: Integer enum for approximation method. 
-     * <p> second element: Integer enum for analog to digital transfer method. 
+     * is not IIR then null is returned.  The Vector is formed like this:
+     * <p> first element: Integer enum for approximation method.
+     * <p> second element: Integer enum for analog to digital transfer method.
      * <p> third element: Integer enum for filter band type.
      * <p> fourth element: Double for sampling rate.
      * <p>
      * Refer ptolemy.math.Filter for these enums.
      * <p>
-     * @return IIR filter paramters in a Vector. 
+     * @return IIR filter paramters in a Vector.
      */
     public Vector getIIRParameter(){
         if (_type == Filter.IIR){
@@ -369,22 +369,22 @@ public class FilterObj extends Observable {
      * New real digital filter is designed, and all the observer (views)
      * are notified about the new filter.
      * <p>
-     * @param atype IIR filter approximation method  
-     * @param mtype analog to digital map method  
+     * @param atype IIR filter approximation method
+     * @param mtype analog to digital map method
      * @param btype filter's band type
      * @param fs sampling frequency
-     */ 
-   public void setIIRParameter(int atype, int mtype, 
+     */
+   public void setIIRParameter(int atype, int mtype,
                                int btype, double fs){
 
 
         _appmethod = atype;
-        _mapmethod = mtype; 
- 
+        _mapmethod = mtype;
+
        // if the band type of the filter is changed, reset the
-       // the filter bands to some default value 
+       // the filter bands to some default value
         if (btype != _bandtype){
-            if (btype == Filter.LOWPASS){ // lowpass defaults 
+            if (btype == Filter.LOWPASS){ // lowpass defaults
                  _band = new double[2];
                  _gain = new double[2];
                  _band[0] = 0.5*Math.PI;
@@ -415,25 +415,25 @@ public class FilterObj extends Observable {
                  _gain[0] = 0.8;
                  _gain[1] = 0.2;
             } else {
-                 System.out.println("unsupported filter spec"); 
-            } 
-        }     
-             
+                 System.out.println("unsupported filter spec");
+            }
+        }
+
         _bandtype = btype;
         _sampleFreq = fs;
 
         // design the new filter
-        _filter = DigitalFilter.designRealIIR(_mapmethod, _appmethod, 
-                                       _bandtype, _band, _gain, 
+        _filter = DigitalFilter.designRealIIR(_mapmethod, _appmethod,
+                                       _bandtype, _band, _gain,
                                        _sampleFreq);
- 
-//        _filter = DigitalFilter.designRealIIR(_mapmethod, _appmethod, 
-//                                       _bandtype, _band, _gain, 
+
+//        _filter = DigitalFilter.designRealIIR(_mapmethod, _appmethod,
+//                                       _bandtype, _band, _gain,
 //                                       _lrippleh, _hrippleh,
 //                                       _sampleFreq);
 
         setChanged();
-      
+
         notifyObservers("UpdatedFilter");
    }
 
@@ -450,22 +450,22 @@ public class FilterObj extends Observable {
 
        _filter.setPoleZeroGain(singlepole, singlezero, conjpole, conjzero, gain);
         setChanged();
-      
+
         notifyObservers("UpdatedFilter");
-   
+
    }
 */
 
    /**
     * Update the frequency domain spec of the filter.
-    * This function is called when the frequency domain observer 
-    * changes the passband/stopband values on the view.  
-    * After the new band data is stored, the filter is 
+    * This function is called when the frequency domain observer
+    * changes the passband/stopband values on the view.
+    * After the new band data is stored, the filter is
     * redesigned by calling <code> DigitalFilter.designIIR () </code>.
     * All views/observers are notified about the change.
     * <p>
-    * @param banddata frequency domain critical frequencies. 
-    * @param gaindata frequency domain gains at critical frequencies. 
+    * @param banddata frequency domain critical frequencies.
+    * @param gaindata frequency domain gains at critical frequencies.
     */
    public void updateFreqSpec(double [] banddata, double [] gaindata){
 
@@ -473,7 +473,7 @@ public class FilterObj extends Observable {
         for (int i=0;i<banddata.length;i++){
              _band[i] = banddata[i];
         }
-  
+
         // gaindata.length should be the same as _gain
         for (int i=0;i<gaindata.length;i++){
              _gain[i] = gaindata[i];
@@ -481,11 +481,11 @@ public class FilterObj extends Observable {
 
 
         // design the new IIR filter
-//        _filter = DigitalFilter.designRealIIR(_mapmethod, 
-//             _appmethod, _bandtype, _band, _gain, sr, pr, 
+//        _filter = DigitalFilter.designRealIIR(_mapmethod,
+//             _appmethod, _bandtype, _band, _gain, sr, pr,
 //             _sampleFreq);
 
-        _filter = DigitalFilter.designRealIIR(_mapmethod, 
+        _filter = DigitalFilter.designRealIIR(_mapmethod,
              _appmethod, _bandtype, _band, _gain, _sampleFreq);
 
         setChanged();
@@ -493,15 +493,15 @@ public class FilterObj extends Observable {
 
    }
 
-  
-   /**  
+
+   /**
     * Add new pole/zero pair to filter.  Observers will be notified
     * about the changed filter.
     * <p>
-    * @param pole pole to be added. 
-    * @param zero zero to be added. 
-    * @param conj boolean indicate if the given pole/zero have complex 
-    * conjuate pair. 
+    * @param pole pole to be added.
+    * @param zero zero to be added.
+    * @param conj boolean indicate if the given pole/zero have complex
+    * conjuate pair.
     */
    public void addPoleZero(Complex pole, Complex zero, boolean conj){
         if (_filter == null) return;
@@ -510,10 +510,10 @@ public class FilterObj extends Observable {
         notifyObservers("UpdatedFilter");
    }
 
-   /**  
+   /**
     * Update pole's value.  Observers will be notified about the changed filter.
     * <p>
-    * @param pole pole object to be changed. 
+    * @param pole pole object to be changed.
     * @param x new value's real part.
     * @param y new value's imaginary part.
     */
@@ -525,10 +525,10 @@ System.out.println("moving pole in filter object");
         notifyObservers("UpdatedFilter");
    }
 
-   /**  
+   /**
     * Update zero's value.  Observers will be notified about the changed filter.
     * <p>
-    * @param zero zero object to be changed. 
+    * @param zero zero object to be changed.
     * @param x new value's real part.
     * @param y new value's imaginary part.
     */
@@ -539,12 +539,12 @@ System.out.println("moving pole in filter object");
         notifyObservers("UpdatedFilter");
    }
 
-   
-   /**  
-    * Delte the factor that contains the given pole. Observers will be 
+
+   /**
+    * Delte the factor that contains the given pole. Observers will be
     * notified about the changed filter.
     * <p>
-    * @param pole pole's factor object to be deleted. 
+    * @param pole pole's factor object to be deleted.
     */
    public void deletePole(Complex pole){
         if (_filter == null) return;
@@ -553,11 +553,11 @@ System.out.println("moving pole in filter object");
         notifyObservers("UpdatedFilter");
    }
 
-   /**  
-    * Delte the factor that contains the given zero. Observers will be 
+   /**
+    * Delte the factor that contains the given zero. Observers will be
     * notified about the changed filter.
     * <p>
-    * @param zero zero's factor object to be deleted. 
+    * @param zero zero's factor object to be deleted.
     */
    public void deleteZero(Complex zero){
         if (_filter == null) return;
@@ -570,16 +570,16 @@ System.out.println("moving pole in filter object");
    ////                       private variables                          ////
 
    private String _fname;   // filter name
-   private int _bandtype;  // see ptolemy.math.Filter enum for band type 
-   private int _appmethod;  // see ptolemy.math.Filter enum for approximation type 
+   private int _bandtype;  // see ptolemy.math.Filter enum for band type
+   private int _appmethod;  // see ptolemy.math.Filter enum for approximation type
    private int _mapmethod; // see ptolemy.math.Filter enum for analog to digital
-                           // transformation type 
+                           // transformation type
    private double _sampleFreq;
    private double [] _band = null;
    private double [] _gain = null;
    private int _stat;
-   private int _type; // see ptolemy.math.Filter enum for filter type 
-  
+   private int _type; // see ptolemy.math.Filter enum for filter type
+
    private DigitalFilter _filter;
 
    private double _step = Math.PI/150;

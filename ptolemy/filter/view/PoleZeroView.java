@@ -1,20 +1,20 @@
-/* Pole/zero view object 
- 
+/* Pole/zero view object
+
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY 
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES 
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF 
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF 
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
@@ -22,38 +22,38 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
- 
+
 */
 
 package ptolemy.filter.view;
- 
-import ptolemy.filter.filtermodel.*; 
-import ptolemy.math.Complex; 
+
+import ptolemy.filter.filtermodel.*;
+import ptolemy.math.Complex;
 
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// PoleZeroView  
-/** 
+//// PoleZeroView
+/**
   Observer for filter's pole-zero plot.  This class contain a PoleZeroPlot
-  object.  Poles and zeroes will be diplayed on it.  After user click and drag 
+  object.  Poles and zeroes will be diplayed on it.  After user click and drag
   poles and zeroes with mouse, moveInteractComp() is called to notify the
   filter about new change.  Method update() is called when filter changes
-  its poles and zeroes, and this object will query the filter for new 
+  its poles and zeroes, and this object will query the filter for new
   pole/zero values.  Hashtables _crossref will be used to store the pairing
   between pole/zero and their interact counter parts (one hashtable is for
-  pole, the other is for zero).  
+  pole, the other is for zero).
   <p>
-  PoleZeroView also allow user to add a new pair of pole/zero with a window, 
-  NewPoleZeroBox.          
-  <p> 
+  PoleZeroView also allow user to add a new pair of pole/zero with a window,
+  NewPoleZeroBox.
+  <p>
   @author: William Wu (wbwu@eecs.berkeley.edu)
   @version: %W%   %G%
   @date: 3/2/98
- */ 
- 
+ */
+
 public class PoleZeroView extends PlotView implements ActionListener {
 
 
@@ -62,10 +62,10 @@ public class PoleZeroView extends PlotView implements ActionListener {
      * the operation mode is in FRAMEMODE).  Method <code> _setViewPoleZero
      * </code>  is called to get the pole/zero data into the plot.
      * <p>
-     * @param filter the observable filter object. 
+     * @param filter the observable filter object.
      * @param mode mode of operation: FRAMEMODE or APPLETMODE
-     * @param viewname name of this view. 
-     */ 
+     * @param viewname name of this view.
+     */
     public PoleZeroView(FilterObj filter, int mode, String viewname){
           super(viewname, filter);
 
@@ -76,7 +76,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
           plot.setXRange(-1.2, 1.2);
           plot.setYRange(-1.2, 1.2);
           plot.setNumSets(5);
-          plot.setMergeInteractComp(true); 
+          plot.setMergeInteractComp(true);
           if ((filter != null) && (filter.getType() == ptolemy.math.filter.Filter.IIR)){
 
               plot.setEditPermission(false);
@@ -91,8 +91,8 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
           // create panel for plot
           _viewPanel = new Panel();
-          _viewPanel.setBackground(_plotBack); 
-          _viewPanel.setForeground(_plotFore); 
+          _viewPanel.setBackground(_plotBack);
+          _viewPanel.setForeground(_plotFore);
 
           // create the button for add new pole/zero
           _addpolezerobutton = new Button("Add Pole/Zero");
@@ -108,11 +108,11 @@ public class PoleZeroView extends PlotView implements ActionListener {
           _viewPanel.add("North", buttonpanel);
           _viewPanel.add("Center", plot);
           _viewPanel.setSize(300,380);
-         
-          // place view panel in frame 
+
+          // place view panel in frame
           if (_opMode == FilterView.FRAMEMODE){ // frame mode
               String name = new String("");
-              if (filter != null) name = filter.getName(); 
+              if (filter != null) name = filter.getName();
               _frame  = _createViewFrame(name);
               _frame.add("Center", _viewPanel);
               _frame.setSize(300, 390);
@@ -134,15 +134,15 @@ public class PoleZeroView extends PlotView implements ActionListener {
               }
               _unitcircleadded = true;
 
-          } 
+          }
 
           // create two new hashtable for cross link between interact component
-          // and underlying data.  
+          // and underlying data.
           _crossref = new Hashtable[2];
           _crossref[0] = new Hashtable();   // for pole
           _crossref[1] = new Hashtable();   // for zero
 
-          // get the initial data 
+          // get the initial data
           if (filter != null){
               FilterObj jf = (FilterObj) _observed;
               Complex [] poledata = jf.getPole();
@@ -150,28 +150,28 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
               _setViewPoleZero(poledata, zerodata);
           }
-    }  
-    
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
    /**
-    * Notifies the view about the updated filter.  When a filter is 
+    * Notifies the view about the updated filter.  When a filter is
     * modified, the filter calls <code> notifyObservers()
     * </code>, which calls each observer's <code> update() </code>
     * function.  This update will query filter for the new
     * poles and zeros, then create interact components for them, by
-    * calling <code> _setViewPoleZero() </code>.  
-    * <p> 
+    * calling <code> _setViewPoleZero() </code>.
+    * <p>
     * @param observable filter object
-    * @param arg message sent by filter object 
-    */ 
+    * @param arg message sent by filter object
+    */
    public void update(Observable observable, Object arg){
           String command = (String)arg;
 
-          // "UpdatedFilter" means filter's data is new. 
-          if (command.equals("UpdatedFilter")){ 
+          // "UpdatedFilter" means filter's data is new.
+          if (command.equals("UpdatedFilter")){
               FilterObj jf = (FilterObj) _observed;
               Complex [] poledata = jf.getPole();
               Complex [] zerodata = jf.getZero();
@@ -197,15 +197,15 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
    /**
     * Add a new pair of pole/zero.  If <i> conjugate </i> is set, the pole
-    * / zero will have their conjugate pairs.  Filter <code> addPoleZero() 
+    * / zero will have their conjugate pairs.  Filter <code> addPoleZero()
     * </code> is called to add the newly created pole zero.
-    *  
+    *
     * @param conjugate boolean value indicating if the given pole/zero have
-    *  conjugate pair. 
-    * @param polereal the real value part of the new pole  
-    * @param poleimag the imaginary value part of the new pole  
-    * @param zeroreal the real value part of the new zero  
-    * @param zeroimag the imaginary value part of the new zero  
+    *  conjugate pair.
+    * @param polereal the real value part of the new pole
+    * @param poleimag the imaginary value part of the new pole
+    * @param zeroreal the real value part of the new zero
+    * @param zeroimag the imaginary value part of the new zero
     */
    public void newpolezero(boolean conjugate, double polereal, double poleimag,
                             double zeroreal, double zeroimag){
@@ -216,26 +216,26 @@ public class PoleZeroView extends PlotView implements ActionListener {
    }
 
    /**
-    * Delete the selected pole/zero.  This function calls filter object 
+    * Delete the selected pole/zero.  This function calls filter object
     * <code> deletePole() </code> or <code> deleteZero() </code>.
-    * This will delete the factor associate with that pole/zero. 
-    * @param interactpolezero to be deleted interact pole/zero 
+    * This will delete the factor associate with that pole/zero.
+    * @param interactpolezero to be deleted interact pole/zero
     */
    public void deleteInteractComp(InteractComponent interactpolezero){
         if (_crossref[0].containsKey(interactpolezero)){
-            Complex pole = (Complex) _crossref[0].get(interactpolezero); 
+            Complex pole = (Complex) _crossref[0].get(interactpolezero);
             // notify the filter object about the moved pole.
             FilterObj jf = (FilterObj) _observed;
-            jf.deletePole(pole); 
-            
-        } else {        
+            jf.deletePole(pole);
+
+        } else {
             if (_crossref[1].containsKey(interactpolezero)){
-                Complex zero = (Complex) _crossref[1].get(interactpolezero); 
+                Complex zero = (Complex) _crossref[1].get(interactpolezero);
                 // notify the filter object about the moved zero.
                 FilterObj jf = (FilterObj) _observed;
-                jf.deleteZero(zero); 
+                jf.deleteZero(zero);
             }
-        } 
+        }
    }
 
 
@@ -243,27 +243,27 @@ public class PoleZeroView extends PlotView implements ActionListener {
     * Move the desired interact pole/zero.  First find the Complex object
     * that represents the pole or zero, then calls FilterObj's updatePoleValue(),
     * updateZeroValue() to change pole/zero in the filter object.
-    * <p> 
+    * <p>
     * @param interactpolezero changed interact pole/zero
-    */  
+    */
    public void moveInteractComp(InteractComponent interactpolezero){
 
         if (_crossref[0].containsKey(interactpolezero)){
-            Complex pole = (Complex) _crossref[0].get(interactpolezero); 
+            Complex pole = (Complex) _crossref[0].get(interactpolezero);
             // notify the filter object about the moved pole.
             FilterObj jf = (FilterObj) _observed;
-            jf.updatePoleValue(pole, interactpolezero.getXValue(), 
+            jf.updatePoleValue(pole, interactpolezero.getXValue(),
                                interactpolezero.getYValue());
-            
-        } else {        
+
+        } else {
             if (_crossref[1].containsKey(interactpolezero)){
-                Complex zero = (Complex) _crossref[1].get(interactpolezero); 
+                Complex zero = (Complex) _crossref[1].get(interactpolezero);
                 // notify the filter object about the moved zero.
                 FilterObj jf = (FilterObj) _observed;
-                jf.updateZeroValue(zero, interactpolezero.getXValue(), 
+                jf.updateZeroValue(zero, interactpolezero.getXValue(),
                                    interactpolezero.getYValue());
             }
-        } 
+        }
    }
 
 
@@ -272,7 +272,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
     * pole/zero.  This method will call filter object <code> getFamilyPoleZero()
     * </code> to get all the poles/zero that are in the same factor.
     * @param interactpolezero changed interact pole/zero
-    */ 
+    */
    public void selectInteractComp(InteractComponent interactpolezero){
 
         InteractComponent ic;
@@ -280,34 +280,34 @@ public class PoleZeroView extends PlotView implements ActionListener {
         Complex [] familyzero = null;
 
         if (_crossref[0].containsKey(interactpolezero)){
-            Complex pole = (Complex) _crossref[0].get(interactpolezero); 
+            Complex pole = (Complex) _crossref[0].get(interactpolezero);
             FilterObj jf = (FilterObj) _observed;
             familypole = jf.getFamilyPoleWithPole(pole);
             familyzero = jf.getFamilyZeroWithPole(pole);
 
         } else if (_crossref[1].containsKey(interactpolezero)){
-                        
-            Complex zero = (Complex) _crossref[1].get(interactpolezero); 
+
+            Complex zero = (Complex) _crossref[1].get(interactpolezero);
             FilterObj jf = (FilterObj) _observed;
             familypole = jf.getFamilyPoleWithZero(zero);
             familyzero = jf.getFamilyZeroWithZero(zero);
         }
-   
+
         if (familypole != null){
             for (int i=0;i<familypole.length;i++){
                 if (!_crossref[0].contains((Object) familypole[i])) {
-                      ic = new InteractComponent("Pole", 
-                                          InteractComponent.CROSS, 
+                      ic = new InteractComponent("Pole",
+                                          InteractComponent.CROSS,
                                           familypole[i].real,
                                           familypole[i].imag);
                       ic.setDrawingParam(Color.green, 6, false,
                                           InteractComponent.SYMMETRICORI);
-                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 3, i, 
+                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 3, i,
                                                         ic.getXValue(),
                                                         ic.getYValue(),
                                                         false);
                       ic.setHighlighted(true);
-                } else { 
+                } else {
                       Enumeration polekeys = _crossref[0].keys();
                       while (polekeys.hasMoreElements()){
                             ic = (InteractComponent) polekeys.nextElement();
@@ -316,25 +316,25 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                  break;
                             }
                       }
-                 } 
+                 }
             }
         }
- 
+
         if (familyzero != null){
             for (int i=0;i<familyzero.length;i++){
                 if (!_crossref[1].contains((Object) familyzero[i])) {
-                      ic = new InteractComponent("Zero", 
-                                          InteractComponent.CIRCLE, 
+                      ic = new InteractComponent("Zero",
+                                          InteractComponent.CIRCLE,
                                           familyzero[i].real,
                                           familyzero[i].imag);
                       ic.setDrawingParam(Color.cyan, 6, false,
                                           InteractComponent.SYMMETRICORI);
-                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 4, i, 
+                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 4, i,
                                                          ic.getXValue(),
                                                          ic.getYValue(),
                                                          false);
                       ic.setHighlighted(true);
-                } else { 
+                } else {
                       Enumeration zerokeys = _crossref[1].keys();
                       while (zerokeys.hasMoreElements()){
                             ic = (InteractComponent) zerokeys.nextElement();
@@ -343,61 +343,61 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                  break;
                             }
                       }
-                 } 
+                 }
             }
-        } 
+        }
         _plots[0].repaint();
    }
 
    /**
     * Remove the pole/zero that is in the same factor as the given pole/zero.
-    * This is done by simply remove the interact components with data set 3 and 4. 
+    * This is done by simply remove the interact components with data set 3 and 4.
     * @param interactpolezero unselected interact pole/zero
-    */ 
+    */
    public void unselectInteractComp(InteractComponent interactpolezero){
          ((InteractPlot)_plots[0]).eraseInteractComponents(3);
          ((InteractPlot)_plots[0]).eraseInteractComponents(4);
-         
-         Enumeration poleenum = _crossref[0].keys(); 
-         Enumeration zeroenum = _crossref[1].keys(); 
-  
-         InteractComponent ic; 
+
+         Enumeration poleenum = _crossref[0].keys();
+         Enumeration zeroenum = _crossref[1].keys();
+
+         InteractComponent ic;
          while (poleenum.hasMoreElements()){
              ic = (InteractComponent) poleenum.nextElement();
              ic.setHighlighted(false);
-         }  
+         }
          while (zeroenum.hasMoreElements()){
              ic = (InteractComponent) zeroenum.nextElement();
              ic.setHighlighted(false);
-         }  
+         }
          _plots[0].repaint();
-        
+
    }
- 
+
    //////////////////////////////////////////////////////////////////////////
    ////                   protected methods                              ////
 
    /**
     *  Set the pole - zero on the polezer plot.  InteractComponents are created
     *  for pole/zero, and added to interact plot.  The cross referencing between
-    *  the interact component and the underlying data is established with the 
+    *  the interact component and the underlying data is established with the
     *  hashtable. The unit circle is also added if it was not there before.
-    *  @param poledata array of Complex that describes poles location. 
-    *  @param zerodata array of Complex that describes zeroes location. 
-    */ 
+    *  @param poledata array of Complex that describes poles location.
+    *  @param zerodata array of Complex that describes zeroes location.
+    */
    protected void _setViewPoleZero(Complex [] poledata, Complex [] zerodata ){
-          
+
        // erase interact components in plot
        ((InteractPlot)_plots[0]).eraseInteractComponents();
-      
+
        _plots[0].eraseAllPoints(1);
        _plots[0].eraseAllPoints(2);
        InteractComponent ic;
 
-       // check if unit circle is added or not 
+       // check if unit circle is added or not
        if (!_unitcircleadded){
 
-           // unit circle is not added, this happens in applet mode of 
+           // unit circle is not added, this happens in applet mode of
            // PtFilter, since addPoint attemps to draw the on the plot,
            // at that point the applet graphics is not avaliable yet.
 
@@ -424,23 +424,23 @@ public class PoleZeroView extends PlotView implements ActionListener {
            for (int ind = 0;ind<poledata.length;ind++){
 
                // create interact component represent pole
-               ic = new InteractComponent("Pole", 
+               ic = new InteractComponent("Pole",
                                           InteractComponent.CROSS, poledata[ind].real,
                                           poledata[ind].imag);
                ic.setDrawingParam(Color.green, 6, false,
                                   InteractComponent.SYMMETRICORI);
-               ic.setInteractParam(new String("Pole real"), 
-                                   new String("Pole imag"), 
-                                   InteractComponent.ALLDEGFREE); 
-                    
-               // add to interact plot 
-               ((InteractPlot)_plots[0]).addInteractPoint(ic, 1, ind, ic.getXValue(), 
+               ic.setInteractParam(new String("Pole real"),
+                                   new String("Pole imag"),
+                                   InteractComponent.ALLDEGFREE);
+
+               // add to interact plot
+               ((InteractPlot)_plots[0]).addInteractPoint(ic, 1, ind, ic.getXValue(),
                                                           ic.getYValue(), false);
-                        
-               // add pole and its interact component to hashtable 
+
+               // add pole and its interact component to hashtable
                _crossref[0].put(ic, poledata[ind]);
-        
-           } 
+
+           }
 
        }
 
@@ -449,20 +449,20 @@ public class PoleZeroView extends PlotView implements ActionListener {
            // add zero to plot
            for (int ind = 0;ind<zerodata.length;ind++){
 
-               // create interact component represent zero 
-               ic = new InteractComponent("Zero", 
+               // create interact component represent zero
+               ic = new InteractComponent("Zero",
                                           InteractComponent.CIRCLE, zerodata[ind].real,
                                           zerodata[ind].imag);
                ic.setDrawingParam(Color.cyan, 8, false,
                                   InteractComponent.SYMMETRICORI);
-               ic.setInteractParam(new String("Zero real"), 
-                                   new String("Zero imag"), 
-                                   InteractComponent.ALLDEGFREE); 
+               ic.setInteractParam(new String("Zero real"),
+                                   new String("Zero imag"),
+                                   InteractComponent.ALLDEGFREE);
 
                ((InteractPlot)_plots[0]).addInteractPoint(ic, 2, ind, ic.getXValue(),
                                                           ic.getYValue(), false);
 
-               // add zero and its interact component to hashtable 
+               // add zero and its interact component to hashtable
                _crossref[1].put(ic, zerodata[ind]);
            }
 
@@ -474,11 +474,11 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
    //////////////////////////////////////////////////////////////////////////
    ////                     private variables                            ////
-  
+
    // button to create the new pole-zero window
    private Button _addpolezerobutton;
 
-   // window for add new polezero 
+   // window for add new polezero
    private NewPoleZeroBox _addpolezerobox = null;
 
    // flag to indicate if the unit circle has been added to the plot
@@ -490,7 +490,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
    //  Dialog for add new pole/zero to the plot, inner class.
    //
    class NewPoleZeroBox extends Frame implements ActionListener {
-   
+
       // Constructor.  Setup the widgets for different inputs.
       public NewPoleZeroBox(String title){
           super(title);
@@ -624,7 +624,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
               newpolezero(conjpair, px, py, zx, zy);
            } else if (evt.getActionCommand().equals("CANCEL")){
               this.setVisible(false);
-           }   
+           }
 
        }
 
@@ -640,5 +640,5 @@ public class PoleZeroView extends PlotView implements ActionListener {
        private Button _cancel;
    }
 
-         
+
 }

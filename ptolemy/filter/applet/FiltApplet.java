@@ -1,4 +1,4 @@
-/* Appletable IIRfilter 
+/* Appletable IIRfilter
 
 
 @Copyright (c) 1997-1998 The Regents of the University of California.
@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
-@Author: William Wu 
+@Author: William Wu
 
 @Version: @(#)PlotApplet.java	1.13    01/11/98
 $Id$\t$Date$
@@ -40,11 +40,11 @@ import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FiltApplet
-/** Create an Applet that can design IIR filter. 
+/** Create an Applet that can design IIR filter.
  *  This uses ptfilter.top package's Manager class, as a private
  *  variables.  It also allocate the spaces to put all the filter window.
- * 
- * @author William Wu 
+ *
+ * @author William Wu
  */
 public class FiltApplet extends Applet implements Runnable {
 
@@ -124,25 +124,25 @@ public class FiltApplet extends Applet implements Runnable {
         //            plot().setDataurl(dataurl);
         //        } catch (NullPointerException e) {}
 
-        
-        
+
+
         if (type.equals("IIR")) { // IIR filter
             manager().newFilter(FilterView.APPLETMODE, "Filter Applet");
             IIRsetPanel = manager().getView("IIRFilterParameterView").getPanel();
             this.add(IIRsetPanel);
         } else if (type.equals("Blank")) { // Blank filter
             manager().newFilter(0, "Filter Applet");
-        }   
+        }
 
         freqPanel = manager().getView("FreqView").getPanel();
         impulsPanel = manager().getView("ImpulseView").getPanel();
         polezeroPanel = manager().getView("PoleZeroView").getPanel();
         transferPanel = manager().getView("TransferFunctionView").getPanel();
 
-         
+
         //        _quit = new Button("quit");
         //        this.add(_quit);
-        
+
         this.add(polezeroPanel);
         this.add(freqPanel);
         this.add(impulsPanel);
@@ -167,7 +167,7 @@ public class FiltApplet extends Applet implements Runnable {
     public void newManager() {
         _myManager = new Manager(1);
     }
-        
+
 
     /** Paint the screen with our plot.
      */
@@ -181,7 +181,7 @@ public class FiltApplet extends Applet implements Runnable {
     }
 
     /** Return the Plot object to operate on.
-     */  
+     */
     public Manager manager() {
         return _myManager;
     }
@@ -219,21 +219,21 @@ public class FiltApplet extends Applet implements Runnable {
 
     private Manager _myManager;
     private Thread _filterThread;
-    private Panel impulsPanel = null; 
-    private Panel freqPanel = null; 
-    private Panel polezeroPanel = null; 
-    private Panel transferPanel = null; 
-    private Panel IIRsetPanel = null; 
+    private Panel impulsPanel = null;
+    private Panel freqPanel = null;
+    private Panel polezeroPanel = null;
+    private Panel transferPanel = null;
+    private Panel IIRsetPanel = null;
     private Button _quit;
 
     public static void main(String[] args){
         Frame f = new Frame("Filter Applet");
         f.setSize(1000, 800);
-        FiltApplet fa = new FiltApplet(); 
+        FiltApplet fa = new FiltApplet();
         f.add(fa);
-        f.setVisible(true); 
+        f.setVisible(true);
         fa.setVisible(true);
         fa.init();
-        fa.start(); 
+        fa.start();
     }
 }
