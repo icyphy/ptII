@@ -397,18 +397,7 @@ public class BooleanToken extends AbstractConvertibleToken
         return this.and((BooleanToken)rightArgument);
     }
 
-    /** Return a new token whose value is the value of the argument token
-     *  subtracted from the value of this token.  It is assumed that
-     *  the type of the argument is an BooleanToken.
-     *  For booleans, subtraction
-     *  is defined by addition (which is logical exclusive or).  Thus, if
-     *  <i>c</i> = <i>a</i> - <i>b</i> then <i>c</i> is defined so that
-     *  <i>c</i> + <i>b</i> = <i>a</i>. Adding <i>b</i> to both sides
-     *  and observing that <i>b</i> + <i>b</i> = <i>false</i> and
-     *  <i>c</i> + <i>false</i> = <i>c</i>, we note that subtraction
-     *  is identical to addition.
-     *  @param rightArgument The token to subtract from this token.
-     *  @return A new BooleanToken containing the result.
+    /** Subtraction is not supported in Boolean algebras.
      */
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
