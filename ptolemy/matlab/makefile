@@ -112,7 +112,7 @@ $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
 		$< \
 		-fno-exceptions \
-		-o HelloWorldImp.dll \
+		-o $@ \
 		-L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
 
 # Jar file for Web Start that contains the dll
