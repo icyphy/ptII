@@ -72,7 +72,6 @@ JSRCS = \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
-	Priority.java \
 	QueueReceiver.java \
 	Receiver.java \
 	Sortable.java \
