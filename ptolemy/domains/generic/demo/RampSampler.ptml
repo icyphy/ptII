@@ -4,7 +4,7 @@
 <description></description>
 <parameter value="0" name="isToplevel" type="CONTROLPARAMETER"></parameter>
 <parameter value="CT" name="domain" type="CONTROLPARAMETER"></parameter>
-<parameter value="Mixed-signal" name="director" type="CONTROLPARAMETER"></parameter>
+<parameter value="Mixed-signal" name="director" type="CONTROLPARAMETER" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"></parameter>
 <parameter value="0.0" name="StartTime" type="DoubleToken"></parameter>
 <parameter value="1.0" name="StopTime" type="DoubleToken"></parameter>
 <parameter value="0.1" name="InitialStepSize" type="DoubleToken"></parameter>
