@@ -42,6 +42,18 @@
   </entity>
 
   <!-- Default director library. -->
+  <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <group>
+  <!-- Blank composite actor. -->
+  <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/> 
+        </group>
+      ?>
+    </configure>
+  </entity>
+
+  <!-- Default director library. -->
   <entity name="director library" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
