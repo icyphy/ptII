@@ -32,7 +32,7 @@ import java.math.BigDecimal;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.math.Utilities;;
+;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -536,7 +536,14 @@ public class Time implements Comparable {
     }
 
     private double _quantizeTimeValue(double originalTimeValue) {
-        return Utilities.round(originalTimeValue, _getTimePrecisionInDigits());
+        // NOTE: when the value is too big, e.g. close to the
+        // maximum double value, the following algorithm will 
+        // get overflow, which gives a wrong answer.
+        int precision = _getTimePrecisionInDigits();
+        double newValue = 
+            Math.round(originalTimeValue * Math.pow(10, precision))
+                / Math.pow(10, precision);
+        return newValue;
     }
 
     /** Return a new time object whose time value is decreased by the 

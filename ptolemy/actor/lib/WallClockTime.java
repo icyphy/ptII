@@ -95,13 +95,13 @@ public class WallClockTime extends Source {
     ////                         public methods                    ////
 
     /** Override the base class to set the type constraints on the ports.
+     *  @param workspace The workspace for the cloned object.
      *  @return A new instance of WallClockTime.
      *  @exception CloneNotSupportedException If a derived class includes
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-
         WallClockTime newObject = (WallClockTime)super.clone(workspace);
         newObject.passThrough.setTypeAtLeast(newObject.trigger);
         return newObject;
@@ -140,6 +140,9 @@ public class WallClockTime extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Get the elpased time since the model starts.
+     *  @return A double value representing the elapsed time.
+     */
     protected double _getCurrentTime() {
         long elapsedTime = System.currentTimeMillis() - _startTime;
         // Note that we need use the actor.util.Time class

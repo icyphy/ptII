@@ -155,6 +155,7 @@ public class CalendarQueue implements Debuggable {
     /** Append a listener to the current set of debug listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
+     *  @see #removeDebugListener
      */
     public void addDebugListener(DebugListener listener) {
         if (_debugListeners == null) {
@@ -300,7 +301,8 @@ public class CalendarQueue implements Debuggable {
     /** Unregister a debug listener.  If the specified listener has not
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
-     *   to which debug messages are sent.
+     *  to which debug messages are sent.
+     *  @see #addDebugListener
      */
     public void removeDebugListener(DebugListener listener) {
         if (_debugListeners == null) {

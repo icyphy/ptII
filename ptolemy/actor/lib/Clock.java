@@ -399,7 +399,10 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /* Get the specified value, checking the form of the values parameter.
+    /** Get the specified output value, checking the form of the values 
+     *  parameter.
+     *  @param index The index of the output values.
+     *  @return A token that contains the output value. 
      */
     protected Token _getValue(int index) throws IllegalActionException {
         ArrayToken val = (ArrayToken)(values.getToken());
@@ -499,6 +502,9 @@ public class Clock extends TimedSource {
      */
     protected transient boolean _done;
 
+    /** Cache of offsets array value. */
+    protected transient double[] _offsets;
+
     /** The phase of the next output. */
     protected transient int _phase;
 
@@ -506,21 +512,28 @@ public class Clock extends TimedSource {
     protected transient Time _startTime;
 
     // Following variables recall data from the fire to the postfire method.
+    /** The tentative current value of the clock output. */
     protected transient Token _tentativeCurrentValue;
+    
+    /** The tentative count of cycles executed so far. */
     protected transient int _tentativeCycleCount;
-    protected transient Time _tentativeCycleStartTime;
-    protected transient boolean _tentativeDone;
-    protected transient Time _tentativeStartTime;
-    protected transient int _tentativePhase;
-
-    // The following are all transient because they need not be cloned.
-    // Either the clone method or the initialize() method sets them.
-
-    // Cache of offsets array value.
-    protected transient double[] _offsets;
-
-    // Following variables recall data from the fire to the postfire method.
+    
+    /** The tentative increment for cycle count increment. */
     protected transient int _tentativeCycleCountIncrement;
-    protected transient Time _tentativeNextFiringTime;
+    
+    /** The tentative start time of the most recent cycle. */
+    protected transient Time _tentativeCycleStartTime;
+    
+    /** The indicator of whether the specified number of cycles 
+     *  have been completed. */
+    protected transient boolean _tentativeDone;
 
+    /** The tentative time for next firing. */
+    protected transient Time _tentativeNextFiringTime;
+    
+    /** The tentative phase of the next otuput. */
+    protected transient int _tentativePhase;
+    
+    /** The tentative start time for the clock to produce output. */
+    protected transient Time _tentativeStartTime;
 }

@@ -86,6 +86,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Construct a FunctionDependency for the given actor.
      *  @param compositeActor The composite actor with which this function 
      *  dependency is associated.
+     *  @param name The name for this attribute.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains

@@ -105,6 +105,9 @@ public abstract class FunctionDependency extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
+    /** A final and static string variable for this attribute. It should
+     *  not be modified. 
+     */
     public final static String UniqueName = "FUNCTIONDEPENDENCY";
 
     ///////////////////////////////////////////////////////////////////
