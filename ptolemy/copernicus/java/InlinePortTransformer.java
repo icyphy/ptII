@@ -55,6 +55,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.data.*;
 import ptolemy.data.type.Typeable;
 import ptolemy.data.expr.Parameter;
@@ -155,6 +156,8 @@ public class InlinePortTransformer extends SceneTransformer {
             inliner = new SDFPortInliner(modelClass, model, _options);
         } else if(director instanceof ptolemy.domains.fsm.kernel.FSMDirector) {
             inliner = new HSPortInliner(modelClass, model, _options);
+        } else if(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
+            inliner = new GiottoPortInliner(modelClass, model, _options);
         } else {
             throw new RuntimeException("Port methods cannot be inlined for " +
                     director.getClass().getName());

@@ -61,6 +61,7 @@ JSRCS = \
 	FieldsForPortsTransformer.java \
 	FieldOptimizationTransformer.java \
 	FreeVariableModelAnalysis.java \
+	GiottoPortInliner.java \
 	HSPortInliner.java \
 	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
