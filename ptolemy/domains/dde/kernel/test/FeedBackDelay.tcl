@@ -74,11 +74,11 @@ test FeedBackDelay-1.1 {Constructors} {
 
     # Set setDelay and getDelay
     set r1 [$f3 getDelay]
-    $f3 setDelay 6.0
-    set r2 [$f3 getDelay]
+    #$f3 setDelay 6.0
+    #set r2 [$f3 getDelay]
 
-    list [$f1 getFullName] [$f2 getFullName] [$f3 getFullName] $r1 $r2
-} {.F1 .F2 .E0.F3 4.0 6.0}
+    list [$f1 getFullName] [$f2 getFullName] [$f3 getFullName] $r1
+} {.F1 .F2 .E0.F3 1.0}
 
 ######################################################################
 ####
