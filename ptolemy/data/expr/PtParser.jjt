@@ -345,7 +345,7 @@ void bitwiseOr() #void :
                    x = <OR> bitwiseXor()
                    {  jjtThis._lexicalTokens.insertLast(x); }
            )*
-   ) #PtBitwiseOpNode(>1)
+   ) #PtBitwiseNode(>1)
 }
 
 void bitwiseXor() #void :
@@ -356,7 +356,7 @@ void bitwiseXor() #void :
                    x = <XOR> bitwiseAnd()
                    {  jjtThis._lexicalTokens.insertLast(x); }
            )*
-   ) #PtBitwiseOpNode(>1)
+   ) #PtBitwiseNode(>1)
 }
 
 void bitwiseAnd() #void :
@@ -367,7 +367,7 @@ void bitwiseAnd() #void :
                    x = <AND> logicalEquals()
                    {  jjtThis._lexicalTokens.insertLast(x); }
            )*
-   ) #PtBitwiseOpNode(>1)
+   ) #PtBitwiseNode(>1)
 }
 
 void logicalEquals() #void :
