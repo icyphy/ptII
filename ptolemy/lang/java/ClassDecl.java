@@ -201,11 +201,11 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                 } catch (Exception exception) {}
                 if (loadedClass == null) {
                     // Try to load the class.
-                    ClassLoader classLoader = new ClassLoader();
+                    JavaClassLoader classLoader = new JavaClassLoader();
                     if (StaticResolution.traceLoading) 
                         System.out.println("loadSource: "
                                 + "trying to load class '" + fullName() + "'"
-                                + " with a ClassLoader");
+                                + " with a JavaClassLoader");
                     try {
                         loadedClass = classLoader.loadClass(fullName());
                     } catch (ClassNotFoundException exception) {
