@@ -1176,7 +1176,8 @@ public class SootUtilities {
 
         while (methods.hasNext()) {
             SootMethod method = (SootMethod) methods.next();
-
+            
+            //  System.out.println("checking method " + method);
             if (method.getName().equals(name) &&
                     args.size() == method.getParameterCount()) {
                 Iterator parameterTypes =

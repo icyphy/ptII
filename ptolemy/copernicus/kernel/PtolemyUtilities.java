@@ -110,6 +110,7 @@ import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.Typeable;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.expr.Variable;
@@ -210,6 +211,12 @@ public class PtolemyUtilities {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
                     localName, intTokenClass, intTokenConstructor,
                     IntConstant.v(((IntToken)token).intValue()));
+            return tokenLocal;
+        }  else if (token instanceof UnsignedByteToken) {
+            Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
+                    localName, unsignedByteTokenClass, 
+                    unsignedByteTokenConstructor,
+                    IntConstant.v(((UnsignedByteToken)token).byteValue()));
             return tokenLocal;
         } else if (token instanceof BooleanToken) {
             Value value;
@@ -342,6 +349,10 @@ public class PtolemyUtilities {
             } else if (type.equals(ptolemy.data.type.BaseType.FIX_MATRIX)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(fixMatrixTypeField)),
+                        insertPoint);
+            } else if (type.equals(ptolemy.data.type.BaseType.UNSIGNED_BYTE)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(byteTypeField)),
                         insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.INT)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
@@ -517,6 +528,7 @@ public class PtolemyUtilities {
         } else {
             objectClass = Scene.v().loadClassAndSupport(className);
         }
+        System.out.println("done loading support of " + className);
 
         RefType objectType = RefType.v(objectClass);
 
@@ -913,6 +925,7 @@ public class PtolemyUtilities {
     public static SootClass arrayTokenClass;
     // Soot Method representing the ArrayToken(Token[]) constructor.
     public static SootMethod arrayTokenConstructor;
+    public static SootMethod arrayGetElementMethod;
     public static SootMethod arrayValueMethod;
 
     // Soot class representing the ptolemy.data.type.ArrayType class.
@@ -993,6 +1006,9 @@ public class PtolemyUtilities {
 
     // Soot class representing the ptolemy.actor.Executable interface.
     public static SootClass executableInterface;
+    public static SootMethod executablePrefireMethod;
+    public static SootMethod executableFireMethod;
+    public static SootMethod executablePostfireMethod;
 
     // Soot class representing the ptolemy.data.BooleanToken class.
     public static SootClass fixTokenClass;
@@ -1021,6 +1037,8 @@ public class PtolemyUtilities {
     // SootMethod representing
     // ptolemy.kernel.util.Attribute.getAttribute();
     public static SootMethod getAttributeMethod;
+
+    public static SootMethod getContainerMethod;
 
     // SootMethod representing
     // ptolemy.actor.Actor.getDirector
@@ -1091,8 +1109,9 @@ public class PtolemyUtilities {
     // SootClass representing ptolemy.actor.Manager
     public static SootClass managerClass;
 
-   // Soot class representing the ptolemy.data.MatrixToken class.
+    // Soot class representing the ptolemy.data.MatrixToken class.
     public static SootClass matrixTokenClass;
+    public static SootMethod matrixTokenCreateMethod;
 
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
@@ -1145,6 +1164,7 @@ public class PtolemyUtilities {
     // SootMethod representing ptolemy.actor.IOPort.setMultiport().
     public static SootMethod setMultiportMethod;
 
+    public static SootMethod setNameMethod;
     // Soot Class representing the ptolemy.kernel.util.Settable class.
     public static SootClass settableClass;
 
@@ -1189,6 +1209,8 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.data.Token class.
     public static BaseType tokenType;
 
+    public static SootMethod toplevelMethod;
+
     public static SootMethod toStringMethod;
 
     public static SootClass typeClass;
@@ -1199,15 +1221,19 @@ public class PtolemyUtilities {
 
     public static SootField unknownTypeField;
 
+    // Soot class representing the ptolemy.data.IntToken class.
+    public static SootClass unsignedByteTokenClass;
+    // Soot Method representing the IntToken(unsignedByte) constructor.
+    public static SootMethod unsignedByteTokenConstructor;
+    public static SootMethod unsignedByteValueMethod;
+
     // ptolemy.kernel.util.Settable.validate()
     public static SootMethod validateMethod;
 
     public static SootClass variableClass;
-
     public static SootMethod variableConstructorWithoutToken;
-
     public static SootMethod variableConstructorWithToken;
-
+    public static SootMethod variableGetTokenMethod;
     public static SootMethod variableSetTokenMethod;
 
     static {
@@ -1243,8 +1269,14 @@ public class PtolemyUtilities {
                 "void _attachText(java.lang.String,java.lang.String)");
         getFullNameMethod =
             namedObjClass.getMethod("java.lang.String getFullName()");
+        setNameMethod = 
+            namedObjClass.getMethod("void setName(java.lang.String)");
         getNameMethod =
             namedObjClass.getMethod("java.lang.String getName()");
+        toplevelMethod =
+            namedObjClass.getMethod("ptolemy.kernel.util.NamedObj toplevel()");
+        getContainerMethod =
+            Scene.v().getMethod("<ptolemy.kernel.util.Nameable: ptolemy.kernel.util.Nameable getContainer()>");
 
 
         attributeClass =
@@ -1269,9 +1301,8 @@ public class PtolemyUtilities {
                 "void <init>(ptolemy.kernel.util.NamedObj,java.lang.String,ptolemy.data.Token)");
         variableSetTokenMethod = variableClass.getMethod(
                 "void setToken(ptolemy.data.Token)");
-
-        executableInterface =
-            Scene.v().loadClassAndSupport("ptolemy.actor.Executable");
+        variableGetTokenMethod = variableClass.getMethod(
+                "ptolemy.data.Token getToken()");
 
         entityClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.Entity");
@@ -1289,6 +1320,16 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.kernel.CompositeEntity");
         getEntityMethod =
             compositeEntityClass.getMethod("ptolemy.kernel.ComponentEntity getEntity(java.lang.String)");
+
+        executableInterface =
+            Scene.v().loadClassAndSupport("ptolemy.actor.Executable");
+        executablePrefireMethod = 
+            executableInterface.getMethodByName("prefire");
+        executableFireMethod = 
+            executableInterface.getMethodByName("fire");
+        executablePostfireMethod = 
+            executableInterface.getMethodByName("postfire");
+        
 
         actorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
@@ -1356,6 +1397,8 @@ public class PtolemyUtilities {
             arrayTokenClass.getMethod("void <init>(ptolemy.data.Token[])");
         arrayValueMethod =
             arrayTokenClass.getMethod("ptolemy.data.Token[] arrayValue()");
+        arrayGetElementMethod =
+            arrayTokenClass.getMethod("ptolemy.data.Token getElement(int)");
       
         recordTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.RecordToken");
@@ -1366,6 +1409,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.data.ScalarToken");
         matrixTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.MatrixToken");
+        matrixTokenCreateMethod = 
+            matrixTokenClass.getMethod("ptolemy.data.MatrixToken create(ptolemy.data.Token[],int,int)");
 
         doubleTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.DoubleToken");
@@ -1394,6 +1439,12 @@ public class PtolemyUtilities {
         booleanMatrixMethod =
             booleanMatrixTokenClass.getMethod("boolean[][] booleanMatrix()");
   
+        unsignedByteTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.UnsignedByteToken");
+        unsignedByteTokenConstructor =
+            unsignedByteTokenClass.getMethod("void <init>(int)");
+        unsignedByteValueMethod =
+            scalarTokenClass.getMethod("byte byteValue()");
   
         intTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.IntToken");
