@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil/ptolemy
 
-DIRS =		kernel fsm
+DIRS =		kernel img fsm
 
 # Root of the Java directory
 ROOT =		../../../
