@@ -260,7 +260,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
                 // FIXME: use parameter when the DEDirector is changed.
                 double stopT = _query.doubleValue("stopT");
-                _deDirector.setStopTime(stopT);
+                _deDirector.stopTime.setToken(new DoubleToken(stopT));
                 //System.out.println("stop time set");
                 _gain3.factor.setToken(new DoubleToken(
                         _query.doubleValue("feedback")));
