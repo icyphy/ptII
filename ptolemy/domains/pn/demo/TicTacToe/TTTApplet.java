@@ -35,6 +35,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+import ptolemy.domains.pn.gui.PNApplet;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
