@@ -16,6 +16,17 @@ the <CODE>ptplot</CODE> package to the <CODE>ptolemy.plot</CODE> package.
 <li> <CODE>PlotApplication.java</CODE> was moved to a new directory
 called <CODE>ptolemy/apps</CODE>.
 
+
+<li> The <CODE>pxgraph</CODE> script has been removed.  A new
+script <CODE>ptplot</CODE> replaces it.  Usually, <CODE>ptplot</CODE> uses
+the PlotApplication class.
+If <CODE>pxgraph</CODE> is a link to <CODE>ptplot</CODE>, then when
+<CODE>pxgraph</CODE> is run, it uses the Pxgraph class
+
+
+<li> Removed <CODE>ptplot2mif.tcl</CODE>, it was of little use.
+
+
 <h3>PlotBox</h3>
 <menu>
 
@@ -128,7 +139,24 @@ New class to handle the thread trickiness for live plots.
 <h3>CmdLineArgException</h3>
 This class is now public so that it can be used outside of the plot
 package.
+
+<h3>New classes</h3>
+<dl>
+
+<dt> <a href="../../PlotFrame.java">PlotFrame</a>
+<dd> 2-D plotter widget used by PlotApplication, below.
+
+
+<dt> <a href="../../PlotApplication.java">PlotApplication</a>
+<dd> Stand alone plotter application, started up by
+<a href="../../ptplot"><CODE>ptplot</CODE></a>
+
+<dt> <a href="../../demo/TwoPlotExample.java">TwoPlotExample</a>
+<dd> a simple example application with two side by side plots.
+
+</dl>
 </menu>
+
 
 <H2>The changes between ptplot1.3 and ptplot1.3p1</H2>
 <menu>
