@@ -33,7 +33,6 @@ package ptolemy.vergil.toolbox;
 import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import ptolemy.schematic.xml.XMLElement;
 import diva.canvas.toolbox.*;
 import diva.util.java2d.*;
 import java.awt.*;

@@ -32,7 +32,6 @@ package ptolemy.vergil;
 
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
-import ptolemy.schematic.util.*;
 import ptolemy.moml.*;
 
 import diva.graph.model.*;
