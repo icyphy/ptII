@@ -934,15 +934,16 @@ $(INSTALLSHIELD_PTINY):
 		$@/ptolemy/configs/vergilConfiguration.xml
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
 	 -for domain in $(INSTALLSHIELD_PTINY_DOMAINS); do \
-	  mkdir -p $@/ptolemy/domains/$$domain; \
-	  mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/$$domain.jar \
-	 	$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo \
-		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
+	   mkdir -p $@/ptolemy/domains/$$domain \
+		$@/ptolemy/domains/$$domain/lib; \
+	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo/ \
 		$@/ptolemy/domains/$$domain; \
+	   mv $(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/lib/$$domainentities.jar \
+		$@/ptolemy/domains/$$domain/lib; \
 	 done
 	# FIXME: we should find this in the jar file?
 	 -mkdir $@/ptolemy/domains/sdf/lib 
-	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/Spectrum*.xml \
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/*Spectrum*.xml \
 		$@/ptolemy/domains/sdf/lib 
 	 -mkdir -p $@/doc/codeDoc
 	 -cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
@@ -968,6 +969,9 @@ $(INSTALLSHIELD_PTINY):
 		$@/ptolemy/actor/lib/conversions
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/Sinewave.xml \
 		$@/ptolemy/actor/lib/conversions
+	 -mkdir $@/ptolemy/plot \
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/plot/plotapplication.jar \
+		$@/ptolemy/plot
 
 
 #configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
