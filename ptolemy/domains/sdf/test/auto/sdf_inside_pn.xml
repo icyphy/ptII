@@ -83,20 +83,6 @@
                 </property>
             </port>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="245.0, 40.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -107,7 +93,6 @@
         <link port="output" relation="relation"/>
         <link port="Repeat.input" relation="relation5"/>
         <link port="Repeat.output" relation="relation"/>
-        <link port="Display.input" relation="relation5"/>
     </entity>
     <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
         <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="2">
