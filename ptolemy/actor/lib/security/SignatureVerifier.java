@@ -55,9 +55,9 @@ parameters should be set to the values used to generate the publicKey.
 See {@link PublicKeyReader} and {@link SignatureActor}
 for possible values.
 
-<p>The <i>provider</i> and <i>signatureAlgorithm</i>
-parameters should be set to the same
-value as the corresponding parameter in the SignatureVerifier actor.
+<p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
+be set to the same value as the corresponding parameter in the
+SignatureSigner actor.
 
 <p>This actor reads an ObjectToken public key from the
 <i>publicKey</i> port and then reads unsigned byte arrays from
