@@ -32,9 +32,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.io.File;
-
 import ptolemy.lang.*;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// PackageDecl
@@ -47,11 +50,16 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants {
+public class PackageDecl extends JavaDecl
+    implements JavaStaticSemanticConstants {
+
     public PackageDecl(String name, JavaDecl container) {
         super(name, CG_PACKAGE);
         _container = container;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Re-override equals() from Decl so that equality is defined as being the
      *  same object. This is necessary to ensure that a Decl named z for x.y.z
@@ -87,6 +95,75 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
 
     public final boolean hasEnviron() { return true; }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Initialize the Environ by loading in the system packages
+     */
+    protected void _initEnvironSystemPackages() {
+        // FIXME: should this be File.separatorChar?  I think
+        // jar files always use /
+        String packageName = fullName('/');
+        System.out.println("PackageDecl._initEnvironSystemPackages(): loading " + packageName + " _container:" + _container);
+
+        Iterator classes = SearchPath.systemClassSet.iterator();
+        while (classes.hasNext()) {
+            String className = (String) classes.next();
+            if (className.startsWith(packageName)) {
+                String systemPackageName =
+                    StringManip.partBeforeLast(className, '/');
+                if (systemPackageName.equals(packageName)) {
+                    if (_environ.lookupProper(className, CG_USERTYPE) == null) {
+                String shortClassName =
+                    className.substring(packageName.length() + 1);
+                        
+                        System.out.println("PackageDecl._initEnvironSystemPackages():"+
+                                shortClassName);
+
+                        _environ.add(new ClassDecl(shortClassName, this));
+                    }
+                }
+            }
+        }
+
+        // Add the sub packages in this package
+        Iterator packages = SearchPath.systemPackageSet.iterator();
+        while(packages.hasNext()) {
+            String systemPackageName = (String) packages.next();
+            // Add the package 
+            // if it is a subpackage of packageName, _or_ 
+            // if the packageName is "" and the
+            // systemPackage does not contain a /
+            //
+            // We need to check to see if the string contains a /
+            // because if packageName == java and systemPackageName == javax
+            // then partBeforeLast will fail. 
+            if (systemPackageName.startsWith(packageName) &&
+                    systemPackageName.indexOf('/') != -1 &&
+                    StringManip.partBeforeLast(systemPackageName,
+                            '/').equals(packageName)) {
+                // Remove the package name and add the subpackage.
+                // For example if we are in java, then add lang instead
+                // of java/lang
+                String shortSystemPackageName =
+                    systemPackageName.substring(packageName.length() + 1);
+                System.out.println("PackageDecl._initEnvironSystemPackages(): " +
+                    "adding package: " + shortSystemPackageName);
+                _environ.add(new PackageDecl(shortSystemPackageName, this));
+            } else {
+                if (packageName.equals("") && 
+                        systemPackageName.indexOf('/') == -1 &&
+                        !systemPackageName.equals("META-INF")
+                    ) {
+                System.out.println("PackageDecl._initEnvironSystemPackages(): " +
+                    "adding toplevel package: " + systemPackageName);
+                _environ.add(new PackageDecl(systemPackageName, this));
+                }
+            }
+        }
+    }
+
+
     protected void _initEnviron() {
 	/* SDFCodeGeneratorClassFactory.createPtolemyTypeIdentifier()
 	 * ptolemy.codegen.PtolemyTypeIdentifier has a static section
@@ -113,6 +190,20 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
         } else {
             ApplicationUtility.trace("_initEnviron : has container");
             _environ = new Environ(_container.getEnviron());
+        }
+
+        // Use the contents of the system jar file to get java.* etc. files 
+        if (fullName().equals("")) {
+            _initEnvironSystemPackages();
+            // Don't return here, we need to add top level packages
+            // such as the ptolemy package.
+        } else {
+            // If this package is a system package, then use the system jar
+            // and return
+            if (SearchPath.systemPackageSet.contains(fullName('/'))) {
+                _initEnvironSystemPackages();
+                return;
+            }
         }
 
         SearchPath paths = _pickLibrary(this);
@@ -182,8 +273,8 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
                         if (fs.isDirectory()) {
                             _environ.add(new PackageDecl(name, this));
 	                    empty = false;
-                            //ApplicationUtility.trace(
-                            // getName() + " : found subpackage in " + fullname);
+                            System.out.println(fullName() + " " +
+                             getName() + " : found subpackage in " + fullname);
                         }
 
                     } // className != null
@@ -197,7 +288,11 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
     protected JavaDecl  _container;
 
     protected Environ _environ = null;
 }
+
