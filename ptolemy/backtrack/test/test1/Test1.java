@@ -26,10 +26,10 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.backtrack;
+package ptolemy.backtrack.test.test1;
 
 //////////////////////////////////////////////////////////////////////////
-//// Rollbackable
+//// Test1
 /**
  
  
@@ -39,11 +39,15 @@ package ptolemy.backtrack;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public interface Rollbackable {
-    
-    public Checkpoint $GET$CHECKPOINT();
+public class Test1 {
 
-    public void $RESTORE(long timestamp, boolean trim);
+    public Test1 getT() {
+        return _t;
+    }
     
-    public void $SET$CHECKPOINT(Checkpoint checkpoint);
+    public void setT(Test1 t) {
+        _t = t;
+    }
+    
+    private Test1 _t;
 }

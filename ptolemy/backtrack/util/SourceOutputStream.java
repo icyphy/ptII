@@ -26,10 +26,15 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.backtrack;
+package ptolemy.backtrack.util;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Rollbackable
+//// SourceOutputStream
 /**
  
  
@@ -39,11 +44,26 @@ package ptolemy.backtrack;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public interface Rollbackable {
-    
-    public Checkpoint $GET$CHECKPOINT();
+public class SourceOutputStream extends FileOutputStream {
 
-    public void $RESTORE(long timestamp, boolean trim);
-    
-    public void $SET$CHECKPOINT(Checkpoint checkpoint);
+    public static SourceOutputStream getStream(String root, String packageName, 
+            String fileName) throws FileNotFoundException, IOException {
+        if (packageName != null && packageName.length() > 0)
+            root = root +
+                    File.separator +
+                    packageName.replace('.', File.separatorChar);
+        File rootFile = new File(root);
+        if (!rootFile.exists())
+            rootFile.mkdirs();
+        
+        String fullName = root + File.separator + fileName;
+        if (new File(fullName).exists())
+            throw new IOException("File \"" + fullName + "\" already exists.");
+        else
+            return new SourceOutputStream(root + File.separator + fileName);
+    }
+
+    private SourceOutputStream(String fileName) throws FileNotFoundException {
+        super(fileName);
+    }
 }

@@ -36,8 +36,10 @@ import java.io.Writer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import ptolemy.backtrack.ast.transform.AssignmentRule;
+import ptolemy.backtrack.ast.transform.PackageRule;
 import ptolemy.backtrack.ast.transform.TransformRule;
 import ptolemy.backtrack.util.PathFinder;
+import ptolemy.backtrack.util.SourceOutputStream;
 
 //////////////////////////////////////////////////////////////////////////
 //// Transform
@@ -73,9 +75,15 @@ public class Transformer {
                     "[.java files... | directories...]");
         else {
             String[] paths = PathFinder.getPtClassPaths();
-            Writer writer = 
+            Writer standardWriter = 
                 outputResult ? new OutputStreamWriter(System.out) : null;
-            for (int i = 0; i < args.length; i++) {
+            for (int i = 0; i < args.length;) {
+                int newPosition = _parseArguments(args, i);
+                if (newPosition != i) {
+                    i = newPosition;
+                    continue;
+                }
+                
                 String pathOrFile = args[i];
                 File[] files = PathFinder.getJavaFiles(pathOrFile, true);
                 for (int j = 0; j < files.length; j++) {
@@ -96,13 +104,16 @@ public class Transformer {
                         continue;
                     
                     System.err.flush();
-                    transform(files[j].getPath(), writer, paths);
+                    
+                    transform(files[j].getPath(), standardWriter, paths);
+                    
                     if (outputResult)
-                        writer.flush();
+                        standardWriter.flush();
                 }
+                i++;
             }
             if (outputResult)
-                writer.close();
+                standardWriter.close();
         }
     }
     
@@ -136,7 +147,7 @@ public class Transformer {
     public static void transform(char[] source, Writer writer, 
             String[] classPaths)
             throws IOException, ASTMalformedException {
-        Transformer transform = new Transformer(source, writer, classPaths);
+        Transformer transform = new Transformer(source, classPaths);
         transform._startTransform();
     }
 
@@ -158,6 +169,11 @@ public class Transformer {
     
     /** Transform the Java source in the file given by its name with
      *  given class paths, and output the result to the writer.
+     *  <p>
+     *  If a output directory is set with the <tt>-output</tt>
+     *  command-line argument, the output is written to a Java source
+     *  file with that directory as the root directory. The given
+     *  writer is not used in that case.
      * 
      *  @param fileName The Java file name.
      *  @param writer The writer where output is written.
@@ -170,15 +186,34 @@ public class Transformer {
     public static void transform(String fileName, Writer writer, 
             String[] classPaths)
             throws IOException, ASTMalformedException {
-        Transformer transform = new Transformer(fileName, writer, classPaths);
+        boolean needClose = false;
+        
+        Transformer transform = new Transformer(fileName, classPaths);
         transform._startTransform();
-        transform._outputSource();
+        
+        if (_rootPath != null) {
+            String packageName = 
+                transform._ast.getPackage().getName().toString();
+            File file = new File(fileName);
+            String outputFileName = file.getName();
+            SourceOutputStream outputStream = 
+                SourceOutputStream.getStream(_rootPath, packageName, 
+                        outputFileName);
+            writer = new OutputStreamWriter(outputStream);
+            needClose = true;
+        }
+        
+        transform._outputSource(writer);
+        
+        if (needClose)
+            writer.close();
     }
 
     /** The refactoring rules to be sequentially applied to the source code.
      */
     public static TransformRule[] RULES = new TransformRule[] {
-        new AssignmentRule()
+        new AssignmentRule(),
+        new PackageRule()
     };
     
     /** Call the <tt>afterTraverse</tt> of all the refactoring rules. For
@@ -202,9 +237,11 @@ public class Transformer {
     }
     
     /** Output the Java source from the current AST with {@link ASTFormatter}.
+     * 
+     *  @param writer The writer where the output is written to.
      */
-    protected void _outputSource() {
-        ASTFormatter formatter = new ASTFormatter(_writer);
+    protected void _outputSource(Writer writer) {
+        ASTFormatter formatter = new ASTFormatter(writer);
         _ast.accept(formatter);
     }
     
@@ -222,6 +259,35 @@ public class Transformer {
             _ast = ASTBuilder.parse(_fileName);
         else
             _ast = ASTBuilder.parse(_source);
+    }
+    
+    /** Parse the command-line arguments starting from the given position.
+     *  If one or more argument corresponds to an option, proper actions are
+     *  performed to record that option. The position is adjusted to the next
+     *  file name or option and returned.
+     * 
+     *  @param args The command-line arguments.
+     *  @param position The starting position.
+     *  @return The new position.
+     */
+    protected static int _parseArguments(String[] args, int position) {
+        if (args[position].equals("-prefix")) {
+            position++;
+            _prefix = args[position];
+            for (int i = 0; i < RULES.length; i++)
+                if (RULES[i] instanceof PackageRule) {
+                    ((PackageRule)RULES[i]).setPrefix(_prefix);
+                    break;
+                }
+            position++;
+        } else if (args[position].equals("-output")) {
+            position++;
+            _rootPath = args[position];
+            if (_rootPath.length() == 0)
+                _rootPath = ".";
+            position++;
+        }
+        return position;
     }
     
     /** Start the transformation by first parsing the source with
@@ -252,9 +318,8 @@ public class Transformer {
      *  @param classPaths An array of explicit class paths, or <tt>null</tt>
      *   if none.
      */
-    private Transformer(char[] source, Writer writer, String[] classPaths) {
+    private Transformer(char[] source, String[] classPaths) {
         _source = source;
-        _writer = writer;
         _visitor = new TypeAnalyzer(classPaths);
     }
     
@@ -266,9 +331,8 @@ public class Transformer {
      *  @param classPaths An array of explicit class paths, or <tt>null</tt>
      *   if none.
      */
-    private Transformer(String fileName, Writer writer, String[] classPaths) {
+    private Transformer(String fileName, String[] classPaths) {
         _fileName = fileName;
-        _writer = writer;
         _visitor = new TypeAnalyzer(classPaths);
     }
     
@@ -280,10 +344,6 @@ public class Transformer {
      */
     private char[] _source;
     
-    /** The output writer.
-     */
-    private Writer _writer;
-    
     /** The AST. Not <tt>null</tt> after {@link #_parse()} is successfully
      *  called.
      */
@@ -292,4 +352,12 @@ public class Transformer {
     /** The visitor used to traverse the AST.
      */
     private TypeAnalyzer _visitor;
+    
+    /** The prefix to be added to the package name of the source.
+     */
+    private static String _prefix;
+    
+    /** The root directory of the Java source output.
+     */
+    private static String _rootPath;
 }

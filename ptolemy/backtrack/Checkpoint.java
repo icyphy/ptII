@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack;
 
-import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,10 +67,18 @@ public class Checkpoint {
         _state.getMonitoredObjects().remove(object);
     }
     
-    public synchronized void rollback(int timestamp, boolean trim) {
-        Iterator objectsIter = _state.getMonitoredObjects().iterator();
-        while (objectsIter.hasNext())
-            ((Rollbackable)objectsIter.next()).$RESTORE(timestamp, trim);
+    public synchronized void rollback(long timestamp, boolean trim) {
+        List objects = _state.getMonitoredObjects();
+        int size = objects.size();
+        for (int i = 0; i < objects.size();) {
+            Rollbackable object = (Rollbackable)objects.get(i);
+            object.$RESTORE(timestamp, trim);
+            int newSize = objects.size();
+            if (newSize < size)
+                size = newSize;
+            else
+                i++;
+        }
     }
     
     public void setCheckpoint(Checkpoint checkpoint) {

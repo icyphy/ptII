@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/backtrack
+ME =		ptolemy/backtrack/test/test1
 
-DIRS =		ast util xmlparser test
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,11 +45,11 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	backtrack
+PTPACKAGE = 	test1
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = Test1.java
 
 OTHER_FILES_TO_BE_JARED = 
 

@@ -404,18 +404,19 @@ public class AssignmentTransformer extends AbstractTransformer
         // Set the name and return type.
         SimpleName name = ast.newSimpleName(methodName);
         method.setName(name);
-        org.eclipse.jdt.core.dom.Type type = 
-            _createType(ast, fieldType.getName());
-        method.setReturnType(_createType(ast, fieldType.getName()));
+        String typeName = _getClassName(fieldType.getName(), state, root);
+        org.eclipse.jdt.core.dom.Type type = _createType(ast, typeName);
+        method.setReturnType(_createType(ast, typeName));
         
         // If the field is static, add a checkpoint object argument.
         if (isStatic) {
             // Add a "$CHECKPOINT" argument.
             SingleVariableDeclaration checkpoint = 
                 ast.newSingleVariableDeclaration();
-            String typeName = 
-                _getClassName(Checkpoint.class, state.getClassLoader(), root);
-            checkpoint.setType(ast.newSimpleType(_createName(ast, typeName)));
+            String checkpointType = 
+                _getClassName(Checkpoint.class, state, root);
+            checkpoint.setType(
+                    ast.newSimpleType(_createName(ast, checkpointType)));
             checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
             method.parameters().add(checkpoint);
         }
@@ -598,8 +599,7 @@ public class AssignmentTransformer extends AbstractTransformer
         fragment.setName(ast.newSimpleName(CHECKPOINT_NAME));
         
         ClassInstanceCreation checkpoint = ast.newClassInstanceCreation();
-        String typeName = 
-            _getClassName(Checkpoint.class, state.getClassLoader(), root);
+        String typeName = _getClassName(Checkpoint.class, state, root);
         checkpoint.setName(_createName(ast, typeName));
         checkpoint.arguments().add(ast.newThisExpression());
         fragment.setInitializer(checkpoint);
@@ -635,8 +635,7 @@ public class AssignmentTransformer extends AbstractTransformer
             ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
         ClassInstanceCreation creation = ast.newClassInstanceCreation();
-        String typeName = _getClassName(CheckpointRecord.class, 
-                state.getClassLoader(), root);
+        String typeName = _getClassName(CheckpointRecord.class, state, root);
         creation.setName(_createName(ast, typeName));
         fragment.setInitializer(creation);
         FieldDeclaration record = ast.newFieldDeclaration(fragment);
@@ -672,8 +671,7 @@ public class AssignmentTransformer extends AbstractTransformer
             throw new ASTDuplicatedFieldException(currentClass.getName(), 
                     recordName);
         
-        String typeName = _getClassName(FieldRecord.class, 
-                state.getClassLoader(), root);
+        String typeName = _getClassName(FieldRecord.class, state, root);
 
         // The only fragment of this field declaration.
         VariableDeclarationFragment fragment = 
@@ -702,6 +700,44 @@ public class AssignmentTransformer extends AbstractTransformer
         return field;
     }
     
+    private MethodDeclaration _createGetCheckpointMethod(AST ast, 
+            CompilationUnit root, TypeAnalyzerState state, 
+            boolean isAnonymous) {
+        String methodName = _getGetCheckpointMethodName(isAnonymous);
+
+        Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
+        
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (_hasMethod(currentClass, methodName, new Class[0]))
+            throw new ASTDuplicatedMethodException(currentClass.getName(), 
+                    methodName);
+        
+        if (parent != null &&
+                (state.getCrossAnalyzedTypes().contains(parent.getName())) ||
+                 _hasMethod(parent, methodName, new Class[]{Checkpoint.class}))
+            return null;
+        
+        MethodDeclaration method = ast.newMethodDeclaration();
+        method.setName(ast.newSimpleName(methodName));
+        String typeName = _getClassName(Checkpoint.class, state, root);
+        method.setReturnType(_createType(ast, typeName));
+        
+        // The body, just to return the checkpoint object.
+        Block body = ast.newBlock();
+        method.setBody(body);
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
+        body.statements().add(returnStatement);
+        
+        method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        
+        _addToLists(_checkParentMethods, parent.getName(), method);
+        
+        return method;
+    }
+    
     /** Create a proxy class for an anonymous class. The proxy class implements
      *  the {@link Rollbackable} interface.
      *  
@@ -715,8 +751,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Create the nested class.
         TypeDeclaration classDeclaration = ast.newTypeDeclaration();
         classDeclaration.setName(ast.newSimpleName(_getProxyName()));
-        String rollbackType = 
-            _getClassName(Rollbackable.class, state.getClassLoader(), root);
+        String rollbackType = _getClassName(Rollbackable.class, state, root);
         classDeclaration.superInterfaces().add(_createName(ast, rollbackType));
         
         // Add a restore method.
@@ -749,6 +784,23 @@ public class AssignmentTransformer extends AbstractTransformer
         proxy.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
         classDeclaration.bodyDeclarations().add(proxy);
         
+        // Add a get checkpoint method.
+        MethodDeclaration getCheckpoint = ast.newMethodDeclaration();
+        String checkpointType = _getClassName(Checkpoint.class, state, root);
+        getCheckpoint.setName(
+                ast.newSimpleName(_getGetCheckpointMethodName(false)));
+        getCheckpoint.setReturnType(_createType(ast, checkpointType));
+        invocation = ast.newMethodInvocation();
+        invocation.setName(ast.newSimpleName(_getGetCheckpointMethodName(true)));
+        body = ast.newBlock();
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(invocation);
+        body.statements().add(returnStatement);
+        getCheckpoint.setBody(body);
+        
+        getCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        classDeclaration.bodyDeclarations().add(getCheckpoint);
+        
         // Add a set checkpoint method.
         MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
         setCheckpoint.setName(
@@ -757,8 +809,6 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add a single checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
             ast.newSingleVariableDeclaration();
-        String checkpointType = 
-            _getClassName(Checkpoint.class, state.getClassLoader(), root);
         checkpoint.setType(_createType(ast, checkpointType));
         checkpoint.setName(ast.newSimpleName("checkpoint"));
         setCheckpoint.parameters().add(checkpoint);
@@ -793,8 +843,7 @@ public class AssignmentTransformer extends AbstractTransformer
             ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(RECORDS_NAME));
         ArrayCreation initializer = ast.newArrayCreation();
-        String typeName = 
-            _getClassName(FieldRecord.class, state.getClassLoader(), root);
+        String typeName = _getClassName(FieldRecord.class, state, root);
         initializer.setType(ast.newArrayType(_createType(ast, typeName)));
         Iterator fields = fieldNames.iterator();
         ArrayInitializer arrayInitializer = ast.newArrayInitializer();
@@ -817,6 +866,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  variables.
      * 
      *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
      *  @param state The current state of the type analyzer.
      *  @param fieldNames The list of all the accessed fields.
      *  @param fieldTypes The types corresponding to the accessed fields.
@@ -825,8 +875,8 @@ public class AssignmentTransformer extends AbstractTransformer
      *   of all the private fields.
      */
     private MethodDeclaration _createRestoreMethod(AST ast, 
-            TypeAnalyzerState state, List fieldNames, List fieldTypes, 
-            boolean isAnonymous) {
+            CompilationUnit root, TypeAnalyzerState state, List fieldNames, 
+            List fieldTypes, boolean isAnonymous) {
         Class currentClass = state.getCurrentClass();
         Class parent = currentClass.getSuperclass();
         String methodName = _getRestoreMethodName(isAnonymous);
@@ -902,7 +952,9 @@ public class AssignmentTransformer extends AbstractTransformer
                 assignment.setRightHandSide(restoreMethodCall);
             else {
                 CastExpression castExpression = ast.newCastExpression();
-                castExpression.setType(_createType(ast, fieldType.getName()));
+                String typeName = 
+                    _getClassName(fieldType.getName(), state, root);
+                castExpression.setType(_createType(ast, typeName));
                 castExpression.setExpression(restoreMethodCall);
                 assignment.setRightHandSide(castExpression);
             }
@@ -912,9 +964,64 @@ public class AssignmentTransformer extends AbstractTransformer
             body.statements().add(assignStatement);
         }
         
+        // Restore the previous checkpoint, if necessary.
+        IfStatement restoreCheckpoint = ast.newIfStatement();
+        
+        InfixExpression timestampTester = ast.newInfixExpression();
+        timestampTester.setLeftOperand(ast.newSimpleName("timestamp"));
+        timestampTester.setOperator(InfixExpression.Operator.LESS_EQUALS);
+        MethodInvocation topTimestamp = ast.newMethodInvocation();
+        topTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+        topTimestamp.setName(ast.newSimpleName("getTopTimestamp"));
+        timestampTester.setRightOperand(topTimestamp);
+        restoreCheckpoint.setExpression(timestampTester);
+        
+        Block restoreBlock = ast.newBlock();
+        restoreCheckpoint.setThenStatement(restoreBlock);
+        
+        // Assign the old checkpoint.
+        Assignment assignCheckpoint = ast.newAssignment();
+        assignCheckpoint.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
+        MethodInvocation restoreCheckpointInvocation = 
+            ast.newMethodInvocation();
+        restoreCheckpointInvocation.setExpression(
+                ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+        restoreCheckpointInvocation.setName(ast.newSimpleName("restore"));
+        restoreCheckpointInvocation.arguments().add(
+                ast.newSimpleName(CHECKPOINT_NAME));
+        restoreCheckpointInvocation.arguments().add(
+                _createRollbackableObject(ast, isAnonymous));
+        restoreCheckpointInvocation.arguments().add(
+                ast.newSimpleName("timestamp"));
+        restoreCheckpointInvocation.arguments().add(
+                ast.newSimpleName("trim"));
+        assignCheckpoint.setRightHandSide(restoreCheckpointInvocation);
+        restoreBlock.statements().add(
+                ast.newExpressionStatement(assignCheckpoint));
+        
+        // Pop the old states.
+        MethodInvocation popStates = ast.newMethodInvocation();
+        String recordType = _getClassName(FieldRecord.class, state, root);
+        popStates.setExpression(_createName(ast, recordType));
+        popStates.setName(ast.newSimpleName("popState"));
+        popStates.arguments().add(ast.newSimpleName(RECORDS_NAME));
+        restoreBlock.statements().add(
+                ast.newExpressionStatement(popStates));
+        
+        body.statements().add(restoreCheckpoint);
+        
         method.setModifiers(Modifier.PUBLIC);
         
         return method;
+    }
+    
+    private Expression _createRollbackableObject(AST ast, boolean isAnonymous) {
+        if (isAnonymous) {
+            ClassInstanceCreation proxy = ast.newClassInstanceCreation();
+            proxy.setName(ast.newSimpleName(_getProxyName()));
+            return proxy;
+        } else
+            return ast.newThisExpression();
     }
     
     /** Create a set checkpoint method invocation for an assignment block.
@@ -999,8 +1106,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Add a checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
             ast.newSingleVariableDeclaration();
-        String checkpointType = 
-            _getClassName(Checkpoint.class, state.getClassLoader(), root);
+        String checkpointType = _getClassName(Checkpoint.class, state, root);
         checkpoint.setType(_createType(ast, checkpointType));
         checkpoint.setName(ast.newSimpleName("checkpoint"));
         method.parameters().add(checkpoint);
@@ -1054,8 +1160,7 @@ public class AssignmentTransformer extends AbstractTransformer
         testNewCheckpointBody.statements().add(
                 ast.newExpressionStatement(record));
         MethodInvocation pushStates = ast.newMethodInvocation();
-        String recordType = 
-            _getClassName(FieldRecord.class, state.getClassLoader(), root);
+        String recordType = _getClassName(FieldRecord.class, state, root);
         pushStates.setExpression(_createName(ast, recordType));
         pushStates.setName(ast.newSimpleName("pushState"));
         pushStates.arguments().add(ast.newSimpleName(RECORDS_NAME));
@@ -1083,12 +1188,8 @@ public class AssignmentTransformer extends AbstractTransformer
         MethodInvocation addInvocation = ast.newMethodInvocation();
         addInvocation.setExpression(ast.newSimpleName("checkpoint"));
         addInvocation.setName(ast.newSimpleName("addObject"));
-        if (isAnonymous) {
-            ClassInstanceCreation proxy = ast.newClassInstanceCreation();
-            proxy.setName(ast.newSimpleName(_getProxyName()));
-            addInvocation.arguments().add(proxy);
-        } else
-            addInvocation.arguments().add(ast.newThisExpression());
+        addInvocation.arguments().add(
+                _createRollbackableObject(ast, isAnonymous));
         thenBranch.statements().add(
                 ast.newExpressionStatement(addInvocation));
         
@@ -1151,6 +1252,10 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private String _getRestoreMethodName(boolean isAnonymous) {
         return RESTORE_NAME + (isAnonymous ? "_ANONYMOUS" : "");
+    }
+    
+    private String _getGetCheckpointMethodName(boolean isAnonymous) {
+        return GET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
     }
     
     /** Get the name of the set checkpoint method.
@@ -1243,9 +1348,17 @@ public class AssignmentTransformer extends AbstractTransformer
         newFields.add(_createRecordArray(ast, root, state, fieldNames));
 
         // Add a restore method.
-        newMethods.add(_createRestoreMethod(ast, state, fieldNames, 
+        newMethods.add(_createRestoreMethod(ast, root, state, fieldNames, 
                 fieldTypes, node instanceof AnonymousClassDeclaration));
         
+        // Get checkpoint method.
+        MethodDeclaration getCheckpoint = 
+            _createGetCheckpointMethod(ast, root, state, 
+                    node instanceof AnonymousClassDeclaration);
+        if (getCheckpoint != null)
+            newMethods.add(getCheckpoint);
+        
+        // Set checkpoint method.
         MethodDeclaration setCheckpoint = 
             _createSetCheckpointMethod(ast, root, state, 
                     node instanceof AnonymousClassDeclaration);
@@ -1270,8 +1383,7 @@ public class AssignmentTransformer extends AbstractTransformer
 
             // Set the class to implement Rollbackable.
             String rollbackType = 
-                _getClassName(Rollbackable.class, 
-                        state.getClassLoader(), root);
+                _getClassName(Rollbackable.class, state, root);
             ((TypeDeclaration)node).superInterfaces().add(
                     _createName(ast, rollbackType));
         }

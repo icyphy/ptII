@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/backtrack
+ME =		ptolemy/backtrack/test
 
-DIRS =		ast util xmlparser test
+DIRS =		test1
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	backtrack
+PTPACKAGE = 	test
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -63,15 +63,42 @@ MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+	# This script is executed AFTER the source in test1 is compiled.
+	# First, transform the source and add prefix "ptolemy.backtrack.test" to the package name.
+	# The output root dir is $(ROOT).
+	# The Test1.java is now in package ptolemy.backtrack.test.test1.
+	# The transformed code is in package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
+	java \
+	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
+	  ptolemy.backtrack.ast.Transformer \
+	  -prefix ptolemy.backtrack.test \
+	  -output $(ROOT) \
+	  test1/Test1.java
+	# Now, compile the transformed code.
+	javac \
+	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)" \
+	  ptolemy/backtrack/test/test1/Test1.java
+	# Now, compile the test program that runs the transformed code.
+	# This test program doesn't require eclipse jars any more.
+	javac \
+	  -classpath "$(CLASSPATH)" \
+	  Test1Main.java
+	# Finally, run the test program. (Again, don't require eclipse.)
+	java \
+	  -classpath "$(CLASSPATH)" \
+	  ptolemy.backtrack.test.Test1Main
+	# If the output is "0 1 2 3 3 2 1 0", it is good.
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+# Is this the right way to remove subdirectory ptolemy?
+# It is generated during the testing, and should not be preserved.
+CRUD := $(CRUD) -r ptolemy
+
+install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)

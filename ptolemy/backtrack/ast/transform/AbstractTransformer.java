@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
 import ptolemy.backtrack.ast.LocalClassLoader;
 import ptolemy.backtrack.ast.Type;
+import ptolemy.backtrack.ast.TypeAnalyzerState;
 import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,6 +66,10 @@ public abstract class AbstractTransformer {
     /** The name of the checkpoint record.
      */
     public static String CHECKPOINT_RECORD_NAME = "$RECORD$$CHECKPOINT";
+    
+    /** The name of the method to get the checkpoint.
+     */
+    public static String GET_CHECKPOINT_NAME = "$GET$CHECKPOINT";
     
     /** The name of the method to set a checkpoint.
      */
@@ -148,16 +153,37 @@ public abstract class AbstractTransformer {
      *   it.
      *  @return The shortest possible class name.
      */
-    protected String _getClassName(Class c, LocalClassLoader loader, 
+    protected String _getClassName(Class c, TypeAnalyzerState state, 
             CompilationUnit root) {
-        String packageName = c.getPackage().getName();
-        String fullName = c.getName();
+        return _getClassName(c.getName(), state, root);
+    }
+    
+    /** Get the shortest possible name of the a class. If there is no conflict,
+     *  the class is first imported, and only the simple class is returned;
+     *  otherwise, the its full name is returned.
+     * 
+     *  @param name The full class name.
+     *  @param loader The class loader used to test importation conflicts.
+     *  @param root The root of the AST. If there is no conflict and the class
+     *   has not been imported yet, a new {@link ImportDeclaration} is added to
+     *   it.
+     *  @return The shortest possible class name.
+     */
+    protected String _getClassName(String name, TypeAnalyzerState state, 
+            CompilationUnit root) {
+        LocalClassLoader loader = state.getClassLoader();
+        int lastDot = name.lastIndexOf('.');
+        String packageName = lastDot == -1 ? "" : name.substring(0, lastDot);
         String simpleName;
-        int lastSeparator = _lastIndexOf(fullName, new char[]{'.', '$'});
+        int lastSeparator = _lastIndexOf(name, new char[]{'.', '$'});
         if (lastSeparator == -1)
-            return fullName;
+            return name;
         else
-            simpleName = fullName.substring(lastSeparator + 1);
+            simpleName = name.substring(lastSeparator + 1);
+        
+        if (name.equals(state.getCurrentClass().getName()))
+            return simpleName;
+        // FIXME
         
         Iterator importedClasses = loader.getImportedClasses().iterator();
         while (importedClasses.hasNext()) {
@@ -169,7 +195,7 @@ public abstract class AbstractTransformer {
             else
                 if (importedClass.getClassName().equals(simpleName))
                     // Conflict.
-                    return fullName;
+                    return name;
         }
         
         Iterator importedPackages = loader.getImportedPackages().iterator();
@@ -183,7 +209,7 @@ public abstract class AbstractTransformer {
                     // package.
                     loader.loadClass(importedPackage + "." + simpleName);
                     // If exists, conflict.
-                    return fullName;
+                    return name;
                 } catch (ClassNotFoundException e) {
                 }
             }
@@ -191,9 +217,9 @@ public abstract class AbstractTransformer {
         
         AST ast = root.getAST();
         ImportDeclaration declaration = ast.newImportDeclaration();
-        declaration.setName(_createName(ast, fullName));
+        declaration.setName(_createName(ast, name));
         root.imports().add(declaration);
-        loader.importClass(fullName);
+        loader.importClass(name);
         return simpleName;
     }
     
