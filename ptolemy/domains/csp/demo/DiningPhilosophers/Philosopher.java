@@ -142,21 +142,21 @@ public class Philosopher extends CSPActor {
                 if (rand.nextDouble() > 0.5) {
                     leftIn.get(0);
                     gotLeft = true;
-                    notifyListeners();
+                    _notifyListeners();
                     waitingRight = true;
                     rightIn.get(0);
                     gotRight = true;
                     waitingRight = false;
-                    notifyListeners();
+                    _notifyListeners();
                 } else {
                     rightIn.get(0);
                     gotRight = true;
-                    notifyListeners();
+                    _notifyListeners();
                     waitingLeft = true;
                     leftIn.get(0);
                     gotLeft = true;
                     waitingLeft = false;
-                    notifyListeners();
+                    _notifyListeners();
                 }
                 rate = ((DoubleToken)_eating.getToken()).doubleValue();
                 interval = (int)(rand.nextDouble()*rate*2000);
@@ -168,10 +168,10 @@ public class Philosopher extends CSPActor {
                 // Release the forks.
                 leftOut.send(0, t);
                 gotLeft = false;
-                rightOut.send(0,t);
+                rightOut.send(0, t);
                 gotRight = false;
 
-                notifyListeners();
+                _notifyListeners();
 
                 count++;
             }
@@ -201,7 +201,7 @@ public class Philosopher extends CSPActor {
     /*  Notify any PhilosopherListeners that have registered an
      *  interest/dependency in this Philosopher.
      */
-    protected void notifyListeners() {
+    protected void _notifyListeners() {
         if (_listeners == null) {
             // No listeners to notify.
             return;
