@@ -227,6 +227,14 @@ public class InequalitySolver {
 	return result.elements();
     }
 
+    /** Return an <code>Enumeration</code> of all the variables in the
+     *  inequality constraints.
+     *  @return an Enumeration of InequalityTerms
+     */
+    public Enumeration variables() {
+	return _Clist.keys();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
