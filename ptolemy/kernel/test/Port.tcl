@@ -54,7 +54,14 @@ test Port-1.1 {Get information about an instance of Port} {
     # If anything changes, we want to know about it so we can write tests.
     set n [java::new pt.kernel.Port]
     list [getJavaInfo $n]
-} {}
+} {{
+  class:         pt.kernel.Port
+  fields:        
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams {connectToRelation pt.kernel.Relation} disconnectAllRelations {disconnectRelation pt.kernel.Relation} enumRelations getEntity numRelations {setEntity pt.kernel.Entity}
+  constructors:  pt.kernel.Port {pt.kernel.Port java.lang.String}
+  properties:    class params name entity
+  superclass:    pt.kernel.NamedObj
+}}
 
 ######################################################################
 ####
