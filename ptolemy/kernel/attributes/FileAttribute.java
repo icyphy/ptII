@@ -34,7 +34,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.util.StringUtilities;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
