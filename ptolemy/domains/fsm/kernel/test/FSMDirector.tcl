@@ -159,17 +159,17 @@ test FSMDirector-4.1 {test action methods} {
     [java::field $fsm initialStateName] setExpression s0
     [java::field $s0 refinementName] setExpression e2
     [java::field $s1 refinementName] setExpression e2
-    $t0 setGuardExpression "p1_V > 5"
+    $t0 setGuardExpression "p1 > 5"
     [java::field $t1 preemptive] setExpression "true"
-    $t1 setGuardExpression "p1_V > 0"
+    $t1 setGuardExpression "p1 > 0"
     [java::field $t2 preemptive] setExpression "true"
-    $t2 setGuardExpression "p1_V > 5"
+    $t2 setGuardExpression "p1 > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
     [java::field $act0 portName] setExpression p2
     [java::field $act0 expression] setExpression 1
     set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
     [java::field $act1 portName] setExpression p2
-    [java::field $act1 expression] setExpression p1_V
+    [java::field $act1 expression] setExpression p1
     set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
     [java::field $act2 portName] setExpression p2
     [java::field $act2 expression] setExpression 0
@@ -265,9 +265,9 @@ test FSMDirector-6.1 {test transferInputs} {
     [java::field $fsm initialStateName] setExpression s0
     [java::field $s0 refinementName] setExpression e2
     [java::field $s1 refinementName] setExpression e3
-    $t0 setGuardExpression "p1_V > 5"
+    $t0 setGuardExpression "p1 > 5"
     [java::field $t1 preemptive] setExpression "true"
-    $t1 setGuardExpression "p1_V > 5"
+    $t1 setGuardExpression "p1 > 5"
 
     $d0 preinitialize
     $d0 initialize
@@ -342,17 +342,17 @@ test FSMDirector-7.1 {test clone a modal model} {
     [java::field $fsm initialStateName] setExpression s0
     [java::field $s0 refinementName] setExpression e2
     [java::field $s1 refinementName] setExpression e2
-    $t0 setGuardExpression "p1_V > 5"
+    $t0 setGuardExpression "p1 > 5"
     [java::field $t1 preemptive] setExpression "true"
-    $t1 setGuardExpression "p1_V > 0"
+    $t1 setGuardExpression "p1 > 0"
     [java::field $t2 preemptive] setExpression "true"
-    $t2 setGuardExpression "p1_V > 5"
+    $t2 setGuardExpression "p1 > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
     [java::field $act0 portName] setExpression p2
     [java::field $act0 expression] setExpression 1
     set act1 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t1 act1]
     [java::field $act1 portName] setExpression p2
-    [java::field $act1 expression] setExpression p1_V
+    [java::field $act1 expression] setExpression p1
     set act2 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t2 act2]
     [java::field $act2 portName] setExpression p2
     [java::field $act2 expression] setExpression 0

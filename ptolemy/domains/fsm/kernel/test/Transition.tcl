@@ -146,17 +146,17 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     set scope1 [[$guard getScope] elementList]
     set scope2 [[$trigger getScope] elementList]
     list [listToNames $scope1] [listToNames $scope2]
-} {{preemptive _trigger p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V} {preemptive _guard p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}}
+} {{preemptive _trigger p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1} {preemptive _guard p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
-    $t0 setGuardExpression "p0_V > 0"
-    $t0 setTriggerExpression "p0_V > 5"
+    $t0 setGuardExpression "p0 > 0"
+    $t0 setTriggerExpression "p0 > 5"
     list [$t0 getGuardExpression] [$t0 getTriggerExpression]
-} {{p0_V > 0} {p0_V > 5}}
+} {{p0 > 0} {p0 > 5}}
 
 test Transition-3.3 {test guard and trigger evaluation} {
     set tok [java::new {ptolemy.data.IntToken int} 10]
-    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p0_V]]
+    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p0]]
     $v0 setToken $tok
     set re0 [$t0 isEnabled]
     set re1 [$t0 isTriggered]
@@ -168,11 +168,11 @@ test Transition-3.3 {test guard and trigger evaluation} {
 } {1 1 0 0}
 
 test Transition-3.4 {guard must be true whenever trigger is true} {
-    $t0 setTriggerExpression "p0_V > -5"
+    $t0 setTriggerExpression "p0 > -5"
     catch {$t0 isTriggered} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: ..fsm.t0:
-The trigger: p0_V > -5 is true but the guard: p0_V > 0 is false.}}
+The trigger: p0 > -5 is true but the guard: p0 > 0 is false.}}
 
 ######################################################################
 ####

@@ -160,7 +160,7 @@ test FSMActor-5.1 {test creating input variables} {
     $p2 link $r1
     $dir preinitialize
     listToNames [$fsm attributeList]
-} {_iconDescription initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}
+} {_iconDescription initialStateName p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}
 
 ######################################################################
 ####
@@ -176,10 +176,10 @@ test FSMActor-6.1 {test action methods} {
     set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
     [java::field $s0 outgoingPort] link $t0
     [java::field $s1 incomingPort] link $t0
-    $t0 setGuardExpression "(p1_0_S ? p1_0_V : 0) > 5"
+    $t0 setGuardExpression "(p1_0_isPresent ? p1_0 : 0) > 5"
     set act0 [java::new ptolemy.domains.fsm.kernel.BroadcastOutput $t0 act0]
     [java::field $act0 portName] setExpression p2
-    [java::field $act0 expression] setExpression "p1_0_V + 1"
+    [java::field $act0 expression] setExpression "p1_0 + 1"
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
     $p1 setInput true
     $p1 setMultiport true
@@ -207,8 +207,8 @@ test FSMActor-6.1 {test action methods} {
     $dir preinitialize
     $dir initialize
 
-    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0_S]]
-    set v1 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0_V]]
+    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0_isPresent]]
+    set v1 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0]]
     set re0 [[$fsm currentState] getFullName]
     $fsm prefire
     $fsm fire
@@ -334,7 +334,7 @@ test FSMActor-9.1 {test working with MoML} {
             </port>
         </entity>
         <relation name="t0" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -348,7 +348,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
         </relation>
         <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 0">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -362,7 +362,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
         </relation>
         <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -376,7 +376,7 @@ test FSMActor-9.1 {test working with MoML} {
             </property>
         </relation>
         <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_V == 0">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
