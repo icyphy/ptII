@@ -19,11 +19,14 @@
       <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
       <property name="Code Generator" class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
       <property name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
+      <property name="Tcl Shell" class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/>
+
     </property>
     <property name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
       <!-- This will appear in the View menu of an entity tableau. -->
       <property name="Source" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     </property>
+    <property name="Web Browser" class="ptolemy.actor.gui.BrowserTableau$Factory"/>
     <property name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     <!-- FIXME: plot data tableau, etc. -->
   </property>
