@@ -115,7 +115,7 @@ public abstract class Source extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        for (int i = 0; i < trigger.getWidth(); i++) {
+        for (int i = 0; i < trigger.numberOfSources(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);
             }
