@@ -28,9 +28,11 @@
 
 */
 
-package pt.actors;
+package pt.actor.util;
 
 import pt.kernel.*;
+import pt.kernel.util.*;
+
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 import java.util.NoSuchElementException;
