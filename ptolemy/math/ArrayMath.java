@@ -120,7 +120,17 @@ public final class ArrayMath {
      *  @return A new array.
      */
     public static Complex[] convolve(Complex[] array1, Complex[] array2) {
-        Complex[] result = new Complex[array1.length+array2.length-1];
+        Complex[] result;
+        int resultsize = array1.length+array2.length-1;
+        if (resultsize < 0) {
+            // If we attempt to convolve two zero length arrays, return
+            // a zero length array.  
+            result = new Complex[0];
+            return result;
+        }
+
+        result = new Complex[resultsize];
+        
         for (int i = 0; i<result.length; i++) {
             result[i] = new Complex();
         }
@@ -144,7 +154,18 @@ public final class ArrayMath {
      *  @return A new array.
      */
     public static double[] convolve(double[] array1, double[] array2) {
-        double[] result = new double[array1.length+array2.length-1];
+        double[] result;
+        int resultsize = array1.length+array2.length-1;
+
+        if (resultsize < 0) {
+            // If we attempt to convolve two zero length arrays, return
+            // a zero length array.  
+            result = new double[0];
+            return result;
+        }
+
+        result = new double[resultsize];
+
         // The result is assumed initialized to zero (in the Java spec).
         for (int i = 0; i<array1.length; i++) {
             for (int j = 0; j<array2.length; j++) {
