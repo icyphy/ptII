@@ -51,7 +51,7 @@ public class ExpressionShellEffigy extends Effigy {
      */
     public ExpressionShellEffigy(Workspace workspace) {
         super(workspace);
-        _model = new NamedObj();
+        _init();
     }
 
     /** Create a new effigy in the given container with the given name.
@@ -65,7 +65,7 @@ public class ExpressionShellEffigy extends Effigy {
     public ExpressionShellEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _model = new NamedObj();
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,6 +93,20 @@ public class ExpressionShellEffigy extends Effigy {
      */
     public NamedObj getModel() {
         return _model;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Initialization.
+    private void _init() {
+        _model = new NamedObj();
+        try {
+            _model.setName("Expression");
+            identifier.setExpression("Expression Evaluator");
+        } catch (KernelException ex) {
+            throw new InternalErrorException(ex);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
