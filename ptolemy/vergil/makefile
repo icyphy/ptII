@@ -55,7 +55,8 @@ PTCLASSALLJARS = \
 		icon/icon.jar \
 		lib/lib.jar \
 		ptolemy/ptolemy.jar \
-		toolbox/toolbox.jar
+		toolbox/toolbox.jar \
+		tree/tree.jar
 
 PTCLASSALLJAR = vergil.jar
 
