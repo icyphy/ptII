@@ -381,47 +381,6 @@ public class SDFScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Determine the number of times the given actor can fire, based on
-     *  the number of tokens that are present on its inputs according to
-     *  the given map.
-     *
-     *  @param currentActor The actor.
-     *  @param waitingTokens A map between each input IOPort and the number of
-     *  tokens in the queue for that port.
-     *  @return The number of times the actor can fire.
-     *  @exception IllegalActionException If the rate parameters are invalid.
-     */
-    private int _computeMaximumFirings(ComponentEntity currentActor,
-            Map waitingTokens) throws IllegalActionException {
-        int maximumFirings = Integer.MAX_VALUE;
-
-        // Update the number of tokens waiting on the actor's input ports.
-        Iterator inputPorts =
-	    ((Actor) currentActor).inputPortList().iterator();
-        while(inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            int[] tokens = (int []) waitingTokens.get(inputPort);
-	    int tokenRate = getTokenConsumptionRate(inputPort);
-            // Ignore zero rate ports.. they don't limit the number of times
-            // we can fire their actors.
-            if(tokenRate == 0) {
-                continue;
-            }
-	    for(int channel = 0;
-                channel < inputPort.getWidth();
-                channel++) {
-		int firings = tokens[channel] / tokenRate;
-
-		// keep track of whether or not this actor can fire again
-		// immediately
-		if(firings < maximumFirings) {
-                    maximumFirings = firings;
-                }
-	    }
-	}
-        return maximumFirings;
-    }
-
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
@@ -619,6 +578,47 @@ public class SDFScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
+
+    /** Determine the number of times the given actor can fire, based on
+     *  the number of tokens that are present on its inputs according to
+     *  the given map.
+     *
+     *  @param currentActor The actor.
+     *  @param waitingTokens A map between each input IOPort and the number of
+     *  tokens in the queue for that port.
+     *  @return The number of times the actor can fire.
+     *  @exception IllegalActionException If the rate parameters are invalid.
+     */
+    private int _computeMaximumFirings(ComponentEntity currentActor,
+            Map waitingTokens) throws IllegalActionException {
+        int maximumFirings = Integer.MAX_VALUE;
+
+        // Update the number of tokens waiting on the actor's input ports.
+        Iterator inputPorts =
+	    ((Actor) currentActor).inputPortList().iterator();
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            int[] tokens = (int []) waitingTokens.get(inputPort);
+	    int tokenRate = getTokenConsumptionRate(inputPort);
+            // Ignore zero rate ports.. they don't limit the number of times
+            // we can fire their actors.
+            if(tokenRate == 0) {
+                continue;
+            }
+	    for(int channel = 0;
+                channel < inputPort.getWidth();
+                channel++) {
+		int firings = tokens[channel] / tokenRate;
+
+		// keep track of whether or not this actor can fire again
+		// immediately
+		if(firings < maximumFirings) {
+                    maximumFirings = firings;
+                }
+	    }
+	}
+        return maximumFirings;
+    }
 
     /** Count the number of input ports in the given actor that must be
      *  fulfilled before the actor can fire.  Ports that are connected
