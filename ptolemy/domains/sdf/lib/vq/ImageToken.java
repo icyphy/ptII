@@ -305,7 +305,7 @@ public final class ImageToken extends MatrixToken {
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
-		    if (_value[i * _columnCount + j] != 
+		    if (_value[i * _columnCount + j] !=
                             tem.getElementAt(i, j)) {
 			return new BooleanToken(false);
 		    }
