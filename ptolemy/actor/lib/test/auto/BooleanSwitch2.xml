@@ -22,12 +22,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 350.0]">
         </property>
     </property>
-    <property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 110.0]">
-        </property>
-    </property>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
         </property>

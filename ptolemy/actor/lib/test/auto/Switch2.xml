@@ -22,12 +22,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 185.0]">
         </property>
     </property>
-    <property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 105.0]">
-        </property>
-    </property>
     <entity name="Switch" class="ptolemy.actor.lib.Switch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 285.0]">
         </property>

@@ -18,12 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="ModelID" class="ptolemy.kernel.attributes.IDAttribute">
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 60.0]">
-        </property>
-    </property>
     <entity name="TestSource" class="ptolemy.domains.de.lib.test.TestSource">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 145.0]">
         </property>
