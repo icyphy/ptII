@@ -28,6 +28,8 @@
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
             </property>
@@ -43,16 +45,16 @@
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[355.0, 305.0]">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="SampleDelay.input" relation="relation4"/>
-    <link port="SampleDelay.output" relation="relation3"/>
+    <link port="SampleDelay.output" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
-    <link port="AddSubtract.plus" relation="relation3"/>
+    <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.output" relation="relation4"/>
 </entity>

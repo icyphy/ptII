@@ -112,6 +112,8 @@ public class SampleDelay extends CodeGeneratorHelper {
             }
             code.append(initialOutputs[i].toString() + ";\n");
         }
+        setOffset(actor.input, 0, initialOutputs.length);
+        setOffset(actor.output, 0, initialOutputs.length);
         return code.toString();
     }
 }
