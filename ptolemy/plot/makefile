@@ -226,9 +226,9 @@ include $(ROOT)/mk/ptcommon.mk
 # Include rules necessary to build a distribution
 include $(ROOT)/mk/ptdist.mk
 
-# Fix the temporary directory
+# Fix the temporary directory used when building a distribution
 fixtmpdist:
-	@echo "Fixing $(PTTMPDIR)/$(PTDIST)
+	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
 	echo "all:" > $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "	cd ptolemy/plot; $(MAKE) all" >> $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "sources:" > $(PTTMPDIR)/$(PTDIST)/makefile
@@ -240,10 +240,32 @@ fixtmpdist:
 	echo "clean:" >> $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "	cd ptolemy/plot; $(MAKE) clean" >> $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "$(PTDIST) - A Java plotting package" > \
-		 $(PTTMPDIR)/$(PTDIST)/README
-	echo "See ptolemy/plot/index.html" >> $(PTTMPDIR)/$(PTDIST)/README
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "Ptplot is a set of two dimensional signal plotters >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README
+	echo "Ptplot is embeddable in applets and applications." >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "For more information, see ptolemy/plot/index.html" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
 	@echo "Remove LogicAnalyzer from makefile"
 	grep -v LogicAnalyzer \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile > /tmp/ptplotfix
 	mv /tmp/ptplotfix $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile
 	rm -f $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/LogicAnalyzer*
+	@echo "JShield needs the ico file to be in the top level directory"
+	cp $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/img/ptplot.ico \
+		$(PTTMPDIR)/$(PTDIST)
+	@echo "Fixing up doc/download directory"
+	rm -rf $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
+	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
+	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "<head>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "<title>Download Ptplot</title>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "<H1>Download Ptplot<H1>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/ptplot/download"><code>http://ptolemy.eecs.berkeley.edu/ptplot/download</code></a>' >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "<hr>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "</body>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "</html>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
