@@ -82,14 +82,14 @@ public class QueueWithNextOut extends DETransformer {
         nextOut.setTypeAtLeast(input);
 	nextOut.setOutput(true);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.GENERAL);
+        // Leave type undeclared.
         _queue = new FIFOQueue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The trigger port, which has type Token. If this port
+    /** The trigger port, which has undeclared type. If this port
      *  receives a token, then the oldest token in the queue
      *  will be emitted on the <i>output</i> port.
      */

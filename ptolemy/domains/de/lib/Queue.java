@@ -72,14 +72,14 @@ public class Queue extends DETransformer {
         super(container, name);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.GENERAL);
+        // Leave trigger type undeclared.
         _queue = new FIFOQueue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The trigger port, which has type Token. If this port
+    /** The trigger port, which has undeclared type. If this port
      *  receives a token, then the oldest token in the queue
      *  will be emitted on the <i>output</i> port.
      */
@@ -132,19 +132,21 @@ public class Queue extends DETransformer {
         // If the trigger input is not connected, never fire.
         boolean hasInput = false;
         boolean hasTrigger = false;
-        if (input.getWidth() > 0)
+        if (input.getWidth() > 0) {
             hasInput = (input.hasToken(0));
-        if (trigger.getWidth() > 0)
+        }
+        if (trigger.getWidth() > 0) {
             hasTrigger = (trigger.hasToken(0));
+        }
         return hasInput || hasTrigger;
     }
 
     /** Clear the cached input tokens.
      *  @exception IllegalActionException If there is no director.
      */
-    public void preinitialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         _queue.clear();
-        super.preinitialize();
+        super.initialize();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -101,7 +101,7 @@ public class Sampler extends DETransformer {
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.GENERAL);
+        // Leave type undeclared.
 
         initialValue = new Parameter(this, "initialValue");
 
@@ -118,7 +118,7 @@ public class Sampler extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The trigger port, which has type Token. If this port
+    /** The trigger port, which has undeclared type. If this port
      *  receives a token, then the most recent token from the
      *  <i>input</i> port will be emitted on the <i>output</i> port.
      */
