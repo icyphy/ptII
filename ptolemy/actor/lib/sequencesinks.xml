@@ -6,7 +6,7 @@
     <?moml
       <group>
 <doc>Sinks for inputs that are sequences of tokens. </doc>
-<entity name="Assertion" class="ptolemy.actor.lib.Assertion"/>
+<entity name="Assertion" class="ptolemy.actor.lib.assertion"/>
 <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
 <!-- NOTE: Appears also in timedsinks.xml. -->
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
