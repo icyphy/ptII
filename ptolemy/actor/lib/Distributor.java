@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (mudit@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
 package ptolemy.actor.lib;
@@ -67,14 +70,20 @@ initialize() method of the actor, as they are computed and set in that method.
 public class Distributor extends AtomicActor {
 
     /** Constructor. Creates ports and makes the output port a multiport.
-     * @exception NameDuplicationException If more than one port
-     *  with the same name is added to the star or if another star with an
+     *
+     *  @param container CompositeActor containing this actor
+     *  @param name Name of this actor.
+     *  @exception IllegalActionException If one of the
+     *  called methods throws it.
+     *  @exception NameDuplicationException If more than one port
+     *  with the same name is added to the actor or if another actor with an
      *  an identical name already exists.
      */
     public Distributor(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
+        //These parameters are required for SDF
         Parameter param = new Parameter(_input, "Token Consumption Rate",
                 new IntToken(1));
         param = new Parameter(_input,"Token Production Rate",
@@ -84,6 +93,7 @@ public class Distributor extends AtomicActor {
 
         _output = new IOPort(this, "output", false, true);
         _output.setMultiport(true);
+        //These parameters are required for SDF
         param = new Parameter(_output, "Token Consumption Rate",
                 new IntToken(1));
         param = new Parameter(_output,"Token Production Rate",
@@ -96,9 +106,10 @@ public class Distributor extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reads one Token from its input port and writes this token to
-     *  its output port. Needs to read one token for every relation 
-     *  connected to the output port.
+    /** Reads one token from its input port and writes this token to
+     *  one of the relations  connected to the output port. 
+     *  Needs to read one token for every relation connected to the 
+     *  output port.
      *
      *  @exception IllegalActionException If there is an error in reading
      *  data from the input or writing data to the output. 
@@ -110,7 +121,7 @@ public class Distributor extends AtomicActor {
     }
 
     /** Initializes the actor. Sets the parameter representing the number of 
-     *  tokens that the input port should consume. This parameter is required 
+     *  tokens that the input port will consume. This parameter is required 
      *  only for domains like SDF that need this information to calculate
      *  a static schedule.
      *  
