@@ -55,7 +55,7 @@ outputs and ArrayToken that contains the current token, plus some number of
 previously read tokens.
 The length of the delay line (and subsequently the size of the ArrayToken
 created) is the same as the <i>initialValues</i> parameter.
-This actor is polymorphic. It can accept intput of any type and will
+This actor is polymorphic. It can accept input of any type and will
 send ArrayTokens of corresponding type.
 <p>
 
