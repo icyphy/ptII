@@ -107,6 +107,21 @@ public abstract class BaseType implements Type, Serializable {
         return _tokenClass;
     }
 
+    /** Return a perfect hash for this type.  This number corresponds
+     *  uniquely to a particular type, and is used to improve
+     *  performance of certain operations in the TypeLattice class.
+     *  All instances of a particular type (e.g. integer array) must
+     *  return the same number.  Types that return HASH_INVALID will
+     *  not have results in TypeLattice cached.  Note that it is safer
+     *  to return HASH_INVALID, than to return a number that is not
+     *  unique, or different number for the same type from different
+     *  instances.  This base class returns HASH_INVALID.
+     *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
+     */
+    public int getTypeHash() {
+        return Type.HASH_INVALID;
+    }
+
     /** Return a hash code value for this object.
      */
     public int hashCode() {
@@ -195,6 +210,9 @@ public abstract class BaseType implements Type, Serializable {
             // return the argument.
             return t;
         }
+        public int getTypeHash() {
+            return 0;
+        }
     }
     public static final UnknownType UNKNOWN = new UnknownType();
 
@@ -205,6 +223,9 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             return BooleanToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 1;
         }
     }
     public static final BooleanType BOOLEAN = new BooleanType();
@@ -220,6 +241,9 @@ public abstract class BaseType implements Type, Serializable {
         public Token convert(Token t) throws IllegalActionException {
             return UnsignedByteToken.convert(t);
         }
+        public int getTypeHash() {
+            return 2;
+        }
     }
     public static final UnsignedByteType UNSIGNED_BYTE =
     new UnsignedByteType();
@@ -231,6 +255,9 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             return ComplexToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 3;
         }
     }
     public static final ComplexType COMPLEX = new ComplexType();
@@ -245,6 +272,9 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             return DoubleToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 4;
         }
     }
     public static final DoubleType DOUBLE = new DoubleType();
@@ -274,6 +304,9 @@ public abstract class BaseType implements Type, Serializable {
         public Token convert(Token t) throws IllegalActionException {
             return IntToken.convert(t);
         }
+        public int getTypeHash() {
+            return 5;
+        }
     }
     public static final IntType INT = new IntType();
 
@@ -287,6 +320,9 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             return LongToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 6;
         }
     }
     public static final LongType LONG = new LongType();
@@ -306,6 +342,9 @@ public abstract class BaseType implements Type, Serializable {
             throw new IllegalActionException("Cannot convert token " + t +
                     " to type numerical, because numerical is not a concrete type.");
         }
+        public int getTypeHash() {
+            return 7;
+        }
     }
     public static final NumericalType NUMERICAL = new NumericalType();
 
@@ -316,6 +355,9 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             return ObjectToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 8;
         }
     }
     public static final ObjectType OBJECT = new ObjectType();
@@ -329,6 +371,9 @@ public abstract class BaseType implements Type, Serializable {
             throw new IllegalActionException("Cannot convert token " + t +
                     " to type scalar, because scalar is not a concrete type.");
         }
+        public int getTypeHash() {
+            return 9;
+        }
     }
     public static final ScalarType SCALAR = new ScalarType();
 
@@ -339,6 +384,9 @@ public abstract class BaseType implements Type, Serializable {
         }
         public Token convert(Token t) throws IllegalActionException {
             return StringToken.convert(t);
+        }
+        public int getTypeHash() {
+            return 10;
         }
     }
     public static final StringType STRING = new StringType();
@@ -355,43 +403,11 @@ public abstract class BaseType implements Type, Serializable {
             //         + t + " to type general, because general is not a "
             //         + concrete type.");
         }
+        public int getTypeHash() {
+            return 11;
+        }
     }
     public static final GeneralType GENERAL = new GeneralType();
-
-    /** Return the cached type comparison result:
-     * TypeLattice.compare(this,type(index)).
-     * @param index Other type's node index in the type lattice.
-     * @return Cached type comparison result.
-     */
-    public int getCachedTypeComparisonResult(int index) {
-        return _cachedTypeComparisonResults[index];
-    }
-
-    /** Return this type's node index in the (constant) type lattice.
-     * @return this type's node index in the (constant) type lattice.
-     */
-    public int getNodeIndex() {
-        return _nodeIndex;
-    }
-
-    /** Set the cached TypeLattice.compare(this, type) value.
-     * @param index The other type's node index.
-     * @param value TypeLattice.compare(this, type) result.
-     */
-    public void setCachedTypeComparisonResult(int index, int value) {
-        _cachedTypeComparisonResults[index] = value;
-    }
-
-    /** Set this type's node index in the (constant) type lattice.
-     * @param index This type's node index.
-     * @param value The total number of types in the type lattice.
-     */
-    public void setNodeIndex(int index, int nodeCount) {
-        _nodeIndex = index;
-        _cachedTypeComparisonResults = new int[nodeCount];
-        for (int i = 0; i < nodeCount; i++)
-            _cachedTypeComparisonResults[i] = Type.CACHE_INVALID;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
@@ -435,5 +451,4 @@ public abstract class BaseType implements Type, Serializable {
     private static Map _classNameToType;
 
     private int[] _cachedTypeComparisonResults = null;
-    private int _nodeIndex = Type.CACHE_INVALID;
 }

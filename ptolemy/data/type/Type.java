@@ -68,19 +68,18 @@ public interface Type {
      */
     public boolean equals(Object object);
 
-    /** Return the cached type comparison result:
-     *  TypeLattice.compare(this, type(index)).
-     *  @param index Other type's node index in the type lattice.
-     *  @return Cached type comparison result.
-     *  @since Ptolemy II 2.1
+    /** Return a perfect hash for this type.  This number corresponds
+     *  uniquely to a particular type, and is used to improve
+     *  performance of certain operations in the TypeLattice class.
+     *  All instances of a particular type (e.g. integer array) must
+     *  return the same number.  Types that return HASH_INVALID will
+     *  not have results in TypeLattice cached.  Note that it is safer
+     *  to return HASH_INVALID, than to return a number that is not
+     *  unique, or different number for the same type from different
+     *  instances.
+     *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
      */
-    public int getCachedTypeComparisonResult(int index);
-
-    /** Return this type's node index in the (constant) type lattice.
-     *  @return this type's node index in the (constant) type lattice.
-     *  @since Ptolemy II 2.1
-     */
-    public int getNodeIndex();
+    public int getTypeHash();
 
     /** Return the class for tokens that this type represents.
      */
@@ -119,21 +118,6 @@ public interface Type {
      */
     public boolean isSubstitutionInstance(Type type);
 
-    /** Cache type comparison result.
-     *  Set the cached TypeLattice.compare(this, type) value.
-     *  @param index The other type's node index.
-     *  @param value TypeLattice.compare(this, type) result.
-     *  @since Ptolemy II 2.1
-     */
-    public void setCachedTypeComparisonResult(int index, int value);
-
-    /** Set this type's node index in the (constant) type lattice.
-     *  @param index This type's node index.
-     *  @param value The total number of types in the type lattice.
-     *  @since Ptolemy II 2.1
-     */
-    public void setNodeIndex(int index, int nodeCount);
-
     /** Return the string representation of this type.
      *  @return A String.
      */
@@ -146,5 +130,6 @@ public interface Type {
     /** Used to indicate that the type comparison cache is invalid
      *  @since Ptolemy II 2.1
      */
-    public static final int CACHE_INVALID = Integer.MIN_VALUE;
+    public static final int HASH_INVALID = Integer.MIN_VALUE;
+    public static final int HASH_MAX = 12;
 }

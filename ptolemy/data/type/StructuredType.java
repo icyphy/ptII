@@ -64,20 +64,19 @@ public abstract class StructuredType implements Type {
      */
     abstract public Object clone() throws CloneNotSupportedException;
 
-    /** Return the cached type comparison result:
-     * TypeLattice.compare(this, type(index)).
-     * @param index Other type's node index in the type lattice.
-     * @return Cached type comparison result.
+    /** Return a perfect hash for this type.  This number corresponds
+     *  uniquely to a particular type, and is used to improve
+     *  performance of certain operations in the TypeLattice class.
+     *  All instances of a particular type (e.g. integer array) must
+     *  return the same number.  Types that return HASH_INVALID will
+     *  not have results in TypeLattice cached.  Note that it is safer
+     *  to return HASH_INVALID, than to return a number that is not
+     *  unique, or different number for the same type from different
+     *  instances.  This base class returns HASH_INVALID.
+     *  @return A number between 0 and HASH_MAX, or HASH_INVALID.
      */
-    public int getCachedTypeComparisonResult(int index) {
-        return _cachedTypeComparisonResults[index];
-    }
-
-    /** Return this type's node index in the (constant) type lattice.
-     * @return this type's node index in the (constant) type lattice.
-     */
-    public int getNodeIndex() {
-        return _nodeIndex;
+    public int getTypeHash() {
+        return Type.HASH_INVALID;
     }
 
     /** Set the elements that have declared type BaseType.UNKNOWN to the
@@ -85,25 +84,6 @@ public abstract class StructuredType implements Type {
      *  @param type A Type.
      */
     public abstract void initialize(Type type);
-
-    /** Set the cached TypeLattice.compare(this, type) value.
-     * @param index The other type's node index.
-     * @param value TypeLattice.compare(this, type) result.
-     */
-    public void setCachedTypeComparisonResult(int index, int value) {
-        _cachedTypeComparisonResults[index] = value;
-    }
-
-    /** Set this type's node index in the (constant) type lattice.
-     * @param index This type's node index.
-     * @param value The total number of types in the type lattice.
-     */
-    public void setNodeIndex(int index, int nodeCount) {
-        _nodeIndex = index;
-        _cachedTypeComparisonResults = new int[nodeCount];
-        for (int i = 0; i < nodeCount; i++)
-            _cachedTypeComparisonResults[i] = Type.CACHE_INVALID;
-    }
 
     /** Update this StructuredType to the specified Structured Type.
      ** The specified type must have the same structure as this type.
@@ -160,11 +140,5 @@ public abstract class StructuredType implements Type {
      */
     protected abstract StructuredType _leastUpperBound(StructuredType type);
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private int[] _cachedTypeComparisonResults = null;
-    private int _nodeIndex = Type.CACHE_INVALID;
 }
 
