@@ -74,7 +74,7 @@ public class PNSieve extends AtomicActor {
 		    //System.out.println("Making mutations");
 		    // yes - make the mutation for it
 		    TopologyChangeRequest m = makeMutation(((IntToken)data).intValue());
-		    PNDirector director = (PNDirector)getDirector();
+		    BasePNDirector director = (BasePNDirector)getDirector();
 		    // Queue the new mutation
 		    director.queueTopologyChangeRequest(m);
 		    //System.out.println("Queued mutation");
