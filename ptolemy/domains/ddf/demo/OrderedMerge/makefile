@@ -47,12 +47,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	OrderedMerge.xml \
-
+	OrderedMerge.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+	$(OTHER_FILES_TO_BE_JARED) \
+	OrderedMerge.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,10 +72,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer OrderedMerge.htm
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer OrderedMerge.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" OrderedMerge.xml

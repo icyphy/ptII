@@ -32,7 +32,7 @@ ME =		ptolemy/domains/ddf/demo
 
 # Keep these alphabetical please.
 DIRS = 		Eratosthenes Factorial HanoiTower IfThenElse \
-		Loop OrderedMerge RijndaelEncryption
+		Loop OrderedMerge RandomWalk RijndaelEncryption
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	IfThenElse/IfThenElse.jar \
 	Loop/Loop.jar \
 	OrderedMerge/OrderedMerge.jar \
+	RandomWalk/RandomWalk.jar \
 	RijndaelEncryption/RijndaelEncryption.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

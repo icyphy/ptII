@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II DDF IfThenElse demo
+# Makefile for Ptolemy II Random Walk DDF demonstration
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,8 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ddf/demo/IfThenElse
-
 # Root of the Java directory
 ROOT =		../../../../..
 
@@ -41,18 +39,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	IfThenElse
+PTPACKAGE = 	RandomWalk
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	IfThenElse.xml
+	$(JSRCS) \
+	RandomWalk.xml
 
 EXTRA_SRCS = \
-	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
-	IfThenElse.htm
+	RandomWalk.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,15 +71,14 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
-
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer IfThenElse.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer RandomWalk.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" IfThenElse.xml
+	"$(PTII)/bin/ptolemy" RandomWalk.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" IfThenElse.xml
+	"$(PTII)/bin/vergil" RandomWalk.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
