@@ -206,6 +206,20 @@ public class RecordDisassembler extends TypedAtomicActor {
             }
         }
 
+        /** Return an additional string describing the current value
+         *  of this function.
+         */
+        public String getVerboseString() {
+            if(input.getType() instanceof RecordType) {
+                RecordType type = (RecordType)input.getType();
+                Type fieldType = type.get(_name);
+                if(fieldType == null) {
+                    return "Input Record doesn't have field named " + _name;
+                }
+            }
+            return null;
+        }
+ 
         /** Return the type variable in this inequality term. If the
          *  type of the input port is not declarad, return an one
          *  element array containing the inequality term representing
