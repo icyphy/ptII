@@ -1,7 +1,8 @@
-# Makefile for PtolemyII SDF Domain
+# Makefile for Ptolemy II Communication Systems demo that uses an Eye plot
+#
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
 # @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
@@ -28,44 +29,54 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo
+ME =		ptolemy/domains/sdf/demo/Eye
 
-# Keep these alphabetical please.
-DIRS = 		Butterfly Expression Eye FixFIR FixPoint \
-		HTVQ OrthogonalCom Sketch Type
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+JSRCS =
 
-# Used to build jar files
-PTPACKAGE = 	sdf
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
+EXTRA_SRCS =	$(JSRCS) \
+	Eye.htm \
+	Eye.xml \
+	EyeVergil.xml \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Eye.htm
+
+demo_ptolemy:
+	$(PTII)/bin/ptolemy Eye.xml
+
+demo_vergil:
+	$(PTII)/bin/vergil Eye.xml
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
