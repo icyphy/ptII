@@ -43,10 +43,10 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Delay-1.1 {test constructor and clone} {
+test SimpleDelay-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
-    set delaybase [java::new ptolemy.domains.de.lib.Delay $e0 delay]
-    set delay [java::cast ptolemy.domains.de.lib.Delay [$delaybase clone]]
+    set delaybase [java::new ptolemy.domains.de.lib.test.SimpleDelay $e0 delay]
+    set delay [java::cast ptolemy.domains.de.lib.test.SimpleDelay [$delaybase clone]]
     $delaybase setContainer [java::null]
     $delay setContainer $e0
     # Success here is just not throwing an exception.
@@ -56,29 +56,27 @@ test Delay-1.1 {test constructor and clone} {
 ######################################################################
 #### Test Delay in a DE model
 #
-test Delay-2.1 {test with the default delay value} {
+test SimpleDelay-2.1 {test with the default delay value} {
     set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock] output] \
-       [java::field [java::cast ptolemy.domains.de.lib.DETransformer $delay] \
-       input]
+       [java::field $delay input]
     $e0 connect \
-       [java::field \
-       [java::cast ptolemy.domains.de.lib.DETransformer $delay] output] \
+       [java::field $delay output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToStrings [$rec getTimeRecord]
 } {1.0 2.0 3.0}
 
-test Delay-3.1 {test with the zero delay} {
+test SimpleDelay-3.1 {test with the zero delay} {
     set delayAmount [java::field $delay delay]
     $delayAmount setExpression "0.0"
     [$e0 getManager] execute
     enumToStrings [$rec getTimeRecord]
 } {0.0 1.0 2.0 3.0}
 
-test Delay-4.1 {test a self loop with the zero delay} {
+test SimpleDelay-4.1 {test a self loop with the zero delay} {
     set e0 [deModel 3.0]
     set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
     set add [java::new ptolemy.actor.lib.AddSubtract $e0 add]
@@ -94,7 +92,7 @@ test Delay-4.1 {test a self loop with the zero delay} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector: Zero delay self-loop on actor: .top.add}}
 
-test Delay-5.1 {test a more complex loop with the zero delay} {
+test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
     set e0 [deModel 3.0]
     set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
     set add [java::new ptolemy.actor.lib.AddSubtract $e0 add]
@@ -115,14 +113,12 @@ test Delay-5.1 {test a more complex loop with the zero delay} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector: Zero delay loop including actor: .top.gain}}
 
-test Delay-5.2 {fix the zero delay with a non-zero delay} {
-    set delay [java::new ptolemy.domains.de.lib.Delay $e0 delay]
+test SimpleDelay-5.2 {fix the zero delay with a non-zero delay} {
+    set delay [java::new ptolemy.domains.de.lib.test.SimpleDelay $e0 delay]
     [java::field $add plus] unlink $r
-    [java::field [java::cast ptolemy.domains.de.lib.DETransformer $delay] \
-            input] link $r
+    [java::field $delay input] link $r
     $e0 connect \
-            [java::field [java::cast ptolemy.domains.de.lib.DETransformer \
-            $delay] output] \
+            [java::field $delay output] \
             [java::field $add plus]
     [$e0 getManager] execute
     enumToStrings [$rec getTimeRecord]

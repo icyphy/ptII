@@ -35,7 +35,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEIOPort
@@ -104,33 +105,6 @@ public class DEIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Assert that this port has higher priority than the port in the
-     *  argument.  The scheduler uses this information to ensure that
-     *  if this port and the argument are to receive simultaneous events,
-     *  then the event at this port will trigger a firing first (or
-     *  both events might be made visible in the same firing).
-     *
-     *  @param otherport Another input port
-     *  @exception IllegalActionException If this port or the argument port
-     *   is not an input.
-     */
-    public void before(IOPort otherport) throws IllegalActionException {
-        if (!isInput() || !otherport.isInput()) {
-            throw new IllegalActionException(this,
-                    "Invalid before relationship.  " +
-                    "Must be input before input.");
-        }
-        _beforeList.insertLast(otherport);
-    }
-
-    /** Return an enumeration of the other input ports that have lower
-     *  priority than this one, as asserted by the before() method.
-     *  @return An enumeration of TypedIOPorts.
-     */
-    public Enumeration beforePorts() {
-        return _beforeList.elements();
-    }
-
     /** Broadcast a token to all receivers connected to this output
      *  port with the specified time delay.  The time stamp of
      *  of the token is equal to current time plus the specified delay.
@@ -147,6 +121,28 @@ public class DEIOPort extends TypedIOPort {
         } finally {
             _delay = 0.0;
         }
+    }
+
+    /** Add the specified port to the set of output ports that
+     *  have delayed events triggered by this input port.
+     *  @param output The output port with delayed events.
+     *  @exception IllegalActionException If this port is not an input,
+     *   or if the argument is not an output port.
+     */
+    public void delayTo(IOPort output) throws IllegalActionException {
+        if (!isInput() || !output.isOutput()) {
+            throw new IllegalActionException(this,
+                    "Invalid delayTo relationship.  " +
+                    "Must be input.delayTo(output).");
+        }
+        _delayToSet.add(output);
+    }
+
+    /** Return the set of ports that have delayed events triggered
+     *  by this one (as opposed to instantaneous events).
+     */
+    public Set getDelayToPorts() {
+        return _delayToSet;
     }
 
     /** Override the base class to use the delay that may have been set
@@ -208,39 +204,11 @@ public class DEIOPort extends TypedIOPort {
         }
     }
 
-    /** Add the specified port to the list of output ports that may
-     *  have zero-delay outputs triggered by this input port.
-     *  @param output The output port that may be triggered.
-     *  @exception IllegalActionException If this port is not an input,
-     *   or if the argument is not an output port.
-     */
-    public void triggers(IOPort output) throws IllegalActionException {
-        if (!isInput() || !output.isOutput()) {
-            throw new IllegalActionException(this,
-                    "Invalid triggering relationship.  " +
-                    "Must be input triggers output.");
-        }
-        _triggerList.insertLast(output);
-    }
-
-    /** Return an enumeration of the output ports that are triggered by
-     *  this input port.  I.e., an event at this input port may cause
-     *  an immediate (zero-delay) event at any of these output ports.
-     */
-    public Enumeration triggersPorts() {
-        return _triggerList.elements();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // List of ports with lower priority than this one.
-    // I.e., events at this port should be triggered before those at ports
-    // in this list.
-    private LinkedList _beforeList = new LinkedList();
-
     // List of ports triggered immediately by this input port.
-    private LinkedList _triggerList = new LinkedList();
+    private Set _delayToSet = new HashSet();
 
     // The delay to use in transfering tokens.
     // Be careful to set this back to zero after using it.

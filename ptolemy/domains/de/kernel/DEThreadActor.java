@@ -72,9 +72,9 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      */
     public void initialize() {
         // start a thread.
-        pThread = new PtolemyThread(this);
+        _thread = new PtolemyThread(this);
         _isWaiting = true;
-        pThread.start();
+        _thread.start();
     }
 
     /** Awake the thread running this actor.
@@ -95,7 +95,6 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                 }
             }
         }
-
     }
 
     /** Implement this method to define the job of the threaded actor.
@@ -159,8 +158,8 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    PtolemyThread pThread;
-    protected boolean _isWaiting = true;
+    private PtolemyThread _thread;
+    private boolean _isWaiting = true;
 
     protected static Object _monitor = new Object();
 

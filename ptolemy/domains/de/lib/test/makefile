@@ -45,12 +45,13 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = SimpleDelay.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Delay.tcl \
 	Sampler.tcl \
+	SimpleDelay.tcl \
 	WaitingTime.tcl
 
 # Graphical Java tests that use Tcl.

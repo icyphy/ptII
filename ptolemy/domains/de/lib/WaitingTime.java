@@ -50,7 +50,7 @@ is always a DoubleToken.
 @author Lukito Muliadi, Edward A Lee
 @version $Id$
 */
-public class WaitingTime extends DEActor {
+public class WaitingTime extends TypedAtomicActor {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -65,15 +65,12 @@ public class WaitingTime extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the ports
-        output = new DEIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(DoubleToken.class);
-        waiter = new DEIOPort(this, "waiter", true, false);
+        waiter = new TypedIOPort(this, "waiter", true, false);
         waiter.setTypeEquals(Token.class);
-        waitee = new DEIOPort(this, "waitee", true, false);
+        waitee = new TypedIOPort(this, "waitee", true, false);
         waitee.setTypeEquals(Token.class);
-        // Ensure that waiters are seen before simultaneous waitees.
-        waiter.before(waitee);
-        waitee.triggers(output);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,18 +79,18 @@ public class WaitingTime extends DEActor {
     /** The output, which is always a DoubleToken representing the
      *  that a waiter waited for an input at the <i>waitee</i> input.
      */
-    public DEIOPort output;
+    public TypedIOPort output;
 
     /** An input event here waits for the next event at the <i>waitee</i>
      *  input.  The type of this port is Token, so any input is acceptable.
      */
-    public DEIOPort waiter;
+    public TypedIOPort waiter;
 
     /** An input event here triggers an output event for each <i>waiter</i>
      *  input that arrived since the last input here.  The type of this
      *  port is Token, so any input is acceptable.
      */
-    public DEIOPort waitee;
+    public TypedIOPort waitee;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
