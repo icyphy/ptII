@@ -46,6 +46,7 @@ include $(CONFIG)
 SHELL_FILES = \
 	histogram \
 	jode \
+	mescal \
 	moml \
 	ptexecute \
 	ptinvoke \
@@ -93,6 +94,8 @@ all: ptinvoke
 	ln -s ptinvoke histogram
 	rm -f jode
 	ln -s ptinvoke jode
+	rm -f mescal
+	ln -s ptinvoke mescal
 	rm -f moml
 	ln -s ptinvoke moml
 	rm -f ptexecute
