@@ -147,7 +147,6 @@ OPTIONAL_FILES =	\
 COPERNICUSPACKAGES = \
 			ptolemy.copernicus.applet \
 			ptolemy.copernicus.kernel \
-			ptolemy.copernicus.c \
 			ptolemy/copernicus/java/*.java \
 			$(JHDLPACKAGE) \
 			ptolemy.copernicus.shallow
@@ -397,7 +396,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m $(JDOCBREAKITERATOR)"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
 	./removeasd codeDoc
