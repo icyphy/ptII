@@ -30,10 +30,10 @@ import java.io.IOException;
 
 /** Print the value of the java.home property
     @author Christopher Hylands Brooks
-    @@version $Id$
-    @@since Ptolemy II 4.0
-    @@Pt.ProposedRating Green (cxh)
-    @@Pt.AcceptedRating Red
+    @version $Id$
+    @since Ptolemy II 4.0
+    @Pt.ProposedRating Green (cxh)
+    @Pt.AcceptedRating Red
 */
 public class JavaHome {
     public static void main(String args[]) {
