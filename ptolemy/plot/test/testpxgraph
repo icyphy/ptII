@@ -27,13 +27,15 @@ move:2 2.5
 3 1
 EOF
 
-# Test out two file invocations
+# Test out two file invocations and dataset labeling 
+$pxgraph -test -0 '' -binary demo/data/bin.plt
 $pxgraph -test $tmpfile $tmpfile2
 $pxgraph -test -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
 $pxgraph -test -0 "first data set" $tmpfile $tmpfile2
 $pxgraph -test -1 "second data set" $tmpfile $tmpfile2
 $pxgraph -test -2 "second data set" $tmpfile $tmpfile2
 $pxgraph -test -0 "zero" -binary demo/data/bin.plt
+
 
 $pxgraph -test -bar -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
 
