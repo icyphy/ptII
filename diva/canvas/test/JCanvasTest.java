@@ -92,7 +92,7 @@ public class JCanvasTest extends TestSuite {
                 public void check () throws TestFailedException {
                     CanvasPane pane = canvas.getCanvasPane();
                     assertExpr(pane != null, "pane != null");
-                    assertEquals(pane,this.pane,"pane == this.pane");
+                    assertEquals(pane, this.pane, "pane == this.pane");
                 }
             });
     }
