@@ -118,7 +118,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   port with the specified name.
      */
     public Port newPort(String name)
-            throws IllegalActionException, NameDuplicationException {
+            throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
             TypedIOPort port = new TypedIOPort(this, name);
