@@ -144,7 +144,7 @@ public class CTReceiver extends Mailbox {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty discrete CTReceiver.\n"
                     + "Are you trying to use a discrete signal "
-                    + "to drive a continuous port?\n");
+                    + "to drive a continuous port?");
         }
 
     }
