@@ -152,7 +152,7 @@ public class Ramp extends SequenceSource {
      *  @exception IllegalActionException If calling send() or super.fire()
      *  throws it.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, _stateToken);
     }
