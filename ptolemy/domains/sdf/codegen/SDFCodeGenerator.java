@@ -96,7 +96,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         try {
             new File(_packageDirectoryName + "CG_Main.java").createNewFile();
         } catch (IOException ioe) {
-            ApplicationUtility.error("could not create output directory " +
+            throw new RuntimeException("could not create output directory " +
                     _packageDirectoryName);
         }
 
@@ -110,7 +110,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
             // are done
             _compositeActor.getManager().initialize();
         } catch (Exception e) {
-            ApplicationUtility.error("could not initialize composite actor");
+            throw new RuntimeException("could not initialize composite actor");
         }
 
         // get the schedule for the model
