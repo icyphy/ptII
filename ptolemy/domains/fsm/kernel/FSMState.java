@@ -347,11 +347,12 @@ public class FSMState extends ComponentEntity {
 		/* Add the output ports of this state's refining actor to
 		 * the scope.
 		 */
-                _localStatusVars.createVariables(_refinement.outputPorts());
+		// FIXME: This is not a very elegant solution!
+                _localStatusVars.createVariables(java.util.Collections.enumeration(_refinement.outputPortList()));
 		/* Add the output ports of this state's refining actor to
 		 * the scope.
 		 */
-                _localValueVars.createVariables(_refinement.outputPorts());
+                _localValueVars.createVariables(java.util.Collections.enumeration(_refinement.outputPortList()));
             } else {
                 _localStatusVars = null;
                 _localValueVars = null;
