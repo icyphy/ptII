@@ -212,10 +212,10 @@ public class Test extends Sink {
      *  @param count The iteration that we are checking.
      *  @exception IllegalActionException If the token and the correctValue
      *  are not equal or within the tolerance.
-     */   
+     */
     protected void _checkTokenAgainstReference(
             Token token, Token correctValue, Parameter tolerance,
-            int count) 
+            int count)
             throws IllegalActionException {
 
         // This method is protected so that we can use it in
