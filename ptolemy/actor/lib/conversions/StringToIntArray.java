@@ -51,11 +51,11 @@ import ptolemy.math.Complex;
 /// StringToIntArray
 
 /**
-Convert a string to an integer array.  The output is an array of integers 
-constructed by placing one byte of the string into the least significant 
-byte of each integer.  For the time being, this actor assumes an 8-bit 
-character set to be the Java default.  This actor is designed to facilitate 
-use of the SerialComm serial communication actor which uses the same kind 
+Convert a string to an integer array.  The output is an array of integers
+constructed by placing one byte of the string into the least significant
+byte of each integer.  For the time being, this actor assumes an 8-bit
+character set to be the Java default.  This actor is designed to facilitate
+use of the SerialComm serial communication actor which uses the same kind
 of integer array.
 <p>
 @author Winthrop Williams
@@ -103,9 +103,9 @@ public class StringToIntArray extends TypedAtomicActor {
     /** Consume one string token on the input port and output a new array
      *  token of integer tokens on the output port.  The low byte of each
      *  integer is the byte form of one of the characters.  The other
-     *  three bytes of each integer may be 0x000000 or 0xFFFFFF.  The 
-     *  first character of the string is copied to the first element of 
-     *  the array, and so on.  NOTE: Assumes an 8-bit character set is 
+     *  three bytes of each integer may be 0x000000 or 0xFFFFFF.  The
+     *  first character of the string is copied to the first element of
+     *  the array, and so on.  NOTE: Assumes an 8-bit character set is
      *  the default setting for this implementation of Java.
      *
      *  @exception IllegalActionException If there is no director.
@@ -117,8 +117,8 @@ public class StringToIntArray extends TypedAtomicActor {
 
         // DO THE CONVERSION:
         byte[] dataBytes = inputValue.getBytes(); //(Creates a new copy)
-        // FIXME The following line assumes one byte per char.  
-        // True for out platform, but not all, under Java.  
+        // FIXME The following line assumes one byte per char.
+        // True for out platform, but not all, under Java.
         // Replace with length of the created byte array.
         int bytesAvailable = inputValue.length();
         Token[] dataIntTokens = new Token[bytesAvailable];

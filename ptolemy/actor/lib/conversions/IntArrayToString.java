@@ -51,8 +51,8 @@ import ptolemy.math.Complex;
 /// IntArrayToString
 
 /**
-Convert an integer array into a string.  Use only the low byte from 
-each integer.  Assumes an 8-bit character set.  The output is a string 
+Convert an integer array into a string.  Use only the low byte from
+each integer.  Assumes an 8-bit character set.  The output is a string
 assembled from these bytes.
 <p>
 
@@ -106,9 +106,9 @@ public class IntArrayToString extends TypedAtomicActor {
      *  setting on the platform on which it is run.  However, it
      *  assumes that this character set is an 8-bit character set.
      *
-     *  @exception IllegalActionException If there is no director.  
+     *  @exception IllegalActionException If there is no director.
      *  FIXME: Either verify that it does check for the director,
-     *  or remove this statement.  This statement occurs in other 
+     *  or remove this statement.  This statement occurs in other
      *  conversion actor(s) as well.
      */
     public void fire() throws IllegalActionException {
