@@ -275,4 +275,4 @@ test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
     catch {$param1 evaluate} errmsg
 
     list $value1 $value2 $value3 $errmsg
-} {1.1 9.9 11 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id3: id2 + id1}}
+} {1.1 9.9 11 {java.lang.IllegalArgumentException: Found dependency loop in .parent.id1: id3}}
