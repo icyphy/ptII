@@ -36,7 +36,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		#test #demo #doc
+DIRS = 		test #demo #doc
 
 CLASSPATH =	../../../..
 
