@@ -99,9 +99,9 @@ public class Main extends KernelMain {
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
 	// -p wjtp.watchDog time:30000
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-        //        WatchDogTimer.v()));
-       
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
+                WatchDogTimer.v()));
+        
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
         // so that we can 
