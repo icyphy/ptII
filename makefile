@@ -33,7 +33,7 @@ ME =		ptII
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
 # Go into com before compiling ptolemy so we get JLex
-DIRS = util com ptolemy bin doc
+DIRS = util boot com ptolemy bin doc
 
 # Root of Ptolemy II directory
 ROOT =		.
