@@ -58,7 +58,8 @@ A Transformer that reports reachable methods in the Java libraries.
 @since Ptolemy II 2.0
 
 */
-public class LibraryUsageReporter extends SceneTransformer implements HasPhaseOptions {
+public class LibraryUsageReporter extends SceneTransformer
+    implements HasPhaseOptions {
 
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
@@ -74,16 +75,18 @@ public class LibraryUsageReporter extends SceneTransformer implements HasPhaseOp
     }
 
     public String getDefaultOptions() {
-        return "";
+        return "analyzeAllReachables:false";
     }
 
     public String getDeclaredOptions() {
-        return "outDir";
+        return "outFile analyzeAllReachables";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        String outDir = PhaseOptions.getString(options, "outDir");
+        String outFile = PhaseOptions.getString(options, "outFile");
+        boolean analyzeAllReachables =
+            PhaseOptions.getBoolean(options, "analyzeAllReachables");
         System.out.println("LibraryUsageReporter.internalTransform("
                 + phaseName + ", " + options + ")");
         Scene.v().releaseCallGraph();
@@ -149,13 +152,15 @@ public class LibraryUsageReporter extends SceneTransformer implements HasPhaseOp
             // Add to the set of necessary classes all that they depend on.
             DependedClasses dependedClasses = 
                 new DependedClasses(necessaryClasses);
-            FileWriter writer = new FileWriter(outDir + "/jarClassList.txt");
+            FileWriter writer = new FileWriter(outFile);
             for (Iterator classes = dependedClasses.list().iterator();
                  classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
-                // Set the class to be an application class, so we can
-                // analyze it.
-                theClass.setApplicationClass();
+                if(analyzeAllReachables) {
+                    // Set the class to be an application class, so we can
+                    // analyze it.
+                    theClass.setApplicationClass();
+                }
                 writer.write(theClass.getName());
                 writer.write("\n");
             }
