@@ -743,13 +743,6 @@ public class TMDirector extends Director {
         }
     }
 
-    // Return true if this director is embedded inside an opaque composite
-    // actor contained by another composite actor.
-    private boolean _isEmbedded() {
-        return (getContainer() != null &&
-                getContainer().getContainer() != null);
-    }
-
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
