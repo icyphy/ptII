@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
 
 */
 
@@ -41,24 +41,24 @@ import pt.graph.CPO;
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
 /**
- * A Parameter is an Attribute that is also* a container for a token. 
+ * A Parameter is an Attribute that is also a container for a token. 
  * The type of a Parameter is set by the first non-null Token placed in it. 
- * A Parameters type can be changed later via a method call. However the 
- * new type for the parameter must be able to contain the previous token. 
- * A paramter can be given a Token or a String as its value. 
+ * The type can be changed later via a method call. However the 
+ * new type for the parameter must be able to contain the previous token.
+ * A parameter can be given a Token or a String as its value. 
  * If a String is given, it uses PtParser to obtain the Token
  * resulting from parsing and evaluating the expression. 
- * If another Object (eg Parameter) wants to Observe this Parameter, it must 
+ * If another Object (e.g. Parameter) wants to Observe this Parameter, it must 
  * register its interest with the TokenPublisher associated with the 
  * contained Token.
- * At any stage a new Token or String can be given to the Parameter. The 
- * new/resulting Tokens type is checked to see if it can be converted 
- * to the Parameters type in a lossles manner.
- * If you want to create a parameter from a string, it is neccessary 
+ * At any stage a new Token or String can be given to the Parameter. The type
+ * of the new/resulting Token is checked to see if it can be converted to 
+ * the type of the Parameter in a lossless manner.
+ * If you want to create a parameter from a string, it is necessary 
  * to create the parameter with the appropriate container and name, 
- * then call <code>setTokenFromExpr()</code> to set its value.
+ * then call setTokenFromExpr() to set its value.
  * 
- * FIXME:, as does  synchroniation isssues
+ * FIXME:  synchronization issues
  * 
  * @author Neil Smyth
  * @version $Id$
@@ -93,7 +93,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  NullPointerException will be thrown.  This parameter will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  The object is not added to the list of objects in the workspace,
+     *  The object is not added to the list of objects in the workspace
      *  unless the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
@@ -109,6 +109,13 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     }
 
     /** Construct a Parameter with the given container, name, and Token.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This parameter will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  The object is not added to the list of objects in the workspace
+     *  unless the container is null.
+     *  Increment the version of the workspace.
      *  If the name argument is null, then the name is set to the empty 
      *  string.
      *  @param container The container.
@@ -138,10 +145,10 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     ////                         public methods                           ////
 
     /** Clone the parameter. 
-     *  The cloned paramters state will identical to the original paramter, 
-     *  but without the Observer/Observable dependencies set up. To achieve 
-     *  this <code>update()</code> should be called after cloning the 
-     *  parameter.  <code>Update()</code> should only be called after all 
+     *  The state of the cloned parameter will be identical to the original 
+     *  parameter, but without the Observer/Observable dependencies set up. 
+     *  To achieve this update() should be called after cloning the 
+     *  parameter.  Update() should only be called after all 
      *  the parameters on which this parameter depends have been created. 
      *  @param The workspace in which to place the cloned Parameter.
      *  @exception CloneNotSupportedException If the parameter
@@ -151,7 +158,6 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
       Parameter result = (Parameter)super.clone(ws);
-      pt.data.Token token = getToken();
       if (_token != null) {
           result._token = (pt.data.Token)_token.clone();
       }
@@ -166,15 +172,20 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
           }
       }
       result._currentValue = _currentValue;
+      result._dependencyLoop = false;
       result._initialValue = _initialValue;
+      result._lastVersion = 0;
       result._noTokenYet = _noTokenYet;      
+      result._parser = null;
+      result._parseTreeRoot = null;
+      result._scope = null;
       return result;
     }
 
     /** Return a description of the object.
      *  @param verbosity The level of verbosity.
-     *  @return A String desrcibing the Parameter.
-     *  FIXME: needs to be finisihed.
+     *  @return A String describing the Parameter.
+     *  FIXME: needs to be finished.
      */
     public String description(int verbosity) {
         return toString();
@@ -243,7 +254,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  String given in the constructor.
      *  @exception IllegalArgumentException Thrown if the Parameter 
      *  was created from an expression, and reevaluating that expression
-     *  now yields a Token incompatible with this Parameters type.
+     *  now yields a Token incompatible with the type of this Parameter.
      */	
    
     public void reset() throws IllegalArgumentException {
@@ -293,11 +304,11 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
         _token.notifySubscribers();
     }
 
-    /** Set the param by parsing and evaluating the given String argument.
+    /** Set the parameter by parsing and evaluating the given String argument.
      * The string must be non-null. If the parameter has not been given 
      * a string or a Token yet, the string argument is used to set the 
-     * initial state(value ansd type) of the parameter.
-     * @param str The string to be evaluated to set the params value.
+     * initial state(value and type) of the parameter.
+     * @param str The string to be evaluated to set the value of the parameter.
      * @exception IllegalArgumentException Thrown if try to set the value 
      *  of this parameter from a null string.
      */
@@ -340,7 +351,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  be thrown. If so, the state of the parameter is unchanged.
      *  @param newType The class object representing the new type 
      *   of this parameter.
-     *  @exception IllegalArgumentExcpetion Thrown if the new type 
+     *  @exception IllegalArgumentException Thrown if the new type 
      *   is too restrictive for the currently contained token.
      */
     public void setType(Class newType) throws IllegalArgumentException {
@@ -351,9 +362,9 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
         } catch (IllegalArgumentException ex) {
             _paramType = oldType;
             String str = "Cannot set the type of Parameter " + getName();
-            str = str + " to type: " + newType.getName() + ", when the ";
-            str = str + "currently contained Token is of type: ";
-            str = str +  _token.getClass().getName();
+            str += " to type: " + newType.getName() + ", when the ";
+            str += "currently contained Token is of type: ";
+            str += _token.getClass().getName();
             throw new IllegalArgumentException(str);
         }
     }
@@ -368,17 +379,17 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     }
 
     /** Normally this method is called by an object this Parameter is
-     *  observing. Also called if want to re-evaluate the current 
-     *  Tokens value.
+     *  observing. It is also called to re-establish dependencies 
+     *  between parameters after a NamedObj has been cloned.
      *  @param o the Observable object that called this method.
      *  @param t not used.
-     *  @exception IllegalArgumentException Thrown if the resulting 
-     *  Token type is not allowed in this Parameter.
+     *  @exception IllegalArgumentException Thrown if type of the 
+     *   resulting Token is not allowed in this Parameter.
      */
     public void update(Observable o, Object t) throws IllegalArgumentException {
         if (_dependencyLoop) {
-            String str = "Found dependency loop in ";
-            str = str + this.getFullName() + ": " + _currentValue;
+            String str = "Found dependency loop in " + getFullName();
+            str += ": " + _currentValue;
             throw new IllegalArgumentException(str);
         }
         _dependencyLoop = true;
@@ -417,16 +428,16 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     protected void _checkType(Class tryType) 
             throws IllegalArgumentException {
         int typeInfo = TypeCPO.compare(_paramType, tryType);
-        if (typeInfo == CPO.STRICT_LESS) return;
+        if (typeInfo == CPO.STRICT_GREATER) return;
         if (typeInfo == CPO.EQUAL) return;
         // Incompatible type!
         String str = "Cannot store a Token of type ";
-        str = str + tryType.getName() + " in a Parameter restricted";
-        str = str + " to tokens of type " + _paramType.getName() + "or lower";
+        str += tryType.getName() + " in a Parameter restricted to ";
+        str += "tokens of type " + _paramType.getName() + " or lower";
         throw new IllegalArgumentException(str);
     }
 
- /** Checks to see if the new token type is compatible with the initial 
+    /** Checks to see if the new token type is compatible with the initial 
      *  Token type stored. If the new Token cannot be converted in a lossless 
      *  manner to the original type, an exception is thrown.
      *  @param tok The token that is trying to be placed in the Parameter.
@@ -440,27 +451,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
         }
     }
 
-    /** Clear references that are not valid in a cloned object. The clone()
-     *  method makes a field-by-field copy, which results
-     *  in invalid references to objects. 
-     *  In this class, this method reinitializes the private members.
-     *  @param ws The workspace the cloned object is to be placed in.
-     */
-    protected void _clearAndSetWorkspace(Workspace ws) {
-        super._clearAndSetWorkspace(ws);
-        _token = null;
-        _origToken = null;
-        _initialValue = null;
-        _noTokenYet = true; // What should this be reset to?
-        _paramType = null;
-        _parser = null;
-        _parseTreeRoot = null;
-        _scope = null;
-        _lastVersion = 0;       
-    }
-
-        
-    
+       
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
@@ -470,16 +461,42 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+
+    // Stores the string used to set this expression. It is null if 
+    // the parameter was set using a token.
     private String _currentValue;
+
+    // used to check for dependency loops amongst parameters.
     private boolean _dependencyLoop = false;
+
+    // Stores the string used to initialize the parameter. It is null if 
+    // the first token placed in the parameter was not parsed from a string.
     private String _initialValue;
+
+    // Used to test if the version of the workspace has changed since the 
+    // last time getScope() was called
     private long _lastVersion = 0;
+
+    // Tests if the parameter has not yet contained a Token.
     private boolean _noTokenYet = true;
+
+    // Stores the first Token placed in this parameter. It is null if the
+    // first token contained by the parameter was parsed from an expression.
     private pt.data.Token _origToken;
+
+    // Stores the type information for this parameter.
     private Class _paramType;
+
+    // The parser used by this parameter to parse expressions.
     private PtParser _parser;
+
+    // If the parameter was last set from an expression, this stores 
+    // the parse tree for that expression.
     private ASTPtRootNode _parseTreeRoot;
+
+    // The parameters this parameter may reference in an expression.
     private NamedList _scope;
-    private pt.data.Token _token;
-    
+
+    // The token contained by this parameter.
+    private pt.data.Token _token;   
 }
