@@ -133,7 +133,7 @@ import java.net.*;
  * specifying how much the bar of the <i>i</i><sup>th</sup> data set
  * is offset from the previous one.  This allows bars to "peek out"
  * from behind the ones in front.  Note that the frontmost data set
- * will be the last one.  To turn off bars, use
+ * will be the first one.  To turn off bars, use
  * <pre>
  * Bars: off
  * </pre>
