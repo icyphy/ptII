@@ -37,7 +37,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import ptolemy.vergil.*;
-import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;

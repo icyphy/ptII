@@ -40,7 +40,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.moml.*;
-import ptolemy.vergil.graph.AbstractPtolemyGraphModel;
+import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;

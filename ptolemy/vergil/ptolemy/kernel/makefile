@@ -1,4 +1,4 @@
-# Makefile for the Vergil/ptolemy/kernel package
+# Makefile for the Vergil graph support package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -31,10 +31,10 @@
 
 ME =		ptolemy/vergil/ptolemy/kernel
 
-DIRS =		
+DIRS = 		
 
 # Root of the Java directory
-ROOT =		../../../../
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -43,18 +43,22 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy.vergil.ptolemy.kernel
+PTPACKAGE = 	graph
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-
-PTCLASSALLJAR = 
-
 JSRCS = \
+	EditorGraphController.java \
+	EntityController.java \
+	EntityPortController.java \
 	KernelGraphFrame.java \
-	KernelGraphTableau.java
+	KernelGraphTableau.java \
+	Link.java \
+	LinkController.java \
+	PortController.java \
+	PtolemyGraphModel.java \
+	RelationController.java \
+	ViewerGraphController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -66,18 +70,42 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'KernelGraphFrame$$1.class' \
-	'KernelGraphFrame$$2.class' \
-	'KernelGraphFrame$$EditIconAction.class' \
-	'KernelGraphFrame$$EntityContextMenuFactory.class' \
-	'KernelGraphFrame$$GetDocumentationAction.class' \
-	'KernelGraphFrame$$LookInsideAction.class' \
-	'KernelGraphFrame$$PortContextMenuFactory$$PortDescriptionFactory.class' \
-	'KernelGraphFrame$$PortContextMenuFactory.class' \
-	'KernelGraphFrame$$PtolemyLayout.class' \
-	'KernelGraphFrame$$PtolemyLayoutTarget.class' \
-	'KernelGraphFrame$$RelationContextMenuFactory.class' \
-	'KernelGraphTableau$$Factory.class'
+	'AbstractPtolemyGraphModel$$GraphChangeListener.class' \
+	'EditorDropTarget$$1.class' \
+	'EditorDropTarget$$DTListener.class' \
+	'EditorGraphController$$ConnectedVertexCreator.class' \
+	'EditorGraphController$$LinkCreator.class' \
+	'EditorGraphController$$PortCreator.class' \
+	'EditorGraphController$$RelationCreator.class' \
+	'EntityController$$1.class' \
+	'EntityController$$EntityContextMenuFactory.class' \
+	'EntityController$$EntityLayout.class' \
+	'EntityController$$EntityRenderer.class' \
+	'EntityPortController$$EntityPortRenderer.class' \
+	'EntityPortController$$PortContextMenuFactory$$PortDescriptionFactory.class' \
+	'EntityPortController$$PortContextMenuFactory.class' \
+	'Link$$1.class' \
+	'Link$$2.class' \
+	'Link$$3.class' \
+	'Link$$4.class' \
+	'LinkController$$LinkContextMenuFactory.class' \
+	'LinkController$$LinkRenderer.class' \
+	'LinkController$$LinkTarget.class' \
+	'PortController$$PortRenderer.class' \
+	'PtolemyGraphModel$$1.class' \
+	'PtolemyGraphModel$$2.class' \
+	'PtolemyGraphModel$$3.class' \
+	'PtolemyGraphModel$$ExternalPortModel.class' \
+	'PtolemyGraphModel$$IconModel.class' \
+	'PtolemyGraphModel$$LinkModel.class' \
+	'PtolemyGraphModel$$PortModel.class' \
+	'PtolemyGraphModel$$ToplevelModel.class' \
+	'PtolemyGraphModel$$VertexModel.class' \
+	'RelationController$$RelationContextMenuFactory.class' \
+	'RelationController$$RelationRenderer.class' \
+	'ViewerGraphController$$EditDirectorParameterStylesFactory.class' \
+	'ViewerGraphController$$EditDirectorParametersFactory.class' \
+	'ViewerGraphController$$SchematicContextMenuFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -61,18 +61,12 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = vergil.jar
 
 JSRCS = \
-	AbstractService.java \
-	JModelViewer.java \
-	MoMLViewerApplet.java \
-	Module.java \
-	Service.java \
-	VergilApplication.java \
-	VergilDocument.java \
-	VergilDocumentFactory.java \
-	VisualNotation.java 
+	VergilApplication.java 
 
 # FIXME: Needs work
 #	VergilApplet.java
+#	JModelViewer.java \
+#	MoMLViewerApplet.java \
 
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \

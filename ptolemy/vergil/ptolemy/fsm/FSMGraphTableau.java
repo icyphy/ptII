@@ -40,7 +40,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.Locatable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.graph.EditorDropTarget;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;

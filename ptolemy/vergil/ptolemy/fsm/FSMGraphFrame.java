@@ -31,6 +31,7 @@
 package ptolemy.vergil.ptolemy.fsm;
 
 import ptolemy.vergil.ptolemy.GraphFrame;
+import ptolemy.vergil.ptolemy.EditorDropTarget;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.ChangeRequest;
@@ -59,9 +60,6 @@ import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
-import ptolemy.vergil.graph.EditorDropTarget;
-import ptolemy.vergil.graph.EditorGraphController;
-import ptolemy.vergil.graph.PtolemyGraphModel;
 import ptolemy.vergil.icon.IconEditor;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.EditParameterStylesFactory;

@@ -35,7 +35,7 @@ import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
-import ptolemy.vergil.graph.*;
+import ptolemy.vergil.ptolemy.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -120,7 +120,7 @@ public class FSMViewerController extends GraphController {
                 (SelectionInteractor)_linkController.getEdgeInteractor());
 
         MenuCreator _menuCreator = new MenuCreator(
-	    new ViewerGraphController.SchematicContextMenuFactory(this));
+	    new SchematicContextMenuFactory(this));
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 
 	pane.getBackgroundEventLayer().setConsuming(false);
@@ -152,6 +152,22 @@ public class FSMViewerController extends GraphController {
      */
     public void setLinkController(FSMTransitionController controller) {
         _linkController = controller;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          inner classes                    ////
+   
+    public static class SchematicContextMenuFactory 
+	extends PtolemyMenuFactory {
+	public SchematicContextMenuFactory(GraphController controller) {
+	    super(controller);
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParameterStylesFactory());
+	}	
+	
+	public NamedObj _getObjectFromFigure(Figure source) {
+	    return (NamedObj)getController().getGraphModel().getRoot();
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

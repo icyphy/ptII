@@ -66,13 +66,12 @@ import ptolemy.data.IntToken;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import ptolemy.vergil.*;
-import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.debugger.*;
 import ptolemy.vergil.ptolemy.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DebuggerUI
+//// DebuggerFrame
 /**
    This class creates the interface for the debugger.
    The frame is composed of a menubar, a toolbar, and a scrollbar 

@@ -55,7 +55,10 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
-	GraphFrame.java
+	EditorDropTarget.java \
+	GraphFrame.java \
+	LocatableNodeController.java \
+	LocatableNodeDragInteractor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
