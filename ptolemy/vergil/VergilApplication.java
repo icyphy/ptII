@@ -189,8 +189,7 @@ public class VergilApplication extends MDIApplication {
 	// Instantiate the modules.
 	// FIXME read this out of resources somehow.	
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
-        new ptolemy.vergil.debugger.DebuggerModule(this);
-	
+   	
 	final JPanner panner = new JPanner();
 	panner.setPreferredSize(new Dimension(200, 150));
 	panner.setMaximumSize(new Dimension(200, 150));
