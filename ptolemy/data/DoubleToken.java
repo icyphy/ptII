@@ -198,12 +198,16 @@ public class DoubleToken extends ScalarToken {
         if ( !_isUnitless()) {
             unitString = " * " + unitsString();
         }
-
-        double mag = Math.abs(_value);
-        if (mag == 0.0 || (mag < 1000000 && mag > .001)) {
-            return TokenUtilities.regularFormat.format(_value) + unitString;
+        if (Double.isNaN(_value) || Double.isInfinite(_value)) {
+            return Double.toString(_value) + unitString;
         } else {
-            return TokenUtilities.exponentialFormat.format(_value) + unitString;
+            double mag = Math.abs(_value);
+            if (mag == 0.0 || (mag < 1000000 && mag > .001)) {
+                return TokenUtilities.regularFormat.format(_value) + unitString;
+            } else {
+                return TokenUtilities.exponentialFormat.format(_value)
+                        + unitString;
+            }
         }
     }
 
