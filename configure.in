@@ -196,14 +196,14 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where javacc is;  if
-#	not, check to see if $PTOLEMY/vendors/sun/JavaCC exists
+#	not, check to see if $PTII/vendors/sun/JavaCC exists
 #       if it is does not, look for javacc on the path.
 #--------------------------------------------------------------------
 
 AC_MSG_CHECKING([for JavaCC])
 AC_ARG_WITH(javacc, [  --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTOLEMY/vendors/sun/JavaCC],
-    JAVACC_DIR=$withval, JAVACC_DIR=$PTOLEMY/vendors/sun/JavaCC)
+                           defaults to \$PTII/vendors/sun/JavaCC],
+    JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/JavaCC)
 
 if test "`uname -s`" = "CYGWIN32_NT"; then
     JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
