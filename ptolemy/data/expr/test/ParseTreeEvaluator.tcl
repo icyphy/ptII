@@ -578,3 +578,17 @@ test ParseTreeEvaluator-25.1 {Test remainder operator} {
          [evaluate {-3.0 % -2.0}] \
          [evaluate {3.0 % -2.0}] \
      } {1.0 -1.0 -1.0 1.0}
+
+####################################################################
+
+test ParseTreeEvaluator-26.0 {Test record operations} {
+    list [evaluate {{a=1, b=2}=={a=1.0, b=2.0+0.0i}}] \
+         [evaluate {{a=1, b=2}.equals({a=1.0, b=2.0+0.0i})}] \
+         [evaluate {{a=1, b=2}.equals({b=2, a=1})}]
+ } {true false true}
+
+test ParseTreeEvaluator-26.1 {Test record operations} {
+    list [evaluate {{a=1,b=2}.a}] \
+         [evaluate {{a=1,b=2}.a()}] \
+         [evaluate {{foodCost=40, hotelCost=100} + {foodCost=20, taxiCost=20}}]
+ } {1 1 {{foodCost=60}}}
