@@ -1,4 +1,4 @@
-/* A document for Vergil that contains a visual notation.
+/* A document for Vergil.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -35,13 +35,14 @@ import diva.gui.Document;
 import javax.swing.*;
 
 /**
- * A document for Vergil that is capable of creating a view on itself.
+ * A document for Vergil.  All documents in Vergil are capable of creating
+ * their own view.
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
 public interface VergilDocument extends Document {
-    /** Construct a view on this document.
+    /** Create a view on this document.
      */
     public JComponent createView();
 }

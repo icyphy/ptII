@@ -24,17 +24,19 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil;
 
 /**
- * A modular package that can be plugged into Vergil.x
+ * A modular package that can be plugged into Vergil.  Usually the package
+ * will take a reference to the application in its constructor and use the 
+ * reference to add toolbars and menubars to the application.
  *
  * @author Steve Neuendorffer
- * @version $Id%
+ * @version $Id$
  */
 public interface Package {
 }

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -34,7 +34,7 @@ import diva.gui.DocumentFactory;
 
 /**
  * A document factory for Vergil that contains a name in order to differentiate
- * different factories.
+ * different factories.  
  *
  * @author Steve Neuendorffer
  * @version $Id$

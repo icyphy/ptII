@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -70,12 +70,34 @@ import ptolemy.domains.pn.kernel.*;
 
 /**
  * A modular package that can be plugged into Vergil that adds support for 
- * Ptolemy II.
+ * Ptolemy II.  This package adds a Ptolemy II menu to the menu bar, which
+ * allows access to the model of the currently selected document, if that
+ * document is a Ptolemy document.  It also adds a new tool bar that contains
+ * a pulldown menu for selecting directors and a pulldown menu for executing a 
+ * graph layout algorithm.
+ * <p>
+ * This package contains a list of Directors which are placed in the
+ * appropriate toolbar menu.
+ * <p>
+ * This package contains a list of Visual notations.  Each notation is 
+ * capable of creating a view on a Ptolemy Document.  In some cases,
+ * certain notations may be preferable for some domains.  For instance, 
+ * Finite State Machine models are usually represented using a bubble
+ * and arc diagram.  However, bubble and arc diagrams are not usually used
+ * for dataflow diagrams.
+ * <p>
+ * Currently the only access to the model that is allowed is executing the
+ * model.  When the model is executed, this package listens to the state of 
+ * the model's manager and updates the status bar.
  *
  * @author Steve Neuendorffer
- * @version $Id%
+ * @version $Id$
  */
 public class PtolemyPackage implements Package {
+    /**
+     * Create a new package that will register itself with the given
+     * Vergil application.
+     */
     public PtolemyPackage(VergilApplication application) {
 	_application = application;
 	Action action;

@@ -1,4 +1,4 @@
-/* A Vergil Document for Ptolemy models
+/* A Vergil Document for Ptolemy models.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -63,23 +63,28 @@ import java.net.URL;
 import javax.swing.*;
 
 /**
- * A class representing graph-structured documents.
- * This class saves and loads Ptolemy models from MoML.
+ * A Vergil document that contains a Ptolemy model.
+ * Ptolemy documents are stored in MoML.  
+ * <p>
+ * In order to create views on itself, this document defers to an attribute
+ * that is contained in the toplevel composite entity of the model.  This
+ * attribute, a visual notation, creates the view instead.
  *
  * @author Steve Neuendorffer, John Reekie
  * @version $Id$
  */
 public class PtolemyDocument extends AbstractDocument
     implements VergilDocument {
-    /** Construct a graph document that is owned by the given
-     *  application
+
+    /** Construct a Ptolemy document that is owned by the given
+     *  application.
      */
     public PtolemyDocument(Application a) {
         super(a);
     }
 
     /** Close the document. This method doesn't do anything, as
-     * graph data doesn't change.
+     * the model doesn't change.
      */
     public void close() throws Exception {
         // Do nothing
@@ -91,8 +96,6 @@ public class PtolemyDocument extends AbstractDocument
 	VisualNotation notation = getVisualNotation();
 	GraphPane pane = notation.createView(this);
 
-	// CRAP.. This stuff is registered on the JGraph.  
-	// Can we figure out how to register it on the graph pane?
 	JGraph jgraph = new JGraph(pane);
 	new EditorDropTarget(jgraph);
         GraphController controller =
@@ -106,13 +109,16 @@ public class PtolemyDocument extends AbstractDocument
 	return jgraph;
     }
 
-    /** Return the model contained in this document.
+    /** Return the toplevel composite entity of the 
+     * model contained in this document.
      */
     public CompositeEntity getModel() {
 	return _model;
     }
 
     /** Return a visual notation that can create a view on this document.
+     * In this class, we search the toplevel entity in the model for a 
+     * Ptolemy notation attribute and return the first one found.
      */
     public VisualNotation getVisualNotation() {
 	List notationList = _model.attributeList(VisualNotation.class);
@@ -126,11 +132,9 @@ public class PtolemyDocument extends AbstractDocument
 	return notation;
     }	
 
-    /** Open the document from its current file.  If successful, add a
-     * new Page to the document containing the model parsed from the
-     * current file.
+    /** Open the document from its current file.  
      *
-     * @throws Exception  If there is no file, or if the I/O operation failed.
+     * @exception Exception If there is no file, or if the I/O operation failed.
      */
     public void open() throws Exception {
         if (getFile() == null) {
@@ -148,7 +152,7 @@ public class PtolemyDocument extends AbstractDocument
 
     /** Save the document to the current file.
      *
-     * @throws Exception  If there is no file, or if the I/O operation failed.
+     * @exception Exception If there is no file, or if the I/O operation failed.
      */
     public void save() throws Exception {
         if (getFile() == null) {
@@ -161,7 +165,7 @@ public class PtolemyDocument extends AbstractDocument
     /** Save the document to the given file. Do not change the file
      * attribute to the new File object.
      *
-     * @throws Exception  If the I/O operation failed.
+     * @exception Exception If the I/O operation failed.
      */
     public void saveAs(File file) throws Exception {
         String filename = file.getName();
@@ -170,32 +174,35 @@ public class PtolemyDocument extends AbstractDocument
         writer.flush();
     }
 
-    /** Throw an exception, as save to URLs is not supported.
+    /** Save the document to the given URL.  
      *
-     * @throws UnsupportedOperationException always, as the save to
+     * @exception UnsupportedOperationException always, as the save to
      * URL operation is not supported.
      */
     public void saveAs(URL url) {
         throw new UnsupportedOperationException(
-                "PtolemyDocument " + getTitle() + ": save to URL not supported");
+                "PtolemyDocument " + getTitle() + 
+                ": save to URL not supported");
     }
 
+    /** Set the model contained in this document.  
+     */
     public void setModel(CompositeEntity toplevel) {
 	_model = toplevel;
     }
 
-    /** Print information about the graph document
+    /** Print information about the graph document.
      */
     public String toString() {
-        return
-            getClass().getName() + "["
+        return getClass().getName() + "["
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
             + "]\n" + _model.exportMoML();
     }
 
-    /** Delete any selected nodes and all attached edges in the current graph.
+    /** Delete any nodes or edges from the graph that are currently selected.
+     * In addition, delete any edges that are connected to any deleted nodes.
      */
     public class DeletionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -234,10 +241,11 @@ public class PtolemyDocument extends AbstractDocument
     }
 
     /**
-     * A factory for vergil documents.
+     * The factory for Ptolemy documents.  
      */
     public static class Factory implements VergilDocumentFactory {
-        /** Create an empty graph document
+        /** Create a document with an empty typed composite actor for
+         * its model.
          */
         public Document createDocument(Application app) {
             PtolemyDocument d = new PtolemyDocument(app);
@@ -247,14 +255,19 @@ public class PtolemyDocument extends AbstractDocument
             return d;
         }
 
-        /** Throw an exception, as URLs are not supported.
+        /** Create a document and create a new model using the information
+         * in the given URL. In this base class, throw and exception, since
+         * URL's are not supported.
+         * @exception UnsupportedOperationException 
+         * If the URL's are not supported.
          */
         public Document createDocument(Application app, URL url) {
             throw new UnsupportedOperationException(
                     "Graph documents cannot yet be loaded from a URL");
         }
 
-        /** Create a new graph that contains the given file path.
+        /** Create a document and create a new model using the information
+         * in the given file. 
          */
         public Document createDocument(Application app, File file) {
             PtolemyDocument d = new PtolemyDocument(app);
@@ -264,11 +277,14 @@ public class PtolemyDocument extends AbstractDocument
 
 	/** Return a string which is the name associated with this document
 	 * factory.
+         * @returns The string "Ptolemy II".
 	 */
 	public String getName() {
 	    return "Ptolemy II";
 	}
     }
 
-    CompositeEntity _model;
+    /** The document's model.
+     */
+    private CompositeEntity _model;
 }

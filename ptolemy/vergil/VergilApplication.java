@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -68,7 +68,18 @@ import javax.swing.event.*;
 //// VergilApplication
 /**
 Vergil is an extensible high-level graphical interface for component-based
-design tools.  It is primarily aimed at Ptolemy II
+design tools.  It is primarily aimed at Ptolemy II, although it could
+be used with other tools as well.  The feature of Vergil include:
+<ul>
+<li> Support for multiple types of documents.
+<li> A modular package system to allow for easy extension.
+<li> Expandable tool bars and menu bars.
+</ul>
+<p>
+This class is associated with a desktop frame.  This frame contains a palette
+into which packages can place design libraries.  The frame also inherits
+improved Multiple Document handling, a toolbar, status bar and progress bar
+from the Diva desktop frame.
 
 @author Steve Neuendorffer
 @contributor John Reekie
@@ -76,7 +87,7 @@ design tools.  It is primarily aimed at Ptolemy II
 */
 public class VergilApplication extends MDIApplication {
     /**
-     * Construct a new graph editing application.
+     * Construct a new Vergil application.
      */
     public VergilApplication() {
         super();
@@ -199,7 +210,7 @@ public class VergilApplication extends MDIApplication {
 
             if(entity instanceof CompositeEntity) {
                 GraphPalette palette = new GraphPalette();
-		//		palette.setMinimumSize(new Dimension(200, 200));
+		//palette.setMinimumSize(new Dimension(200, 200));
 		//palette.setPreferredSize(new Dimension(600, 250));
 		pane.addEntry(parent, entity.getFullName(), palette);
 		createTreeNodes(pane, entity.getFullName(),
