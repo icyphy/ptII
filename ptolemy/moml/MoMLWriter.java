@@ -1228,5 +1228,3 @@ public class MoMLWriter extends Writer {
     private MoMLParser _reflectionParser =
     new MoMLParser(_reflectionWorkspace);
 }
-
-

@@ -89,4 +89,3 @@ public interface ErrorHandler {
     /** Indicator to request that the exception be rethrown */
     public static final int RETHROW = 3;
 }
-

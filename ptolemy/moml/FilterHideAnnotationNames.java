@@ -138,4 +138,3 @@ public class FilterHideAnnotationNames implements MoMLFilter {
     // The the full name of the annotation we are currently processing
     private static String _currentAnnotationFullName;
 }
-

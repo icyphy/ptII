@@ -136,4 +136,3 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
     }
 }
-
