@@ -895,6 +895,8 @@ public class CTMultiSolverDirector extends CTDirector {
                         + "continuous actors");
             }
 
+            _iterateWaveformGenerators(schedule);
+
             // Establish the initial states for discrete phase of execution.
             _propagateResolvedStates();
 
