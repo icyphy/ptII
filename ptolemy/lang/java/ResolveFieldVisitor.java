@@ -35,6 +35,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
@@ -360,7 +361,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         
         ClassDecl typeDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) oType);
         JavaDecl d = null;
-        LinkedList methodArgs = ctx.methodArgs;
+        List methodArgs = ctx.methodArgs;
         String nameString = node.getName().getIdent();
 
         if (methodArgs == null) {
@@ -386,9 +387,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
            if (!resolutions.hasNext()) {
               ApplicationUtility.error("no " + nameString + " method in " +
                typeDecl.getName());
-    	   } else {
+    	     } else {
        	      d = StaticResolution.resolveCall(resolutions, methodArgs);
-		   }		   
+		       }		   
         }
   
         node.getName().setProperty(DECL_KEY, d);
@@ -414,7 +415,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         public boolean inStatic = false;
         
         /** A list of the method arguments. */
-        public LinkedList methodArgs = null;
+        public List methodArgs = null;
     }
 
     /** The current package. */

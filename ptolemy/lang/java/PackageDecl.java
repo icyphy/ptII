@@ -31,13 +31,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
-import java.util.LinkedList;
 
 import ptolemy.lang.*;
 
-public class PackageDecl extends JavaDecl {
+public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants {
     public PackageDecl(String name, JavaDecl container) {
-        super(name, JavaDecl.CG_PACKAGE);
+        super(name, CG_PACKAGE);
         _container = container;
     }
 

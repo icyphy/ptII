@@ -31,13 +31,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
+import java.util.List;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-public class ClassDecl extends TypeDecl 
-       implements JavaStaticSemanticConstants {
+public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public ClassDecl(String name, JavaDecl container) {
         this(name, CG_CLASS, null, 0, null, container);
@@ -102,11 +102,11 @@ public class ClassDecl extends TypeDecl
         _container = container;
     }
 
-    public LinkedList getInterfaces() {
+    public List getInterfaces() {
         return _interfaces;
     }
 
-    public void setInterfaces(LinkedList interfaces) {
+    public void setInterfaces(List interfaces) {
         _interfaces = interfaces;
     }
 
@@ -169,6 +169,6 @@ public class ClassDecl extends TypeDecl
     protected TreeNode  _source;
     protected JavaDecl  _container;
     protected Environ   _environ = null;
-    protected LinkedList _interfaces = new LinkedList();
+    protected List _interfaces = new LinkedList();
     protected ClassDecl _superClass;
 }

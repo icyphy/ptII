@@ -37,9 +37,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.HashSet;
+import java.util.List;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
@@ -316,8 +317,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         NameNode name = node.getName();
         String methodName = name.getIdent();
 
-        Iterator methodItr = classEnv.lookupFirstProper(methodName,
-         CG_METHOD);
+        Iterator methodItr = classEnv.lookupFirstProper(methodName, CG_METHOD);
 
         MethodDecl d = new MethodDecl(methodName, CG_METHOD,
          node.getReturnType(), modifiers, node, classDecl,
@@ -413,7 +413,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     /** Given a list of ParameterNodes, return a new list of TypeNodes
      *  corresponding to the type of each parameter.
      */
-    protected static LinkedList _makeTypeList(LinkedList paramList) {
+    protected static List _makeTypeList(List paramList) {
         LinkedList retval = new LinkedList();
 
         Iterator paramItr = paramList.iterator();

@@ -37,6 +37,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.lang.IVisitor;
 import ptolemy.lang.TreeNode;
@@ -46,7 +47,7 @@ import ptolemy.lang.java.nodetypes.*;
 <nheader>
 package ptolemy.lang.java.nodetypes;
 
-import java.util.LinkedList;
+import java.util.List;
 import ptolemy.lang.TreeNode;
 </nheader>
 
@@ -67,7 +68,7 @@ PrimitiveTypeNode A TypeNode c 0 c
 ReferenceTypeNode A TypeNode c 0 c
 
 StatementNode A TreeNode c 0 c
-ConstructorCallNode A StatementNode k 0 LinkedList args k
+ConstructorCallNode A StatementNode k 0 List args k
 IterationNode A StatementNode c 0 c
 JumpStmtNode A StatementNode k 0 TreeNode label k
 
@@ -92,7 +93,7 @@ BitwiseNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
 BitwiseAssignNode A BinaryOpAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 LogCondNode A BinaryOpNode c 2 ExprNode expr1 ExprNode expr2 c
 OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
-UserTypeDeclNode A ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
+UserTypeDeclNode A ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List interfaces List members k
 
 // literals
 LiteralNode A ExprNode k 0 String literal k
@@ -130,40 +131,40 @@ ArrayInitTypeNode S TypeNode
 
 // Declarations
 
-CompileUnitNode C TreeNode k 0 TreeNode pkg LinkedList imports LinkedList defTypes k
+CompileUnitNode C TreeNode k 0 TreeNode pkg List imports List defTypes k
 ImportNode C TreeNode i NamedNode i k 0 NameNode name k
 ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
-ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList interfaces LinkedList members TypeNameNode superClass k
+ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members TypeNameNode superClass k
 
 FieldDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 VarDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 
-InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList params LinkedList throwsList k
+InvokableDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name List params List throwsList k
 // body may be absent
-MethodDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList params LinkedList throwsList TreeNode body TypeNode returnType k
-ConstructorDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList params LinkedList throwsList BlockNode body ConstructorCallNode constructorCall k
+MethodDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List params List throwsList TreeNode body TypeNode returnType k
+ConstructorDeclNode C InvokableDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List params List throwsList BlockNode body ConstructorCallNode constructorCall k
 
-ThisConstructorCallNode C ConstructorCallNode c 1 LinkedList args c
-SuperConstructorCallNode C ConstructorCallNode c 1 LinkedList args c
+ThisConstructorCallNode C ConstructorCallNode c 1 List args c
+SuperConstructorCallNode C ConstructorCallNode c 1 List args c
 StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
-InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList interfaces LinkedList members k
+InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members k
 ParameterNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name k
-BlockNode C StatementNode k 0 LinkedList stmts k
+BlockNode C StatementNode k 0 List stmts k
 EmptyStmtNode C StatementNode c 0 c
 LabeledStmtNode C StatementNode i NamedNode i k 0 NameNode name StatementNode stmt k
 IfStmtNode C StatementNode k 0 ExprNode condition StatementNode thenPart TreeNode elsePart k
-SwitchNode C StatementNode k 0 ExprNode expr LinkedList switchBlocks k
+SwitchNode C StatementNode k 0 ExprNode expr List switchBlocks k
 // expr may be absent
 CaseNode C TreeNode k 0 TreeNode expr k
-SwitchBranchNode C TreeNode k 0 LinkedList cases LinkedList stmts k
+SwitchBranchNode C TreeNode k 0 List cases List stmts k
 LoopNode C IterationNode k 0 TreeNode foreStmt ExprNode test TreeNode aftStmt k
 ExprStmtNode C StatementNode k 0 ExprNode expr k
 UserTypeDeclStmtNode C StatementNode k 0 UserTypeDeclNode defType k
 
 // test will be a BoolLitNode in "for(;;)"
-ForNode C IterationNode k 0 LinkedList init ExprNode test LinkedList update StatementNode stmt k
+ForNode C IterationNode k 0 List init ExprNode test List update StatementNode stmt k
 
 // label may be absent !!!
 BreakNode C JumpStmtNode k 1 TreeNode label k
@@ -178,11 +179,11 @@ SynchronizedNode C StatementNode k 0 ExprNode expr TreeNode stmt k
 CatchNode C TreeNode k 0 ParameterNode param BlockNode block k
 
 // finly may be ABSENT
-TryNode C StatementNode k 0 BlockNode block LinkedList catches TreeNode finly k
+TryNode C StatementNode k 0 BlockNode block List catches TreeNode finly k
 
 // Expressions
 
-ArrayInitNode C ExprNode k 0 LinkedList initializers k
+ArrayInitNode C ExprNode k 0 List initializers k
 
 NullPntrNode C ExprNode c 0 c
 ThisNode C ExprNode c 0 c
@@ -195,10 +196,10 @@ ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
 TypeClassAccessNode C ExprNode k 0 TypeNode fType k
 OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
-MethodCallNode C ExprNode k 0 ExprNode method LinkedList args k
-AllocateNode C ExprNode k 0 TypeNameNode dtype LinkedList args ExprNode enclosingInstance k
-AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims TreeNode initExpr k
-AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType LinkedList superArgs LinkedList members ExprNode enclosingInstance k
+MethodCallNode C ExprNode k 0 ExprNode method List args k
+AllocateNode C ExprNode k 0 TypeNameNode dtype List args ExprNode enclosingInstance k
+AllocateArrayNode C ExprNode k 0 TypeNode dtype List dimExprs int dims TreeNode initExpr k
+AllocateAnonymousClassNode C ExprNode k 0 TypeNameNode superType List superArgs List members ExprNode enclosingInstance k
 PostIncrNode C IncrDecrNode c 1 ExprNode expr c
 PostDecrNode C IncrDecrNode c 1 ExprNode expr c
 UnaryPlusNode C UnaryArithNode c 1 ExprNode expr c

@@ -81,7 +81,7 @@ public class Skeleton {
 
         try {
           String outFileName = args[f + fileStart];
-          outFileName = outFileName.substring(0, outFileName.indexOf('.'));
+          outFileName = outFileName.substring(0, outFileName.lastIndexOf('.'));
           outFileName += ".jskel";
           FileOutputStream outFile = null;
 

@@ -40,12 +40,12 @@ public class TNLManip {
 
     private TNLManip() {}
 
-    public static final LinkedList traverseList(IVisitor v, TreeNode parent,
+    public static final List traverseList(IVisitor v, TreeNode parent,
      LinkedList args, List childList) {
        Object retval;
        LinkedList retList = new LinkedList();
 
-       Iterator itr = childList.listIterator();
+       Iterator itr = childList.iterator();
 
        while (itr.hasNext()) {
          Object obj = itr.next();
@@ -97,7 +97,7 @@ public class TNLManip {
              
        sb.append("list\n");
 
-       Iterator itr = list.listIterator();
+       Iterator itr = list.iterator();
 
        while (itr.hasNext()) {
           

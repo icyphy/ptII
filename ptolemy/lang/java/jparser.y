@@ -184,6 +184,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedList;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -341,7 +342,7 @@ ArrayType :
 
 CompilationUnit :
     PackageDeclarationOpt ImportStatementsOpt TypeDeclarationsOpt
-    { $$ = new CompileUnitNode((TreeNode) $1, (LinkedList) $2, (LinkedList) $3);  }
+    { $$ = new CompileUnitNode((TreeNode) $1, (List) $2, (List) $3);  }
   ;
 
 PackageDeclarationOpt :
@@ -355,7 +356,7 @@ ImportStatementsOpt :
     empty
     { $$ = new LinkedList(); }
   | ImportStatement ImportStatementsOpt
-    { $$ = cons($1, (LinkedList) $2); }
+    { $$ = cons($1, (List) $2); }
 
   ;
 
@@ -363,7 +364,7 @@ TypeDeclarationsOpt :
     empty
     { $$ = new LinkedList(); }
   | TypeDeclaration TypeDeclarationsOpt
-    { $$ = cons($1, (LinkedList) $2); }
+    { $$ = cons($1, (List) $2); }
   | ';' TypeDeclarationsOpt
     { $$ = $2; }
   ;
@@ -403,7 +404,7 @@ ClassDeclaration :
     { 
       // add a default constructor if none is found
       NameNode name = (NameNode) $3;
-      LinkedList body = (LinkedList) $6;
+      List body = (List) $6;
        
       Iterator bodyItr = body.iterator();
              
@@ -426,8 +427,8 @@ ClassDeclaration :
                   new SuperConstructorCallNode(new LinkedList())));  
       }
                          
-      $$ = new ClassDeclNode($1, name, (LinkedList) $5,
-           (LinkedList) body, (TypeNameNode) $4);
+      $$ = new ClassDeclNode($1, name, (List) $5,
+           (List) body, (TypeNameNode) $4);
     }
  ;
 
@@ -479,7 +480,7 @@ FieldDeclarationsOpt :
 FieldDeclarations :
     FieldDeclaration
   | FieldDeclaration FieldDeclarations
-    { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+    { $$ = appendLists((List) $1, (List) $2); }
   ;
 
 
@@ -513,9 +514,9 @@ FieldVariableDeclaration :
     FieldModifiersOpt Type VariableDeclarators ';'
    {
       Modifier.checkFieldModifiers($1);
-       LinkedList result = new LinkedList();
+      List result = new LinkedList();
 
-      LinkedList varDecls = (LinkedList) $3;
+      List varDecls = (List) $3;
       Iterator itr = varDecls.iterator();
 
        while (itr.hasNext()) {
@@ -592,7 +593,7 @@ VariableDeclarators :
     VariableDeclarator
     { $$ = cons($1); }
   | VariableDeclarators ',' VariableDeclarator
-    { $$ = cons($3, (LinkedList) $1); }
+    { $$ = cons($3, (List) $1); }
   ;
 
 VariableDeclarator :
@@ -617,16 +618,16 @@ MethodDeclaration :
     ThrowsOpt MethodBody
    {
      Modifier.checkMethodModifiers($1);
-      $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
-                             (LinkedList) $8, (TreeNode) $9,
+      $$ = new MethodDeclNode($1, (NameNode) $3, (List) $5,
+                             (List) $8, (TreeNode) $9,
                              makeArrayType((TypeNode) $2, $7));
    }
   | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
     ThrowsOpt MethodBody
    {
      Modifier.checkMethodModifiers($1);
-      $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
-                             (LinkedList) $8, (TreeNode) $9,
+      $$ = new MethodDeclNode($1, (NameNode) $3, (List) $5,
+                             (List) $8, (TreeNode) $9,
                              makeArrayType((TypeNode) $2, $7));
    }
  ;
@@ -650,7 +651,7 @@ ParameterList :
     Parameter
     { $$ = cons($1); }
   | Parameter ',' ParameterList
-    { $$ = cons($1, (LinkedList) $3); }
+    { $$ = cons($1, (List) $3); }
   ;
 
 Parameter :
@@ -679,7 +680,7 @@ TypeNameList :
     ClassOrInterfaceType
     { $$ = cons($1); }
   | ClassOrInterfaceType ',' TypeNameList
-    { $$ = cons($1, (LinkedList) $3); }
+    { $$ = cons($1, (List) $3); }
   ;
 
 
@@ -700,8 +701,8 @@ ConstructorDeclaration :
     {
       Modifier.checkConstructorModifiers($1);
        $$ = new ConstructorDeclNode($1,
-            new NameNode(AbsentTreeNode.instance, $2), (LinkedList) $4,
-            (LinkedList) $6, new BlockNode((LinkedList) $9),
+            new NameNode(AbsentTreeNode.instance, $2), (List) $4,
+            (List) $6, new BlockNode((List) $9),
             (ConstructorCallNode) $8);
    }
   | FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
@@ -709,8 +710,8 @@ ConstructorDeclaration :
     {
      Modifier.checkConstructorModifiers($1);
       $$ = new ConstructorDeclNode($1,
-           new NameNode(AbsentTreeNode.instance, $2), (LinkedList) $4,
-           (LinkedList) $6, new BlockNode((LinkedList) $8),
+           new NameNode(AbsentTreeNode.instance, $2), (List) $4,
+           (List) $6, new BlockNode((List) $8),
            new SuperConstructorCallNode(new LinkedList()));
     }
   ;
@@ -721,9 +722,9 @@ ConstructorDeclaration :
 
 ExplicitConstructorCallStatement :
     THIS '(' ArgumentListOpt ')' ';'
-    { $$ = new ThisConstructorCallNode((LinkedList) $3); }
+    { $$ = new ThisConstructorCallNode((List) $3); }
   | SUPER '(' ArgumentListOpt ')' ';'
-    { $$ = new SuperConstructorCallNode((LinkedList) $3); }
+    { $$ = new SuperConstructorCallNode((List) $3); }
   ;
 
 
@@ -746,7 +747,7 @@ InterfaceDeclaration :
     InterfaceBody
     {
      Modifier.checkInterfaceModifiers($1);
-     $$ = new InterfaceDeclNode($1, (NameNode) $3, (LinkedList) $4, (LinkedList) $5);
+     $$ = new InterfaceDeclNode($1, (NameNode) $3, (List) $4, (List) $5);
     }
   ;
 
@@ -780,7 +781,7 @@ InterfaceMemberDeclarationsOpt :
     empty
     { $$ = new LinkedList(); }
   | InterfaceMemberDeclaration InterfaceMemberDeclarationsOpt
-    { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+    { $$ = appendLists((List) $1, (List) $2); }
   ;
 
 InterfaceMemberDeclaration :
@@ -800,10 +801,10 @@ ConstantFieldDeclaration :
      modifiers |= (Modifier.STATIC_MOD | Modifier.FINAL_MOD);
 
      Modifier.checkConstantFieldModifiers(modifiers);
-     LinkedList varDecls = (LinkedList) $3;
+     List varDecls = (List) $3;
      Iterator itr = varDecls.iterator();
 
-      LinkedList result = new LinkedList();
+      List result = new LinkedList();
 
       while (itr.hasNext()) {
         DeclaratorNode decl = (DeclaratorNode) itr.next();
@@ -822,7 +823,7 @@ MethodSignatureDeclaration :
     {
      Modifier.checkMethodSignatureModifiers($1);
       $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
-                             (LinkedList) $5, (LinkedList) $8,
+                             (List) $5, (List) $8,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) $2, $7));
    }
@@ -831,7 +832,7 @@ MethodSignatureDeclaration :
     {
       Modifier.checkMethodSignatureModifiers($1);
       $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
-                             (LinkedList) $5, (LinkedList) $8,
+                             (List) $5, (List) $8,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) $2, $7));
     }
@@ -843,9 +844,9 @@ MethodSignatureDeclaration :
 
 ArrayInitializer :
    '{' ElementInitializers '}'
-    { $$ = new ArrayInitNode((LinkedList) $2); }
+    { $$ = new ArrayInitNode((List) $2); }
   | '{' ElementInitializers ',' '}'
-    { $$ = new ArrayInitNode((LinkedList) $2); }
+    { $$ = new ArrayInitNode((List) $2); }
   | '{' '}'
     { $$ = new ArrayInitNode(new LinkedList()); }
   ;
@@ -855,7 +856,7 @@ ElementInitializers :
     Element
     { $$ = cons($1); }
   | ElementInitializers ',' Element
-    { $$ = append((LinkedList) $1, $3); }
+    { $$ = append((List) $1, $3); }
   ;
 
 Element :
@@ -870,7 +871,7 @@ Element :
 
 Block :
     '{' BlockStatementsOpt '}'
-    { $$ = new BlockNode((LinkedList) $2); }
+    { $$ = new BlockNode((List) $2); }
   ;
 
 BlockStatementsOpt :
@@ -883,7 +884,7 @@ BlockStatements :
     BlockStatement
     { $$ = $1; }
   | BlockStatements BlockStatement
-    { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+    { $$ = appendLists((List) $1, (List) $2); }
   ;
 
 BlockStatement :
@@ -903,8 +904,8 @@ LocalVariableDeclarationStatement :
    {
      Modifier.checkLocalVariableModifiers($1);
 
-     LinkedList varDecls = (LinkedList) $3;
-     LinkedList result = new LinkedList();
+     List varDecls = (List) $3;
+     List result = new LinkedList();
 
      Iterator itr = varDecls.iterator();
 
@@ -919,8 +920,8 @@ LocalVariableDeclarationStatement :
 
  | Type VariableDeclarators ';'
    {
-     LinkedList varDecls = (LinkedList) $2;
-     LinkedList result = new LinkedList();
+     List varDecls = (List) $2;
+     List result = new LinkedList();
 
      Iterator itr = varDecls.iterator();
 
@@ -992,7 +993,7 @@ SelectionStatement :
   | IF '(' Expression ')' Statement ELSE Statement
     { $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, (TreeNode) $7); }
   | SWITCH '(' Expression ')' SwitchBlock
-    { $$ = new SwitchNode((ExprNode) $3, (LinkedList) $5); }
+    { $$ = new SwitchNode((ExprNode) $3, (List) $5); }
   ;
 
 SwitchBlock :
@@ -1005,19 +1006,19 @@ SwitchBlockStatementsOpt :
    { $$ = new LinkedList(); }
   | SwitchLabels BlockStatements SwitchBlockStatementsOpt
     {
-     $$ = cons(new SwitchBranchNode((LinkedList) $1, (LinkedList) $2),
-               (LinkedList) $3);
+     $$ = cons(new SwitchBranchNode((List) $1, (List) $2),
+               (List) $3);
    }
    /* Handle labels at the end without any statements */
  | SwitchLabels
-   { $$ = cons(new SwitchBranchNode((LinkedList) $1, new LinkedList())); }
+   { $$ = cons(new SwitchBranchNode((List) $1, new LinkedList())); }
  ;
 
 SwitchLabels :
     SwitchLabel
     { $$ = cons($1); }
   | SwitchLabel SwitchLabels
-    { $$ = cons($1, (LinkedList) $2); }
+    { $$ = cons($1, (List) $2); }
  ;
 
 SwitchLabel :
@@ -1035,10 +1036,10 @@ IterationStatement :
   | DO Statement WHILE '(' Expression ')' ';'
     { $$ = new LoopNode((TreeNode) $2, (ExprNode) $5, new EmptyStmtNode()); }
   | FOR '(' ForInit Expression ';' ForUpdateOpt ')' Statement
-    { $$ = new ForNode((LinkedList) $3, (ExprNode) $4,
-      (LinkedList) $6, (StatementNode) $8); }
+    { $$ = new ForNode((List) $3, (ExprNode) $4,
+      (List) $6, (StatementNode) $8); }
   | FOR '(' ForInit ';' ForUpdateOpt ')' Statement
-    { $$ = new ForNode((LinkedList) $3, new BoolLitNode("true"), (LinkedList) $5,
+    { $$ = new ForNode((List) $3, new BoolLitNode("true"), (List) $5,
       (StatementNode) $7); }
   ;
 
@@ -1065,7 +1066,7 @@ ExpressionStatements :
     ExpressionStatement
     { $$ = cons($1); }
   | ExpressionStatement ',' ExpressionStatements
-    { $$ = cons($1, (LinkedList) $3); }
+    { $$ = cons($1, (List) $3); }
   ;
 
 
@@ -1098,16 +1099,16 @@ GuardingStatement :
   | TRY Block Finally
     { $$ = new TryNode((BlockNode) $2, new LinkedList(), (TreeNode) $3); }
   | TRY Block Catches
-    { $$ = new TryNode((BlockNode) $2, (LinkedList) $3, AbsentTreeNode.instance); }
+    { $$ = new TryNode((BlockNode) $2, (List) $3, AbsentTreeNode.instance); }
   | TRY Block Catches Finally
-    { $$ = new TryNode((BlockNode) $2, (LinkedList) $3, (TreeNode) $4); }
+    { $$ = new TryNode((BlockNode) $2, (List) $3, (TreeNode) $4); }
   ;
 
 Catches :
     Catch
     { $$ = cons($1); }
   | Catch Catches
-    { $$ = cons($1, (LinkedList) $2); }
+    { $$ = cons($1, (List) $2); }
   ;
 
 Catch :
@@ -1211,9 +1212,9 @@ FieldAccess :
 
 MethodCall :
     Name '(' ArgumentListOpt ')'
-    { $$ = new MethodCallNode(new ObjectNode((NameNode) $1), (LinkedList) $3); }
+    { $$ = new MethodCallNode(new ObjectNode((NameNode) $1), (List) $3); }
   | FieldAccess '(' ArgumentListOpt ')'
-    { $$ = new MethodCallNode((FieldAccessNode) $1, (LinkedList) $3); }
+    { $$ = new MethodCallNode((FieldAccessNode) $1, (List) $3); }
   ;
 
 ArgumentListOpt :
@@ -1226,7 +1227,7 @@ ArgumentList :
     Expression
     { $$ = cons($1); }
   | Expression ',' ArgumentList
-    { $$ = cons($1, (LinkedList) $3); }
+    { $$ = cons($1, (List) $3); }
   ;
 
 
@@ -1234,16 +1235,16 @@ ArgumentList :
 
 AllocationExpression :
    NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
-   { $$ = new AllocateNode((TypeNameNode) $2, (LinkedList) $4, new ThisNode()); }
+   { $$ = new AllocateNode((TypeNameNode) $2, (List) $4, new ThisNode()); }
    /* NEW: Java 1.1 : D.2.1 Anonymous classes */
  | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
    {
      $$ = new AllocateAnonymousClassNode((TypeNameNode) $2,
-               (LinkedList) $4, (LinkedList) $6, new ThisNode());
+               (List) $4, (List) $6, new ThisNode());
    }
  | NEW ClassOrInterfaceType DimExprs DimsOpt
    {
-     $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4,
+     $$ = new AllocateArrayNode((TypeNode) $2, (List) $3, $4,
            AbsentTreeNode.instance);
    }
    /* NEW: Java 1.1 : D.2.1 Anonymous arrays */
@@ -1254,7 +1255,7 @@ AllocationExpression :
    }
  | NEW PrimitiveType DimExprs DimsOpt
    {
-     $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4,
+     $$ = new AllocateArrayNode((TypeNode) $2, (List) $3, $4,
            AbsentTreeNode.instance);
    }
    /* NEW: Java 1.1 : D.2.1 Anonymous arrays */
@@ -1268,14 +1269,14 @@ AllocationExpression :
    {
      $$ = new AllocateNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
-           (LinkedList) $6, (ExprNode) $1);
+           (List) $6, (ExprNode) $1);
    }
    /* NEW: Java 1.1 : qualified anonymous class creation */
  | PrimaryExpression '.' NEW IDENTIFIER '(' ArgumentListOpt ')' ClassBody
    {
      $$ = new AllocateAnonymousClassNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
-           (LinkedList) $6, (LinkedList) $8, (ExprNode) $1);
+           (List) $6, (List) $8, (ExprNode) $1);
    }
    /* Redundant productions to handle Name . new */
    /* NEW: Java 1.1 : qualified class creation */
@@ -1283,14 +1284,14 @@ AllocationExpression :
    {
      $$ = new AllocateNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
-           (LinkedList) $6, new ObjectNode((NameNode) $1));
+           (List) $6, new ObjectNode((NameNode) $1));
    }
    /* NEW: Java 1.1 : qualified anonymous class creation */
  | Name '.' NEW IDENTIFIER '(' ArgumentListOpt ')' ClassBody
    {
      $$ = new AllocateAnonymousClassNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, $4)),
-           (LinkedList) $6, (LinkedList) $8, new ObjectNode((NameNode) $1));
+           (List) $6, (List) $8, new ObjectNode((NameNode) $1));
    }
  ;
 
@@ -1298,7 +1299,7 @@ DimExprs :
     DimExpr
     { $$ = cons($1); }
   | DimExpr DimExprs
-    { $$ = cons($1, (LinkedList) $2); }
+    { $$ = cons($1, (List) $2); }
   ;
 
 DimExpr :
@@ -1498,39 +1499,36 @@ protected int yylex()
     yylval = _lexer.getParserVal();
 
   } catch (IOException e) {
-
     throw new RuntimeException("lexical error");
   }
 
   return retval;
 }
 
-protected static final LinkedList cons(Object obj)
+protected static final List cons(Object obj)
 {
   return cons(obj, new LinkedList());
 }
 
-protected static final LinkedList cons(Object obj, LinkedList list)
+protected static final List cons(Object obj, List list)
 {
   if ((obj != null) && (obj != AbsentTreeNode.instance)) {
-     list.addFirst(obj);
+     list.add(0, obj);
   }
 
   return list;
 }
 
-protected static final LinkedList append(LinkedList list, Object obj)
+protected static final List append(List list, Object obj)
 {
-  list.addLast(obj);
-
+  list.add(obj);
   return list;
 }
 
 
-protected static final Object appendLists(LinkedList list1, LinkedList list2)
+protected static final Object appendLists(List list1, List list2)
 {
   list1.addAll(list2);
-
   return list1;
 }
 

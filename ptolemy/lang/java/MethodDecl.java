@@ -35,6 +35,7 @@ package ptolemy.lang.java;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
@@ -44,7 +45,7 @@ import ptolemy.lang.java.nodetypes.TypeNode;
 
 public class MethodDecl extends MemberDecl {
     public MethodDecl(String name, int category0, TypeNode type, int modifiers,
-     TreeNode source, JavaDecl container, LinkedList paramList,
+     TreeNode source, JavaDecl container, List paramList,
      Collection throwsCollection) {
         super(name, category0, type, modifiers, source, container);
         _paramList = paramList;
@@ -88,7 +89,7 @@ public class MethodDecl extends MemberDecl {
     /** Return list of TypeNodes representing the types of the arguments of
      *  this method.
      */
-    public LinkedList getParams() {
+    public List getParams() {
         return _paramList;
     }
 
@@ -129,20 +130,20 @@ public class MethodDecl extends MemberDecl {
     /** The list of TypeNodes representing the types of the arguments of
      *  this method. This list should not be modified after construction.
      */
-    protected final LinkedList _paramList;
+    protected final List _paramList;
 
     /** The set of TypeNameNodes representing exceptions that can be thrown
      *  by this method.
      *  This set may change after construction, if overridden methods throw
      *  exceptions not declared explicitly.
      */
-    protected final HashSet _throwsSet;
+    protected final Set _throwsSet;
 
-    protected final HashSet _overridersSet = new HashSet();
+    protected final Set _overridersSet = new HashSet();
 
     /** The set of interface methods this MethodDecl implements.  Similar
      *  to overrides, but refers to a set of interface methods rather than
      *  a single superclass method.
      */
-    protected final HashSet _implementsSet = new HashSet();
+    protected final Set _implementsSet = new HashSet();
 }

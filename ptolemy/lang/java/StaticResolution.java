@@ -36,6 +36,7 @@ package ptolemy.lang.java;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
@@ -226,7 +227,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
   }
 
-  public static MethodDecl resolveCall(EnvironIter methods, LinkedList args) {
+  public static MethodDecl resolveCall(EnvironIter methods, List args) {
 
       Decl aMethod = methods.head();      
       Decl d;

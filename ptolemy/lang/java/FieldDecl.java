@@ -30,8 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.util.LinkedList;
-
 import ptolemy.lang.IVisitor;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;

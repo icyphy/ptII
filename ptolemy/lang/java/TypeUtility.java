@@ -36,6 +36,7 @@ package ptolemy.lang.java;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
@@ -142,11 +143,10 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      */
     public static boolean isMoreSpecific(final MethodDecl m1, final MethodDecl m2) {
 
-        LinkedList params1 = m1.getParams();
-        LinkedList params2 = m2.getParams();
+        List params1 = m1.getParams();
+        List params2 = m2.getParams();
 
-        int numParams = params1.size();    
-        if (numParams != params2.size()) {         
+        if (params2.size() != params2.size()) {         
            return false;
         }
 
@@ -162,9 +162,13 @@ public class TypeUtility implements JavaStaticSemanticConstants {
 
         // This is inefficient ... iterate the list backwards once everything's working
         // Actually, it doesn't seem to matter what direction we go...
-        for (int i = numParams - 1; i >= 0; i--) {
-            TypeNode param2 = (TypeNode) params2.get(i);
-            TypeNode param1 = (TypeNode) params1.get(i);
+        
+        Iterator params1Itr = params1.iterator();
+        Iterator params2Itr = params2.iterator();
+        
+        while (params1Itr.hasNext()) {
+            TypeNode param2 = (TypeNode) params2Itr.next();
+            TypeNode param1 = (TypeNode) params1Itr.next();
 
             if (!isAssignableFromType(param2, param1)) {
                return false;
@@ -174,8 +178,8 @@ public class TypeUtility implements JavaStaticSemanticConstants {
         return true;    
     }
 
-    public static boolean isCallableWith(MethodDecl m, LinkedList argTypes) {
-        LinkedList formalTypes = m.getParams();
+    public static boolean isCallableWith(MethodDecl m, List argTypes) {
+        List formalTypes = m.getParams();
 
         if (argTypes.size() != formalTypes.size()) {
            return false;
@@ -460,7 +464,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
        return type;   
     }
 
-    public static TypeNode arithPromoteType(TypeNode type1, TypeNode type2) {
+    public static TypeNode arithPromoteType(final TypeNode type1, final TypeNode type2) {
        int kind1 = kind(type1);
        int kind2 = kind(type2);
 
@@ -468,6 +472,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
            (kind2 == TYPE_KIND_DOUBLE)) {
           return DoubleTypeNode.instance;
        }
+       
        if ((kind1 == TYPE_KIND_FLOAT) ||
            (kind2 == TYPE_KIND_FLOAT)) {
           return FloatTypeNode.instance;

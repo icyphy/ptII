@@ -35,15 +35,19 @@ package ptolemy.lang;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
 public abstract class TreeNode extends PropertyMap {
 
-    /** A class ID number, which is unique for each sub-type. */    
+    /** Return the class ID number, which is unique for each sub-type. */    
     public abstract int classID();
 
+    /** Return a String representation of this node, indented by ident. 
+     *  Call the toString() method of all child nodes.
+     */
     public String toString(String indent) {
 
         StringBuffer sb = new StringBuffer();
@@ -55,7 +59,7 @@ public abstract class TreeNode extends PropertyMap {
       
         // If the number property is defined, print the number.
         if (hasProperty(NUMBER_KEY)) {
-           sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ")");
+           sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ')');
         }
            
         Method[] methodArr = c.getMethods();
@@ -82,9 +86,7 @@ public abstract class TreeNode extends PropertyMap {
           
                String totalIndent = nextIndent + _makeSpaceString(methodLabel.length()) + "  ";
                        
-               sb.append(nextIndent);             
-               sb.append(methodLabel);
-               sb.append(": ");
+               sb.append(nextIndent + methodLabel + ": ");
 
                Object retval = null;
                try {
@@ -96,11 +98,10 @@ public abstract class TreeNode extends PropertyMap {
                if (retval instanceof TreeNode) {
                   TreeNode node = (TreeNode) retval;
                   sb.append(node.toString(totalIndent));
-               } else if (retval instanceof LinkedList) {
-                  sb.append(TNLManip.toString((LinkedList) retval, nextIndent));
+               } else if (retval instanceof List) {
+                  sb.append(TNLManip.toString((List) retval, nextIndent));
                } else {
-                  sb.append(retval.toString());
-                  sb.append('\n');
+                  sb.append(retval.toString() + '\n');
                }
              
             } // if (methodName.startsWith("get") ...
@@ -109,9 +110,7 @@ public abstract class TreeNode extends PropertyMap {
         if (matchingMethods < 1) {
            sb.append(" (leaf)"); // Node has no children
         } else {
-           sb.append(indent);
-           sb.append("END ");
-           sb.append(className);           
+           sb.append(indent + "END " + className);           
         }      
       
         sb.append('\n');
@@ -119,14 +118,22 @@ public abstract class TreeNode extends PropertyMap {
         return sb.toString();
     }
 
+    /** Return a String representation of this node.
+     *  Call the toString() method of all child nodes.
+     */  
     public String toString() {
         return toString("");
     }
 
+    /** Accept a visitor, giving the visitor a list of zero arguments. */
     public Object accept(IVisitor v) {
         return accept(v, new LinkedList());
     }
 
+    /** Accept a visitor, giving the visitor a list of arguments. Depending on
+     *  the traversal method, the children of the node may be visited before or
+     *  after this node is visited, or not at all.
+     */
     public Object accept(IVisitor v, LinkedList visitorArgs) {
 
       Object retval;
@@ -167,12 +174,16 @@ public abstract class TreeNode extends PropertyMap {
       return retval;
     }
 
+    /** Visit all nodes or lists in in the argument list, and place the list of 
+     *  return values in the CHILD_RETURN_VALUES_KEY property of the node.
+     */
     public void traverseChildren(IVisitor v, LinkedList args) {
-        LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
+        List retList = TNLManip.traverseList(v, this, args, _childList);
 
         setProperty(CHILD_RETURN_VALUES_KEY, retList);
     }
 
+    /** Return the child at the specified index in the child list. */
     public Object getChild(int index) {
         return _childList.get(0);
     }
@@ -181,9 +192,10 @@ public abstract class TreeNode extends PropertyMap {
         _childList.set(index, child);
     }
 
-    public LinkedList children() { return _childList; } // change this name
+    /** Return the list of all direct children of this node. */
+    public List children() { return _childList; } // change this name
 
-    public void setChildren(LinkedList childList) {
+    public void setChildren(List childList) {
         _childList = childList;
     }
 
@@ -255,6 +267,7 @@ public abstract class TreeNode extends PropertyMap {
   
     // protected methods
   
+    /** Return a String of spaces, the number of which is specified by the argument. */
     protected static String _makeSpaceString(int spaces) {
         StringBuffer sb = new StringBuffer();
     
@@ -272,7 +285,7 @@ public abstract class TreeNode extends PropertyMap {
     ////                        protected variables                ////
 
     protected Class  _myClass = null;    
-    protected LinkedList _childList = new LinkedList();
+    protected List _childList = new ArrayList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

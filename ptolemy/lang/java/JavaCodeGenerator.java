@@ -39,7 +39,7 @@ import java.util.Iterator;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-public class JavaCodeGenerator extends JavaVisitor {
+public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemanticConstants {
     public Object visitNameNode(NameNode node, LinkedList args) {
         String ident = node.getIdent();
         TreeNode qualifier = node.getQualifier();
@@ -49,7 +49,7 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         String qualPartStr = (String) node.childReturnValueAt(node.CHILD_INDEX_QUALIFIER);
 
-        return qualPartStr + "." + ident;
+        return qualPartStr + '.' + ident;
     }
 
     public Object visitAbsentTreeNode(AbsentTreeNode node, LinkedList args) {
@@ -77,11 +77,11 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitCharLitNode(CharLitNode node, LinkedList args) {
-        return "'" + node.getLiteral() + "'"; 
+        return "'" + node.getLiteral() + '\''; 
     }
 
     public Object visitStringLitNode(StringLitNode node, LinkedList args) {
-        return "\"" + node.getLiteral() + "\"";
+        return "\"" + node.getLiteral() + '\"';
     }
 
     public Object visitBoolTypeNode(BoolTypeNode node, LinkedList args) {
@@ -121,22 +121,11 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BASETYPE));
-        sb.append("[]");
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_BASETYPE) + "[]";
     }
 
     public Object visitVoidTypeNode(VoidTypeNode node, LinkedList args) {
         return "void";
-    }
-
-    public Object visitDeclaratorNode(DeclaratorNode node, LinkedList args) {
-        ApplicationUtility.error("DeclaratorNode should not appear in the " +
-         "final parse tree.");
-        return null;
     }
 
     public Object visitPackageNode(PackageNode node, LinkedList args) {
@@ -152,11 +141,11 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_TYPE) + ".this";
     }
 
     public Object visitOuterSuperAccess(OuterSuperAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_TYPE) + ".super";
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
@@ -166,15 +155,10 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         // not using package nodes
         if (pkgStr.length() > 0) {
-
-           sb.append("package ");
-
-           sb.append(pkgStr);
-
-           sb.append(";\n");
+           sb.append("package " + pkgStr + ";\n");
         }
 
-        LinkedList impList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_IMPORTS);
+        List impList = (List) node.childReturnValueAt(node.CHILD_INDEX_IMPORTS);
 
         Iterator impItr = impList.iterator();
 
@@ -184,14 +168,12 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         sb.append('\n');
 
-        LinkedList typeList = (LinkedList) node.childReturnValueAt(
-         node.CHILD_INDEX_DEFTYPES);
+        List typeList = (List) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPES);
 
         Iterator typeItr = typeList.iterator();
 
         while (typeItr.hasNext()) {
-          sb.append((String) typeItr.next());
-          sb.append('\n');
+          sb.append((String) typeItr.next() + '\n');
         }
 
         return sb.toString();
@@ -211,39 +193,25 @@ public class JavaCodeGenerator extends JavaVisitor {
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
-
-        sb.append(Modifier.toString(node.getModifiers()));
-
-        sb.append("class ");
-
         String name = (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
 
-        sb.append(name);
-
-        sb.append(' ');
+        sb.append(Modifier.toString(node.getModifiers()) + "class " + name + ' ');
 
         TreeNode superClass = node.getSuperClass();
 
         if (superClass != AbsentTreeNode.instance) {
-           sb.append("extends " + node.childReturnValueFor(superClass) + " ");
+           sb.append("extends " + node.childReturnValueFor(superClass) + ' ');
         }
 
-        LinkedList implList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
+        List implList = (List) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
 
         if (!implList.isEmpty()) {
-
-           sb.append("implements ");
-
-           sb.append(_commaList(implList));
-
-           sb.append(' ');
+           sb.append("implements " + _commaList(implList) + ' ');
         }
 
         sb.append("{\n");
 
-        LinkedList memberList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_MEMBERS);
+        List memberList = (List) node.childReturnValueAt(node.CHILD_INDEX_MEMBERS);
 
         if (!memberList.isEmpty()) {
            Iterator memberItr = memberList.iterator();
@@ -263,16 +231,15 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append(Modifier.toString(node.getModifiers()));
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
-        sb.append(' ');
-        sb.append(node.getName().getIdent());
+        sb.append(Modifier.toString(node.getModifiers()) + 
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) + ' ' + 
+                  node.getName().getIdent());
 
         String initStr = (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR);
+        
+        // AbsentTreeNode returns a String of length 0
         if (initStr.length() > 0) {
-           sb.append(" = ");
-           sb.append(initStr);
+           sb.append(" = " + initStr);
         }
 
         sb.append(";\n");
@@ -281,50 +248,32 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitVarDeclNode(VarDeclNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append(Modifier.toString(node.getModifiers()));
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
-        sb.append(' ');
-        sb.append(node.getName().getIdent());
-        sb.append(" = ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
-        sb.append(";\n");
-
-        return sb.toString();
+        return Modifier.toString(node.getModifiers()) + 
+               (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) +
+               ' ' + node.getName().getIdent() + " = " +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR)  + ";\n";
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
 
-        sb.append(Modifier.toString(node.getModifiers()));
+        List paramList = (List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS);
+        
+        sb.append(Modifier.toString(node.getModifiers()) + 
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_RETURNTYPE) + 
+                  ' ' + (String) node.childReturnValueAt(node.CHILD_INDEX_NAME) + '(' + 
+                  _commaList(paramList) + ')');
 
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_RETURNTYPE));
-        sb.append(' ');
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
-        sb.append('(');
-
-
-        LinkedList paramList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_PARAMS);
-
-        sb.append(_commaList(paramList));
-
-        sb.append(")");
-
-        LinkedList throwsList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_THROWSLIST);
+        List throwsList = (List) node.childReturnValueAt(node.CHILD_INDEX_THROWSLIST);
 
         if (!throwsList.isEmpty()) {
-           sb.append(" throws ");
-
-           sb.append(_commaList(throwsList));
+           sb.append(" throws " + _commaList(throwsList));
         }
 
         if (node.getBody() == AbsentTreeNode.instance) {
            sb.append(';');
         } else {
-           sb.append(' ');
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BODY));
+           sb.append(" " + (String) node.childReturnValueAt(node.CHILD_INDEX_BODY));
         }
 
         sb.append('\n');
@@ -334,26 +283,16 @@ public class JavaCodeGenerator extends JavaVisitor {
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
+        List paramList = (List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS);
 
         sb.append(Modifier.toString(node.getModifiers()));
 
-        sb.append(node.getName().getIdent());
-        sb.append('(');
+        sb.append(node.getName().getIdent() + '(' + _commaList(paramList) + ") ");
 
-        LinkedList paramList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_PARAMS);
-
-        sb.append(_commaList(paramList));
-
-        sb.append(") ");
-
-        LinkedList throwsList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_THROWSLIST);
+        List throwsList = (List) node.childReturnValueAt(node.CHILD_INDEX_THROWSLIST);
 
         if (!throwsList.isEmpty()) {
-           sb.append("throws ");
-
-           sb.append(_commaList(throwsList));
-
-           sb.append(' ');
+           sb.append("throws " + _commaList(throwsList) + ' ');
         }
 
         sb.append("{\n");
@@ -375,28 +314,14 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
+        List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
 
-        sb.append("this(");
-
-        LinkedList argsList = (LinkedList) node.childReturnValueAt(
-         node.CHILD_INDEX_ARGS);
-
-        sb.append(_commaList(argsList));
-
-        sb.append(");\n");
-
-        return sb.toString();
+        return "this(" + _commaList(argsList) + ");\n";
     }
 
     public Object visitStaticInitNode(StaticInitNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("static ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK));
-        sb.append('\n');
-
-        return sb.toString();
+        return "static " +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK) + '\n';
     }
 
     public Object visitInstanceInitNode(InstanceInitNode node, LinkedList args) {
@@ -404,34 +329,22 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
+        String name = (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);    
+    
         StringBuffer sb = new StringBuffer();
 
-        sb.append(Modifier.toString(node.getModifiers()));
+        sb.append(Modifier.toString(node.getModifiers()) +
+                  "interface " + name + ' ');
 
-        sb.append("interface ");
-
-        String name = (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
-
-        sb.append(name);
-
-        sb.append(' ');
-
-        LinkedList implList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
+        List implList = (List) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
 
         if (!implList.isEmpty()) {
-
-           sb.append("extends ");
-
-           sb.append(_commaList(implList));
-
-           sb.append(' ');
+           sb.append("extends " + _commaList(implList) + ' ');
         }
 
         sb.append("{\n");
 
-        LinkedList memberList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_MEMBERS);
+        List memberList = (List) node.childReturnValueAt(node.CHILD_INDEX_MEMBERS);
 
         if (!memberList.isEmpty()) {
            Iterator memberItr = memberList.iterator();
@@ -452,8 +365,7 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         sb.append('{');
 
-        LinkedList initializers = (LinkedList)
-         node.childReturnValueAt(node.CHILD_INDEX_INITIALIZERS);
+        List initializers = (List) node.childReturnValueAt(node.CHILD_INDEX_INITIALIZERS);
 
         sb.append(_commaList(initializers));
 
@@ -474,39 +386,14 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
+        List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);      
 
-        sb.append("super(");
-
-        LinkedList argsList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
-
-        sb.append(_commaList(argsList));
-
-        sb.append(");\n");
-
-        return sb.toString();
+        return "super(" + _commaList(argsList) + ");\n";
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("{\n");
-
-        LinkedList stmtList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_STMTS);
-        LinkedList stmtTreeList = (LinkedList) node.getStmts();
-
-        Iterator stmtItr = stmtList.iterator();
-        Iterator stmtTreeItr = stmtTreeList.iterator();
-
-        while (stmtItr.hasNext()) {
-          sb.append((String) stmtItr.next());
-
-          TreeNode stmt = (TreeNode) stmtTreeItr.next();
-        }
-
-        sb.append("}\n");
-
-        return sb.toString();
+        return "{\n" + _lineList((List) node.childReturnValueAt(node.CHILD_INDEX_STMTS)) +
+               "}\n";
     }
 
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
@@ -514,25 +401,22 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
-        sb.append(": ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_STMT));
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_NAME) +       
+               ": " + (String) node.childReturnValueAt(node.CHILD_INDEX_STMT);
     }
 
     public Object visitIfStmtNode(IfStmtNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
 
-        sb.append("if (");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_CONDITION));
-        sb.append(") ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_THENPART));
+        sb.append("if (" + 
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_CONDITION) +
+                  ") " +
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_THENPART));
 
         TreeNode elsePart = node.getElsePart();
         if (elsePart != AbsentTreeNode.instance) {
-           sb.append(" else ");
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_ELSEPART));
+           sb.append(" else " +
+                     (String) node.childReturnValueAt(node.CHILD_INDEX_ELSEPART));
         }
 
         sb.append('\n');
@@ -540,77 +424,52 @@ public class JavaCodeGenerator extends JavaVisitor {
         return sb.toString();
     }
 
-    public Object visitSwitchNode(SwitchNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+    public Object visitSwitchNode(SwitchNode node, LinkedList args) {        
+        return "switch (" + 
+               (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) + ") {\n" +
+               _listToString((List) node.childReturnValueAt(node.CHILD_INDEX_SWITCHBLOCKS), "\n") + 
+               "}\n";                                                         
     }
 
     public Object visitCaseNode(CaseNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        if (node.getExpr() == AbsentTreeNode.instance) {
+           return "default:\n";
+        }
+    
+        return "case " + (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) + ":\n";               
     }
 
     public Object visitSwitchBranchNode(SwitchBranchNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        return _lineList((List) node.childReturnValueAt(node.CHILD_INDEX_CASES)) +
+               _lineList((List) node.childReturnValueAt(node.CHILD_INDEX_STMTS));
     }
 
     public Object visitLoopNode(LoopNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-        if (node.getForeStmt() instanceof EmptyStmtNode) {
+        if (node.getForeStmt().classID() == EMPTYSTMTNODE_ID) {
            // while loop
-           sb.append("while (");
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_TEST));
-           sb.append(") \n");
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_AFTSTMT));
+           return "while (" +
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_TEST) +
+                  ") \n" +
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_AFTSTMT);
         } else {
            // do loop
-           sb.append("do ");
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FORESTMT));
-           sb.append(" while (");
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_TEST));
-           sb.append(");\n");
+           return "do " +
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_FORESTMT) +
+                  " while (" +
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_TEST) +
+                  ");\n";
         }
-        return sb.toString();
     }
 
     public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
-        sb.append(";\n");
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) + ";\n";
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("for (");
-
-        LinkedList initList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_INIT);
-
-        Iterator initItr = initList.iterator();
-
-        while (initItr.hasNext()) {
-          sb.append((String) initItr.next());
-
-          if (initItr.hasNext()) {
-             sb.append(", ");
-          }
-        }
-
-        sb.append("; ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_TEST));
-        sb.append("; ");
-
-        LinkedList updateList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_UPDATE);
-
-        sb.append(_commaList(updateList));
-
-        sb.append(") ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_STMT));
-        sb.append('\n');
-
-        return sb.toString();
+        return "for (" + _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_INIT)) +
+               "; " + (String) node.childReturnValueAt(node.CHILD_INDEX_TEST) + "; " +
+               _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)) + ") " +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_STMT) + '\n';
     }
 
     public Object visitBreakNode(BreakNode node, LinkedList args) {
@@ -619,8 +478,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         sb.append("break");
 
         if (node.getLabel() != AbsentTreeNode.instance) {
-           sb.append(' ');
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_LABEL));
+           sb.append(" " + (String) node.childReturnValueAt(node.CHILD_INDEX_LABEL));
         }
         sb.append(";\n");
 
@@ -633,8 +491,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         sb.append("continue");
 
         if (node.getLabel() != AbsentTreeNode.instance) {
-           sb.append(' ');
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_LABEL));
+           sb.append(" " + (String) node.childReturnValueAt(node.CHILD_INDEX_LABEL));
         }
         sb.append(";\n");
 
@@ -643,60 +500,31 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitReturnNode(ReturnNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("return ");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
-
-        sb.append(";\n");
-
-        return sb.toString();
+        return "return " + (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) + ";\n";
     }
 
     public Object visitThrowNode(ThrowNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("throw ");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
-
-        sb.append(";\n");
-
-        return sb.toString();
+        return "throw " + (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) + ";\n";
     }
 
     public Object visitSynchronizedNode(SynchronizedNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("synchronized (");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
-        sb.append(") ");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_STMT));
-
-        sb.append('\n');
-
-        return sb.toString();
+        return "synchronized (" +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) + ") " +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_STMT) + "\n";
     }
 
     public Object visitCatchNode(CatchNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("catch (");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_PARAM));
-        sb.append(") ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK));
-
-        return sb.toString();
+        return "catch (" + 
+               (String) node.childReturnValueAt(node.CHILD_INDEX_PARAM) + ") " +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK);
     }
 
     public Object visitTryNode(TryNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
-        sb.append("try ");
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK));
+        
+        sb.append("try " + (String) node.childReturnValueAt(node.CHILD_INDEX_BLOCK));
 
-        LinkedList catchesList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_CATCHES);
+        List catchesList = (List) node.childReturnValueAt(node.CHILD_INDEX_CATCHES);
 
         Iterator catchesItr = catchesList.iterator();
 
@@ -705,8 +533,8 @@ public class JavaCodeGenerator extends JavaVisitor {
         }
 
         if (node.getFinly() != AbsentTreeNode.instance) {
-           sb.append(" finally ");
-           sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FINLY));
+           sb.append(" finally " +  
+                     (String) node.childReturnValueAt(node.CHILD_INDEX_FINLY));
         }
 
         return sb.toString();
@@ -721,14 +549,8 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_ARRAY));
-        sb.append('[');
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_INDEX));
-        sb.append(']');
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_ARRAY) +
+               '[' +  (String) node.childReturnValueAt(node.CHILD_INDEX_INDEX) + ']';
     }
 
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
@@ -736,73 +558,32 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_OBJECT));
-
-        sb.append('.');
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_OBJECT) + '.' +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
     }
 
     public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("super.");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
-
-        return sb.toString();
+        return "super." + (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
     }
 
     public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FTYPE));
-
-        sb.append('.');
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_FTYPE) +
+               '.' +  (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
     }
 
-    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("this.");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_NAME));
-
-        return sb.toString();
-
+    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {        
+        return "this." + (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
     }
 
     public Object visitTypeClassAccessNode(TypeClassAccessNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_FTYPE));
-
-        sb.append(".class");
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_FTYPE) + ".class";
     }
 
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
+        List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);        
 
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_METHOD));
-        sb.append('(');
-
-        LinkedList argsList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
-
-        sb.append(_commaList(argsList));
-
-        sb.append(')');
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_METHOD) +
+               '(' + _commaList(argsList) + ')';
     }
 
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
@@ -812,21 +593,13 @@ public class JavaCodeGenerator extends JavaVisitor {
          node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
 
         if (!enclosingInstance.equals("this")) {
-           sb.append(enclosingInstance);
-           sb.append('.');
+           sb.append(enclosingInstance + '.');
         }
 
-        sb.append("new ");
+        List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
 
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
-
-        sb.append('(');
-
-        LinkedList argsList = (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
-
-        sb.append(_commaList(argsList));
-
-        sb.append(')');
+        sb.append("new " + (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) +
+                  '(' + _commaList(argsList) +  ')');
 
         return sb.toString();
     }
@@ -835,19 +608,14 @@ public class JavaCodeGenerator extends JavaVisitor {
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append("new ");
+        sb.append("new " + (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
 
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
-
-        LinkedList dimExprList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_DIMEXPRS);
+        List dimExprList = (List) node.childReturnValueAt(node.CHILD_INDEX_DIMEXPRS);
 
         Iterator dimExprItr = dimExprList.iterator();
 
         while (dimExprItr.hasNext()) {
-            sb.append('[');
-            sb.append((String) dimExprItr.next());
-            sb.append(']');
+            sb.append("[" + (String) dimExprItr.next() + ']');
         }
 
         for (int dimsLeft = node.getDims(); dimsLeft > 0; dimsLeft--) {
@@ -858,8 +626,7 @@ public class JavaCodeGenerator extends JavaVisitor {
            String initExpr =
             (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR);
 
-           sb.append(' ');
-           sb.append(initExpr);
+           sb.append(" " + initExpr);
         }
 
         return sb.toString();
@@ -902,20 +669,11 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitCastNode(CastNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append('(');
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
-
-        sb.append(") ");
-
         String exprString = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
         ExprNode expr = (ExprNode) node.getExpr();
-
-        sb.append(_parenExpr(expr, exprString));
-
-        return sb.toString();
+       
+        return "(" + (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) +
+               ") " + _parenExpr(expr, exprString);
     }
 
     public Object visitMultNode(MultNode node, LinkedList args) {
@@ -967,15 +725,9 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitInstanceOfNode(InstanceOfNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_EXPR));
-
-        sb.append(" instanceof ");
-
-        sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE));
-
-        return sb.toString();
+        return (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) +
+               " instanceof " +
+               (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE);
     }
 
     public Object visitEQNode(EQNode node, LinkedList args) {
@@ -1007,8 +759,6 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitIfExprNode(IfExprNode node, LinkedList args) {
-        StringBuffer sb = new StringBuffer();
-
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
         String e3String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR3);
@@ -1017,13 +767,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         e2String = _parenExpr(node.getExpr2(), e2String);
         e3String = _parenExpr(node.getExpr3(), e2String);
 
-        sb.append(e1String);
-        sb.append(" ? ");
-        sb.append(e2String);
-        sb.append(" : ");
-        sb.append(e3String);
-
-        return sb.toString();
+        return e1String + " ? " + e2String + " : " + e3String;
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
@@ -1032,9 +776,7 @@ public class JavaCodeGenerator extends JavaVisitor {
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
-        sb.append(e1String);
-        sb.append(" = ");
-        sb.append(e2String);
+        sb.append(e1String + " = " + e2String);
 
         return sb.toString();
     }
@@ -1093,38 +835,21 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     protected String _visitBinaryOpNode(BinaryOpNode node, String opString) {
-        StringBuffer sb = new StringBuffer();
-
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
         e1String = _parenExpr(node.getExpr1(), e1String);
         e2String = _parenExpr(node.getExpr2(), e2String);
 
-        sb.append(e1String);
-        sb.append(' ');
-        sb.append(opString);
-        sb.append(' ');
-        sb.append(e2String);
-
-        return sb.toString();
+        return e1String + ' ' + opString + ' ' + e2String;
     }
 
-    protected String _visitBinaryOpAssignNode(BinaryOpAssignNode node, String opString) {
-        StringBuffer sb = new StringBuffer();
-        
+    protected String _visitBinaryOpAssignNode(BinaryOpAssignNode node, String opString) {       
         String e1String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         String e2String = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
-        sb.append(e1String);
-        sb.append(' ');
-        sb.append(opString);
-        sb.append(' ');
-        sb.append(e2String);
-
-        return sb.toString();;
+        return e1String + ' ' + opString + ' ' + e2String;
     }
-
 
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         // for testing purposes only
@@ -1132,6 +857,14 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     protected static String _commaList(List list) {
+        return _listToString(list, ", ");
+    }
+
+    protected static String _lineList(List list) {
+        return _listToString(list, "");
+    }        
+    
+    protected static String _listToString(List list, String separator) {
         StringBuffer sb = new StringBuffer();
 
         Iterator itr = list.iterator();
@@ -1140,13 +873,13 @@ public class JavaCodeGenerator extends JavaVisitor {
           sb.append((String) itr.next());
 
           if (itr.hasNext()) {
-             sb.append(", ");
+             sb.append(separator);
           }
         }
 
         return sb.toString();
     }
-
+        
     protected String _parenExpr(ExprNode expr, String exprStr) {
        if ((expr instanceof BinaryOpNode) ||
            (expr instanceof BinaryOpAssignNode) ||
@@ -1154,11 +887,7 @@ public class JavaCodeGenerator extends JavaVisitor {
            (expr instanceof InstanceOfNode) ||
            (expr instanceof EqualityNode) ||
            (expr instanceof IfExprNode)) {
-          StringBuffer sb = new StringBuffer();
-          sb.append('(');
-          sb.append(exprStr);
-          sb.append(')');
-          return sb.toString();
+          return "(" + exprStr + ')';
        }
 
        return exprStr;

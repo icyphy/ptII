@@ -681,7 +681,7 @@ public class GenerateVisitor {
                  switch (placement) {
 
                  case 'l':
-                 sb.append("_childList.addLast(" + nameStr + ");");
+                 sb.append("_childList.add(" + nameStr + ");");
                  break;
 
                  case 'm':

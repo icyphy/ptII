@@ -30,20 +30,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-public class SkeletonVisitor extends JavaVisitor {
+public class SkeletonVisitor extends JavaVisitor implements JavaStaticSemanticConstants {
     public SkeletonVisitor() {
         super(TM_CUSTOM);
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        LinkedList retList =
-         (LinkedList) TNLManip.traverseList(this, null, null,
+        List retList = TNLManip.traverseList(this, null, null,
          node.getDefTypes());
 
         LinkedList newDefTypeList = new LinkedList();
@@ -74,8 +74,7 @@ public class SkeletonVisitor extends JavaVisitor {
 
         int modifiers = node.getModifiers();
 
-        LinkedList retList =
-         TNLManip.traverseList(this, null, null, node.getMembers());
+        List retList = TNLManip.traverseList(this, null, null, node.getMembers());
 
         Iterator retItr = retList.iterator();
 
@@ -92,7 +91,7 @@ public class SkeletonVisitor extends JavaVisitor {
 
                 if (cDeclNode.getParams().size() == 0) {
                    // found default constructor, make it public
-                   cDeclNode.setModifiers(Modifier.PUBLIC_MOD);
+                   cDeclNode.setModifiers(PUBLIC_MOD);
                 }
              }
           }
@@ -106,7 +105,7 @@ public class SkeletonVisitor extends JavaVisitor {
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
         int modifiers = node.getModifiers();
 
-        if ((modifiers & Modifier.PRIVATE_MOD) != 0) {
+        if ((modifiers & PRIVATE_MOD) != 0) {
            return null;
         }
 
@@ -118,12 +117,12 @@ public class SkeletonVisitor extends JavaVisitor {
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         int modifiers = node.getModifiers();
 
-        if ((modifiers & Modifier.PRIVATE_MOD) != 0) {
+        if ((modifiers & PRIVATE_MOD) != 0) {
            return null;
         }
 
         if (node.getBody() != AbsentTreeNode.instance) {
-           node.setModifiers(modifiers | Modifier.NATIVE_MOD);
+           node.setModifiers(modifiers | NATIVE_MOD);
         }
         node.setBody(AbsentTreeNode.instance);
 
@@ -137,8 +136,7 @@ public class SkeletonVisitor extends JavaVisitor {
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        LinkedList retList =
-         TNLManip.traverseList(this, null, null, node.getMembers());
+        List retList = TNLManip.traverseList(this, null, null, node.getMembers());
 
         Iterator retItr = retList.iterator();
 
