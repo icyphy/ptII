@@ -48,7 +48,7 @@ TCL_SRCS = \
 	SigmaDelta.tcl
 
 JSRCS = \
-	SigmaDeltaApplet.java
+	SigmaDelta.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	SDCTPlot.gif \
