@@ -202,6 +202,7 @@ public class ZeroCrossingDetector extends Transformer
     public void initialize() throws IllegalActionException {
         super.initialize();
         _first = true;
+	_eventNow = false;
         if(_debugging) _debug(getFullName() + "initialize");
     }
 
