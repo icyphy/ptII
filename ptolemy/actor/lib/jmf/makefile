@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AudioPlayer.java \
 	ColorFinder.java \
+	ImageToJMF.java \
 	JMFImageToken.java \
 	MovieReader.java \
 	MovieWriter.java \

@@ -13,6 +13,9 @@
 	<entity name="ColorFinder" class="ptolemy.actor.lib.jmf.ColorFinder">
 	</entity>
 
+	<entity name="ImageToJMF" class="ptolemy.actor.lib.jmf.ImageToJMF">
+	</entity>
+
 	<entity name="MovieReader" class="ptolemy.actor.lib.jmf.MovieReader">
 	</entity>	
 
