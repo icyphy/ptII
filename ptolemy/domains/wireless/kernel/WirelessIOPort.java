@@ -49,6 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// WirelessIOPort
@@ -88,6 +89,40 @@ a receiver may be out of range of a transmitter).
 
 public class WirelessIOPort
     extends TypedIOPort implements ChangeListener {
+
+    /** Construct a port in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the port.
+     *  @exception IllegalActionException If creating the parameters
+     *  of this port throws it.
+     *  @exception NameDuplicationException If creating the parameters
+     *  of this port throws it.
+     */
+    public WirelessIOPort(Workspace workspace) 
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        outsideChannel = new StringParameter(this, "outsideChannel");
+        outsideChannel.setExpression("");
+
+        outsideTransmitProperties =
+            new Parameter(this, "outsideTransmitProperties");
+
+        insideChannel = new StringParameter(this, "insideChannel");
+        insideChannel.setExpression("");
+
+        insideTransmitProperties =
+            new Parameter(this, "insideTransmitProperties");
+
+        // Since the channel parameters affect connectivity, we should
+        // treat changes to their values as changes to the topology.
+        // To do that, we listen for changes and increment the version
+        // number of the workspace.
+        outsideChannel.addChangeListener(this);
+    }
 
     /** Construct a port with the specified container and name
      *  that is neither an input nor an output.  The specified container
