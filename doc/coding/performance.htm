@@ -43,6 +43,56 @@ import statements.
 import java.util.Date;
 </pre>
 
+<h2><a name="performance">Performance</a></h2>
+Measuring the performance of an Applet inside a browser is tricky.
+
+ <p><a href="http://help.netscape.com/kb/client/970907-1.html"><CODE>http://help.netscape.com/kb/client/970907-1.html</CODE></a> says:
+<pre>
+To troubleshoot your Java applets in UNIX environment, you can start Communicator with the "-java" switch.
+
+
+ #netscape -java
+ Usage: -java [-options] class
+  
+ where options include:
+     -help             print out this message
+     -version          print out the build version
+     -v -verbose       turn on verbose mode
+     -debug            enable remote JAVA debugging
+     -noasyncgc        don't allow asynchronous garbage collection
+     -verbosegc        print a message when garbage collection occurs
+     -noclassgc        disable class garbage collection
+     -cs -checksource  check if source is newer when loading classes
+     -ss<number>       set the maximum native stack size for any thread
+     -oss<number>      set the maximum Java stack size for any thread
+     -ms<number>       set the initial Java heap size
+     -mx<number>       set the maximum Java heap size
+     -D<name>=<value>  set a system property
+     -classpath <directories separated by ':'>
+                       list directories in which to look for classes
+     -prof[:<file>]    output profiling data to ./java.prof or ./<file>
+     -verify           verify all classes when read in
+     -verifyremote     verify classes read in over the network [default]
+     -noverify         do not verify any class
+</pre>
+
+<a href="http://help.netscape.com/kb/client/970907-2.html"><CODE>http://help.netscape.com/kb/client/970907-2.html</CODE></a>
+<pre>
+You can automatically startup the Java Virtual Machine as you launch 
+ Communicator. This will prevent Communicator from restarting the 
+ Java Virtual Machine each time you browse pages that have Java applets 
+ or audio files played by the liveaudio plugin. 
+
+ The command to use is : 
+ "C:\Program Files\Netscape\Communicator\Program\netscape.exe" -start_java
+
+ You can edit the properties of your start icon of the Communicator 
+ to add the option. You can also start the messenger (or other 
+ component) the same way by : 
+ "C:\Program Files\Netscape\Communicator\Program\netscape.exe" -start_java -mail 
+
+ Note: This doesn't seem to work on NT3.51
+</pre>
 
 <h2><a name="remoteresources">Remote resources</a></h2>
 
