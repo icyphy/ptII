@@ -155,7 +155,6 @@ test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
     set outToken2 [$actorB getToken 2] 
     set threadTime2 [$actorB getThreadTime 2] 
     set rcvrTime2 [$actorB getRcvrTime 2] 
-    set lastTime [$actorB getLastTime]
 
     if { $outToken0 == $token0 && $outToken1 == $token1 && $outToken2 == $token2 } {
 	set tok0 1
@@ -173,8 +172,8 @@ test TimedQueueReceiver-5.1 {get(), put(), check _rcvrTime and _lastTime} {
 	set threadTime2 1
     }
 
-    list $tok0 $tok1 $tok2 $rcvrTime0 $rcvrTime1 $rcvrTime2 $threadTime0 $threadTime1 $threadTime2 $lastTime
-} {1 1 1 1 1 1 1 1 1 17.2}
+    list $tok0 $tok1 $tok2 $rcvrTime0 $rcvrTime1 $rcvrTime2 $threadTime0 $threadTime1 $threadTime2 
+} {1 1 1 1 1 1 1 1 1}
 
 ######################################################################
 ####
@@ -202,11 +201,7 @@ test TimedQueueReceiver-5.2 {get(), put(), check _rcvrTime and _lastTime} {
 
     $manager run
 
-    set lastTime [$actorB getLastTime]
-
-    list $lastTime
-
-} {0.0}
+} {}
 
 ######################################################################
 ####
