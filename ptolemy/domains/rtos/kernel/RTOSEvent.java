@@ -228,7 +228,7 @@ public class RTOSEvent implements Comparable {
     }
 
     /** Reduce the remaining processing time of this event by a certain
-     *  amount. This is a syntactic suger for setProcessingTime().
+     *  amount. This is a syntactic sugar for setProcessingTime().
      *  @param time The amount of time progressed.
      */
     public final void timeProgress(double time) {
@@ -249,7 +249,7 @@ public class RTOSEvent implements Comparable {
      */
     public final String toString() {
         return "RTOSEvent(token=" + _token + ", priority=" + _priority 
-            + ", dest=" 
+            + ", destination=" 
             + _actor
             + ", hasStarted=" + _hasStarted
             + ", processingTime=" + _processingTime + ")";

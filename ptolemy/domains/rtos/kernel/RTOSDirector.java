@@ -59,14 +59,14 @@ A director that implements a priority-driven multitasking
 model of computation. This model of computation is usually seen in
 real-time operating systems.
 <P>
-Each actor in this domain is called a task. A task is elligible to 
+Each actor in this domain is called a task. A task is eligible to 
 execute if there is an event that triggers it. Source actors may trigger
 themselves by calling fireAt(time, actor) on this director. This call
 is treated as an interrupt that happens at that particular time.
 A task can have a priority and an execution time, specified by (adding)
 <i>priority</i> and <i>executionTime</i> parameters. The <i>priority</i>
 parameter takes an integer value, and the <i>executionTime</i>
-parameter takes a double value. These parameters may also be sepcified
+parameter takes a double value. These parameters may also be specified
 on a per input port basis, if the actor reacts differently
 to input events at different ports. If these parameters are not
 specified, then the default priority value is the java.Thread.NORM
@@ -77,7 +77,7 @@ the execution of all actors. At one particular time, only
 one of the tasks can get the resource and execute. If the execution
 is preemptable (by setting the <i>preemptive</i> parameter of
 this director to true), then the execution of one task 
-may be preempted by another elligible task with a higher priority.
+may be preempted by another eligible task with a higher priority.
 Otherwise, the higher priority task has to wait until the current
 task finishes its execution.
 <P>
@@ -101,7 +101,7 @@ on this director are treated differently. These events carry
 a time stamp, and are queued with another queue which sorts these
 events in their chronological order. When the modeling time reaches
 an interrupt event time, (regardless whether there is a task 
-executing), the interrupt event is processed. And the curresponding
+executing), the interrupt event is processed. And the corresponding
 (source) actor is fired, which may in turn produce some RTOS events.
 If one of these RTOS events has a higher priority than the event
 being processed by the current task, and the execution is preemptive,
@@ -109,13 +109,13 @@ then the current tasks is stalled, and the task triggered by the
 highest priority event is started. Note that, a task is always
 granted the resource that is specified by the <i>executionTime</i>,
 no matter whether it has been preempted.
-When that amount of time is ellapsed, the fire() method of the actor
+When that amount of time is elapsed, the fire() method of the actor
 will be called, and the actor is expected to produce its output, if
 there is any.
 <P>
 The RTOS domain can be nested with other (timed) domains. In that
 case, the inputs from the outside domain are treated as interrupts
-that heppens at the (outside) current time.
+that happen at the (outside) current time.
 <p>
 This director supports executions that synchronize to real time.
 To enable such an execution, set the <i>synchronizeToRealTime</i>
