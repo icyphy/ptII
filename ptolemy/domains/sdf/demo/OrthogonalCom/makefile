@@ -62,7 +62,7 @@ all: jclass $(PTCLASSJAR)
 	@echo "To run all demo, run 'make demo'"
 install: all
 
-demo: $(PTCLASSJAR)
+demo: jclass
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
 		-class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
