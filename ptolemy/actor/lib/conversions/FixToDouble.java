@@ -33,6 +33,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.FixToken;   // for javadoc
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.math.Precision;
@@ -79,7 +80,7 @@ Parameter <i>precision</i> is of type StringToken and parameter
 @author Bart Kienhuis
 @version $Id$
 @see ptolemy.data.FixToken
-@see ptolemy.data.Precision
+@see ptolemy.math.Precision
 */
 
 public class FixToDouble extends Transformer {
