@@ -11,12 +11,20 @@
 	<description>Continuous Time</description>
 	<actorpackage name="CT default" package="ptolemy.domains.ct.lib"/>
 
-	<director name="Single Solver"
+	<director name="Single solver"
 		class="ptolemy.domains.ct.kernel.CTSingleSolverDirector"/>
-	<director name="Multiple Solver"
+	<director name="Multiple solver"
 		class="ptolemy.domains.ct.kernel.CTMultiSolverDirector"/>
 	<director name="Mixed-signal"
 		class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
+    </domain>
+
+    <domain name="DE">
+        <description>Discrete Event</description>
+        <actorpackage name="DE default" package="ptolemy.domains.de.lib"/>
+
+        <director name="Calendar queue"
+                 class="ptolemy.domains.de.kernel.DECQDirector"/>
     </domain>
 
     <domain name="PN">
