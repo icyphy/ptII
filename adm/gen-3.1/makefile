@@ -180,8 +180,8 @@ $(PTIIDIST):
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
-	# Remove apps.xml from the configuration
-	grep -v "apps.xml" \
+	# Remove apps.xml and corba.xml from the configuration
+	egrep -v "apps.xml|corba.xml" \
 		< $(PTIIHOME)/ptolemy/configs/defaultFullConfiguration.xml \
 		> /tmp/defaultFullConfiguration_tmp.xml
 	mv /tmp/defaultFullConfiguration_tmp.xml \
