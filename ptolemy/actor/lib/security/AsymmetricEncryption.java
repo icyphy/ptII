@@ -68,8 +68,8 @@ parameter.
 Cryptography Extension (JCE).
 
 <br>Information about JCA can be found at
-<a href="http://java.sun.com/products/jca/" target="_top">http://java.sun.com/products/jca/">.
-Information about JCE can be found at
+<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html">.
+<br>Information about JCE can be found at
 <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
 
 @author Rakesh Reddy, Christopher Hylands Brooks
