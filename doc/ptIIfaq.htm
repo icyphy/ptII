@@ -303,6 +303,7 @@ Technologies, Inc. (* Smyth is now with Altio).
 <dt> <a name="metropolis"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
  <dd> 
 
+
 Ptolemy (<a href="http://ptolemy.eecs.berkeley.edu" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu</CODE></a>)
 and Metropolis (<a href="http://www.gigascale.org/metropolis/" target="_top"><CODE>http://www.gigascale.org/metropolis/</CODE></a>) 
 are separate research projects at Berkeley,
@@ -310,60 +311,91 @@ albeit ones with considerable cross-influences. Ptolemy is headed by
 <a href="http://ptolemy.eecs.berkeley.edu/~eal" target="_top">Edward Lee</a>,
 while Metropolis is headed by 
 <a href="http://www-cad.eecs.berkeley.edu/~alberto" target="_top">Alberto Sangiovanni-Vincentelli</a>.
-A key principle in Metropolis is its "meta model,"
-which in the terminology of the Ptolemy project we would call
-its "abstract semantics." In Metropolis, models consist of processes,
-with their own thread of control, that communicate through ports and
-"media." The media are roughly equivalent to Ptolemy Receivers; they
-define the communication semantics between components. The abstract
-semantics of Metropolis, is an abstraction of the model of computation
-that appears in the Ptolemy PN and CSP domains. It is an abstraction
-because in Metropolis, the communication semantics is not defined,
-whereas in PN and CSP, it is (in two different ways). Metropolis model
-builders construct the media that processes use to communicate. One
-could build, for example, media in Metropolis to implement either PN or
-CSP. Moreover, Metropolis model builders construct much of what would
-be the director in a Ptolemy model.
+
+ <br>A key principle in Metropolis is its "meta model," which in the
+terminology of the Ptolemy project we would call its "abstract
+semantics." In Metropolis, models consist of processes, with their own
+thread of control, that communicate through ports and "media." The
+media are roughly equivalent to Ptolemy Receivers; they define the
+communication semantics between components. The abstract semantics of
+Metropolis, is an abstraction of the model of computation that appears
+in the Ptolemy PN and CSP domains. It is an abstraction because in
+Metropolis, the communication semantics is not defined, whereas in PN
+and CSP, it is (in two different ways). Metropolis model builders
+construct the media that processes use to communicate. One could build,
+for example, media in Metropolis to implement either PN or CSP.
+Moreover, Metropolis model builders construct much of what would be the
+director in a Ptolemy model.
+
+ <p>In Ptolemy, two parts of the abstract semantics are separated, control
+and communication. The abstract semantics of control is based on the
+Executable interface. The abstract semantics of communication is based
+on the IOPort/Receiver interface. The Metropolis metamodel is more
+fixed about control semantics (i.e. components are process based), but
+allows a richer interface to communications media (since a media can
+expose arbitrary interfaces to components). This design choice makes
+communication refinement easier (since the interface to a media can
+change) but makes it more difficult to build domain-polymorphic
+components since media often have different interfaces. It also
+emphasizes process-oriented concurrency that often exists at the
+top-level of a system, and de-emphasizes the construction of
+hierarchical models.
 
  <p>The abstract semantics that binds most Ptolemy domains (with the
 exception of PN and CSP) is significantly different. Instead of
 processes, components are actors with three-phase firings. The
 objective of this abstract semantics is to be able to define "domain
-polymorphic" actors, which are actors that operate in several models
-of computation. This enables hierarchically composing distinct models
-of computation, since an aggregation of actors in one domain becomes an
+polymorphic" actors, which are actors that operate in several models of
+computation. This enables hierarchically composing distinct models of
+computation, since an aggregation of actors in one domain becomes an
 actor in another. No such composition is possible (by any method we
-know of) with processes. Indeed, both PN and CSP fall outside this
-preferred Ptolemy abstract semantics, and hence do not compose well
-with other domains. There is no systematic way to embed PN or CSP
-models within other, firing-based models of computation.
+know of) with processes. Indeed, both PN and CSP do not compose well
+with other domains. There is no useful way to embed PN or CSP models
+within other, firing-based models of computation.
 
  <p>A key reason for the choice of abstract semantics in Metropolis is the
-desire to model parallel hardware systems well. The separate threads of
-control do this well, and mesh well with trends in hardware design,
-particularly SystemC, which uses a similar abstract semantics.
+desire to model several aspects of a system, including particularly its
+performance when mapped to hardware resources. The separate threads of
+control model parallel hardware systems well, and mesh well with trends
+in hardware design.
 
- <p>Processes in Metropolis are defined in a Java-like syntax, and follow a
-stylistic pattern that effectively realizes a cooperative multitasking
-strategy. Processes yield to other processes when they call certain
-core system methods. This permits, for example, the "simulation
-manager" to coordinate notions of time across components. A variety of
-back-ends have been built or are under construction, including ones
-that target Java, SystemC, and C. By contrast, in Ptolemy, actors are
-defined in ordinary Java. More easily retargeted actor-definition
-languages are under development, including Cal and Actif
+ <p>Processes in Metropolis are defined in a Java-like syntax, and use a
+model of computation in which components are processes with global
+synchronization points. Constraints are an explicit, declarative manner
+to specify requirements on performance (e.g. power or timing) and
+sharing of computation and communication resources. For example, timing
+constraints are expressed in linear temporal logic and timed logic. A
+variety of back-ends have been built or are under construction, to
+perform simulation, formal verification and synthesis, including ones
+that target Java, SystemC, and C.
+
+ <p>By contrast, in Ptolemy, actors are defined in ordinary Java. More
+easily retargetted actor-definition languages are under development,
+including Cal 
 (<a href="http://www.gigascale.org/caltrop" target="_top"><CODE>http://www.gigascale.org/caltrop</CODE></a>).
+and Actif
+(<a href="http://www.gigascale.org/compose" target="_top"><CODE>http://www.gigascale.org/compose</CODE></a>).
 
  <p>One of the key innovations in Metropolis is the notion of "quantity
 managers." Quantity managers contain code that is invoked when a
-process calls certain core system methods. Quantity managers can
-enforce constraints defined by users, including constraints that
-involve time. Quantity managers are used to get discrete-event
-semantics, where events are processed in chronological order. They are
-also used to enforce constraints that are specified in a linear
-temporal logic. In Ptolemy, quantity managers would be associated
-with the director, although no director has been developed (to our
-knowledge) with such a broadly applicable mechanism.
+request is made to annotate a process transition with a quantity, such
+as time, energy, or memory. Such requests are made, for example, on the
+execution of a statement, or on a communication action over a medium. A
+special case of quantity manager is the global time manager, which is
+used to implement a discrete event semantics, where events are
+processed in chronological order. Constraints in terms of quantities
+are expressed formally in the Logic Of Constraints, a logic
+particularly suitable for specifying constraints at the abstract system
+level, where coordination of executions, not the low level interaction,
+is of concern. LOC is a formalism designed to reason about simulation
+traces. It consists of all the terms and operators allowed in
+sentential logic, with additions that make it possible to specify
+system level quantitative constraints.
+
+ <p>In Ptolemy, quantity managers would be associated with the director,
+although no director has been developed (to our knowledge) with such a
+broadly applicable mechanism.
+
 
 </dl>
 
