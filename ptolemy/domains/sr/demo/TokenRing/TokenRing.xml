@@ -6,7 +6,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[0, 15]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 12]">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
@@ -21,7 +21,7 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="65.0, 35.0">
         </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -50,24 +50,18 @@ This example is from:
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="110.0, 5.0">
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 10.0">
         </property>
     </property>
     <entity name="Request1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 360.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 395.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -86,7 +80,7 @@ This example is from:
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="145.0, 635.0">
+        <property name="_location" class="ptolemy.moml.Location" value="140.0, 490.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -94,7 +88,7 @@ This example is from:
         </port>
     </entity>
     <entity name="Block2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="375.0, 320.0">
+        <property name="_location" class="ptolemy.moml.Location" value="380.0, 385.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
         </property>
@@ -313,7 +307,7 @@ This example is from:
         <link port="NonStrictDelay.output" relation="relation3"/>
     </entity>
     <entity name="Block3" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="565.0, 320.0">
+        <property name="_location" class="ptolemy.moml.Location" value="565.0, 385.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
         </property>
@@ -532,7 +526,7 @@ This example is from:
         <link port="NonStrictDelay.output" relation="relation3"/>
     </entity>
     <entity name="Block1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="170.0, 320.0">
+        <property name="_location" class="ptolemy.moml.Location" value="165.0, 385.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
         </property>
@@ -754,13 +748,7 @@ This example is from:
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="285.0, 360.0">
+        <property name="_location" class="ptolemy.moml.Location" value="290.0, 425.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -774,13 +762,7 @@ This example is from:
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 360.0">
+        <property name="_location" class="ptolemy.moml.Location" value="475.0, 425.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -801,7 +783,7 @@ This example is from:
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="770.0, 575.0">
+        <property name="_location" class="ptolemy.moml.Location" value="715.0, 575.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -839,7 +821,7 @@ This example is from:
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="495.0, 485.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 535.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -853,7 +835,7 @@ This example is from:
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="685.0, 400.0">
+        <property name="_location" class="ptolemy.moml.Location" value="660.0, 500.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -873,19 +855,19 @@ This example is from:
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="250.0, 575.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="220.0, 575.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="435.0, 485.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="425.0, 535.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="625.0, 400.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="615.0, 450.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -895,11 +877,11 @@ This example is from:
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="625.0, 240.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="620.0, 310.0">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="130.0, 255.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="110.0, 320.0">
         </vertex>
     </relation>
     <link port="Request1.output" relation="relation11"/>
