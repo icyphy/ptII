@@ -71,7 +71,7 @@ test VariableClock-2.1 {test with the default output value} {
 } {1 1 1 1 1 1 1 1 1 1 1}
 
 test VariableClock-2.2 {check times} {
-    listToObjects [$rec getTimeHistory]
+    listToStrings [$rec getTimeHistory]
 } {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0}
 
 test VariableClock-2.3 {Connect a second clock to the periodControl input} {
@@ -94,5 +94,5 @@ test VariableClock-2.3 {Connect a second clock to the periodControl input} {
 } {1 1 1 1 1 1 1 1}
 
 test VariableClock-2.4 {check times} {
-    listToObjects [$rec getTimeHistory]
+    listToStrings [$rec getTimeHistory]
 } {0.0 2.0 4.0 6.0 7.0 8.0 9.0 10.0}
