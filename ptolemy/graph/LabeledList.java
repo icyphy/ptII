@@ -140,10 +140,8 @@ public class LabeledList implements List {
     /** Clear all of the elements in this list.
      */
     public void clear() {
-        int elements = size();
-        for (int i = 0; i < elements; i++) {
-            remove(0);
-        }
+        _elements.clear();
+        _labels.clear();
     }
 
     /** Return true if the specified object is an element of this list.
