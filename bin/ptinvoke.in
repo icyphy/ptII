@@ -431,6 +431,8 @@ if [ "$1" = "-policyfile" ]; then
 fi
 
 if [ "$1" = "-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
+    # Note that when running "vergil -sandbox" or "vergil -policyfile ...",
+    # merging properties from lib/ptII.properties.in might not work.
     if [ "$1" = "-sandbox" ]; then
 	shift
     fi
