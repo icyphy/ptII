@@ -179,6 +179,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         CompositeActor newobj = (CompositeActor)super.clone(ws);
         if (_director != null) {
             newobj._director = (Director)_director.clone();
+	    newobj._director._makeDirectorOf(newobj);
         } else {
             newobj._director = null;
         }

@@ -205,7 +205,7 @@ test CompositeActor-7.1 {Test clone and description} {
     } entities {
     } relations {
     } director {
-        {ptolemy.actor.Director {.WORMDIR} attributes {
+        {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
         }}
     } executivedirector {
     }}
