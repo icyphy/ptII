@@ -635,6 +635,7 @@ NONJSALLCOREDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
+	ptolemy/copernicus/interpreted \
 	ptolemy/copernicus/java \
 	ptolemy/copernicus/shallow
 
@@ -690,6 +691,12 @@ remote1distjsall_2:
 			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
+	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/interpreted; \
+		$(MAKE) $(MFLAGS) $(MAKEVARS) \
+			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			AUXCLASSPATH=":$(JSCLASSPATH)" \
+			jsall JSINSTRFLAGS=;)
+
 
 remote1distjsall_3:
 	jssummary -HTML -PROGRESS \
@@ -727,6 +734,9 @@ remote1distjsrestore:
 	fi
 	( cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		echo making jsrestore in ptolemy/copernicus/applet ; \
+		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
+	( cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/interpreted; \
+		echo making jsrestore in ptolemy/copernicus/interpreted ; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
 
 # Remove the JavaScope instrumentation
