@@ -362,6 +362,23 @@ For more help, choose Help from the upper menu bar.</text>
 
 <!-- Controller for Modal Model -->
 <xsl:template name="_Controller">
+
+     <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory"/>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+        <property name="_library" class="ptolemy.moml.LibraryAttribute">
+           <configure>
+                <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+                   <input source="ptolemy/configs/basicUtilities.xml"></input>
+                   <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                      <property name="_centerName" class="ptolemy.kernel.util.Attribute"></property>
+                      <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property>
+                   </entity>
+                </entity>
+           </configure>
+        </property>
+     </property>
+
     <xsl:element name="property">
         <!-- attributes of property -->
         <xsl:attribute name="name">initialStateName</xsl:attribute>
@@ -422,6 +439,8 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
             <xsl:attribute name="value"><xsl:value-of select="@name"/></xsl:attribute>
         </xsl:element>
+        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        </property>
         <xsl:element name="port">
             <xsl:attribute name="name">incomingPort</xsl:attribute>
             <xsl:attribute name="class">ptolemy.kernel.ComponentPort</xsl:attribute>
