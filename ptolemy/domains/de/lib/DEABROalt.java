@@ -48,8 +48,6 @@ behavior each time the input R occurs.
 */
 public class DEABROalt extends DEThreadActor {
 
-    private static boolean DEBUG = true;
-
     /** Construct a DEANDGate actor with the specified delay.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.
@@ -102,7 +100,7 @@ public class DEABROalt extends DEThreadActor {
                         System.out.println("Seen A..");
                     }
 
-                    IOPort[] ports = {B,R};
+                    IOPort[] ports = {B, R};
                     waitForNewInputs(ports);
                     if (!R.hasToken(0)) {
                         if (DEBUG) {
@@ -122,7 +120,7 @@ public class DEABROalt extends DEThreadActor {
                         System.out.println("Seen B..");
                     }
 
-                    IOPort[] ports = {A,R};
+                    IOPort[] ports = {A, R};
                     waitForNewInputs(ports);
                     if (!R.hasToken(0)) {
                         if (DEBUG) {
@@ -160,4 +158,5 @@ public class DEABROalt extends DEThreadActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private static boolean DEBUG = true;
 }
