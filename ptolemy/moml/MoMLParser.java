@@ -2022,8 +2022,11 @@ public class MoMLParser extends HandlerBase {
                     }
                 } else {
                     // Ordinary attribute.
-                    NamedObj property = (Attribute)
-                        _current.getAttribute(propertyName);
+                    NamedObj property = null;
+                    if (_current != null) {
+                        property = (Attribute)_current
+                                .getAttribute(propertyName);
+                    }
                     Class newClass = null;
                     if (className != null) {
                         try {
@@ -2634,6 +2637,117 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Attempt to find a MoML class.
+    // If there is no source defined, then use the classpath.
+    private ComponentEntity _attemptToFindMoMLClass(
+            String className, String source) throws Exception {
+        String classAsFile = null;
+        String altClassAsFile = null;
+        ComponentEntity reference = null;
+        if (source == null) {
+            // No source defined.  Use the classpath.
+
+            // First, replace all periods in the class name
+            // with slashes, and then append a ".xml".
+            // NOTE: This should perhaps be handled by the
+            // class loader, but it seems rather complicated to
+            // do that.
+            // Search for the .xml file before searching for the .moml
+            // file.  .moml files are obsolete, and we should probably
+            // not bother searching for them at all.
+            classAsFile = className.replace('.', '/') + ".xml";
+            // RIM uses .moml files, so leave them in.
+            altClassAsFile = className.replace('.', '/') + ".moml";
+        } else {
+            // Source is given.
+            classAsFile = source;
+        }
+        // Read external model definition in a new parser,
+        // rather than in the current context.
+        MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
+
+        NamedObj candidateReference = null;
+        try {
+            candidateReference =
+                _parse(newParser, _base, classAsFile);
+        } catch (Exception ex2) {
+            // Try the alternate file, if it's not null.
+            if (altClassAsFile != null) {
+                try {
+                    candidateReference =
+                        _parse(newParser, _base, altClassAsFile);
+                    classAsFile = altClassAsFile;
+                } catch (Exception ex3) {
+                    // Cannot find class definition.
+                    // Unfortunately exception chaining does not work here
+                    // since we really want to know what ex2 and ex3
+                    // both were.
+                    throw new XmlException("Could not find '"
+                            + classAsFile + "' or '"
+                            + altClassAsFile + "' using base '"
+                            + _base + "': " ,
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber(), ex2);
+                }
+            } else {
+                // No alternative. Rethrow exception.
+                throw ex2;
+            }
+        }
+        if (candidateReference instanceof ComponentEntity) {
+            reference = (ComponentEntity)candidateReference;
+        } else {
+            throw new XmlException(
+                    "File "
+                    + classAsFile
+                    + " does not define a ComponentEntity.",
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        // Check that the classname matches the name of the
+        // reference.
+        String referenceName = reference.getName();
+        if (!className.equals(referenceName)
+                && !className.endsWith("." + referenceName)) {
+            throw new XmlException(
+                    "File "
+                    + classAsFile
+                    + " does not define a class named "
+                    + className,
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        // Set the classname and source of the import.
+        // NOTE: We have gone back and forth on whether this
+        // is right, because previously, the className field
+        // was overloaded to contain the class name in some
+        // circumstances, and the base class name in others.
+        // We now have a field for the base class, so this can
+        // be done again.  Moreover, it is necessary, or
+        // further instances of this class will not be cloned
+        // from this same reference (which breaks look inside).
+        reference.getMoMLInfo().className = className;
+
+        // NOTE: This might be a relative file reference, which
+        // won't be of much use if a MoML file is moved.
+        reference.getMoMLInfo().source = source;
+
+        // Record the import to avoid repeated reading
+        if (_imports == null) {
+            _imports = new LinkedList();
+        }
+        _imports.add(0, reference);
+        
+        // Load an associated icon, if there is one
+        String iconFile = className.replace('.', '/') + "Icon.xml";
+        _loadFileInContext(iconFile, reference);
+        
+        return reference;
+    }
+    
     // If the first argument is not an instance of the second,
     // throw an exception with the given message.
     private void _checkClass(Object object, Class correctClass, String msg)
@@ -2839,6 +2953,7 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _current;
                 arguments[1] = entityName;
                 NamedObj newEntity = _createInstance(newClass, arguments);
+                _loadIconForClass(className, newEntity);
                 return newEntity;
             } else {
                 // Top-level entity.  Instantiate in the workspace.
@@ -2846,6 +2961,7 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _workspace;
                 NamedObj result = _createInstance(newClass, arguments);
                 result.setName(entityName);
+                _loadIconForClass(className, result);
                 return result;
             }
         } else {
@@ -2902,113 +3018,7 @@ public class MoMLParser extends HandlerBase {
             return newEntity;
         }
     }
-
-    // Attempt to find a MoML class.
-    // If there is no source defined, then use the classpath.
-    private ComponentEntity _attemptToFindMoMLClass(
-            String className, String source) throws Exception {
-        String classAsFile = null;
-        String altClassAsFile = null;
-        ComponentEntity reference = null;
-        if (source == null) {
-            // No source defined.  Use the classpath.
-
-            // First, replace all periods in the class name
-            // with slashes, and then append a ".xml".
-            // NOTE: This should perhaps be handled by the
-            // class loader, but it seems rather complicated to
-            // do that.
-            // Search for the .xml file before searching for the .moml
-            // file.  .moml files are obsolete, and we should probably
-            // not bother searching for them at all.
-            classAsFile = className.replace('.', '/') + ".xml";
-            // RIM uses .moml files, so leave them in.
-            altClassAsFile = className.replace('.', '/') + ".moml";
-        } else {
-            // Source is given.
-            classAsFile = source;
-        }
-        // Read external model definition in a new parser,
-        // rather than in the current context.
-        MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
-
-        NamedObj candidateReference = null;
-        try {
-            candidateReference =
-                _parse(newParser, _base, classAsFile);
-        } catch (Exception ex2) {
-            // Try the alternate file, if it's not null.
-            if (altClassAsFile != null) {
-                try {
-                    candidateReference =
-                        _parse(newParser, _base, altClassAsFile);
-                    classAsFile = altClassAsFile;
-                } catch (Exception ex3) {
-                    // Cannot find class definition.
-                    // Unfortunately exception chaining does not work here
-                    // since we really want to know what ex2 and ex3
-                    // both were.
-                    throw new XmlException("Could not find '"
-                            + classAsFile + "' or '"
-                            + altClassAsFile + "' using base '"
-                            + _base + "': " ,
-                            _currentExternalEntity(),
-                            _parser.getLineNumber(),
-                            _parser.getColumnNumber(), ex2);
-                }
-            } else {
-                // No alternative. Rethrow exception.
-                throw ex2;
-            }
-        }
-        if (candidateReference instanceof ComponentEntity) {
-            reference = (ComponentEntity)candidateReference;
-        } else {
-            throw new XmlException(
-                    "File "
-                    + classAsFile
-                    + " does not define a ComponentEntity.",
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
-        }
-        // Check that the classname matches the name of the
-        // reference.
-        String referenceName = reference.getName();
-        if (!className.equals(referenceName)
-                && !className.endsWith("." + referenceName)) {
-            throw new XmlException(
-                    "File "
-                    + classAsFile
-                    + " does not define a class named "
-                    + className,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
-        }
-        // Set the classname and source of the import.
-        // NOTE: We have gone back and forth on whether this
-        // is right, because previously, the className field
-        // was overloaded to contain the class name in some
-        // circumstances, and the base class name in others.
-        // We now have a field for the base class, so this can
-        // be done again.  Moreover, it is necessary, or
-        // further instances of this class will not be cloned
-        // from this same reference (which breaks look inside).
-        reference.getMoMLInfo().className = className;
-
-        // NOTE: This might be a relative file reference, which
-        // won't be of much use if a MoML file is moved.
-        reference.getMoMLInfo().source = source;
-
-        // Record the import to avoid repeated reading
-        if (_imports == null) {
-            _imports = new LinkedList();
-        }
-        _imports.add(0, reference);
-        return reference;
-    }
-
+    
     // Create an instance of the specified class name by finding a
     // constructor that matches the specified arguments.  The specified
     // class must be NamedObj or derived, or a ClassCastException will
@@ -3384,6 +3394,61 @@ public class MoMLParser extends HandlerBase {
         return false;
     }
     
+    /** If the file with the specified name exists, parse it in
+     *  the context of the specified instance. If it does not
+     *  exist, do nothing.
+     *  @param fileName The file name.
+     *  @param context The context into which to load the file.
+     *  @return True if a file was found.
+     *  @throws Exception If the file exists but cannot be read
+     *   for some reason.
+     */
+    private boolean _loadFileInContext(String fileName, NamedObj context)
+            throws Exception {
+        URL xmlFile = _classLoader.getResource(fileName);
+        if (xmlFile == null) {
+            return false;
+        }
+        InputStream input = xmlFile.openStream();
+        // Read the external file in the current context, but with
+        // a new parser.  I'm not sure why the new parser is needed,
+        // but the "input" element handler does the same thing.
+        // FIXME: Should we keep the parser to re-use?
+        MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
+        newParser.setContext(context);
+        newParser._propagating = _propagating;
+        NamedObj result = newParser.parse(_base, input);
+        
+        // Have to mark the contents class elements, so that
+        // the icon is not exported with the MoML export.
+        // Unfortunately, we can't be sure what contents
+        // were added to the context, so we just mark the
+        // whole context.
+        _markContentsClassElements(context);
+        
+        return true;
+    }
+
+    /** Look for a MoML file associated with the specified class
+     *  name, and if it exists, parse it in the context of the
+     *  specified instance. The file name is constructed from
+     *  the class name by replacing periods with file separators
+     *  ("/") and appending "Icon.xml".  So, for example, for
+     *  the class name "ptolemy.actor.lib.Ramp", if there is a
+     *  file "ptolemy/actor/lib/RampIcon.xml" in the classpath
+     *  then that file be read.
+     *  @param className The class name.
+     *  @param context The context into which to load the file.
+     *  @return True if a file was found.
+     *  @throws Exception If the file exists but cannot be read
+     *   for some reason.
+     */
+    private boolean _loadIconForClass(String className, NamedObj context)
+            throws Exception {
+        String fileName = className.replace('.', '/') + "Icon.xml";
+        return _loadFileInContext(fileName, context);
+    }
+
     /** Mark the contents as being class elements.
      *  This makes them not export MoML, and prohibits name and
      *  container changes. Normally, the argument is an Entity,
