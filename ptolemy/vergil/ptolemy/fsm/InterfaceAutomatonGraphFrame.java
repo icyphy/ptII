@@ -1,4 +1,4 @@
-/* A simple graph view for Ptolemy models
+/* The graph frame for interface automata.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,35 +24,33 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Red (yuhong@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.ptolemy.fsm;
 
-import java.net.URL;
-
 import diva.graph.GraphPane;
 
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.vergil.ptolemy.GraphFrame;
 
 //////////////////////////////////////////////////////////////////////////
-//// FSMGraphFrame
+//// InterfaceAutomatonGraphFrame
 /**
-This is a graph editor frame for ptolemy FSM models.  Given a composite
-entity and a tableau, it creates an editor and populates the menus
-and toolbar.  This overrides the base class to associate with the
-editor an instance of FSMGraphController.
+This is a graph editor frame for ptolemy InterfaceAutomaton models.
+Given a composite entity and a tableau, it creates an editor and populates
+the menus and toolbar.  This overrides the base class to associate with the
+editor an instance of InterfaceAutomatonGraphController.
 
-@author  Steve Neuendorffer
+@author  Steve Neuendorffer, Yuhong Xiong
 @contributor Edward A. Lee
 @version $Id$
 */
-public class FSMGraphFrame extends GraphFrame {
+public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
 
-    /** Construct a frame associated with the specified FSM model.
+    /** Construct a frame associated with the specified interface automaton
+     *  model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
@@ -60,54 +58,28 @@ public class FSMGraphFrame extends GraphFrame {
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public FSMGraphFrame(CompositeEntity entity, Tableau tableau) {
+    public InterfaceAutomatonGraphFrame(CompositeEntity entity,
+                                        Tableau tableau) {
 	super(entity, tableau);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the menus that are used by this frame.
-     *  It is essential that _createGraphPane() be called before this.
-     */
-    protected void _addMenus() {
-	super._addMenus();
-
-        // Add any commands to graph menu and toolbar that the controller
-        // wants in the graph menu and toolbar.
-        _graphMenu.addSeparator();
-        _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
-    }
-
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-	_controller = new FSMGraphController();
+	_controller = new InterfaceAutomatonGraphController(this, _directory);
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
 	return new GraphPane(_controller, graphModel);
     }
 
-    /** Display more detailed information than given by _about().
-     */
-    protected void _help() {
-        try {
-            URL doc = getClass().getClassLoader().getResource(
-                    "ptolemy/configs/doc/vergilFsmEditorHelp.htm");
-            getConfiguration().openModel(null, doc, doc.toExternalForm());
-        } catch (Exception ex) {
-            _about();
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The controller is protected so that the subclass
-    // (InterfaceAutomatonGraphFrame) can set it to a more specific
-    // controller.
-    protected FSMGraphController _controller;
+    // private InterfaceAutomatonGraphController _controller;
 }
