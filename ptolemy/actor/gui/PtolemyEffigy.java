@@ -393,20 +393,20 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			if (throwable instanceof StackOverflowError) {
 			    Throwable newThrowable =
 				new StackOverflowError("StackOverflowError: "
-				    + "Which often indicates that a class " 
-                                    + "could not be found, but there was "
-                                    + "possibly a moml file with that same "
-                                    + "name in the directory that referred "
- 			            + "to the class, so we got into a loop."
-				    + "For example: We had "
-				    + "actor/lib/joystick/Joystick.java and "
-				    + "actor/lib/joystick/joystick.xml, but "
-			            + "the .class file would not load because "
-				    + "of a classpath problem, so we kept "
-				    + "loading joystick.xml which referred "
-				    + "to Joystick and because of Windows "
-				    + "filename case insensitivity, we found "
-				    + "joystick.xml, which put us in a loop.");		       
+                                        + "Which often indicates that a class " 
+                                        + "could not be found, but there was "
+                                        + "possibly a moml file with that same "
+                                        + "name in the directory that referred "
+                                        + "to the class, so we got into a loop."
+                                        + "For example: We had "
+                                        + "actor/lib/joystick/Joystick.java and "
+                                        + "actor/lib/joystick/joystick.xml, but "
+                                        + "the .class file would not load because "
+                                        + "of a classpath problem, so we kept "
+                                        + "loading joystick.xml which referred "
+                                        + "to Joystick and because of Windows "
+                                        + "filename case insensitivity, we found "
+                                        + "joystick.xml, which put us in a loop.");		       
 			    newThrowable.initCause(throwable);
 			    throwable = newThrowable;
 			}
