@@ -247,7 +247,7 @@ public class JAIEdgeDetection extends Transformer {
                 count = count + 1;
             }
         }
-        return new KernelJAI(width,height,floatArray);
+        return new KernelJAI(width, height, floatArray);
     }
 
     /** A convenience method to help in assingning masks.  */
