@@ -35,6 +35,7 @@ import ptolemy.graph.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNot
@@ -49,10 +50,10 @@ will be negated and passed to the <i>output</i> port for broadcasting.
 If no input token is available at all, then no output is produced.
 
 @author John Li
-@version $Id: 
+@version $Id$
 */
 
-public class LogicalNot extends ptolemy.actor.lib.Transformer {
+public class LogicalNot extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
