@@ -84,6 +84,19 @@ public final class Edge {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the weight of the edge.
+     *  @return The edge weight.
+     *  @exception IllegalStateException If this is an unweighted edge.
+     */
+    public Object getWeight() {
+        if (!hasWeight()) {
+            throw new IllegalStateException("Attempt to access the weight "
+                    + "of an unweighted edge '" + this + "'");
+        } else {
+            return _weight;
+        }
+    }
+
     /** Return true if this is a weighted edge.
      *  @return True if this is a weighted edge.
      */
@@ -167,6 +180,7 @@ public final class Edge {
 
     /** Return the weight of the edge.
      *  @return The edge weight.
+     *  @deprecated Use getWeight() instead.
      *  @exception IllegalStateException If this is an unweighted edge.
      */
     public Object weight() {

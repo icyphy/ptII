@@ -62,6 +62,19 @@ public final class Node {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the weight that has been associated with this node.
+     *  @return The associated weight.
+     *  @exception IllegalStateException If this is an unweighted node.
+     */
+    public Object getWeight() {
+        if (!hasWeight()) {
+            throw new IllegalStateException("Attempt to access the weight "
+                    + "of an unweighted node.\n");
+        } else {
+            return _weight;
+        }
+    }
+
     /** Return <code>true</code> if and only if this is a weighted node.
      *  @return True if and only if this is a weighted node.
      */
@@ -98,6 +111,7 @@ public final class Node {
 
     /** Return the weight that has been associated with this node.
      *  @return The associated weight.
+     *  @deprecated Use getWeight() instead.
      *  @exception IllegalStateException If this is an unweighted node.
      */
     public Object weight() {

@@ -177,7 +177,7 @@ public class Graph implements Cloneable {
 
     /** Given two node weights <i>w1</i> and <i>w2</i>, add weighted
      *  edges of the form (<i>x1</i>, <i>x2</i>), where
-     *  <code>(x1.weight() == w1) && (x2.weight() == w2)</code>.
+     *  <code>(x1.getWeight() == w1) && (x2.getWeight() == w2)</code>.
      *
      *  @param weight1 The first node weight.
      *  @param weight2 The second node weight.
@@ -194,7 +194,7 @@ public class Graph implements Cloneable {
 
     /** Given two node weights <i>w1</i> and <i>w2</i>, add all unweighted
      *  edges of the form (<i>x1</i>, <i>x2</i>), where
-     *  <code>(x1.weight() == w1) && (x2.weight() == w2)</code>.
+     *  <code>(x1.getWeight() == w1) && (x2.getWeight() == w2)</code>.
      *
      *  @param weight1 The first node weight.
      *  @param weight2 The second node weight.
@@ -386,8 +386,8 @@ public class Graph implements Cloneable {
             Edge edge = (Edge)edges.next();
             Node sourceContainer = (Node)(componentMap.get(edge.source()));
             Node sinkContainer = (Node)(componentMap.get(edge.sink()));
-            ArrayList sourceSet = (ArrayList)(sourceContainer.weight());
-            ArrayList sinkSet = (ArrayList)(sinkContainer.weight());
+            ArrayList sourceSet = (ArrayList)(sourceContainer.getWeight());
+            ArrayList sinkSet = (ArrayList)(sinkContainer.getWeight());
             if (sourceSet != sinkSet) {
                 // Construct the union of the two components in the source set.
                 components.remove(sinkContainer);
@@ -405,7 +405,7 @@ public class Graph implements Cloneable {
         ArrayList result = new ArrayList(components.size());
         Iterator connectedComponents = components.iterator();
         while (connectedComponents.hasNext()) {
-            result.add(((Node)connectedComponents.next()).weight());
+            result.add(((Node)connectedComponents.next()).getWeight());
         }
         return result;
     }
@@ -576,7 +576,7 @@ public class Graph implements Cloneable {
      *  @see #edgeLabel(Edge).
      */
     public Object edgeWeight(int label) {
-        return ((Edge)(_edges.get(label))).weight();
+        return ((Edge)(_edges.get(label))).getWeight();
     }
 
     /** Return all the edges in this graph in the form of a collection.
@@ -772,7 +772,7 @@ public class Graph implements Cloneable {
                 try {
                     // Clone weights of any type of object.
                     if (cloneWeights) {
-                        Object oldWeight = node.weight();
+                        Object oldWeight = node.getWeight();
                         if (oldWeight instanceof Cloneable) {
                             /* Since clone() of Object is protected, it can't
                                be called publicly. The class Method is used
@@ -784,7 +784,7 @@ public class Graph implements Cloneable {
                         } else
                             throw new RuntimeException();
                     } else
-                        mirrorWeight = node.weight();
+                        mirrorWeight = node.getWeight();
                 } catch (Exception e) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
@@ -811,7 +811,7 @@ public class Graph implements Cloneable {
                 try {
                     // Clone weights of any type of object.
                     if (cloneWeights) {
-                        Object oldWeight = edge.weight();
+                        Object oldWeight = edge.getWeight();
                         if (oldWeight instanceof Cloneable) {
                             /* Since clone() of Object is protected, it can't
                                be called publicly. The class Method is used
@@ -823,7 +823,7 @@ public class Graph implements Cloneable {
                         } else
                             throw new RuntimeException();
                     } else
-                        mirrorWeight = edge.weight();
+                        mirrorWeight = edge.getWeight();
                 } catch (Exception e) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
@@ -968,7 +968,7 @@ public class Graph implements Cloneable {
      *  @see #nodeLabel(Node).
      */
     public Object nodeWeight(int label) {
-        return ((Node)(_nodes.get(label))).weight();
+        return ((Node)(_nodes.get(label))).getWeight();
     }
 
     /** Return all the nodes in this graph in the form of a collection.
@@ -1030,10 +1030,10 @@ public class Graph implements Cloneable {
         _disconnect(edge, edge.source());
         _disconnect(edge, edge.sink());
         if (edge.hasWeight()) {
-            ArrayList sameWeightList = _sameWeightEdges(edge.weight());
+            ArrayList sameWeightList = _sameWeightEdges(edge.getWeight());
             sameWeightList.remove(edge);
             if (sameWeightList.size() == 0) {
-                _edgeWeightMap.remove(edge.weight());
+                _edgeWeightMap.remove(edge.getWeight());
             }
         }
         _registerChange();
@@ -1061,10 +1061,10 @@ public class Graph implements Cloneable {
         }
         _incidentEdgeMap.remove(node);
         if (node.hasWeight()) {
-            ArrayList sameWeightList = _sameWeightNodes(node.weight());
+            ArrayList sameWeightList = _sameWeightNodes(node.getWeight());
             sameWeightList.remove(node);
             if (sameWeightList.size() == 0) {
-                _nodeWeightMap.remove(node.weight());
+                _nodeWeightMap.remove(node.getWeight());
             }
         }
         _registerChange();
@@ -1246,9 +1246,9 @@ public class Graph implements Cloneable {
                     throw new NullPointerException("Null graph element "
                             + "specified.\n");
                 } else if (element instanceof Node) {
-                    result[i] = ((Node)element).weight();
+                    result[i] = ((Node)element).getWeight();
                 } else if (element instanceof Edge) {
-                    result[i] = ((Edge)element).weight();
+                    result[i] = ((Edge)element).getWeight();
                 } else {
                     throw new IllegalArgumentException("Illegal graph element "
                             + "(neither a Node nor an Edge) specified.\n"
@@ -1388,7 +1388,7 @@ public class Graph implements Cloneable {
      *  @see #_registerNode(Node).
      */
     protected void _registerEdge(Edge edge) {
-        Object weight = edge.hasWeight() ? edge.weight() : null;
+        Object weight = edge.hasWeight() ? edge.getWeight() : null;
         if (!validEdgeWeight(weight)) {
             throw new RuntimeException("Invalid edge weight. The offending "
                     + "weight: " + ((weight == null) ? "null\n" : 
@@ -1424,7 +1424,7 @@ public class Graph implements Cloneable {
      *  @see #_registerEdge(Edge).
      */
     protected void _registerNode(Node node) {
-        Object weight = node.hasWeight() ? node.weight() : null;
+        Object weight = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(weight)) {
             throw new RuntimeException("Invalid node weight. The offending "
                     + "weight: " + ((weight == null) ? "null\n" : 
@@ -1450,7 +1450,7 @@ public class Graph implements Cloneable {
 
     // Given two node weights w1 and w2, add all edges of the form
     // edges of the form (x1, x2), where
-    //     (x1.weight() == w1) && (x2.weight() == w2).
+    //     (x1.getWeight() == w1) && (x2.getWeight() == w2).
     // The third parameter specifies whether the edges are to be
     // weighted, and the fourth parameter is the weight that is
     // to be applied if the edges are weighted.
