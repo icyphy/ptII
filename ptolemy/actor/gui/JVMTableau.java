@@ -103,7 +103,7 @@ public class JVMTableau extends Tableau {
 
 	    
 	    // Display total memory and free memory.
-            final J memoryArea = new JTextArea("", 1, 100);
+            final JTextArea memoryArea = new JTextArea("", 1, 100);
 	    updateMemoryStatistics(memoryArea);
             memoryArea.setEditable(false);
 	    component.add(memoryArea);
