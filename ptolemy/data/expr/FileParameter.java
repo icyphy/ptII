@@ -422,7 +422,11 @@ public class FileParameter extends StringParameter {
         // Create a dummy variable in scope that will be sustituted
         // for references to $CLASSPATH.
         if (container.getAttribute("CLASSPATH") == null) {
-            StringParameter classpath = new StringParameter(container, "CLASSPATH");
+            // Use a singleton here because the container may have more
+            // than one instance of FileParameter, and if this isn't a
+            // singleton, then clone() will fail with a NameDuplicationException.
+            Parameter classpath = new SingletonParameter(container, "CLASSPATH");
+            classpath.setStringMode(true);
             classpath.setVisibility(Settable.NONE);
             classpath.setPersistent(false);
             classpath.setExpression(_CLASSPATH_VALUE);
