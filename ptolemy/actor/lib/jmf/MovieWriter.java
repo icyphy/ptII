@@ -308,7 +308,7 @@ public class MovieWriter extends Sink
 
         processor.configure();
 
-        if (!_waitForState(processor, processor.Configured)) {
+        if (!_waitForState(processor, Processor.Configured)) {
             throw new IllegalActionException("Failed to configure processor.");
         }
 

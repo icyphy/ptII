@@ -86,7 +86,7 @@ public class GUIUtilities {
      */
     public static void addHotKey(JComponent pane, Action action,
             KeyStroke key) {
-        String name = (String)action.getValue(action.NAME);
+        String name = (String)action.getValue(Action.NAME);
         if (key == null) {
             key = (KeyStroke) action.getValue(ACCELERATOR_KEY);
         } else {
@@ -94,7 +94,7 @@ public class GUIUtilities {
         }
         if (key != null)
             pane.registerKeyboardAction(action, name,
-                    key, pane.WHEN_IN_FOCUSED_WINDOW);
+                    key, JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     /** Add an action to a menu and return the menu item created.  If
@@ -107,7 +107,7 @@ public class GUIUtilities {
      * The item will be enabled by default.
      */
     public static JMenuItem addMenuItem (JMenu menu, Action action) {
-        String label = (String)action.getValue(action.NAME);
+        String label = (String)action.getValue(Action.NAME);
         int mnemonic = 0;
         Integer i = (Integer)action.getValue(MNEMONIC_KEY);
         if (i != null)
@@ -127,7 +127,7 @@ public class GUIUtilities {
      */
     public static JMenuItem addMenuItem (JMenu menu, Action action,
             int mnemonic, String tooltip) {
-        String label = (String)action.getValue(action.NAME);
+        String label = (String)action.getValue(Action.NAME);
         return addMenuItem(menu, label.toString(), action,
                 mnemonic, tooltip, true);
     }
@@ -173,7 +173,7 @@ public class GUIUtilities {
         Icon icon = (Icon)action.getValue(LARGE_ICON);
         String label = null;
         if (icon == null) {
-            label = (String)action.getValue(action.NAME);
+            label = (String)action.getValue(Action.NAME);
         }
         return addToolBarButton(toolbar, action, null, icon, label, true);
     }

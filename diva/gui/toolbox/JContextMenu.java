@@ -62,7 +62,7 @@ public class JContextMenu extends JPopupMenu {
      * action's name and is enabled by default.
      */
     public JMenuItem add(Action action, String tooltip) {
-        String label = (String)action.getValue(action.NAME);
+        String label = (String)action.getValue(Action.NAME);
         return add(action, tooltip, label, true);
     }
 
