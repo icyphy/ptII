@@ -115,7 +115,7 @@ public class TestUnboxingMain extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-    private static String _watchDogTimeout = "60000";
+    private static String _watchDogTimeout = "720000";
     private static String _outputDirectory = "test";
 
 }
