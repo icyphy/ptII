@@ -46,6 +46,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -154,12 +155,10 @@ public class CTMultiSolverDirector extends CTDirector {
     /** React to a change in an attribute. If the changed attribute matches
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
-     *  In particular, if either the <i>ODESolver</i> or the
-     *  <i>breakpointODESolver</i> parameter is changed, then
-     *  the corresponding solver will be instantiated. If the ODEsolver
-     *  instantiated is an instance of BreakpointODESolver, then
-     *  an IllegalActionException will be thrown, and the original
-     *  ODESolver will be unchanged.
+     *  In particular, if either the <i>ODESolver</i> is changed, then
+     *  the corresponding solver will be instantiated. If the new ODEsolver
+     *  can not be instantiated, an IllegalActionException will be thrown, and 
+     *  the original ODESolver will be unchanged.
      *  @param attribute The changed attribute.
      *  @exception IllegalActionException If the new solver can not be
      *  instantiated, or the change to other attributes is invalid.
@@ -170,22 +169,22 @@ public class CTMultiSolverDirector extends CTDirector {
             if (_debugging) {
                 _debug(getFullName() + " updating  ODE solver...");
             }
-            _solverClassName =
+            String newSolverClassName = 
                 ((StringToken)ODESolver.getToken()).stringValue();
+            if (newSolverClassName.length() > 33) {
+                // The old solver name is a parameter starts with 
+                // "ptolemy.domains.ct.kernel.solver."
+                _solverClassName = 
+                    ((StringToken)ODESolver.getToken()).stringValue();
+            } else {
+                _solverClassName = _solverClasspath + newSolverClassName;
+            }
             ODESolver defaultSolver = _instantiateODESolver(_solverClassName);
             if (defaultSolver instanceof BreakpointODESolver) {
                 throw new IllegalActionException(this, _solverClassName +
                         " can only be used as a breakpoint ODE solver.");
             }
             _normalSolver = defaultSolver;
-        } else if (attribute == breakpointODESolver) {
-            if (_debugging) {
-                _debug(getName() +" updating breakpoint solver...");
-            }
-            _breakpointSolverClassName =
-                ((StringToken)breakpointODESolver.getToken()).stringValue();
-            _breakpointSolver =
-                _instantiateODESolver(_breakpointSolverClassName);
         } else {
             super.attributeChanged(attribute);
         }
@@ -302,9 +301,9 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Fire event generators. This method is only called in a continuous
      *  phase of execution. Note that event generators are only fired but not
-     *  postfired in this method.
-     *  @throws IllegalActionException If the schedule does not exist,
-     *  or any actor can not be prefired, or any actor throws it during firing.
+     *  postfired in this method. 
+     *  @exception IllegalActionException If the schedule does not exist, 
+     *  or any actor can not be prefired, or any actor throws it during firing. 
      */
     public void fireEventGenerators() throws IllegalActionException {
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
@@ -869,14 +868,21 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             _solverClassName =
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
-            ODESolver = new Parameter(
-                    this, "ODESolver", new StringToken(_solverClassName));
+            ODESolver = new Parameter(this, "ODESolver", 
+                    new StringToken("ExplicitRK23Solver"));
             ODESolver.setTypeEquals(BaseType.STRING);
+            ODESolver.addChoice(
+                    new StringToken("ExplicitRK23Solver").toString());
+            ODESolver.addChoice(
+                    new StringToken("BackwardEulerSolver").toString());
+            ODESolver.addChoice(
+                    new StringToken("ForwardEulerSolver").toString());
             _breakpointSolverClassName =
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver";
-            breakpointODESolver = new Parameter(this, "breakpointODESolver",
-                    new StringToken(_breakpointSolverClassName));
+            breakpointODESolver = new Parameter(this, "breakpointODESolver", 
+                    new StringToken("DerivativeResolver"));
             breakpointODESolver.setTypeEquals(BaseType.STRING);
+            breakpointODESolver.setVisibility(Settable.NOT_EDITABLE);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
@@ -1474,4 +1480,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
     // The classname of the normal ODE solver.
     private String _solverClassName;
+    
+    // The classpath for solvers.
+    private static String _solverClasspath 
+        = "ptolemy.domains.ct.kernel.solver.";
 }
