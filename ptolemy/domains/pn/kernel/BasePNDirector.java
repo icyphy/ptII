@@ -54,7 +54,7 @@ infrastructure to support mutations.
 <p>
 The thread that calls the various execution methods (initialize, prefire, fire
 and postfire) on the director is referred to as the <i>directing thread</i>.
-This directing thread might be the main thread reponsible for the execution
+This directing thread might be the main thread responsible for the execution
 of the entire simulation or might be the thread created by the executive
 director of the containing composite actor.
 <p>
