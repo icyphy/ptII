@@ -361,7 +361,7 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp *.class $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTCLASSALLJARS) ; do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); "$(JAR)" -xf ../$$jar); \
@@ -382,7 +382,7 @@ $(PTAUXALLJAR): $(PTAUXALLJARS)
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp *.class $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $^; do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
