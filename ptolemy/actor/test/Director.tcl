@@ -90,9 +90,10 @@ test Director-5.1 {Test action methods} {
     set a1 [java::new ptolemy.actor.test.TestActor $e0 A1]
     set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
+    set r1 [$d4 getNextIterationTime]
     $manager run
-    $a1 getRecord
-} {.E0.A1.initialize
+    list $r1 [$a1 getRecord] [$d4 getNextIterationTime]
+} {0.0 {.E0.A1.initialize
 .E0.A2.initialize
 .E0.A1.prefire
 .E0.A1.fire
@@ -102,7 +103,7 @@ test Director-5.1 {Test action methods} {
 .E0.A2.postfire
 .E0.A1.wrapup
 .E0.A2.wrapup
-}
+} 0.0}
 
 ######################################################################
 ####
