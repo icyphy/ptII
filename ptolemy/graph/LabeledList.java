@@ -423,21 +423,23 @@ public class LabeledList implements List {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                     ////
 
+    // This inner class is adapted from the SubList class in
+    // java.util.AbstractList.java (jdk1.3.1).
     private class SubList extends LabeledList {
-        private LabeledList l;
+        private LabeledList list;
         private int offset;
         private int size;
 
-        SubList(LabeledList list, int fromIndex, int toIndex) {
+        SubList(LabeledList parent, int fromIndex, int toIndex) {
             if (fromIndex < 0) {
                 throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-            } else if (toIndex > list.size()) {
+            } else if (toIndex > parent.size()) {
                 throw new IndexOutOfBoundsException("toIndex = " + toIndex);
             } else if (fromIndex > toIndex) {
                 throw new IllegalArgumentException("fromIndex(" + fromIndex +
                         ") > toIndex(" + toIndex + ")");
             } else {
-                l = list;
+                list = parent;
                 offset = fromIndex;
                 size = toIndex - fromIndex;
             }
@@ -450,7 +452,7 @@ public class LabeledList implements List {
 
         public Object get(int index) {
             _rangeCheck(index);
-            return l.get(index+offset);
+            return list.get(index+offset);
         }
 
         public int size() {
@@ -460,13 +462,13 @@ public class LabeledList implements List {
         public void add(int index, Object element) {
             if (index < 0 || index > size)
                 throw new IndexOutOfBoundsException();
-            l._add(index+offset, element);
+            list._add(index+offset, element);
             size++;
         }
 
         public Object remove(int index) {
             _rangeCheck(index);
-            Object result = l.remove(index+offset);
+            Object result = list.remove(index+offset);
             size--;
             return result;
         }
@@ -481,7 +483,7 @@ public class LabeledList implements List {
                     "Index: "+index+", Size: "+size);
 
             return new ListIterator() {
-                private ListIterator i = l.listIterator(index+offset);
+                private ListIterator elements = list.listIterator(index+offset);
 
                 public boolean hasNext() {
                     return nextIndex() < size;
@@ -489,7 +491,7 @@ public class LabeledList implements List {
 
                 public Object next() {
                     if (hasNext()) {
-                        return i.next();
+                        return elements.next();
                     }
                     else {
                         throw new NoSuchElementException();
@@ -502,7 +504,7 @@ public class LabeledList implements List {
 
                 public Object previous() {
                         if (hasPrevious()) {
-                            return i.previous();
+                            return elements.previous();
                         }
                         else {
                             throw new NoSuchElementException();
@@ -510,24 +512,24 @@ public class LabeledList implements List {
                 }
 
                 public int nextIndex() {
-                    return i.nextIndex() - offset;
+                    return elements.nextIndex() - offset;
                 }
 
                 public int previousIndex() {
-                    return i.previousIndex() - offset;
+                    return elements.previousIndex() - offset;
                 }
 
                 public void remove() {
-                    i.remove();
+                    elements.remove();
                     size--;
                 }
 
                 public void set(Object o) {
-                    i.set(o);
+                    elements.set(o);
                 }
 
                 public void add(Object o) {
-                    i.add(o);
+                    elements.add(o);
                     size++;
                 }
             };
