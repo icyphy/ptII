@@ -38,7 +38,7 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// JNLPApplication
 /** A wrapper class that calls eventually calls
-ptolemy.actor.gui.PtExecuteApplicatio for use with Java Network
+ptolemy.actor.gui.PtExecuteApplication for use with Java Network
 Launching Protocol (JNLP) aka Web Start.
 
 <p>Note that under Web Start, it is easiest if each application needs
@@ -58,6 +58,12 @@ we create these wrapper classes that call the appropriate main class.
 @since Ptolemy II 3.1
 */
 public class JNLPApplication {
+
+    /** Execute one or more models.
+     *  @param args The arguments to pass to 
+     * {@link ptolemy.actor.gui.PtExecuteApplication}.
+     *  Typically the argument names a MoML file. 
+     */
     public static void main(final String [] args) {
         // See the class comment of MenuApplication
         // about why we set the security manager to null.
