@@ -28,7 +28,7 @@
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.lib.gui;
 
 // Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
 import diva.gui.toolbox.FocusMouseListener;
