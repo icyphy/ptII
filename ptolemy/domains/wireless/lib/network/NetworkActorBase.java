@@ -81,7 +81,7 @@ public class NetworkActorBase extends TypedAtomicActor {
         _timersSet = new HashSet();
     }
 
-    // messages from higher layers
+    // messages between the layers
     protected static final String[] PCRequestMsgFields 
             = {"kind", "fromMACAddr", "toMACAddr", "range", "angle", 
                "num_nb", "xpos","ypos", "Length"};
@@ -100,7 +100,27 @@ public class NetworkActorBase extends TypedAtomicActor {
             = {"kind", "fromMACAddr", "toMACAddr", "hopcount", 
                "arrivalTime","payload","Length"};
 
-
+    // message types
+    protected static final int  RxStart        = 30;
+    protected static final int  RxEnd          = 31;
+    protected static final int  RxData         = 32;
+    protected static final int  TxStart        = 36;
+    protected static final int  TxStartConfirm = 37;
+    protected static final int  TxData         = 38;
+    protected static final int  TxEnd          = 11;
+    protected static final int  Idle           = 8;
+    protected static final int  Busy           = 9;
+    protected static final int  NoError        = 0;
+    protected static final int  Error          = 1;
+    protected static final int  UNKNOWN        = -1;
+    protected static final int  Timeout        = 39;
+    protected static final int  Gilbert        = 40;
+    protected static final int  Turnaround     = 41;
+    protected static final int  Rxdelay        = 42;
+    protected static final int  appl_interest_msg = 100;
+    protected static final int  appl_data_msg  = 101;
+    protected static final int  netw_interest_msg = 200;
+    protected static final int  netw_data_msg  = 201;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -416,17 +416,15 @@ public class MACActorBase extends NetworkActorBase {
 
 
     // message formats
-    protected static final String[] RxStartMsgFields 
-            ={"kind", "rxRate"};
     protected static final String[] TxStartMsgFields 
             = {"kind", "length", "rate"};
+    protected static final String[] TxDataMsgFields 
+            = {"kind", "pdu"};
     protected static final String[] RtsTimeoutMsgFields ={"kind"};
     protected static final String[] RxMpduMsgFields 
             ={"kind", "pdu","endRx","rxRate"};
     protected static final String[] UseIfsMsgFields 
             ={"kind", "tRxEnd"};
-    protected static final String[] RxEndMsgFields 
-            ={"kind", "status"};
     protected static final String[] RxIndicateMessageFields =
             {"kind", "pdu", "endRx", "rxRate"};
     protected static final String[] NeedAckMessageFields =
@@ -478,8 +476,6 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  BkDone         = 5;
     protected static final int  Backoff        = 6;
     protected static final int  Slot           = 7;
-    protected static final int  Idle           = 8;
-    protected static final int  Busy           = 9;
     protected static final int  Cancel         = 10;
     protected static final int  TxRequest      = 21;
     protected static final int  UseEifs        = 22;
@@ -490,16 +486,6 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  nosrc          = 27;
     protected static final int  misc           = 28;
     protected static final int  RxMpdu         = 29;
-    protected static final int  RxStart        = 30;
-    protected static final int  RxEnd          = 31;
-    protected static final int  RxData         = 32;
-    protected static final int  TxStart        = 36;
-    protected static final int  TxStartConfirm = 37;
-    protected static final int  TxData         = 38;
-    protected static final int  Timeout        = 39;
-    protected static final int  Gilbert        = 40;
-    protected static final int  Turnaround     = 41;
-    protected static final int  Rxdelay        = 42;
     protected static final int  startRsp       = 43;
     protected static final int  PCresponse     = 44;
     protected static final int  PCrequest      = 45;
@@ -508,7 +494,6 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  PCremove2      = 48;
     protected static final int  PCmax          = 48;
     protected static final int  PCmin          = 44;
-    protected static final int  TxEnd          = 11;
     protected static final int  Ack            = 13;
     protected static final int  Cts            = 12;
     protected static final int  Data           = 0;
@@ -519,13 +504,7 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  GotCts         = 2;
     protected static final int  ControlCh      = 0;
     protected static final int  DataCh         = 1;
-    protected static final int  NoError        = 0;
-    protected static final int  Error          = 1;
-    protected static final int  UNKNOWN        = -1;
-    protected static final int  appl_interest_msg = 100;
-    protected static final int  appl_data_msg  = 101;
-    protected static final int  netw_interest_msg = 200;
-    protected static final int  netw_data_msg  = 201;
+
     
     // A convenient method for the MAC actors to set an
     // attibute of the MAC composite.

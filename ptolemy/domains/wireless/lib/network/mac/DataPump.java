@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
    TxConfirm.
 
    @author Yang Zhao, Charlie Zhong and Xiaojun Liu
-   @version $Id$
+   @version DataPump.java,v 1.18 2004/04/22 19:46:18 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (ellen_zh)
    @Pt.AcceptedRating Red (pjb2e)
@@ -220,37 +220,8 @@ public class DataPump extends MACActorBase {
 
             case Wait_TxStart:
                 if (_messageType == TxStartConfirm) {
-                    int pduType = ((IntToken) _pdu.get("Type")).intValue();
-                    int pduSubtype = ((IntToken) _pdu.get("Subtype")).intValue();
-                    String pduName = " ";
-                    switch(pduType) {
-                    case ControlType:
-                        switch(pduSubtype)
-                            {
-                            case Ack:
-                                pduName = "ACK";
-                                break;
-
-                            case Cts:
-                                pduName ="CTS";
-                                break;
-
-                            case Rts:
-                                pduName = "RTS";
-                                break;
-                            }
-                        break;
-
-                    case DataType:
-                        if (pduSubtype==Data)
-                            pduName = "Data";
-                        break;
-                    }
-                    String[] labels = {"kind", "name"};
-                    Token[] values = {new IntToken(TxData), new StringToken( pduName)};
-
-                    RecordToken mergeToPdu = new RecordToken(labels, values);
-                    RecordToken newPdu = RecordToken.merge(mergeToPdu, _pdu);
+                    Token[] values = {new IntToken(TxData), _pdu};
+                    RecordToken newPdu = new RecordToken(TxDataMsgFields, values);
                     toPHYLayer.send(0, newPdu);
                     _state = Wait_TxEnd;
 

@@ -193,7 +193,8 @@ public class ValidateMpdu extends MACActorBase {
 
                             case RxData:
                                 // store the packet and process it after RxEnd is received
-                                _pdu=msg;
+                                _pdu=(RecordToken)msg.get("pdu");
+                                //_pdu=msg;
                                 break;
                             }
                     }
