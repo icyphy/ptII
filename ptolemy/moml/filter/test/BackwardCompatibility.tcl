@@ -712,6 +712,7 @@ The affected actors are:
 	ptolemy.actor.lib.Expression
 } {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
+	ptolemy.vergil.icon.ImageEditorIcon	 -> ptolemy.vergil.icon.ImageIcon
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
@@ -793,6 +794,7 @@ The affected actors are:
 
 ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
+	ptolemy.vergil.icon.ImageEditorIcon	 -> ptolemy.vergil.icon.ImageIcon
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
