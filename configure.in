@@ -507,7 +507,8 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 #--------------------------------------------------------------------
 
 # These directories are always excluded from Eclipse
-ECLIPSE_EXCLUDING_SRC="ptolemy/codegen/c/actor/lib/oldJavaFiles/|ptolemy/codegen/dsp/lib/"
+# To add to this list, edit .classpath.in
+ECLIPSE_EXCLUDING_SRC=""
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
