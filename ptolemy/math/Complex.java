@@ -635,6 +635,20 @@ public class Complex implements Cloneable, Serializable {
      */
     public static double epsilon = 1.0e-9;
 
+    /** A Complex number representing negative infinity, by which we mean
+     *  that both the real and imaginary parts are equal to
+     *  Double.NEGATIVE_INFINITY.
+     */
+    public static final Complex NEGATIVE_INFINITY = new Complex(
+            Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+
+    /** A Complex number representing positive infinity, by which we mean
+     *  that both the real and imaginary parts are equal to
+     *  Double.POSITIVE_INFINITY.
+     */
+    public static final Complex POSITIVE_INFINITY = new Complex(
+            Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+
     /** A Complex number representing zero. Reference this to save
      *  memory usage and construction overhead.
      */
