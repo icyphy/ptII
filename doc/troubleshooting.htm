@@ -90,6 +90,17 @@ and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
  <p>Note that the JDK1.2 Plugin console is different than
 the Netscape or IE Java console.
 
+ <p><a name="jit">The</a> plugin control panel also has a checkbox
+to turn off the Just In Time (JIT) Compiler.  If you are having problems
+with the Netscape process lingering after you exit the browser, then
+try turning the JIT off and restarting Navigator.
+
+ <p><a name="jar cache">The</a> plugin control panel also has a checkbox
+that turns off the Jar Cache.  If you are debugging applets, you 
+may want to turn off the Jar Cache so that .class files and jar files
+are reloaded when the applet is reloaded.  Note that if you turn
+off the Jar Cache, then memory usage is increased.
+
 <H3><a name="CLASSPATH">CLASSPATH variable</a></H3>
 Java supports an environment variable called CLASSPATH that tells the Java
 virtual machine where to look for code. As a general rule, it is not a
