@@ -1,6 +1,6 @@
 /* A SCState is a state in the *charts formalism.
 
- Copyright (c) 1997-1999 The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,42 +45,9 @@ A SCState is a state in the *charts formalism. It can be refined by a
 subsystem which is an opaque composite actor.
 
 @author Xiaojun Liu
-@version @(#)SCState.java	1.2 11/27/98
+@version $Id$
 */
 public class SCState extends ComponentEntity {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The actor refining this state.
-    Actor _refinement = null;
-
-    // The list of variables corresponding to the status of output
-    // of refinement.
-    VariableList _localStatusVars = null;
-
-    // The list of variables corresponding to the value of output
-    // of refinement.
-    VariableList _localValueVars = null;
-
-    // The list of outgoing preemptive transitions.
-    LinkedList _preTrans = null;
-
-    // The list of outgoing non-preemptive transitions.
-    LinkedList _nonPreTrans = null;
-
-    // The version of the transitions lists.
-    long _transVersion = -1;
-
-    // If true, the subsystem refining this state is initialized each
-    // time entering this state.
-    boolean _initEntry = false;
-
-    // The port connects to all incoming transitions.
-    ComponentPort _incoming = null;
-
-    // The port connects to all outgoing transitions.
-    ComponentPort _outgoing = null;
 
     /** Construct a state in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
@@ -406,6 +373,9 @@ public class SCState extends ComponentEntity {
         _localStatusVars.setVarValue(name, SCController.PRESENT);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     /** The name of the outgoing port.
      */
     public static final String OUTGOING_PORT = "Outgoing";
@@ -421,6 +391,39 @@ public class SCState extends ComponentEntity {
     /** The name of the local value variable list.
      */
     public static final String LOCAL_INPUT_VALUE_VAR_LIST = "LocalValueVars";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The actor refining this state.
+    Actor _refinement = null;
+
+    // The list of variables corresponding to the status of output
+    // of refinement.
+    VariableList _localStatusVars = null;
+
+    // The list of variables corresponding to the value of output
+    // of refinement.
+    VariableList _localValueVars = null;
+
+    // The list of outgoing preemptive transitions.
+    LinkedList _preTrans = null;
+
+    // The list of outgoing non-preemptive transitions.
+    LinkedList _nonPreTrans = null;
+
+    // The version of the transitions lists.
+    long _transVersion = -1;
+
+    // If true, the subsystem refining this state is initialized each
+    // time entering this state.
+    boolean _initEntry = false;
+
+    // The port connects to all incoming transitions.
+    ComponentPort _incoming = null;
+
+    // The port connects to all outgoing transitions.
+    ComponentPort _outgoing = null;
 
 }
 

@@ -1,6 +1,6 @@
 /* A SCDirector governs the execution of a *chart model.
 
- Copyright (c) 1998-1999 The Regents of the University of California.
+ Copyright (c)  The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -281,12 +281,16 @@ System.out.println("Initializing SCDirector " + this.getFullName());
     public boolean prefire() throws IllegalActionException {
         // elaborate
         Actor refine = _controller.currentRefinement();
+
+// REMOVE 
+System.out.println("SCDirector: get controller's current refinement.");
+
         boolean result = true;
         if (refine != null) {
             result = refine.prefire();
 
 /* REMOVE! */
-System.out.println("Result of prefire " + ((CompositeActor)refine).getFullName()
+System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName()
 	+ " is " + result);
         }
 

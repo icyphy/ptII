@@ -1,6 +1,6 @@
 /* An SCController is an FSM controller.
 
- Copyright (c) 1997-1999 The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -239,24 +239,22 @@ public class SCController extends CompositeEntity implements Actor {
         return getDirector();
     }
 
-
     /** Return the Manager responsible for execution of this actor,
      *  if there is one. Otherwise, return null.
      *  @return The manager.
      */
     public Manager getManager() {
-	try {
-	    workspace().getReadAccess();
-	    CompositeActor container = (CompositeActor)getContainer();
-	    if (container != null) {
-		return container.getManager();
-	    }
-	    return null;
-	} finally {
-	    workspace().doneReading();
-	}
+        try {
+            workspace().getReadAccess();
+            CompositeActor container = (CompositeActor)getContainer();
+            if (container != null) {
+                return container.getManager();
+            }
+            return null;
+        } finally {
+            workspace().doneReading();
+        }
     }
-
 
     public void initialize() throws IllegalActionException {
         try {
@@ -264,6 +262,9 @@ public class SCController extends CompositeEntity implements Actor {
         } catch (NameDuplicationException ex) {
             // FIXME!!
             // ignore for now
+
+throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
+
         }
         // Set local variables to their initial value.
         if (_localVariables != null) {
@@ -312,6 +313,11 @@ public class SCController extends CompositeEntity implements Actor {
             // Delegate to the director or just call initialize() on
             // the refinement?
             // Now we are doing initialization in SC system.
+            currentRefinement().createReceivers();
+            currentRefinement().initialize();
+
+System.out.println("Initializing refinement "+((ComponentEntity)currentRefinement()).getFullName());
+
         }
     }
 
@@ -671,7 +677,7 @@ public class SCController extends CompositeEntity implements Actor {
 
 SCState state = dir.currentState();
 System.out.println("SCController " + this.getFullName() + " setting " +
-        "local variable " + var.getName() + " of state " + state.getFullName());
+        "local variable " + var.getName() + ":" + var.getExpression() + " of state " + state.getFullName());
 
                     dir.currentState().setLocalInputVar(var.getName(), var.getToken());
                 }
