@@ -75,17 +75,10 @@ public class Main extends KernelMain {
         Pack pack = PackManager.v().getPack("wjtp");
 
         // Generate the makefile files in outDir
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
-        //        MakefileWriter.v(_toplevel)));
-
         addTransform(pack, "wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel));
 
-
         // Generate the applet files in outDir
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.appletWriter",
-        //        AppletWriter.v(_toplevel)));
-
         addTransform(pack, "wjtp.appletWriter",
                 AppletWriter.v(_toplevel));
 
