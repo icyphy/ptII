@@ -139,7 +139,7 @@ public class Main extends KernelMain {
     private static String _generatorAttributeFileName = "unsetParameter";
     private static String _watchDogTimeout = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
-    private static String _templateDirectory = "ptolemy/copernicus/shalloww";
+    private static String _templateDirectory = "ptolemy/copernicus/shallow";
     private static String _outputDirectory = "unsetParameter";
 }
 
