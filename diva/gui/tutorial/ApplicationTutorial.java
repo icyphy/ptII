@@ -95,14 +95,14 @@ public class ApplicationTutorial extends AbstractApplication {
 
     public ApplicationTutorial(AppContext context) {
         super(context);
-        
+
         initializeApp();
 
         // Initialize the context.
         JMenuBar menuBar = new JMenuBar();
         context.setJMenuBar(menuBar);
         initializeMenuBar(menuBar);
-        
+
         JToolBar toolBar = new JToolBar();
         context.getContentPane().add(toolBar, BorderLayout.NORTH);
         initializeToolBar(toolBar);
@@ -116,7 +116,7 @@ public class ApplicationTutorial extends AbstractApplication {
           _displayedDocument = null;
           displayDocument(getCurrentDocument());
         */
-            
+
         // When the currently selected document is changed, this listener
         // is notified.
         addViewListener(new ListDataListener() {
@@ -151,9 +151,9 @@ public class ApplicationTutorial extends AbstractApplication {
      // only handle text documents.
      TextDocument document = (TextDocument) d;
      System.out.println("displaying");
-        
+
      if(_displayedDocument != null) {
-     // Pull the text out of the editor and stuff it back into the 
+     // Pull the text out of the editor and stuff it back into the
      // document.
      _displayedDocument.setText(_editorPane.getText());
      }
@@ -161,12 +161,12 @@ public class ApplicationTutorial extends AbstractApplication {
      _displayedDocument = document;
 
      if(document != null) {
-     // Pull the text out of the new document and stuff it 
+     // Pull the text out of the new document and stuff it
      // into the editor.
      _editorPane.setText(document.getText());
      _editorPane.setEditable(true);
      } else {
-     // If we've closed all the documents, then disable the 
+     // If we've closed all the documents, then disable the
      // editor pane.
      _editorPane.setText("");
      _editorPane.setEditable(false);
@@ -187,7 +187,7 @@ public class ApplicationTutorial extends AbstractApplication {
         try {
             DefaultStoragePolicy storage = new DefaultStoragePolicy();
             setStoragePolicy(storage);
-        
+
             FileFilter ff = new FileFilter() {
                     public boolean accept (File file) {
                         return GUIUtilities.getFileExtension(file).
@@ -197,11 +197,11 @@ public class ApplicationTutorial extends AbstractApplication {
                         return "Text files";
                     }
                 };
-            JFileChooser fc;      
+            JFileChooser fc;
             fc = storage.getOpenFileChooser();
             fc.addChoosableFileFilter(ff);
             fc.setFileFilter(ff);
-            
+
             fc = storage.getSaveFileChooser();
             fc.addChoosableFileFilter(ff);
             fc.setFileFilter(ff);
@@ -225,36 +225,36 @@ public class ApplicationTutorial extends AbstractApplication {
 
         action = DefaultActions.newAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'N', 
+        GUIUtilities.addMenuItem(menuFile, action, 'N',
                 "Create a new graph document");
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'O', 
+        GUIUtilities.addMenuItem(menuFile, action, 'O',
                 "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'C', 
+        GUIUtilities.addMenuItem(menuFile, action, 'C',
                 "Close the current graph document");
 
         menuFile.addSeparator();
 
         action = DefaultActions.saveAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'S', 
+        GUIUtilities.addMenuItem(menuFile, action, 'S',
                 "Save the current graph document");
 
         action = DefaultActions.saveAsAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'A', 
+        GUIUtilities.addMenuItem(menuFile, action, 'A',
                 "Save the current graph document to a different file");
 
         menuFile.addSeparator();
 
         action = DefaultActions.exitAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'X', 
+        GUIUtilities.addMenuItem(menuFile, action, 'X',
                 "Exit from the graph editor");
         // Hook the exit action into the frame's close button, if we are
         // running in an ApplicationContext.
@@ -277,11 +277,11 @@ public class ApplicationTutorial extends AbstractApplication {
                 resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
-        GUIUtilities.addToolBarButton(tb, action, null, 
+        GUIUtilities.addToolBarButton(tb, action, null,
                 resources.getImageIcon("OpenImage"));
 
         action = getAction("Save");
-        GUIUtilities.addToolBarButton(tb, action, null, 
+        GUIUtilities.addToolBarButton(tb, action, null,
                 resources.getImageIcon("SaveImage"));
     }
 }

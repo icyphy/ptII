@@ -76,7 +76,7 @@ import diva.resource.RelativeBundle;
 public abstract class AbstractApplication implements Application {
 
     // This class used to be in the parent directory, but only the
-    // tutorial needed it, so we moved it. 
+    // tutorial needed it, so we moved it.
 
     /** The resources object
      */

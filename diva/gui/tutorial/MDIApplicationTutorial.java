@@ -57,13 +57,13 @@ import diva.resource.RelativeBundle;
 /**
  * A simple MDI text editor.  This application uses the MDIApplication base
  * class to provide a separate internal frame associated with each document.
- * This class is similar in many ways to the ApplicationTutorial.  The 
+ * This class is similar in many ways to the ApplicationTutorial.  The
  * code in the initializeApp(), initializeMenuBar(), and initializeToolBar()
  * methods is the same in both.
  * <p>
  * Note that there appears to be a bug in jdk1.2 with the keyboard handling
  * in JEditorPane.  Maximizing one of the internal frames loses the event
- * hooks that the JEditorPane uses for keyboard input.  This is fixed in 
+ * hooks that the JEditorPane uses for keyboard input.  This is fixed in
  * jdk1.3.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
@@ -91,7 +91,7 @@ public class MDIApplicationTutorial extends MDIApplication {
         super(context);
 
         initializeApp();
-        
+
         // Initialize the context.  DesktopContext already has a toolbar
         // and a menu bar.
         initializeMenuBar(context.getJMenuBar());
@@ -140,11 +140,11 @@ public class MDIApplicationTutorial extends MDIApplication {
                         return "Text files";
                     }
                 };
-            JFileChooser fc;      
+            JFileChooser fc;
             fc = storage.getOpenFileChooser();
             fc.addChoosableFileFilter(ff);
             fc.setFileFilter(ff);
-            
+
             fc = storage.getSaveFileChooser();
             fc.addChoosableFileFilter(ff);
             fc.setFileFilter(ff);
@@ -168,36 +168,36 @@ public class MDIApplicationTutorial extends MDIApplication {
 
         action = DefaultActions.newAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'N', 
+        GUIUtilities.addMenuItem(menuFile, action, 'N',
                 "Create a new graph document");
 
         action = DefaultActions.openAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'O', 
+        GUIUtilities.addMenuItem(menuFile, action, 'O',
                 "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'C', 
+        GUIUtilities.addMenuItem(menuFile, action, 'C',
                 "Close the current graph document");
 
         menuFile.addSeparator();
 
         action = DefaultActions.saveAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'S', 
+        GUIUtilities.addMenuItem(menuFile, action, 'S',
                 "Save the current graph document");
 
         action = DefaultActions.saveAsAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'A', 
+        GUIUtilities.addMenuItem(menuFile, action, 'A',
                 "Save the current graph document to a different file");
 
         menuFile.addSeparator();
 
         action = DefaultActions.exitAction(this);
         addAction(action);
-        GUIUtilities.addMenuItem(menuFile, action, 'X', 
+        GUIUtilities.addMenuItem(menuFile, action, 'X',
                 "Exit from the graph editor");
         // Hook the exit action into the frame's close button, if we are
         // running in an ApplicationContext.
@@ -220,31 +220,31 @@ public class MDIApplicationTutorial extends MDIApplication {
                 resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
-        GUIUtilities.addToolBarButton(tb, action, null, 
+        GUIUtilities.addToolBarButton(tb, action, null,
                 resources.getImageIcon("OpenImage"));
 
         action = getAction("Save");
-        GUIUtilities.addToolBarButton(tb, action, null, 
+        GUIUtilities.addToolBarButton(tb, action, null,
                 resources.getImageIcon("SaveImage"));
     }
 
     /**
      * FIXME
-     * 
+     *
      * A property change listener for documents.  It is responsible for
      * keeping the title of the internal frame for a document the same
      * as the title of the document.
      *
      public class TitleChanger implements PropertyChangeListener {
-     /** 
-      * When the file or url properties of the document change, 
+     /**
+      * When the file or url properties of the document change,
       * assume that the title of the document has changed and
       * reset the title of the appropriate internal frame.
       *
       public void propertyChange(PropertyChangeEvent e) {
       String name = e.getPropertyName();
-      if (name.equals("file") || 
-      name.equals("url") || 
+      if (name.equals("file") ||
+      name.equals("url") ||
       name.equals("title")) {
       // the title has changed.
       Document doc = (Document)e.getSource();

@@ -60,7 +60,7 @@ import diva.gui.ViewEvent;
 public abstract class MDIApplication extends AbstractApplication {
 
     // This class used to be in the parent directory, but only the
-    // tutorial needed it, so we moved it. 
+    // tutorial needed it, so we moved it.
 
     /** A mapping from content panes to views
      */

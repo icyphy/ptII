@@ -44,11 +44,11 @@ import diva.gui.Document;
 import diva.gui.DocumentFactory;
 
 /**
- * A example document that contains plain boring old text 
+ * A example document that contains plain boring old text
  * and saves it to ascii files.  Here you can see some sample
  * implementations of the open, save, saveAs, and close methods.
- * You should also notice that this class adds methods for accessing 
- * the contained document's data in an application-useful format.  
+ * You should also notice that this class adds methods for accessing
+ * the contained document's data in an application-useful format.
  * (In this case, there are just simple getText and setText methods.)
  * The setText properly realized that the document's data has been changed
  * and sets the Dirty flag.  This is used in the application
@@ -56,8 +56,8 @@ import diva.gui.DocumentFactory;
  * without saving changes.
  * <p>
  * This class also contains a DocumentFactory for documents of this type.
- * The document factory is used by an application to create documents of 
- * this type.  
+ * The document factory is used by an application to create documents of
+ * this type.
  *
  * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
  * @version $Revision$
@@ -68,7 +68,7 @@ public class TextDocument extends AbstractDocument {
      */
     String _text;
 
-    /** Create an text document for the given application containing an 
+    /** Create an text document for the given application containing an
      * empty string.
      */
     public TextDocument(Application application) {
@@ -111,7 +111,7 @@ public class TextDocument extends AbstractDocument {
         }
         readResult.append(buffer, 0, amountRead);
         _text = readResult.toString();
-    }        
+    }
 
     /** Save the document to its current file or URL.  Throw an
      * exception if the operation failed. Reasons for failure might
@@ -155,7 +155,7 @@ public class TextDocument extends AbstractDocument {
     }
 
     /**
-     * Set the text contained by this document.  If the given text is 
+     * Set the text contained by this document.  If the given text is
      * different from the previously contained text, then set the dirty flag.
      */
     public void setText(String text) {
