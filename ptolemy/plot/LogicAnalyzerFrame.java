@@ -159,8 +159,7 @@ public class LogicAnalyzerFrame extends Frame {
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                Color.white, Color.black);
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
     }
 
