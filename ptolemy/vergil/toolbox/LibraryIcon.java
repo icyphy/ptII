@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -58,7 +58,7 @@ pattern.
 public class LibraryIcon extends PatternIcon implements Configurable {
 
     /**
-     * Create a new icon with the name "_icon" in the given container.
+     * Create a new icon with the given name in the given container.
      */
     public LibraryIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -79,7 +79,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
      */
     public void configure(URL base, InputStream in) throws Exception {
 	int bytesread = 0;
-	// There must be a better way to do this.
+	// FIXME: There must be a better way to do this.
 	byte[] b = new byte[100];
 	bytesread = in.read(b, 0, 100);
 	if(bytesread > 90) {
@@ -114,10 +114,9 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	    _iconName = name;
 	}
     }        
-
  
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+    ////                        protected methods                  ////
 
     /** Return a description of the object.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
@@ -162,7 +161,12 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         static variables                  ////
+    ////                        private variables                  ////
+
+    private String _iconName;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         static methods                    ////
 
     /** 
      * Return the root icon library from which to search for icons.
@@ -179,5 +183,4 @@ public class LibraryIcon extends PatternIcon implements Configurable {
     }
 
     private static CompositeEntity _iconLibrary;
-    private String _iconName;
 }

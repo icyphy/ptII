@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -52,10 +52,8 @@ i.e. a line, box, textbox, etc.
 public class GraphicElement {
     /**
      * Create a new GraphicElement with the given type.
-     * By default, the GraphicElement contains no graphic
-     * representations.
-     * @param attributes a CircularList from a String specifying the name of
-     * an attribute to a String specifying the attribute's value.
+     * By default, the GraphicElement contains no attributes and an empty 
+     * label
      */
     public GraphicElement(String type) {
         _attributes = new HashMap();
@@ -97,7 +95,9 @@ public class GraphicElement {
     }
 
     /**
-     * Return a painted object that looks like this graphic element
+     * Return a new painted object that looks like this graphic element.
+     * If the attributes are not consistent, or another error occurs, then
+     * return a painted string containing "Error!".
      */
     public PaintedObject getPaintedObject() {
 	String type = getType();
@@ -112,14 +112,14 @@ public class GraphicElement {
     }
 
     /**
-     * Test if this schematic has the attribute wuth the given name.
+     * Test if this element has an attribute with the given name.
      */
     public boolean containsAttribute(String name) {
         return _attributes.containsKey(name);
     }
 
     /**
-     * Remove an attribute from this element
+     * Remove an attribute from this element.
      */
     public void removeAttribute(String name) {
         _attributes.remove(name);
@@ -127,8 +127,6 @@ public class GraphicElement {
 
     /**
      * Set the attribute with the given name to the given value.
-     * Throw an exception if there is no attribute with the
-     * given name in this schematic.
      */
     public void setAttribute(String name, String value) {
         _attributes.put(name, value);
@@ -170,10 +168,16 @@ public class GraphicElement {
 	element.writeXML(out, prefix);
     }
 
+    // The painted object that is returned if an error occurs.
     private static final PaintedString _errorObject =
-    new PaintedString("ERROR!");
+	new PaintedString("ERROR!");
 
+    // The attributes of this graphic element.
     private Map _attributes;
+
+    // The type of this graphic element.
     private String _type;
+
+    // The label of this graphic element.
     private String _label;
 }

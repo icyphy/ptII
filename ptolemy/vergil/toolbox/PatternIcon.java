@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -48,7 +48,7 @@ This icon represents an icon with a similar look to another icon (its
 'pattern').  This is useful for using an icon in more than one place, while
 keeping a reference to it's original, in case the original is changed.
 This class is minimally useful by itself, since it doesn't understand MoML.
-Subclasses should  implement different ways of setting the
+Subclasses should implement different ways of setting the
 pattern (such as referring to a library of icons).
 
 @author Steve Neuendorffer

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -44,13 +44,13 @@ import diva.util.xml.*;
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon
 /**
-
 An icon is the graphical representation of a schematic entity.
-Icons are stored hierarchically in icon libraries.   Every icon has a
-name, along with a graphical representation.
-
-This icon is for those based on XML.  If the icon is never configured, then
-it will have a default figure.
+This icon contains a set of graphic elements.  These graphic elements can 
+be added manually or created automatically by configuring the icon with
+appropriate XML code.  Each graphic element represents a primitive graphical
+object that will be used to create a figure or a Swing icon.   If this
+icon contains no graphic elements, then the default figure or Swing icon will
+be created.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -234,6 +234,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
 	output.write("</configure>\n");
     }
 
+    // Create a new graphic element from the given XML element.
     private GraphicElement _createGraphicElement(XmlElement e)
             throws IllegalActionException {
 
@@ -258,5 +259,6 @@ public class XMLIcon extends EditorIcon implements Configurable {
         return element;
     }
 
-    private LinkedList _graphics;
+    // The list of graphic elements contained in this icon.
+    private List _graphics;
 }
