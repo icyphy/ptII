@@ -69,5 +69,7 @@ typedef struct {
 
 } PCCG_CLASS_INSTANCE; 
 
+typedef PCCG_CLASS *PCCG_CLASS_PTR;
+typedef PCCG_CLASS_INSTANCE *PCCG_CLASS_INSTANCE_PTR;
 
 #endif
