@@ -90,11 +90,12 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) lib
+MISC_FILES =	util sched process gui lib test lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	corba \
 	doc \
 	'FiringEvent$$1.class' \
 	'FiringEvent$$FiringEventType.class' \
