@@ -1285,7 +1285,7 @@ public class Plot extends PlotBox {
         Vector pts = _points[dataset];
         PlotPoint pt = (PlotPoint)pts.elementAt(index);
         // Use long here because these numbers can be quite large
-        // (when we are zoomed out alot).
+        // (when we are zoomed out a lot).
         long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
         long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
 
