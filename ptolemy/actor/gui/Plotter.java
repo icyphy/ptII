@@ -175,6 +175,8 @@ public class Plotter extends TypedAtomicActor
      *  of the container because the container may not yet be laid out
      *  (its size will be zero).  Thus, you will have to explicitly
      *  set the size of the plot by calling plot.setSize().
+     *  The background of the plot is set equal to that of the container
+     *  (unless it is null).
      *
      *  @param container The container into which to place the plot.
      */
@@ -192,6 +194,7 @@ public class Plotter extends TypedAtomicActor
                 plot = new Plot();
                 _container.add(plot);
                 plot.setButtons(true);
+                plot.setBackground(_container.getBackground());
             }
         }
     }

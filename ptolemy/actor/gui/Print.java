@@ -154,6 +154,8 @@ public class Print extends TypedAtomicActor implements Placeable {
      *  Otherwise, an instance of TextArea will be placed in its own frame.
      *  The text area is also placed in its own frame if this method
      *  is called with a null argument.
+     *  The background of the text area is set equal to that of the container
+     *  (unless it is null).
      *
      *  @param container The container into which to place the text area.
      */
@@ -171,6 +173,7 @@ public class Print extends TypedAtomicActor implements Placeable {
             textArea = new JTextArea();
             _scrollPane = new JScrollPane(textArea);
             _container.add(_scrollPane);
+            textArea.setBackground(_container.getBackground());
         }
         // Make sure the text is not editable.
         textArea.setEditable(false);
