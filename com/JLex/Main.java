@@ -400,8 +400,8 @@ class CEmit
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != spec);
-                    CUtility.assert(null != outstream);
+                    CUtility.cuassert(null != spec);
+                    CUtility.cuassert(null != outstream);
                 }
 
             m_spec = spec;
@@ -424,8 +424,8 @@ class CEmit
 
 	  if (CUtility.DEBUG)
 	    {
-	      CUtility.assert(null != m_spec);
-	      CUtility.assert(null != m_outstream);
+	      CUtility.cuassert(null != m_spec);
+	      CUtility.cuassert(null != m_outstream);
 	    }*/
 
 	  /*m_outstream.writeBytes("import java.lang.String;\n");
@@ -532,8 +532,8 @@ class CEmit
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             if (CUtility.OLD_DEBUG) {
@@ -561,8 +561,8 @@ class CEmit
 	{
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             /* Constants */
@@ -740,7 +740,7 @@ class CEmit
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(null != state);
+                            CUtility.cuassert(null != state);
                         }
 
                     m_outstream.writeBytes("\tprivate final int "
@@ -779,8 +779,8 @@ class CEmit
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             /* Function: yy_do_eof */
@@ -1060,8 +1060,8 @@ class CEmit
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             m_outstream.writeBytes("\n\n");
@@ -1098,8 +1098,8 @@ class CEmit
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             m_outstream.writeBytes("\tprivate int yy_acpt[] = {\n");
@@ -1274,8 +1274,8 @@ class CEmit
 	{
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             emit_table();
@@ -1500,7 +1500,7 @@ class CEmit
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(m_spec.m_accept_vector.size()
+                    CUtility.cuassert(m_spec.m_accept_vector.size()
                             == m_spec.m_anchor_array.length);
                 }
 
@@ -1536,8 +1536,8 @@ class CEmit
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(null != m_outstream);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(null != m_outstream);
                 }
 
             m_outstream.writeBytes("}\n");
@@ -1623,9 +1623,9 @@ class CMakeNfa
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != input);
-                    CUtility.assert(null != lexGen);
-                    CUtility.assert(null != spec);
+                    CUtility.cuassert(null != input);
+                    CUtility.cuassert(null != lexGen);
+                    CUtility.cuassert(null != spec);
                 }
 
             m_input = input;
@@ -1882,7 +1882,7 @@ class CMakeNfa
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != pair);
+                    CUtility.cuassert(null != pair);
                 }
 
             e2_pair = CAlloc.newCNfaPair();
@@ -1930,7 +1930,7 @@ class CMakeNfa
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != pair);
+                    CUtility.cuassert(null != pair);
                 }
 
             e2_pair = CAlloc.newCNfaPair();
@@ -2267,7 +2267,7 @@ class CMinimize
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != spec);
+                    CUtility.cuassert(null != spec);
                 }
 
             m_spec = spec;
@@ -2435,7 +2435,7 @@ class CMinimize
                         {
                             for (i = 0; i < reduced_ncols; ++i)
                                 {
-                                    CUtility.assert(-1 != m_spec.m_col_map[i]);
+                                    CUtility.cuassert(-1 != m_spec.m_col_map[i]);
                                 }
                         }
 
@@ -2454,8 +2454,8 @@ class CMinimize
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(false == set.get(i));
-                            CUtility.assert(-1 == m_spec.m_col_map[i]);
+                            CUtility.cuassert(false == set.get(i));
+                            CUtility.cuassert(-1 == m_spec.m_col_map[i]);
                         }
 
                     set.set(i);
@@ -2486,7 +2486,7 @@ class CMinimize
 
                             if (CUtility.DEBUG)
                                 {
-                                    CUtility.assert(j <= i);
+                                    CUtility.cuassert(j <= i);
                                 }
 
                             if (j == i)
@@ -2501,7 +2501,7 @@ class CMinimize
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(k == reduced_ncols);
+                    CUtility.cuassert(k == reduced_ncols);
                 }
 
             /* Allocate row map. */
@@ -2519,7 +2519,7 @@ class CMinimize
                         {
                             for (i = 0; i < reduced_nrows; ++i)
                                 {
-                                    CUtility.assert(-1 != m_spec.m_row_map[i]);
+                                    CUtility.cuassert(-1 != m_spec.m_row_map[i]);
                                 }
                         }
 
@@ -2538,8 +2538,8 @@ class CMinimize
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(false == set.get(i));
-                            CUtility.assert(-1 == m_spec.m_row_map[i]);
+                            CUtility.cuassert(false == set.get(i));
+                            CUtility.cuassert(-1 == m_spec.m_row_map[i]);
                         }
 
                     set.set(i);
@@ -2570,7 +2570,7 @@ class CMinimize
 
                             if (CUtility.DEBUG)
                                 {
-                                    CUtility.assert(j <= i);
+                                    CUtility.cuassert(j <= i);
                                 }
 
                             if (j == i)
@@ -2586,7 +2586,7 @@ class CMinimize
             if (CUtility.DEBUG)
                 {
                     /*System.out.print("k = " + k + "\nreduced_nrows = " + reduced_nrows + "\n");*/
-                    CUtility.assert(k == reduced_nrows);
+                    CUtility.cuassert(k == reduced_nrows);
                 }
         }
 
@@ -2670,7 +2670,7 @@ class CMinimize
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(m_group.size() == group_count);
+                            CUtility.cuassert(m_group.size() == group_count);
                         }
 
                     for (i = 0; i < group_count; ++i)
@@ -2703,7 +2703,7 @@ class CMinimize
                                                 {
                                                     if (CUtility.DEBUG)
                                                         {
-                                                            CUtility.assert(dtrans_group.elementAt(j) == next);
+                                                            CUtility.cuassert(dtrans_group.elementAt(j) == next);
                                                         }
 
                                                     dtrans_group.removeElementAt(j);
@@ -2720,21 +2720,21 @@ class CMinimize
 
                                                     if (CUtility.DEBUG)
                                                         {
-                                                            CUtility.assert(m_group.contains(new_group)
+                                                            CUtility.cuassert(m_group.contains(new_group)
                                                                     == true);
-                                                            CUtility.assert(m_group.contains(dtrans_group)
+                                                            CUtility.cuassert(m_group.contains(dtrans_group)
                                                                     == true);
-                                                            CUtility.assert(dtrans_group.contains(first)
+                                                            CUtility.cuassert(dtrans_group.contains(first)
                                                                     == true);
-                                                            CUtility.assert(dtrans_group.contains(next)
+                                                            CUtility.cuassert(dtrans_group.contains(next)
                                                                     == false);
-                                                            CUtility.assert(new_group.contains(first)
+                                                            CUtility.cuassert(new_group.contains(first)
                                                                     == false);
-                                                            CUtility.assert(new_group.contains(next)
+                                                            CUtility.cuassert(new_group.contains(next)
                                                                     == true);
-                                                            CUtility.assert(dtrans_group.size() == group_size);
-                                                            CUtility.assert(i == m_ingroup[first.m_label]);
-                                                            CUtility.assert((m_group.size() - 1)
+                                                            CUtility.cuassert(dtrans_group.size() == group_size);
+                                                            CUtility.cuassert(i == m_ingroup[first.m_label]);
+                                                            CUtility.cuassert((m_group.size() - 1)
                                                                     == m_ingroup[next.m_label]);
                                                         }
 
@@ -2788,9 +2788,9 @@ class CMinimize
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(i == dtrans.m_label);
-                            CUtility.assert(false == group_found);
-                            CUtility.assert(group_count == m_group.size());
+                            CUtility.cuassert(i == dtrans.m_label);
+                            CUtility.cuassert(false == group_found);
+                            CUtility.cuassert(group_count == m_group.size());
                         }
 
                     for (j = 0; j < group_count; ++j)
@@ -2799,8 +2799,8 @@ class CMinimize
 
                             if (CUtility.DEBUG)
                                 {
-                                    CUtility.assert(false == group_found);
-                                    CUtility.assert(0 < dtrans_group.size());
+                                    CUtility.cuassert(false == group_found);
+                                    CUtility.cuassert(0 < dtrans_group.size());
                                 }
 
                             first = (CDTrans) dtrans_group.elementAt(0);
@@ -2812,12 +2812,12 @@ class CMinimize
                                     int s;
 
                                     s = dtrans_group.size();
-                                    CUtility.assert(0 < s);
+                                    CUtility.cuassert(0 < s);
 
                                     for (k = 1; k < s; ++k)
                                         {
                                             check = (CDTrans) dtrans_group.elementAt(k);
-                                            CUtility.assert(check.m_accept == first.m_accept);
+                                            CUtility.cuassert(check.m_accept == first.m_accept);
                                         }
                                 }
 
@@ -2829,7 +2829,7 @@ class CMinimize
 
                                     if (CUtility.DEBUG)
                                         {
-                                            CUtility.assert(j == m_ingroup[dtrans.m_label]);
+                                            CUtility.cuassert(j == m_ingroup[dtrans.m_label]);
                                         }
 
                                     break;
@@ -3056,7 +3056,7 @@ class CNfa2Dfa
 
                             if (CUtility.DEBUG)
                                 {
-                                    CUtility.assert(false == dfa.m_mark);
+                                    CUtility.cuassert(false == dfa.m_mark);
                                 }
 
                             /* Get first unmarked node, then mark it. */
@@ -3072,8 +3072,8 @@ class CNfa2Dfa
                                 {
                                     if (CUtility.DEBUG)
                                         {
-                                            CUtility.assert(0 <= i);
-                                            CUtility.assert(m_spec.m_dtrans_ncols > i);
+                                            CUtility.cuassert(0 <= i);
+                                            CUtility.cuassert(m_spec.m_dtrans_ncols > i);
                                         }
 
                                     /* Create new dfa set by attempting character transition. */
@@ -3085,7 +3085,7 @@ class CNfa2Dfa
 
                                     if (CUtility.DEBUG)
                                         {
-                                            CUtility.assert((null == bunch.m_nfa_set
+                                            CUtility.cuassert((null == bunch.m_nfa_set
                                                     && null == bunch.m_nfa_bit)
                                                     || (null != bunch.m_nfa_set
                                                             && null != bunch.m_nfa_bit));
@@ -3108,7 +3108,7 @@ class CNfa2Dfa
 
                                     if (CUtility.DEBUG)
                                         {
-                                            CUtility.assert(nextstate < m_spec.m_dfa_states.size());
+                                            CUtility.cuassert(nextstate < m_spec.m_dfa_states.size());
                                         }
 
                                     dtrans.m_dtrans[i] = nextstate;
@@ -3116,7 +3116,7 @@ class CNfa2Dfa
 
                             if (CUtility.DEBUG)
                                 {
-                                    CUtility.assert(m_spec.m_dtrans_vector.size() == dfa.m_label);
+                                    CUtility.cuassert(m_spec.m_dtrans_vector.size() == dfa.m_label);
                                 }
 
                             m_spec.m_dtrans_vector.addElement(dtrans);
@@ -3169,9 +3169,9 @@ class CNfa2Dfa
             /* Debug checks. */
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != bunch);
-                    CUtility.assert(null != bunch.m_nfa_set);
-                    CUtility.assert(null != bunch.m_nfa_bit);
+                    CUtility.cuassert(null != bunch);
+                    CUtility.cuassert(null != bunch.m_nfa_set);
+                    CUtility.cuassert(null != bunch.m_nfa_bit);
                 }
 
             bunch.m_accept = null;
@@ -3187,7 +3187,7 @@ class CNfa2Dfa
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(bunch.m_nfa_bit.get(state.m_label));
+                            CUtility.cuassert(bunch.m_nfa_bit.get(state.m_label));
                         }
 
                     nfa_stack.push(state);
@@ -3228,8 +3228,8 @@ class CNfa2Dfa
 
                             if (CUtility.DEBUG)
                                 {
-                                    CUtility.assert(null != bunch.m_accept);
-                                    CUtility.assert(CSpec.NONE == bunch.m_anchor
+                                    CUtility.cuassert(null != bunch.m_accept);
+                                    CUtility.cuassert(CSpec.NONE == bunch.m_anchor
                                             || 0 != (bunch.m_anchor & CSpec.END)
                                             || 0 != (bunch.m_anchor & CSpec.START));
                                 }
@@ -3243,7 +3243,7 @@ class CNfa2Dfa
                                         {
                                             if (CUtility.DEBUG)
                                                 {
-                                                    CUtility.assert(false == bunch.m_nfa_bit.get(state.m_next.m_label));
+                                                    CUtility.cuassert(false == bunch.m_nfa_bit.get(state.m_next.m_label));
                                                 }
 
                                             bunch.m_nfa_bit.set(state.m_next.m_label);
@@ -3258,7 +3258,7 @@ class CNfa2Dfa
                                         {
                                             if (CUtility.DEBUG)
                                                 {
-                                                    CUtility.assert(false == bunch.m_nfa_bit.get(state.m_next2.m_label));
+                                                    CUtility.cuassert(false == bunch.m_nfa_bit.get(state.m_next2.m_label));
                                                 }
 
                                             bunch.m_nfa_bit.set(state.m_next2.m_label);
@@ -3309,7 +3309,7 @@ class CNfa2Dfa
                                 {
                                     if (CUtility.DEBUG)
                                         {
-                                            CUtility.assert(null == bunch.m_nfa_bit);
+                                            CUtility.cuassert(null == bunch.m_nfa_bit);
                                         }
 
                                     bunch.m_nfa_set = new Vector();
@@ -3330,7 +3330,7 @@ class CNfa2Dfa
                 {
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(null != bunch.m_nfa_bit);
+                            CUtility.cuassert(null != bunch.m_nfa_bit);
                         }
 
                     sortStates(bunch.m_nfa_set);
@@ -3458,9 +3458,9 @@ class CNfa2Dfa
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != bunch.m_nfa_set);
-                    CUtility.assert(null != bunch.m_nfa_bit);
-                    CUtility.assert(null != bunch.m_accept
+                    CUtility.cuassert(null != bunch.m_nfa_set);
+                    CUtility.cuassert(null != bunch.m_nfa_bit);
+                    CUtility.cuassert(null != bunch.m_accept
 			    || CSpec.NONE == bunch.m_anchor);
                 }
 
@@ -3855,7 +3855,7 @@ class CInput
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != input);
+                    CUtility.cuassert(null != input);
                 }
 
             /* Initialize input stream. */
@@ -4136,18 +4136,20 @@ class CUtility
         }
 
     /********************************************************
-    Function: assert
+    Function: cuassert
     Description: Debugging routine.
+    As of release 1.4, cuassert is a keyword, and may not be used as
+    an identifier
     *******************************************************/
-    static void assert
+    static void cuassert
         (
                 boolean expr
                 )
         {
             if (DEBUG && false == expr)
                 {
-                    System.out.println("Assertion Failed");
-                    throw new Error("Assertion Failed.");
+                    System.out.println("Cuassertion Failed");
+                    throw new Error("Cuassertion Failed.");
                 }
         }
 
@@ -4842,12 +4844,12 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
-                    CUtility.assert(m_init_flag);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
+                    CUtility.cuassert(m_init_flag);
                 }
 
             /*m_emit.emit_imports(m_spec,m_outstream);*/
@@ -4916,11 +4918,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             if (m_input.m_eof_reached)
@@ -5021,7 +5023,7 @@ class CLexGen
         {
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(INIT_CODE == specified
+                    CUtility.cuassert(INIT_CODE == specified
 			    || CLASS_CODE == specified
 			    || EOF_CODE == specified
 			    || EOF_VALUE_CODE == specified
@@ -5335,11 +5337,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             if (m_input.m_eof_reached)
@@ -5781,11 +5783,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             /* UNDONE: Need to handle states preceding rules. */
@@ -5800,7 +5802,7 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(END_OF_INPUT == m_spec.m_current_token);
+                    CUtility.cuassert(END_OF_INPUT == m_spec.m_current_token);
                 }
 
             if (m_spec.m_verbose)
@@ -5977,8 +5979,8 @@ class CLexGen
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(null != state);
-                            CUtility.assert(null != index);
+                            CUtility.cuassert(null != state);
+                            CUtility.cuassert(null != index);
                         }
 
                     System.out.println("State \"" + state
@@ -6029,11 +6031,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             states = null;
@@ -6181,11 +6183,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             /* Check for macro. */
@@ -6228,7 +6230,7 @@ class CLexGen
             /* Debug checks. */
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(0 < count_name);
+                    CUtility.cuassert(0 < count_name);
                 }
 
             /* Retrieve macro definition. */
@@ -6255,7 +6257,7 @@ class CLexGen
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(rep_elem < replace.length);
+                            CUtility.cuassert(rep_elem < replace.length);
                         }
                 }
 
@@ -6322,11 +6324,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             /* Macro declarations are of the following form:
@@ -6448,9 +6450,9 @@ class CLexGen
             /* Debug checks. */
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(0 < count_def);
-                    CUtility.assert(0 < count_name);
-                    CUtility.assert(null != m_spec.m_macros);
+                    CUtility.cuassert(0 < count_def);
+                    CUtility.cuassert(0 < count_name);
+                    CUtility.cuassert(null != m_spec.m_macros);
                 }
 
             if (CUtility.OLD_DEBUG)
@@ -6486,11 +6488,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             /* EOF found? */
@@ -6502,11 +6504,11 @@ class CLexGen
             /* Debug checks. */
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert('%' == m_input.m_line[0]);
-                    CUtility.assert('s' == m_input.m_line[1]);
-                    CUtility.assert(m_input.m_line_index <= m_input.m_line_read);
-                    CUtility.assert(0 <= m_input.m_line_index);
-                    CUtility.assert(0 <= m_input.m_line_read);
+                    CUtility.cuassert('%' == m_input.m_line[0]);
+                    CUtility.cuassert('s' == m_input.m_line[1]);
+                    CUtility.cuassert(m_input.m_line_index <= m_input.m_line_read);
+                    CUtility.cuassert(0 <= m_input.m_line_index);
+                    CUtility.cuassert(0 <= m_input.m_line_read);
                 }
 
             /* Blank line?  No states? */
@@ -6589,9 +6591,9 @@ class CLexGen
             /* Debug checks. */
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(m_input.m_line_index < m_input.m_line_read);
-                    CUtility.assert(0 < m_input.m_line_read);
-                    CUtility.assert(0 <= m_input.m_line_index);
+                    CUtility.cuassert(m_input.m_line_index < m_input.m_line_read);
+                    CUtility.cuassert(0 < m_input.m_line_read);
+                    CUtility.cuassert(0 <= m_input.m_line_index);
                 }
 
             if ('\\' != m_input.m_line[m_input.m_line_index])
@@ -6708,11 +6710,11 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != this);
-                    CUtility.assert(null != m_outstream);
-                    CUtility.assert(null != m_input);
-                    CUtility.assert(null != m_tokens);
-                    CUtility.assert(null != m_spec);
+                    CUtility.cuassert(null != this);
+                    CUtility.cuassert(null != m_outstream);
+                    CUtility.cuassert(null != m_input);
+                    CUtility.cuassert(null != m_tokens);
+                    CUtility.cuassert(null != m_spec);
                 }
 
             /* Get a new line, if needed. */
@@ -6824,7 +6826,7 @@ class CLexGen
 
             if (CUtility.DEBUG)
                 {
-                    CUtility.assert(null != accept);
+                    CUtility.cuassert(null != accept);
                 }
 
             if (CUtility.DESCENT_DEBUG)
@@ -6852,7 +6854,7 @@ class CLexGen
             /*if (m_input.m_line_index > m_input.m_line_read) {
               System.out.println("m_input.m_line_index = " + m_input.m_line_index);
               System.out.println("m_input.m_line_read = " + m_input.m_line_read);
-              CUtility.assert(m_input.m_line_index <= m_input.m_line_read);
+              CUtility.cuassert(m_input.m_line_index <= m_input.m_line_read);
               }*/
 
             if (m_input.m_eof_reached)
@@ -6912,7 +6914,7 @@ class CLexGen
                 }
 
             if (CUtility.DEBUG) {
-                CUtility.assert(m_input.m_line_index <= m_input.m_line_read);
+                CUtility.cuassert(m_input.m_line_index <= m_input.m_line_read);
             }
 
             while (true)
@@ -6953,7 +6955,7 @@ class CLexGen
             if (m_input.m_line_index > m_input.m_line_read) {
                 System.out.println("m_input.m_line_index = " + m_input.m_line_index);
                 System.out.println("m_input.m_line_read = " + m_input.m_line_read);
-                CUtility.assert(m_input.m_line_index <= m_input.m_line_read);
+                CUtility.cuassert(m_input.m_line_index <= m_input.m_line_read);
             }
 
             /* Look for backslash, and corresponding
@@ -7063,8 +7065,8 @@ class CLexGen
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(null != name);
-                            CUtility.assert(null != def);
+                            CUtility.cuassert(null != name);
+                            CUtility.cuassert(null != def);
                         }
 
                     System.out.println("Macro name \"" + name
@@ -7081,8 +7083,8 @@ class CLexGen
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(null != state);
-                            CUtility.assert(null != index);
+                            CUtility.cuassert(null != state);
+                            CUtility.cuassert(null != index);
                         }
 
                     System.out.println("State \"" + state
@@ -7099,7 +7101,7 @@ class CLexGen
                 {
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(m_spec.m_count_lines);
+                            CUtility.cuassert(m_spec.m_count_lines);
                         }
 
                     System.out.println("Character counting is on.");
@@ -7114,7 +7116,7 @@ class CLexGen
                 {
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(m_spec.m_count_lines);
+                            CUtility.cuassert(m_spec.m_count_lines);
                         }
 
                     System.out.println("Line counting is on.");
@@ -7222,8 +7224,8 @@ class CLexGen
 
                     if (CUtility.DEBUG)
                         {
-                            CUtility.assert(null != state);
-                            CUtility.assert(null != index);
+                            CUtility.cuassert(null != state);
+                            CUtility.cuassert(null != index);
                         }
 
                     System.out.println("State \"" + state
