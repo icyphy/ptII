@@ -552,13 +552,17 @@ public class CTSingleSolverDirector extends CTDirector {
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
-            predictedstep = Math.min(predictedstep, a.predictedStepSize());
+            double pre = a.predictedStepSize();
+            _debug(((NamedObj)a).getName(), "predict step " + pre);
+            predictedstep = Math.min(predictedstep, pre);
         }
         sscs = sched.outputSSCActors();
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
-            predictedstep = Math.min(predictedstep, a.predictedStepSize());
+            double pre = a.predictedStepSize();
+            _debug(((NamedObj)a).getName(), "predict step " + pre);
+            predictedstep = Math.min(predictedstep, pre);
         }
         return predictedstep;
     }

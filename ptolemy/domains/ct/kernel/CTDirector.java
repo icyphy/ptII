@@ -119,6 +119,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public CTDirector() {
         super();
         _initParameters();
+        // create a empty breakpoint table
+        _breakPoints = new TotallyOrderedSet(
+                    new FuzzyDoubleComparator(_timeResolution));
         try {
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
@@ -138,6 +141,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public CTDirector(Workspace workspace) {
         super(workspace);
         _initParameters();
+        _breakPoints = new TotallyOrderedSet(
+                new FuzzyDoubleComparator(_timeResolution));
         try {
             setScheduler(new CTScheduler(workspace));
         }catch(IllegalActionException e) {
@@ -163,6 +168,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         super(container, name);
         _initParameters();
+        _breakPoints = new TotallyOrderedSet(
+                new FuzzyDoubleComparator(_timeResolution));
         try {
             setScheduler(new CTScheduler(container.workspace()));
         }catch(IllegalActionException e) {
@@ -249,11 +256,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             Parameter param = (Parameter)attr;
             _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
             TotallyOrderedSet bptable = getBreakPoints();
-            if(bptable != null) {
-                FuzzyDoubleComparator comp = 
-                    (FuzzyDoubleComparator) bptable.getComparator();
-                comp.setThreshold(_timeResolution);
-            }
+            FuzzyDoubleComparator comp = 
+                (FuzzyDoubleComparator) bptable.getComparator();
+            comp.setThreshold(_timeResolution);
         } else if(attr == MaxIterations) {
             Parameter param = (Parameter)attr;
             _maxIterations = ((IntToken)param.getToken()).intValue();
@@ -398,15 +403,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
-        if(_breakPoints == null) {
-            _breakPoints = new TotallyOrderedSet(
-                    new FuzzyDoubleComparator(_timeResolution));
-        }
         if(time < getCurrentTime()-getTimeResolution()) {
             throw new IllegalActionException((Nameable)actor,
                     "Requested an Fire time " + time + " is earlier than" +
                     " the current time." + getCurrentTime() );
         }
+        // _breakPoints can never be null.
         _breakPoints.insert(new Double(time));
     }
 

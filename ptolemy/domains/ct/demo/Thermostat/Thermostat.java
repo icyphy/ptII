@@ -92,7 +92,7 @@ public void init() {
         // the top level DE director
         CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                 _toplevel, "CTTopLevelDirector");
-        topdir.addDebugListener(new StreamListener());
+        //topdir.addDebugListener(new StreamListener());
         // a CT ramp
         Const source = new Const(_toplevel, "Const");
         source.value.setToken(new DoubleToken(1.0));
@@ -103,15 +103,14 @@ public void init() {
         myplot.plot.setGrid(true);
         myplot.plot.setTitle("Thermostat");
         myplot.plot.addLegend(0, "Temperature");
-        myplot.plot.setConnected(false);
-        myplot.plot.setImpulses(true);
+        myplot.plot.setConnected(true);
+        myplot.plot.setImpulses(false);
         //myplot.plot.addLegend(1, "Trigger");
 
         myplot.plot.setXRange(0.0, 5.0);
         myplot.plot.setYRange(-0.1, 0.3);
         myplot.plot.setSize(500, 300);
 
-        //System.out.println("Building a simple hybrid system.");
         CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");
         // the ports
         TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
@@ -128,7 +127,6 @@ public void init() {
         //hstr.setTypeEquals(DoubleToken.class);
 
 
-        //System.out.println("Building the FSM controller.");
         HSController ctrl = new HSController(hs, "Controller");
         FSMState ctrlInc = new FSMState(ctrl, "Increasing");
         FSMState ctrlDec = new FSMState(ctrl, "Decreasing");
@@ -148,12 +146,12 @@ public void init() {
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
         //hs.setDirector(hsdir);
         hsdir.setController(ctrl);
-        hsdir.addDebugListener(new StreamListener());
+        //hsdir.addDebugListener(new StreamListener());
 
-        //System.out.println("Building the heating subsystem.");
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
         CTZeroOrderHold ctIncH = new CTZeroOrderHold(ctInc, "Hold");
         CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
+        //ctIncI.addDebugListener(new StreamListener());
         CTZeroCrossingDetector ctIncD =
             new CTZeroCrossingDetector(ctInc, "ZD");
         Expression ctIncGF =
@@ -195,9 +193,8 @@ public void init() {
         ctIncSt.link(ctIncR1);
         CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                 ctInc, "CTIncDir");
-        ctIncDir.addDebugListener(new StreamListener());
+        //ctIncDir.addDebugListener(new StreamListener());
 
-        //System.out.println("Building the cooling subsystem.");
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
         CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
         CTIntegrator ctDecI = new CTIntegrator(ctDec, "Integrator");
@@ -243,7 +240,7 @@ public void init() {
         ctDecSt.link(ctDecR1);
         CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                 ctDec, "CTDecDir");
-        ctDecDir.addDebugListener(new StreamListener());
+        //ctDecDir.addDebugListener(new StreamListener());
 
         ctrlInc.setRefinement(ctInc);
         ctrlDec.setRefinement(ctDec);
@@ -273,14 +270,14 @@ public void init() {
         //_toplevel.connect(hstr, myplot.input);
 
 
-        //System.out.println("Set parameters.");
         // try to run the system
         topdir.setStopTime(5.0);
 
         // CT embedded director 1 parameters
         ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
-
         ctIncDir.MinStepSize.setToken(new DoubleToken(1e-3));
+        ctIncDir.MaxStepSize.setToken(new DoubleToken(0.05));
+
 
         StringToken tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
@@ -293,6 +290,8 @@ public void init() {
         // CT embedded director 2  parameters
         ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
         ctDecDir.MinStepSize.setToken(new DoubleToken(1e-3));
+        ctDecDir.MaxStepSize.setToken(new DoubleToken(0.05));
+
         tok = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         ctDecDir.BreakpointODESolver.setToken(tok);
