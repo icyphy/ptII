@@ -294,10 +294,8 @@ test Icon-9.4 {graphicFormats tests} {
     # Uses setup from above
     set genum [$e0 graphicFormats]
     set s [$genum nextElement]
-    list [$s toString] [$genum hasMoreElements]
-} {{<graphic format="test">A test Graphic string
-</graphic>
-} 0}
+    list $s [$genum hasMoreElements]
+} {test 0}
    
 ######################################################################
 ####
