@@ -74,14 +74,14 @@ public class BusContentionDemo {
         
         
         // Set up next level actors
-        CSPManager controller = new CSPManager( topLevelActor, "controller" );
+        CSPController controller = 
+                new CSPController( topLevelActor, "controller" );
         CSPContentionAlarm alarm = 
                 new CSPContentionAlarm( topLevelActor, "alarm" );
         CSPMemory memory = new CSPMemory( topLevelActor, "memory" );
         CSPProcessor proc1 = new CSPProcessor( topLevelActor, "proc1" );
         CSPProcessor proc2 = new CSPProcessor( topLevelActor, "proc2" );
         CSPProcessor proc3 = new CSPProcessor( topLevelActor, "proc3" );
-        
         // System.out.println("Actors have been instantiated.");
         
         
@@ -116,7 +116,7 @@ public class BusContentionDemo {
         
         
         // Set up connections
-        inReqs = (IORelation)topLevelActor.connect( reqIn, p1_ReqOut, "inReqs" );
+        inReqs = (IORelation)topLevelActor.connect( reqIn, p1_ReqOut );
         inReqs = (IORelation)topLevelActor.connect( reqIn, p2_ReqOut );
         inReqs = (IORelation)topLevelActor.connect( reqIn, p3_ReqOut );
         
