@@ -35,7 +35,6 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;  // For javadoc
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
@@ -201,7 +200,7 @@ public class Vertex extends Location {
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
-     *  @see NamedObj#_exportMoMLContents
+     *  @see ptolemy.kernel.util.NamedObj#_exportMoMLContents
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {

@@ -31,7 +31,6 @@ package ptolemy.actor.lib.io;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.lib.Source;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;

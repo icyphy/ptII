@@ -33,7 +33,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.jai;
 
 import ptolemy.actor.lib.Source;
-import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;

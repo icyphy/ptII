@@ -35,7 +35,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj; // For javadoc
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,7 +56,7 @@ don't. But some containers might do more with the error.
 @version $Id$
 @since Ptolemy II 2.1
 @see ThrowException
-@see NamedObj#handleModelError(NamedObj, IllegalActionException)
+@see ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)
 */
 public class ThrowModelError extends Sink {
 

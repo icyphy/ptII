@@ -40,15 +40,12 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.actor.lib.Source;
-import ptolemy.actor.IOPort;
-
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
 import ptolemy.actor.corba.CorbaIOUtil.*;
 
 
 import java.util.StringTokenizer;
-import java.util.Iterator;
 import java.lang.Object;
 
 //////////////////////////////////////////////////////////////////////////

@@ -32,20 +32,15 @@ package ptolemy.actor.corba;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.actor.lib.Sink;
-import ptolemy.actor.IOPort;
-
 import org.omg.CORBA.*;
 import org.omg.CosNaming.*;
 import ptolemy.actor.corba.CorbaIOUtil.*;
 
 import java.util.StringTokenizer;
-import java.util.Iterator;
 import java.lang.Object;
 
 //////////////////////////////////////////////////////////////////////////

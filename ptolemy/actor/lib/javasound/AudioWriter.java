@@ -41,8 +41,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.media.javasound.SoundPlayback; // For javadoc
-import ptolemy.media.javasound.SoundReader; // For javadoc
 import ptolemy.media.javasound.SoundWriter;
 
 import java.io.IOException;
@@ -105,9 +103,9 @@ Note: Requires Java 2 v1.3.0 or later.
 @author  Brian K. Vogel
 @version  $Id$
 @since Ptolemy II 1.0
-@see AudioReader
-@see AudioCapture
-@see AudioPlayer
+@see ptolemy.media.javasound.AudioReader
+@see ptolemy.media.javasound.AudioCapture
+@see ptolemy.media.javasound.AudioPlayer
 */
 public class AudioWriter extends Sink {
 

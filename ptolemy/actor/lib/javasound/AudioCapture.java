@@ -44,8 +44,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.LiveSound;
 import ptolemy.media.javasound.LiveSoundEvent;
 import ptolemy.media.javasound.LiveSoundListener;
-import ptolemy.media.javasound.SoundReader; // For javadoc
-import ptolemy.media.javasound.SoundWriter; // For javadoc
 
 import java.io.IOException;
 
@@ -108,9 +106,9 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound
-@see AudioPlayer
-@see SoundReader
-@see SoundWriter
+@see ptolemy.media.javasound.AudioPlayer
+@see ptolemy.media.javasound.SoundReader
+@see ptolemy.media.javasound.SoundWriter
 */
 public class AudioCapture extends Source implements LiveSoundListener {
 

@@ -31,9 +31,7 @@
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

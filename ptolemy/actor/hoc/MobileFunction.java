@@ -37,9 +37,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.FunctionType;
-
 import java.util.LinkedList;
 
 

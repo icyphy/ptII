@@ -41,7 +41,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.renderable.ParameterBlock;
 
 import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
 //////////////////////////////////////////////////////////////////////////

@@ -39,10 +39,7 @@ import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.media.javasound.SoundPlayback; // For javadoc
 import ptolemy.media.javasound.SoundReader;
-import ptolemy.media.javasound.SoundWriter; // For javadoc
-
 import java.io.IOException;
 
 
@@ -81,8 +78,8 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound
-@see SoundWriter
-@see SoundPlayback
+@see ptolemy.media.javasound.SoundWriter
+@see ptolemy.media.javasound.SoundPlayback
 */
 public class AudioReader extends Source {
 
