@@ -69,7 +69,7 @@ from the constructor of this class and the _decreaseActiveCount() method
 is called at the end of the run() method, i.e. before the thread terminates.
 <P>
 
-@author Mudit Goel, Neil Smyth
+@author Mudit Goel, Neil Smyth, John S. Davis II
 @version $Id$
 */
 public class ProcessThread extends PtolemyThread {
@@ -112,10 +112,10 @@ public class ProcessThread extends PtolemyThread {
      *  on the actor.
      */
     public void run() {
+	boolean iterate = true; 
 	try {
-            boolean iterate = true;
 	    while (iterate) {
-                iterate = false;
+	        iterate = false;
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if ( ((Entity)_actor).getContainer() != null ) {
@@ -123,20 +123,49 @@ public class ProcessThread extends PtolemyThread {
 			_actor.fire();
 			iterate =  _actor.postfire();
 		    }
+		    if( _threadStopRequested && iterate) {
+ 		        if( !((ComponentEntity)getActor()).isAtomic() ) {
+ 			    ((CompositeActor)getActor()).stopFire();
+ 		        }
+ 		        _director.registerStoppedThread();
+			while( _threadStopRequested ) {
+			    synchronized(this) {
+			        wait();
+			    }
+			}
+		    }
 		}
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
+	} catch (InterruptedException e) {
+            _manager.notifyListenersOfException(e);
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
             try {
-		wrapup();
+ 		wrapup();
             } catch (IllegalActionException e) {
                 _manager.notifyListenersOfException(e);
             }
             _director._decreaseActiveCount();
         }
+    }
+
+    /** Restart this thread if it has stopped in response to a 
+     *  call to stopFire(). 
+     */
+    public synchronized void restartThread() {
+ 	_threadStopRequested = false;
+    }
+ 
+    /** Request that execution of the actor controlled by this
+     *  thread stop. Call stopFire() on all composite actors 
+     *  that are contained by the composite actor that contains 
+     *  this director. 
+     */
+    public synchronized void stopThread() {
+	_threadStopRequested = true;
     }
 
     /** End the execution of the actor under the control of this
@@ -156,6 +185,7 @@ public class ProcessThread extends PtolemyThread {
     private Actor _actor;
     private ProcessDirector _director;
     private Manager _manager;
+    private boolean _threadStopRequested = false;
 }
 
 
