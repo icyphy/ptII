@@ -2069,3 +2069,51 @@ test MoMLChangeRequest-14.0 {test export moml from a derived instance} {
 </entity>
 }}
 
+set body {
+<entity name="cls3" class="ptolemy.actor.TypedCompositeActor">
+    <class name="C0" extends="ptolemy.actor.TypedCompositeActor">
+        <property name="p" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </class>
+    <class name="C1" extends="ptolemy.actor.TypedCompositeActor">
+        <class name="SC0" extends="C0">
+        </class>
+        <entity name="A0" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="ISC0" class="SC0">
+                <property name="p" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </entity>
+        </entity>
+    </class>
+    <class name="SC1" extends="C1">
+        <class name="SC0" extends="C0">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+        </class>
+    </class>
+</entity>
+}
+
+set moml "$header $body"
+test MoMLChangeRequest-14.1 {test export moml from a derived instance} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    set top [java::cast ptolemy.kernel.CompositeEntity $toplevel]
+    set p0 [java::cast ptolemy.data.expr.Parameter [$toplevel getAttribute "C1.A0.ISC0.p"]]
+    set p1 [java::cast ptolemy.data.expr.Parameter [$toplevel getAttribute "SC1.SC0.p"]]
+    set p2 [java::cast ptolemy.data.expr.Parameter [$toplevel getAttribute "SC1.A0.ISC0.p"]]
+	set i1 [java::cast ptolemy.kernel.util.NamedObj [$top getEntity "C1.A0.ISC0"]]
+	set i2 [java::cast ptolemy.kernel.util.NamedObj [$top getEntity "SC1.A0.ISC0"]]
+    list \
+    [[$p0 getToken] toString] \
+    [[$p1 getToken] toString] \
+    [[$p2 getToken] toString] \
+    [$i1 exportMoML] \
+    [$i2 exportMoML]
+} {10 20 20 {<entity name="ISC0" class="SC0">
+    <property name="p" class="ptolemy.data.expr.Parameter" value="10">
+    </property>
+</entity>
+} {<entity name="ISC0" class="SC0">
+</entity>
+}}
