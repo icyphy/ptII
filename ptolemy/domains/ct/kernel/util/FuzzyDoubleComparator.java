@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel.util;
@@ -68,6 +68,7 @@ public class FuzzyDoubleComparator implements Comparator{
      *  will be thrown
      *  @param fst The first Double object.
      *  @param snd The second Double object.
+     *  @return The comparison result, -1, 0, or 1.
      */
     public int compare(Object fst, Object snd) {
         double fstvalue = ((Double)fst).doubleValue();
@@ -92,8 +93,8 @@ public class FuzzyDoubleComparator implements Comparator{
      *  If the argument is negative, then its absolute value is taken.
      *  @param thres The threshold.
      */
-    public void setThreshold(double thres) {
-        _threshold = Math.abs(thres);
+    public void setThreshold(double threshold) {
+        _threshold = Math.abs(threshold);
     }
 
     ///////////////////////////////////////////////////////////////////

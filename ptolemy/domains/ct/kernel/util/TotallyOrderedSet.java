@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
 
 */
 
@@ -40,14 +40,14 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// TotallyOrderedSet
 /**
-Totally ordered set, implemented using LinkedList. No repeated elements (
+Totally ordered set with no repeated elements (
 elements that the comparator returns 0).
 @author  Jie Liu
 @version $Id$
 */
 public class TotallyOrderedSet {
     /** Construct the set with the given comparator. comparator is a blank
-     *  final field.
+     *  final field that can't be changed after creation.
      * @see java.util.Comparator
      * @param comparator The Comparator to compare elements.
      */
@@ -60,22 +60,21 @@ public class TotallyOrderedSet {
     ////                         public methods                    ////
     /** Return the index-th element. If the index is out of range
      *  a NoSuchElementException will be thrown.
+     *  @return The requested element.
      */
     public Object at(int index) {
         return _set.get(index);
     }
 
-    /** Clear the set. Remove all the elements.
+    /** Clear the set. Remove all elements.
      */
     public void clear() {
         _set.clear();
     }
 
     /** Return true if the given element is contained in this set.
-     *  This is done by sequentially compare the given elements with
-     *  all the elements in this set, until the one that GREATER_THEN
-     *  the given one is reached. If any comparison returns 0, then
-     *  return true; else return false. If the type of given element
+     *  The equivalence relation is defined by the comparetor.
+     *  If the type of given element
      *  is uncomparable by the comparator, then a ClassCastException
      *  will be thrown.
      *  @return True If the elements is contained according to the
@@ -133,13 +132,16 @@ public class TotallyOrderedSet {
 
     /** Return the index of the given object. Return -1 if the object
      *  is not in the set.
+     *  @return The index.
      */
     public int indexOf(Object obj) {
         return _set.indexOf(obj);
     }
 
     /** Insert the given element, keeping the set sorted. If the set
-     *  <i>contains</i> the given element, then do nothing.
+     *  contains an element "equals" to the given element, 
+     *  then do nothing.
+     *  The equivalence relation is defined by the comparator.
      *  If the type of given element
      *  is uncomparable by the comparator, then a ClassCastException
      *  will be thrown.
@@ -192,7 +194,9 @@ public class TotallyOrderedSet {
     }
 
     /** Remove and return the index-th element.
+     *  Thrown an exception if the set is empty.
      *  @param index The index of the element.
+     *  @return The removed element.
      *  @exception NoSuchElementException If the specified index is
      *        out of range.
      */
@@ -200,7 +204,10 @@ public class TotallyOrderedSet {
         return _set.remove(index);
     }
 
-    /** Remove and return the first element.
+    /** Remove and return the first element, ie. the <i>"smallest"</i> 
+     *  element in the set.. Thrown an exception 
+     *  if the set is empty.
+     *  @return The removed element.
      *  @exception NoSuchElementException If the set is empty.
      */
     public Object removeFirst() {
@@ -225,7 +232,7 @@ public class TotallyOrderedSet {
 
     /** Return a String that consists of the contents of the elements
      *  in the set. The elements are represented by there toString()
-     *  value.
+     *  value. This method is for test purpose.
      *  @return The String description of the set.
      */
     public String toString() {
