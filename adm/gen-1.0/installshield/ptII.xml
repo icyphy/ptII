@@ -142,7 +142,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32JVMResolutionExtra">
                         <property name="bundledJVMResource"/>
-                        <property name="useCurrentJVM">False</property>
+                        <property name="useCurrentJVM">True</property>
                         <property array="True" length="0" name="JVMFileResources" type="string"/>
                         <property array="True" length="1" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
@@ -151,7 +151,7 @@ Berkeley, CA 94706</property>
                             </arrayItem>
                         </property>
                         <property name="timeout">120</property>
-                        <property name="JVMResolution">2</property>
+                        <property name="JVMResolution">1</property>
                         <property name="bundledJVMSource"/>
                         <property name="bundledJVMArguments"/>
                     </extendedProperty>
@@ -171,14 +171,11 @@ Berkeley, CA 94706</property>
                     <property name="title">Launching Vergil</property>
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
-                    <property array="True" length="4" name="classPath" type="string">
-                        <arrayItem>$P(absoluteInstallLocation)\lib\diva.jar</arrayItem>
-                        <arrayItem>c:\users\cxh\ptII\lib\diva.jar</arrayItem>
-                        <arrayItem>c:\users\cxh\ptII\ptolemy\vergil\vergil.jar</arrayItem>
-                        <arrayItem>c:\users\cxh\ptII\ptolemy\ptsupport.jar</arrayItem>
+                    <property array="True" length="1" name="classPath" type="string">
+                        <arrayItem>c:\users\cxh\ptII</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
-                    <property name="javaArguments"/>
+                    <property name="javaArguments">-verbose:class</property>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean4">
@@ -231,10 +228,10 @@ Berkeley, CA 94706</property>
                     <property name="mainClass">ptolemy.plot.plotml.EditablePlotMLApplication</property>
                     <property name="mainClassArguments"/>
                     <property array="True" length="1" name="classPath" type="string">
-                        <arrayItem>ptolemy\ptsupport.jar</arrayItem>
+                        <arrayItem>c:\users\cxh\ptII</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
-                    <property name="javaArguments"/>
+                    <property name="javaArguments">-verbose:class</property>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean7">
