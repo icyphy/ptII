@@ -60,7 +60,7 @@ import ptolemy.kernel.util.*;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
- */
+*/
 
 public class JAIIDCT extends Transformer {
 

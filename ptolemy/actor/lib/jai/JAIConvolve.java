@@ -49,7 +49,7 @@ import javax.media.jai.RenderedOp;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
- */
+*/
 public class JAIConvolve extends Transformer {
 
     /** Construct an actor with the given container and name.

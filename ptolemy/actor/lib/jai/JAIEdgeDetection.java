@@ -55,7 +55,7 @@ import javax.media.jai.RenderedOp;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
- */
+*/
 public class JAIEdgeDetection extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -232,6 +232,24 @@ public class JAIEdgeDetection extends Transformer {
         }
     }
 
+    /** If a user decides not to use a prespecified mask, this method
+     *  will return a KernalJAI filled with user specified values.
+     */
+    private KernelJAI _maskFiller(DoubleMatrixToken matrix) {
+        double[][] matrixValue = matrix.doubleMatrix();
+        int height = matrix.getRowCount();
+        int width = matrix.getColumnCount();
+        float[] floatArray = new float[width*height];
+        int count = 0;
+        for (int i = 0; i < height; i = i+1) {
+            for (int j = 0; j < width; j = j+1) {
+                floatArray[count] = (float)matrixValue[i][j];
+                count = count + 1;
+            }
+        }
+        return new KernelJAI(width,height,floatArray);
+    }
+
     /** A convenience method to help in assingning masks.  */
     private int _maskNumberer(String maskName)
             throws IllegalActionException {
@@ -265,24 +283,6 @@ public class JAIEdgeDetection extends Transformer {
             throw new IllegalActionException(this,
                     "Unrecognized Mask type: " + maskName);
         }
-    }
-
-    /** If a user decides not to use a prespecified mask, this method
-     *  will return a KernalJAI filled with user specified values.
-     */
-    private KernelJAI _maskFiller(DoubleMatrixToken matrix) {
-        double[][] matrixValue = matrix.doubleMatrix();
-        int height = matrix.getRowCount();
-        int width = matrix.getColumnCount();
-        float[] floatArray = new float[width*height];
-        int count = 0;
-        for (int i = 0; i < height; i = i+1) {
-            for (int j = 0; j < width; j = j+1) {
-                floatArray[count] = (float)matrixValue[i][j];
-                count = count + 1;
-            }
-        }
-        return new KernelJAI(width,height,floatArray);
     }
 
     ///////////////////////////////////////////////////////////////////

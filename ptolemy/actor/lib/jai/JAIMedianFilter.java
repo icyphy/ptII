@@ -55,7 +55,7 @@ import javax.media.jai.operator.MedianFilterShape;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
- */
+*/
 
 public class JAIMedianFilter extends Transformer {
 

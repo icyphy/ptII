@@ -58,7 +58,7 @@ import javax.media.jai.RenderedOp;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
- */
+*/
 
 public class JAIScale extends Transformer {
 
