@@ -847,7 +847,7 @@ public class Pxgraph extends Frame {
 
     /* Spawn a browser and run the applet Plot class so that the
      * user can print.  Note that we use the JDK1.1 PrintJob
-     * class here. 
+     * class here.
      */
     private void _print () {
         // awt.print.destination   - can be "printer" or "file"

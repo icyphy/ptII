@@ -67,7 +67,7 @@ public class Message extends Frame {
         if (foreground != null) setForeground(foreground);
 
         _txtarea = new TextArea(msg, rows, columns, scrollbars);
-        
+
         _txtarea.setEditable(false);
         add("Center", _txtarea);
 

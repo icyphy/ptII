@@ -986,7 +986,7 @@ public class Plot extends PlotBox {
     public void samplePlot() {
         // Create a sample plot.
         this.clear(true);
-              
+
         this.setTitle("Sample plot");
         this.setYRange(-4, 4);
         this.setXRange(0, 100);

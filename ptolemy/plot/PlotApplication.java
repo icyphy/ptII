@@ -116,7 +116,7 @@ public class PlotApplication extends PlotFrame {
      *  @param args The command-line arguments.
      */
     public PlotApplication(String args[]) {
-        
+
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
@@ -189,7 +189,7 @@ public class PlotApplication extends PlotFrame {
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
                 "Copyright (c) 1997-1998,\n" +
-                "The Regents of the University of California."); 
+                "The Regents of the University of California.");
         message.setTitle("About Ptolemy Plot");
     }
 
