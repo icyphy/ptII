@@ -47,10 +47,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
+	ptKeystore \
 	Signature.xml
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -70,6 +71,12 @@ all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
 install: all $(PTCLASSJAR)
+
+ptKeystore: $(ROOT)/ptKeystore
+	cp $(ROOT)/ptKeystore .
+
+$(ROOT)/ptKeystore:
+	(cd $(ROOT); $(MAKE) ptKeystore)
 
 demo: demo_ptolemy demo_vergil
 
