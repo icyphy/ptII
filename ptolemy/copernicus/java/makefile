@@ -306,30 +306,45 @@ gcj1:
 		gcj --main=ptolemy.copernicus.java.cg.Orthogonal.Main -o ortho *.class
 	@echo "Even so, this fails when linking"
 
+GCJ_DIR=/home/eecs/cxh/src/ptII/vendors/gcj
+GCJ=$(GCJ_DIR)/bin/gcj
+GCJ_LIBDIR=$(GCJ_DIR)/lib
+
 gcj2: $(ROOT)/$(TARGETPATH)/gcj gcj2_1 gcj2_2
 gcj2_1:
 	@echo "--- Run gcj on all the .class files in the jar file dir"
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		dirs=`find . -type d -print`; \
-		echo "dirs=$$dirs"; \
 		for dir in $$dirs; \
 		do \
-			echo "---Running gcj in $$dir"; \
-			(cd $$dir; CLASSPATH="."; gcj -c --CLASSPATH=$(PTII)/$(TARGETPATH)/gcj --encoding=UTF-8 *.class); \
+			files=`ls -1 $$dir/*.class | awk 'END {print NR}'`; \
+			if [ $$files -gt 1 ]; then \
+				echo "$$retval---Running gcj in $$dir"; \
+				(cd $$dir; CLASSPATH="."; $(GCJ) -g -c --CLASSPATH=$(PTII)/$(TARGETPATH)/gcj --encoding=UTF-8 *.class); \
+			fi; \
 		done;
 gcj2_2:
 	@echo "--- Run gcj on all the .o files in the jar file dir"
 	@echo "    Note that here, we end up needing .class files other"
-	@echo "    than the ones in the jar file"
+	@echo "    than the ones in the tree shaken jar file"
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
-		gcj --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
-			-Wl,-R,/usr/local/lib \
+		$(GCJ) -g --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
+			-Wl,-R,$(GCJ_LIBDIR) \
 			-o $(MODEL)_gcj $$objs;
 
 gcjRun:
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		./$(MODEL)_gcj
+
+GDB=/usr/local/bin/gdb 
+gcjGdb:
+	echo "handle SIGPWR nostop noprint" > .gdbinit
+	echo "handle SIGXCPU nostop noprint" >> .gdbinit
+	echo "directory $(PTII)" >> .gdbinit 
+	$(GDB) $(ROOT)/$(TARGETPATH)/gcj/$(MODEL)_gcj
+
+
 
 gcj3_1:
 	@echo "--- Determine what directories are in the jar file"
