@@ -342,7 +342,6 @@ public class SDFScheduler extends Scheduler {
     protected void _localMemberInitialize() {
         _firingvector = new TreeMap(new NamedObjComparator());
         _firingvectorvalid = true;
-        addDebugListener(new StreamListener());
     }
 
     /** Return the scheduling sequence.  An exception will be thrown if the
