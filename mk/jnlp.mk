@@ -286,8 +286,9 @@ KEYALIAS = claudius
 #
 # make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
 #
-STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
-KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
+STOREPASSWORD = -storepass this.is.the.storePassword,change.it
+KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
+
 KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 
 # Script to update a *.jnlp file with the proper jar files
@@ -551,7 +552,7 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII3.0/jnlp
+DIST_BASE = ptolemyII/ptII4.0/jnlp
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
