@@ -356,9 +356,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Register a (predictable) breakpoint at a specified time.
      *  If the specified time is the current time (within the
-     *  <i>timeResolution</i> of this director), then the actor will
+     *  <i>timeResolution</i> of this director), and the actor is
+     *  not null nor a step size control actor, then the actor will
      *  be fired as part of the current execution phase.  If the
-     *  specified time is in the future, and this director will fire
+     *  specified time is in the future, or the actor is null, or
+     *  the actor is a step size control actor, this director will fire
      *  the specified actor in the specified time. Note, this director
      *  does not deal with discontinuity but only handle the request
      *  from the actors it contains. If some actor tries to produce
@@ -385,8 +387,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     "Requested fire time: " + time + " is earlier than" +
                     " the current time." + currentTime );
         }
+
         if (Math.abs(time - currentTime) < resolution &&
-            actor != null) {
+            actor != null && !(actor instanceof CTStepSizeControlActor)
+            && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
             // Requesting firing at the current time.
             if (_debugging) _debug(((Nameable)actor).getName(),
                     "requests refire at current time: " + currentTime);

@@ -296,6 +296,8 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     $dir fireAt $sys 0.4
     $dir fireAt $sys 0.2
     set bptable [$dir getBreakPoints]
+    set starttime [$bptable first]
+    $bptable removeFirst
     set first [$bptable first]
     set firstAgain [$bptable first]
     $bptable removeFirst
@@ -304,8 +306,8 @@ test CTMultiSolverDirector-3.1 {register a breakpoint} {
     set third [$bptable first]
     $bptable removeFirst
     set stoptime [$bptable first]
-    list $first $firstAgain $second $third $stoptime
-} {0.1 0.1 0.2 0.4 1.0}
+    list $starttime $first $firstAgain $second $third $stoptime
+} {0.0 0.1 0.1 0.2 0.4 1.0}
 
 test CTMultiSolverDirector-3.2 {access empty breakpoint table} {     
     #Note: use above set up.

@@ -355,28 +355,26 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Set suggested next step size to "
                     + getSuggestedNextStepSize());
         }
-        
-        if (((Schedule)schedule.get(CTSchedule.DYNAMIC_ACTORS)).size() != 0) {
-          if (_debugging) {
-            _debug("There are dynamic actors in " 
-                + getContainer().getFullName() 
-                + " require firing at current time.");
-          }
-          
-          if (_debugging) {
+
+        if (_debugging) {
+            _debug("There are dynamic actors in "
+                   + getContainer().getFullName()
+                   + " require firing at current time.");
+        }
+
+        if (_debugging) {
             _debug("Set the current time as a break point: "
-                + getCurrentTime());
-          }
-          fireAt(null, getCurrentTime());
-          if (_debugging) {
+                   + getCurrentTime());
+        }
+        fireAt(null, getCurrentTime());
+        if (_debugging) {
             _debug("Set the stop time as a break point: "
-                + getStopTime());
-          }
-          fireAt(null, getStopTime());
-          if (_debugging) {
+                   + getStopTime());
+        }
+        fireAt(null, getStopTime());
+        if (_debugging) {
             _debug("----- End of Initialization of: " + getFullName());
-          }
-        } 
+        }
     }
 
     /** Return false if the stop time is reached or if any actor returned
