@@ -60,7 +60,7 @@ test DirectedGraph-2.1 {Create an empty instance} {
 ####
 # 
 test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
-    catch {$p reachableNodes null} msg
+    catch {$p {reachableNodes Object} null} msg
     list $msg
 } {{java.lang.IllegalArgumentException: Graph._getNodeId: the specified Object is not a node in this graph.}}
 
@@ -75,7 +75,7 @@ test DirectedGraph-3.1 {Create a cyclic graph with 2 nodes} {
     $p add $n2
     $p addEdge $n1 $n2
     $p addEdge $n2 $n1
-    set reach [$p reachableNodes $n1]
+    set reach [$p {reachableNodes Object} $n1]
     list [$p isAcyclic] [$reach get 0] [$reach get 1]
 } {0 node1 node2}
 
@@ -96,7 +96,7 @@ test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
     $p addEdge $n1 $n3
     $p addEdge $n2 $n4
     $p addEdge $n3 $n4
-    set reach [$p reachableNodes $n2]
+    set reach [$p {reachableNodes Object} $n2]
     list [$p isAcyclic] \
 	 [$reach get 0]
 } {1 node4}
