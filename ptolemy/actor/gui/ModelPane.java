@@ -318,13 +318,12 @@ public class ModelPane extends JPanel implements CloseListener {
 	    _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
 	    _displays.setBackground(null);
 
-	    // Put placeable objects in a reasonable place
-            
-	    for(Iterator i = _allAtomicEntityList(_model).iterator(); 
-                i.hasNext();) {
-		Object o = i.next();
-		if(o instanceof Placeable) {
-		    ((Placeable) o).place(_displays);
+	    // Put placeable objects in a reasonable place.
+            Iterator atomicEntities = model.allAtomicEntityList().iterator(); 
+            while (atomicEntities.hasNext()) {
+                Object object = atomicEntities.next();
+		if(object instanceof Placeable) {
+		    ((Placeable) object).place(_displays);
                 }
             }
         }
@@ -405,21 +404,6 @@ public class ModelPane extends JPanel implements CloseListener {
 
     /** Indicator to include director parameters in the controls. */
     public static int DIRECTOR_PARAMETERS = 4;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private List _allAtomicEntityList(CompositeActor model) {
-        LinkedList entities = (LinkedList)model.deepEntityList();
-        for(int i = 0; i < entities.size(); i++) {
-            Object actor = entities.get(i);
-            if (actor instanceof CompositeActor) {
-                entities.addAll(_allAtomicEntityList((CompositeActor)actor));
-            }
-        }
-        return (List)entities;
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
