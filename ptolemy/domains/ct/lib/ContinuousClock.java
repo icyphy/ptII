@@ -123,6 +123,7 @@ public class ContinuousClock extends Clock implements CTWaveformGenerator {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _currentValue = defaultValue.getToken();
         _tMinus = true;
         _tPlus = false;
         _startTime = Time.POSITIVE_INFINITY;
