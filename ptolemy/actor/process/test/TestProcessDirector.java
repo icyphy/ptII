@@ -99,101 +99,176 @@ public class TestProcessDirector extends ProcessDirector {
      */
     public void fire() throws IllegalActionException {
         Workspace workspace = workspace();
-        boolean continueFireMethod = true;
         synchronized(this) {
-            while( continueFireMethod ) {
-                continueFireMethod = false;
+            _continueFireMethod = true;
+            while( _continueFireMethod ) {
+                _continueFireMethod = false;
 		if( _debugging ) _debug(_name+": beginning fire() cycle;"
                 +"there are "+_actorsBlocked+" actors blocked, " 
                 +_getStoppedProcessesCount()+" actors stopped and "
                 +_getActiveActorsCount()+" actors active.");
                 while( !_areActorsDeadlocked() && !_areActorsStopped() ) {
-                    workspace.wait(this);
+                    if(_debugging) _debug(_name+": about to wait");
+                    // workspace.wait(this);
+                    try {
+                        wait();
+                    } catch(InterruptedException e) {
+                        // Do nothing
+                    }
+                    if(_debugging) _debug(_name+": waking up");
                 }
 		if( _debugging ) _debug(_name+": actors deadlocked or stopped");
-
-		// We know it will be external read deadlocked
-		// by virtue of the test.
-                
-		// Since this is an external read block
-		// we might as well wait to see what
-		// happens. Either the input will block
-		// or the input will not block and the
-		// actors will no longer be deadlocked.
-		while( _areActorsDeadlocked() && !_isInputControllerBlocked() ) {
-		    // JFIXME: Possible deadlock in call to 
-		    // _isInputControllerBlocked(); obtaining
-		    // lock on BranchController in addition
-		    // to this
-		    if( _debugging ) _debug(_name+": actors deadlocked; waiting for input to block");
-		    workspace.wait(this);
-		}
                 if( _areActorsDeadlocked() ) {
-		    if( _debugging ) _debug(_name+": actors deadlocked");
-                } else if( !_areActorsDeadlocked() ) {
-		    if( _debugging ) _debug(_name+": actors no longer deadlocked");
+		    if( _debugging ) _debug(_name+": beginning deadlock resolution");
+                    _attemptToResolveDeadlock();
+                } else if( _areActorsStopped() ) {
+                    stopInputBranchController();
+                    stopOutputBranchController();
+                    _continueFireMethod = false;
+                    _notDone = true;
                 }
-                if( _isInputControllerBlocked() ) {
-		    if( _debugging ) _debug(_name+": input controller stopped");
-                } else if( !_isInputControllerBlocked() ) {
-		    if( _debugging ) _debug(_name+": input controller is not stopped");
+            }
+        }
+    }
+            
+    /**
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    protected boolean haveExternalReadDeadlock() throws IllegalActionException {
+        /*
+        */
+        boolean externalReadBlock = false;
+	if( _debugging ) _debug(_name+": inside haveExternalReadDeadlock;"
+                +"there are "+_actorsBlocked+" actors blocked, " 
+                +_getStoppedProcessesCount()+" actors stopped and "
+                +_getActiveActorsCount()+" actors active.");
+        if( _areActorsDeadlocked() ) {
+            Iterator rcvrs = _blockedRcvrList.iterator();
+            /*
+            if( !rcvrs.hasNext() ) {
+                if(_debugging) _debug("EEEEEEEE: No blocked receivers");
+                externalReadBlock = true;
+            }
+            */
+            while( rcvrs.hasNext() ) {
+                ProcessReceiver rcvr = (ProcessReceiver)rcvrs.next();
+                if(_debugging) _debug("EEEEEEEE: Have a blocked receiver");
+                if( rcvr.isReadBlocked() ) {
+                    if(_debugging) _debug("EEEEEEEE: One receiver blocked on read");
+                    if( rcvr.isConnectedToBoundaryInside() ) {
+                        if(_debugging) _debug("EEEEEEEE: One receiver blocked on external read");
+        		externalReadBlock = true;
+                    }
                 }
-		// if( _debugging ) _debug(_name+": deadlocked or input controller stopped");
+            }
+        }
+        /*
+        if( _getActiveActorsCount() == 0 ) { 
+            externalReadBlock = false;
+        }
+        */
+        if(_debugging) _debug(_name+": haveExternalReadDeadlock() returning " + externalReadBlock);
+        return externalReadBlock;
+        // return true;
+    }
+            
+    /**
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    protected void _attemptToResolveDeadlock() throws IllegalActionException {
+        Workspace workspace = workspace();
+        // if( true ) {
+        if( haveExternalReadDeadlock() ) {
+            // We know it will be external read deadlocked
+            // by virtue of the test.
+                
+            // Since this is an external read block
+            // we might as well wait to see what
+            // happens. Either the input will block
+            // or the input will not block and the
+            // actors will no longer be deadlocked.
+	    while( _areActorsDeadlocked() && !_isInputControllerBlocked() ) {
+		if( _debugging ) _debug(_name+": actors deadlocked; waiting for input to block");
+		workspace.wait(this);
+	    }
+            if( _areActorsDeadlocked() ) {
+		if( _debugging ) _debug(_name+": actors deadlocked");
+            } else if( !_areActorsDeadlocked() ) {
+		if( _debugging ) _debug(_name+": actors no longer deadlocked");
+            }
+            if( _isInputControllerBlocked() ) {
+		if( _debugging ) _debug(_name+": input controller stopped");
+            } else if( !_isInputControllerBlocked() ) {
+		if( _debugging ) _debug(_name+": input controller is not stopped");
+            }
+	    // if( _debugging ) _debug(_name+": deadlocked or input controller stopped");
 
-		while( _areActorsDeadlocked() && _isInputControllerBlocked() ) {
-		    // Reaching this point means that both the
-		    // actors and the input have blocked. 
-		    // However, it is possible that the input
-		    // could awaken resulting in an end to the
-		    // external read block
-		    if( _debugging ) _debug(_name+": actors deadlocked and input controller stopped");
-		    CompositeActor container = (CompositeActor)getContainer();
-		    if( container.getContainer() != null ) {
-                        if( registerBlockedBranchReceiversWithExecutive() ) {
-		            if( _debugging ) _debug(_name+": just registered blocked branches to executive director; there are "+_actorsBlocked+" actors blocked; now waiting");
-			    workspace.wait(this);
-                        
-                        /*
-			Director execDir = ((Actor)container.getContainer()).getDirector();
-			if( execDir instanceof TestProcessDirector ) {
-			    // Since the higher level actor is a process
-			    // let's register a block and wait.
-		            if( _debugging ) _debug(_name+": registering blocked branches to executive director");
-			    ((TestProcessDirector)execDir).registerBlockedBranchReceiversWithExecutive();
-		            if( _debugging ) _debug(_name+": just registered blocked branches to executive director; there are "+_actorsBlocked+" actors blocked; now waiting");
-			    workspace.wait(this);
-                        */
-			} else {
-			    // Since the higher level actor is not a 
-			    // process, let's end this iteration and
-			    // request another iteration. Recall that
-			    // calling stopInputBranchController()
-			    // is a blocking call that when finished
-			    // will guarantee that the (input) branches
-			    // will not restart during this iteration.
-			    stopInputBranchController();
-
-			    if( _areActorsDeadlocked() ) {
-				_notDone = false;
-				return;
-			    } else if( !_areActorsDeadlocked() ) {
-				// It is possible that prior to
-				// stopping the branch controller
-				// a token stuck that caused the
-				// deadlocked actors to awaken.
-				continueFireMethod = true;
-			    }
-			}
+	    while( _areActorsDeadlocked() && _isInputControllerBlocked() ) {
+		// Reaching this point means that both the
+		// actors and the input have blocked. 
+		// However, it is possible that the input
+		// could awaken resulting in an end to the
+		// external read block
+		if( _debugging ) _debug(_name+": actors deadlocked and input controller stopped");
+		CompositeActor container = (CompositeActor)getContainer();
+		if( container.getContainer() != null ) {
+                    if( registerBlockedBranchReceiversWithExecutive() ) {
+		        if( _debugging ) _debug(_name+": just registered blocked branches to executive director; there are "+_actorsBlocked+" actors blocked; now waiting");
+			workspace.wait(this);
 		    } else {
-			_notDone = false;
-			return;
+			// Since the higher level actor is not a 
+			// process, let's end this iteration and
+			// request another iteration. Recall that
+			// calling stopInputBranchController()
+			// is a blocking call that when finished
+			// will guarantee that the (input) branches
+			// will not restart during this iteration.
+			stopInputBranchController();
+
+			if( _areActorsDeadlocked() ) {
+			    _notDone = false;
+			    return;
+			} else if( !_areActorsDeadlocked() ) {
+			    // It is possible that prior to
+			    // stopping the branch controller
+			    // a token stuck that caused the
+			    // deadlocked actors to awaken.
+			    _continueFireMethod = true;
+			}
 		    }
+	        } else {
+		    _notDone = false;
+		    return;
 		}
-		if( !_areActorsDeadlocked() || !_isInputControllerBlocked() ) {
-		    // Reaching this point means that the
-		    // fire method should continue
-		    continueFireMethod = true;
-		}
+	    }
+	    if( !_areActorsDeadlocked() || !_isInputControllerBlocked() ) {
+		// Reaching this point means that the
+		// fire method should continue
+		_continueFireMethod = true;
+            }
+   	} else {
+            // This is not an external read deadlock. Additional
+            // inputs will do no good. Stop the input controllers
+            // and wait for the output controllers.
+            if(_debugging) _debug(_name+": calling stopInputBranchController()");
+            stopInputBranchController();
+            if(_debugging) _debug(_name+": finished calling stopInputBranchController()");
+            /*
+            while( _areActorsDeadlocked() && !_isOutputControllerBlocked() ) {
+                workspace.wait(this);
+            }
+            */
+	    // if( !_areActorsDeadlocked() || !_isOutputControllerBlocked() ) {
+	    if( !_areActorsDeadlocked() ) {
+                if(_debugging) _debug(_name+": actors not deadlocked; will continue fire method");
+		// Reaching this point means that the
+		// fire method should continue
+		_continueFireMethod = true;
+            } else {
+                if(_debugging) _debug(_name+": actors are deadlocked; will not continue fire method");
+		// Reaching this point means that the
+	        _continueFireMethod = false;
+                _notDone = false;
             }
         }
     }
@@ -277,6 +352,8 @@ public class TestProcessDirector extends ProcessDirector {
         }
         return false;
     }
+    
+    protected boolean _continueFireMethod;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
