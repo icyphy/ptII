@@ -80,6 +80,8 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 PTMATLAB_LIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+# make clean removes $(KRUFT)
+KRUFT = matlabWindows.jar
 
 all: jclass
 
