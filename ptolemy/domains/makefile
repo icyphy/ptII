@@ -59,8 +59,8 @@ PTAUXALLJARS = \
 		giotto/giotto.jar \
 		gr/gr.jar \
 		pn/pn.jar \
-		rtos/rtos.jar \
 		rtp/rtp.jar \
+		tm/tm.jar \
 		sr/sr.jar
 
 # Are we shipping these domains?
