@@ -80,6 +80,7 @@ SHELL_FILES = \
 BAT_FILES = $(foreach file, $(SHELL_FILES), $(file).bat)
 
 EXTRA_SRCS = \
+	hyvisual \
 	policy.all \
 	ptinvoke.in \
 	sandbox.policy \

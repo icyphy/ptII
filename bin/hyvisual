@@ -1,0 +1,4 @@
+#!/bin/sh
+# $Id$
+# Invoke vergil -hyvisual
+$PTII/bin/vergil -hyvisual $@
