@@ -50,7 +50,10 @@ PTCLASSJAR =    ecslptolemy.jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ECSLDemux.java \
         ECSLGain.java \
+	ECSLMux.java \
+	ECSLSaturate.java \
 	ECSLStep.java \
 	ECSLSum.java
 
@@ -73,7 +76,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass jars
 
-#include 
 cruiseControlECSL.moml: cruiseControlECSL.xml ecsl2moml
 	./ecsl2moml $<
 
@@ -83,8 +85,22 @@ cruiseControlECSL.xml: cruiseControl.xml
 cruiseControl.xml: cruiseControl.mdl
 	../MDL2XML/bin/MDL2XML $<
 
+
 demo: all cruiseControlECSL.moml
 	$(PTII)/bin/vergil cruiseControlECSL.moml
+
+# Electronic Throttle Control (etc) demo
+demo_etc: all etc_controlECSL.moml
+	$(PTII)/bin/vergil etc_controlECSL.moml
+
+etc_controlECSL.moml: etc_controlECSL.xml ecsl2moml
+	./ecsl2moml $<
+
+etc_controlECSL.xml: ../XML2ECSL/bin/etc_control.xml
+	../XML2ECSL/bin/Xml2Ecsl_d $< $@
+
+
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

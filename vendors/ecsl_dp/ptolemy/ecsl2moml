@@ -223,7 +223,7 @@ awk 'BEGIN {
     map["Abs"] = "ptolemy.actor.lib.AbsoluteValue"
     map["Clock"] = "ptolemy.actor.lib.Clock"
     map["Constant"] = "ptolemy.actor.lib.Const"
-    map["Demux"] = "ptolemy.actor.lib.Select"
+    map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
     # FIXME
     map["DiscreteFilter"] = "ptolemy.domains.de.lib.EventFilter"
     map["DiscretePulseGenerator"] = "ptolemy.actor.lib.Pulse"
@@ -242,13 +242,13 @@ awk 'BEGIN {
     map["MinMax"] = "ptolemy.actor.lib.Maximum"
     # FIXME
     map["MultiPortSwitch"] = "ptolemy.actor.lib.Switch"
-    map["Mux"] = "ptolemy.actor.lib.Multiplexor"
+    map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
     map["Product"] = "ptolemy.actor.lib.MultiplyDivide"
     # FIXME
     map["RelationalOperator"] = "ptolemy.actor.lib.logic.Comparator"
     map["S-Function"] = "ptolemy.matlab.Expression"
     # FIXME
-    map["Saturate"] = "ptolemy.actor.lib.Quantizer"
+    map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
     #map["Scope"] = "ptolemy.actor.lib.gui.TimedPlotter"
     map["Scope"] = "vendors.ecsl_dp.ptolemy.Scope"
     map["Signum"] = "ptolemy.actor.lib.Quantizer"
