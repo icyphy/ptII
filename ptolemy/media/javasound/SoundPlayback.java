@@ -312,7 +312,7 @@ public class SoundPlayback {
      *  to the sound file specified in the constructor.
      *  <p>
      *  The samples should be in the range 
-     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). Sample
+     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). Samples
      *  that are outside this range will be hard-clipped.
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
@@ -492,7 +492,7 @@ public class SoundPlayback {
     }
 
     private void _startPlaybackToFile() {
-	// FIXME: Performance is great when the incoming audio
+	// FIXME: Performance is not great when the incoming audio
 	// samples are being captured in real-time, possibly
 	// due to resizing of the ArrayList.
 	//
