@@ -113,8 +113,8 @@ compileShallowDemo: $(JCLASS)
 	ptolemy.copernicus.shallow.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.writeJimple1 outDir:$(TARGETPATH)/jimple1 \
-		-p wjtp.writeJimple2 outDir:$(TARGETPATH)/jimple2 \
+		-p wjtp.writeJimple1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
+		-p wjtp.writeJimple2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
@@ -135,7 +135,7 @@ runOrthoCommDemo:
 # Time the OrthoComm demo
 TIMEORTHOCOMM_ITERATIONS = 50000
 timeOrthoCommDemo:
-	@echo "Run the model for $(TIMEORTHOCOMM_ITERATIONS) iterations"
+	@echo "Time the model for $(TIMEORTHOCOMM_ITERATIONS) iterations"
 	$(RUN_COMMAND) \
 		-class $(ORTHOCOMMTARGETCLASS) \
 		-director.iterations $(TIMEORTHOCOMM_ITERATIONS) | tail 
