@@ -1,7 +1,6 @@
-
 /** Alter of Extract the ith element from an array.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,7 +28,7 @@
 @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 package ptolemy.domains.hde.lib;
-import java.util.List;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -44,11 +43,8 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-//import ptolemy.kernel.util.IllegalActionException;
-//import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.InternalErrorException;
-//import ptolemy.kernel.util.Workspace;
 
+import java.util.List;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,20 +52,25 @@ import java.util.List;
 //// ArrayMem
 /**
 Alter or Extract the ith element from an internal array.
-Read:  read the ith element from the internal array and send it to the output
-port
-Read parallel: read the entire array and send it to the parallel output
-port
-Write: write the data input to the ith element of an internal array.
-Initialize: write the initializing data input to the internal array.
-It is required that the value of the input index be less than or equal to the
-length parameter.
+
+<p>Read: read the ith element from the internal array and send it to the
+output port
+
+<p>Read parallel: read the entire array and send it to the parallel
+output port
+
+<p>Write: write the data input to the ith element of an internal array.
+
+<p>Initialize: write the initializing data input to the internal array.
+
+<p>It is required that the value of the input index be less than or
+equal to the length parameter.
+
 @see LookupTable
 @see RecordDisassembler
-@authors Edward A. Lee, Elaine Cheong,Jim Armstrong
+@authors Elaine Cheong, Jim Armstrong, Contributor: Edward A. Lee
 @version $Id$
 */
-
 public class ArrayMem extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -113,16 +114,9 @@ public class ArrayMem extends TypedAtomicActor {
         write  = new TypedIOPort(this, "write", true, false);
         write.setTypeEquals(BaseType.BOOLEAN);
 
-
-
-
         // Set parameters.
         length = new Parameter(this, "length");
         length.setExpression("1");
-
-
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,18 +127,25 @@ public class ArrayMem extends TypedAtomicActor {
      *  length of the input array.
      */
     public TypedIOPort index;
+
     /** The read input*/
     public TypedIOPort read;
+
     /** The write input*/
     public TypedIOPort write;
+
     /**The ser/par control for reading and writing**/
     public TypedIOPort serPar;
+
     /** The serieal data input*/
     public  TypedIOPort dataInSer;
+
     /** The serial data output*/
     public  TypedIOPort dataOutSer;
-    /** The parallel  data output*/
+
+    /** The parallel data output*/
     public TypedIOPort dataOutPar;
+
     /** The parallel input data*/
     public TypedIOPort dataInPar;
 
@@ -166,21 +167,23 @@ public class ArrayMem extends TypedAtomicActor {
     /** Get the value of the lenght parameter
      *  Initialize the memory array
      */
-
     public void initialize() throws IllegalActionException{
-        alength =((IntToken)length.getToken()).intValue();
+
+        alength = ((IntToken)length.getToken()).intValue();
         _mem = new Token[alength];
     }
-    /** If read has a token, copy the ith elment of the memory to dataOutSer.
-     *  If write has a token, copy the dataInSer input to the ith element of memory.
-     *  If init has a token, copy the dataInPar input to the internal array*
+
+    /** If read has a token, copy the ith elment of the memory to
+     *  dataOutSer.  If write has a token, copy the dataInSer input to
+     *  the ith element of memory.  If init has a token, copy the
+     *  dataInPar input to the internal array*
      *  @exception IllegalActionException If the index input
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
-        BooleanToken yes=BooleanToken.TRUE;
+        BooleanToken yes = BooleanToken.TRUE;
         /**Read the Serial/Parallel Control*/
-        if(serPar.hasToken(0)){
+        if (serPar.hasToken(0)) {
             _serPar = ((BooleanToken)serPar.get(0)).booleanValue();
         }
 
@@ -195,31 +198,28 @@ public class ArrayMem extends TypedAtomicActor {
             }
         }
         /** Write to the array*/
-        if(write.hasToken(0)){
+        if (write.hasToken(0)) {
             _write = (BooleanToken)write.get(0);
 
-            if (_write.isEqualTo(yes).booleanValue()){
-                if(_serPar){
-                    _mem[_index]=(Token)dataInSer.get(0);
-                }
-                else {if(dataInPar.hasToken(0)){
+            if (_write.isEqualTo(yes).booleanValue()) {
+                if (_serPar) {
+                    _mem[_index] = (Token)dataInSer.get(0);
+                } else if (dataInPar.hasToken(0)) {
                     ArrayToken token = (ArrayToken)dataInPar.get(0);
-                    for(int i = 0; i < alength; i++) {
-                        _mem[i]=(token.getElement(i));
+                    for (int i = 0; i < alength; i++) {
+                        _mem[i] = (token.getElement(i));
                     }
-                }
                 }
             }
             /** Read from the array*/
-            if(read.hasToken(0)){
+            if (read.hasToken(0)) {
                 _read  = (BooleanToken)read.get(0);
-                if(_read.isEqualTo(yes).booleanValue()){
-                    if(_serPar){
-                        dataOutSer.send(0,_mem[_index]);
-                    }
-                    else{
+                if (_read.isEqualTo(yes).booleanValue()) {
+                    if (_serPar) {
+                        dataOutSer.send(0, _mem[_index]);
+                    } else {
 
-                        dataOutPar.send(0,new ArrayToken(_mem));
+                        dataOutPar.send(0, new ArrayToken(_mem));
                     }
                 }
             }
