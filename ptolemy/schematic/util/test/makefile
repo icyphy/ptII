@@ -72,8 +72,10 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES =	alljtests.tcl \
 		exampleEntityLibrary.ptml \
 		exampleIconLibrary.ptml \
-		exampleschematic.ptml \
-		ptolemyicon.dtd
+		exampleRootEntityLibrary.ptml \
+		exampleRootIconLibrary.ptml \
+		exampleschematic.ptml
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
