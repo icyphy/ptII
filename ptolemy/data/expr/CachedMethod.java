@@ -463,7 +463,7 @@ public class CachedMethod {
                         (ptolemy.data.Token)argValues[i]);
             }
             // for(int i = 0; i < num - 1; i++) {
-            //    System.out.println("Convertedarg " + i + " = "
+            //    System.out.println("ConvertedArg " + i + " = "
             //            + methodArgValues[i] + " class = "
             //            + methodArgValues[i].getClass());
             // }
@@ -492,7 +492,7 @@ public class CachedMethod {
                         (ptolemy.data.Token)argValues[i]);
             }
             // for(int i = 0; i < num; i++) {
-            //    System.out.println("Convertedarg " + i + " = "
+            //    System.out.println("ConvertedArg " + i + " = "
             //           + methodArgValues[i] + " class = "
             //           + methodArgValues[i].getClass());
             // }
@@ -781,7 +781,7 @@ public class CachedMethod {
 
                 // System.out.println("checking method " + methods[i]);
 
-                // Check the compatability of arguments.
+                // Check the compatibility of arguments.
                 boolean match = true;
                 for (int j = 0; j < arguments.length && match; j++) {
                     ArgumentConversion conversion =

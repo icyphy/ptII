@@ -192,52 +192,52 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     // @deprecated use separate convert methods for type and arg.
     public static Object[] convertTokenToJavaType(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
-        Object[] retval = new Object[2];
+        Object[] returnValue = new Object[2];
         if (token instanceof DoubleToken) {
             // Note: Java makes a distinction between the class objects
             // for double & Double...
-            retval[0] = new Double(((DoubleToken)token).doubleValue());
-            retval[1] = Double.TYPE;
+            returnValue[0] = new Double(((DoubleToken)token).doubleValue());
+            returnValue[1] = Double.TYPE;
         } else if (token instanceof UnsignedByteToken) {
-            retval[0] = new Byte(((UnsignedByteToken)token).byteValue());
-            retval[1] = Byte.TYPE;
+            returnValue[0] = new Byte(((UnsignedByteToken)token).byteValue());
+            returnValue[1] = Byte.TYPE;
         } else if (token instanceof IntToken) {
-            retval[0] = new Integer(((IntToken)token).intValue());
-            retval[1] = Integer.TYPE;
+            returnValue[0] = new Integer(((IntToken)token).intValue());
+            returnValue[1] = Integer.TYPE;
         } else if (token instanceof LongToken) {
-            retval[0] = new Long(((LongToken)token).longValue());
-            retval[1] = Long.TYPE;
+            returnValue[0] = new Long(((LongToken)token).longValue());
+            returnValue[1] = Long.TYPE;
         } else if (token instanceof StringToken) {
-            retval[0] = new String(((StringToken)token).stringValue());
-            retval[1] = retval[0].getClass();
+            returnValue[0] = new String(((StringToken)token).stringValue());
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof BooleanToken) {
-            retval[0] =
+            returnValue[0] =
                 new Boolean(((BooleanToken)token).booleanValue());
-            retval[1] = Boolean.TYPE;
+            returnValue[1] = Boolean.TYPE;
         } else if (token instanceof ComplexToken) {
-            retval[0] = ((ComplexToken)token).complexValue();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((ComplexToken)token).complexValue();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof FixToken) {
-            retval[0] = ((FixToken)token).fixValue();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((FixToken)token).fixValue();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof FixMatrixToken) {
-            retval[0] = ((FixMatrixToken)token).fixMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((FixMatrixToken)token).fixMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof IntMatrixToken) {
-            retval[0] = ((IntMatrixToken)token).intMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((IntMatrixToken)token).intMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof DoubleMatrixToken) {
-            retval[0] = ((DoubleMatrixToken)token).doubleMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((DoubleMatrixToken)token).doubleMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof ComplexMatrixToken) {
-            retval[0] = ((ComplexMatrixToken)token).complexMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((ComplexMatrixToken)token).complexMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof LongMatrixToken) {
-            retval[0] = ((LongMatrixToken)token).longMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((LongMatrixToken)token).longMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof BooleanMatrixToken) {
-            retval[0] = ((BooleanMatrixToken)token).booleanMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((BooleanMatrixToken)token).booleanMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof ArrayToken) {
             // This is frustrating... It would be nice if there
             // was a Token.getValue() that would return the
@@ -250,7 +250,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((FixToken)((ArrayToken)token)
                                 .getElement(j)).fixValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof IntToken) {
                 int[] array = new int[((ArrayToken)token).length()];
@@ -258,7 +258,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((IntToken)((ArrayToken)token)
                                 .getElement(j)).intValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof LongToken) {
                 long[] array = new long[((ArrayToken)token).length()];
@@ -266,7 +266,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((LongToken)((ArrayToken)token)
                                 .getElement(j)).longValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof DoubleToken) {
                 double[] array = new double
@@ -275,7 +275,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((DoubleToken)((ArrayToken)token)
                                 .getElement(j)).doubleValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof ComplexToken) {
                 Complex[] array = new Complex
@@ -284,7 +284,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((ComplexToken)((ArrayToken)token)
                                 .getElement(j)).complexValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof StringToken) {
                 String[] array = new String
@@ -293,7 +293,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((StringToken)((ArrayToken)token)
                                 .getElement(j)).stringValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof BooleanToken) {
                 boolean[] array = new boolean
@@ -302,18 +302,18 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((BooleanToken)((ArrayToken)token)
                                 .getElement(j)).booleanValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else {
                 // Bailout if we don't recognize the argument.
-                retval[0] = token;
+                returnValue[0] = token;
             }
-            retval[1] = retval[0].getClass();
+            returnValue[1] = returnValue[0].getClass();
         } else {
             // Bailout if we don't recognize the argument.
-            retval[0] = token;
-            retval[1] = retval[0].getClass();
+            returnValue[0] = token;
+            returnValue[1] = returnValue[0].getClass();
         }
-        return retval;
+        return returnValue;
     }
 
     // Convert a token to its underlying java type and return its value
@@ -321,52 +321,52 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     // @deprecated Use separate convert methods for type and arg.
     public static Object convertTokenToJava(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
-        Object[] retval = new Object[2];
+        Object[] returnValue = new Object[2];
         if (token instanceof DoubleToken) {
             // Note: Java makes a distinction between the class objects
             // for double & Double...
-            retval[0] = new Double(((DoubleToken)token).doubleValue());
-            retval[1] = Double.TYPE;
+            returnValue[0] = new Double(((DoubleToken)token).doubleValue());
+            returnValue[1] = Double.TYPE;
         } else if (token instanceof IntToken) {
-            retval[0] = new Integer(((IntToken)token).intValue());
-            retval[1] = Integer.TYPE;
+            returnValue[0] = new Integer(((IntToken)token).intValue());
+            returnValue[1] = Integer.TYPE;
         } else if (token instanceof UnsignedByteToken) {
-            retval[0] = new Byte(((UnsignedByteToken)token).byteValue());
-            retval[1] = Byte.TYPE;
+            returnValue[0] = new Byte(((UnsignedByteToken)token).byteValue());
+            returnValue[1] = Byte.TYPE;
         } else if (token instanceof LongToken) {
-            retval[0] = new Long(((LongToken)token).longValue());
-            retval[1] = Long.TYPE;
+            returnValue[0] = new Long(((LongToken)token).longValue());
+            returnValue[1] = Long.TYPE;
         } else if (token instanceof StringToken) {
-            retval[0] = new String(((StringToken)token).stringValue());
-            retval[1] = retval[0].getClass();
+            returnValue[0] = new String(((StringToken)token).stringValue());
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof BooleanToken) {
-            retval[0] =
+            returnValue[0] =
                 new Boolean(((BooleanToken)token).booleanValue());
-            retval[1] = Boolean.TYPE;
+            returnValue[1] = Boolean.TYPE;
         } else if (token instanceof ComplexToken) {
-            retval[0] = ((ComplexToken)token).complexValue();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((ComplexToken)token).complexValue();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof FixToken) {
-            retval[0] = ((FixToken)token).fixValue();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((FixToken)token).fixValue();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof FixMatrixToken) {
-            retval[0] = ((FixMatrixToken)token).fixMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((FixMatrixToken)token).fixMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof IntMatrixToken) {
-            retval[0] = ((IntMatrixToken)token).intMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((IntMatrixToken)token).intMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof DoubleMatrixToken) {
-            retval[0] = ((DoubleMatrixToken)token).doubleMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((DoubleMatrixToken)token).doubleMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof ComplexMatrixToken) {
-            retval[0] = ((ComplexMatrixToken)token).complexMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((ComplexMatrixToken)token).complexMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof LongMatrixToken) {
-            retval[0] = ((LongMatrixToken)token).longMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((LongMatrixToken)token).longMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof BooleanMatrixToken) {
-            retval[0] = ((BooleanMatrixToken)token).booleanMatrix();
-            retval[1] = retval[0].getClass();
+            returnValue[0] = ((BooleanMatrixToken)token).booleanMatrix();
+            returnValue[1] = returnValue[0].getClass();
         } else if (token instanceof ArrayToken) {
             // This is frustrating... It would be nice if there
             // was a Token.getValue() that would return the
@@ -379,7 +379,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((FixToken)((ArrayToken)token)
                                 .getElement(j)).fixValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof IntToken) {
                 int[] array = new int[((ArrayToken)token).length()];
@@ -387,7 +387,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((IntToken)((ArrayToken)token)
                                 .getElement(j)).intValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof LongToken) {
                 long[] array = new long[((ArrayToken)token).length()];
@@ -395,7 +395,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((LongToken)((ArrayToken)token)
                                 .getElement(j)).longValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof DoubleToken) {
                 double[] array = new double
@@ -404,7 +404,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((DoubleToken)((ArrayToken)token)
                                 .getElement(j)).doubleValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof ComplexToken) {
                 Complex[] array = new Complex
@@ -413,7 +413,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((ComplexToken)((ArrayToken)token)
                                 .getElement(j)).complexValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof StringToken) {
                 String[] array = new String
@@ -422,7 +422,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((StringToken)((ArrayToken)token)
                                 .getElement(j)).stringValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else if (((ArrayToken)token).getElement(0)
                        instanceof BooleanToken) {
                 boolean[] array = new boolean
@@ -431,18 +431,18 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     array[j] = ((BooleanToken)((ArrayToken)token)
                                 .getElement(j)).booleanValue();
                 }
-                retval[0] = array;
+                returnValue[0] = array;
             } else {
                 // Bailout if we don't recognize the argument.
-                retval[0] = token;
+                returnValue[0] = token;
             }
-            retval[1] = retval[0].getClass();
+            returnValue[1] = returnValue[0].getClass();
         } else {
             // Bailout if we don't recognize the argument.
-            retval[0] = token;
-            retval[1] = retval[0].getClass();
+            returnValue[0] = token;
+            returnValue[1] = returnValue[0].getClass();
         }
-        return retval;
+        return returnValue;
     }
 
     public static Class convertTokenTypeToJavaType(Type type)
@@ -572,88 +572,88 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     // Convert a java object to its corresponding Token.
     public static ptolemy.data.Token convertJavaTypeToToken(Object object)
         throws ptolemy.kernel.util.IllegalActionException {
-        ptolemy.data.Token retval = null;
+        ptolemy.data.Token returnValue = null;
         if (object instanceof ptolemy.data.Token) {
-            retval = (ptolemy.data.Token)object;
+            returnValue = (ptolemy.data.Token)object;
         } else if (object instanceof ptolemy.data.Token[]) {
-            retval = new ArrayToken((ptolemy.data.Token[])object);
+            returnValue = new ArrayToken((ptolemy.data.Token[])object);
         } else if (object instanceof Double) {
-            retval = new DoubleToken(((Double)object).doubleValue());
+            returnValue = new DoubleToken(((Double)object).doubleValue());
         } else if (object instanceof Byte) {
             // FIXME: not quite right? Sign?
-            retval = new UnsignedByteToken(((Byte)object).byteValue());
+            returnValue = new UnsignedByteToken(((Byte)object).byteValue());
         } else if (object instanceof Integer) {
-            retval = new IntToken(((Integer)object).intValue());
+            returnValue = new IntToken(((Integer)object).intValue());
         } else if (object instanceof Long) {
-            retval = new LongToken(((Long)object).longValue());
+            returnValue = new LongToken(((Long)object).longValue());
         } else if (object instanceof String) {
-            retval = new StringToken((String)object);
+            returnValue = new StringToken((String)object);
         } else if (object instanceof Boolean) {
-            retval = new BooleanToken(((Boolean)object).booleanValue());
+            returnValue = new BooleanToken(((Boolean)object).booleanValue());
         } else if (object instanceof Complex) {
-            retval = new ComplexToken((Complex)object);
+            returnValue = new ComplexToken((Complex)object);
         } else if (object instanceof FixPoint) {
-            retval = new FixToken((FixPoint)object);
+            returnValue = new FixToken((FixPoint)object);
         } else if (object instanceof int[][]) {
-            retval = new IntMatrixToken((int[][])object);
+            returnValue = new IntMatrixToken((int[][])object);
         } else if (object instanceof double[][]) {
-            retval = new DoubleMatrixToken((double[][])object);
+            returnValue = new DoubleMatrixToken((double[][])object);
         } else if (object instanceof Complex[][]) {
-            retval = new ComplexMatrixToken((Complex[][])object);
+            returnValue = new ComplexMatrixToken((Complex[][])object);
         } else if (object instanceof long[][]) {
-            retval = new LongMatrixToken((long[][])object);
+            returnValue = new LongMatrixToken((long[][])object);
         } else if (object instanceof FixPoint[][]) {
-            retval = new FixMatrixToken((FixPoint[][])object);
+            returnValue = new FixMatrixToken((FixPoint[][])object);
         } else if (object instanceof double[]) {
             DoubleToken[] temp = new DoubleToken
                 [((double[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new DoubleToken(((double[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if (object instanceof Complex[]) {
             ComplexToken[] temp = new ComplexToken
                 [((Complex[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new ComplexToken(((Complex[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if (object instanceof int[]) {
             IntToken[] temp = new IntToken[((int[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new IntToken(((int[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if (object instanceof long[]) {
             LongToken[] temp = new LongToken[((long[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new LongToken(((long[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if (object instanceof boolean[]) {
             BooleanToken[] temp = new BooleanToken[((long[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new BooleanToken(((boolean[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if (object instanceof String[]) {
             StringToken[] temp = new StringToken[((String[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new StringToken(((String[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if (object instanceof FixPoint[]) {
             // Create back an ArrayToken containing FixTokens
             FixToken[] temp = new FixToken[((FixPoint[])object).length];
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
             }
-            retval = new ArrayToken(temp);
+            returnValue = new ArrayToken(temp);
         } else if(object instanceof Object) {
             // Package into an ObjectToken.
-            retval = new ObjectToken(object);
+            returnValue = new ObjectToken(object);
         }
-        return retval;
+        return returnValue;
     }
 }
 
