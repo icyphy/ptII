@@ -38,8 +38,6 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.lib.ParseTreeEvaluatorForGuardExpression;
-import ptolemy.domains.fsm.lib.RelationList;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;

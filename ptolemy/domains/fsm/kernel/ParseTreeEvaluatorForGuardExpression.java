@@ -27,7 +27,7 @@
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 
 */
-package ptolemy.domains.fsm.lib;
+package ptolemy.domains.fsm.kernel;
 
 //FIXME: replace * with individual classes.
 import ptolemy.data.BooleanToken;

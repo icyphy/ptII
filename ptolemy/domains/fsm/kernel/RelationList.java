@@ -27,7 +27,7 @@
 @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.fsm.lib;
+package ptolemy.domains.fsm.kernel;
 
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.Attribute;

@@ -60,6 +60,8 @@ JSRCS = \
 	InterfaceAutomaton.java \
 	InterfaceAutomatonTransition.java \
 	OutputActionsAttribute.java \
+	ParseTreeEvaluatorForGuardExpression.java \
+	RelationList.java \
 	State.java \
 	StateEvent.java \
 	StatePair.java \

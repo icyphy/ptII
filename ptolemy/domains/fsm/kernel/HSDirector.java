@@ -39,7 +39,6 @@ import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
-import ptolemy.domains.fsm.lib.RelationList;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
