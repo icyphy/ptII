@@ -1,4 +1,4 @@
-/* A base class for directors in process oriented domains that
+/* A baseclass for directors in process oriented domains that
 incorporates hierarchical, heterogeneity.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
@@ -47,8 +47,8 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CompositeProcessDirector
 /**
-A base class for directors in process oriented domains that incorporate
-hierarchical heterogeneity. As with the ProcessDirector class,
+A baseclass for directors in process oriented domains that incorporate
+hierarchical heterogeneity. As with ProcessDirector
 CompositeProcessDirectors need to keep a count of the number of active
 processes and the number of processes that are blocked for any reason
 (e.g., trying to read from an empty channel in PN).
