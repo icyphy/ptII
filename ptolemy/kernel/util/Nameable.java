@@ -63,7 +63,7 @@ public interface Nameable {
      *  lists of descriptions of this same form, although different
      *  forms can be used for different keywords.  The keywords are
      *  extensible, but the following are in use: links, ports, entities,
-     *  relations, attributes, and insidelinks, at least.
+     *  relations, attributes, and inside links, at least.
      *  @return A description of this object.
      */
     public String description();
