@@ -134,8 +134,11 @@ public class Unit implements UnitPresentation {
                 }
             }
             if (denominator.size() > 0) {
-                retv += "/";
-                for (int i = 0; i < denominator.size(); i++) {
+                retv += "/"
+                    + ((UnitTerm) (denominator.elementAt(0)))
+                        .getUnit()
+                        .getPrimaryLabel();
+                for (int i = 1; i < denominator.size(); i++) {
                     retv += " "
                         + ((UnitTerm) (denominator.elementAt(i)))
                             .getUnit()
