@@ -290,3 +290,4 @@ test Fraction-3.12 {greaterThan} {
 	set b4 [$d3 greaterThan $d1]
 	concat $b1 $b2 $b3 $b4
 } {1 0 1 0}
+
