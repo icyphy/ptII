@@ -78,7 +78,6 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this solver.
      */
     public ForwardEulerSolver(Workspace workspace) {
         super(workspace);
