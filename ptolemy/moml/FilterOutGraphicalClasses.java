@@ -50,7 +50,7 @@ run tests when there is no graphical display present.
 public class FilterOutGraphicalClasses implements MoMLFilter {
 
     /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
-     *  or "ptolemy.vergile.basic.NodeControllerFactory"
+     *  or "ptolemy.vergil.basic.NodeControllerFactory"
      *  then return "ptolemy.kernel.util.Attribute"; if the attributeValue
      *  is "ptolemy.vergil.icon.AttributeValueIcon" or
      *  "ptolemy.vergil.icon.BoxedValueIcon" then return null, which
