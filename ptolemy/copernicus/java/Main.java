@@ -220,7 +220,7 @@ public class Main extends KernelMain {
         // determined.  The generated code ends up with alot of
         // these that are really just dead code.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iee",
-                new TransformerAdapter(InstanceEqualityEliminator.v())));
+                InstanceEqualityEliminator.v()));
 
         // Remove casts and instanceof Checks.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
