@@ -78,29 +78,32 @@ import ptolemy.kernel.util.Workspace;
    compile-time schedule. Instead, each actor has a set of firing rules
    (patterns) and can be fired if one of them is satisfied, i.e., one
    particular firing pattern forms a prefix of sequences of unconsumed
-   tokens at input ports. The canonical actors in DDF domain include
+   tokens at input ports. The canonical actors in the DDF domain include
    Select and Switch, which consume or produce tokens on different channels
    based on the token received from the control port.
    <p>
    The dynamic scheduler implemented in this director fires all enabled 
    and non-deferrable actors once in a basic iteration. A deferrable 
    actor is one which will not help one of the downstream actors become 
-   enabled because that actor either already has enough data on the channel 
-   connecting those two actors or is waiting for data on another channel. 
-   If no actor fires, then among all deferrable actors, fire those which 
-   have the smallest maximum number of tokens on their output channels 
-   which satisfy the demand of destination actors. A user can treat several
-   such basic iterations as a single iteration by adding a parameter with 
-   name <i>requiredFiringsPerIteration</i> to an actor (which is often a 
-   sink actor or an actor directly connected to output port of the composite 
-   actor) and specifying the number of times this actor must be fired in 
-   a single iteration. If the value of the parameter 
+   enabled because that downstream actor either already has enough tokens on 
+   the channel connecting those two actors or is waiting for tokens on 
+   another channel. If no actor fires so far, which means there is no 
+   enabled and non-deferrable actor, then among all enabled and deferrable 
+   actors, this director fires those which have the smallest maximum number 
+   of tokens on their output channels which satisfy the demand of destination 
+   actors. If still no actor fires, then there is no enabled actor. A user 
+   can treat several such basic iterations as a single iteration by adding 
+   a parameter with name <i>requiredFiringsPerIteration</i> to an actor 
+   (which is often a sink actor or an actor directly connected to output port
+   of the composite actor) and specifying the number of times this actor must 
+   be fired in a single iteration. If the value of the parameter 
    <i>runUntilDeadlockInOneIteration</i> is a BooleanToken with value true, 
    one single iteration consists of repeating the basic iteration until 
-   deadlock is reached, which is the status of the model where all active 
+   deadlock is reached (thus overriding the previous definition of one 
+   iteration), which is the status of the model where all active 
    actors under the control of this director are unable to fire because 
    their firing rules are not satisfied. However, they may be able to fire 
-   again during next iteration when tokens are transferred in from outside 
+   again during next iteration when tokens are transferred in from an outside 
    domain. Note <i>runUntilDeadlockInOneIteration</i> can be set to true 
    only when this director is not on the top level.
    <p> 
@@ -111,9 +114,9 @@ import ptolemy.kernel.util.Workspace;
    </pre>
    One basic(default) iteration consists of:
    <pre>
-   if (E-D != 0) {
-       fire (E-D)
-   } else if (D != 0) { 
+   if (E\D != empty set) {
+       fire (E\D)
+   } else if (D != empty set) { 
        fire minimax(D)
    } else {
        declare deadlock
@@ -125,19 +128,19 @@ import ptolemy.kernel.util.Workspace;
    <p>
    Note that any SDF model can be run with a DDF Director. However, the 
    notion of iteration is different. One could try to imitate the SDF 
-   iteration in DDF domain by controlling the number of firings in one
+   iteration in the DDF domain by controlling the number of firings in one
    iteration for some actors, such as requiring a plotter to plot a fixed
    number of points in each iteration. 
    <p>
-   In DDF domain, the firing rule of any actor is specified by the token
+   In the DDF domain, the firing rule of any actor is specified by the token
    consumption rates of its input ports. A general DDF actor could change 
-   the consumption rates of its input ports after each firing. For multiports,
-   an array token could be used to specify different rates for different 
-   channels connected to the same multiport. Note that in SDF, all channels 
-   connected to the same multiport have the same rate.  
+   the consumption rates of its input ports after each firing of this actor.
+   For multiports, an array token could be used to specify different rates 
+   for different channels connected to the same multiport. Note that in SDF, 
+   all channels connected to the same multiport have the same rate.  
    <p>
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee. 
-   See E. A. Lee etal, "The Almagest," documentation for Ptolemy Classic, 
+   See E. A. Lee et al., "The Almagest," documentation for Ptolemy Classic, 
    Vol. 1, Chapter 7, 1997.
 
    @author Gang Zhou
@@ -198,27 +201,27 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** A Parameter representing the number of times that postfire may be
-     *  called before it returns false.  If the value is less than or
+    /** A Parameter representing the number of times that postfire() may 
+     *  be called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in
-     *  postfire, and thus the execution can continue forever or until 
+     *  postfire(), and thus the execution can continue forever or until 
      *  the model is deadlocked.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
 
-    /** A Parameter representing maximum capacity of each receiver controlled
-     *  by this director. This is an integer that defaults to 0, which means
-     *  the queue in each receiver is unbounded. To specify bounded queues,
-     *  set this to a positive integer.
+    /** A Parameter representing the maximum capacity of each receiver 
+     *  controlled by this director. This is an integer that defaults to 0,
+     *  which means the queue in each receiver is unbounded. To specify 
+     *  bounded queues, set this to a positive integer.
      */
     public Parameter maximumReceiverCapacity;
 
-    /** A parameter representing whether one iteration consists of
-     *  repeated basic iteration until deadlock. If this parameter is
+    /** A parameter indicating whether one iteration consists of
+     *  repeated basic iterations until deadlock. If this parameter is
      *  true, the model will be executed until deadlock in one iteration.
      *  The default value is a BooleanToken with the value false. It 
-     *  cannot be set to true if this director is at top level. 
+     *  cannot be set to true if this director is at the top level. 
      */
     public Parameter runUntilDeadlockInOneIteration;
 
@@ -226,11 +229,12 @@ public class DDFDirector extends Director {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>runUntilDeadlockInOneIteration</i>
-     *  and it is set to be true, then verify this director is not at 
+     *  and it is set to be true, then verify this director is not at the 
      *  top level.
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If this director is at top
-     *   level and <i>runUntilDeadlockInOneIteration</i> is set to be true.
+     *   level and <i>runUntilDeadlockInOneIteration</i> is set to be true,
+     *   or getToken() throws IllegalActionException.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
