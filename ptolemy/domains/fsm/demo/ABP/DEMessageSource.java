@@ -53,14 +53,12 @@ public class DEMessageSource extends TypedAtomicActor {
      *  @param container The composite actor that this actor belongs to.
      *  @param name The name of this actor.
      *  @param value The value of the output events.
-     *  @param lambda The mean of the inter-arrival times.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEMessageSource(TypedCompositeActor container,
-            String name, double maxDelay)
+    public DEMessageSource(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
@@ -69,7 +67,7 @@ public class DEMessageSource extends TypedAtomicActor {
         request.setTypeEquals(BaseType.GENERAL);
         next = new DEIOPort(this, "next", true, false);
         next.setTypeEquals(BaseType.GENERAL);
-        _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
+        maxDelay = new Parameter(this, "maxDelay", new DoubleToken(0.5));
         next.delayTo(request);
         next.delayTo(output);
     }
@@ -92,7 +90,7 @@ public class DEMessageSource extends TypedAtomicActor {
         DEDirector dir = (DEDirector) getDirector();
         double now = dir.getCurrentTime();
         dir.fireAt(this, now +
-                ((DoubleToken)_maxDelay.getToken()).doubleValue() *
+                ((DoubleToken)maxDelay.getToken()).doubleValue() *
                 Math.random());
     }
 
@@ -111,7 +109,8 @@ public class DEMessageSource extends TypedAtomicActor {
         }
         DEDirector dir = (DEDirector)getDirector();
         double now = dir.getCurrentTime();
-        double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue();
+        double maxDelayValue = 
+            ((DoubleToken)maxDelay.getToken()).doubleValue();
 
 	if (next.hasToken(0)) {
             next.get(0);
@@ -119,7 +118,7 @@ public class DEMessageSource extends TypedAtomicActor {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
-                double delay = maxDelay * Math.random();
+                double delay = maxDelayValue * Math.random();
 	        dir.fireAt(this, now + delay);
                 _nextMsgTime = now + delay;
             }
@@ -151,11 +150,11 @@ public class DEMessageSource extends TypedAtomicActor {
     /** @serial The request port. */
     public DEIOPort request;
 
+    /** @serial the mean inter-arrival time and value */
+    public Parameter maxDelay;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** @serial the mean inter-arrival time and value */
-    private Parameter _maxDelay;
 
     /** @serial True if this is the first firing. */
     private boolean _firstFire = true;

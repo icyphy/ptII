@@ -118,8 +118,6 @@ public class DETimer extends TypedAtomicActor {
     /** @serial Expired port. */
     public DEIOPort expired;
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

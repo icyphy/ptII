@@ -105,7 +105,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
 
             // message source
             _msgSrc = new DEMessageSource(_toplevel,
-                    "MessageSource", 0.5);
+                    "MessageSource");
 
             // timer
             _timer = new DETimer(_toplevel, "Timer");
