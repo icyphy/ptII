@@ -121,6 +121,15 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         }
     }
 
+    /** Return true if the first object is contained in the second.
+     */
+    public static boolean isContained(Nameable object1, Nameable object2) {
+        while(object1 != null && object1 != object2) {
+            object1 = object1.getContainer();
+        }
+        return (object1 == object2);
+    }
+
     /** Insert code into the given body of a method in the given class
      *  before the given unit to get a reference to the object
      *  generated for the given entity.
@@ -130,30 +139,44 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
     public static Local getLocalReferenceForEntity(
             Entity entity, SootClass sourceClass, Local local, 
             JimpleBody body, Unit unit, Map options) {
+        System.out.println("Get reference to " + entity + " from " + sourceClass);
         if(ModelTransformer.isActorClass(sourceClass)) {
-            Entity sourceEntity = ModelTransformer.getActorForClass(sourceClass);
+            Entity sourceEntity = 
+                ModelTransformer.getActorForClass(sourceClass);
             if(entity.equals(sourceEntity)) {
                 return local;
             }
-            if(sourceClass.equals(ModelTransformer.getModelClass())) {
-                String fieldName = ModelTransformer.getFieldNameForEntity(entity, sourceEntity);
-                SootField field = ModelTransformer.getModelClass().getFieldByName(fieldName);
-                Local containerLocal = Jimple.v().newLocal("container",
+            if(isContained(entity, sourceEntity)) {
+                Entity entityContainer = getEntityContainerOfObject(entity);
+                SootClass entityContainerClass = 
+                ModelTransformer.getClassForActor(entityContainer);
+                Local entityContainerLocal = getLocalReferenceForEntity(
+                        entityContainer, sourceClass, local, body, unit, options);
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, sourceEntity);
+                SootField field = 
+                    entityContainerClass.getFieldByName(fieldName);
+                Local newLocal = Jimple.v().newLocal("container",
                         RefType.v(PtolemyUtilities.entityClass));
-                body.getLocals().add(containerLocal);
+                body.getLocals().add(newLocal);
                 body.getUnits().insertBefore(
-                        Jimple.v().newInstanceFieldRef(local,
-                                field),
+                        Jimple.v().newAssignStmt(newLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        entityContainerLocal,
+                                        field)),
                         unit);
-                return containerLocal;
+                return newLocal;
             }
-            // Then the source class must something up the hierarchy.
-            CompositeEntity container = (CompositeEntity)sourceEntity.getContainer();
-            SootClass containerClass = ModelTransformer.getClassForActor(container);
+            // Then the source class must be something up the hierarchy.
+            CompositeEntity container = 
+                (CompositeEntity)sourceEntity.getContainer();
+            SootClass containerClass = 
+                ModelTransformer.getClassForActor(container);
             RefType type = RefType.v(containerClass);
             Local containerLocal = Jimple.v().newLocal("container",
                     type);
-            SootField field = sourceClass.getFieldByName(ModelTransformer.getContainerFieldName());
+            SootField field = sourceClass.getFieldByName(
+                    ModelTransformer.getContainerFieldName());
             body.getLocals().add(containerLocal);
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
@@ -161,18 +184,22 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                             Jimple.v().newInstanceFieldRef(
                                     local, field)),
                     unit);
-            return containerLocal; // FIXME!
+            return getLocalReferenceForEntity(entity, containerClass, 
+                    containerLocal, body, unit, options); // FIXME!
         } else {
             // Then the source class must be a class for a settable attribute.
-            NamedObj sourceObject = ModelTransformer.getObjectForClass(sourceClass);
+            NamedObj sourceObject = 
+                ModelTransformer.getObjectForClass(sourceClass);
             Entity container = (Entity)sourceObject.getContainer();
-            System.out.println("sourceObject = " + sourceObject);
-            System.out.println("container = " + container);
-            SootClass containerClass = ModelTransformer.getClassForActor(container);
+//             System.out.println("sourceObject = " + sourceObject);
+//             System.out.println("container = " + container);
+            SootClass containerClass = 
+                ModelTransformer.getClassForActor(container);
             RefType type = RefType.v(containerClass);
             Local containerLocal = Jimple.v().newLocal("container",
                     type);
-            SootField field = sourceClass.getFieldByName(ModelTransformer.getContainerFieldName());
+            SootField field = sourceClass.getFieldByName(
+                    ModelTransformer.getContainerFieldName());
             body.getLocals().add(containerLocal);
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
@@ -203,32 +230,48 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         _options = options;
         _debug = Options.getBoolean(options, "debug");
 
-        
-        for(Iterator classes = ModelTransformer.actorClassList().iterator();
+        for(Iterator classes =
+                ModelTransformer.actorClassList().iterator();
+            classes.hasNext();) {
+            SootClass theClass = (SootClass)classes.next();
+            _createContainerField(theClass);
+        }
+        for(Iterator classes = 
+                ModelTransformer.attributeClassList().iterator();
+            classes.hasNext();) {
+            SootClass theClass = (SootClass)classes.next();
+            _createContainerField(theClass);
+        }
+        for(Iterator classes = 
+                ModelTransformer.actorClassList().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _replaceEntityCalls(theClass);
         }
-        for(Iterator classes = ModelTransformer.attributeClassList().iterator();
+        for(Iterator classes = 
+                ModelTransformer.attributeClassList().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _replaceEntityCalls(theClass);
         }
     }
 
-    private void _replaceEntityCalls(SootClass theClass) {
-        System.out.println("theClass = " + theClass);
-        NamedObj correspondingObject = ModelTransformer.getObjectForClass(theClass);
+    public void _createContainerField(SootClass theClass) {
+        NamedObj correspondingObject = 
+            ModelTransformer.getObjectForClass(theClass);
         // Create a field referencing the container, for all but the top level.
         if(!correspondingObject.equals(_model)) {
             Entity container = (Entity)correspondingObject.getContainer();
-            SootClass containerClass = ModelTransformer.getClassForActor(container);
+            SootClass containerClass = 
+                ModelTransformer.getClassForActor(container);
             SootField field = new SootField(
                     ModelTransformer.getContainerFieldName(),
                     RefType.v(containerClass),
                     Modifier.PUBLIC);
            
             theClass.addField(field);
+
+            ModelTransformer.addFieldForEntity(field, container);
             
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
@@ -264,6 +307,11 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 }
             }
         }
+    }
+
+    private void _replaceEntityCalls(SootClass theClass) {
+        System.out.println("replacing entity calls in " + theClass);
+        NamedObj correspondingObject = ModelTransformer.getObjectForClass(theClass);
 
         // Replace calls to entity method with field references.
         for (Iterator methods = theClass.getMethods().iterator();
@@ -289,22 +337,22 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 if (value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                     if (r.getMethod().getSubSignature().equals(
-                            PtolemyUtilities.getContainerMethod.getSubSignature())) {
-
+                                PtolemyUtilities.getContainerMethod.getSubSignature())) {
+                        
                         Value newFieldRef =
                             _getContainerMethodReplacementFieldRef(
-                                    (Local)r.getBase(),
-                                    unit, localDefs);
+                                    theClass, (Local)r.getBase(),
+                                    body, unit, localDefs);
                         box.setValue(newFieldRef);
                         if (_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().equals(
                             PtolemyUtilities.toplevelMethod)) {
-                        throw new RuntimeException("toplevel not implemented");
-              //           // Replace with reference to the toplevel
-//                         Value newFieldRef =
-//                             ModelTransformer.getFieldRefForEntity(_model);
-//                         box.setValue(newFieldRef);
-//                         if (_debug) System.out.println("replacing " + unit);
+                        // Replace with reference to the toplevel
+                        Value newFieldRef = getLocalReferenceForEntity(
+                                _model, theClass, 
+                                body.getThisLocal(), body, unit, _options);
+                        box.setValue(newFieldRef);
+                        if (_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().getSubSignature().equals(
                             PtolemyUtilities.getEntityMethod.getSubSignature())) {
                         Value nameValue = r.getArg(0);
@@ -313,13 +361,15 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                 (StringConstant)
                                 Evaluator.getConstantValueOf(nameValue);
                             String name = nameConstant.value;
-
-                            Value newFieldRef =
-                                _getEntityMethodReplacementFieldRef(
-                                        (Local)r.getBase(), name,
-                                        unit, localDefs);
-                            box.setValue(newFieldRef);
                             if (_debug) System.out.println("replacing " + unit);
+                            Value newFieldRef =
+                                _getEntityMethodReplacementValue(theClass,
+                                        (Local)r.getBase(), name,
+                                        body, unit, localDefs);
+                            box.setValue(newFieldRef);
+
+                            if (_debug) System.out.println("replacing " + unit);
+                       
                         } else {
                             String string = "Entity cannot be " +
                                 "statically determined";
@@ -333,13 +383,14 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         }
     }
 
-    private Value _getContainerMethodReplacementFieldRef(Local baseLocal,
-            Unit unit, LocalDefs localDefs) {
+    private Value _getContainerMethodReplacementFieldRef(
+            SootClass sourceClass, Local baseLocal,
+            JimpleBody body, Unit unit, LocalDefs localDefs) {
 
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         SootClass theClass = type.getSootClass();
-        NamedObj object = (NamedObj)ModelTransformer.getActorForClass(
+        NamedObj object = (NamedObj)ModelTransformer.getObjectForClass(
                 type.getSootClass());
         if (object != null) {
             // Then we are dealing with a getContainer call on one of the
@@ -349,7 +400,15 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             return Jimple.v().newInstanceFieldRef(baseLocal,
                     theClass.getFieldByName(ModelTransformer.getContainerFieldName()));
         } else {
-            throw new RuntimeException("unexpected getContainer() call on something other than an actor");
+            DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+            FieldRef ref = (FieldRef) stmt.getRightOp();
+            SootField field = ref.getField();
+            Entity entity = (Entity)
+                ModelTransformer.getEntityForField(field);
+            Entity container = (Entity)entity.getContainer();
+            return getLocalReferenceForEntity(container, sourceClass, 
+                    body.getThisLocal(), body, unit, _options);
+        }
   
     //       DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
 //             System.out.println("stmt = " + stmt);
@@ -377,29 +436,31 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             //                     localDefs);
             //             //baseField.getDeclaringClass().getFieldByName(
             //             //    baseField.getName() + "_" + name);
-        }
     }
 
-    private FieldRef _getEntityMethodReplacementFieldRef(Local baseLocal,
-            String name, Unit unit, LocalDefs localDefs) {
-        throw new RuntimeException("getEntity not implemented case");
-     //    // FIXME: This is not enough.
-//         RefType type = (RefType)baseLocal.getType();
-//         NamedObj object = (NamedObj)ModelTransformer.getActorForClass(
-//                 type.getSootClass());
-//         if (object != null) {
-//             // Then we are dealing with a getEntity call on one of the
-//             // classes we are generating.
-//             Entity entity = (Entity)((CompositeEntity)object).getEntity(name);
-//             return ModelTransformer.getFieldRefForEntity(entity);
-//         } else {
-//             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
-//             FieldRef ref = (FieldRef) stmt.getRightOp();
-//             SootField field = ref.getField();
-//             CompositeEntity container = (CompositeEntity)
-//                 ModelTransformer.getEntityForField(field);
-//             return ModelTransformer.getFieldRefForEntity(container.getEntity(name));
-//         }
+    private Value _getEntityMethodReplacementValue(
+            SootClass sourceClass, Local baseLocal,
+            String name, JimpleBody body, Unit unit, LocalDefs localDefs) {
+        // FIXME: This is not enough.
+        RefType type = (RefType)baseLocal.getType();
+        NamedObj object = (NamedObj)ModelTransformer.getActorForClass(
+                type.getSootClass());
+        Entity entity;
+        if (object != null) {
+            // Then we are dealing with a getEntity call on one of the
+            // classes we are generating.
+            entity = (Entity)((CompositeEntity)object).getEntity(name);
+        } else {
+            DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+            FieldRef ref = (FieldRef) stmt.getRightOp();
+            SootField field = ref.getField();
+            CompositeEntity container = (CompositeEntity)
+                ModelTransformer.getEntityForField(field);
+            entity = container.getEntity(name);
+        }
+        if(_debug) System.out.println("found entity = " + entity.getFullName());
+        return getLocalReferenceForEntity(entity, sourceClass, 
+                body.getThisLocal(), body, unit, _options);
     }
 
     /** Attempt to determine the constant value of the given local,

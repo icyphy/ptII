@@ -1606,10 +1606,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         Token operator = (Token)node.getOperator();
         Local leftLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         Local rightLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
-        System.out.println("left = " + leftLocal.hashCode());
-        System.out.println("right = " + rightLocal.hashCode());
-
-
+   
         Type scalarType = RefType.v("ptolemy.data.ScalarToken");
         Local tokenLocal = Jimple.v().newLocal("token",
                 PtolemyUtilities.tokenType);
@@ -1946,7 +1943,6 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     protected Local _getLocalForName(String name)
             throws IllegalActionException {
-        System.out.println("getting local for name = " + name);
         if (_scope != null) {
             Local local = _scope.getLocal(name);
             if (local != null) {

@@ -91,7 +91,6 @@ public class DataUtilities {
             Entity entity, SootClass entityClass, String expression,
             Map nameToField, Map nameToType,
             JimpleBody body, Stmt insertPoint) {
-
         Local local;
         try {
             PtParser parser = new PtParser();
@@ -231,16 +230,27 @@ public class DataUtilities {
                         PtolemyUtilities.tokenType);
                 _body.getLocals().add(tokenLocal);
 
-                NamedObj toplevel = _entity.toplevel();
-                String deepName = result.getName(toplevel);
-
+                Entity entityContainer =
+                    FieldsForEntitiesTransformer.getEntityContainerOfObject(result);
+                String deepName = result.getName(entityContainer);
 
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(containerLocal,
-                                Jimple.v().newVirtualInvokeExpr(
-                                        thisLocal,
-                                        PtolemyUtilities.toplevelMethod)),
+                                thisLocal),
                         _insertPoint);
+                while(container != entityContainer) {
+                    Local containerLocal2 = Jimple.v().newLocal("container",
+                            RefType.v(PtolemyUtilities.namedObjClass));
+                    _body.getLocals().add(containerLocal2);
+                    _units.insertBefore(
+                            Jimple.v().newAssignStmt(containerLocal2,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            containerLocal,
+                                            PtolemyUtilities.getContainerMethod)),
+                            _insertPoint);
+                    container = (NamedObj)container.getContainer();
+                    containerLocal = containerLocal2;
+                }
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(attributeLocal,
                                 Jimple.v().newVirtualInvokeExpr(

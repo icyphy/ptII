@@ -245,7 +245,7 @@ public class NamedObjEliminator extends SceneTransformer {
                             PtolemyUtilities.compositeActorClass) ||
                     SootUtilities.derivesFrom(theClass,
                             PtolemyUtilities.attributeClass)) {
-                System.out.println("changing superclass for " + theClass);
+                //    System.out.println("changing superclass for " + theClass);
                 theClass.setSuperclass(PtolemyUtilities.objectClass);
                 // Fix the constructor for the actor to take just a container argument, if it
                 // was a 2 arg constructor, or no arguments otherwise.
@@ -296,8 +296,8 @@ public class NamedObjEliminator extends SceneTransformer {
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             if (expr.getBase().equals(body.getThisLocal()) &&
                                     expr.getMethod().getName().equals("<init>")) {
-                                System.out.println("replacing constructor = "
-                                        + unit + " in method " + method);
+                                //             System.out.println("replacing constructor = "
+                                //       + unit + " in method " + method);
 
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
@@ -313,19 +313,12 @@ public class NamedObjEliminator extends SceneTransformer {
                             ParameterRef parameterRef = (ParameterRef)value;
                             if(parameterRef.getIndex() == 0 && 
                                     method.getParameterCount() == 1) {
-                                System.out.println("found = " + identityStmt);
+                                //       System.out.println("found = " + identityStmt);
                                 ValueBox box = identityStmt.getRightOpBox();
                                 box.setValue(Jimple.v().newParameterRef(
                                                      method.getParameterType(0), 0));
-                                System.out.println("changed to: " + identityStmt);
-//                                 body.getUnits().insertBefore(
-//                                         Jimple.v().newIdentityStmt(identityStmt.getLeftOp(),
-//                                                 Jimple.v().newParameterRef(
-//                                                         parameterRef.getType(), 0)),
-//                                         body.getFirstNonIdentityStmt());
-//                                 body.getUnits().remove(identityStmt);
+                                //    System.out.println("changed to: " + identityStmt);
                             } else {
-                                System.out.println("index = " + parameterRef.getIndex());
                                 // Parameter values are null.  Note that
                                 // we need to make sure that the
                                 // assignment to null happens after all
@@ -333,11 +326,11 @@ public class NamedObjEliminator extends SceneTransformer {
                                 // super constructor will be implicitly
                                 // called.
                                 body.getUnits().remove(identityStmt);
-                                // body.getUnits().insertBefore(
-//                                         Jimple.v().newAssignStmt(
-//                                                 identityStmt.getLeftOp(),
-//                                                 NullConstant.v()),
-//                                         body.getFirstNonIdentityStmt());
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(
+                                                identityStmt.getLeftOp(),
+                                                NullConstant.v()),
+                                        body.getFirstNonIdentityStmt());
                             }
                         }//  else if (value instanceof ThisRef) {
                         //                             // Fix the type of thisRefs.
@@ -347,15 +340,6 @@ public class NamedObjEliminator extends SceneTransformer {
                         //                                             RefType.v(PtolemyUtilities.objectClass)));
                         //                         }
                     }
-                }
-            }
-
-            // Remove all the interfaces that it implements??
-            for(Iterator interfaces = theClass.getInterfaces().snapshotIterator();
-                interfaces.hasNext();) {
-                SootClass theInterface = (SootClass)interfaces.next();
-                if(theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
-                    theClass.getInterfaces().remove(theInterface);
                 }
             }
         }
@@ -445,6 +429,7 @@ public class NamedObjEliminator extends SceneTransformer {
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
 
+                    //        System.out.println("unit = " + unit);
                     // If any box is removable, then remove the statement.
                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
                          boxes.hasNext();) {
@@ -454,7 +439,7 @@ public class NamedObjEliminator extends SceneTransformer {
                         Type type = value.getType();
 
                         if (_isRemovableType(type)) {
-                            System.out.println("Unit with removable type " + type + ": " + unit);
+                            //             System.out.println("Unit with removable type " + type + ": " + unit);
                             body.getUnits().remove(unit);
                             break;
                         }
@@ -481,6 +466,20 @@ public class NamedObjEliminator extends SceneTransformer {
             }
         }/*
           */
+
+       // Remove all the interfaces that it implements??
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
+            SootClass theClass = (SootClass) i.next();
+                        
+            for(Iterator interfaces = theClass.getInterfaces().snapshotIterator();
+                interfaces.hasNext();) {
+                SootClass theInterface = (SootClass)interfaces.next();
+                if(theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
+                    theClass.getInterfaces().remove(theInterface);
+                }
+            }
+        }
     }
 
     // Return true if the type is one that should not appear in generated
@@ -501,7 +500,9 @@ public class NamedObjEliminator extends SceneTransformer {
                     SootUtilities.derivesFrom(refClass,
                             PtolemyUtilities.portClass) ||
                     SootUtilities.derivesFrom(refClass,
-                            PtolemyUtilities.entityClass)) {
+                            PtolemyUtilities.entityClass) ||
+                    SootUtilities.derivesFrom(refClass,
+                            PtolemyUtilities.inequalityTermClass)) {
                 return true;
             }
         }

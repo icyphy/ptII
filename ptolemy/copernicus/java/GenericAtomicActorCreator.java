@@ -228,8 +228,11 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             attributes.hasNext();) {
             Attribute attribute = (Attribute) attributes.next();
             
+            // If we have an attribute that derives from stringAttribute, then
+            // we need to grab some code for it. (i.e. FileAttribute
             if((attribute instanceof StringAttribute) && 
-                    !(attribute instanceof Variable)) {
+                    !(attribute instanceof Variable) &&
+                    !(attribute.getClass().equals(StringAttribute.class))) {
                 String className = attribute.getClass().getName();
                 
                 SootClass attributeClass = 

@@ -373,7 +373,7 @@ public class FSMCreator implements AtomicActorCreator {
                 } catch (Exception ex) {
                     throw new RuntimeException(ex.getMessage());
                 }
-                if (refinements != null)
+                if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         TypedActor refinement = refinements[i];
 
@@ -384,16 +384,17 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj toplevel = entity.toplevel();
+                        NamedObj containerModel = 
+                            (NamedObj)entity.getContainer();
                         String deepName
-                            = ((NamedObj)refinement).getName(toplevel);
+                            = ((NamedObj)refinement).getName(containerModel);
 
                         units.add(
                                 Jimple.v().newAssignStmt(containerLocal,
-                                        Jimple.v().newVirtualInvokeExpr(
+                                        Jimple.v().newInterfaceInvokeExpr(
                                                 thisLocal,
                                                 PtolemyUtilities
-                                                .toplevelMethod)));
+                                                .getContainerMethod)));
                         units.add(
                                 Jimple.v().newAssignStmt(containerLocal,
                                         Jimple.v().newCastExpr(
@@ -446,14 +447,16 @@ public class FSMCreator implements AtomicActorCreator {
                                                 rpostfireMethod)));
 
                     }
+                }
 
                 // Determine the next state in this state.
                 for (Iterator transitions =
                          state.outgoingPort.linkedRelationList().iterator();
                      transitions.hasNext();) {
                     Transition transition = (Transition)transitions.next();
+                    System.out.println("transition = " + transition);
                     String guardExpression = transition.getGuardExpression();
-
+                                 
                     Local guardLocal =
                         DataUtilities.generateExpressionCode(
                                 entity, entityInstanceClass, guardExpression,
@@ -507,6 +510,7 @@ public class FSMCreator implements AtomicActorCreator {
                          actions.hasNext();) {
                         AbstractActionsAttribute action =
                             (AbstractActionsAttribute)actions.next();
+                        System.out.println("action = " + action);
                         _generateActionCode(entity, entityInstanceClass,
                                 nameToField, nameToType, body, action);
                     }
@@ -691,19 +695,20 @@ public class FSMCreator implements AtomicActorCreator {
                             RefType.v(PtolemyUtilities.attributeClass));
                     body.getLocals().add(attributeLocal);
 
-                    // Get a ref to the parameter through the toplevel,
+                    // Get a ref to the parameter through the container,
                     // since the parameter we are assigning to may be
                     // above us in the hierarchy.
 
-                    NamedObj toplevel = entity.toplevel();
+                    NamedObj containerModel = 
+                        (NamedObj)entity.getContainer();
                     String deepName
-                        = ((NamedObj)destination).getName(toplevel);
+                        = ((NamedObj)destination).getName(containerModel);
 
                     body.getUnits().add(
                             Jimple.v().newAssignStmt(containerLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
+                                    Jimple.v().newInterfaceInvokeExpr(
                                             body.getThisLocal(),
-                                            PtolemyUtilities.toplevelMethod)));
+                                            PtolemyUtilities.getContainerMethod)));
                     body.getUnits().add(
                             Jimple.v().newAssignStmt(attributeLocal,
                                     Jimple.v().newVirtualInvokeExpr(

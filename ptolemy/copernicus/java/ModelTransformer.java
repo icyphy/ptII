@@ -676,6 +676,12 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
+    /** Assert that the given field always points to the given entity.
+     */
+    public static void addFieldForEntity(SootField field, Entity entity) {
+        _fieldToEntityMap.put(field, entity);
+    }
+
     /** Return the name of the field that is created for the
      *  given entity.
      */

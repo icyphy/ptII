@@ -133,6 +133,9 @@ public class Main extends KernelMain {
                         InvocationBinder.v()));
        
         Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalSplitter.v())));
+        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
                         FieldsForEntitiesTransformer.v(toplevel)));
 
@@ -141,7 +144,12 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
-
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.cie",
+                        new TransformerAdapter(
+                                CastAndInstanceofEliminator.v())));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
@@ -163,7 +171,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalNameStandardizer.v())));
          _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        
+         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
@@ -323,11 +331,10 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ib",
                         InvocationBinder.v()));
-        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.noe",
                         NamedObjEliminator.v(toplevel)));
-        
+         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
         

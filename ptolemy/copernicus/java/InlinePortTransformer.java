@@ -353,11 +353,11 @@ public class InlinePortTransformer extends SceneTransformer {
 
                         // If we do this, then we have to get rid of
                         // the ports.
-//                         if (port instanceof Typeable) {
-//                             PtolemyUtilities.inlineTypeableMethods(body,
-//                                     stmt, box, r, (Typeable)port);
+                        if (port instanceof Typeable) {
+                            PtolemyUtilities.inlineTypeableMethods(body,
+                                   stmt, box, r, (Typeable)port);
 
-//                         }
+                        }
 
                         // Inline namedObj methods on the attribute.
                         if (r.getMethod().getSubSignature().equals(
