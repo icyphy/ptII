@@ -29,7 +29,6 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
@@ -49,12 +48,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.util.NamedObj.*;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.util.Iterator;
-import java.util.List;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -391,7 +388,7 @@ public class ModalModel extends TypedCompositeActor
         new Attribute(state, "_centerName");
         new HierarchicalStateControllerFactory(state, "_controllerFactory");
 
-        // Import annotations file.
+        // Import utilities file (including annotations, etc.)
         // Do this as a MoML change request so we can easily read the library
         // spec from a file, rather than replicating it here.
         // NOTE: Because this library has no association with a director,
@@ -399,7 +396,7 @@ public class ModalModel extends TypedCompositeActor
         // This should be OK, since the library is in its own workspace,
         // and modifying the library cannot possibly affect the executing
         // model.
-        String moml = "<input source=\"ptolemy/configs/annotation.xml\"/>";
+        String moml = "<input source=\"ptolemy/configs/basicUtilitiesFSM.xml\"/>";
         MoMLChangeRequest request = new MoMLChangeRequest(
                 this, library, moml);
         library.requestChange(request);
