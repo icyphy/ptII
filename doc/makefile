@@ -158,9 +158,9 @@ mainVergil.htm: main.htm
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 ptII1.0.releaseVergil.htm: ptII1.0.release.htm
-	awk -f javahtml.awk $^ > $@  
+	awk -f javahtml.awk $< > $@  
 troubleshootingVergil.htm: troubleshooting.htm
-	awk -f javahtml.awk $^ > $@  
+	awk -f javahtml.awk $< > $@  
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
