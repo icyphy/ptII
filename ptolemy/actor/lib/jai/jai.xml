@@ -181,6 +181,8 @@
 	      </property>   
 	  </property>
 	</entity>
+	<entity name="JAIPeriodicShift" class="ptolemy.actor.lib.jai.JAIPeriodicShift">
+	</entity>
 	<entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
 	</entity>	
 	<entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
