@@ -35,6 +35,8 @@ import ptolemy.data.Token;
 import ptolemy.actor.TypedCompositeActor;
 // import ptolemy.kernel.util.*;
 
+import net.jini.space.JavaSpace;
+
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
@@ -57,15 +59,22 @@ public class Publisher extends Sink {
     public Publisher(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+
     	jspaceName = new Parameter(this, "jspaceName", 
                 new StringToken("JaveSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
+
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
+
         startingSerialNumber = new Parameter(this, "startingSerialNumber", 
                 new LongToken(0));
         startingSerialNumber.setTypeEquals(BaseType.LONG);
+
+        leaseTime = new Parameter(this, "leaseTime", 
+                new LongToken(Lease.FOREVER));
+        leaseTime.setTypeEquals(BaseType.LONG);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,6 +96,11 @@ public class Publisher extends Sink {
      */  
     public Parameter startingSerialNumber;
 
+    /** The lease time for entries written into the space. The default
+     *  is Least.FOREVER. This parameter must contain a LongToken.
+     */
+    public Parameter leaseTime;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -104,6 +118,7 @@ public class Publisher extends Sink {
             newobj.entryName = (Parameter)newobj.getAttribute("entryName");
             newobj.startingSerialNumber = 
                 (Parameter)newobj.getAttribute("startingSerialNumber");
+            newobj.leaseTime = (Parameter)newobj.getAttribute("leaseTime");
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -115,27 +130,35 @@ public class Publisher extends Sink {
     /** Find the JavaSpaces according to the jspaceName parameter.
      */
     public void preinitialize() throws IllegalActionException {
-    }
+	String name = ((StringToken)jspaceName.getToken()).toString();
+	_space = SpaceFinder.getSpace(name);
 
+	_currentSerialNumber =
+		((LongToken)startingSerialNumber.getToken()).longValue();
+    }
 
     /** Read at most one input token from each channel of the input
      *  and write an entry into the space for each token read.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
+	String name = ((StringToken)entryName.getToken()).toString();
+	String time = ((LongToken)leaseTime.getTokne()).longValue();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-
-
-
-
+		TokenEntry entry = new TokenEntry(name, _currentSerialNumber,
+							token);
+		_currentSerialNumber++;
+		_space.write(name, null, time);
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    private JavaSpace _space;
     private long _currentSerialNumber;
 }
 
