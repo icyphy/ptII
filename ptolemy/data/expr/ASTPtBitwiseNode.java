@@ -72,8 +72,8 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
         for ( i = 1; i < num; i++ ) {
             // need to take the top object, AND put it back at the
             // end so that the tree can be reparsed
-            Object x = _lexicalTokens.take();
-            _lexicalTokens.insertLast(x);
+            Object x = _lexicalTokens.removeFirst();
+            _lexicalTokens.add(x);
             op = ((Token)x).image;
             if (isBoolean) {
                 if ( !(childTokens[i] instanceof BooleanToken) ) {

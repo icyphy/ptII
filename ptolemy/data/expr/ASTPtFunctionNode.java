@@ -39,8 +39,7 @@ import ptolemy.math.Complex;
 
 import java.lang.reflect.*;
 import java.lang.Math;		/* Needed for javadoc */
-import java.util.Enumeration;
-
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionNode
@@ -195,11 +194,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         }
         // Now have the arguments converted, look through all the
         // classes registered with the parser for the appropriate function.
-        Enumeration allClasses = PtParser.getRegisteredClasses().elements();
+        Iterator allClasses = PtParser.getRegisteredClasses().iterator();
         boolean foundMethod = false;
         Object result = null;
-        while (allClasses.hasMoreElements()) {
-            Class nextClass = (Class)allClasses.nextElement();
+        while (allClasses.hasNext()) {
+            Class nextClass = (Class)allClasses.next();
             try {
                 Method m = nextClass.getMethod(_funcName, argTypes);
                 result = m.invoke(nextClass, argValues);

@@ -69,9 +69,9 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         }
         boolean result = values[0];
         for (i = 0; i < _lexicalTokens.size(); i++) {
-            Token x = (Token)_lexicalTokens.take();
+            Token x = (Token)_lexicalTokens.removeFirst();
             // need to reinsert at end if want to reParse tree
-            _lexicalTokens.insertLast(x);
+            _lexicalTokens.add(x);
             if ( x.image.equalsIgnoreCase("&&") ) {
                 result = (result && values[i+1]);
             } else if ( x.image.equalsIgnoreCase("||") ) {

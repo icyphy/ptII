@@ -37,8 +37,9 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+
 import java.util.Vector;
-import collections.LinkedList;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRootNode

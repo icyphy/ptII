@@ -38,7 +38,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.math.Complex;
 import java.util.Hashtable;
-import collections.LinkedList;
+import java.util.LinkedList;
 
 import java.io.*;
 
@@ -262,7 +262,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         try {
             Class newClass = Class.forName(newClassName);
-            _classesSearched.insertLast(newClass);
+            _classesSearched.add((Object)newClass);
         } catch (ClassNotFoundException ex) {
             throw new IllegalArgumentException("PtParser.registerClass: " +
                      "Could not find " + newClassName + ".");
@@ -447,7 +447,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_OR);
         logicalAnd();
-                      jjtn001._lexicalTokens.insertLast(x);
+                      jjtn001._lexicalTokens.add((Object)x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -489,7 +489,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_AND);
         bitwiseOr();
-                      jjtn001._lexicalTokens.insertLast(x);
+                      jjtn001._lexicalTokens.addLast(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -531,7 +531,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(OR);
         bitwiseXor();
-                      jjtn001._lexicalTokens.insertLast(x);
+                      jjtn001._lexicalTokens.addLast(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -573,7 +573,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(XOR);
         bitwiseAnd();
-                      jjtn001._lexicalTokens.insertLast(x);
+                      jjtn001._lexicalTokens.addLast(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -615,7 +615,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(AND);
         logicalEquals();
-                      jjtn001._lexicalTokens.insertLast(x);
+                      jjtn001._lexicalTokens.addLast(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -661,7 +661,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         relational();
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
         break;
       default:
         jj_la1[9] = jj_gen;
@@ -719,7 +719,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         sum();
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
         break;
       default:
         jj_la1[11] = jj_gen;
@@ -777,7 +777,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         term();
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -835,7 +835,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         unary();
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.math.Complex;
 import java.util.Hashtable;
-import collections.LinkedList;
+import java.util.LinkedList;
 
 import java.io.*;
 
@@ -273,7 +273,7 @@ public class PtParser {
         }
         try {
             Class newClass = Class.forName(newClassName);
-            _classesSearched.insertLast(newClass);
+            _classesSearched.add((Object)newClass);
         } catch (ClassNotFoundException ex) {
             throw new IllegalArgumentException("PtParser.registerClass: " +
                      "Could not find " + newClassName + ".");
@@ -497,7 +497,7 @@ void logicalOr() #void :
    (
            logicalAnd() ( 
                    x = <COND_OR> logicalAnd()
-                   {  jjtThis._lexicalTokens.insertLast(x); }
+                   {  jjtThis._lexicalTokens.add((Object)x); }
            )*
    ) #PtLogicalNode(>1)
 }
@@ -508,7 +508,7 @@ void logicalAnd() #void :
    (
            bitwiseOr() ( 
                    x = <COND_AND> bitwiseOr()
-                   {  jjtThis._lexicalTokens.insertLast(x); }
+                   {  jjtThis._lexicalTokens.addLast(x); }
            )*
    ) #PtLogicalNode(>1)
 }
@@ -519,7 +519,7 @@ void bitwiseOr() #void :
    (
            bitwiseXor() ( 
                    x = <OR> bitwiseXor()
-                   {  jjtThis._lexicalTokens.insertLast(x); }
+                   {  jjtThis._lexicalTokens.addLast(x); }
            )*
    ) #PtBitwiseNode(>1)
 }
@@ -530,7 +530,7 @@ void bitwiseXor() #void :
    (
            bitwiseAnd() ( 
                    x = <XOR> bitwiseAnd()
-                   {  jjtThis._lexicalTokens.insertLast(x); }
+                   {  jjtThis._lexicalTokens.addLast(x); }
            )*
    ) #PtBitwiseNode(>1)
 }
@@ -541,7 +541,7 @@ void bitwiseAnd() #void :
    (
            logicalEquals() ( 
                    x = <AND> logicalEquals()
-                   {  jjtThis._lexicalTokens.insertLast(x); }
+                   {  jjtThis._lexicalTokens.addLast(x); }
            )*
    ) #PtBitwiseNode(>1)
 }
@@ -553,7 +553,7 @@ void logicalEquals() #void :
            relational() ( 
                    ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
                    {
-                       jjtThis._lexicalTokens.insertLast(x);
+                       jjtThis._lexicalTokens.addLast(x);
                    }
            )?
    ) #PtRelationalNode(>1)
@@ -567,7 +567,7 @@ void relational() #void :
            sum() ( 
                    ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
                    {
-                       jjtThis._lexicalTokens.insertLast(x);
+                       jjtThis._lexicalTokens.addLast(x);
                    }
            )?
    ) #PtRelationalNode(>1)
@@ -580,7 +580,7 @@ void sum() #void :
            term() ( 
                    ( x = <PLUS> | x = <MINUS> ) term()
                    {
-                       jjtThis._lexicalTokens.insertLast(x);
+                       jjtThis._lexicalTokens.addLast(x);
                    }
            )*
    ) #PtSumNode(>1)
@@ -593,7 +593,7 @@ void term() #void :
            unary() ( 
                    ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
                    {
-                       jjtThis._lexicalTokens.insertLast(x);
+                       jjtThis._lexicalTokens.addLast(x);
                    }
            )*
    ) #PtProductNode(>1)

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.math.Complex;
 import java.util.Hashtable;
-import collections.LinkedList;
+import java.util.LinkedList;
 
 import java.io.*;
 
@@ -273,7 +273,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         }
         try {
             Class newClass = Class.forName(newClassName);
-            _classesSearched.insertLast(newClass);
+            _classesSearched.add((Object)newClass);
         } catch (ClassNotFoundException ex) {
             throw new IllegalArgumentException("PtParser.registerClass: " +
                      "Could not find " + newClassName + ".");
@@ -562,7 +562,7 @@ void logicalOr()       :
    (
            logicalAnd() ( 
                    x = <COND_OR> logicalAnd()
-                   {  jjtn001._lexicalTokens.insertLast(x); }
+                   {  jjtn001._lexicalTokens.add((Object)x); }
            )*
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
@@ -600,7 +600,7 @@ void logicalAnd()       :
    (
            bitwiseOr() ( 
                    x = <COND_AND> bitwiseOr()
-                   {  jjtn001._lexicalTokens.insertLast(x); }
+                   {  jjtn001._lexicalTokens.addLast(x); }
            )*
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
@@ -638,7 +638,7 @@ void bitwiseOr()       :
    (
            bitwiseXor() ( 
                    x = <OR> bitwiseXor()
-                   {  jjtn001._lexicalTokens.insertLast(x); }
+                   {  jjtn001._lexicalTokens.addLast(x); }
            )*
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
@@ -676,7 +676,7 @@ void bitwiseXor()       :
    (
            bitwiseAnd() ( 
                    x = <XOR> bitwiseAnd()
-                   {  jjtn001._lexicalTokens.insertLast(x); }
+                   {  jjtn001._lexicalTokens.addLast(x); }
            )*
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
@@ -714,7 +714,7 @@ void bitwiseAnd()       :
    (
            logicalEquals() ( 
                    x = <AND> logicalEquals()
-                   {  jjtn001._lexicalTokens.insertLast(x); }
+                   {  jjtn001._lexicalTokens.addLast(x); }
            )*
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
@@ -753,7 +753,7 @@ void logicalEquals()       :
            relational() ( 
                    ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
                    {
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
                    }
            )?
    )/*@bgen(jjtree)*/
@@ -794,7 +794,7 @@ void relational()       :
            sum() ( 
                    ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
                    {
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
                    }
            )?
    )/*@bgen(jjtree)*/
@@ -834,7 +834,7 @@ void sum()       :
            term() ( 
                    ( x = <PLUS> | x = <MINUS> ) term()
                    {
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
                    }
            )*
    )/*@bgen(jjtree)*/
@@ -874,7 +874,7 @@ void term()       :
            unary() ( 
                    ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
                    {
-                       jjtn001._lexicalTokens.insertLast(x);
+                       jjtn001._lexicalTokens.addLast(x);
                    }
            )*
    )/*@bgen(jjtree)*/

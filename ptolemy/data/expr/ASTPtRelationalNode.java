@@ -65,9 +65,9 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
         }
         boolean res = false;
         ptolemy.data.Token result = childTokens[0];
-        Token x = (Token)_lexicalTokens.take();
+        Token x = (Token)_lexicalTokens.removeFirst();
         // need to insert at end if want to reparse tree
-        _lexicalTokens.insertLast(x);
+        _lexicalTokens.add(x);
 
         if (x.image.compareTo("==") == 0) {
             result = result.isEqualTo(childTokens[1]);
