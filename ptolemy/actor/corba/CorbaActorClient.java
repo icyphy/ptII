@@ -192,6 +192,7 @@ public class CorbaActorClient extends TypedAtomicActor {
         int i = 0;
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
+            _debug(getName(), " ORB init property ", args[i]);
             i++;
         }
         try {
