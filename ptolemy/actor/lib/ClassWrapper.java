@@ -150,9 +150,9 @@ public class ClassWrapper extends TypedAtomicActor {
         try {
             _class = Class.forName(className.getExpression());
         } catch (ClassNotFoundException ex) {
-            throw new IllegalActionException(this, "Cannot find specified "
-                    + "class " + className.getExpression() + "\n"
-                    + ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "Cannot find specified "
+                    + "class " + className.getExpression());
         }
 
         _methodTable = new Hashtable();
@@ -195,9 +195,9 @@ public class ClassWrapper extends TypedAtomicActor {
                 Constructor constructor = _class.getConstructor(new Class[0]);
                 _instance = constructor.newInstance(new Object[0]);
             } catch (Exception ex) {
-                throw new IllegalActionException(this, "Cannot create an "
-                        + "instance of the specified class.\n"
-                        + ex.getMessage());
+                throw new IllegalActionException(this, ex,
+                        "Cannot create an "
+                        + "instance of the specified class");
             }
         }
     }
@@ -272,11 +272,11 @@ public class ClassWrapper extends TypedAtomicActor {
         } catch (InvocationTargetException ex) {
             // get the exception produced by the invoked function
             ex.getTargetException().printStackTrace();
-            throw new IllegalActionException(this,
-                    "Error invoking method " + m.getName() + "\n" +
-                    ex.getTargetException().getMessage());
+            throw new IllegalActionException(this, ex.getTargetException(),
+                    "Error invoking method " + m.getName());
         } catch (Exception ex)  {
-            new IllegalActionException(ex.getMessage());
+            new IllegalActionException(this, ex,
+                    "Error invoking method " + m.getName());
         }
 
         Token resultToken = null;
