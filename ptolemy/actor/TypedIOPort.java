@@ -137,6 +137,8 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 
     /** Return the resolved type of this object.  The type is represented
      *  by an instance of Class associated with a token type.
+     *  If this port has an undeclared type, and this method is called
+     *  before type resolution takes place, this method returns null.
      *  This method is read-synchronized on the workspace.
      *  @return a Class representing the resolved type.
      */
