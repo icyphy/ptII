@@ -112,11 +112,11 @@ public class OrderedMerge extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         OrderedMerge newObject = (OrderedMerge)super.clone(workspace);
         newObject.inputA.setTypeAtMost(BaseType.SCALAR);
-	newObject.inputB.setTypeSameAs(newObject.inputA);
-	newObject.output.setTypeSameAs(newObject.inputA);
+        newObject.inputB.setTypeSameAs(newObject.inputA);
+        newObject.output.setTypeSameAs(newObject.inputA);
         return newObject;
     }
 
