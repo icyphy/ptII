@@ -272,7 +272,7 @@ public class CSPDirector extends ProcessDirector {
     public void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the model");
-        if ((_actorsDelayed !=0) || _topologyChangesPending ||
+        if ((_actorsDelayed !=0 ) || _topologyChangesPending ||
                 (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
               "when there are actors delayed or paused, or when " +
@@ -431,7 +431,8 @@ public class CSPDirector extends ProcessDirector {
                 // any times within 0.000000001 are considered the same.
                 boolean done = false;
                 while (!done && _delayedActorList.size() > 0 ) {
-                    DelayListLink val = (DelayListLink)_delayedActorList.first();
+                    DelayListLink val =
+                        (DelayListLink)_delayedActorList.first();
                     double tolerance = Math.pow(10, -10);
                     if (Math.abs(val._resumeTime - nextTime) < tolerance) {
                         _delayedActorList.removeFirst();
@@ -447,7 +448,8 @@ public class CSPDirector extends ProcessDirector {
                 }
             } else {
                 System.out.println("REAL DEADLOCK!!");
-                // Real deadlock. Return true so that the fire method can return.
+                // Real deadlock. Return true so that the
+                // fire method can return.
                 return true;
             }
             // Return false for topology changes and time deadlock.
