@@ -514,6 +514,10 @@ public class Solver {
     String _variables[];
     Unit _vectorA[];
     private static final DecimalFormat _vNumFormat = new DecimalFormat("00");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     inner class                           ////
+
     /**
      * Class that represents an index in the P array.
      *
