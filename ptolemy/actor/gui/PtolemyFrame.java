@@ -41,13 +41,14 @@ import ptolemy.actor.Manager;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UndoStackAttribute;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame

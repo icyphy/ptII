@@ -29,10 +29,10 @@
 
 package ptolemy.moml;
 
+import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UndoAction;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLUndoEntry

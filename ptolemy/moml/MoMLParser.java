@@ -65,6 +65,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -73,7 +74,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.UndoStackAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 

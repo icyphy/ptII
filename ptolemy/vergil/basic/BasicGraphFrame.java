@@ -94,6 +94,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.undo.RedoChangeRequest;
+import ptolemy.kernel.undo.UndoChangeRequest;
+import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -104,9 +107,6 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.RedoChangeRequest;
-import ptolemy.kernel.util.UndoChangeRequest;
-import ptolemy.kernel.util.UndoStackAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -135,6 +135,7 @@ import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FocusMouseListener;
 import diva.gui.toolbox.JCanvasPanner;
 import diva.util.java2d.ShapeUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
 /**
