@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II DDF kernel tests
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -48,7 +48,8 @@ TCL_SRCS = \
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS =
+JSIMPLE_TESTS = \
+	DDFDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
