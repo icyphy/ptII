@@ -133,18 +133,15 @@ public class SignatureSigner extends SignatureActor {
         if (input.hasToken(0)) {
             try {
                 // Process the input data to generate a signature.
-                byte[] dataBytes =
-                    CryptographyActor.arrayTokenToUnsignedByteArray(
+                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
                             (ArrayToken)input.get(0));
 
                 _signature.initSign(_privateKey);
                 _signature.update(dataBytes);
 
-                output.send(0,
-                        CryptographyActor.unsignedByteArrayToArrayToken(
+                output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
                                 dataBytes));
-                signature.send(0,
-                        CryptographyActor.unsignedByteArrayToArrayToken(
+                signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
                                 _signature.sign()));
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,

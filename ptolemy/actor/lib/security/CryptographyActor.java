@@ -168,6 +168,8 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  The key size is an integer value representing the number of bits in
      *  the key.  The initial default depends on the algorithm that is
      *  selected, not all algorithms use <i>keySize</i>.
+     *  In addition, only certain keySizes may work with certain
+     *  algorithms, see the documentation for the algorithm you are using.
      *  <p>DSA is the most common algorithm that uses </i>keySize</i>, the Sun
      *  documentation says:
      *  "The length, in bits, of the modulus p. This must range from
@@ -177,7 +179,6 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.
-     *  <p>FIXME: What if the algorithm does not use the keySize?
      */
     public Parameter keySize;
 
@@ -195,24 +196,6 @@ abstract public class CryptographyActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Convert an ArrayToken to an array of unsigned bytes.
-     *
-     * @param dataArrayToken to be converted to a unsigned byte array.
-     * @return dataBytes the resulting unsigned byte array.
-     */
-    public static byte[] arrayTokenToUnsignedByteArray(
-            ArrayToken dataArrayToken) {
-        // FIXME: Seems like this utility function should be in ArrayToken?
-        byte[] dataBytes = new byte[dataArrayToken.length()];
-        for (int j = 0; j < dataArrayToken.length(); j++) {
-            UnsignedByteToken dataToken =
-                (UnsignedByteToken)dataArrayToken.getElement(j);
-            dataBytes[j] = (byte)dataToken.byteValue();
-        }
-        return dataBytes;
-    }
-
 
     /** Override the base class to reinitialize the state if
      *  the <i>algorithm</i>, <i>keySize</i>, or <i>provider</i>
@@ -245,12 +228,11 @@ abstract public class CryptographyActor extends TypedAtomicActor {
         super.fire(); // super.fire() will print out debugging messages. 
         try {
             if (input.hasToken(0)) {
-                byte[] dataBytes =
-                    CryptographyActor.arrayTokenToUnsignedByteArray(
+                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
                             (ArrayToken)input.get(0));
                 dataBytes = _process(dataBytes);
                 output.send(0,
-                        CryptographyActor.unsignedByteArrayToArrayToken(
+                        ArrayToken.unsignedByteArrayToArrayToken(
                                 dataBytes));
             }
         } catch (Exception ex) {
@@ -259,23 +241,6 @@ abstract public class CryptographyActor extends TypedAtomicActor {
         }
 
     }
-
-    /** Take an array of unsigned bytes and convert it to an ArrayToken.
-     *
-     * @param dataBytes data to be converted to an ArrayToken.
-     * @return dataArrayToken the resulting ArrayToken.
-     * @exception IllegalActionException If ArrayToken can not be created.
-     */
-    public static ArrayToken unsignedByteArrayToArrayToken(byte[] dataBytes)
-            throws IllegalActionException{
-                // FIXME: Seems like this utility function should be in ArrayToken?
-                int bytesAvailable = dataBytes.length;
-                Token[] dataArrayToken = new Token[bytesAvailable];
-                for (int j = 0; j < bytesAvailable; j++) {
-                    dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
-                }
-                return new ArrayToken(dataArrayToken);
-            }
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////

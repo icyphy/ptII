@@ -49,23 +49,23 @@ Encrypt an unsigned byte array using a symmetric algorithm.
 
 <p>In cryptography, a symmetric algorithm is an algorithm that uses
 the same key for encryption and decryption.  An asymmetric algorithm uses
-a two different keys: a public key and private key.  Asymmetric algorithms
-are usually much slower than symmetric algorithms.  The initial
-default set of algorithms that comes with the Sun JDK does
-not include a symmetric encryption algorithm, though other algorithms
-may be installed.
+two different keys: a public key and a private key.  Sun's documentation 
+says that asymmetric algorithms are usually much slower than
+symmetric algorithms.  The initial default set of algorithms that
+comes with the Sun JDK does not include an asymmetric encryption algorithm,
+though other algorithms may be installed by the system administrator.
 
 <p>This actor reads an unsigned byte array at the <i>input<i> port,
 encrypts the data using the data from the <i>key</i> port and then
 writes the unsigned byte array results to the <i>output</i> port.
 
-<p>The <i>key</i> is should be the same for both the
+<p>The <i>key</i> should be the same for both the
 SymmetricDecryption actor and this actor.  The <i>key</i> should not
 be visible to users as the security of the encrypted message relies on
 the secrecy of this key.
 
 <p>The <i>algorithm</i> parameter determines which algorithm is used.
-algorithm specified must be symmetric. The mode and padding can also
+The algorithm specified must be symmetric. The mode and padding can also
 be specified in the <i>mode</i> and <i>padding</i> parameters.  In
 case a provider specific instance of an algorithm is needed the
 provider may also be specified in the <i>provider</i> parameter.
@@ -80,7 +80,7 @@ an exception will likely be thrown.
 Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
 
-@author Rakesh Reddy, Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -119,7 +119,7 @@ public class SymmetricEncryption extends CipherActor {
     /** If there is a token on the <i>input</i> port, this method takes the
      *  data from the <i>input</i> and encrypts the data based on the
      *  <i>algorithm</i>, <i>provider</i>, <i>mode</i> and <i>padding</i>
-     *  using the data read in from the <i>key</i> port.
+     *  using the key read in from the <i>key</i> port.
      *  This processed data is then sent on the <i>output</i> port.
      *  All parameters should be the same as the corresponding
      *  decryption actor.  This method calls javax.crypto.Cipher.init()
@@ -155,18 +155,14 @@ public class SymmetricEncryption extends CipherActor {
             throws IllegalActionException{
         // FIXME: should this method try to stream the data and
         // have a wrapup method that calls _cipher.doFinal() instead?
-        _byteArrayOutputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream
+            = new ByteArrayOutputStream();
         try {
-            _byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
+            byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem processing " + dataBytes.length + " bytes.");
         }
-        return _byteArrayOutputStream.toByteArray();
+        return byteArrayOutputStream.toByteArray();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private ByteArrayOutputStream _byteArrayOutputStream;
 }

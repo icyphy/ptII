@@ -181,7 +181,7 @@ abstract public class CipherActor extends CryptographyActor {
      * <dd>Use the default setting for the algorithm.
      *
      * <dt><code>NoPadding</code>
-     * <dd>No padding.
+     * <dd>No padding (do not use padding).
      *
      * <dt><code> OAEPWith<digest>And<mgf>Padding</code>
      * <dd>Optimal Asymmetric Encryption Padding scheme defined in

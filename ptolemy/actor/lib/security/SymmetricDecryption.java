@@ -57,11 +57,11 @@ description of symmetric vs. asymmetric algorithms.
 dencrypts the data using the data from the <i>key</i> port and then
 writes the unsigned byte array results to the <i>output</i> port.
 
-<p>The <i>key</i> is should be the same for both the SymmetricEncryption
+<p>The <i>key</i> should be the same for both the SymmetricEncryption
 actor and this actor.
 
 The <i>algorithm</i> parameter determines which algorithm is used.
-algorithm specified must be symmetric. The mode and padding can also
+The algorithm specified must be symmetric. The mode and padding can also
 be specified in the <i>mode</i> and <i>padding</i> parameters.  In
 case a provider specific instance of an algorithm is needed the
 provider may also be specified in the <i>provider</i> parameter.
