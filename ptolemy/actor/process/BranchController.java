@@ -163,8 +163,8 @@ public class BranchController implements Runnable {
         _ports.add(port);
 
 	Branch branch = null;
-	BoundaryReceiver prodRcvr = null;
-	BoundaryReceiver consRcvr = null;
+	ProcessReceiver prodRcvr = null;
+	ProcessReceiver consRcvr = null;
 	Receiver[][] prodRcvrs = null;
 	Receiver[][] consRcvrs = null;
 
@@ -179,8 +179,8 @@ public class BranchController implements Runnable {
 		throw new IllegalActionException("Bad news");
 	    }
             
-	    prodRcvr = (BoundaryReceiver)prodRcvrs[i][0];
-	    consRcvr = (BoundaryReceiver)consRcvrs[i][0];
+	    prodRcvr = (ProcessReceiver)prodRcvrs[i][0];
+	    consRcvr = (ProcessReceiver)consRcvrs[i][0];
 
 	    branch = new Branch( prodRcvr, consRcvr, this );
 	    _branches.add(branch);
@@ -195,7 +195,7 @@ public class BranchController implements Runnable {
 	setActive(false);
         Iterator branches = _branches.iterator();
         Branch branch = null;
-        BoundaryReceiver bRcvr = null;
+        ProcessReceiver bRcvr = null;
         while (branches.hasNext()) {
             branch = (Branch)branches.next();
             branch.setActive(false);

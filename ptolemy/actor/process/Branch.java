@@ -81,7 +81,7 @@ public class Branch implements Runnable {
  
     /** Construct a Branch object.
      */
-    public Branch(BoundaryReceiver prodRcvr, BoundaryReceiver consRcvr, 
+    public Branch(ProcessReceiver prodRcvr, ProcessReceiver consRcvr, 
 	    BranchController cntlr) throws IllegalActionException {
         _controller = cntlr;
         
@@ -112,7 +112,7 @@ public class Branch implements Runnable {
      * @return The consumer receiver that this branch puts data into.
      * @see ptolemy.actor.process.BoundaryDetector
      */
-    public BoundaryReceiver getConsReceiver() {
+    public ProcessReceiver getConsReceiver() {
         return _consRcvr;
     }
 
@@ -122,7 +122,7 @@ public class Branch implements Runnable {
      * @return The producer receiver that this branch gets data from.
      * @see ptolemy.actor.process.BoundaryDetector
      */
-    public BoundaryReceiver getProdReceiver() {
+    public ProcessReceiver getProdReceiver() {
         return _prodRcvr;
     }
 
@@ -172,8 +172,6 @@ public class Branch implements Runnable {
                 _consRcvr.put(token, this);
                 */
             }
-        } catch( TerminateBranchException e ) {
-            return;
         } catch( TerminateProcessException e ) {
             return;
         }
@@ -218,8 +216,8 @@ public class Branch implements Runnable {
     // The controller of this thread is trying to perform a conditional
     // rendezvous for.
     private BranchController _controller;
-    private BoundaryReceiver _prodRcvr;
-    private BoundaryReceiver _consRcvr;
+    private ProcessReceiver _prodRcvr;
+    private ProcessReceiver _consRcvr;
     
     private boolean _rcvrBlocked = false;
 

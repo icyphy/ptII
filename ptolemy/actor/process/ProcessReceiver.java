@@ -71,6 +71,10 @@ public interface ProcessReceiver extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** 
+     */
+    public Token get(Branch controllingBranch); 
+
     /** Return true if this receiver is connected to the inside of a 
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
@@ -122,6 +126,10 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isConnectedToBoundaryOutside();
 
+    /** 
+     */
+    public boolean isConsumerReceiver(); 
+
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
@@ -156,6 +164,10 @@ public interface ProcessReceiver extends Receiver {
      */
     public boolean isOutsideBoundary();
     
+    /** 
+     */
+    public boolean isProducerReceiver(); 
+
     /** Determine if this receiver is read blocked.
      */
     public boolean isReadBlocked();
@@ -173,4 +185,8 @@ public interface ProcessReceiver extends Receiver {
      */
     public void requestFinish();
     
+    /** 
+     */
+    public void put(Token token, Branch controllingBranch); 
+
 }

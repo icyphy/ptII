@@ -1,4 +1,4 @@
-/* A BoundaryReceiver that stores tokens via a mailbox.
+/* A ProcessReceiver that stores tokens via a mailbox.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -45,7 +45,7 @@ A MailboxBoundaryReceiver stores tokens via a mailbox.
 
 */
 public class MailboxBoundaryReceiver extends Mailbox 
-	implements BoundaryReceiver {
+	implements ProcessReceiver {
 
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
@@ -88,9 +88,7 @@ public class MailboxBoundaryReceiver extends Mailbox
     }
     
     /** Get a token from the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
+     *  to control the execution of this method. If this receiver is
      *  terminated during the execution of this method, then throw
      *  a TerminateProcessException.
      * @param controllingBranch The Branch controlling execution of
@@ -125,22 +123,7 @@ public class MailboxBoundaryReceiver extends Mailbox
     
     /**
      */
-    public synchronized void wakeUpBlockedPartner() {
-        if( _otherBranch != null ) {
-            _otherBranch.registerRcvrUnBlocked(this);
-        } else {
-            ProcessDirector director = ((ProcessDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
-            director._actorUnBlocked(this);
-            
-        }
-        notifyAll();
-    }
-    
-    /**
-     */
-    public synchronized void prepareToBlock(Branch branch) 
-            throws TerminateBranchException {
+    public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
@@ -203,9 +186,7 @@ public class MailboxBoundaryReceiver extends Mailbox
     }
 
     /** Put a token into the mailbox receiver and specify a Branch
-     *  to control the execution of this method. If the controlling
-     *  branch becomes inactive during the execution of this method,
-     *  then throw a TerminateBranchException. If this receiver is
+     *  to control the execution of this method. If this receiver is
      *  terminated during the execution of this method, then throw
      *  a TerminateProcessException.
      * @param token The token being placed in this receiver.
@@ -257,6 +238,20 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public synchronized void requestFinish() {
     	_terminate = true;
+        notifyAll();
+    }
+    
+    /**
+     */
+    public synchronized void wakeUpBlockedPartner() {
+        if( _otherBranch != null ) {
+            _otherBranch.registerRcvrUnBlocked(this);
+        } else {
+            ProcessDirector director = ((ProcessDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorUnBlocked(this);
+            
+        }
         notifyAll();
     }
     
