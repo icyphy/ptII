@@ -29,11 +29,11 @@
 
 # Variables
 MAJOR_VERSION = 	1.0
-MINOR_VERSION =
+MINOR_VERSION =		.1
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	1_0$(MINOR_VERSION)
+WINDOWS_VERSION =	1_0_1
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -117,9 +117,12 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 # Rebuild the distributions
-# rm unixPtII.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0 PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptII
 rebuild: clean all codeDocPtiny installshield_app 
+
+# rm unixPtII.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0 PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptiny
 rebuildptiny: rebuild build_unixPtiny
+
+# rm unixPtII.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0 PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptII
 rebuildptII: rebuild build_unixPtII
 
 # Codedoc directory for ptiny version
@@ -1027,13 +1030,13 @@ $(INSTALLSHIELD_PTINY_ONLY):
 	# Move vergilConfiguration.xml into app
 	-mv $(INSTALLSHIELD_PTINY)/ptolemy/configs/vergilConfiguration.xml \
 	 	$(INSTALLSHIELD_APP_ONLY)/ptolemy/configs/
-	# We then rename introPtiny.htm so as to get doc/demoPtiny.htm
+	# We then copy introPtiny.htm so as to get doc/demoPtiny.htm
 	# instead of doc/demo.htm
-	 -mv $(INSTALLSHIELD_PTINY)/ptolemy/configs/introPtiny.htm \
+	 -cp $(INSTALLSHIELD_PTINY)/ptolemy/configs/introPtiny.htm \
 		$@/ptolemy/configs/intro.htm 
-	# Rename vergilConfigurationPtiny.xml so that we get the right 
+	# Copy vergilConfigurationPtiny.xml so that we get the right 
 	# directors
-	-mv $(INSTALLSHIELD_PTINY)/ptolemy/configs/vergilConfigurationPtiny.xml \
+	-cp $(INSTALLSHIELD_PTINY)/ptolemy/configs/vergilConfigurationPtiny.xml \
 		$@/ptolemy/configs/vergilConfiguration.xml
 
 #configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
