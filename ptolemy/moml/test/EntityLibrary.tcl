@@ -90,11 +90,7 @@ test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
 </entity>
 }
 
-######################################################################
-####
-#
-test EntityLibrary-1.2 {Test EntityLibrary at top level} {
-    set moml_1 "$header
+set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.moml.EntityLibrary\">
     <configure>
         <?moml
@@ -108,6 +104,11 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     </configure>
 </entity>
 "
+
+######################################################################
+####
+#
+test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
     set entityLibrary [java::cast ptolemy.moml.EntityLibrary $toplevel]
@@ -141,3 +142,112 @@ test EntityLibrary-1.2 {Test EntityLibrary at top level} {
     </entity>
 </group>} {
 } 2}
+
+
+######################################################################
+####
+#
+test EntityLibrary-1.3 {clone} {
+    # Uses setup from 1.2 above
+
+    # FIXME: we should try calling clone while populating a large library
+    set clonedEntityLibrary [java::cast ptolemy.moml.EntityLibrary \
+	    [$entityLibrary clone]] 
+    list \
+	    [$clonedEntityLibrary -noconvert getSource] "\n" \
+	    [$clonedEntityLibrary getText] "\n" \
+	    [$clonedEntityLibrary numEntities]
+} {java0x0 {
+} {<group>
+    <entity name="a" class="ptolemy.actor.AtomicActor">
+    </entity>
+    <entity name="b" class="ptolemy.actor.AtomicActor">
+    </entity>
+</group>} {
+} 2}
+
+######################################################################
+####
+#
+test EntityLibrary-1.4 {deepEntityList} {
+    # Uses setup from 1.2 above
+    # listToNames is defined in $PTII/util/testsuite/enums.tcl
+    listToNames [$entityLibrary deepEntityList]
+} {a b}
+
+######################################################################
+####
+#
+test EntityLibrary-1.5 {deepEntityList with nonexistant file in configure so populate throws and exception} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml_1]
+    set entityLibrary [java::cast ptolemy.moml.EntityLibrary $toplevel]
+
+    puts "This test will print an error message to stderr which can be ignored"
+
+    $entityLibrary configure [java::null] "file:./EntityLibary.tcl" \
+	    {EntityLibrary Test Configure}
+    catch {[$entityLibrary deepEntityList]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.InvalidStateException: Failed to populate Library
+  in .top
+Because:
+./EntityLibary.tcl (No such file or directory)}}
+
+######################################################################
+####
+#
+test EntityLibrary-2.1 {Constructor: EntityLibrary()} {
+    set entityLibrary [java::new ptolemy.moml.EntityLibrary]
+    list [$entityLibrary exportMoML] "\n" \
+	    [$entityLibrary -noconvert getSource] "\n" \
+	    [$entityLibrary getText] "\n" \
+	    [$entityLibrary numEntities]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.moml.EntityLibrary">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <configure>
+        <group>
+            <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </group>
+    </configure>
+</entity>
+} {
+} java0x0 {
+} {<group>
+</group>} {
+} 0}
+
+
+######################################################################
+####
+#
+test EntityLibrary-2.2 {Constructor: EntityLibrary(workspace)} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set entityLibrary [java::new ptolemy.moml.EntityLibrary $w]
+    list [$entityLibrary exportMoML] "\n" \
+	    [$entityLibrary -noconvert getSource] "\n" \
+	    [$entityLibrary getText] "\n" \
+	    [$entityLibrary numEntities]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.moml.EntityLibrary">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <configure>
+        <group>
+            <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </group>
+    </configure>
+</entity>
+} {
+} java0x0 {
+} {<group>
+</group>} {
+} 0}
