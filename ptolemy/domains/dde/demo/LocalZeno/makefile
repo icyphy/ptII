@@ -73,6 +73,7 @@ OPTIONAL_FILES = \
 	'LocalZenoApplet$$4.class' \
 	'LocalZenoApplet$$LayoutListener.class' \
 	'LocalZenoApplet$$LocalEdgeRenderer.class' \
+	'LocalZenoApplet$$LocalZenoGraphController.class' \
 	'LocalZenoApplet$$StateListener.class' \
 	'LocalZenoApplet$$ThreadRenderer.class' 
 
