@@ -49,9 +49,10 @@ import java.util.Iterator;
  *  syntax tree. This code generator requires that static resolution has been
  *  performed beforehand, that indentation
  *  levels (i.e., INDENTATION_KEY property settings) have been set, and that
- *  unique names for methods (i.e., C_NAME KEY property settings
- *  of MethodDeclNodes) have been set. The IndentationVisitor and
- *  and MethodNameGenerator class should be used to handle the latter
+ *  unique identifiers for certain types of Java abstract syntax tree nodes 
+ *  (e.g., method and constructor declarations) have been set for these
+ *  nodes through the C_NAME KEY property. The IndentationVisitor and
+ *  and UniqueNameGenerator classes should be used to handle the latter
  *  two tasks.
  *
  *  @author Shuvra S. Bhattacharyya
