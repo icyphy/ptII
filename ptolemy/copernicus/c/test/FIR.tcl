@@ -77,7 +77,9 @@ test FIR-1.1 {Generate .c, .i.h, and .h files for FIR.xml} {
     set jasmineJar $relativePathToPTII/lib/jasminclasses.jar
     set separator [java::field java.io.File pathSeparator]
     set classpath $ptolemyClasspath$separator$sootJar
-    set classpath $classpath$separator$jasmineJar$separator$rtjar
+
+    # Need buildinClasspath so that we can find JavaScope.zip
+    set classpath $classpath$separator$jasmineJar$separator$rtjar$separator$builtinClasspath
 
     # Set up arguments to C code generation.
     set dummyDirectory ../../nonexistent/something
