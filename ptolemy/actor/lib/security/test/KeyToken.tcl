@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare listToStrings [info procs listToStrings]] == 1} then { 
+    source $PTII/util/testsuite/enums.tcl
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -114,11 +118,24 @@ test KeyToken-4.2 {equals(): Two Keys are not likely to have the same encoding} 
 test KeyToken-4.3 {equals(): Different Algorithms} {
     # uses 1.1 above
 
-    source $PTII/util/testsuite/enums.tcl
-    set s [java::call java.security.Security getAlgorithms "Cipher"]
-    puts "Available Ciphers: [listToStrings $s]"
+    set availableCiphers \
+	    [java::call java.security.Security getAlgorithms "Cipher"]
+    puts "Available Ciphers: [listToStrings $availableCiphers]"
 
-    set keyGenerator4 [java::call javax.crypto.KeyGenerator getInstance "AES"]
+    # Not all Ciphers work, but BLOWFISH should
+    # Java 1.4.1 does not have AES
+    #set ciphers [$availableCiphers iterator] 
+    #while {[$ciphers hasNext] == 1} {
+    #	set cipher [$ciphers next]
+    #	if {"$cipher" == "BLOWFISH"} {
+    #	    break
+    #	}
+    #}
+    set cipher BLOWFISH
+    puts "Using $cipher"
+
+    set keyGenerator4 [java::call javax.crypto.KeyGenerator getInstance \
+	    $cipher]
     set secureRandom4 [java::new java.security.SecureRandom]
     $keyGenerator4 {init int java.security.SecureRandom} 128 $secureRandom4
     set secretKey4 [$keyGenerator4 generateKey]
