@@ -91,7 +91,6 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
-			ptolemy.domains.csp.gui \
 			ptolemy.domains.csp.kernel \
 			ptolemy.domains.csp.lib \
 			ptolemy.domains.ct.gui \
@@ -154,7 +153,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
-			../ptolemy/domains/csp/gui/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
 			../ptolemy/domains/csp/lib/*.java \
 			../ptolemy/domains/ct/gui/*.java \
