@@ -32,7 +32,8 @@ in:
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
 
-<li> The Using Vergil html file has some bogus characters in it.
+<li> The Using Vergil html file has some bogus characters in it, and
+the internal hyperlinks refer to usingVergil.html instead of index.htm
 
 <li> <code>vergil foo</code> hangs.  No window comes up if foo does not exist.
 
@@ -42,12 +43,6 @@ included in the release.
 
 <li> Ptolemy II will not configure and build properly if the pathname leading 
 up to the Ptolemy II directory contains a space. 
-
-
-<li> Dragging the UnitConversion icon into a blank canvas will
-throw an exception because UnitConversion requires data
-in the other Unit icons.
-
 
 <li> Applet issues:
 	<ul>
@@ -62,12 +57,12 @@ in the other Unit icons.
 
 
 	<li> SDF Spectrum plot is not filled at the end
-	<li> $PTII/doc/expression.htm needs to be updated
 
 <li> The DDE Zeno demo produces an error message in the Java Plug-in console
 window:
 <pre>
-java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time to the past; time = 50.001. The _lastTime was 54.0
+java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time
+	      to the past; time = 50.001. The _lastTime was 54.0
 	at ptolemy.domains.dde.kernel.PrioritizedTimedQueue.put(PrioritizedTimedQueue.java:297)
 	at ptolemy.domains.dde.kernel.DDEReceiver.put(DDEReceiver.java:580)
 	at ptolemy.domains.dde.kernel.DDEReceiver.put(DDEReceiver.java:549)
@@ -83,7 +78,11 @@ file system results in an AccessControlException.
 com.microstar.xml.XmlException: XML element "entity" triggers exception:
   java.lang.Exception: Attempted to lookup 'Waveform', but got: 
   java.lang.ClassNotFoundException: Waveform
-Attempted to find as a moml class, but got: java.security.AccessControlException: access denied (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve) in file:/C:/Program Files/Ptolemy/Ptolemy II 2.0 beta2/ptolemy/moml/demo/Networked/ at line 62 and column 118
+Attempted to find as a moml class, but got: 
+             java.security.AccessControlException: access denied
+             (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve)
+	     in file:/C:/Program Files/Ptolemy/Ptolemy II 2.0 beta2/
+                   ptolemy/moml/demo/Networked/ at line 62 and column 118
 	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
 	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:944)
 	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1117)
@@ -119,6 +118,10 @@ java.lang.OutOfMemoryError
 
 	&lt;&lt;no stack trace available&gt;&gt;
 </pre>
+	One workaround is to request garbage collection by doing
+	<CODE>File</CODE> -&gt; <CODE>View</CODE> -&gt;
+	<CODE>JVM Properties</CODE> -&gt;
+	<CODE>Request Garbage Collection</CODE>
 	</ul>
 </ul>
 
@@ -146,9 +149,8 @@ R11 (5.3) and up to and including R12.1 (6.1)
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
-<a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
-
-will only work under Windows.
+<a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
+The SerialComm actor will only work under Windows.
 
 </ul>
 
