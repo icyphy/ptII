@@ -84,7 +84,6 @@ test DoubleMatrixMath-0.5.1 {applyBinaryOperation DoubleBinaryOperation double d
     set mr [java::call ptolemy.math.DoubleMatrixMath \
 	    {applyBinaryOperation ptolemy.math.DoubleBinaryOperation double double[][]} $dbo -1.7 $m3]
 
-    # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
     set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
     regsub -all {,} $s {} stmp
 
@@ -134,7 +133,6 @@ test DoubleMatrixMath-0.6.1 {applyUnaryOperation DoubleUnaryOperation double[][]
 ####################################################################
 test DoubleMatrixMath-1.1 {add double[][] double} {
     set mr [java::call ptolemy.math.DoubleMatrixMath {add double[][] double} $m1 -1.7]
-    # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
     set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
 } {{{23.3}}}
 
@@ -320,6 +318,18 @@ test DoubleMatrixMath-7.8 {orthogonalizeColumns double[][]} {
     # Get rid of trailing ,
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{3.7 -6.779869606653945 -1.1646268307442962} {4862.2 -0.26810850616519133 0.004773493257714222} {-56.4 -23.558203833707434 0.3351163057437292}}}
+} {} 
+
+####################################################################
+test DoubleMatrixMath-7.9 {qr double[][]} {
+    # Result is a double[][][]
+    set mr [java::call ptolemy.math.DoubleMatrixMath qr $m3]
+
+    set s0 [java::call ptolemy.math.DoubleMatrixMath toString [$mr get 0]]
+    set s1 [java::call ptolemy.math.DoubleMatrixMath toString [$mr get 1]]
+    # Get rid of trailing ,
+    regsub -all {,} [list $s0 $s1] {} stmp
+    epsilonDiff $stmp {{{{7.609209887406715E-4 -0.2765503268847303 -0.9609991351188665} {0.9999324409337547 -0.010936124044006986 0.003938877905833077} {-0.011598903720263207 -0.9609372080894999 0.2765233218765346}}} {{{4862.528507885584 236.38407839377675 -36.304385383801595} {0.0 24.51586184340302 -4.312240788141362} {0.0 0.0 1.2118916533680348}}}} {{{3.7 -6.779869606653945 -1.1646268307442962} {4862.2 -0.26810850616519133 0.004773493257714222} {-56.4 -23.558203833707434 0.3351163057437292}}}
 } {} 
 
 ####################################################################

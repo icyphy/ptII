@@ -42,6 +42,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 set epsilon [java::field ptolemy.math.SignalProcessing epsilon]
 
+set a2 [java::new {float[]} 3 [list 4862.2 236.1 -36.25]]
 
 set m3 [java::new {float[][]} 3 [list [list 3.7 -6.6 0.0003] \
                                        [list 4862.2 236.1 -36.25] \
@@ -107,6 +108,50 @@ test FloatMatrixMath-0.6.1 {applyUnaryOperation FloatUnaryOperation float[][]} {
 } {}
 
 ####################################################################
+test FloatMatrixMath-1.7.1 {diag float[]} {
+    set mr [java::call ptolemy.math.FloatMatrixMath \
+	    diag $a2]
+    set s [java::call ptolemy.math.FloatMatrixMath toString $mr]
+    epsilonDiff $s {{{4862.2, 0.0, 0.0}, {0.0, 236.1, 0.0}, {0.0, 0.0, -36.25}}}
+} {}
+
+####################################################################
+test FloatMatrixMath-2.1 {determinate float[][] not square} {
+    catch {set r [java::call ptolemy.math.FloatMatrixMath determinate $m23]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.FloatMatrixMath.determinate() : matrix argument [2 x 3] is not a square matrix.}}
+
+####################################################################
+test FloatMatrixMath-2.2 {determinate float[][]} {
+   set r [java::call ptolemy.math.FloatMatrixMath determinate $m3]
+   set ok [java::call ptolemy.math.SignalProcessing close $r 144468.484375]
+} {1}
+
+####################################################################
+test FloatMatrixMath-3.8.1 {hilbert} {
+    set mr [java::call ptolemy.math.FloatMatrixMath \
+	    hilbert 4]
+    set s [java::call ptolemy.math.FloatMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{1.0 0.5 0.3333333333333333 0.25} {0.5 0.3333333333333333 0.25 0.2} {0.3333333333333333 0.25 0.2 0.16666666666666666} {0.25 0.2 0.16666666666666666 0.14285714285714285}}}
+} {}
+
+####################################################################
+test FloatMatrixMath-5.1 {inverse float[][] not square} {
+    catch {set r [java::call ptolemy.math.FloatMatrixMath inverse $m23]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.FloatMatrixMath.inverse() : matrix argument [2 x 3] is not a square matrix.}}
+
+####################################################################
+test FloatMatrixMath-5.2 {inverse float[][]} {
+    set mr [java::call ptolemy.math.FloatMatrixMath inverse $m3]
+    set s [java::call ptolemy.math.FloatMatrixMath toString $mr]
+    # Get rid of trailing ,
+    regsub -all {,} $s {} stmp
+    ptclose $stmp {{{0.00140871553556869 0.000223800435617599 0.00165558024009741} {-0.150761461342092 0.000125611616474079 0.000938499905222039} {-0.79297446471244 0.00325018981267364 0.228174953683435}}}
+} {1} 
+
+####################################################################
 test FloatMatrixMath-5.8.0 {matrixCopy([][], [][]) } {
     set m3_tmp [java::new {float[][]} 3 \
 	    [list \
@@ -137,3 +182,15 @@ test FloatMatrixMath-5.8.1 {matrixCopy float[][] int int float[][] int int int i
     epsilonDiff $s {{{10.0, -1.1, -2.1}, {10.1, -11.1, -12.1}, {10.2, -11.2, -12.2}}}
 } {}
 
+
+####################################################################
+test FloatMatrixMath-7.9 {qr float[][]} {
+    # Result is a float[][][]
+    set mr [java::call ptolemy.math.FloatMatrixMath qr $m3]
+
+    set s0 [java::call ptolemy.math.FloatMatrixMath toString [$mr get 0]]
+    set s1 [java::call ptolemy.math.FloatMatrixMath toString [$mr get 1]]
+    # Get rid of trailing ,
+    regsub -all {,} [list $s0 $s1] {} stmp
+    epsilonDiff $stmp {{{{7.60921E-4 -0.27655035 -0.96098757} {0.99993247 -0.010937519 0.0039348574} {-0.011598904 -0.9609372 0.2765635}}} {{{4862.5283 236.38411 -36.304386} {0.0 24.515532 -4.3121905} {0.0 0.0 1.2122343}}}}
+} {} 

@@ -297,7 +297,8 @@ proc testArrayMathArrayArray {op types {matrixSize 2_2}} {
 # Test a *ArrayMath  operation that takes an array, an array and a scalar
 # like boolean within(xxx[], xxx[], xxx[][])
 proc testArrayMathArrayArrayArray {op types {matrixSize 2_2}} {
-    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]" "$t\[\]" "$t\[\]"} \
+    testMatrixMath $op $types $matrixSize \
+	    {[list $op "$t\[\]" "$t\[\]" "$t\[\]"]} \
 	    {[subst $$array]} {[subst $$array]} {[subst $$array} ArrayMath
 }
 
@@ -1041,6 +1042,71 @@ testMatrix negative $types
 
 ######################################################################
 ####
+##  *MatrixMath Test out: xxx[][] orthogonalizeColumns(xxx[][])
+
+## FIXME: Missing Complex[][] orthogonalizeColumns(xxx[][])
+
+set types [list \
+	[list Double double double {{{2.0 -0.2} {1.0 0.4}}}] \
+	[list Float float float {{{2.0 -0.2} {1.0 0.4}}}]]
+
+
+testMatrix orthogonalizeColumns $types
+
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] orthonormalizeColumns(xxx[][])
+
+## FIXME: Missing Complex[][] orthonormalizeColumns(xxx[][])
+
+set types [list \
+	[list Double double double {{{2.0 -0.2} {1.0 0.4}}}] \
+	[list Float float float {{{2.0 -0.2} {1.0 0.4}}}]]
+
+
+testMatrix orthonormalizeColumns $types
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] orthogonalizeRows(xxx[][])
+
+## FIXME: Missing Complex[][] orthogonalizeRows(xxx[][])
+
+set types [list \
+	[list Double double double {{{2.0 -1.0} {0.2 0.4}}}] \
+	[list Float float float {{{2.0 -1.0} {0.2 0.4}}}]]
+
+
+testMatrix orthogonalizeRows $types
+
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] orthonormalizeRows(xxx[][])
+
+## FIXME: Missing Complex[][] orthonormalizeRows(xxx[][])
+
+set types [list \
+	[list Double double double {{{0.8944271909999159 -0.4472135954999579} {0.44721359549995787 0.894427190999916}}}] \
+	[list Float float float {{{0.8944272 -0.4472136} {0.4472136 0.89442724}}}]]
+
+testMatrix orthonormalizeRows $types
+
+######################################################################
+####
+##  *MatrixMath Test out: xxx[][] qr(xxx[][])
+
+## FIXME: Missing Complex[][] qr(xxx[][])
+
+set types [list \
+	[list Double double double {{{0.8944271909999159 -0.4472135954999579} {0.44721359549995787 0.894427190999916}}}] \
+	[list Float float float {{{0.8944272 -0.4472136} {0.4472136 0.89442724}}}]]
+
+testMatrix qr $types
+
+######################################################################
+####
 ##  *ArrayMath Test out: xxx[] scale(xxx[], xxx)
 
 # FIXME: Note that ComplexArrayMath.scale(Complex[], double)
@@ -1419,14 +1485,23 @@ testMatrixMatrixScalar within $types
 # FIXME: no boolean within(int[], int[], int[])
 # FIXME: no boolean within(long[], long[], long[])
 
-#  set types [list \
+#set types [list \
 #  	[list Double double double {1}] \
 #  	[list Float float float {1}] \
 #  	[list Integer int int {1}] \
 #  	[list Long long long {1}]]
-
+#
 #  testArrayMathArrayArrayArray within $types
 
 ######################################################################
 ####
-##  FIXME: boolean within(xxx[][], xxx[][], xxx[][])
+##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx[][])
+
+# FIXME: no boolean within(Complex[][], Complex[][], Complex[][])
+set types [list \
+	[list Double double double {1}] \
+	[list Float float float {1}] \
+	[list Integer int int {1}] \
+	[list Long long long {1}]]
+
+testMatrixMatrixMatrix within $types
