@@ -98,11 +98,15 @@ public class TNLManip {
     }
 
     /** Make a deep clone of a list.  That is, each element is cloned
-     *  and a new list of the new element is returned.
+     *  and a new list of the new element is returned. Return
+     *  null if the argument is null.
      *  @param list The list to clone.
      *  @return A new list.
      */
     public static final List cloneList(List list) {
+
+        if (list == null) return null;
+ 
         Iterator iterator = list.iterator();
         ArrayList returnValue = new ArrayList(list.size());
 
