@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="0.9464073044859">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{329.2713926174503, 246.3372483221476}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{335.7345328282828, 387.3655303030302}">
     </property>
     <property name="numberOfModelsToRun" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -139,17 +139,18 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 160.0">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 295.0">
+        </property>
+    </entity>
+    <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 225.0">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -186,4 +187,5 @@
     <link port="StringMatches.output" relation="relation5"/>
     <link port="Test.input" relation="relation3"/>
     <link port="Test2.input" relation="relation5"/>
+    <link port="LineWriter.input" relation="relation2"/>
 </entity>
