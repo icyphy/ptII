@@ -41,12 +41,14 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.StringToken;
 import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
@@ -321,8 +323,9 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug(getFullName(), " set the stop time as a break point: " +
                     getStopTime());
         fireAt(null, getStopTime());
-
+        if(_debugging) _debug(getScheduler().toString());
         if(_debugging) _debug(getFullName() + " End of Initialization.");
+        
     }
 
     /** Return false if the stop time is reached.
@@ -392,12 +395,41 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _eventPhaseExecution() throws IllegalActionException {
         CTScheduler scheduler = (CTScheduler)getScheduler();
         Iterator eventGenerators = scheduler.eventGeneratorList().iterator();
+        LinkedList discreteActors = new LinkedList();
         while(eventGenerators.hasNext()) {
             CTEventGenerator generator =
                 (CTEventGenerator) eventGenerators.next();
             generator.emitCurrentEvents();
         }
         // FIXME: Fire all discrete actors here.
+        Iterator discrete = scheduler.discreteActorSchedule().iterator();
+        while(discrete.hasNext()) {
+            Actor actor = (Actor)discrete.next();
+            Iterator inputs = actor.inputPortList().iterator();
+            boolean hasTrigger = false;
+            while(inputs.hasNext()) {
+                IOPort input = (IOPort)inputs.next();
+                for(int i = 0; i < input.getWidth(); i++) {
+                    if (input.hasToken(i)) {
+                        if(_debugging) _debug(((Nameable)actor).getName(),
+                                input.getName(), " has token."); 
+                        hasTrigger = true;
+                        break;
+                    }
+                }
+                if(hasTrigger) {
+                    break;
+                }
+            }
+            if (hasTrigger) {
+                if(_debugging) _debug("Fire " + (Nameable)actor);
+                if (actor.prefire()) {
+                    actor.fire();
+                    actor.postfire();
+                }
+            }
+        }
+
         Iterator waveGenerators = scheduler.waveformGeneratorList().iterator();
         while(waveGenerators.hasNext()) {
             CTWaveformGenerator generator =

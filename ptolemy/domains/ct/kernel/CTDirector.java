@@ -43,6 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
@@ -649,9 +650,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void updateStates() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         Iterator actors = container.deepEntityList().iterator();
+        List discretes = ((CTScheduler)getScheduler()).discreteActorSchedule();
         while(actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            actor.postfire();
+            if(!discretes.contains(actor)) {
+                actor.postfire();
+                if(_debugging) _debug("postfire " + (Nameable)actor);
+            }
         }
     }
 
