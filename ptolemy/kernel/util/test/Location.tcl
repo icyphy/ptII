@@ -115,7 +115,7 @@ test Location-4.1 {clone with an empty location} {
     set s1 [java::new ptolemy.kernel.util.Location $n "my Location"]
     set s2 [$s1 clone]
     $s2 toString
-} {(ptolemy.kernel.util.Location, Location = null)}
+} {(ptolemy.kernel.util.Location, Location = (0.0, 0.0))}
 
 test Location-4.2 {clone with a non-empty location} {
     set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
