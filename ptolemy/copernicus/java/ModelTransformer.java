@@ -919,10 +919,12 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     /** Inline invocation sites from methods in the given class to
-     *  another method in the given class.
+     *  another method in the given class that are problematic.  This
+     *  primarily includes any method that takes or returns a
+     *  NamedObj.
      *  @param theClass The class to transform.
      */
-    public static void inlineLocalCalls(SootClass theClass) {
+    public static void inlineLocalCalls(SootClass theClass) {//Dangerous
         // FIXME: what if the inlined code contains another call
         // to this class???
         for (Iterator methods = theClass.getMethods().iterator();
@@ -936,12 +938,53 @@ public class ModelTransformer extends SceneTransformer {
                     continue;
                 }
                 InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
-                // Avoid inlining recursive methods.
-                if (r.getMethod() != method &&
-                        r.getMethod().getDeclaringClass().equals(theClass)) {
-                    // FIXME: What if more than one method could be called?
-                    SiteInliner.inlineSite(r.getMethod(), stmt, method);
+                SootMethod targetMethod = r.getMethod();
+                // Don't inline obviously recursive methods.
+                if (targetMethod == method) {
+                    continue;
+                } 
+                // Don't inline methods invoked on the super
+                // class. (These get taken care of later explicitly)
+                if (!targetMethod.getDeclaringClass().equals(theClass)) {
+                    continue;
                 }
+                boolean isCGInitMethod = 
+                    targetMethod.getName().equals("__CGInit");       
+                // Avoid inlining methods that don't take or return
+                // named objects, except for the CGInit method, which
+                // is always inlined.
+                boolean hasDangerousType = false;
+                
+                {
+                    Type type = targetMethod.getReturnType();
+                    if (type instanceof RefType) {
+                        SootClass typeClass = ((RefType)type).getSootClass();
+                        if(SootUtilities.derivesFrom(typeClass,
+                                   PtolemyUtilities.namedObjClass)) {
+                            hasDangerousType = true;
+                        }
+                    }
+                }
+                for (Iterator argTypes = 
+                         targetMethod.getParameterTypes().iterator();
+                     argTypes.hasNext();) {
+                    Type type = (Type)argTypes.next();
+                    if (type instanceof RefType) {
+                        SootClass typeClass = ((RefType)type).getSootClass();
+                        if(SootUtilities.derivesFrom(typeClass,
+                                   PtolemyUtilities.namedObjClass)) {
+                            hasDangerousType = true;
+                        }
+                    }
+                }                         
+                if (!isCGInitMethod && !hasDangerousType) {
+                    continue;
+                }
+
+                System.err.println("inlining method " + r.getMethod());
+                // FIXME: What if more than one method could be
+                // called?
+                SiteInliner.inlineSite(r.getMethod(), stmt, method);
                 // Inline other NamedObj methods here, too..
 
                 // FIXME: avoid inlining method calls

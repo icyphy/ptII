@@ -244,7 +244,7 @@ public class DataUtilities {
                     _body.getLocals().add(containerLocal2);
                     _units.insertBefore(
                             Jimple.v().newAssignStmt(containerLocal2,
-                                    Jimple.v().newVirtualInvokeExpr(
+                                    Jimple.v().newInterfaceInvokeExpr(
                                             containerLocal,
                                             PtolemyUtilities.getContainerMethod)),
                             _insertPoint);
