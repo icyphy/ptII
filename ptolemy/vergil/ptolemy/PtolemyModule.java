@@ -39,6 +39,7 @@ import ptolemy.data.IntToken;
 import ptolemy.gui.*;
 import ptolemy.moml.Vertex;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.Locatable;
 import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
@@ -151,8 +152,7 @@ public class PtolemyModule implements Module {
 				 "Automatically layout the model");
 	
 	JToolBar tb = new JToolBar();
-	Container pane =
-	    ((DesktopFrame)_application.getApplicationFrame()).getToolBarPane();
+	Container pane = _application.getDesktopContext().getToolBarPane();
 	pane.add(tb);
 	
 	String dflt = "";
@@ -335,7 +335,7 @@ public class PtolemyModule implements Module {
     /** 
      * Return the application that contains this module.
      */
-    public Application getApplication() {
+    public VergilApplication getApplication() {
         return _application;
     }
 
@@ -593,8 +593,7 @@ public class PtolemyModule implements Module {
 	 * design palette.
 	 */
 	public void run() {
-	    DesktopFrame frame = 
-		((DesktopFrame) getApplication().getApplicationFrame());
+	    DesktopContext frame = getApplication().getDesktopContext();
 	    JPanel pane = (JPanel)frame.getPalettePane();
 	    
 	    _parseLibraries();
@@ -640,10 +639,8 @@ public class PtolemyModule implements Module {
 
 	// Display the new manager state in the application's status bar.
 	public void managerStateChanged(Manager manager) {
-	    DesktopFrame frame = (DesktopFrame)
-		_application.getApplicationFrame();
-	    JStatusBar statusBar = frame.getStatusBar();
-	    statusBar.setMessage(manager.getState().getDescription());
+	    AppContext context = _application.getAppContext();
+	    context.showStatus(manager.getState().getDescription());
 	}
         private Application _application;
     }
@@ -755,6 +752,39 @@ public class PtolemyModule implements Module {
 	    return node;
 	}
     }
+
+    // A layout target that translates locatable nodes.
+    private class PtolemyLayoutTarget extends BasicLayoutTarget {
+	/**
+	 * Construce a new layout target that operates
+	 * in the given pane.
+	 */
+	public PtolemyLayoutTarget(GraphController controller) {
+	    super(controller);
+	}
+    
+	/**
+	 * Translate the figure associated with the given node in the
+	 * target's view by the given delta.
+	 */
+	public void translate(Object node, double dx, double dy) {
+	    super.translate(node, dx, dy);
+	    if(node instanceof Locatable) {
+		double location[] = ((Locatable)node).getLocation();
+		if(location == null) {
+		    location = new double[2];
+		    Figure figure = 
+			(Figure)getGraphModel().getVisualObject(node);
+		    location[0] = figure.getBounds().getCenterX();
+		    location[1] = figure.getBounds().getCenterY();
+		} else {
+		    location[0] += dx;
+		    location[1] += dy;
+		}
+		((Locatable)node).setLocation(location);
+ 	    }
+	}
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -796,7 +826,7 @@ public class PtolemyModule implements Module {
     private void _redoLayout(JGraph jgraph) {
 	GraphController controller = 
 	    jgraph.getGraphPane().getGraphController();
-        LayoutTarget target = new BasicLayoutTarget(controller);
+        LayoutTarget target = new PtolemyLayoutTarget(controller);
         GraphModel model = controller.getGraphModel();
         PtolemyLayout layout = new PtolemyLayout();
 	layout.setOrientation(LevelLayout.HORIZONTAL);
