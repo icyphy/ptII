@@ -5,6 +5,8 @@
 
   <doc>Configuration to edit and run Ptolemy II models</doc>
 
+  <input source="../vergil/lib/rootIconLibrary.xml"/>
+
   <!-- The directory of open models, each represented by an effigy. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
