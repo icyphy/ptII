@@ -60,7 +60,7 @@ public class ReaderProcessWriter {
 	// size.
 	int getSamplesSize = 256;
 	try {
-	    // Counstruct a SoundReader object that is used to read
+	    // Construct a SoundReader object that is used to read
 	    // sound samples from an audio file.
 	    SoundReader soundReader =
 		new SoundReader(sourceURL, getSamplesSize);
