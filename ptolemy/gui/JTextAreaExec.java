@@ -46,6 +46,10 @@ import javax.swing.border.*;
 
 <p>Loosely based on Example1.java from
 http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
+<p>See also
+http://developer.java.sun.com/developer/qow/archive/135/index.jsp
+and
+http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 
 @author Christopher Hylands
 @version $Id$
@@ -131,7 +135,12 @@ public class JTextAreaExec extends JPanel {
                 _cancelButton.doClick();
     }
 
-    /** Main method used for testing. */
+    /** Main method used for testing.
+     *  To run a simple test, use:
+     *  <pre>
+     *	java -classpath $PTII ptolemy.gui.JTextAreaExec
+     *  </pre>		
+     */
     public static void main(String [] args) {
         JFrame jFrame = new JFrame("JTextAreaExec Example");
         WindowListener windowListener = new WindowAdapter() {
@@ -143,6 +152,7 @@ public class JTextAreaExec extends JPanel {
 	execCommands.add("date");
 	execCommands.add("sleep 5");
 	execCommands.add("date");
+	execCommands.add("javac");
 
         final JTextAreaExec exec =
 	    new JTextAreaExec("JTextAreaExec Tester", true);
@@ -234,29 +244,20 @@ public class JTextAreaExec extends JPanel {
 		    }
 
                     _process = runtime.exec(command);
+			
+		    // Set up a Thread to read in any error messages
+		    _StreamReaderThread errorGobbler = new 
+			_StreamReaderThread(_process.getErrorStream(), "ERROR", this); 
 
-		    try {
-			InputStream processStream = _process.getErrorStream();
-			String line;
-			BufferedReader reader =
-			    new BufferedReader(new
-				InputStreamReader(processStream));
-			while((line = reader.readLine()) != null) {
-			    appendJTextArea(line);
-			}
-			reader.close();
+		    // Set up a Thread to read in any output messages
+		    _StreamReaderThread outputGobbler = new 
+			_StreamReaderThread(_process.getInputStream(), "OUTPUT", this); 
 
-			processStream = _process.getInputStream();
-			reader =
-			    new BufferedReader(new
-				InputStreamReader(processStream));
-			while((line = reader.readLine()) != null) {
-			    appendJTextArea(line);
-			}
-			reader.close();
-		    } catch (IOException io) {
-			appendJTextArea("IOException: " + io);
-		    }
+		    // Start up the Threads
+		    errorGobbler.start(); 
+		    outputGobbler.start(); 
+
+
 		    try {
 			int processReturnCode = _process.waitFor();
 			synchronized(this) {
@@ -341,6 +342,44 @@ public class JTextAreaExec extends JPanel {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // Private class that reads a stream in a thread and updates the
+    // JTextArea.
+    private class _StreamReaderThread extends Thread { 
+
+	_StreamReaderThread(InputStream inputStream, String streamType,
+			    JTextAreaExec jTextAreaExec) { 
+	    _inputStream = inputStream; 
+	    _streamType = streamType;
+	    _jTextAreaExec = jTextAreaExec;
+	} 
+
+	// Read lines from the _inputStream and output them to the 
+	// JTextArea.
+	public void run() { 
+	    try { 
+		InputStreamReader inputStreamReader =
+		    new InputStreamReader(_inputStream); 
+	    BufferedReader bufferedReader =
+		new BufferedReader(inputStreamReader); 
+	    String line = null; 
+	    while ( (line = bufferedReader.readLine()) != null) 
+		_jTextAreaExec.appendJTextArea(_streamType + ">" + line); 
+	    } catch (IOException ioe) { 
+		_jTextAreaExec.appendJTextArea("IOException: " + ioe);
+	    }
+	} 
+	    
+	// Stream to read from.
+	private InputStream _inputStream; 
+	// Description of the Stream that we print, usually "OUTPUT" or "ERROR"
+	private String _streamType; 
+	// JTextArea to update
+	private JTextAreaExec _jTextAreaExec;
+    } 
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The Cancel Button.
@@ -358,7 +397,6 @@ public class JTextAreaExec extends JPanel {
     // The Process that we are running.
     private Process _process;
 
-
     // Progress bar where the length of the bar is the total number
     // of commands being run.
     private JProgressBar _progressBar;
@@ -372,3 +410,4 @@ public class JTextAreaExec extends JPanel {
     // SwingWorker that actually does the work.
     private SwingWorker _worker;
 }
+
