@@ -554,15 +554,36 @@ public class Plot extends PlotBox {
                     // Process =WxH+X+Y
                     _width = (int)Integer.valueOf(arg.substring(1,
                             arg.indexOf('x'))).intValue();
-                    if (arg.indexOf('+') != -1) {
-                        _height =
-                            Integer.valueOf(arg.substring(
-                                    arg.indexOf('x')+1,
-                                    arg.indexOf('+'))).intValue();
+                    int plusIndex = arg.indexOf('+');
+                    int minusIndex = arg.indexOf('-');
+                    if (plusIndex != -1 || minusIndex != -1) {
+                        // =WxH+X+Y, =WxH-X+Y, =WxH-X-Y, =WxH+X-Y
+                        if ( plusIndex != -1 && minusIndex != -1) {
+                            // =WxH-X+Y or =WxH+X-Y
+                            int index = minusIndex;
+                            if (plusIndex < minusIndex) {
+                                index = plusIndex;
+                            }
+                            _height = Integer.valueOf(arg.substring(
+                                        arg.indexOf('x')+1,
+                                        index)).intValue();
+                        } else {
+                            if (plusIndex != -1) {
+                                // =WxH+X+Y
+                                _height = Integer.valueOf(arg.substring(
+                                            arg.indexOf('x')+1,
+                                            plusIndex)).intValue();
+                            } else {
+                                // =WxH-X-Y
+                                _height = Integer.valueOf(arg.substring(
+                                            arg.indexOf('x')+1,
+                                            minusIndex)).intValue();
+                            }
+                        }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
-                            _height =
-                                Integer.valueOf(arg.substring(
+                            // =WxH
+                            _height = Integer.valueOf(arg.substring(
                                         arg.indexOf('x')+1,
                                         arg.length())).intValue();
                         }
