@@ -754,7 +754,7 @@ Typically, under Windows, this directory might be c:\jdk1.3.1\bin
 For instructions about adding to a directory to your path permanently,
 consult your user documentation.
 Under bash, you may temporarily add a directory with something like:
-  PATH=/cygdrive/c/jdk1.3.1/bin:$PATH
+  PATH=/cygdrive/c/jdk1.3.1/bin:\$PATH
   export PATH
   rm config.*; ./configure
 You may also try --with-java=DIR, or set the PTJAVA_DIR environment variable
