@@ -33,6 +33,7 @@ package ptolemy.vergil.ptolemy.fsm.modal;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -109,6 +110,12 @@ public class ModalPort extends TypedIOPort {
                             castPort._mirrorDisable = disableStatus;
                         }
                     }
+                }
+                // Remove the relation as well.
+                ComponentRelation relation = (ComponentRelation)
+                        model.getRelation(getName() + "Relation");
+                if (relation != null) {
+                    relation.setContainer(null);
                 }
             }
             super.setContainer(container);
@@ -220,16 +227,15 @@ public class ModalPort extends TypedIOPort {
                         try {
                             castPort._mirrorDisable = true;
                             castPort.setName(name);
-                            // Rename the corresponding relation.
-                            Relation relation = container.getRelation(
-                                    oldName + "Relation");
-                            if (relation != null) {
-                                relation.setName(name + "Relation");
-                            }
                         } finally {
                             castPort._mirrorDisable = disableStatus;
                         }
                     }
+                }
+                // Rename the corresponding relation.
+                Relation relation = container.getRelation(oldName + "Relation");
+                if (relation != null) {
+                    relation.setName(name + "Relation");
                 }
             }
         } finally {
