@@ -128,7 +128,8 @@ public abstract class ParameterEditorStyle extends Attribute {
         // We want this check, but here is not the place.
         //     if (container != null && !(container instanceof Settable)) {
         //    throw new IllegalActionException(this, container,
-        //            "ParameterEditorStyle can only be contained by Settable.");
+        //            "ParameterEditorStyle can only be "
+        //            + "contained by Settable.");
         // }
         super.setContainer(container);
     }

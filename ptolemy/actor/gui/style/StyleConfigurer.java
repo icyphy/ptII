@@ -129,7 +129,8 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    // Reduce the list of parameters
 	    for(int i = 0; i < parameterStyles.length; i++) {
                 if(foundOne &&
-                        parameterStyles[i].getClass() == foundStyle.getClass()) {
+                        parameterStyles[i].getClass()
+                        == foundStyle.getClass()) {
                     defaultIndex = count;
                     if(foundStyle.acceptable(param)) {
                         styleList.add(parameterStyles[i].getName());
