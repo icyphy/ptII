@@ -157,35 +157,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a change listener.  If there is a container, then
-     *  delegate to the container.  Otherwise, delegate to the manager.
-     *  If there is no manager, then add the listener
-     *  to the list of change listeners in this object. Each listener
-     *  will be notified of the execution (or failure) of each 
-     *  change request that is executed via the requestChange() method.
-     *  Note that in this implementation, only the top level of a
-     *  hierarchy executes changes, which is why this method delegates
-     *  to the container if there is one.
-     *  <p>
-     *  If the listener is already in the list, do not add it again.
-     *  @param listener The listener to add.
-     */
-    public void addChangeListener(ChangeListener listener) {
-	NamedObj container = (NamedObj) getContainer();
-	if(container != null) {
-            container.addChangeListener(listener);
-        } else {
-            Manager manager = getManager();
-	    if(manager == null) {
-                if (!_changeListeners.contains(listener)) {
-                    _changeListeners.add(listener);
-                }
-            } else {
-                manager.addChangeListener(listener);
-            }
-        }
-    }
-
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -657,27 +628,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Remove a change listener. If there is a container, delegate the
-     *  request to the container.  If there is no container, delegate the
-     *  request to the manager.  If there is no manager, then remove the
-     *  listener from the local list. If the specified listener is not
-     *  on the list of listeners, do nothing.
-     *  @param listener The listener to remove.
-     */
-    public void removeChangeListener(ChangeListener listener) {
-	NamedObj container = (NamedObj) getContainer();
-	if(container != null) {
-            container.removeChangeListener(listener);
-        } else {
-	    Manager manager = getManager();
-	    if(manager == null) {
-                _changeListeners.remove(listener);
-            } else {
-                manager.removeChangeListener(listener);
-            }
-        }
-    }
-
     /** Queue a change request.  Delegate the change request to the container
      *  of this actor, if there is one.  If there is none, then delegate
      *  to the Manager.  If the actor has no manager then execute the request 
@@ -696,13 +646,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void requestChange(ChangeRequest change) {
 	CompositeEntity container = (CompositeEntity) getContainer();
 	if(container == null) {
+	    change.setListeners(_changeListeners);
 	    Manager manager = getManager();
 	    if(manager == null) {
-                change.setListeners(_changeListeners);
 		change.execute();
 	    } else {
 		manager.requestChange(change);
-                stopFire();
 	    }
 	} else {
 	    container.requestChange(change);

@@ -190,18 +190,6 @@ public class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a change listener.  Each listener
-     *  will be notified of the execution (or failure) of each 
-     *  change request that is executed via the requestChange() method.
-     *  If the listener is already in the list, do not add it again.
-     *  @param listener The listener to add.
-     */
-    public void addChangeListener(ChangeListener listener) {
-        if (!_changeListeners.contains(listener)) {
-            _changeListeners.add(listener);
-        }
-    }
-
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
      */
@@ -521,14 +509,6 @@ public class Manager extends NamedObj implements Runnable {
         _executionListeners.remove(listener);
     }
 
-    /** Remove a change listener. If the specified listener is not
-     *  on the list of listeners, do nothing.
-     *  @param listener The listener to remove.
-     */
-    public void removeChangeListener(ChangeListener listener) {
-        _changeListeners.remove(listener);
-    }
-
     /** Queue a change request, or if the model is idle, execute it
      *  immediately.  If the request is queued, then it will be executed
      *  at the next opportunity, between top-level iterations of the model.
@@ -536,7 +516,6 @@ public class Manager extends NamedObj implements Runnable {
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
-        change.setListeners(_changeListeners);
 	// If the model is idle (i.e., initialize() has not yet been
 	// invoked), then process the change request right now.
 	if (_state == IDLE) {
@@ -549,6 +528,9 @@ public class Manager extends NamedObj implements Runnable {
 		_changeRequests = new LinkedList();
 	    }
 	    _changeRequests.add(change);
+	    // Now call stopfire so we can be sure the model will give us 
+	    // back control.
+	    _container.stopFire();	    
 	}
     }
 
