@@ -76,7 +76,6 @@ JSRCS = \
 	NoSuchItemException.java \
 	PtolemyThread.java \
 	RecorderListener.java \
-	RedoChangeRequest.java \
 	Settable.java \
 	Singleton.java \
 	SingletonAttribute.java \
@@ -85,9 +84,6 @@ JSRCS = \
 	StreamListener.java \
 	StringAttribute.java \
 	TransientSingletonConfigurableAttribute.java \
-	UndoAction.java \
-	UndoChangeRequest.java \
-	UndoStackAttribute.java \
 	ValueListener.java \
 	Workspace.java
 
