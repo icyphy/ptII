@@ -73,8 +73,8 @@ FIXME: need to add in ComplexToken when it is written.
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
-@see ptolemy.data.expr.UtilityFunctions;
-@see java.lang.Math;
+@see ptolemy.data.expr.UtilityFunctions
+@see java.lang.Math
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
