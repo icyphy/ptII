@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE schematic PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptdesign/ptml.dtd">
+<schematic version="1.0" name="WhoAmI?">
+<description></description>
+<parameter value="1" name="isToplevel" type="CONTROLPARAMETER"></parameter>
+<parameter value="DE" name="domain" type="CONTROLPARAMETER"></parameter>
+<parameter value="Calendar queue" name="director" type="CONTROLPARAMETER" class="ptolemy.domains.de.kernel.DECQDirector"></parameter>
+<parameter value="0.0" name="StopTime" type="DoubleToken"></parameter>
+<entity coords="636.0 219.0" name="Plot1" icon="Sinks.Plot">
+<entitytype location="" ports="?" name="Plot" type="actor"></entitytype>
+<parameter value="" name="Legends" type="StringToken"></parameter>
+<parameter value="-1.0" name="Y_Min" type="DoubleToken"></parameter>
+<parameter value="1.0" name="Y_Max" type="DoubleToken"></parameter>
+</entity>
+<entity coords="335.0 227.0" name="FIRfilter1" icon="Filters.FIRfilter">
+<entitytype location="" ports="?" name="FIRfilter" type="actor"></entitytype>
+<parameter value="1.0 1.0 " name="taps" type="StringToken"></parameter>
+<parameter value="0.0" name="Delay" type="DoubleToken"></parameter>
+</entity>
+<entity coords="539.0 86.0" name="TestLevel0" icon="Filters.TestLevel">
+<entitytype location="" ports="?" name="TestLevel" type="actor"></entitytype>
+<parameter value="0.0" name="Threshold" type="DoubleToken"></parameter>
+</entity>
+<entity coords="287.0 86.0" name="Processor0" icon="Composites.SDProcessor">
+<entitytype location="" ports="?" name="Processor" type="actor"></entitytype>
+</entity>
+<entity coords="320.0 326.0" name="Clock1" icon="Sources.Clock">
+<entitytype location="" ports="?" name="Clock" type="actor"></entitytype>
+<parameter value="1.0" name="interval" type="DoubleToken"></parameter>
+<parameter value="1.0" name="value" type="DoubleToken"></parameter>
+</entity>
+<entity coords="126.0 157.0" name="CTSigmaDelta0" icon="Composites.CTSigmaDelta">
+<entitytype location="" ports="?" name="CTSigmaDelta" type="actor"></entitytype>
+</entity>
+<entity coords="412.0 86.0" name="FIRfilter0" icon="Filters.FIRfilter">
+<entitytype location="" ports="?" name="FIRfilter" type="actor"></entitytype>
+<parameter value="1.0 1.0 " name="taps" type="StringToken"></parameter>
+<parameter value="0.0" name="Delay" type="DoubleToken"></parameter>
+</entity>
+<relation name="Relation6" width="1">
+<link name="FIRfilter1.output"></link>
+<layout to="Statistic1 input" from="FIRfilter1 output" coords="" name="edge6" type="edge"></layout>
+</relation>
+<relation name="Relation2" width="1">
+<link name="CTSigmaDelta0.output"></link>
+<link name="Processor0.input"></link>
+<layout to="Processor0 input" from="CTSigmaDelta0 output" coords="" name="edge0" type="edge"></layout>
+</relation>
+<relation name="Relation7" width="1">
+<link name="Plot1.input"></link>
+<layout to="Plot1 input" from="Statistic1 average" coords="" name="edge7" type="edge"></layout>
+</relation>
+<relation name="Relation3" width="1">
+<link name="Processor0.output"></link>
+<link name="FIRfilter0.input"></link>
+<layout to="FIRfilter0 input" from="Processor0 output" coords="" name="edge1" type="edge"></layout>
+</relation>
+<relation name="Relation8" width="1">
+<link name="Clock1.output"></link>
+<layout coords="433.0 326.0" name="junction1" type="junction"></layout>
+<layout to="junction1 w" from="Clock1 output" coords="" name="edge8" type="edge"></layout>
+<layout to="Statistic1 demand" from="junction1 e" coords="" name="edge9" type="edge"></layout>
+<layout to="Statistic1 reset" from="junction1 s" coords="" name="edge10" type="edge"></layout>
+</relation>
+<relation name="Relation4" width="1">
+<link name="FIRfilter0.output"></link>
+<link name="TestLevel0.input"></link>
+<layout to="TestLevel0 input" from="FIRfilter0 output" coords="" name="edge2" type="edge"></layout>
+</relation>
+<relation name="Relation5" width="1">
+<link name="TestLevel0.output"></link>
+<link name="FIRfilter1.input"></link>
+<link name="CTSigmaDelta0.input"></link>
+<layout coords="264.0 169.0" name="junction0" type="junction"></layout>
+<layout to="junction0 n" from="TestLevel0 output" coords="" name="edge3" type="edge"></layout>
+<layout to="FIRfilter1 input" from="junction0 s" coords="" name="edge4" type="edge"></layout>
+<layout to="CTSigmaDelta0 input" from="junction0 w" coords="" name="edge5" type="edge"></layout>
+</relation>
+</schematic>

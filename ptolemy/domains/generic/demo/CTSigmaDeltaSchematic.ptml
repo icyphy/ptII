@@ -1,0 +1,34 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE schematic PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptdesign/ptml.dtd">
+<schematic version="1.0" name="WhoAmI?">
+<description></description>
+<parameter value="1" name="isToplevel" type="CONTROLPARAMETER"></parameter>
+<parameter value="CT" name="domain" type="CONTROLPARAMETER"></parameter>
+<parameter value="Mixed-signal" name="director" type="CONTROLPARAMETER"></parameter>
+<parameter value="0.0" name="StartTime" type="DoubleToken"></parameter>
+<parameter value="1.0" name="StopTime" type="DoubleToken"></parameter>
+<parameter value="0.0" name="InitialStepSize" type="DoubleToken"></parameter>
+<parameter value="0.001" name="MinimumStepSize" type="DoubleToken"></parameter>
+<parameter value="20" name="MaximumIterationsPerStep" type="IntToken"></parameter>
+<parameter value="0.0" name="LocalTrancationErrorTolerant" type="DoubleToken"></parameter>
+<parameter value="0.0" name="ConvergeValueAccuracy" type="DoubleToken"></parameter>
+<parameter value="0.0" name="TimeAccuracy" type="DoubleToken"></parameter>
+<parameter value="ptolemy.domains.ct.kernel.solver.ForwardEulerSolver" name="DefaultODESolver" type="StringToken"></parameter>
+<parameter value="ptolemy.domains.ct.kernel.solver.BackwardEulerSolver" name="BreakpointODESolver" type="StringToken"></parameter>
+<parameter value="1.0" name="MaxRunAheadLength" type="DoubleToken"></parameter>
+<entity coords="246.0 121.0" name="Gain1" icon="Filters.GainRight">
+<entitytype location="" ports="?" name="Gain" type="actor"></entitytype>
+<parameter value="50" name="Gain" type="IntToken"></parameter>
+</entity>
+<entity coords="113.0 121.0" name="Sin3" icon="Sources.Sin">
+<entitytype location="" ports="?" name="Sin" type="actor"></entitytype>
+<parameter value="1.0" name="Magnitude" type="DoubleToken"></parameter>
+<parameter value="0.5" name="AngleFrequency" type="DoubleToken"></parameter>
+<parameter value="0.0" name="Phase" type="DoubleToken"></parameter>
+</entity>
+<relation name="Relation4" width="1">
+<link name="Sin3.output"></link>
+<link name="Gain1.input"></link>
+<layout to="Gain1 input" from="Sin3 output" coords="" name="edge0" type="edge"></layout>
+</relation>
+</schematic>
