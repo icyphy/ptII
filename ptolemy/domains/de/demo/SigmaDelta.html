@@ -24,13 +24,24 @@ takes a fixed minimum service time to serve. With interrupts, the service
 time is increased by the number of interrupt events during the service period
 multiplied by a fixed interrupt service time.
 <p>
-FIXME: What does the plot mean, help me out Jie ....
+In the CTPlot, the red curve ("Position") is the beam position; the blue
+one ("Input") is the acceleration input; the green one ("Control") is
+the feedback control input from the digital controler. In the DEPlot,
+the red dots are the (digital) output of the accumulator; the blue dots
+are the output of the one bit quantizer.
+<p>
+In this particular sigma delta converter case, the processor delay
+may not make sense (unless the user is modeling the transmission line
+delay from the sampler to the filter). But in general, if we consider the 
+continuous part of the system as a plant, and the discrete event part 
+as the digital controller implemented by embedded software, then the
+processor delay will impact the control result.
 <p>
 Different parameters for the processor model can be chosen. MST (Minimum
 Service Time) indicate the amount of time needed to process an event, if there
 is no interrupt. IST (Interrupt Service Time) is the amount of time needed
 to process an interrupt. Note that the interrupts preempts the inputs. Lambda
-represents the mean inter-arrival time of the Poisson process modeling the
+represents the inter-arrival time of the Poisson process modeling the
 interrupt arrival. Lastly, stop time is just the time when simulation stops.
 <P>
 <BR>&nbsp;
@@ -49,18 +60,12 @@ here.</I>
 
 <P>This applet is implemented by
 <TT><A HREF="SigmaDeltaApplet.java">SigmaDeltaApplet.java</A></TT>.
-<P>The simulation consists of a <A HREF="../../ct/lib/CTSin.java">Clock</A>
+<P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
 Actor, a
-<A HREF="../../ct/lib/CTGain.java">Ramp</A> Actor,
-<A HREF="../../ct/lib/CTAdd.java">Ramp</A> Actor,
-<A HREF="../../ct/lib/CTIntegrator.java">Ramp</A> Actor,
-<A HREF="../../ct/lib/CTZeroOrderHold.java">Ramp</A> Actor,
-<A HREF="../../ct/lib/CTPeriodicalSampler.java">Ramp</A> Actor,
-<A HREF="../../ct/lib/CTPlot.java">Ramp</A> Actor,
+<A HREF="../lib/DERamp.java">Ramp</A> Actor,
 <A HREF="../lib/DEProcessor.java">DEProcessor</A> Actor,
-<A HREF="../lib/DEInterruptibleServer.java">DEInterruptibleServer</A> Actor,
+<A HREF="../lib/InterruptibleServer.java">InterruptibleServer</A> Actor,
 <A HREF="../lib/DESampler.java">DESampler</A> Actor,
-<A HREF="../lib/DESampler.java">DETestLevel</A> Actor,
 and a <A HREF="../lib/DEPoisson.java">DEPoisson</A>
 Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <BR>
