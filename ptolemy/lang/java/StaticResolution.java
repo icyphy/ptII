@@ -640,7 +640,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         _defaultTypePolicy = typeVisitor.typePolicy();
     }
 
-    protected static final ClassDecl _requireClass(Environ env, String name) {
+    private static final ClassDecl _requireClass(Environ env, String name) {
         Decl decl = env.lookup(name);
 
         if (decl == null) {
@@ -708,6 +708,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static TypePolicy _defaultTypePolicy = _defaultTypeVisitor.typePolicy();
 
     static {
+        System.out.println("StaticResolution<static>: --- Creating two new PackageDecls ---");
         SYSTEM_PACKAGE  = new PackageDecl("", null);
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
 
@@ -727,11 +728,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         OBJECT_TYPE = OBJECT_DECL.getDefType();
 
+        System.out.println("StaticResolution<static>: --- require class on Cloneable ---");
         CLONEABLE_DECL = _requireClass(env, "Cloneable");
         CLONEABLE_TYPE = CLONEABLE_DECL.getDefType();
 
         // virtual class for arrays
 
+        System.out.println("StaticResolution<static>: --- virtual class for arrays ---");
         List arrayClassMembers = new LinkedList();
 
         FieldDeclNode arrayLengthNode = new FieldDeclNode(PUBLIC_MOD | FINAL_MOD,
@@ -763,9 +766,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         ARRAY_LENGTH_DECL = (FieldDecl) JavaDecl.getDecl((NamedNode) arrayLengthNode);
         ARRAY_CLONE_DECL  = (MethodDecl) JavaDecl.getDecl((NamedNode) arrayCloneNode);
 
+        System.out.println("StaticResolution<static>: --- require class on String ---");
         STRING_DECL = _requireClass(env, "String");
         STRING_TYPE = STRING_DECL.getDefType();
 
+        System.out.println("StaticResolution<static>: --- require class on Class ---");
         CLASS_DECL  = _requireClass(env, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
