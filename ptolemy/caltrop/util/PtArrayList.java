@@ -39,24 +39,37 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// PtArrayList
 /**
+FIXME: What does this class do?
 @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
 @version $Id$
 @since Ptolemy II 3.1
  */
 public class PtArrayList extends AbstractList implements List {
-    private ArrayToken _arrayToken;
 
+    /** Construct a PtArrayList from an ArrayToken */
     public PtArrayList(ArrayToken arrayToken) {
         _arrayToken = arrayToken;
     }
 
+    /** Get the token at the given index.  The type of the return
+     *  @param index The index of the desired element.
+     *  @return The token contained in this array token at the
+     *  specified index.
+     *  @exception ArrayIndexOutOfBoundException If the specified index is
+     *   outside the range of the token array.
+     */
     public Object get(int index) {
         return _arrayToken.getElement(index);
     }
 
+    /** Return the size of the array */
     public int size() {
         return _arrayToken.length();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private ArrayToken _arrayToken;
 }
 
