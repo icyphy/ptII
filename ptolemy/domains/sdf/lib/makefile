@@ -61,14 +61,7 @@ JSRCS = \
 	FIR.java \
 	LineCoder.java \
 	RaisedCosine.java \
-	SDFConsumer.java \
-	SDFRamp.java \
-	SDFPrint.java \
-	SDFDelay.java \
-	SDFSplit.java \
-	SDFJoin.java \
 	testlistener.java
-
 
 EXTRA_SRCS =	$(JSRCS)
 

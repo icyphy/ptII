@@ -23,10 +23,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@PropsedRating Red
+
+@ProposedRating Red
 @AcceptedRating Red
 */
-package ptolemy.domains.sdf.lib;
+package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -35,38 +36,46 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-
+//////////////////////////////////////////////////////////////////////////
+//// SDFJoin
 /**
- * Create an increasing sequence of integer tokens,
- * starting with value zero, and incrementing by one.
- * This actor is aware of the rate that is set on its port and
- * will create the proper number of tokens with every firing.
- *
+ * A deterministic merge of two token streams.
+ * @author Stephen Neuendorffer
  * @version $Id$
- * @author Steve Neuendorffer
- */
-public class SDFRamp extends SDFAtomicActor {
-    public SDFRamp(TypedCompositeActor container, String name)
-            throws IllegalActionException,
-            NameDuplicationException {
+*/
+
+public class SDFJoin extends SDFAtomicActor {
+
+    public SDFJoin(TypedCompositeActor container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            output = (TypedIOPort) newPort("output");
+            input1 = (TypedIOPort)newPort("input1");
+            input1.setInput(true);
+            setTokenConsumptionRate(input1, 1);
+            input1.setDeclaredType(Token.class);
+
+            input2 = (TypedIOPort)newPort("input2");
+            input2.setInput(true);
+            setTokenConsumptionRate(input2, 1);
+            input2.setDeclaredType(Token.class);
+
+            output = (TypedIOPort)newPort("output");
             output.setOutput(true);
-            setTokenProductionRate(output, 1);
-            output.setDeclaredType(IntToken.class);
+            setTokenProductionRate(output, 2);
+            output.setDeclaredType(Token.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFRamp: constructor error");
+            System.out.println("SDFJoin: constructor error");
         }
-        _value = 0;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    //// 
 
-   public TypedIOPort output;
+    public TypedIOPort input1;
+    public TypedIOPort input2;
+    public TypedIOPort output;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -76,7 +85,9 @@ public class SDFRamp extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFRamp newobj = (SDFRamp)(super.clone(ws));
+            SDFJoin newobj = (SDFJoin)(super.clone(ws));
+            newobj.input1 = (TypedIOPort)newobj.getPort("input1");
+            newobj.input2 = (TypedIOPort)newobj.getPort("input2");
             newobj.output = (TypedIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -86,31 +97,24 @@ public class SDFRamp extends SDFAtomicActor {
         }
     }
 
-    /**
-     * Produce several integer tokens with values with incremental values.
-     * The number of tokens produced during each firing is determined by 
-     * the rates on the ports, and the sequence of values continues across
-     * firings.
+    /** Fire the actor.
+     * Copy one token from input1 to the output and then copy one token 
+     * from input2 to the output.
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        int i;
+        IntToken message;
 
-        int tokens = getTokenProductionRate(output);
-        for(i = 0; i < tokens; i++) {
-            Token message = new IntToken(_value);
-            _value = _value + 1;
-            output.send(0, message);
-        }
+        message = (IntToken)input1.get(0);
+        output.send(0, message);
+        message = (IntToken)input2.get(0);
+        output.send(0, message);
+
     }
-
-    /**
-     * Initialize the sequence so the first token created has value zero.
-     */
-    public void initialize() {
-        _value = 0;
-    }
-
-    private int _value;
 }
+
+
+
+
+
 

@@ -109,8 +109,8 @@ test SDFScheduler-5.1 {Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $toplevel Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFConsumer $toplevel Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer]
     $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
     $scheduler setValid false
 
@@ -132,9 +132,9 @@ test SDFScheduler-5.2 {Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $toplevel Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFDelay $toplevel Delay]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $toplevel Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer]
     $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
     $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
     $scheduler setValid false
@@ -157,10 +157,10 @@ test SDFScheduler-5.3 {Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $toplevel Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFSplit $toplevel Dist]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $toplevel Consumer1]
-    set a4 [java::new ptolemy.domains.sdf.lib.SDFConsumer $toplevel Consumer2]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFSplit $toplevel Dist]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer1]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer2]
     $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
     $toplevel connect [java::field $a2 output1] [java::field $a3 input] R2
     $toplevel connect [java::field $a2 output2] [java::field $a4 input] R3
@@ -184,10 +184,10 @@ test SDFScheduler-5.4 {Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $toplevel Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFSplit $toplevel Dist]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFJoin $toplevel Comm]
-    set a4 [java::new ptolemy.domains.sdf.lib.SDFConsumer $toplevel Consumer1]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFSplit $toplevel Dist]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFJoin $toplevel Comm]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer1]
     $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
     $toplevel connect [java::field $a2 output1] [java::field $a3 input1] R2a
     $toplevel connect [java::field $a2 output2] [java::field $a3 input2] R2d
@@ -212,7 +212,7 @@ test SDFScheduler-6.1 {Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $toplevel Ramp]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
     $p1 setInput 1
@@ -221,8 +221,8 @@ test SDFScheduler-6.1 {Scheduling tests} {
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w d5]
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFDelay $c1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $toplevel Consumer]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $c1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer]
     $toplevel connect [java::field $a1 output] $p1 R1
     $c1 connect $p1 [java::field $a2 input] R2
     $c1 connect [java::field $a2 output] $p2 R3

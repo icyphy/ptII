@@ -23,10 +23,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red
+@PropsedRating Red
 @AcceptedRating Red
 */
-package ptolemy.domains.sdf.lib;
+package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -35,28 +35,38 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
+
 /**
- * Print Integer tokens.
+ * Create an increasing sequence of integer tokens,
+ * starting with value zero, and incrementing by one.
+ * This actor is aware of the rate that is set on its port and
+ * will create the proper number of tokens with every firing.
+ *
  * @version $Id$
  * @author Steve Neuendorffer
  */
-public class SDFPrint extends SDFAtomicActor {
-
-    public SDFPrint(TypedCompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+public class SDFRamp extends SDFAtomicActor {
+    public SDFRamp(TypedCompositeActor container, String name)
+            throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         try{
-            input = (TypedIOPort)newPort("input");
-            input.setInput(true);
-            setTokenConsumptionRate(input, 1);
-            input.setDeclaredType(IntToken.class);
+            output = (TypedIOPort) newPort("output");
+            output.setOutput(true);
+            setTokenProductionRate(output, 1);
+            output.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFPrint: Constructor error");
+            System.out.println("SDFRamp: constructor error");
         }
+        _value = 0;
+
     }
 
-    public TypedIOPort input;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    //// 
+
+   public TypedIOPort output;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -66,8 +76,8 @@ public class SDFPrint extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFPrint newobj = (SDFPrint)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
+            SDFRamp newobj = (SDFRamp)(super.clone(ws));
+            newobj.output = (TypedIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -77,19 +87,30 @@ public class SDFPrint extends SDFAtomicActor {
     }
 
     /**
-     * Consume an integer and print its value to standard output.
-     * @exception IllegalActionException Not Thrown
+     * Produce several integer tokens with values with incremental values.
+     * The number of tokens produced during each firing is determined by 
+     * the rates on the ports, and the sequence of values continues across
+     * firings.
+     * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        IntToken message;
+        int i;
 
-	message = (IntToken)input.get(0);
-        System.out.println(message.intValue());
+        int tokens = getTokenProductionRate(output);
+        for(i = 0; i < tokens; i++) {
+            Token message = new IntToken(_value);
+            _value = _value + 1;
+            output.send(0, message);
+        }
     }
+
+    /**
+     * Initialize the sequence so the first token created has value zero.
+     */
+    public void initialize() {
+        _value = 0;
+    }
+
+    private int _value;
 }
-
-
-
-
-
 

@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @ProposedRating Red
 @AcceptedRating Red
 */
-package ptolemy.domains.sdf.lib;
+package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;

@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @ProposedRating Red
 @AcceptedRating Red
 */
-package ptolemy.domains.sdf.lib;
+package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -36,43 +36,34 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 /**
- * This actor deterministically splits its input token stream into two
- * streams.
- * @author Steve Neuendorffer
+ * This actor will consume all tokens on its input port and write their
+ * values to a string.  The value of the string can then be obtained
+ * for use in test scripts, etc.
+ * 
+ * This actor is aware of the rate that is set on its input port and will
+ * consume an appropriate number of tokens with each firing.
+ * This actor is type Polymorphic.
+ *
  * @version $Id$
+ * @author Steve Neuendorffer
  */
-public class SDFSplit extends SDFAtomicActor {
-    public SDFSplit(TypedCompositeActor container, String name)
+public class SDFConsumer extends SDFAtomicActor {
+    public SDFConsumer(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
             input = (TypedIOPort)newPort("input");
             input.setInput(true);
-            setTokenConsumptionRate(input, 2);
-            input.setDeclaredType(IntToken.class);
-
-            output1 = (TypedIOPort)newPort("output1");
-            output1.setOutput(true);
-            setTokenProductionRate(output1, 1);
-            output1.setDeclaredType(IntToken.class);
-
-            output2 = (TypedIOPort)newPort("output2");
-            output2.setOutput(true);
-            setTokenProductionRate(output2, 1);
-            output2.setDeclaredType(IntToken.class);
+            setTokenConsumptionRate(input, 1);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFSplit: constructor error");
+            System.out.println("SDFConsumer: Constructor error");
         }
+        _history = new StringBuffer("");
     }
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    //// 
-
 
     public TypedIOPort input;
-    public TypedIOPort output1;
-    public TypedIOPort output2;
-
+ 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
@@ -81,11 +72,10 @@ public class SDFSplit extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFSplit newobj = (SDFSplit)(super.clone(ws));
+            SDFConsumer newobj = (SDFConsumer)(super.clone(ws));
             newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output1 = (TypedIOPort)newobj.getPort("output1");
-            newobj.output2 = (TypedIOPort)newobj.getPort("output2");
-            return newobj;
+            newobj._history = new StringBuffer(_history.toString());
+	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(
@@ -93,20 +83,29 @@ public class SDFSplit extends SDFAtomicActor {
         }
     }
 
-    /** 
-     * Consume two tokens from the input.  Copy the first one to the port 
-     * output1, and the second to the port output2
-     * @exception IllegalActionException if a contained method throws it.
+    /**
+     * Fire the Actor
+     * Consume an input token, and append its value to the history.
+     * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        IntToken message;
-
-        message = (IntToken)input.get(0);
-        output1.send(0, message);
-        message = (IntToken)input.get(0);
-        output2.send(0, message);
+        int tokens = getTokenConsumptionRate(input);
+        int i;
+        for(i = 0; i < tokens; i++) {
+            Token t = input.get(0);
+            _history.append(t.toString() + "\n");
+        }        
     }
 
+    /** 
+     * Return a string representing the values of the tokens that have been
+     * consumed so far by this actor, since its creation.
+     */
+    public String getHistory() {
+        return _history.toString();
+    }
+
+    private StringBuffer _history;
 }
 
 

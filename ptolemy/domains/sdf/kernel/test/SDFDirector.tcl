@@ -85,8 +85,8 @@ test SDFDirector-4.1 {Test _makeDirectorOf} {
 #
 test SDFDirector-5.1 {Test action methods} {
     # NOTE: Uses the setup above
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $e0 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     set iter [$d3 getAttribute Iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
@@ -107,9 +107,9 @@ test SDFDirector-5.2 {Test action methods} {
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $e0 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFDelay $e0 Delay]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $e0 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output] [java::field $a3 input] R2
     set iter [$d3 getAttribute Iterations]
@@ -131,10 +131,10 @@ test SDFDirector-5.3 {Test action methods} {
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $e0 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFSplit $e0 Dist]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer1]
-    set a4 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer2]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFSplit $e0 Dist]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer1]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer2]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output1] [java::field $a3 input] R2
     $e0 connect [java::field $a2 output2] [java::field $a4 input] R3
@@ -163,10 +163,10 @@ test SDFDirector-5.4 {Test action methods} {
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $e0 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFSplit $e0 Dist]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFJoin $e0 Comm]
-    set a4 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer1]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFSplit $e0 Dist]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFJoin $e0 Comm]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer1]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output1] [java::field $a3 input1] R2a
     $e0 connect [java::field $a2 output2] [java::field $a3 input2] R2d
@@ -199,7 +199,7 @@ test SDFDirector-6.1 {Test wormhole activation} {
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $e0 Ramp]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $e0 Cont]
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
     $p1 setInput 1
@@ -207,8 +207,8 @@ test SDFDirector-6.1 {Test wormhole activation} {
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w d5]
     $c1 setDirector $d5
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFDelay $c1 Delay]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $c1 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] $p1 R1
     $c1 connect $p1 [java::field $a2 input] R2
     $c1 connect [java::field $a2 output] $p2 R3
@@ -240,9 +240,9 @@ test SDFDirector-7.1 {Test mutations (adding an actor} {
     $e0 setName E0
     $e0 setManager $manager
     $e0 setDirector $d3
-    set a1 [java::new ptolemy.domains.sdf.lib.SDFRamp $e0 Ramp]
-    set a2 [java::new ptolemy.domains.sdf.lib.SDFDelay $e0 Delay]
-    set a3 [java::new ptolemy.domains.sdf.lib.SDFConsumer $e0 Consumer]
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $e0 Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $e0 Delay]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $e0 Consumer]
     $e0 connect [java::field $a1 output] [java::field $a2 input] R1
     $e0 connect [java::field $a2 output] [java::field $a3 input] R2
     set iter [$d3 getAttribute Iterations]

@@ -44,6 +44,11 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	SDFConsumer.java \
+	SDFDelay.java \
+	SDFJoin.java \
+	SDFRamp.java \
+	SDFSplit.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

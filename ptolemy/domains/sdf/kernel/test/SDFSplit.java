@@ -23,11 +23,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-
 @ProposedRating Red
 @AcceptedRating Red
 */
-package ptolemy.domains.sdf.lib;
+package ptolemy.domains.sdf.kernel.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -36,46 +35,43 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-//////////////////////////////////////////////////////////////////////////
-//// SDFJoin
 /**
- * A deterministic merge of two token streams.
- * @author Stephen Neuendorffer
+ * This actor deterministically splits its input token stream into two
+ * streams.
+ * @author Steve Neuendorffer
  * @version $Id$
-*/
-
-public class SDFJoin extends SDFAtomicActor {
-
-    public SDFJoin(TypedCompositeActor container, String name)
+ */
+public class SDFSplit extends SDFAtomicActor {
+    public SDFSplit(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            input1 = (TypedIOPort)newPort("input1");
-            input1.setInput(true);
-            setTokenConsumptionRate(input1, 1);
-            input1.setDeclaredType(Token.class);
+            input = (TypedIOPort)newPort("input");
+            input.setInput(true);
+            setTokenConsumptionRate(input, 2);
+            input.setDeclaredType(IntToken.class);
 
-            input2 = (TypedIOPort)newPort("input2");
-            input2.setInput(true);
-            setTokenConsumptionRate(input2, 1);
-            input2.setDeclaredType(Token.class);
+            output1 = (TypedIOPort)newPort("output1");
+            output1.setOutput(true);
+            setTokenProductionRate(output1, 1);
+            output1.setDeclaredType(IntToken.class);
 
-            output = (TypedIOPort)newPort("output");
-            output.setOutput(true);
-            setTokenProductionRate(output, 2);
-            output.setDeclaredType(Token.class);
+            output2 = (TypedIOPort)newPort("output2");
+            output2.setOutput(true);
+            setTokenProductionRate(output2, 1);
+            output2.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFJoin: constructor error");
+            System.out.println("SDFSplit: constructor error");
         }
     }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    //// 
 
-    public TypedIOPort input1;
-    public TypedIOPort input2;
-    public TypedIOPort output;
+
+    public TypedIOPort input;
+    public TypedIOPort output1;
+    public TypedIOPort output2;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -85,10 +81,10 @@ public class SDFJoin extends SDFAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            SDFJoin newobj = (SDFJoin)(super.clone(ws));
-            newobj.input1 = (TypedIOPort)newobj.getPort("input1");
-            newobj.input2 = (TypedIOPort)newobj.getPort("input2");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
+            SDFSplit newobj = (SDFSplit)(super.clone(ws));
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output1 = (TypedIOPort)newobj.getPort("output1");
+            newobj.output2 = (TypedIOPort)newobj.getPort("output2");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -97,20 +93,20 @@ public class SDFJoin extends SDFAtomicActor {
         }
     }
 
-    /** Fire the actor.
-     * Copy one token from input1 to the output and then copy one token 
-     * from input2 to the output.
-     * @exception IllegalActionException If a contained method throws it.
+    /** 
+     * Consume two tokens from the input.  Copy the first one to the port 
+     * output1, and the second to the port output2
+     * @exception IllegalActionException if a contained method throws it.
      */
     public void fire() throws IllegalActionException {
         IntToken message;
 
-        message = (IntToken)input1.get(0);
-        output.send(0, message);
-        message = (IntToken)input2.get(0);
-        output.send(0, message);
-
+        message = (IntToken)input.get(0);
+        output1.send(0, message);
+        message = (IntToken)input.get(0);
+        output2.send(0, message);
     }
+
 }
 
 
