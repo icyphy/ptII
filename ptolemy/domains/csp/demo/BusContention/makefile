@@ -83,9 +83,10 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass  $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-install: jclass $(PTCLASSJAR)
+install: all
 
 
 # 'make clean' removes everything in KRUFT
