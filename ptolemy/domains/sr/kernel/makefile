@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	NonStrictIOPort.java \
 	SRDirector.java \
 	SRReceiver.java
 

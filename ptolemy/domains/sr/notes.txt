@@ -5,7 +5,12 @@ run ptolemy classic SR
 add, update, and correct comments
 FIXMEs
 
-kill NonStrictIOPort, put methods into IOPort
+kill NonStrictIOPort, put methods into IOPort (cvs.txt)
+figure out how actors can make absent values
+       IOPort.send(0, null) throws an exception,
+       although SRReceiver.put(null) is allowed
+       maybe have an IOPort.setAbsent() that would call Receiver.setAbsent()
+	     some receivers: this might not be supported, or might do nothing
 create an SRScheduler
 determine whether actors are ready to fire
 determine whether actors are done firing

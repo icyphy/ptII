@@ -52,6 +52,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+// FIXME: Won't need this import.
+import java.util.Collections;
+
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
 /**
@@ -345,17 +348,22 @@ public class SRDirector extends Director {
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
 
-        if (_isFiringAllowed(actor)) {
-            _debug("    SRDirector is firing", ((Nameable)actor).getName());
-            actor.fire();
-        } else {
-            _debug("    SRDirector is prefiring", ((Nameable)actor).getName());
-            if (actor.prefire()) {
-                _doAllowFiringOf(actor);
-                _fireActor(actor);
+        if (_isReadyToFire(actor)) {
+            if (_isFiringAllowed(actor)) {
+                if (!_hasCompletedFiring(actor)) {
+                    _debug("    SRDirector is firing",
+                            ((Nameable)actor).getName());
+                    actor.fire();
+                }
+            } else {
+                _debug("    SRDirector is prefiring",
+                        ((Nameable)actor).getName());
+                if (actor.prefire()) {
+                    _doAllowFiringOf(actor);
+                    _fireActor(actor);
+                }
             }
         }
-        
     }
 
     /** Return a list of the actors to be fired by this director.
@@ -377,7 +385,29 @@ public class SRDirector extends Director {
 
         List actorList = container.deepEntityList();
 
+        // FIXME: this shouldn't happen, just for testing
+        Collections.shuffle(actorList);
+
         return actorList;
+    }
+
+    /** Return true if the specified actor has completed firing.
+     *  @return True if the specified actor has completed firing.
+     *  @exception IllegalActionException If it cannot be determined
+     *   whether the output ports have known state.
+     */
+    private boolean _hasCompletedFiring(Actor actor)
+            throws IllegalActionException {
+
+        // FIXME: Is this list deep enough?
+        Iterator outputPorts = actor.outputPortList().iterator();
+
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort)outputPorts.next();
+            if (!outputPort.isKnown()) return false;
+        }
+
+        return true;
     }
 
     /** Return true if this iteration has converged.  The iteration has
@@ -468,7 +498,8 @@ public class SRDirector extends Director {
         _resetAllReceivers();
     }
 
-    /** Return true if the specified actor is allowed to fire.
+    /** Return true if the specified actor is allowed to fire, that is,
+     *  the prefire method of the actor has returned true.
      *  @return True if the specified actor is allowed to fire.
      */
     private boolean _isFiringAllowed(Actor actor) {
@@ -482,6 +513,27 @@ public class SRDirector extends Director {
     private boolean _isIterationAllowed(Actor actor) {
         return (_doNotIterateActors == null || 
                 !_doNotIterateActors.contains(actor));
+    }
+
+    /** Return true if the specified actor is ready to fire.
+     *  @return True if the specified actor is ready to fire.
+     *  @exception IllegalActionException If it cannot be determined
+     *   whether the input ports have known state.
+     */
+    private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
+        if (actor instanceof NonStrictActor) {
+            return true;
+        }
+
+        // FIXME: Is this list deep enough?
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)inputPorts.next();
+            if (!inputPort.isKnown()) return false;
+        }
+
+        return true;
     }
 
     /** Return the number of actors that are allowed to fire.
@@ -530,26 +582,6 @@ public class SRDirector extends Director {
                     ((Nameable)actor).getName());
             return actor.postfire();
         }
-        return true;
-    }
-
-    /** Return true if the specified actor is ready to fire.
-     *  @return True if the specified actor is ready to fire.
-     */
-    private boolean _isReadyToFire(Actor actor) {
-        if (actor instanceof NonStrictActor) {
-            return true;
-        }
-
-        // FIXME: Is this list deep enough?
-        Iterator inputPorts = actor.inputPortList().iterator();
-
-        while(inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
-            // FIXME:
-            //if (!inputPort.isKnown()) return false;
-        }
-
         return true;
     }
 

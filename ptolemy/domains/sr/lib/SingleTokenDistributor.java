@@ -32,6 +32,7 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -81,12 +82,16 @@ public class SingleTokenDistributor extends Transformer
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        _tentativeOutputPosition = _currentOutputPosition;
         int width = output.getWidth();
+        _tentativeOutputPosition = 1 + _currentOutputPosition;
+        if (_tentativeOutputPosition >= width) {
+            _tentativeOutputPosition = 0;
+        }
         if (input.hasToken(0)) {
-            output.send(_tentativeOutputPosition++, input.get(0));
-            if (_tentativeOutputPosition >= width) {
-                _tentativeOutputPosition = 0;
+            for (int i = 0; i < width; i++) {
+                Token outToken = null;
+                if (i == _tentativeOutputPosition) outToken = input.get(0);
+                output.send(i, outToken);
             }
         }
     }
