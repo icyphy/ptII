@@ -281,8 +281,11 @@ public class ProcessDirector extends Director {
             // Now wake up all the receivers.
             try {
                 NotifyThread obj = new NotifyThread(_pausedReceivers);
+                //FIXME FIXME FIXME: Maybe NotifyThread should be derived 
+                //from thread
+                Thread thre = new Thread(obj);
                 synchronized(obj) {
-                    obj.start();
+                    thre.start();
                     obj.wait();
                 }
             } catch (InterruptedException ex) {
@@ -317,8 +320,10 @@ public class ProcessDirector extends Director {
         // Now wake up all the receivers.
         try {
             NotifyThread obj = new NotifyThread(_pausedReceivers);
+            //FIXME:
+            Thread thre = new Thread(obj);
             synchronized(obj) {
-                obj.start();
+                thre.start();
                 obj.wait();
             }
         } catch (InterruptedException ex) {
@@ -411,8 +416,10 @@ public class ProcessDirector extends Director {
 
                 // Now wake up all the receivers.
                 NotifyThread obj = new NotifyThread(recs);
+                //FIXME:
+                Thread thre = new Thread(obj);
                 synchronized(obj) {
-                    obj.start();
+                    thre.start();
                     obj.wait();
                 }
             } catch (InterruptedException ex) {
