@@ -72,6 +72,7 @@ docs: javadocs
 
 tests:: $(EXTRA_SRCS)
 	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSystem
+	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSerializable write
 	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSerializable
 
 # Get the rest of the rules
