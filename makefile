@@ -63,8 +63,8 @@ PTDEMODOCJARS = \
 		ptolemy/domains/giotto/demo/demo.jar \
 		ptolemy/domains/fsm/demo/demo.jar \
 		ptolemy/domains/pn/demo/demo.jar \
-		ptolemy/domains/rtos/demo/demo.jar \
 		ptolemy/domains/sdf/demo/demo.jar \
+		ptolemy/domains/tm/demo/demo.jar \
 		ptolemy/moml/demo/demo.jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
