@@ -374,8 +374,6 @@ public class ShallowModelTransformer extends SceneTransformer {
                 
                 if(!(entity instanceof CompositeEntity) ||
                         className.equals(entity.getMoMLInfo().className)) {
-                    CompositeEntity classCompositeEntity = 
-                        (CompositeEntity)classEntity;
                     // If the entity is NOT a moml class....
                     // Then record the things inside the master as things
                     // that automagically get created when we construct the
