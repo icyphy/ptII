@@ -86,7 +86,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 		       + _currentAnnotationFullName);
 
 	    } else if (_currentlyProcessingAnnotation &&
-		       attributeName.equals("_hideName")) {
+		       attributeValue.equals("_hideName")) {
 		// We are processing an annotation and it already
 		// has _hideName
 		_currentlyProcessingAnnotation = false;
@@ -142,7 +142,7 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 
     // FIXME: this should go away
     private void _debug(String printString) {
-	//System.out.println(printString);
+
     }
 
     private boolean _currentlyProcessingAnnotation = false;
