@@ -1,4 +1,4 @@
-/** An Interface representing the Type of an object.
+/** An Interface representing the Type of a Token.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,39 +31,43 @@
 
 package ptolemy.data.type;
 
-import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;	
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.IllegalActionException;
-import java.util.Enumeration;
-import collections.LinkedList;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// Type
 /**
-An interface representing the type of an object.  
+An interface representing the type of a Token.
+All instances of Type must be immutable to avoid circular containment
+in structured types.
 
-@author Steve Neuendorffer
+@author Yuhong Xiong, Steve Neuendorffer
 $Id$
-
 */
 
-public interface Type extends InequalityTerm
+public interface Type 
 {
-    /** Given a constraint on this Type, return an enumeration of constraints
-     *  on other types, on which this type depends.
-     *  In this base class, we assume there is nothing to expand, so return
-     *  an enumeration with a single element of the given constraint.
+    /** Convert the specified token into a token having the type
+     *  represented by this object.
+     *  @param t a token.
+     *  @return a token.
+     *  @exception IllegalActionExceptin If lossless conversion
+     *   cannot be done.
      */
-    public Enumeration expandConstraint(Inequality constraint);
-    
-    /** Resolve the given constraints on objects of this type.
-     *  Set the values of all the mentioned variables, such that the
-     *  values are consistent with all of the constraints.
-     *  @param constraints An Enumeration of Inequality objects.
-     *  @return An enumeration of objects in which conflict occured.
+    public Token convert(Token t) throws IllegalActionException;
+ 
+    /** Determine if the argument represents the same type as this object.
+     *  @param t A Type.
+     *  @return True if the argument represents the same type as this
+     *   object; false otherwise.
      */
-    //    public Enumeration resolveConstraints(Enumeration constraints);
+    public boolean isEqualTo(Type t);
 
+    /** Determine if this Type corresponds to an instantiable token
+     *  class.
+     *  @return True if this type corresponds to an instantiable
+     *   token class.
+     */
+    public boolean isInstantiable();
 }
 
