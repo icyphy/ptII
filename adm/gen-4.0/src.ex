@@ -113,6 +113,7 @@ ptolemy/domains/sdf/demo/FixPointSystem
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
+ptolemy/domains/tm/lib/PeriodicTrigger
 ptolemy/domains/tm/runtime
 ptolemy/domains/wireless/lib/network
 ptolemy/domains/wireless/lib/tinyOS
