@@ -260,7 +260,7 @@ proc ptclose {newresults oldresults {epsilon 0.00001}} {
 ############################################################################
 #### epsilonDiff
 # Compare two lists of numbers, if each number in the newresults
-# is the different by more than epsilong from the corresponding number
+# is the different by more than epsilon from the corresponding number
 # in old results, then return a message about the difference.
 # If the two results lists are within epsilon, then return null
 #
