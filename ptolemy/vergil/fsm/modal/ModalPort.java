@@ -40,6 +40,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalPort
@@ -56,6 +57,16 @@ in either class.
 */
 
 public class ModalPort extends TypedIOPort {
+
+    /** Construct a port in the given workspace.  
+     *  @param workspace The workspace.
+     *  @exception IllegalActionException If the port is not of an acceptable
+     *   class for the container, or if the container does not implement the
+     *   TypedActor interface.
+     */
+    public ModalPort(Workspace workspace) throws IllegalActionException {
+        super(workspace);
+    }
 
     /** Construct a port with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
