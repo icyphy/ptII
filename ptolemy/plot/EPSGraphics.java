@@ -1,6 +1,6 @@
 /* Graphics class supporting EPS export from plots.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
-
+ 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red
@@ -31,14 +31,20 @@ package ptolemy.plot;
 import java.awt.*;
 import java.awt.image.*;
 import java.util.Hashtable;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.awt.datatransfer.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EPSGraphics
-/**
+/** 
 Graphics class supporting EPS export from plots.
+If this is used from within an applet, then the output goes to the standard
+output.  Unfortunately, with standard browsers, this is not useful.
+With MS Internet Explorer, standard output is not available.
+With Netscape Navigator, standard output is available in the Java console,
+but is limited to fewer lines than what is usually generated.
+Thus, we reommend using this within Sun's appletviewer, and redirecting
+its standard output to a file.
 
 @author Edward A. Lee
 @version $Id$
@@ -47,18 +53,18 @@ Graphics class supporting EPS export from plots.
 public class EPSGraphics extends PtolemyGraphics {
 
     /** Constructor for a graphics object that writes encapsulated
-     *  PostScript to the specified file.  If the file argument is
+     *  PostScript to the specified output stream.  If the out argument is
      *  null, then it writes to standard output (it would write it to
      *  the clipboard, but as of this writing, writing to the clipboard
      *  does not work in Java).
-     *  @param file The file to write to, or null to write to standard out.
+     *  @param out The stream to write to, or null to write to standard out.
      *  @param width The width of the plot graphic, in units of 1/72 inch.
      *  @param height The height of the plot graphic, in units of 1/72 inch.
-     */
-    public EPSGraphics(FileWriter file, int width, int height) {
+     */	
+    public EPSGraphics(OutputStream out, int width, int height) {
         _width = width;
         _height = height;
-        _file = file;
+        _out = out;
         _buffer.append("%!PS-Adobe-3.0 EPSF-3.0\n");
         _buffer.append("%%Creator: UC Berkeley Plot Package\n");
         _buffer.append("%%BoundingBox: 50 50 " + (50+width) + " "
@@ -81,14 +87,14 @@ public class EPSGraphics extends PtolemyGraphics {
     }
 
     public Graphics create() {
-        return new EPSGraphics(_file, _width, _height);
+        return new EPSGraphics(_out, _width, _height);
     }
 
     public void dispose() {
     }
 
     public void drawArc(int x, int y, int width, int height,
-            int startAngle, int arcAngle) {
+             int startAngle, int arcAngle) {
     }
 
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
@@ -111,31 +117,31 @@ public class EPSGraphics extends PtolemyGraphics {
     }
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-            int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+    int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img,
-            int dx1,
-            int dy1,
-            int dx2,
-            int dy2,
-            int sx1,
-            int sy1,
-            int sx2,
-            int sy2,
-            Color bgcolor,
-            ImageObserver observer) {
+                                   int dx1,
+                                   int dy1,
+                                   int dx2,
+                                   int dy2,
+                                   int sx1,
+                                   int sy1,
+                                   int sx2,
+                                   int sy2,
+                                   Color bgcolor,
+                                   ImageObserver observer) {
         return true;
     }
 
     /** Draw a line, using the current color, between the points (x1, y1)
-     *  and (x2, y2) in this graphics context's coordinate system.
-     *  @param x1 the x coordinate of the first point.
-     *  @param y1 the y coordinate of the first point.
-     *  @param x2 the x coordinate of the second point.
-     *  @param y2 the y coordinate of the second point.
-     */
+     *  and (x2, y2) in this graphics context's coordinate system. 
+     *  @param x1 the x coordinate of the first point. 
+     *  @param y1 the y coordinate of the first point. 
+     *  @param x2 the x coordinate of the second point. 
+     *  @param y2 the y coordinate of the second point. 
+     */	
     public void drawLine(int x1, int y1, int x2, int y2) {
         Point start = _convert(x1, y1);
         Point end = _convert(x2, y2);
@@ -152,8 +158,8 @@ public class EPSGraphics extends PtolemyGraphics {
      *  gives the number of vertices.  If the arrays are not long enough to
      *  define this many vertices, or if the third argument is less than three,
      *  then nothing is drawn.
-     *  @param xPoints An array of x coordinates.
-     *  @param yPoints An array of y coordinates.
+     *  @param xPoints An array of x coordinates. 
+     *  @param yPoints An array of y coordinates. 
      *  @param nPoints The total number of vertices.
      */
     public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
@@ -167,7 +173,7 @@ public class EPSGraphics extends PtolemyGraphics {
     /** Draw an oval bounded by the specified rectangle with the current color.
      *  @param x The x coordinate of the upper left corner
      *  @param y The y coordinate of the upper left corner
-     *  @param width The width of the oval to be filled.
+     *  @param width The width of the oval to be filled. 
      *  @param height The height of the oval to be filled.
      */
     // FIXME: Currently, this ignores the fourth argument and draws a circle
@@ -176,11 +182,11 @@ public class EPSGraphics extends PtolemyGraphics {
         int radius = width/2;
         Point center = _convert(x + radius, y + radius);
         _buffer.append("newpath " + center.x + " " + center.y + " "
-                + radius + " 0 360 arc closepath stroke\n");
+        + radius + " 0 360 arc closepath stroke\n");
     }
 
     public void drawRect(int x, int y, int width, int height) {
-        Point start = _convert(x, y);
+        Point start = _convert(x,y);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         _buffer.append("0 " + (-height) + " rlineto\n");
         _buffer.append("" + width + " 0 rlineto\n");
@@ -208,8 +214,8 @@ public class EPSGraphics extends PtolemyGraphics {
      *  gives the number of vertices.  If the arrays are not long enough to
      *  define this many vertices, or if the third argument is less than three,
      *  then nothing is drawn.
-     *  @param xPoints An array of x coordinates.
-     *  @param yPoints An array of y coordinates.
+     *  @param xPoints An array of x coordinates. 
+     *  @param yPoints An array of y coordinates. 
      *  @param nPoints The total number of vertices.
      */
     public void fillPolygon(int xPoints[], int yPoints[], int nPoints) {
@@ -223,7 +229,7 @@ public class EPSGraphics extends PtolemyGraphics {
     /** Fill an oval bounded by the specified rectangle with the current color.
      *  @param x The x coordinate of the upper left corner
      *  @param y The y coordinate of the upper left corner
-     *  @param width The width of the oval to be filled.
+     *  @param width The width of the oval to be filled. 
      *  @param height The height of the oval to be filled.
      */
     // FIXME: Currently, this ignores the fourth argument and draws a circle
@@ -232,7 +238,7 @@ public class EPSGraphics extends PtolemyGraphics {
         int radius = width/2;
         Point center = _convert(x + radius, y + radius);
         _buffer.append("newpath " + center.x + " " + center.y + " "
-                + radius + " 0 360 arc closepath fill\n");
+        + radius + " 0 360 arc closepath fill\n");
     }
 
     /** Fill the specified rectangle and draw a thin outline around it.
@@ -247,7 +253,7 @@ public class EPSGraphics extends PtolemyGraphics {
      *  @param height The height of the rectangle.
      */
     public void fillRect(int x, int y, int width, int height) {
-        Point start = _convert(x, y);
+        Point start = _convert(x,y);
         _fillPattern();
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         _buffer.append("0 " + (-height) + " rlineto\n");
@@ -261,7 +267,7 @@ public class EPSGraphics extends PtolemyGraphics {
     }
 
     public void fillRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+             int arcWidth, int arcHeight) {
     }
 
     public Shape getClip() {
@@ -344,25 +350,26 @@ public class EPSGraphics extends PtolemyGraphics {
     public void setXORMode(Color c1) {
     }
 
-    /** Issue the PostScript showpage command.
+    /** Issue the PostScript showpage command, then write and flush the output.
+     *  If the output argument of the constructor was null, then write
+     *  to the clipboard.
      */
     public void showpage() {
         _buffer.append("showpage\n");
-        if (_file != null) {
-            try {
-                _file.write(_buffer.toString());
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+        if (_out != null) {
+            PrintWriter output = new PrintWriter(
+                new BufferedOutputStream(_out));
+
+            output.println(_buffer.toString());
+            output.flush();
         } else {
             // Write to clipboard instead
-            // FIXME: This doesn't work with jdk 1.1.4.
-            // if (_clipboard == null) {
-            //     _clipboard = new Clipboard("UCB Plot");
-            // }
-            // StringSelection sel = new StringSelection(_buffer.toString());
-            // _clipboard.setContents(sel, sel);
-            System.out.println(_buffer);
+            // NOTE: This doesn't work at least with jdk 1.1.4.
+            if (_clipboard == null) {
+                _clipboard = new Clipboard("UCB Plot");
+            }
+            StringSelection sel = new StringSelection(_buffer.toString());
+            _clipboard.setContents(sel, sel);
         }
     }
 
@@ -381,13 +388,13 @@ public class EPSGraphics extends PtolemyGraphics {
     // Return false if arguments are misformed.
     private boolean _polygon(int xPoints[], int yPoints[], int nPoints) {
         if (nPoints < 3 || xPoints.length < nPoints
-                || yPoints.length < nPoints) return false;
-        Point start = _convert(xPoints[0], yPoints[0]);
+                 || yPoints.length < nPoints) return false;
+        Point start = _convert(xPoints[0],yPoints[0]);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         for (int i = 1; i < nPoints; i++) {
             Point vertex = _convert(xPoints[i], yPoints[i]);
             _buffer.append("" + vertex.x + " " + vertex.y + " lineto\n");
-        }
+        }  
         return true;
     }
 
@@ -412,7 +419,7 @@ public class EPSGraphics extends PtolemyGraphics {
         _buffer.append("" + graylevel + " setgray\n");
         // NOTE -- for debugging, output color spec in comments
         _buffer.append("%---- rgb: " + red + " " +
-                green + " " + blue +"\n");
+               green + " " + blue +"\n");
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -422,7 +429,7 @@ public class EPSGraphics extends PtolemyGraphics {
     private Font _currentFont;
     private int _width, _height;
     private Hashtable _linepattern = new Hashtable();
-    private FileWriter _file;
+    private OutputStream _out;
     private StringBuffer _buffer = new StringBuffer();
     private Clipboard _clipboard;
 
