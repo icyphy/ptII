@@ -90,6 +90,17 @@ test DoubleArrayStat-1.3 {entropy bad p} {
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.entropy() : Negative probability encountered.}}
 
 ####################################################################
+test DoubleArrayStat-1.3.5 {geometricMean} {
+    set r0 [java::call ptolemy.math.DoubleArrayStat geometricMean $a0]
+    set r1 [java::call ptolemy.math.DoubleArrayStat geometricMean $a1]
+    # r2 has negative values
+    set r2 [java::call ptolemy.math.DoubleArrayStat geometricMean $a2]
+    
+    set r3 [java::call ptolemy.math.DoubleArrayStat geometricMean $p3]
+    list $r0 $r1 $r2 $r3
+}  {1.0 0.043 NaN 0.2}
+
+####################################################################
 test DoubleArrayStat-1.4.1 {min} {
     set r [java::call ptolemy.math.DoubleArrayStat min $a2]
     list $r
@@ -128,13 +139,20 @@ test DoubleArrayStat-3.1 {mean} {
 }  1019.298
 
 ####################################################################
-test DoubleArrayStat-1.3 {mean of empty aray} {
+test DoubleArrayStat-3.1.1 {mean of empty array} {
     catch {set r [java::call ptolemy.math.DoubleArrayStat mean $a0]} errMsg
     list $errMsg
 } {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.mean() : input array has length 0.}}
 
 ####################################################################
-test DoubleArrayStat-3.1 {productOfElements} {
+test DoubleArrayStat-3.1.2 {mean of null array, test _nonZeroLength} {
+    catch {set r [java::call ptolemy.math.DoubleArrayStat mean \
+	    [java::null]]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.DoubleArrayStat.mean() : input array is null.}}
+
+####################################################################
+test DoubleArrayStat-3.2 {productOfElements} {
     set r [java::call ptolemy.math.DoubleArrayStat productOfElements $a4]
     epsilonDiff [list $r] [list -1.37267422284600]
 } {}
@@ -316,6 +334,16 @@ test DoubleArrayStat-5.1 {crosscorrelation} {
     set r2 [$v2 getrange ]
     list $r1 $r2 
 } {0.33 {0.04 0.06}}
+
+
+####################################################################
+test DoubleArrayStat-5.1 {crosscorrelationAt, no start lag} {
+    set r1 [java::call ptolemy.math.DoubleArrayStat crossCorrelationAt \
+	    $p1 $p2 4 0]
+    set r2 [java::call ptolemy.math.DoubleArrayStat crossCorrelationAt \
+	    $p1 $p2 10 3]
+    list $r1 $r2 
+} {0.33 0.06}
 
 
 ####################################################################
