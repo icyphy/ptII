@@ -80,7 +80,9 @@ test Attribute-3.1 {Test for NameDuplicationException on constructor} {
     catch {[java::new ptolemy.kernel.util.Attribute $n P]} msg
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "P" into a container that already contains an object with that name.}}
-
+######################################################################
+####
+#
 test Attribute-3.2 {Test for NameDuplicationException on setName} {
     set n [java::new ptolemy.kernel.util.NamedObj]
     $n setName N
@@ -89,7 +91,16 @@ test Attribute-3.2 {Test for NameDuplicationException on setName} {
     catch {$p2 setName P1} msg
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: .N: already contains an attribute with the name P1.}}
-
+######################################################################
+####
+#
+test Attribute-3.3 {set an Attribute to its own name} {
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    $n setName N
+    set p1 [java::new ptolemy.kernel.util.Attribute $n P1]
+    $p1 setName P1
+    $p1 getFullName
+} {.N.P1}
 ######################################################################
 ####
 #
