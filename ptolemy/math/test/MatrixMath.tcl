@@ -162,7 +162,7 @@ set longUnaryOperation \
 #            contains four subelements: 
 #              The base matrix type, which would go in 
 #                    ptolemy.math.xxxMatrixMath
-#              The base type, for example double or Complex
+#              The base type, for example double or ptolemy.math.Complex
 #              The base name of the variable to use, for example double 
 #              The expected results
 #    matrixSize - the suffix of the variable name that contains the
@@ -219,6 +219,24 @@ proc testMatrixMath {op types matrixSize opSignature \
 		# Could be a number like 2.0
 		set stringResults $matrixResults
 	    } else {
+		# The basetype of the result.  If matrixResults is
+		# double[], then this will be double.
+		# If matrixResults is ptolemy.math.Complex[], then
+		# this will be Complex
+		set resultsBaseType [java::info baseclass $matrixResults]
+
+		if {"$resultsBaseType" == "ptolemy.math.Complex" } {
+		    set resultsBaseType Complex
+		}
+
+		if {"$resultsBaseType" == "int" } {
+		    set resultsBaseType Integer
+		}
+
+		# Capitalize
+		set resultsBaseType "[string toupper [string range $resultsBaseType 0 0]][string range $resultsBaseType 1 end]"
+
+
 		# Depending on the number of dimensions, call the
 		# proper toString
 		switch [java::info dimensions $matrixResults] {
@@ -227,19 +245,19 @@ proc testMatrixMath {op types matrixSize opSignature \
 		    }
 		    1 {
 			set stringResults \
-				[java::call ptolemy.math.${m}ArrayMath \
+				[java::call ptolemy.math.${resultsBaseType}ArrayMath \
 				toString $matrixResults]	
 		    }
 		    default {
 			set stringResults \
-				[java::call ptolemy.math.${m}MatrixMath \
+				[java::call ptolemy.math.${resultsBaseType}MatrixMath \
 				toString $matrixResults]	
 		    }
 		}
 	    }
 	    regsub -all {,} $stringResults {} stringAsList
-	    puts "got: $stringAsList"
-	    puts "expected: $expectedResults"
+	    #puts "got: $stringAsList"
+	    #puts "expected: $expectedResults"
 	    epsilonDiff $stringAsList $expectedResults
 	} {}
     }
@@ -487,7 +505,7 @@ testMatrixMath applyBinaryOperation $types 2_2 \
 
 ######################################################################
 ####
-#  FIXME: *ArrayMath applyUnaryOperation(XXXUnaryOperation, xxx[])
+#  Test out *ArrayMath applyUnaryOperation(XXXUnaryOperation, xxx[])
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
@@ -1160,27 +1178,92 @@ testMatrixMatrix subtract $types
 
 ######################################################################
 ####
-##  FIXME: double[] toDoubleArray(xxx[])
+##  *ArrayMath Test out double[] toDoubleArray(xxx[])
+
+set types [list \
+	[list Float float float {{2.0 -1.0}}] \
+	[list Integer int int {{2.0 -1.0}}] \
+	[list Long long long {{2.0 -1.0}}]]
+
+testArrayMathArray toDoubleArray $types
 
 ######################################################################
 ####
-##  FIXME: double[][] toDoubleMatrix(xxx[][])
+##  *MatrixMath Test out double[][] toDoubleMatrix(xxx[][])
+
+set types [list \
+	[list Float float float {{{2.0 -1.0} {1.0 0.0}}}] \
+	[list Integer int int {{{2.0 -1.0} {1.0 0.0}}}] \
+	[list Long long long {{{2.0 -1.0} {1.0 0.0}}}]]
+
+testMatrix toDoubleMatrix $types
 
 ######################################################################
 ####
-##  FIXME: float[] toFloatArray(xxx[])
+##  *ArrayMath Test out: float[] toFloatArray(xxx[])
+
+set types [list \
+	[list Double double double {{2.0 -1.0}}] \
+	[list Integer int int {{2.0 -1.0}}] \
+	[list Long long long {{2.0 -1.0}}]]
+
+testArrayMathArray toFloatArray $types
 
 ######################################################################
 ####
-##  FIXME: float[][] toFloatMatrix(xxx[][])
+##  *MatrixMath Test out: float[][] toFloatMatrix(xxx[][])
+
+set types [list \
+	[list Double double double {{{2.0 -1.0} {1.0 0.0}}}] \
+	[list Integer int int {{{2.0 -1.0} {1.0 0.0}}}] \
+	[list Long long long {{{2.0 -1.0} {1.0 0.0}}}]]
+
+testMatrix toFloatMatrix $types
 
 ######################################################################
 ####
-##  FIXME: int[] toIntegerArray(xxx[])
+##  *ArrayMath Test out int[] toIntegerArray(xxx[])
+
+set types [list \
+	[list Double double double {{2 -1}}] \
+	[list Float float float {{2 -1}}] \
+	[list Long long long {{2 -1}}]]
+
+testArrayMathArray toIntegerArray $types
 
 ######################################################################
 ####
-##  FIXME: int[][] toIntegerMatrix(xxx[][])
+##  *MatrixMath: int[][] toIntegerMatrix(xxx[][])
+
+set types [list \
+	[list Double double double {{{2 -1} {1 0}}}] \
+	[list Float float float {{{2 -1} {1 0}}}] \
+	[list Long long long {{{2 -1} {1 0}}}]]
+
+testMatrix toIntegerMatrix $types
+
+######################################################################
+####
+##  *ArrayMath Test out long[] toLongArray(xxx[])
+
+set types [list \
+	[list Double double double {{2 -1}}] \
+	[list Float float float {{2 -1}}] \
+	[list Integer int int {{2 -1}}]]
+
+testArrayMathArray toLongArray $types
+
+
+######################################################################
+####
+##  *MatrixMath: long[][] toLongMatrix(xxx[][])
+
+set types [list \
+	[list Double double double {{{2 -1} {1 0}}}] \
+	[list Float float float {{{2 -1} {1 0}}}] \
+	[list Integer int int {{{2 -1} {1 0}}}]]
+
+testMatrix toLongMatrix $types
 
 ######################################################################
 ####
