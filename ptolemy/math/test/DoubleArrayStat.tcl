@@ -319,13 +319,16 @@ test DoubleArrayStat-5.1 {crosscorrelation} {
 
 
 ####################################################################
-test DoubleArrayStat-6.1 {autoCorrelation} {
-    set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelation \
-	    $p1 4 0 0]
+test DoubleArrayStat-6.1.1 {autoCorrelation} {
+    set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelation $p1 4 0 0]
     set r1 [$v1 getrange ]
-    set v2 [java::call ptolemy.math.DoubleArrayStat autoCorrelation \
-	    $p1 10 2 3]
+    set v2 [java::call ptolemy.math.DoubleArrayStat autoCorrelation $p1 10 2 3]
     set r2 [$v2 getrange ]
     list $r1 $r2 
 } {0.38 {0.1 0.15}}
 
+####################################################################
+test DoubleArrayStat-6.1.2 {autoCorrelationAt without startlag and endlag} {
+    set v1 [java::call ptolemy.math.DoubleArrayStat autoCorrelationAt $p1 4 0]
+    list $v1 
+} {0.38}
