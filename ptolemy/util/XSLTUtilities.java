@@ -35,6 +35,7 @@ package ptolemy.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -79,6 +80,43 @@ public class XSLTUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Read an input file and one or more xsl files and generate the output
+     * file
+     * <pre>
+     *  java -classpath $PTII ptolemy.util.XSLTUtilities
+     *       $PTII/ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml \
+     *       $PTII/ptolemy/hsif/xsl/GlobalVariablePreprocessor.xsl \
+     *       /tmp/SwimmingPool_1.xml
+     * </pre>
+     
+     * @args args At least three arguments:
+     * <ul>
+     * <li> The first argument is the input file name.
+     * <li> The second through n-1 arguments are the names xsl files.
+     * <li> The final argument is the output file name.
+     * @exception Exception If there are problems with the transform. 
+     */ 
+    public static void main(String []args) throws Exception {
+	if (args.length < 3) {
+	    System.err.println("Usage: java -classpath $PTII "
+			       + "ptolemy.util.XSLTUtilities inputFile "
+			       + "xslFile1 [xslFile2 . . .] outputFile");
+	    System.exit(2);
+	}
+	// Make sure we can write the output first
+	FileWriter fileWriter = new FileWriter(args[args.length - 1]);
+	Document inputDocument = parse(args[0]);
+
+        List transforms = new LinkedList();
+	for(int i = 1; i < args.length - 1; i++) {
+	    transforms.add(args[i]);
+	}
+	Document outputDocument =
+            XSLTUtilities.transform(inputDocument, transforms);
+	fileWriter.write(XSLTUtilities.toString(outputDocument));
+	fileWriter.close();
+    }
 
     /** Parse a document.
      * @param filename The file name of the xml file to be read in
