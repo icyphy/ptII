@@ -47,8 +47,12 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	SoundCapture.java \
-	SoundPlayback.java
+	LiveSound.java \
+	LiveSoundListener.java \
+	LiveSoundEvent.java \
+	SoundPlayback.java \
+	SoundReader.java \
+	SoundWriter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

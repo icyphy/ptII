@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound;
@@ -75,7 +75,7 @@ import javax.sound.sampled.*;
    called to deliver the audio data to the audio output device
    (speaker or file). The audio samples delivered to putSamples()
    should be in the proper range, or clipping will occur.
-   putSamples() expects the samples to be in the range (-1,1).
+   putSamples() expects the samples to be in the range (-1, 1).
    putSamplesInt() expects the samples to be in the range
    (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
    bits_per_sample is the number of bits per sample.
@@ -127,7 +127,6 @@ public class SoundPlayback {
     public SoundPlayback(float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int putSamplesSize) {
-	//System.out.println("SoundPlayback: constructor 1: invoked");
 	_isAudioPlaybackActive = false;
 	// Set mode to real-time.
 	this._playbackMode = "speaker";
@@ -136,18 +135,6 @@ public class SoundPlayback {
 	this._channels = channels;
 	this._bufferSize = bufferSize;
 	this._putSamplesSize = putSamplesSize;
-
-	// For debug only:
-	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-	//      + sampleSizeInBits);
-	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
-	//      + sampleRate);
-	//System.out.println("SoundPlayback: constructor 1: channels = "
-	//      + channels);
-	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
-	//      + bufferSize);
-	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-	//      + putSamplesSize);
     }
 
     /** Construct a sound playback object that writes audio to
@@ -183,7 +170,6 @@ public class SoundPlayback {
             float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int putSamplesSize) {
-	//System.out.println("SoundPlayback: constructor 2: invoked");
 	_isAudioPlaybackActive = false;
 	this._playbackMode = "file";
 	this._fileName = fileName;
@@ -191,18 +177,6 @@ public class SoundPlayback {
 	this._sampleRate = sampleRate;
 	this._channels = channels;
 	this._productionRate = putSamplesSize;
-
-	// For debug only:
-	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-	//      + sampleSizeInBits);
-	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
-	//      + sampleRate);
-	//System.out.println("SoundPlayback: constructor 1: channels = "
-	//      + channels);
-	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
-	//      + bufferSize);
-	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-	//      + putSamplesSize);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -231,7 +205,7 @@ public class SoundPlayback {
      *  to the sound file specified in the constructor. Note that
      *  underflow cannot occur for this case.
      *  <p>
-     *  The samples should be in the range (-1,1). Samples that are
+     *  The samples should be in the range (-1, 1). Samples that are
      *  outside ths range will be hard-clipped so that they fall
      *  within this range.
      *  @param putSamplesArray A two dimensional array containing
@@ -253,7 +227,6 @@ public class SoundPlayback {
      */
     public void putSamples(double[][] putSamplesArray) throws IOException,
             IllegalStateException {
-	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
 
@@ -270,8 +243,6 @@ public class SoundPlayback {
 		// Now write the array to output device.
 		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    } else if (_playbackMode == "file") {
-		//System.out.println("SoundPlayback: putSamples(): file");
-
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _doubleArrayToByteArray(putSamplesArray,
@@ -333,7 +304,6 @@ public class SoundPlayback {
      */
     public void putSamplesInt(int[][] putSamplesArray) throws IOException,
             IllegalStateException {
-	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
 
@@ -350,8 +320,6 @@ public class SoundPlayback {
 		// Now write the array to output device.
 		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    } else if (_playbackMode == "file") {
-		//System.out.println("SoundPlayback: putSamples(): file");
-
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _intArrayToByteArray(putSamplesArray,
@@ -387,7 +355,6 @@ public class SoundPlayback {
      */
     public void startPlayback() throws IOException,
             IllegalStateException {
-	//System.out.println("SoundPlayback: startPlayback(): invoked");
 	if (_isAudioPlaybackActive == false) {
 	    if (_playbackMode == "speaker") {
 		// Real time playback to speaker.
@@ -425,21 +392,23 @@ public class SoundPlayback {
      *   unsupported format.
      */
     public void stopPlayback() throws IOException {
-	_isAudioPlaybackActive = false;
-	if (_playbackMode == "speaker") {
-	    // Stop real-time playback to speaker.
-	    if (_sourceLine != null) {
-		_sourceLine.drain();
-		_sourceLine.stop();
-		_sourceLine.close();
+	if (_isAudioPlaybackActive == true) {
+	    if (_playbackMode == "speaker") {
+		// Stop real-time playback to speaker.
+		if (_sourceLine != null) {
+		    _sourceLine.drain();
+		    _sourceLine.stop();
+		    _sourceLine.close();
+		}
+		_sourceLine = null;
+	    } else if (_playbackMode == "file") {
+		// Record data to sound file.
+		_stopPlaybackToFile();
+	    } else  {
+		// Should not happen.
 	    }
-	    _sourceLine = null;
-	} else if (_playbackMode == "file") {
-	    // Record data to sound file.
-	    _stopPlaybackToFile();
-	} else  {
-	    // Should not happen.
 	}
+	_isAudioPlaybackActive = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -455,17 +424,9 @@ public class SoundPlayback {
 
         _frameSizeInBytes = format.getFrameSize();
 
-	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-	//      "sampling rate = " + _sampleRate);
-	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-	//      "sample size in bits = " + _sampleSizeInBits);
-
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
                 AudioSystem.NOT_SPECIFIED);
-
-	//System.out.println("SoundPlayback: Dataline.Info : " +
-	//      sourceInfo.toString());
 
         // get and open the source data line for playback.
 	try {
@@ -475,9 +436,6 @@ public class SoundPlayback {
             // Open line and suggest a buffer size (in bytes) to use or
 	    // the internal audio buffer.
 	    _sourceLine.open(format, _bufferSize*_frameSizeInBytes);
-	    //System.out.println("SoundPlayback: internal audio buffer size = " +
-	    //      _sourceLine.getBufferSize()/_frameSizeInBytes +
-	    //      " samples.");
 
 	} catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
@@ -513,7 +471,6 @@ public class SoundPlayback {
 
 
     private void _stopPlaybackToFile() throws IOException {
-
 	int size =  _toFileBuffer.size();
 	byte[] audioBytes = new byte[size];
 	for (int i = 0; i < size; i++) {
@@ -529,6 +486,8 @@ public class SoundPlayback {
                     audioBytes.length /  _frameSizeInBytes);
 
 	File outFile = new File(_fileName);
+
+
 
 	try {
 	    StringTokenizer st = new StringTokenizer(_fileName, ".");
@@ -576,8 +535,8 @@ public class SoundPlayback {
     /* Convert a double array of audio samples into a byte array of
      * audio samples in linear signed pcm big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
-     * range (-1,1). Samples outside this range will be hard clipped
-     * to the range (-1,1).
+     * range (-1, 1). Samples outside this range will be hard clipped
+     * to the range (-1, 1).
      * @param doubleArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.

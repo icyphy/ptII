@@ -25,8 +25,8 @@ from the computer's audio input port.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound;
@@ -141,7 +141,6 @@ public class SoundCapture {
     public SoundCapture(float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int getSamplesSize) {
-	//System.out.println("SoundCapture: constructor 1: invoked");
 	_isAudioCaptureActive = false;
 	// Set mode to real-time.
 	this._isRealTime = true;
@@ -150,19 +149,6 @@ public class SoundCapture {
 	this._channels = channels;
 	this._bufferSize = bufferSize;
 	this._productionRate = getSamplesSize;
-
-	// For debug only:
-	//System.out.println("SoundCapture: constructor 1: sampleSizeInBits = "
-        //        + sampleSizeInBits);
-	//System.out.println("SoundCapture: constructor 1: sampleRate = "
-        //        + sampleRate);
-	//System.out.println("SoundCapture: constructor 1: channels = "
-        //        + channels);
-	//System.out.println("SoundCapture: constructor 1: bufferSize = "
-        //        + bufferSize);
-	//System.out.println("SoundCapture: constructor 1: getSamplesSize = "
-        //        + getSamplesSize);
-
     }
 
     /** Construct a sound capture object that captures audio from a
@@ -186,7 +172,6 @@ public class SoundCapture {
      */
     public SoundCapture(String pathName,
             int getSamplesSize) {
-	//System.out.println("SoundCapture: constructor 2: invoked");
 	_isAudioCaptureActive = false;
 	// Set mode to "capture from file" (not real-time).
 	this._isRealTime = false;
@@ -282,7 +267,7 @@ public class SoundCapture {
      *  in the constructor.
      *  @return Two dimensional array of captured audio samples.
      *   Return null
-     *  if end of audio file is reached A null return value is
+     *  if end of audio file is reached. A null return value is
      *  only possible when capturing from a sound file.
      *  The first index
      *  represents the channel number (0 for first channel, 1 for
@@ -300,7 +285,6 @@ public class SoundCapture {
     public double[][] getSamples() throws IOException,
             IllegalStateException {
 	if (_isAudioCaptureActive == true) {
-	    //System.out.println("SoundCapture: getSamples(): invoked");
 	    int numBytesRead;
 	    if (_isRealTime == true) {
 		// Real-time capture.
@@ -321,9 +305,15 @@ public class SoundCapture {
 		return _audioInDoubleArray;
 	    } else if (numBytesRead != _data.length) {
 		// Read fewer samples than productionRate many samples.
-
-		// FIXME: Output the samples that were read + zeros?
-		return null;
+		// FIXME: There appears to be a java sound bug that
+		// causes AudioInputStream.read(array) to sometimes
+		// return fewer bytes than requested, even though
+		// the end of the file has not yet been reached.
+		_audioInDoubleArray =
+		    _byteArrayToDoubleArray(_data,
+                            _bytesPerSample,
+                            _channels);
+		return _audioInDoubleArray;
 	    } else if (numBytesRead == -1) {
 		// Ran out of samples to play. This generally means
 		// that the end of the sound file has been reached.
@@ -386,7 +376,6 @@ public class SoundCapture {
     public int[][] getSamplesInt() throws IOException,
             IllegalStateException {
 	if (_isAudioCaptureActive == true) {
-	    //System.out.println("SoundCapture: getSamples(): invoked");
 	    int numBytesRead;
 	    if (_isRealTime == true) {
 		// Real-time capture.
@@ -468,24 +457,32 @@ public class SoundCapture {
      *  audio resources.
      */
     public void stopCapture() throws IOException {
-	_isAudioCaptureActive = false;
-	// Free up audio system resources.
-	// For capture from file:
-	if (_audioInputStream != null) {
-	    _audioInputStream.close();
-	}
-	if (_properFormatAudioInputStream != null) {
-	    _properFormatAudioInputStream.close();
-	}
-	// For real-time capture:
-	if (_targetLine != null) {
+	if (_isAudioCaptureActive == true) {
+	    // Free up audio system resources.
+	    // For capture from file:
+	    if (_audioInputStream != null) {
+		_audioInputStream.close();
 
-	    if (_targetLine.isOpen() == true) {
-		_targetLine.stop();
-		_targetLine.close();
-		_targetLine = null;
+		// FIXME : is this correct?
+		_audioInputStream = null;
+	    }
+	    if (_properFormatAudioInputStream != null) {
+		_properFormatAudioInputStream.close();
+
+		// FIXME : is this correct?
+		_properFormatAudioInputStream = null;
+	    }
+	    // For real-time capture:
+	    if (_targetLine != null) {
+
+		if (_targetLine.isOpen() == true) {
+		    _targetLine.stop();
+		    _targetLine.close();
+		    _targetLine = null;
+		}
 	    }
 	}
+	_isAudioCaptureActive = false;
     }
 
     /** Return the number of bits per audio sample. This method will
@@ -557,14 +554,8 @@ public class SoundCapture {
                     "real-time audio capture: " + ex);
         }
 
-        //System.out.println("SoundCapture: internal audio " +
-	//      "buffer size = " +
-	//      _targetLine.getBufferSize()/_frameSizeInBytes +
-	//" samples.");
-
         int targetBufferLengthInBytes = _productionRate *
             _frameSizeInBytes;
-	//System.out.println("frameSizeInBytes = " + _frameSizeInBytes);
 
 	// The following works under Windows Java 1.3.0 RC2 but
 	// not under Tritonus under Linux, so comment out.
@@ -587,12 +578,10 @@ public class SoundCapture {
 
 
     /* Perform necessary initialization to capture from a sound
-     * file. The sound file can be specified as a URL or as a
-     * filename on the local file system.
+     * file. The sound file is specified as a URL.
      */
     private void _startCaptureFromFile() throws IOException {
 	// Load audio from a URL.
-
 	// Create a URL corresponding to the sound file location.
 	URL soundURL =
 	    new URL(_pathName);
@@ -612,17 +601,16 @@ public class SoundCapture {
 	    throw new IOException("No loaded audio to play back");
 	}
 
+	// FIXME: is this correct?
+	//_audioInputStream.reset();
+
 	AudioFormat origFormat = _audioInputStream.getFormat();
 	// Now convert to PCM_SIGNED_BIG_ENDIAN so that can get double
 	// representation of samples.
 	float sampleRate = origFormat.getSampleRate();
-	//System.out.println("SoundCapture: sampling rate = " +
-	//	   sampleRate);
 
 	_sampleSizeInBits = origFormat.getSampleSizeInBits();
 	_bytesPerSample = _sampleSizeInBits/8;
-	//System.out.println("SoundCapture: sample size in bits = " +
-	//	   _sampleSizeInBits);
 
 	_channels = origFormat.getChannels();
 	boolean signed = true;
@@ -630,11 +618,14 @@ public class SoundCapture {
 	AudioFormat format = new AudioFormat(sampleRate,
                 _sampleSizeInBits, _channels,
                 signed, bigEndian);
-	//System.out.println("Converted format: " + format.toString());
-
 	_properFormatAudioInputStream =
 	    AudioSystem.getAudioInputStream(format, _audioInputStream);
+
 	_frameSizeInBytes = format.getFrameSize();
+
+	// FIXME: is this correct?
+	//_properFormatAudioInputStream.reset();
+
 	// Array of audio samples in byte format.
 	_data = new byte[_productionRate*_frameSizeInBytes];
 
