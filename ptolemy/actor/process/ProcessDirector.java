@@ -256,7 +256,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if( _debugging ) _debug("ProcessDirector returning _notDone = " 
+        if( _debugging ) _debug(_name+": returning _notDone = " 
                 + _notDone);
 	return _notDone;
     }
@@ -399,7 +399,7 @@ public class ProcessDirector extends Director {
      *  has stopped due to all of the branches it controls
      *  stopping.
      */
-    public void  stopInputBranchController() {
+    public void stopInputBranchController() {
         Workspace workspace = workspace();
         _inputBranchController.endIteration();
         while( !_inputBranchController.isBlocked() ) {
@@ -413,7 +413,7 @@ public class ProcessDirector extends Director {
      *  has stopped due to all of the branches it controls
      *  stopping.
      */
-    public void  stopOutputBranchController() {
+    public void stopOutputBranchController() {
         Workspace workspace = workspace();
         _outputBranchController.endIteration();
         while( !_outputBranchController.isBlocked() ) {
@@ -702,7 +702,7 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** 
+    /** JFIXME: This method can lead to deadlock
      */
     protected synchronized boolean _isInputControllerBlocked() {
         return _inputBranchController.isBlocked(); 
@@ -710,7 +710,7 @@ public class ProcessDirector extends Director {
         
     /** 
      */
-    protected synchronized void registerBlockedBranchReceivers() {
+    public synchronized void registerBlockedBranchReceivers() {
         if( _inputBranchController.isBlocked() ) {
             Iterator branches = 
                     _inputBranchController.getEngagedBranchList().iterator();
