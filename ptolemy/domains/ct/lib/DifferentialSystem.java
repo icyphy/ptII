@@ -161,7 +161,8 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
             // Changes of the initialStates parameter are ignored after
             // the execution.  
-            if (getManager().getState() == Manager.IDLE) {
+            if (getManager()!= null && 
+                    getManager().getState() == Manager.IDLE) {
                 _requestInitialization();
             }
         } else if (attribute instanceof Parameter) {
