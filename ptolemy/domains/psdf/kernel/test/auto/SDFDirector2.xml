@@ -65,6 +65,11 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 130.0">
             </property>
         </property>
+        <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 125.0">
+            </property>
+        </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
@@ -73,11 +78,6 @@
         <port name="port2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 200.0">
-            </property>
-        </port>
-        <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 125.0">
             </property>
         </port>
         <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -91,8 +91,6 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
             </port>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -183,9 +181,9 @@
         <vertex name="vertex1" value="120.0, 210.0">
         </vertex>
     </relation>
+    <link port="typed composite actor.rate" relation="relation"/>
     <link port="typed composite actor.port" relation="relation"/>
     <link port="typed composite actor.port2" relation="relation2"/>
-    <link port="typed composite actor.rate" relation="relation"/>
     <link port="NonStrictTest.input" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
 </entity>
