@@ -99,8 +99,9 @@ public class Attribute extends NamedObj {
      *  @exception CloneNotSupportedException Not thrown in this base class
      *  @return The new Attribute.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Attribute newObject = (Attribute)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Attribute newObject = (Attribute)super.clone(workspace);
         newObject._container = null;
         return newObject;
     }

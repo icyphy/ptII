@@ -333,7 +333,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  its contents when exportMoML() is called, but rather will
      *  declare that it extends this one, and will export only its attributes.
      *  This method read-synchronizes on the workspace.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
