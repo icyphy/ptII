@@ -377,7 +377,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         if (change != null) {
             persistent = change.isPersistent();
             // Note that we don't want to accidently reset to false here.
-            if(persistent) {
+            if (persistent) {
                 setModified(persistent);
             }
         }
@@ -517,9 +517,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
             double[] location = new double[2];
             boolean gotLocation = false;
-            for(int i = 0; i < selection.length; i++) {
-                if(selection[i] instanceof Figure) {
-                    if(!gotLocation) {
+            for (int i = 0; i < selection.length; i++) {
+                if (selection[i] instanceof Figure) {
+                    if (!gotLocation) {
                         location[0] = ((Figure)selection[i]).getBounds().
                             getCenterX();
                         location[1] = ((Figure)selection[i]).getBounds().
@@ -527,7 +527,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         gotLocation = true;
                     }
                     Object userObject = ((Figure)selection[i]).getUserObject();
-                    if(graphModel.isNode(userObject)) {
+                    if (graphModel.isNode(userObject)) {
                         nodeSet.add(userObject);
                         NamedObj actual =
                             (NamedObj)graphModel.getSemanticObject(userObject);
@@ -536,10 +536,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 }
             }
 
-            for(int i = 0; i < selection.length; i++) {
-                if(selection[i] instanceof Figure) {
+            for (int i = 0; i < selection.length; i++) {
+                if (selection[i] instanceof Figure) {
                     Object userObject = ((Figure)selection[i]).getUserObject();
-                    if(graphModel.isEdge(userObject)) {
+                    if (graphModel.isEdge(userObject)) {
                         // Check to see if the head and tail are both being
                         // selected.
                         Object head = graphModel.getHead(userObject);
@@ -552,23 +552,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         Iterator objects = nodeSet.iterator();
                         while(!(headOK && tailOK) && objects.hasNext()) {
                             Object object = objects.next();
-                            if(!headOK && GraphUtilities.isContainedNode(head,
+                            if (!headOK && GraphUtilities.isContainedNode(head,
                                     object, graphModel)) {
                                 headOK = true;
                             }
-                            if(!tailOK && GraphUtilities.isContainedNode(tail,
+                            if (!tailOK && GraphUtilities.isContainedNode(tail,
                                     object, graphModel)) {
                                 tailOK = true;
                             }
                         }
                         // For the edges at the boundary.
-                        if((!headOK && tailOK) || (headOK && !tailOK)) {
+                        if ((!headOK && tailOK) || (headOK && !tailOK)) {
                             IOPort port = null;
                             IORelation relation = null;
                             boolean duplicateRelation = false;
-                            if(head instanceof IOPort) {
+                            if (head instanceof IOPort) {
                                 port = (IOPort)head;
-                                if(tail instanceof IOPort) {
+                                if (tail instanceof IOPort) {
                                     relation = (IORelation)graphModel.
                                         getSemanticObject(userObject);
                                     duplicateRelation = true;
@@ -576,12 +576,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                     relation = (IORelation)graphModel.
                                         getSemanticObject(tail);
                                 }
-                            } else if(tail instanceof IOPort) {
+                            } else if (tail instanceof IOPort) {
                                 port = (IOPort)tail;
                                 relation = (IORelation)graphModel.
                                     getSemanticObject(head);
                             }
-                            if(port != null) {
+                            if (port != null) {
                                 ComponentEntity entity = (ComponentEntity)
                                     ((IOPort)port).getContainer();
                                 String portName = "port_" + i;
@@ -590,15 +590,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                     newPorts.append("<port name=\"" + portName +
                                             "\" class=\"ptolemy.actor.TypedIOPort"
                                             + "\">\n");
-                                if(namedObjSet.contains(entity)) {
+                                if (namedObjSet.contains(entity)) {
                                     // The port is inside the hierarchy.
                                     // The relation must be outside.
                                     // Create composite port.
-                                    if(isInput) {
+                                    if (isInput) {
                                         newPorts.append(
                                                 "<property name=\"input\"/>");
                                     }
-                                    if(isOutput) {
+                                    if (isOutput) {
                                         newPorts.append(
                                                 "<property name=\"output\"/>");
                                     }
@@ -620,7 +620,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                             relationName + "\"/>\n");
                                     // Create external links.
 
-                                    if(duplicateRelation) {
+                                    if (duplicateRelation) {
                                         extRelations.append("<relation name=\"" +
                                             relation.getName() + "\" class=\"" +
                                             "ptolemy.actor.TypedIORelation\"/>\n");
@@ -628,7 +628,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                         ComponentEntity otherEntity =
                                             (ComponentEntity)otherPort.
                                             getContainer();
-                                        if(otherEntity == container) {
+                                        if (otherEntity == container) {
                                             // This is a boundy port at a higher level.
                                             extConnections.append("<link port=\"" +
                                                     otherPort.getName() +
@@ -650,11 +650,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                 } else {
                                     // The port is outside the hierarchy.
                                     // The relation must be inside.
-                                    if(isInput) {
+                                    if (isInput) {
                                         newPorts.append(
                                                 "<property name=\"output\"/>");
                                     }
-                                    if(isOutput) {
+                                    if (isOutput) {
                                         newPorts.append(
                                                 "<property name=\"input\"/>");
                                     }
@@ -674,7 +674,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                                             relationName + "\"/>\n");
                                     // Create external links.
 
-                                    if(duplicateRelation) {
+                                    if (duplicateRelation) {
                                         intRelations.append("<relation name=\"" +
                                             relation.getName() + "\" class=\"" +
                                             "ptolemy.actor.TypedIORelation\"/>\n");
@@ -1128,11 +1128,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             CompositeEntity library = (CompositeEntity)
                 configuration.getEntity("actor library."
                         + VERGIL_USER_LIBRARY_NAME);
-            if(library == null) {
+            if (library == null) {
                 MessageHandler.error(
                         "Save In Library failed: " +
-                        "Could not find user library with name " +
-                        "\"vergilUserLibrary\".");
+                        "Could not find user library with name \"" +
+                        VERGIL_USER_LIBRARY_NAME + "\".");
                 return;
             }
             configuration.openModel(library);
@@ -1141,7 +1141,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
             // Check if there is already something existing in the
             // user library with this name.
-            if(library.getEntity(entity.getName()) != null) {
+            if (library.getEntity(entity.getName()) != null) {
                 MessageHandler.error(
                         "Save In Library failed: An object" +
                         " already exists in the user library with name " +
