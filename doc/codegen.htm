@@ -106,13 +106,13 @@ make codegen
 </pre>
 This rule sets the CLASSPATH and then reads in the Ptolemy
 simulation from
-<a href="../ptolemy/domains/sdf/demo/orthocom"><code>ptolemy/domains/sdf/demo/orthocom</code></a> and generates code in
-<a href="../cg/orthocom"><code>cg/orthocom</code></a>.
+<a href="../ptolemy/domains/sdf/demo/OrthogonalCom"><code>ptolemy/domains/sdf/demo/OrthogonalCom</code></a> and generates code in
+<a href="../cg/OrthogonalCom"><code>cg/OrthogonalCom</code></a>.
 <pre>
 java -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-     -class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
+     -class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalComSystem \
      -iterations 50 \
-     -outdir $(ROOT) -outpkg cg.orthocom
+     -outdir $(ROOT) -outpkg cg.OrthogonalCom
 </pre>
 <dl>
 <dt><code>-iterations</code
@@ -122,20 +122,20 @@ java -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 <dt><code>-outpkg</code
 <dd>Package of output classes, usually set to <code>cg.<i>system</i></code>.
 If <code>outdir</code> is set to <code>$PTII</code>, and
-<code>outpkg</code> is set to <code>cg.orthocom</code>, then
-the output classes will be created in <code>$PTII/cg/orthocom</code>
+<code>outpkg</code> is set to <code>cg.OrthogonalCom</code>, then
+the output classes will be created in <code>$PTII/cg/OrthogonalCom</code>
 
 </dl>
 Compile the newly created java classes with:
 <pre>
-cd $PTII/cg/orthocom
+cd $PTII/cg/OrthogonalCom
 javac -classpath ../.. CG_Main.java
 </pre>
 
 Run the code generation classes
 <pre>
-cd $PTII/cg/orthocom
-java -classpath ../.. cg.orthocom.CG_Main
+cd $PTII/cg/OrthogonalCom
+java -classpath ../.. cg.OrthogonalCom.CG_Main
 </pre>
 
 
