@@ -51,17 +51,18 @@ DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
-    CNames.java \
-    CodeFileGenerator.java \
-    CodeGenerator.java \
-    Context.java \
-    CSwitch.java \
-    HeaderFileGenerator.java \
-    JavaToC.java \
+	CNames.java \
+	CodeFileGenerator.java \
+	CodeGenerator.java \
+	Context.java \
+	CSwitch.java \
+	HeaderFileGenerator.java \
+	JavaToC.java \
 	Main.java \
-    MethodListGenerator.java
+	MethodListGenerator.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	README.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

@@ -43,7 +43,8 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	testDefs.tcl
+	testDefs.tcl \
+	sootDeepCodeGeneration.tcl
 
 JSRCS = \
 
@@ -68,7 +69,7 @@ MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = cg
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

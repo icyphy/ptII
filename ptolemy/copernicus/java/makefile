@@ -78,7 +78,10 @@ MISC_FILES =	$(DIRS) cg
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	cg
+	cg \
+	'CommandLineTemplate$$1.class' \
+	'TypeSpecializer$$ConstantTerm.class' \
+	'TypeSpecializer$$VariableTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

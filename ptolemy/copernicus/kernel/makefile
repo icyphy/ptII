@@ -74,7 +74,9 @@ MISC_FILES =	$(DIRS) cg
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'KernelMain$$_IgnoreAllApplicationClasses.class' \
+	'SideEffectAnalysis$$EffectFlow.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
