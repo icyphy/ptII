@@ -588,7 +588,7 @@ if test ! -d "$PTII/ptolemy/apps/tini"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present, so we need not
 find the Dallas Semiconductor tini])
     TINI_DIR='$(PTII)/vendors/dalsemi/tini'
-    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     AC_MSG_CHECKING([for tini directory])
     AC_ARG_WITH(tini, [  --with-tini=DIR       use TINI from DIR,
@@ -600,7 +600,14 @@ else
 	AC_MSG_RESULT([$TINI_DIR])
         AC_MSG_CHECKING([for \$TINI_DIR/bin/tiniclasses.jar])
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+	    AC_MSG_RESULT([$TINI_DIR/bin/tiniclasses.jar])
+	    AC_MSG_CHECKING([for \$TINI_DIR/bin/tini.jar])
+  	    if test -f "$TINI_DIR/bin/tini.jar"; then
+                AC_MSG_RESULT([$TINI_DIR/bin/tini.jar])
+	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+	    else	
+	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+            fi
 	    AC_MSG_RESULT([$TINI_CLASSES])
         else
 	    TINI_CLASSES=no
@@ -614,13 +621,19 @@ else
 	    AC_MSG_RESULT([$TINI_DIR])
             AC_MSG_CHECKING([for \$TINI_DIR/bin/tiniclasses.jar])
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
-	        AC_MSG_RESULT([$TINI_CLASSES])
-            else
-	        TINI_CLASSES=no
+	        AC_MSG_RESULT([$TINI_DIR/bin/tiniclasses.jar])
+	        AC_MSG_CHECKING([for \$TINI_DIR/bin/tini.jar])
+	        if test -f "$TINI_DIR/bin/tini.jar"; then
+	            AC_MSG_RESULT([$TINI_DIR/bin/tini.jar])
+	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+	        else	
+	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+	        fi 
             fi
-        else 
-		TINI_CLASSES=no
+	    AC_MSG_RESULT([$TINI_CLASSES])
+        else
+	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
+	    AC_MSG_RESULT([$TINI_CLASSES])
         fi
 
     fi
@@ -632,7 +645,7 @@ else
    The Tini SDK can be downloaded from http://www.ibutton.com'])
 	# Note that we don't substitute in the $(PTII) or $(TINI_DIR) here
 	TINI_DIR='$(PTII)/vendors/dalsemi/tini'
-   	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
+   	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
     else 
 	# Set to tini and used in 
 	# $PTII/ptolemy/apps/makefile if tini was found
