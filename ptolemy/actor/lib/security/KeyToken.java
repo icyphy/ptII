@@ -140,12 +140,12 @@ public class KeyToken extends Token {
      */
     public static class KeyType implements Type, Serializable {
 
-        // FIXME: should this extend BaseType?
-
         ///////////////////////////////////////////////////////////////////
         ////                         constructors                      ////
 
         // The constructor is private to make a type safe enumeration.
+        // We could extend BaseType, yet the BaseType(Class, String)
+        // Constructor is private.
         private KeyType() {
             super();
         }

@@ -54,7 +54,6 @@ JSRCS = \
 	KeyStoreActor.java \
 	KeyToken.java \
 	KeyWriter.java \
-	Password.java \
 	PrivateKeyReader.java \
 	PublicKeyReader.java \
 	SecretKey.java \
