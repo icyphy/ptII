@@ -29,20 +29,6 @@
 
 # Generate the materials for a review
 # It is unlikely that this script will work anywhere but at UCB
-# 
-# This script is used to convert javadoc html output to pdf
-# so that we can print it out in 2up format.  Ideally javadoc would
-# do this for us. 
-# One method would be to use the mif doclet to generate mif javadoc
-# output and then use something like a mif2ps script to generate
-# PostScript.  However, this would require that Frame was installed
-# on the local machine and require some scripting work under Windows
-#
-# Potentially useful links:
-# http://www.geocities.com:0080/SiliconValley/5682/postscript.html
-#                                          - PostScript utilities
-# http://www.tdb.uu.se/~jan/html2psug.html - perl html2ps
-# http://www.easysw.com/htmldoc/           - $99 html2ps utility
 
 # This script expects as its arguments:
 if [ $# -lt 1 ]; then
