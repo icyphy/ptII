@@ -635,19 +635,22 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The list of DebugListeners registered with this object.
+    /** @serial The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 
-    // Instance of a workspace that can be used if no other is specified.
+    /** @serial Instance of a workspace that can be used if no other
+     *  is specified.
+     */
     private static Workspace _defaultWorkspace = new Workspace();
 
-    // The name
+    /** @serial The name */
     private String _name;
 
-    // The Attributes attached to this object.
+    /** @serial The Attributes attached to this object. */
     private NamedList _attributes;
 
-    // The workspace for this object.
-    // This should be set by the constructor and never changed.
+    /** @serial The workspace for this object.
+     * This should be set by the constructor and never changed.
+     */
     private Workspace _workspace;
 }

@@ -72,6 +72,6 @@ public class InternalErrorException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The detail message.
+    /** @serial The detail message. */
     private String _message ;
 }

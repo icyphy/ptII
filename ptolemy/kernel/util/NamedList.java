@@ -314,10 +314,10 @@ public class NamedList implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The container (owner) of this list.
+    /** @serial The container (owner) of this list. */
     private Nameable _container;
 
-    // A LinkedList containing the elements.
+    /** @serial A LinkedList containing the elements. */
     private LinkedList _namedlist = new LinkedList();
 
     // Constant strings.

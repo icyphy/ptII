@@ -750,37 +750,44 @@ public final class Workspace implements Nameable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // List of contained objects.
+    /** @serial List of contained objects. */
     private LinkedList _directory = new LinkedList();
 
-    // The name
+    /** @serial The name. */
     private String _name;
 
-    // Version number.
+    /** @serial Version number. */
     private long _version = 0;
 
-    // The currently writing thread (if any).
+    /** @serial The currently writing thread (if any). */
     private Thread _writer;
 
-    // The number of pending write requests plus active write permissions.
+    /** @serial The number of pending write requests plus active write
+     *  permissions.
+     */
     private int _writeReq = 0;
 
-    // The number of active write permissions (all to the same thread).
+    /** @serial The number of active write permissions
+     *  (all to the same thread).
+     */
     private int _writeDepth = 0;
 
-    // A table by readers (threads) of how many times they have gotten
-    // read permission.
+    /** @serial A table by readers (threads) of how many times they have
+     *  gotten read permission.
+     */ 
     private Hashtable _readers = new Hashtable();
 
-    // The number of PtolemyThread readers.
-    // The use of this field is to increment it every time we have a new
-    // Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
-    // whenever a Ptolemy reader relinquishes ALL its read access (readDepth
-    // field goes from 1 to 0).
+    /** @serial The number of PtolemyThread readers.
+     *  The use of this field is to increment it every time we have a new
+     *  Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
+     *  whenever a Ptolemy reader relinquishes ALL its read access (readDepth
+     *  field goes from 1 to 0).
+    */
     private long _numPtReaders = 0;
 
-    // Indicate that the workspace is read-only, and no changes in
-    // this Workspace object is permitted.
+    /** @serial Indicate that the workspace is read-only, and no changes in
+     * this Workspace object is permitted.
+     */
     private boolean _readOnly = false;
 
     ///////////////////////////////////////////////////////////////////

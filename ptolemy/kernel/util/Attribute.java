@@ -205,5 +205,6 @@ public class Attribute extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial Container of this attribute. */
     private NamedObj _container;
 }

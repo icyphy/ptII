@@ -242,22 +242,28 @@ public final class CrossRefList implements Serializable  {
     // This permits them to work in applets.  Once we settle on JDK 1.2,
     // these can be made private again.
 
-    // Version number is incremented each time the list is modified.
-    // This is used to make sure that elements accessed via an enumeration
-    // are valid.  This is inspired by a similar mechanism in Doug Lea's
-    // Java Collections.
+    /** @serial Version number is incremented each time the list is modified.
+     * This is used to make sure that elements accessed via an enumeration
+     * are valid.  This is inspired by a similar mechanism in Doug Lea's
+     * Java Collections.
+     */
     /* private */ long _listVersion = 0;
 
-    // The code ensures that if this is non-zero, then _headNode is non-null.
+    /** @serial The code ensures that if this is non-zero, then _headNode
+     *  is non-null.
+     */
     /* private */ int _size = 0;
 
+    /** @serial Head Node */
     /* private */ CrossRef _headNode;
 
+    /** @serial Last Node */
     /* private */ CrossRef _lastNode;
 
-    // NOTE: In jdk 1.2 or higher, this could be made final to prohibit
-    // what is called "reference reseating" (not resetting), i.e. to
-    // make the variable immutable.
+    /** @serial NOTE: In jdk 1.2 or higher, this could be made final to
+     *  prohibit what is called "reference reseating" (not resetting),
+     *  i.e. to make the variable immutable.
+     */
     /* private */ Object _container;
 
     ///////////////////////////////////////////////////////////////////

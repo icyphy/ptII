@@ -154,6 +154,6 @@ public class KernelException extends Exception {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The detail message.
+    /** @serial The detail message. */
     private String _message ;
 }
