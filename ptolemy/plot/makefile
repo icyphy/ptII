@@ -40,7 +40,7 @@ JPACKAGE = 	ptplot
 JPACKAGE_DIR = 	ptplot
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
-JVERSION =	1.2p1
+JVERSION =	1.3
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
 JARFILE = 	$(JPACKAGE).jar
