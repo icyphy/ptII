@@ -86,21 +86,69 @@ public class BrowserTableau extends Tableau {
      *  so this is the best we can do.
      */
     public void show() {
+        // FIXME: Unfortunately, the _config.showAll() at the bottom
+        // of MoMLApplication.parseArgs() will end up calling this method
+        // a second time.
+
 	String url = ((Effigy)getContainer()).url.getURL().toExternalForm();
 	try {
 
 	    if (url.startsWith("jar:")) {
-		// If the URL begins with jar: then we are inside Web Start
-		// and we should get the resource, write it to a temporary
-		// file and pass that value to the browser 
+		// If the URL begins with jar: then we are inside Web
+                // Start, or the Windows installer // and we should
+                // get the resource, and try to write the file to the
+                // place where it would appear in the classpath.
 
-		// Save the jar file as a temporary file in the default
-		// platform dependent directory with the same suffix
-		// as that of the jar URL
-		url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp",
+                // For example,  if url is
+                // jar:file:/D:/ptII/doc/design.jar!/doc/design/design.pdf
+		// then we try to save the file as
+                // d:/ptII/doc/design.pdf
+                // if d:/ptII/doc is writable.
+
+                String temporaryURL = null;
+                try {
+                    // We try to save the resource in the classpath, but
+                    // if we fail, then we copy the resource to a temporary
+                    // location.
+
+                    // If we are successful, then note that the file
+                    // that we create is not deleted when we exit.
+                    temporaryURL = JNLPUtilities.saveJarURLInClassPath(url);
+                } catch (Exception ex) {
+                    // We print out the error and move on.
+                    // Eventually, this could be logged as a warning. 
+                    System.out.println("Failed to save '" + url + ": " + ex);
+                }
+
+                if (temporaryURL != null) {
+                    url = temporaryURL;
+                } else {
+                    // For some reason we could not write the file, so
+                    // save the jar file as a temporary file in the default
+                    // platform dependent directory with the same suffix
+                    // as that of the jar URL.
+                    // In this case, the temporary file is deleted when
+                    // we exit.
+                    url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp",
 							 null, null);
+                }
 	    }
 	    BrowserLauncher.openURL(url);
+            try {
+                // We set the container to null immediately because
+                // once we spawn the browser process, we have no
+                // way of communicating with it, so we have no way
+                // of knowing when the browser has been closed.
+                //
+                // FIXME: this effectively destroys the Tableau/Effigy model
+                // for BrowserTableaus, but there is not much to be done
+                // about it since we do not have a platform independent way
+                // of communicating with the browser that we invoke.
+                setContainer(null);
+            } catch (KernelException ex2) {
+                throw new InvalidStateException((Nameable)null, ex2,
+                        "setContainer(null) failed, url was " + url);
+            }
 	} catch (IOException ex) {
 	    throw new InvalidStateException((Nameable)null, ex,
 					    "Failed to handle '"
