@@ -44,7 +44,7 @@ it is connected to a dangling Relation.
 @author John S. Davis, II
 @version $Id$
 */
-public class Relation extends Node {
+public class Relation extends GraphElement {
     /** 
      */	
     public Relation() {
@@ -68,12 +68,12 @@ public class Relation extends Node {
      */	
     public void connectPort(Port port) throws NameDuplicationException {
 	Port duplicatePort;
-	if( _links == null ) {
-	     _links = new Hashtable();
+	if( links_ == null ) {
+	     links_ = new Hashtable();
 	}
-	duplicatePort = (Port)_links.put( port.getName(), port );
+	duplicatePort = (Port)links_.put( port.getName(), port );
 	if( duplicatePort != null ) {
-	     duplicatePort = (Port)_links.put
+	     duplicatePort = (Port)links_.put
 		( duplicatePort.getName(), duplicatePort );
 	     throw new NameDuplicationException( duplicatePort.getName() );
 	}
@@ -86,10 +86,10 @@ public class Relation extends Node {
      * not found.
      */	
     public Port disconnectPort(Port port) {
-	if( _links == null ) {
+	if( links_ == null ) {
 	     return null;
 	}
-	return (Port)_links.remove( port.getName() );
+	return (Port)links_.remove( port.getName() );
     }
 
     /** Return the Ports which are connected to this Relation.
@@ -97,13 +97,13 @@ public class Relation extends Node {
      * collection of Ports is null.
      */	
     public Enumeration getPorts() {
-	if( _links == null ) {
+	if( links_ == null ) {
 	     return null;
 	}
 	if( size() == 0 ) {
 	     return null;
 	}
-        return _links.elements();
+        return links_.elements();
     }
 
     /** Initialize this Relation.
@@ -115,10 +115,10 @@ public class Relation extends Node {
      * @return Return true if the Relation is dangling; returns false otherwise.
      */	
     public boolean isDangling() {
-	if( _links == null ) {
+	if( links_ == null ) {
 	     return false;
 	}
-	if( _links.size() == 1 ) {
+	if( links_.size() == 1 ) {
 	     return true;
 	}
         return false;
@@ -130,19 +130,19 @@ public class Relation extends Node {
      * false otherwise.
      */	
     public boolean isPortConnected(String portName) {
-	if( _links == null ) {
+	if( links_ == null ) {
 	     return false;
 	}
-	return _links.containsKey( portName );
+	return links_.containsKey( portName );
     }
 
     /** Return the number of Ports connected to the net.
      */	
     public int size() {
-	if( _links == null ) {
+	if( links_ == null ) {
 	     return 0;
 	}
-        return _links.size();
+        return links_.size();
     }
 
     /** Generate a Relation object from a String.
@@ -166,7 +166,7 @@ public class Relation extends Node {
 
     /* A hashtable of links which are connected to this Relation.
      */
-    private Hashtable _links;
+    private Hashtable links_;
 }
 
 
