@@ -121,52 +121,79 @@ public class CTSingleSolverDirector extends CTDirector {
      *   at the breakpoint. 
      *   <P>
      *   All the actors are prefired before an iteration is begun. If 
-     *   any one of them returns false, then the iteration is not 
-     *   proceeded, and the function returns.
+     *   any one of them returns false, then the iteration is 
+     *   cancelled, and the function returns.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
+        //event phase:
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration evgens = sched.eventGenerators();
+        while(evgens.hasMoreElements()) {
+            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
+            evg.emitCurrentEvents();
+        }
+        // fire all the discrete actors?
+        Enumeration evints = sched.eventInterpreters();
+        while(evints.hasMoreElements()) {
+            CTEventInterpreter evg = (CTEventInterpreter) evints.nextElement();
+            evg.consumeCurrentEvents();
+        }
+        // If this is the first fire, the states are not resolved.
         if (_first) {
             _first = false;
             produceOutput();
+            updateStates();
             return;
         }
-        updateStates(); // call postfire on all actors
+        _setFireBeginTime(getCurrentTime());
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         double bp;
         TotallyOrderedSet breakPoints = getBreakPoints();
         // If now is a break point, remove the break point from table;
-        if((breakPoints != null) && !breakPoints.isEmpty()) {
-            bp = ((Double)breakPoints.first()).doubleValue();
-            if(bp <= getCurrentTime()) {
-                // break point now!
-                breakPoints.removeFirst();
-            }
-            //adjust step size;
-            if(!breakPoints.isEmpty()) {
+        if(breakPoints != null) {
+            while (!breakPoints.isEmpty()) {
                 bp = ((Double)breakPoints.first()).doubleValue();
-                double iterEndTime = getCurrentTime()+getCurrentStepSize();
-                if (iterEndTime > bp) {
-                    setCurrentStepSize(bp-getCurrentTime());
+                if(bp <= getCurrentTime()) {
+                    // break point in the past or at now.
+                    breakPoints.removeFirst();
+                } else {
+                    double iterEndTime = getCurrentTime()+getCurrentStepSize();
+                    if (iterEndTime > bp) {
+                        setCurrentStepSize(bp-getCurrentTime());
+                    }
+                    break;
                 }
             }
         }
         //choose ODE solver
-        setCurrentODESolver(_defaultSolver);
-        // prefire all the actors.
-        boolean ready = true;
-        CompositeActor ca = (CompositeActor) getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
-            ready = ready && a.prefire();
-        }
-        if(ready) {
+        //setCurrentODESolver(_defaultSolver);
+        // prefire all the actors.       
+        if(_prefireSystem()) {
             ODESolver solver = getCurrentODESolver();
-            solver.proceedOneStep();
-            produceOutput();
+            while (true) { 
+                if (solver.resolveStates()) {
+                    // ask if this step is acceptable
+                    if (!_isStateAcceptable()) {
+                        setCurrentTime(_getFireBeginTime());
+                        _refineStepWRTState();
+                    } else {
+                        break;
+                    }
+                } else { // resolve state failed, e.g. in implicit methods.
+                    setCurrentTime(_getFireBeginTime());
+                    setCurrentStepSize(0.5*getCurrentStepSize());
+                }
+                produceOutput();
+                if (!_isOutputAcceptable()) {
+                    setCurrentTime(_getFireBeginTime());
+                    _refineStepWRTOutput();
+                }
+            }
+            setSuggestedNextStepSize(_predictNextStepSize());
+            updateStates(); // call postfire on all actors
         }
     }
 
@@ -370,6 +397,131 @@ public class CTSingleSolverDirector extends CTDirector {
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Prefire all the actors in the system.
+     */
+    protected boolean _prefireSystem() throws IllegalActionException {
+        boolean ready = true;
+        CompositeActor ca = (CompositeActor) getContainer();
+        Enumeration actors = ca.deepGetEntities();
+        while(actors.hasMoreElements()) {
+            Actor a = (Actor) actors.nextElement();
+            ready = ready && a.prefire();
+        }
+        return ready;
+    }        
+
+    /** Return the fire begin time, which is the value set by 
+     *  setFireBeginTime().
+     *  @return Fire begin time.
+     */
+    protected double _getFireBeginTime() {
+        return _fireBeginTime;
+    }
+
+    /** Return true if the newly resolved state is acceptable.
+     *  It does it by asking all the step control actors in the
+     *  state transition and dynamic schedule.
+     *  If one of them returns false, then the method returns
+     *  false.
+     */
+    protected boolean _isStateAcceptable() throws IllegalActionException {
+        boolean successful = true;
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration sscs = sched.stateTransitionSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a = 
+                (CTStepSizeControlActor) sscs.nextElement();
+            successful = successful && a.isThisStepSuccessful();
+        }
+        return successful;
+    }
+
+    /** Return true if the newly resolved state is acceptable.
+     *  It does it by asking all the step control actors in the
+     *  state transition and dynamic schedule.
+     *  If one of them returns false, then the method returns
+     *  false.
+     */
+    protected boolean _isOutputAcceptable() throws IllegalActionException {
+        boolean successful = true;
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration sscs = sched.outputSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a = 
+                (CTStepSizeControlActor) sscs.nextElement();
+            successful = successful && a.isThisStepSuccessful();
+        }
+        return successful;
+    }
+    
+    /** Predict the next step size. This method should be called if the
+     *  current integration step is acceptable. The predicted step size
+     *  is the minimum of all predictions from step size control actors.
+     */
+    protected double _predictNextStepSize() throws IllegalActionException {
+        double predictedstep = getCurrentStepSize();
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration sscs = sched.stateTransitionSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a = 
+                (CTStepSizeControlActor) sscs.nextElement();
+            predictedstep = Math.min(predictedstep, a.predictedStepSize());
+        }
+        sscs = sched.outputSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a = 
+                (CTStepSizeControlActor) sscs.nextElement();
+            predictedstep = Math.min(predictedstep, a.predictedStepSize());
+        }
+        return predictedstep;
+    }
+        
+    /** Return the refined the step size with respected to the new state.
+     *  It asks all the step size control actors in the state transition
+     *  and dynamic schedule for the refined step size, and take the
+     *  minimum of them.
+     *  @return the refined step size.
+     */
+    protected double _refineStepWRTState() throws IllegalActionException {
+        double refinedstep = getCurrentStepSize();
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration sscs = sched.stateTransitionSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a = 
+                (CTStepSizeControlActor) sscs.nextElement();
+            refinedstep = Math.min(refinedstep, a.refinedStepSize());
+        }
+        return refinedstep;
+    }
+
+    /** Return the refined the step size with respected to the outputs.
+     *  It asks all the step size control actors in the state transition
+     *  and dynamic schedule for the refined step size, and take the
+     *  minimum of them.
+     *  @return the refined step size.
+     */
+    protected double _refineStepWRTOutput() throws IllegalActionException {
+        double refinedstep = getCurrentStepSize();
+        CTScheduler sched = (CTScheduler)getScheduler();
+        Enumeration sscs = sched.outputSSCActors();
+        while (sscs.hasMoreElements()) {
+            CTStepSizeControlActor a = 
+                (CTStepSizeControlActor) sscs.nextElement();
+            refinedstep = Math.min(refinedstep, a.refinedStepSize());
+        }
+        return refinedstep;
+    }
+
+    /** Set the fire begin time.
+     *  @param fbt Fire begin time.
+     */
+    protected void _setFireBeginTime(double fbt) {
+        _fireBeginTime = fbt;
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         private methods                      ////
     private void _initParameters() {
         try {
@@ -398,6 +550,11 @@ public class CTSingleSolverDirector extends CTDirector {
     private ODESolver _defaultSolver = null;
 
     //indicate the first round of execution.
-
     private boolean _first;
+    
+    // the start time of a iteration. This value is remembered so that
+    // we don't need to resolve it from the end time and step size.
+    private double _fireBeginTime;
+
+
 }
