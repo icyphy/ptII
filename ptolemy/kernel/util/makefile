@@ -83,7 +83,6 @@ JSRCS = \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
-	StringUtilities.java \
 	TransientSingletonConfigurableAttribute.java \
 	ValueListener.java \
 	Workspace.java
