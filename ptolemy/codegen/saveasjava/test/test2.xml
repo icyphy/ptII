@@ -1,0 +1,34 @@
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="test2" class="ptolemy.actor.TypedCompositeActor">
+	<doc>A simple demo to test connectivity handling in the save as Java 
+         implementation</doc>
+	<director class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+	<entity name="ramp1" class="ptolemy.actor.lib.Ramp"/>
+	<entity name="ramp2" class="ptolemy.actor.lib.Ramp"/>
+	<entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter"/>
+	<entity name="mult1" class="ptolemy.actor.lib.MultiplyDivide"/>
+	<entity name="mult2" class="ptolemy.actor.lib.MultiplyDivide"/>
+	<entity name="mult3" class="ptolemy.actor.lib.MultiplyDivide"/>
+	<relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+	<link port="ramp1.output" relation="r1"/>
+	<link port="mult1.multiply" relation="r1"/>
+	<link port="mult2.multiply" relation="r1"/>
+	<link port="mult3.multiply" relation="r1"/>
+	<relation name="r2" class="ptolemy.actor.TypedIORelation"/>
+	<link port="ramp2.output" relation="r2"/>
+	<link port="mult1.multiply" relation="r2"/>
+	<link port="mult2.multiply" relation="r2"/>
+	<link port="mult3.multiply" relation="r2"/>
+	<relation name="r3" class="ptolemy.actor.TypedIORelation"/>
+	<link port="mult1.output" relation="r3"/>
+	<link port="mult2.multiply" relation="r3"/>
+	<link port="mult3.multiply" relation="r3"/>
+	<relation name="r4" class="ptolemy.actor.TypedIORelation"/>
+	<link port="mult2.output" relation="r4"/>
+	<link port="mult3.multiply" relation="r4"/>
+	<relation name="r5" class="ptolemy.actor.TypedIORelation"/>
+	<link port="mult3.output" relation="r5"/>
+	<link port="plot.input" relation="r5"/>
+	<relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+</model>
