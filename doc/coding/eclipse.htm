@@ -25,6 +25,7 @@
   <li><a href="#RunningEclipse">Running Eclipse</a>
   <li><a href="#simpleDebug">Simple Debugging Session</a>
   <li><a href="#UsingCVS">Using CVS</a>
+  <li><a href="#debugTclTests">Debugging Tcl Tests</a>
   <li><a href="#troubleshooting">Troubleshooting</a>
   </menu>
 </menu>
@@ -450,6 +451,37 @@ Resources:
 <li>In the Navigator view scroll/open until you see the resource (directory or file) to be restored.
 <li>Right click that resource and select Replace With->Latest From Head.
 </ol>
+
+<h2>  <a name="#debugTclTests">Debugging Tcl Tests</a></h2>
+<ol>
+<li> Go to Windows -&gt; Open Perspective -&gt; Java.
+
+<li> In Package Explorer, locate ptjacl.jar -&gt; tcl.lang -&gt;
+Shell.class -&gt;  Shell and highlight it.
+
+<li> Go to Run -&gt; Debug...
+
+<li> Select Arguments tag.
+
+<li> In Program arguments, put alljtests.tcl or any individual test tcl file. 
+ <br>(E.g. SimpleDelay.tcl)
+
+<li> In VM arguments, put <CODE>-Dptolemy.ptII.dir=<I>your PtII directroy</I></CODE>
+ <br>(E.g. <CODE>-Dptolemy.ptII.dir=c:\hyzheng\ptII</CODE>)
+
+
+<li> Select Local directory, browse to the directory containing the tcl 
+tests.
+ <br> (E.g. <CODE>C:\hyzheng\ptII\ptolemy\domains\de\lib\test</CODE>)
+
+<li> Select Debug.
+
+</ol>
+
+The nice thing of using Eclipse is that you can very easily locate where 
+the exception is thrown by clicking the classes listed in the stack trace. 
+You may further register a breakpoint to do more diagnosis.
+
 
 <h2><a name="troubleshooting">Troubleshooting</a></h2>
 
