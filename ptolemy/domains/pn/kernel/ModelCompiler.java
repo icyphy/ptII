@@ -41,6 +41,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
@@ -168,14 +170,44 @@ public class ModelCompiler extends Attribute {
                 //wrap up and return.
                 // If we reach here, the subgraphs.size() > 1,
                 // we MUST wrap up.
-                //TypedCompositeActor subCluster = 
-                  //  (TypedCompositeActor)compositeActor.clone();
                 TypedCompositeActor newLayer =
                     new TypedCompositeActor(compositeActor.workspace());
                 newLayer.setName("newLayerAbove_"
                         + compositeActor.getName());
-                compositeActor.setContainer(newLayer);
                 newLayer.setContainer(container);
+                if (attribute != null) {
+                    attribute.setContainer(newLayer);
+                }
+                
+                compositeActor.setContainer(newLayer); 
+                
+                Iterator portsOfOrigin = compositeActor.portList().iterator();
+                while (portsOfOrigin.hasNext()) {
+                    TypedIOPort portOfOrigin =
+                        (TypedIOPort)portsOfOrigin.next();
+                    boolean isInput = portOfOrigin.isInput();
+                    // Create ports for newLayer.
+                    TypedIOPort portOfClone = new TypedIOPort(newLayer,
+                            portOfOrigin.getName(), isInput, !isInput);
+                    Iterator relations =
+                        portOfOrigin.linkedRelationList().iterator();
+                    while (relations.hasNext()) {
+                        IORelation relation = (IORelation)relations.next();
+                        // Connect each relation to newLayer's port.
+                        portOfClone.link(relation);
+                        // Create a new inside relation between newLayer
+                        // composite.
+                        TypedIORelation insideRelation = new TypedIORelation(newLayer,
+                                "insideRelation_" + relation.getName());
+                        // link newLayer with this inside relation.
+                        portOfClone.link(insideRelation);
+                        // disconnect each relation to the composite's port.
+                        portOfOrigin.unlink(relation);
+                        // link compositeActor with this inside relation.
+                        portOfOrigin.link(insideRelation);
+                    }
+                }
+                
                 // Add a new director at the top level.
                 Director directorOfOrigin = compositeActor.getDirector();
                 Director directorOfClone = (Director) directorOfOrigin.clone();
