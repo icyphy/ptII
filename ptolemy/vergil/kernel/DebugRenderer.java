@@ -49,7 +49,7 @@ public class DebugRenderer extends AnimationRenderer {
     /** Create a new selection renderer with the default prototype
      *  decorator.
      */
-    public DebugRenderer () {
+    public DebugRenderer() {
         _prototypeDecorator = new BasicHighlighter(Color.magenta, 4.0f);
     }
 
@@ -59,7 +59,7 @@ public class DebugRenderer extends AnimationRenderer {
     /** Create a new renderer with the given prototype decorator.
      *  @param decorator The prototype decorator.
      */
-    public DebugRenderer (FigureDecorator decorator) {
+    public DebugRenderer(FigureDecorator decorator) {
         _prototypeDecorator = decorator;
     }
 
