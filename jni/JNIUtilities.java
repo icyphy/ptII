@@ -720,7 +720,7 @@ public class JNIUtilities {
                     typ = typ.substring(0, typ.length()-2);
                     results.append( "env->Release"+ typ.substring(0, 1).toUpperCase() +
                         typ.substring(1, typ.length())  + "ArrayElements(" +
-                        arg.getName() + ",(" + arg.getC2Type() + ")" + arg.getName() + "_1,0);\n");
+                        arg.getName() + ",(" + arg.getC2TypeHack() + ")" + arg.getName() + "_1,0);\n");
 	    }
         }
         //for inout
@@ -734,7 +734,7 @@ public class JNIUtilities {
 				   + typ.substring(0, 1).toUpperCase()
 				   + typ.substring(1, typ.length())
 				   + "ArrayElements("
-				   + arg.getName() + ",(" + arg.getC2Type()
+				   + arg.getName() + ",(" + arg.getC2TypeHack()
 				   + ")" + arg.getName() + "_1,0);\n");
 	    }
         }
