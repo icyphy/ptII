@@ -67,7 +67,7 @@ token cannot be retracted once produced, even if the server actor
 is deleted from the topology.  If the service time is zero, then
 the output event is queued to be processed in the next microstep,
 after all events with the current time in the current microstep.
-Thus, a service time of zero can be usefully viewed as an infinitessimal
+Thus, a service time of zero can be usefully viewed as an infinitesimal
 service time.
 
 @author Lukito Muliadi, Edward A. Lee
