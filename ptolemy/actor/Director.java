@@ -290,6 +290,27 @@ public class Director extends Attribute implements Executable {
      *  asynchronous threads should used the fireAtCurrentTime()
      *  method to schedule firings.
      *
+     *  This method calls {@link #fireAt(Actor,Time)} method.
+     * 
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     *  @deprecated Instead of using double as time argument, use a 
+     *  time object instead. As of Ptolemy 4.1, replaced by 
+     *  {@link #fireAt(Actor,Time)}
+     */
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+        fireAt(actor, new Time(this, time));
+    }
+
+    /** Schedule a firing of the given actor at the given absolute
+     *  time.  This method is only intended to be called from within
+     *  main simulation thread.  Actors that create their own
+     *  asynchronous threads should used the fireAtCurrentTime()
+     *  method to schedule firings.
+     *
      *  This method does nothing in this base class. Derived classes
      *  should override this method.  <p> Note that this method is not
      *  made abstract to facilitate the use of the test suite.
