@@ -21,13 +21,13 @@ The plot shows the sampled processor output. The input to the processor is
 a sequence of DoubleToken starting at 0.0 at time 0.0 and incremented by 1.0
 every unit time. The output are sampled to model a latched output. If there
 is no loss of events, then the plot is a straight line. Otherwise, there will
-be flag regions. 
+be flat regions. 
 <p>
 Different parameters for the processor model can be chosen. MST (Minimum
 Service Time) indicate the amount of time needed to process an event, if there
 is no interrupt. IST (Interrupt Service Time) is the amount of time needed
 to process an interrupt. Note that the interrupts preempts the inputs. Lambda
-represents the inter-arrival time of the Poisson process modeling the
+represents the mean inter-arrival time of the Poisson process modeling the
 interrupt arrival. Lastly, stop time is just the time when simulation stops.
 <P>
 <BR>&nbsp;

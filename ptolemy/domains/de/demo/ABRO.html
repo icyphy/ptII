@@ -21,7 +21,7 @@ Esterel language primer. The specification is as follow:
 <P>
 In this kind of specification, it is more natural to describe the actor by
 providing a run() method that describes the actor activity during its 
-livetime. Compare this to writing a fire() method that describes the change
+lifetime. Compare this to writing a fire() method that describes the change
 of state everytime the method is called. The main difference between these
 two schemes is that the first encodes the state in the position of the code,
 while the latter (usually) has explicit state variables that got modified
@@ -31,6 +31,13 @@ Another advantage comes from the fact that the implementation permits
 users to mix these two kinds of actors in a topology, arbitrarily. As far
 as the director knows, the threaded actor is just a regular actor. The 
 DEThreadActor base class in DE kernel provides that encapsulation.
+<p>
+Although it is arguable that this is merely a syntactic sugar, it is often
+beneficial to be able to write actor in the style that corresponds directly
+with its state machine description. As such, it also suffers from 
+<I>exponential state explosion</I> of state machine description in the form
+of <I>exponential code length expansion</I>. Future research will
+emphasize on ways to avoid this (e.g. Esterel like style).
 <p>
 You can interact with the applet by choosing the stop time of the simulation.
 <P>
@@ -58,36 +65,15 @@ Actor (which is derived from
 actor) connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
 <BR>
 <MAP Name="ActorsMap">
-<AREA Shape="rect" Coords="33,315,82,364"
-	Href="../lib/DEClock.java">
-<AREA Shape="rect" Coords="119,314,169,363"
-	Href="../lib/Ramp.java">
-<AREA Shape="rect" Coords="207,330,257,349"
-	Href="../lib/FIFOQueue.java">
-<AREA Shape="rect" Coords="257,253,306,301"
-	Href="../lib/DEPlot.java">
-<AREA Shape="rect" Coords="308,327,343,351"
-	Href="../lib/DEServer.java">
-<AREA Shape="rect" Coords="369,315,418,363"
-	Href="../lib/DEPassGate.java">
-<AREA Shape="rect" Coords="437,229,450,248"
-	Href="../lib/DEDelay.java">
-
-
-<AREA Shape="rect" Coords="468,329,519,349"
-	Href="../lib/FIFOQueue.java">
-<AREA Shape="rect" Coords="507,253,557,301"
-	Href="../lib/TestLevel.java">
-<AREA Shape="rect" Coords="579,263,611,292"
-	Href="../lib/Not.java">
-
-<AREA Shape="rect" Coords="570,327,606,352"
-	Href="../lib/DEServer.java">
-<AREA Shape="rect" Coords="507,176,557,227"
-	Href="../lib/DEPlot.java">
-<AREA Shape="rect" Coords="619,164,669,214"
-	Href="../lib/DEPlot.java">
-<AREA Shape="rect" Coords="657,327,707,377"
+<AREA Shape="rect" Coords="0,0,96,64"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="0,144,96,208"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="0,288,96,352"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="240,144,336,208"
+	Href="../lib/DEABRO.java">
+<AREA Shape="rect" Coords="480,144,576,208"
 	Href="../lib/DEPlot.java">
 </MAP>
 <CENTER>
