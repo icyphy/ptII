@@ -32,6 +32,7 @@ package ptolemy.copernicus.applet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.copernicus.kernel.GenerateCode;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
 
@@ -94,60 +95,6 @@ public class AppletWriter extends SceneTransformer {
 
     public String getDeclaredOptions() {
         return super.getDeclaredOptions() + " targetPackage templateDirectory";
-    }
-
-    /** Given a string and a Map containing String key/value pairs,
-     *  substitute any keys found in the input with the corresponding
-     *  values.
-     *
-     *  @param input The input string that contains substrings
-     *  like "@codeBase@".
-     *  @param substituteMap The Map of String keys like "@codeBase@"
-     *  and String values like "../../..".
-     *  @return  A string with the keys properly substituted with
-     *  their corresponding values.
-     */
-    public static String substitute(String input,
-            Map substituteMap) {
-
-	// At first glance it would appear that we could use StringTokenizer
-	// however, the token is really the String @codeBase@, not
-	// the @ character.  StringTokenizer has problems with
-	// "@codebase", which reports as having one token, but
-	// should not be substituted since it is not "@codebase@"
-
-	Iterator keys = substituteMap.keySet().iterator();
-
-	while (keys.hasNext()) {
-	    String key = (String)keys.next();
-	    input = StringUtilities.substitute(input, key,
-                    (String)substituteMap.get(key));
-	}
-	return input;
-    }
-
-    /** Read in the contents of inputFileName, and replace each matching
-     *	String key found in substituteMap with the corresponding String value.
-     *
-     *  @param inputFileName  The name of the file to read from.
-     *  @param substituteMap The Map of String keys like "@codeBase@"
-     *  and String values like "../../..".
-     *  @param outputFileName The name of the file to write to.
-     */
-    public static void substitute(String inputFileName,
-            Map substituteMap,
-            String outputFileName)
-            throws FileNotFoundException, IOException {
-	BufferedReader inputFile =
-	    new BufferedReader(new FileReader(inputFileName));
-	PrintWriter outputFile =
-	    new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
-	String inputLine;
-	while ( (inputLine = inputFile.readLine()) != null) {
-	    outputFile.println(substitute(inputLine, substituteMap));
- 	}
-	inputFile.close();
-	outputFile.close();
     }
 
 
@@ -288,13 +235,17 @@ public class AppletWriter extends SceneTransformer {
                     "templateDirectory"),
                     "$PTII", _ptIIDirectory);
 	try {
-	    substitute(_templateDirectory + "makefile.in", _substituteMap,
-                    _modelDirectory + "makefile");
-	    substitute(_templateDirectory + "model.htm.in", _substituteMap,
-                    _modelDirectory + _sanitizedModelName + ".htm");
-	    substitute(_templateDirectory + "modelVergil.htm.in",
-                    _substituteMap,
-                    _modelDirectory + _sanitizedModelName + "Vergil.htm");
+	    GenerateCode.substitute(_templateDirectory + "makefile.in",
+				    _substituteMap,
+				    _modelDirectory + "makefile");
+	    GenerateCode.substitute(_templateDirectory + "model.htm.in",
+				    _substituteMap,
+				    _modelDirectory + _sanitizedModelName
+				    + ".htm");
+	    GenerateCode.substitute(_templateDirectory + "modelVergil.htm.in",
+				    _substituteMap,
+				    _modelDirectory + _sanitizedModelName
+				    + "Vergil.htm");
 	} catch (IOException ex) {
 	    throw new InternalErrorException("Problem writing the makefile "
                     + "or htm files: " + ex);
