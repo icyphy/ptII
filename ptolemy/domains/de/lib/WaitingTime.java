@@ -143,7 +143,7 @@ public class WaitingTime extends DEActor {
                     (Time)_waiting.elementAt(i);
                 DoubleToken outToken =
                     new DoubleToken(currentTime.subtract(previousTime)
-                        .getDoubleValue());
+                            .getDoubleValue());
                 output.send(0, outToken);
             }
             _waiting.removeAllElements();

@@ -84,7 +84,7 @@ public class TimeGap extends DETransformer {
         if (_previousTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
             DoubleToken outToken =
                 new DoubleToken(currentTime.subtract(_previousTime)
-                    .getDoubleValue());
+                        .getDoubleValue());
             output.send(0, outToken);
         }
     }

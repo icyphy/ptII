@@ -75,7 +75,7 @@ public class Queue extends DETransformer {
         // Leave trigger type undeclared.
         // Put it at the bottom of the icon by default.
         StringAttribute cardinality
-                = new StringAttribute(trigger, "_cardinal");
+            = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");
 
         _queue = new FIFOQueue();

@@ -133,7 +133,7 @@ public class Timer extends DETransformer {
             double delayValue = ((DoubleToken)_currentInput).doubleValue();
             if (delayValue < 0) {
                 throw new IllegalActionException(
-                    "Delay can not be negative.");
+                        "Delay can not be negative.");
             } else {
                 _delay = delayValue;
             }
@@ -179,31 +179,31 @@ public class Timer extends DETransformer {
      *  be performed or the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-       Time currentTime = getDirector().getModelTime();
-       Time delayToTime = currentTime.add(_delay);
-       // Remove the token that is already sent at the current time.
-       if (_delayedOutputTokens.size() > 0) {
-           if (_currentOutput != null) {
-               _delayedOutputTokens.take();
-           }
-       }
-       // handle the refiring of the multiple tokens
-       // that are scheduled to produce at the same time.
-       if (_delayedOutputTokens.size() > 0) {
-           TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
-           Time eventTime = earliestEvent.timeStamp;
-           if (eventTime.equals(currentTime)) {
-               getDirector().fireAt(this, currentTime);
-           }
-       }
-       // If the current input is processed, schedule a future firing
-       // to process it.
-       if (_currentInput != null) {
-           _delayedOutputTokens.put(
-               new TimedEvent(delayToTime, value.getToken()));
-           getDirector().fireAt(this, delayToTime);
-       }
-       return super.postfire();
+        Time currentTime = getDirector().getModelTime();
+        Time delayToTime = currentTime.add(_delay);
+        // Remove the token that is already sent at the current time.
+        if (_delayedOutputTokens.size() > 0) {
+            if (_currentOutput != null) {
+                _delayedOutputTokens.take();
+            }
+        }
+        // handle the refiring of the multiple tokens
+        // that are scheduled to produce at the same time.
+        if (_delayedOutputTokens.size() > 0) {
+            TimedEvent earliestEvent = (TimedEvent)_delayedOutputTokens.get();
+            Time eventTime = earliestEvent.timeStamp;
+            if (eventTime.equals(currentTime)) {
+                getDirector().fireAt(this, currentTime);
+            }
+        }
+        // If the current input is processed, schedule a future firing
+        // to process it.
+        if (_currentInput != null) {
+            _delayedOutputTokens.put(
+                    new TimedEvent(delayToTime, value.getToken()));
+            getDirector().fireAt(this, delayToTime);
+        }
+        return super.postfire();
     }
 
     /** Override the base class to declare that the <i>output</i>
@@ -222,7 +222,7 @@ public class Timer extends DETransformer {
     protected double _delay;
 
     /** A local queue to store the delayed tokens.
-    */
+     */
     protected CalendarQueue _delayedOutputTokens;
 
     /** Current input.

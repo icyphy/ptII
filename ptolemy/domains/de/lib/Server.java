@@ -180,7 +180,7 @@ public class Server extends VariableDelay {
                 && _delayedOutputTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                    _delayedInputTokensList.removeFirst()));
+                                             _delayedInputTokensList.removeFirst()));
             getDirector().fireAt(this, _nextTimeFree);
         }
         return !_stopRequested;
@@ -192,12 +192,12 @@ public class Server extends VariableDelay {
     /** Override the method of the super class to initialize parameters.
      */
     protected void _init()
-        throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         super._init();
         delay.getPort().setName("newServiceTime");
         // Put the delay port at the bottom of the icon by default.
         StringAttribute cardinality
-                = new StringAttribute(delay.getPort(), "_cardinal");
+            = new StringAttribute(delay.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
     }
 

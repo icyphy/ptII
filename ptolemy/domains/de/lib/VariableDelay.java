@@ -115,7 +115,7 @@ public class VariableDelay extends TimedDelay {
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-         removeDependency(delay.getPort(), output);
+        removeDependency(delay.getPort(), output);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ public class VariableDelay extends TimedDelay {
      *  parameter values.
      */
     protected void _init()
-        throws NameDuplicationException, IllegalActionException  {
+            throws NameDuplicationException, IllegalActionException  {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
