@@ -156,11 +156,8 @@ public class RefinementPort extends TypedIOPort {
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
      *  @param isInput True to make the port an input.
-     *  @exception IllegalActionException If changing the port status is
-     *   not permitted (for example, the port status is fixed by a class
-     *   definition).
      */
-    public void setInput(boolean isInput) throws IllegalActionException {
+    public void setInput(boolean isInput) {
         boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
@@ -208,11 +205,8 @@ public class RefinementPort extends TypedIOPort {
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
      *  @param isMultiport True to make the port a multiport.
-     *  @exception IllegalActionException If changing the port status is
-     *   not permitted (for example, the port status is fixed by a class
-     *   definition).
      */
-    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+    public void setMultiport(boolean isMultiport) {
         boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
@@ -294,11 +288,8 @@ public class RefinementPort extends TypedIOPort {
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
      *  @param isOutput True to make the port an output.
-     *  @exception IllegalActionException If changing the port status is
-     *   not permitted (for example, the port status is fixed by a class
-     *   definition).
      */
-    public void setOutput(boolean isOutput) throws IllegalActionException {
+    public void setOutput(boolean isOutput) {
         boolean disableStatus = _mirrorDisable;
         try {
             _workspace.getWriteAccess();
