@@ -154,6 +154,6 @@ public class Butterfly extends TypedCompositeActor {
 	connect(polarToRect1.y, xyPlotter.inputY);
 	
 	// Export a MoML version of this model to standard output.
-	// System.out.println(momlFileWriter.write(exportMoML());
+	// System.out.println(exportMoML());
     }
 }
