@@ -79,10 +79,11 @@ awk '{
 	    }
 	    part = package
 	    printf("\t<jar href=%c%s%c\n\t\tpart=%c%s%c", 34, jars[n], 34, 34, part, 34)
-	    #printf("\n\t\tdownload=%clazy%c", 34, 34)
 	    printf("\n\t\tsize=%c%s%c", 34, sizes[n], 34)
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
+	    } else {
+		printf("\n\t\tdownload=%clazy%c", 34, 34)
 	    }
 	    printf("/>\n")
 	    printf("\t<package name=%c%s.*%c\n\t\tpart=%c%s%c recursive=%ctrue%c/>\n", 34, package, 34, 34, part, 34, 34, 34)
