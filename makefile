@@ -187,7 +187,10 @@ configure: configure.in
 # Arguments for cvs2cl.pl, which is used to generate a ChangeLog
 # from the CVS logs.  
 # -W 3600 means unify entries that are within 3600 seconds or 1 hr.
-CVS2CL_ARGS = -W 3600
+# -b means "Show branch names in revisions when possible"
+# -r means "Show revision numbers in output"
+# -t means "Show tags (symbolic names) in output"
+CVS2CL_ARGS = -W 3600 -b -r -t
 
 # Generate a ChangeLog file from the CVS logs
 # This rurequires that the CVS directory be present and takes
@@ -196,7 +199,7 @@ ChangeLog:
 	@if [ -d CVS ]; then \
 		echo "Running ./util/testsuite/cvs2cl.pl"; \
 		echo " This could take several minutes"; \
-		./util/testsuite/cvs2cl.pl -W 3600; \
+		./util/testsuite/cvs2cl.pl $(CVS2CL_ARGS); \
 	else \
 		echo "CVS directory not present, so we can't update $@"; \
 	fi
