@@ -17,7 +17,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="185.0, 114.5">
         </property>
     </property>
-    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
