@@ -32,6 +32,7 @@ dependence relation of an entity.
 package ptolemy.actor;
 
 import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -185,16 +186,18 @@ public abstract class IODependency {
      *  @see ptolemy.domains.de.kernel.DEDirector
      */        
     public void invalidate() {
-        _directedGraphValid = false;
+        _directedGraphValid = -1;
     }
 
     /** Check the validity of the IODependency object. If it is invalid,
      *  reconstruct it. Otherwise, do nothing.
      */        
     public void validate() {
-        if (_directedGraphValid == false) {
+        long workspaceVersion = 
+            ((NamedObj)_container).workspace().getVersion();
+        if (_directedGraphValid != workspaceVersion) {
             _constructDirectedGraph();
-            _directedGraphValid = true;
+            _directedGraphValid = workspaceVersion;
         }
     }
 
@@ -225,5 +228,5 @@ public abstract class IODependency {
 
     private DirectedGraph _abstractPortsGraph;
     // The validity flag of this attribute.
-    private boolean _directedGraphValid = false;
+    private long _directedGraphValid = -1;
 }
