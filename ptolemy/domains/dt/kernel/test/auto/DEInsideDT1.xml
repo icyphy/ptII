@@ -9,14 +9,10 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="60.0, 44.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="480.0, 345.0">
+        </property>
     </property>
     <entity name="DT_model" class="ptolemy.actor.TypedCompositeActor">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="164.0, 208.0"/>
-        </rendition>
         <property name="DE0" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -32,14 +28,14 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="75.0, 51.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 315.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
         </property>
         <port name="port1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="location1" class="ptolemy.moml.Location">
-                <location value="418.0, 173.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="459.99998474121094, 135.00000381469727">
             </property>
         </port>
         <entity name="Clock0" class="ptolemy.actor.lib.Clock">
@@ -51,10 +47,9 @@
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="76.0, 168.0"/>
-            </rendition>
             <doc>Create a generalized square wave</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="140.0, 225.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -66,10 +61,8 @@
         <entity name="CurrentTime0" class="ptolemy.actor.lib.CurrentTime">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="215.0, 168.0"/>
-                <configure>generic.source</configure>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -90,9 +83,8 @@
     <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="306.0, 292.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="360.0, 315.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -102,10 +94,8 @@
         </port>
     </entity>
     <entity name="Discard1" class="ptolemy.actor.lib.Discard">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="394.0, 209.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 105.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -116,18 +106,15 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="425.0, 292.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 225.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="261.0, 214.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 225.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

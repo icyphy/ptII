@@ -9,9 +9,8 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="47.0, 33.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="505.71429443359375, 360.0">
+        </property>
     </property>
     <entity name="OnePort4" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
@@ -20,10 +19,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="207.0, 142.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="231.4285659790039, 105.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -50,18 +47,9 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="72.0, 141.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="94.28571701049805, 225.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -77,18 +65,9 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="69.0, 214.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="162.8571434020996, 315.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -104,10 +83,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="210.0, 215.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="231.4285659790039, 225.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -128,10 +105,8 @@
         </port>
     </entity>
     <entity name="AddSubtract15" class="ptolemy.actor.lib.AddSubtract">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="339.0, 150.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 135.0">
+        </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -151,10 +126,8 @@
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="432.0, 150.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="505.71429443359375, 90.0">
+        </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
@@ -177,10 +150,8 @@
     <entity name="CurrentTime24" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="197.0, 58.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="437.1428527832031, 225.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -192,10 +163,8 @@
     <entity name="CurrentTime27" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="432.0, 252.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="437.1428527832031, 345.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -209,10 +178,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="311.0, 58.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="505.7142791748047, 180.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -223,10 +190,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="515.0, 252.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="505.7142791748047, 270.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -239,13 +204,11 @@
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="135.0, 147.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="162.85714721679688, 135.0">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="380.0, 155.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="368.5714416503906, 135.0">
         </vertex>
     </relation>
     <relation name="relation31" class="ptolemy.actor.TypedIORelation">

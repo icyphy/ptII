@@ -17,14 +17,10 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="70.0, 40.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="492.0, 345.0">
+        </property>
     </property>
     <entity name="typed composite actor1" class="ptolemy.actor.TypedCompositeActor">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="118.0, 193.0"/>
-        </rendition>
         <property name="DT5" class="ptolemy.domains.dt.kernel.DTDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -32,14 +28,14 @@
             </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="60.0, 42.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="460.0, 315.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="108.0, 225.0">
         </property>
         <port name="port0" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="location1" class="ptolemy.moml.Location">
-                <location value="297.0, 215.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="459.99998474121094, 135.00000381469727">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -55,9 +51,8 @@
             </property>
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="199.0, 209.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+            </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -84,18 +79,9 @@
             </property>
             <property name="step" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-                <location value="85.0, 208.0"/>
-                <configure>
-                <![CDATA[
-                    <xmlgraphic>
-                    <rectangle coords="0 0 60 40" fill="white"/>
-                    <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                    </xmlgraphic>
-                ]]>
-                </configure>
-            </rendition>
             <doc>Create a sequence of tokens with increasing value</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="140.0, 225.0">
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -116,9 +102,8 @@
     <entity name="CurrentTime1" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="280.0, 285.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 315.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -132,10 +117,8 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="352.0, 194.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="491.99998474121094, 105.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -146,23 +129,19 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="412.0, 284.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="491.99998474121094, 225.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="217.0, 199.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="204.0, 225.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="342.0, 290.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="396.0, 315.0">
         </vertex>
     </relation>
     <link port="typed composite actor1.port0" relation="relation2"/>

@@ -9,14 +9,10 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="50.0, 33.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="411.0, 31.0">
+        </property>
     </property>
     <entity name="typed composite actor0" class="ptolemy.actor.TypedCompositeActor">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="177.0, 186.0"/>
-        </rendition>
         <property name="CT0" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -58,22 +54,21 @@
             </property>
             <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="49.0, 42.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="492.0, 315.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
         </property>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="location1" class="ptolemy.moml.Location">
-                <location value="485.0, 200.0"/>
+            <property name="location1" class="ptolemy.moml.Location" value="491.99998474121094, 135.00000381469727">
             </property>
         </port>
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="171.0, 89.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="108.0, 225.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -84,9 +79,8 @@
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                <location value="257.0, 89.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="204.0, 135.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -97,9 +91,8 @@
         <entity name="Scale3" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                <location value="355.0, 90.0"/>
-            </rendition>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 135.0">
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -112,8 +105,7 @@
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex">
-                <location value="395.0, 200.0"/>
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="396.0, 225.0">
             </vertex>
         </relation>
         <link port="port4" relation="relation0"/>
@@ -127,9 +119,8 @@
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="287.0, 287.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="360.0, 315.0">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -143,9 +134,8 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="342.0, 187.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 105.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -156,17 +146,15 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="383.0, 286.0"/>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="479.99998474121094, 225.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="228.0, 193.0"/>
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 225.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
