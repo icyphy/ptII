@@ -389,17 +389,17 @@ public class FSMDirector extends Director {
 	Director executiveDirector = null;
 	if (container instanceof CompositeActor) {
 	    executiveDirector =
-	            ((CompositeActor)container).getExecutiveDirector();
+                ((CompositeActor)container).getExecutiveDirector();
 	}
         boolean result = true;
 	Transition tr = ctrl._lastChosenTransition;
 	/*if (tr == null || !tr.isPreemptive()) {
-	    Iterator actors = _enabledRefinements.iterator();
-	    while (actors.hasNext()) {
-		TypedActor actor = (TypedActor)actors.next();
-		actor.postfire();
-	    }
-	    }*/
+          Iterator actors = _enabledRefinements.iterator();
+          while (actors.hasNext()) {
+          TypedActor actor = (TypedActor)actors.next();
+          actor.postfire();
+          }
+          }*/
 
 	boolean ctrlPostfire = ctrl.postfire();
         result = result && ctrlPostfire;
@@ -424,14 +424,14 @@ public class FSMDirector extends Director {
         FSMActor ctrl = getController();
         /*Actor[] actors = ctrl.currentState().getRefinement();
 
-	_enabledRefinements = new LinkedList();
-        if (actors != null) {
-            for (int i = 0; i < actors.length; ++i) {
-                if (actors[i].prefire()) {
-                    _enabledRefinements.add(actors[i]);
-                }
-            }
-        }*/
+          _enabledRefinements = new LinkedList();
+          if (actors != null) {
+          for (int i = 0; i < actors.length; ++i) {
+          if (actors[i].prefire()) {
+          _enabledRefinements.add(actors[i]);
+          }
+          }
+          }*/
         _firstFire = true;
 
         return getController().prefire();
@@ -495,9 +495,9 @@ public class FSMDirector extends Director {
                             }
                             insideReceivers[i][j].put(t);
                             if (_debugging) _debug(getName(),
-                                "transferring input from " + port.getName()
-                                + " to "
-                                + (insideReceivers[i][j]).getContainer()
+                                    "transferring input from " + port.getName()
+                                    + " to "
+                                    + (insideReceivers[i][j]).getContainer()
                                     .getName());
                         }
                         transferredToken = true;

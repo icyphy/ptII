@@ -133,7 +133,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
             _firstFire = false;
         }
-       FSMActor ctrl = getController();
+        FSMActor ctrl = getController();
         ctrl._setInputVariables();
         if (_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
         State st = ctrl.currentState();

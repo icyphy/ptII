@@ -272,7 +272,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             String name = initialStateName.getExpression();
             if (name == null || name.trim().equals("")) {
                 throw new IllegalActionException(this,
-                "No initial state has been specified.");
+                        "No initial state has been specified.");
             }
             State st = (State)getEntity(name);
             if (st == null) {
@@ -499,17 +499,17 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _createInputVariables();
         // Validate the attributes of this actor.
         for (Iterator attributes = attributeList(Settable.class).iterator();
-            attributes.hasNext();) {
+             attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
         for (Iterator ports = portList().iterator();
-            ports.hasNext();) {
+             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
             for (Iterator attributes =
-                    port.attributeList(Settable.class).iterator();
-                attributes.hasNext();) {
+                     port.attributeList(Settable.class).iterator();
+                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();
                 attribute.validate();
             }
@@ -743,7 +743,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _debug(new StateEvent(this, _currentState));
         }
 	BooleanToken resetToken =
-	        (BooleanToken)_lastChosenTransition.reset.getToken();
+            (BooleanToken)_lastChosenTransition.reset.getToken();
 	if (resetToken.booleanValue()) {
 	    Actor[] actors = _currentState.getRefinement();
             if (actors != null) {
@@ -1047,7 +1047,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                         boolean linked = false;
 			for (int i = 0; i < actors.length; ++i) {
 			    Iterator outports =
-                                    actors[i].outputPortList().iterator();
+                                actors[i].outputPortList().iterator();
 			    while (outports.hasNext()) {
 				IOPort outport = (IOPort)outports.next();
 				linked = linked | outport.isLinked(relation);
