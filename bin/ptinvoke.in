@@ -429,7 +429,8 @@ jdbflags=""
 quiet=0
 # ${1#-} will not work under Solaris 8
 #while [ "${1#-}" != "$1" ]; do
-while [ "x$1" != "x" -a  "`echo $1 | egrep '^-'`" = "$1" ]; do
+# jode takes a -d argument, which causes problems unless we use "x..."
+while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
     # If -debug is supplied then allow debugger attaches to java VM.
     # Run "jdb -attach javadebug" to attach debugger to JVM.
     if [ "$1" = "-debug" ]; then
