@@ -36,7 +36,7 @@ DIRS = 		#test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)\$(CLASSPATHSEPARATOR)$(JAVASOUND_LIBDIR)/sound.jar
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASOUND_LIBDIR)/sound.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -51,6 +51,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AudioQueue.java \
+	ByteArrayAudioQueue.java \
+	DoubleArrayAudioQueue.java \
+	NewAudio.java
 
 EXTRA_SRCS =	$(JSRCS)
 
