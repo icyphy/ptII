@@ -90,6 +90,8 @@ public class VariableSleep extends Transformer {
      */
     public Parameter defaultSleepTime;
 
+    /** An input port receives the value of sleep time.
+     */
     public TypedIOPort sleepTime;
 
     ///////////////////////////////////////////////////////////////////
