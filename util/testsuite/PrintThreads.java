@@ -1,7 +1,5 @@
 /* Print Information about all the threads
 
-@Author: Christopher Hylands, based on code from Fusion Systems Group
-
 @Copyright (c) 2000 The Regents of the University of California.
 All rights reserved.
 
@@ -49,7 +47,9 @@ import javax.swing.SwingUtilities; // for isEventDispatchThread()
 
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads
-/** PrintThreads prints all the Threads in the current JVM
+/** PrintThreads prints all the Threads in the current JVM.
+ @author: Christopher Hylands, based on code from Fusion Systems Group
+ @version: $Id$
  */
 public class PrintThreads {
 
@@ -116,7 +116,7 @@ public class PrintThreads {
                     + " the Swing Event Dispatch Thread" + lineSeparator
                     + _getHeader() + lineSeparator);
 
-        Thread threads[]= new Thread[rootGroup.activeCount()];
+        Thread threads[] = new Thread[rootGroup.activeCount()];
         rootGroup.enumerate(threads);
 
         for (int i = 0; i < threads.length; i++ ) {
@@ -142,14 +142,14 @@ public class PrintThreads {
 	    else
 		group = thread.getThreadGroup().getName();
 
-	    return _stringFormat(name, 35) + " "
-		+ _stringFormat(group, 20) + " "  
-                    + _stringFormat(Integer.toString(thread.getPriority()), 3) 
-                        + " "
-                        + _stringFormat(new Boolean(thread.isDaemon()).toString(), 6)
-                            + " "
-                            + _stringFormat(new Boolean(thread.isAlive()).toString(), 5)
-                                + (Thread.currentThread().equals(thread) ? " *": "  ");
+	    return _stringFormat(name, 35) + " " +
+		_stringFormat(group, 20) + " "  +
+                _stringFormat(Integer.toString(thread.getPriority()), 3) +
+                " " +
+                _stringFormat(new Boolean(thread.isDaemon()).toString(), 6) +
+                " " +
+                _stringFormat(new Boolean(thread.isAlive()).toString(), 5) +
+                (Thread.currentThread().equals(thread) ? " *": "  ");
 	} catch (Exception e) {
 	    return _stringFormat("unknown thread with bad state" + e,
                     _getHeader().length() );
