@@ -84,7 +84,8 @@ public class Display extends Sink implements Placeable, SequenceActor {
         input.setTypeEquals(BaseType.GENERAL);
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed", new IntToken(10));
-        columnsDisplayed = new Parameter(this, "columnsDisplayed", new IntToken(40));
+        columnsDisplayed = new Parameter(this, "columnsDisplayed",
+                new IntToken(40));
 
         // NOTE: As of jdk 1.3-beta, the setTabSize() method of
         // JTextArea does not work (it is ignored), so the tabSize
@@ -134,7 +135,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
                 textArea.setRows(numRows);
             }
         } else if (attribute == columnsDisplayed) {
-            int numColumns = 
+            int numColumns =
                 ((IntToken)columnsDisplayed.getToken()).intValue();
             if (numColumns <= 0) {
                 throw new IllegalActionException(this,
@@ -168,14 +169,10 @@ public class Display extends Sink implements Placeable, SequenceActor {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         Display newobj = (Display)super.clone(workspace);
         newobj.textArea = null;
-        newobj.rowsDisplayed = 
-            (Parameter)newobj.getAttribute("rowsDisplayed");
-        newobj.columnsDisplayed = 
-            (Parameter)newobj.getAttribute("columnsDisplayed");
-        // newobj.tabSize = (Parameter)newobj.getAttribute("tabSize");
         return newobj;
     }
 
@@ -231,10 +228,10 @@ public class Display extends Sink implements Placeable, SequenceActor {
             _container.add(_scrollPane);
             textArea.setBackground(Color.white);
             try {
-                int numRows = 
+                int numRows =
                     ((IntToken)rowsDisplayed.getToken()).intValue();
                 textArea.setRows(numRows);
-                int numColumns = 
+                int numColumns =
                     ((IntToken)columnsDisplayed.getToken()).intValue();
                 textArea.setColumns(numColumns);
             } catch (IllegalActionException ex) {
