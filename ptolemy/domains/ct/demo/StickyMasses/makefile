@@ -45,7 +45,7 @@ PTPACKAGE = 	StickyMasses
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	StickyMassesApplet.java
+	StickyMasses.java
 
 EXTRA_SRCS = \
 	$(JSRCS) \
