@@ -25,7 +25,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.hdf.kernel;
@@ -122,6 +122,7 @@ Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 @author Brian K. Vogel
 @version $Id$
 @see HDFFSMDirector
+@see HDFDirector
 */
 public class HDFFSMActor extends FSMActor implements TypedActor {
 

@@ -154,10 +154,9 @@ Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 
 @author Brian K. Vogel
 @version: $Id$
-
+@see HDFFSMActor
+@see HDFDirector
 */
-// FIXME: Throw exception if the executive director != SDFDirector or
-// != HDFFSMDirector.
 public class HDFFSMDirector extends FSMDirector {
 
     /** Construct a director in the default workspace with an empty string
@@ -899,21 +898,29 @@ public class HDFFSMDirector extends FSMDirector {
      *
      * @param actor The current refinement.
      */
-    // FIXME: queue the mutation with the director?
-    // FIXME: Need to check that preinitialize has already been invoked
-    // on parameter "actor".
+    // FIXME: All ports of the container of this director that are not connected
+    // to an actor inside the current refinement should have their rate set to 0.
     protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor)
             throws IllegalActionException {
 	if (_debug_info) System.out.println(getName() + " : " +
                 "_updateInputTokenConsumptionRates() invoked on actor: " +
                 actor.getFullName());
-
-	// Get all of its input ports.
-	Iterator refineInPorts = actor.inputPortList().iterator();
 	// Get the current refinement's container.
-	ComponentEntity refineInPortContainer =
-	    (ComponentEntity) actor.getContainer();
+	CompositeActor refineInPortContainer =
+	    (CompositeActor) actor.getContainer();
+	// Get all of the input ports of the container of this director.
+	List containerPortList = refineInPortContainer.inputPortList();
+	// Set all of the port rates to zero.
+	Iterator containerPorts = containerPortList.iterator();
+	while (containerPorts.hasNext()) {
+	    IOPort containerPort = (IOPort)containerPorts.next();
+	    _setTokenConsumptionRate(refineInPortContainer,
+                            containerPort,
+                            0);
+	}
 
+	// Get all of its input ports of the current refinement actor.
+	Iterator refineInPorts = actor.inputPortList().iterator();
 	while (refineInPorts.hasNext()) {
 	    IOPort refineInPort =
 		(IOPort)refineInPorts.next();
@@ -951,15 +958,14 @@ public class HDFFSMDirector extends FSMDirector {
                             inputPortOutside.getFullName());
 		    // Get the port to which "refineInPort" is
 		    // connected on the inside.
-		    // FIXME: ???
 		    List listOfPorts = refineInPort.insidePortList();
 		    // Just get the first port from the list
 		    // since they all must have the same rate.
 		    int refineInPortRate;
 		    if (listOfPorts.isEmpty()) {
-			// Just assume the rate is 1. This could happen
-			// if a Source actor is inside (no input ports).
-			refineInPortRate = 1;
+			// Set the rate to 0, since this port is not connected
+			// to anything on the inside.
+			refineInPortRate = 0;
 		    } else {
 			IOPort portWithRateInfo =
 			    (IOPort)listOfPorts.get(0);
@@ -971,7 +977,6 @@ public class HDFFSMDirector extends FSMDirector {
 		    //if (_debug_info) System.out.println("Port: " + refineInPort.getFullName() + " rate = " + ((SDFIOPort)refineInPort).getTokenConsumptionRate());
 		    if (_debug_info) System.out.println(getName() + " : _updateInputTokenConsumptionRates(): New consumption rate is " +
                             refineInPortRate);
-				// FIXME: call requestChange in Manager for this?
                     _setTokenConsumptionRate(refineInPortContainer,
                             inputPortOutside,
                             refineInPortRate);
@@ -992,12 +997,21 @@ public class HDFFSMDirector extends FSMDirector {
     // FIXME: queue the mutation with the director?
     protected void _updateOutputTokenProductionRates(TypedCompositeActor actor)
             throws IllegalActionException {
+	// Get the current refinement's container.
+	CompositeActor refineOutPortContainer =
+	    (CompositeActor) actor.getContainer();
+	// Get all of the ouput ports of the container of this director.
+	List containerPortList = refineOutPortContainer.outputPortList();
+	// Set all of the port rates to zero.
+	Iterator containerPorts = containerPortList.iterator();
+	while (containerPorts.hasNext()) {
+	    IOPort containerPort = (IOPort)containerPorts.next();
+	    _setTokenProductionRate(refineOutPortContainer,
+                            containerPort,
+                            0);
+	}
 	// Get all of its input ports.
 	Iterator refineOutPorts = actor.outputPortList().iterator();
-	// Get the current refinement's container.
-	ComponentEntity refineOutPortContainer =
-	    (ComponentEntity) actor.getContainer();
-
 	while (refineOutPorts.hasNext()) {
 	    IOPort refineOutPort =
 		(IOPort)refineOutPorts.next();
@@ -1040,9 +1054,8 @@ public class HDFFSMDirector extends FSMDirector {
 		    // since they all must have the same rate.
 		    int refineOutPortRate;
 		    if (listOfPorts.isEmpty()) {
-			// Just assume the rate is 1. This could happen
-			// if a Sink actor is inside (no ouput ports).
-			refineOutPortRate = 1;
+			// Set the rate to 0.
+			refineOutPortRate = 0;
 		    } else {
 			IOPort portWithRateInfo =
 			    (IOPort)listOfPorts.get(0);
