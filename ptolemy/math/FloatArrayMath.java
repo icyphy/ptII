@@ -592,7 +592,7 @@ public class FloatArrayMath {
         int length = _commonLength(array1, array2, "FloatArrayMath.within");
 
         for (int i = 0; i < length; i++) {
-            if (Math.abs(array1[i] - array2[i]) > maxError[i]) {
+            if (Math.abs(array1[i] - array2[i]) > Math.abs(maxError[i])) {
                 return false;
             }
         }

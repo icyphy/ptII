@@ -285,6 +285,51 @@ public class ComplexMatrixMath {
         return true;
     }
 
+    /** Return the given complex number with the absolute value of the real part.
+     */
+    public static final Complex[][] absValues (Complex[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+		matrix[i][j]= new Complex(Math.abs(matrix[i][j].real), matrix[i][j].imag);
+	    }
+	}
+	return matrix;
+    }
+
+    /** Return true if all the absolute differences between corresponding
+     *  elements of matrix1 and matrix2, for both the real and imaginary parts,
+     *  are all less than or equal to the elements in maxError. Otherwise, return false.
+     *  Throw an IllegalArgument exception if the matrices are not of the same
+     *  length. If both matrices are empty, return true.
+     *  This is computationally less expensive than isSquaredErrorWithin().
+     */
+    public static final boolean within(Complex[][] matrix1,
+            Complex[][] matrix2, Complex[][] maxError) {
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+	Complex temp = new Complex();
+	maxError = absValues(maxError);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+
+		temp = matrix1[i][j].subtract(matrix2[i][j]);
+	    
+		// ifgreater returns true if temp > maxError.
+		if (ifgreater(temp,maxError[i][j])) {
+		    return false;
+		}
+	    }
+	}
+        
+        return true;
+    }
+
     /** Return a new matrix that is constructed by conjugating the elements
      *  in the input matrix.
      */

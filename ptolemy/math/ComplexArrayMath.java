@@ -847,6 +847,17 @@ public class ComplexArrayMath {
         return true;
     }
 
+    /** Return the given complex number with the absolute value of the real part.
+     */
+    public static final Complex[] absValues (Complex[] array) {
+	int length = array.length;
+
+	for (int i = 0; i < length; i++) {
+	    array[i]= new Complex(Math.abs(array[i].real), array[i].imag);
+	}
+	return array;
+    }
+
     /** Return true if all the absolute differences between corresponding
      *  elements of array1 and array2, for both the real and imaginary parts,
      *  are all less than or equal to corresponding elements in maxError. 
@@ -860,6 +871,7 @@ public class ComplexArrayMath {
                 "ComplexArrayMath.within");
 
 	Complex temp = new Complex();
+	maxError = absValues(maxError);
 
 	for (int i = 0; i < length; i++) {
 	    temp = array1[i].subtract(array2[i]);
