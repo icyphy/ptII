@@ -343,7 +343,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		bin/comm.policy \
 		bin/copernicus.bat \
 		bin/copernicusjhdl.bat \
-		bin/decompile.bat
+		bin/decompile.bat \
 		bin/emachine.bat \
 		bin/giottoc.bat \
 		bin/histogram.bat \
