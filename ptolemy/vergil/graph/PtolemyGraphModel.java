@@ -293,10 +293,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(Object node, final Object parent) {
+	    if(parent != null) {
+		throw new UnsupportedOperationException(
+		    "Only node removal is supported by this graph model.");
+	    }
+	    Location location = (Location)node;
+	    ComponentPort port = (ComponentPort)location.getContainer();
+	    NamedObj container = (NamedObj)port.getContainer();
 	    try {
-		Location location = (Location)node;
-		ComponentPort port = (ComponentPort)location.getContainer();
-		port.setContainer((CompositeEntity)parent);
+		// Delete the port.
+		StringBuffer moml = new StringBuffer();
+		moml.append("<deletePort name=\"" + 
+			    port.getName(container) + 
+			    "\"/>\n");
+		ChangeRequest request = 
+                    new MoMLChangeRequest(PtolemyGraphModel.this, 
+			  container,
+			  moml.toString());
+		container.requestChange(request);
+		request.waitForCompletion();
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
@@ -367,13 +382,30 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(final Object node, final Object parent) {
+	    if(parent != null) {
+		throw new UnsupportedOperationException(
+		    "Only node removal is supported by this graph model.");
+	    }
+	    ComponentEntity entity = 
+		(ComponentEntity)((Icon)node).getContainer();
+	    NamedObj container = (NamedObj)entity.getContainer();
 	    try {
-		ComponentEntity entity = 
-		    (ComponentEntity)((Icon)node).getContainer();
-		entity.setContainer((CompositeEntity)parent);
+		// Delete the entity.
+		StringBuffer moml = new StringBuffer();
+		moml.append("<deleteEntity name=\"" + 
+			    entity.getName(container) +
+			    "\"/>\n");
+		ChangeRequest request = 
+                    new MoMLChangeRequest(PtolemyGraphModel.this, 
+					  container,
+					  moml.toString());
+		container.requestChange(request);
+		request.waitForCompletion();
 	    } catch (Exception ex) {
+		ex.printStackTrace();
 		throw new GraphException(ex);
 	    }
+	
 	}
     }
 
@@ -450,7 +482,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public void setHead(final Object edge, final Object head) {
 	    Link link = (Link)edge;
 	    try {
-		link.unlink();		
+		link.unlink(PtolemyGraphModel.this);		
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
@@ -458,7 +490,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    try {
 		// This should remove the links and 
 		// must not leave the model in an inconsistent state.
-		link.link();
+		link.link(PtolemyGraphModel.this);
 	    } catch (Exception ex) {
 		// If we fail here, then we remove the link entirely.
 		//_linkSet.remove(link);
@@ -484,7 +516,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	public void setTail(final Object edge, final Object tail) {
 	    Link link = (Link)edge;
 	    try {
-		link.unlink();		
+		link.unlink(PtolemyGraphModel.this);		
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
@@ -492,7 +524,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    try {
 		// This should remove the links and 
 		// must not leave the model in an inconsistent state.
-		link.link();
+		link.link(PtolemyGraphModel.this);
 	    } catch (Exception ex) {
 		// If we fail here, then we remove the link entirely.
 		//_linkSet.remove(link);
@@ -616,8 +648,24 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(final Object node, final Object parent) {
+	    if(parent != null) {
+		throw new UnsupportedOperationException(
+		    "Only node removal is supported by this graph model.");
+	    }
+	    ComponentPort port = (ComponentPort)node;
+	    NamedObj container = (NamedObj)port.getContainer();
 	    try {
-		((Port)node).setContainer((CompositeEntity)parent);
+		// Delete the port.
+		StringBuffer moml = new StringBuffer();
+		moml.append("<deletePort name=\"" + 
+			    port.getName(container) + 
+			    "\"/>\n");
+		ChangeRequest request = 
+                    new MoMLChangeRequest(PtolemyGraphModel.this, 
+					  container,
+					  moml.toString());
+		container.requestChange(request);
+		request.waitForCompletion();
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
@@ -809,10 +857,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * component relation.
 	 */
 	public void setParent(final Object node, final Object parent) {
+	    if(parent != null) {
+		throw new UnsupportedOperationException(
+		    "Only node removal is supported by this graph model.");
+	    }
+	    ComponentRelation relation =
+		(ComponentRelation)((Vertex)node).getContainer();
+	    NamedObj container = (NamedObj)relation.getContainer();
 	    try {
-		ComponentRelation relation =
-		    (ComponentRelation)((Vertex)node).getContainer();
-		relation.setContainer((CompositeEntity)parent);
+		// Delete the relation.
+		StringBuffer moml = new StringBuffer();
+		moml.append("<deleteRelation name=\"" + 
+			    relation.getName(container) +
+			    "\"/>\n");
+		ChangeRequest request = 
+                    new MoMLChangeRequest(PtolemyGraphModel.this, 
+					  container,
+					  moml.toString());
+		container.requestChange(request);
+		request.waitForCompletion();
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
@@ -947,7 +1010,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		link.setHead(head);
 		link.setTail(rootVertex);
 	    }
-	}	 
+	}	
     }
 	
     // Return the location contained in the given port, or

@@ -41,6 +41,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 
 import diva.gui.*;
 import diva.gui.toolbox.*;
+import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.canvas.*;
@@ -178,22 +179,47 @@ public class EditorGraphController extends ViewerGraphController {
 	    final double finalX = x;
 	    final double finalY = y;
 	    final CompositeEntity toplevel = graphModel.getToplevel();
-	    // FIXME use moml.  
-	    toplevel.requestChange(new ChangeRequest(this,
-		"Creating new Port in " + toplevel.getFullName()) {
-		protected void _execute() throws Exception {
-		    Port port = 
-			toplevel.newPort(toplevel.uniqueName("port"));
-		    Location location =
-			new Location(port, 
-				     port.uniqueName("_location"));
-		    
-		    double coords[] = new double[2];
-		    coords[0] = ((int)finalX);
-		    coords[1] = ((int)finalY);
-		    location.setLocation(coords);
-		}
-	    });
+	    final String portName = toplevel.uniqueName("port");
+	    final String locationName = "location1";
+	    // Create the relation.
+	    StringBuffer moml = new StringBuffer();
+	    // FIXME remove class=
+	    moml.append("<port name=\"" + portName + 
+			"\" class=\"ptolemy.actor.TypedIOPort\">\n");
+	    moml.append("<attribute name=\"" + locationName + 
+			"\" class=\"ptolemy.moml.Location\"/>\n");
+	    moml.append("</port>");
+	    
+	    ChangeRequest request = 
+		new MoMLChangeRequest(this, toplevel, moml.toString()) {
+		    protected void _execute() throws Exception {
+			super._execute();
+			// Set the location of the icon.
+			// Note that this really needs to be done after
+			// the change request has succeeded, which is why
+			// it is done here.  When the graph controller
+			// gets around to handling this, it will draw 
+			// the icon at this location.
+			
+			// FIXME: Have to know whether this is an entity,
+			// port, etc. For now, assuming it is an entity.
+			NamedObj newObject =
+			toplevel.getPort(portName);
+			Location location = 
+			(Location) newObject.getAttribute(locationName);
+						
+			double point[] = new double[2];
+			point[0] = ((int)finalX);
+			point[1] = ((int)finalY);
+			location.setLocation(point);
+		    }
+                };
+	    toplevel.requestChange(request);
+	    try {
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}
     }
 
@@ -235,22 +261,46 @@ public class EditorGraphController extends ViewerGraphController {
 	    final double finalY = y;
 	    final CompositeEntity toplevel = graphModel.getToplevel();
 	 		
-	    // FIXME use MoML.  If no class is specifed in MoML, it should
-	    // use the newRelation method.
-	    toplevel.requestChange(new ChangeRequest(this,
-		"Creating new Relation in " + toplevel.getFullName()) {
-		protected void _execute() throws Exception {
-		    Relation relation = 
-			toplevel.newRelation(toplevel.uniqueName("relation"));
-		    Vertex vertex =
-			new Vertex(relation, relation.uniqueName("vertex"));
-		    
-		    double coords[] = new double[2];
-		    coords[0] = ((int)finalX);
-		    coords[1] = ((int)finalY);
-		    vertex.setLocation(coords);
-		}
-	    });
+	    final String relationName = toplevel.uniqueName("relation");
+	    final String vertexName = "vertex1";
+	    // Create the relation.
+	    StringBuffer moml = new StringBuffer();
+	    // FIXME remove class=
+	    moml.append("<relation name=\"" + relationName + 
+			"\" class=\"ptolemy.actor.TypedIORelation\">\n");
+	    moml.append("<vertex name=\"" + vertexName + "\"/>\n");
+	    moml.append("</relation>");
+	    
+	    ChangeRequest request = 
+		new MoMLChangeRequest(this, toplevel, moml.toString()) {
+		    protected void _execute() throws Exception {
+			super._execute();
+			// Set the location of the icon.
+			// Note that this really needs to be done after
+			// the change request has succeeded, which is why
+			// it is done here.  When the graph controller
+			// gets around to handling this, it will draw 
+			// the icon at this location.
+			
+			// FIXME: Have to know whether this is an entity,
+			// port, etc. For now, assuming it is an entity.
+			NamedObj newObject =
+			toplevel.getRelation(relationName);
+			Vertex vertex = 
+			(Vertex) newObject.getAttribute(vertexName);
+						
+			double point[] = new double[2];
+			point[0] = ((int)finalX);
+			point[1] = ((int)finalY);
+			vertex.setLocation(point);
+		    }
+                };
+	    toplevel.requestChange(request);
+	    try {
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		throw new GraphException(ex);
+	    }
 	}
     }
  
@@ -265,7 +315,6 @@ public class EditorGraphController extends ViewerGraphController {
     
     protected class RelationCreator extends ActionInteractor {
 	public RelationCreator() {
-	    // FIXME don't ref VergilApplication.
 	    super(_newRelationAction);
 	}
     }

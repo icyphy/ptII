@@ -145,7 +145,7 @@ public class Link {
      * by the Ptolemy graph model in response to changing the head or the
      * tail.
      */
-    public void link() throws IllegalActionException, 
+    public void link(Object requestor) throws IllegalActionException, 
             NameDuplicationException {
 	ComponentPort port;
 	ComponentRelation relation;
@@ -155,7 +155,7 @@ public class Link {
 	// Deal with the fact that we might be trying to attach to an 
 	// external port.
 	Object head;
-	CompositeEntity container;
+	final CompositeEntity container;
 	if(_head instanceof Location &&
 	   ((Location)_head).getContainer() instanceof ComponentPort) {
 	    head = ((Location)_head).getContainer();
@@ -178,34 +178,36 @@ public class Link {
 	}
 
         if(head instanceof ComponentPort && tail instanceof ComponentPort) {
-	    relation = 
-                container.newRelation(container.uniqueName("relation"));
-	    setRelation(relation);
-          
-	    port = (ComponentPort)head;
+	    ComponentPort headPort = (ComponentPort)head;
+	    ComponentPort tailPort = (ComponentPort)tail;
+	    // Linking two ports with a new relation.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group>\n");
+	    final String relationName = container.uniqueName("relation");
+	    // Note that we use no class so that we use the container's
+	    // factory method when this gets parsed
+	    moml.append("<relation name=\"" + relationName + 
+			"\" class=\"ptolemy.actor.TypedIORelation\"/>\n");
+	    moml.append("<link port=\"" + headPort.getName(container) + 
+			"\" relation=\"" + relationName + "\"/>\n");
+	    moml.append("<link port=\"" + tailPort.getName(container) + 
+			"\" relation=\"" + relationName + "\"/>\n");
+	    moml.append("</group>\n");
+	    ChangeRequest request = 
+		new MoMLChangeRequest(requestor, container, moml.toString()) {
+                    protected void _execute() throws Exception {
+			super._execute();
+			// Set the relation that this link is going to modify.
+			// I'm not sure if this asynchrony will cause
+			// things to break.
+			setRelation(container.getRelation(relationName));
+		    }
+		};
+	    container.requestChange(request);
 	    try {
-		port.link(relation);
-		_checkReceivers(container, port);
-	    } catch (IllegalActionException ex) {
-		// remove the relation and the link.
-		port.unlink(relation);
-		relation.setContainer(null);
-		ex.fillInStackTrace();
-		throw ex;
-	    }
-	    
-	    try {
-		port = (ComponentPort)tail;
-		port.link(relation);
-		_checkReceivers(container, port);
-		_checkSchedule(container);
-	    } catch (IllegalActionException ex) {
-		// remove the relation and both links.
-		port.unlink(relation);
-		((ComponentPort)head).unlink(relation);
-		relation.setContainer(null);
-		ex.fillInStackTrace();
-		throw ex;
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		ex.printStackTrace();
 	    }
 	    return;
         }
@@ -223,10 +225,22 @@ public class Link {
                     "but head is " + head +
                     " and tail is " + tail);
 	}
-        setRelation(relation);
-        port.link(relation);
-	_checkReceivers(container, port);
-	_checkSchedule(container);
+	// Linking a port to an existing relation.
+	StringBuffer moml = new StringBuffer();
+	final ComponentRelation finalRelation = relation;
+	moml.append("<link port=\"" + port.getName(container) + 
+		    "\" relation=\"" + relation.getName(container) + "\"/>\n");
+	ChangeRequest request = 
+	    new MoMLChangeRequest(requestor, container, moml.toString()) {
+		protected void _execute() throws Exception {
+		    super._execute();
+		    // Set the relation that this link is going to modify.
+		    // I'm not sure if this asynchrony will cause
+		    // things to break.
+		    setRelation(finalRelation);
+		}
+	    };
+	container.requestChange(request);
     }
 
     /** Remove the connections between the head and the tail of this
@@ -235,8 +249,8 @@ public class Link {
      * This method is called by the Ptolemy graph model just prior to 
      * changing the head or tail.
      */
-    public void unlink() throws IllegalActionException,
-        NameDuplicationException {
+    public void unlink(Object requestor) throws IllegalActionException, 
+    NameDuplicationException {
 	ComponentPort port;
 	Vertex vertex;
 	ComponentRelation relation;
@@ -268,19 +282,40 @@ public class Link {
 	}
 
         if(head instanceof ComponentPort && tail instanceof ComponentPort) {
-            relation = (ComponentRelation)getRelation();
-            port = (ComponentPort)head;
-            port.unlink(relation);
-	    _checkReceivers(container, port);
-	    
-	    port = (ComponentPort)tail;
-	    port.unlink(relation);
-	    _checkReceivers(container, port);
-	    
-	    // blow the relation away.
-            relation.setContainer(null);
-	    setRelation(null);
-	    _checkSchedule(container);
+	    ComponentPort headPort = (ComponentPort)head;
+	    ComponentPort tailPort = (ComponentPort)tail;
+	    relation = (ComponentRelation)getRelation();
+	    // Linking two ports with a new relation.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group>\n");
+	    // Note that we use no class so that we use the container's
+	    // factory method when this gets parsed
+	    moml.append("<unlink port=\"" + headPort.getName(container) + 
+			"\" relation=\"" + relation.getName(container) + 
+			"\"/>\n");
+	    moml.append("<unlink port=\"" + tailPort.getName(container) + 
+			"\" relation=\"" + relation.getName(container) + 
+			"\"/>\n");
+	    moml.append("<deleteRelation name=\"" + 
+			relation.getName(container) + 
+			"\"/>\n");
+	    moml.append("</group>\n");
+	    ChangeRequest request = 
+		new MoMLChangeRequest(requestor, container, moml.toString()) {
+                    protected void _execute() throws Exception {
+			super._execute();
+			// Set the relation that this link is going to modify.
+			// I'm not sure if this asynchrony will cause
+			// things to break.
+			setRelation(null);
+		    }
+		};
+	    container.requestChange(request);
+	    try {
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+	    }
 	    
 	    return;
         }
@@ -298,21 +333,28 @@ public class Link {
                     "but head is " + head +
                     " and tail is " + tail);
 	}
-	port.unlink(relation);
-	setRelation(null);
-	_checkReceivers(container, port);
-	_checkSchedule(container);
-    }
-
-    /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written.
-     *  MoML is an XML modeling markup language.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-             throws IOException {
+	// Unlinking a port from an existing relation.
+	StringBuffer moml = new StringBuffer();
+	final ComponentRelation finalRelation = relation;
+	System.out.println("container = " + container);
+	moml.append("<unlink port=\"" + port.getName(container) + 
+		    "\" relation=\"" + relation.getName(container) + "\"/>\n");
+	ChangeRequest request = 
+	    new MoMLChangeRequest(requestor, container, moml.toString()) {
+		protected void _execute() throws Exception {
+		    super._execute();
+		    // Set the relation that this link is going to modify.
+		    // I'm not sure if this asynchrony will cause
+		    // things to break.
+		    setRelation(null);
+		}
+	    };
+	container.requestChange(request);
+	try {
+	    request.waitForCompletion();
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	}
     }
 
     /** Return a string representation of this link.
@@ -322,49 +364,6 @@ public class Link {
 	    + _head + ", " 
 	    + _tail + ", " 
 	    + _relation + ")";
-    }
-
-    // If the container has a director, then invalidate its schedule and
-    // rerun type resolution
-    private void _checkSchedule(CompositeEntity container) {
-	if (container instanceof Actor) {
-	    Director director = ((Actor)container).getDirector();
-	    if (director != null) {
-		director.invalidateSchedule();
-		director.invalidateResolvedTypes();
-	    }
-	}
-    }
-
-    // If receivers need to be created for the port, then create them.
-    // If the container has a director, and the port is an IOPort, then
-    //  we create receivers, even if the model is not executing
-    private void _checkReceivers(CompositeEntity container, Port port) 
-	throws IllegalActionException {
-	if (container instanceof Actor) {
-	    Director director = ((Actor)container).getDirector();
-	    if (director != null && port instanceof IOPort) {
-		IOPort ioPort = (IOPort) port;
-		if(ioPort.isInput())
-		    ioPort.createReceivers();
-	    }
-	}
-    }
-
-    /** Return a description of this variable.  This returns the same
-     *  information returned by toString(), but with optional indenting
-     *  and brackets.
-     *  @param detail The level of detail.
-     *  @param indent The amount of indenting.
-     *  @param bracket The number of surrounding brackets (0, 1, or 2).
-     *  @return A string describing this variable.
-     */
-    protected String toString(int detail, int indent, int bracket) {
-	String result;
-	result = "{" + getClass().getName() + ":";
-	result += " head {" + _head ;
-	result +=  "} tail {\n" + _tail + "}}";
-	return result;
     }
 
     private Object _head; 

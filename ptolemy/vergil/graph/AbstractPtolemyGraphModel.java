@@ -115,9 +115,9 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * This method overrides the base class to perform the operation
      * in a ptolemy change request.
       */
-    public void disconnectEdge(final Object eventSource, final Object edge) {
-	throw new UnsupportedOperationException("hack");
-    }
+    //  public void disconnectEdge(final Object eventSource, final Object edge) {
+    //	throw new UnsupportedOperationException("hack");
+    //}
 
     /**
      * Delete a node from its parent graph and notify
@@ -127,9 +127,9 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * This method overrides the base class to perform the operation
      * in a ptolemy change request.
      */
-    public void removeNode(final Object eventSource, final Object node) {
-	throw new UnsupportedOperationException("hack");
-    }
+    //   public void removeNode(final Object eventSource, final Object node) {
+    //throw new UnsupportedOperationException("hack");
+    //}
 
     /**
      * Return the property of the object associated with
