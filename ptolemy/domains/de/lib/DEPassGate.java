@@ -80,7 +80,6 @@ public class DEPassGate extends DEActor {
      *  the "gate" input; if there's no event in the input port, but only
      *  in the "gate" input, pass event when the gate reopens.
      *
-     * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{
@@ -136,9 +135,8 @@ public class DEPassGate extends DEActor {
 
     }
 
-    /** 
+    /** Initialize gate to be open, and last token equal null.
      *
-     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Thrown if could not create the 
      *   receivers.
      */

@@ -35,7 +35,9 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.plot.*;
 import java.awt.*;
-import java.util.Vector;
+import java.util.Enumeration;
+import collections.HashedMap;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DEHistogram
@@ -49,6 +51,9 @@ public class DEHistogram extends DEActor {
 
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
+     *
+     *  @exception NameDuplicationException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public DEHistogram(CompositeActor container, String name, double binWidth)
             throws NameDuplicationException, IllegalActionException  {
@@ -62,7 +67,7 @@ public class DEHistogram extends DEActor {
         // FIXME: Consolidate code with next constructor.
         PlotFrame plotFrame = new PlotFrame(getName());
         _plot = plotFrame.plot;
-        _plot.setBars(0.98*binWidth , 0.02*binWidth);
+        _plot.setBars((1-_percentGap)*binWidth , 0.25*_percentGap*binWidth);
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
@@ -70,12 +75,19 @@ public class DEHistogram extends DEActor {
 
         // Set the parameters
         _binWidth = new Parameter(this,"bin width",new DoubleToken(binWidth));
+
+        // FIXME: Hardwire binZeroOffset.
+        _binZeroOffset = binWidth / 2.0;
+
         
     }
 
     /** Construct a plot actor that uses the specified plot object.
      *  This can be used to create applets that plot the results of
      *  DE simulations.
+     *
+     *  @exception NameDuplicationException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public DEHistogram(CompositeActor container, String name, double binWidth, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
@@ -86,7 +98,7 @@ public class DEHistogram extends DEActor {
         input.makeMultiport(true);
 
         _plot = plot;
-        _plot.setBars(0.95*binWidth, 0.05*binWidth);
+        _plot.setBars((1-_percentGap)*binWidth, 0.25*_percentGap*binWidth);
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
@@ -94,12 +106,17 @@ public class DEHistogram extends DEActor {
 
         // Set the parameters
         _binWidth = new Parameter(this, "bin width", new DoubleToken(binWidth));
+        // FIXME: Hardwire binZeroOffset.
+        _binZeroOffset = binWidth / 2.0;
+        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clear the plot window.
+    /** Initialize the plot window by clearing it, and also clear the map
+     *  collection.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
 
@@ -112,51 +129,64 @@ public class DEHistogram extends DEActor {
         // phase, because the director doesn't know the start time until
         // some stars enqueue an event.
 
-        _dataCount = new Vector();
+        _map.clear();
+        _maxBin = Integer.MIN_VALUE;
+        _minBin = Integer.MAX_VALUE;
+
+
     }
 
     /** Add new input data to the plot.
+     *  @exception IllegalActionException If the input port is disconnected.
      */
     public void fire() throws IllegalActionException{
 
         // Gather datas from input port.
         // FIXME: make it one channel first.
         while (input.hasToken(0)) {
+       
             double dataIn = ((DoubleToken)input.get(0)).doubleValue();
+       
+            // perform the translation from data value to bin number.
+            // Also, keep track of the max and min bin we've seen so far.
+            int bin = _valueToBin(dataIn);
+            if (bin > _maxBin) _maxBin = bin;
+            if (bin < _minBin) _minBin = bin;
             
-            double width = ((DoubleToken)_binWidth.getToken()).doubleValue();
 
-            int binNum = (int) (dataIn/width);
+            Integer binObject = new Integer(bin);
 
-            if (_dataCount.size() < binNum + 1) {
-                _dataCount.setSize(binNum+1);
-            }
-            
-            Object d = _dataCount.elementAt(binNum);
-            
-            if (d == null) {
-                _dataCount.setElementAt(new Integer(1), binNum);
+            if (_map.includesKey(binObject)) {
+                // increase the count
+                int oldVal = ((Integer)_map.at(binObject)).intValue();
+                _map.putAt(binObject, new Integer(oldVal+1));
             } else {
-                Integer dd = (Integer) d;
-                _dataCount.setElementAt(new Integer(dd.intValue() + 1), binNum);               
+                // start a new entry.
+                _map.putAt(binObject, new Integer(1));
             }
+
             
         }
     }
 
     /** Rescale the plot so that all the data plotted is visible.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
 
         double binWidth = ((DoubleToken)_binWidth.getToken()).doubleValue();
 
-        for (int i = 0; i < _dataCount.capacity(); i++) {
-            
-            Object d = _dataCount.elementAt(i);
-            if (d != null) {
-                Integer y = (Integer)d;
-                _plot.addPoint(0, i*binWidth+.5*binWidth, y.doubleValue(), false);
-            }
+        // enumerate through all the keys (bind index) and create a bar
+        // for each.
+        Enumeration keys = _map.keys();
+        while (keys.hasMoreElements()) {
+            Integer bin = (Integer)keys.nextElement();
+            Integer height = (Integer)_map.at(bin);
+
+            // calculate the center x-coordinate of the bin.
+            double binCenter = bin.intValue() * binWidth + _binZeroOffset;
+
+            _plot.addPoint(0, binCenter, height.intValue(), false);
         }
 
 	_plot.fillPlot();
@@ -182,22 +212,54 @@ public class DEHistogram extends DEActor {
 
     public IOPort input;
 
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    // Given a double value, figure out which bin it should end up into.
+    // The current implementation does this by performing an integer divide
+    // with respect to the bin width. FIXME: Tweak this method, if we want
+    // to limit the max number of bins.
+    // This bin number should be a function of only the data value, the
+    // bin width and the binZeroOffset.
+    private int _valueToBin(double value) {
+
+        double binWidth = ((DoubleToken)_binWidth.getToken()).doubleValue();
+        double offset = (value - _binZeroOffset) / binWidth;
+
+        
+
+        // Now round offset to the nearest integer.
+        // If offset is equal to xxx.5, then round up.
+        int retval =  (int)(offset+0.5);
+        return retval;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The Plot object where
     private Plot _plot;
 
     private double _yMin;
     private double _yMax;
-
-    private boolean[] _firstPoint;
-
-    private boolean _firstFiring = true;
     
     private Parameter _binWidth;
+    // The x-coordinate of the center of the first bin.
+    private double _binZeroOffset;
 
-    // access with: setElementAt(Object, int), elementAt(int), and setSize()
-    private Vector _dataCount;
+    // A map to store the (bin, height) paired element.
+    private HashedMap _map = new HashedMap();
+
+    // Keep track of this, so we know from and until where we need to
+    // draw the bins.
+    private int _minBin;
+    private int _maxBin;
+
+    // The ratio of the gap between bins and the width of the bins.
+    // FIXME: currently it's set here.. and can't be changed.
+    private double _percentGap = 0.005;
+
 }
 
 

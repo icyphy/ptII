@@ -47,6 +47,9 @@ public class DEPlot extends DEActor {
 
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
+     *
+     *  @exception NameDuplicationException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public DEPlot(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -55,14 +58,14 @@ public class DEPlot extends DEActor {
         // create the input port and make it a multiport.
         input = new IOPort(this, "input", true, false);
         input.makeMultiport(true);
-
+        
         // FIXME: Consolidate code with next constructor.
         PlotFrame plotFrame = new PlotFrame(getName());
         _plot = plotFrame.plot;
         _plot.setMarksStyle("dots");
         _plot.setImpulses(true);
         _plot.setConnected(false);
-
+        
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
         _yMax = (double)1;
@@ -71,6 +74,9 @@ public class DEPlot extends DEActor {
     /** Construct a plot actor that uses the specified plot object.
      *  This can be used to create applets that plot the results of
      *  DE simulations.
+     *
+     *  @exception NameDuplicationException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public DEPlot(CompositeActor container, String name, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
@@ -94,6 +100,7 @@ public class DEPlot extends DEActor {
     ////                         public methods                    ////
 
     /** Clear the plot window.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
 
@@ -104,20 +111,18 @@ public class DEPlot extends DEActor {
         // Initialization of the frame X-range is deferred until the fire()
         // phase, because the director doesn't know the start time until
         // some stars enqueue an event.
+        _plot.setXRange(getStartTime(), getStopTime());
+        _plot.setYRange(getYMin(), getYMax());
+        _plot.init();
     }
 
     /** Add new input data to the plot.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{
 
-        if (_firstFiring) {
-            _plot.setXRange(getStartTime(), getStopTime());
-            _plot.setYRange(getYMin(), getYMax());
-            _firstFiring = false;
-        }
-
         int numEmptyChannel = 0;
-
+        
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             // check channel i.
@@ -147,6 +152,7 @@ public class DEPlot extends DEActor {
     }
 
     /** Rescale the plot so that all the data plotted is visible.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
 	_plot.fillPlot();
@@ -182,12 +188,4 @@ public class DEPlot extends DEActor {
 
     private boolean[] _firstPoint;
 
-    private boolean _firstFiring = true;
 }
-
-
-
-
-
-
-

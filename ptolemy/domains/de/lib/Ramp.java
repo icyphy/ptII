@@ -79,7 +79,6 @@ public class Ramp extends AtomicActor {
     /** Produce the next ramp output with the same time stamp as the current
      *  input.
      *  FIXME: better exception tags needed.
-     *  @exception CloneNotSupportedException Error when cloning event.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {

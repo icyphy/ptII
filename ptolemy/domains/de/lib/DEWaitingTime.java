@@ -74,8 +74,6 @@ public class DEWaitingTime extends DEActor {
     /** If one or more events have arrived at waitee, then output the
      *  waiting time for each prior event arrival at waiter since the
      *  last arrival of waitee.
-     *  @exception CloneNotSupportedException If the output has multiple
-     *   destinations and the token does not support cloning.
      *  @exception IllegalActionException If get or broadcast throws it.
      */
     public void fire() throws IllegalActionException {
@@ -106,6 +104,19 @@ public class DEWaitingTime extends DEActor {
             _waiting.removeAllElements();
         }
     }
+
+    /** Do nothing.  Derived classes override this method to define their
+     *  initialization code, which gets executed exactly once prior to
+     *  any other action methods. This method typically initializes
+     *  internal members of an actor and produces initial output data.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _waiting.removeAllElements();
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

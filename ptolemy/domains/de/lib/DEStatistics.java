@@ -88,7 +88,6 @@ public class DEStatistics extends DEActor {
      *  the "gate" input; if there's no event in the input port, but only
      *  in the "gate" input, pass event when the gate reopens.
      *
-     * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{
@@ -143,9 +142,8 @@ public class DEStatistics extends DEActor {
         return _sum2 / _num - (_sum / _num)*(_sum / _num);
     }
 
-    /** 
+    /** Intialize the object fields.
      *
-     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Thrown if could not create the 
      *   receivers.
      */

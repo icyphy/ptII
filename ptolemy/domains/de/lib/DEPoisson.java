@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,8 +65,8 @@ public class DEPoisson extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new IOPort(this, "output", false, true);
-        _lambda = lambda;
-        _value = value;
+        _lambda = new Parameter(this, "lambda", new DoubleToken(lambda));
+        _value = new Parameter(this, "value", new DoubleToken(value));
     }
 
 
@@ -87,17 +88,17 @@ public class DEPoisson extends DEActor {
 
     /** Produce an output event at the current time, and then schedule
      *  a firing in the future.
-     *  @exception CloneNotSupportedException If there is more than one
-     *   destination and the output token cannot be cloned.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        
+
+        double lambda = ((DoubleToken)_lambda.getToken()).doubleValue();
+
 	// send a token via the output port.
-	output.broadcast(new DoubleToken(_value));
+	output.broadcast(_value.getToken());
 
         // compute an exponential random variable.
-        double exp = -Math.log((1-Math.random()))*_lambda;
+        double exp = -Math.log((1-Math.random()))*lambda;
 	refireAtTime(exp);
     }
 
@@ -110,8 +111,8 @@ public class DEPoisson extends DEActor {
     ////                         private variables                 ////
 
     // the mean inter-arrival time and value
-    private double _lambda = 1.0;
-    private double _value = 1.0;
+    private Parameter _lambda;
+    private Parameter _value;
 }
 
 

@@ -78,7 +78,6 @@ public class TestLevel extends AtomicActor {
 
     /** Produce the next event at _interval unit-time aparts.
      *
-     * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException{

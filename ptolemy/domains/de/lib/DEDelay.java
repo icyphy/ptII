@@ -77,8 +77,6 @@ public class DEDelay extends DEActor {
     ////                         public methods                    ////
 
     /** Transfer the input tokens to the outputs with the specified delay.
-     *  @exception CloneNotSupportedException If the output has multiple
-     *   destinations and the token does not support cloning.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {

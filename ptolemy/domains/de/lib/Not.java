@@ -70,7 +70,6 @@ public class Not extends AtomicActor {
 
     /** Produce an output token that is logical negation of the input.
      *  FIXME: Fix the following exception tags.
-     *  @exception CloneNotSupportedException Error when cloning event.
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void fire() throws IllegalActionException {

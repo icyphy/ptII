@@ -74,7 +74,6 @@ public class DEClock extends DEActor {
      *  the first output at time zero.
      *
      *  FIXME: What to do if the initial current event is less than zero ?
-     *  @exception CloneNotSupportedException If the base class throws it.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize()
@@ -91,8 +90,6 @@ public class DEClock extends DEActor {
 
     /** Produce an output event at the current time, and then schedule
      *  a firing in the future.
-     *  @exception CloneNotSupportedException If there is more than one
-     *   destination and the output token cannot be cloned.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire()
