@@ -236,6 +236,7 @@ public class MessageHandler {
      *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
+     *  @param throwable The Throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
     protected void _warning(String info, Throwable throwable)
@@ -246,6 +247,7 @@ public class MessageHandler {
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.  In this base class, this prints the question on standard
      *  output and looks for the reply on standard input.
+     *  @param question The yes/no question to be asked.
      *  @return True if the answer is yes.
      */
     protected boolean _yesNoQuestion(String question) {
