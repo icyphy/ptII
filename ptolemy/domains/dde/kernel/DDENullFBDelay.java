@@ -128,18 +128,25 @@ public class DDENullFBDelay extends DDEActor {
      *  sending the output token or setting the current time.
      */
     public void fire() throws IllegalActionException {
-	System.out.println("fire() of DDENullFBDelay");
+	// System.out.println("fire() of DDENullFBDelay");
 	Token token = _getNextInput();
-	System.out.println("fire() of DDENullFBDelay - _getNextInput()");
+	/*
+	System.out.println("fire() of DDENullFBDelay - _getNextInput()."
+		+ "  current time = " + getCurrentTime());
+	*/
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper keeper = ((DDEThread)thread).getTimeKeeper();
             if( token instanceof NullToken ) {
-	        keeper.setCurrentTime(getCurrentTime() + _delay);
+		output.send( 0, token, getCurrentTime() + _delay );
+	        // keeper.setCurrentTime(getCurrentTime() + _delay);
+	    } else {
+		output.send( 0, token );
+		// System.out.println("Real token received in DDENullFBDelay");
 	    } 
 	}
-	output.send( 0, token );
-	System.out.println("end of fire() of DDENullFBDelay");
+	// output.send( 0, token );
+	// System.out.println("end of fire() of DDENullFBDelay");
     }
 
     /**
@@ -149,6 +156,14 @@ public class DDENullFBDelay extends DDEActor {
 	System.out.println("Beginning initialize()");
 	output.send( 0, new Token(), TimedQueueReceiver.IGNORE );
 	System.out.println("Finished initialize()");
+
+	Receiver[][] rcvrs = input.getReceivers();
+	for( int i = 0; i < rcvrs.length; i++ ) {
+	    for( int j = 0; j < rcvrs[i].length; j++ ) {
+		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+		rcvr.hideNullTokens(false);
+	    }
+	}
     }
 
     /** Continue execution of this actor by informing the DDEThread 
@@ -165,7 +180,7 @@ public class DDENullFBDelay extends DDEActor {
     ////                        private variables                  ////
 
     // FIXME: I need to use parameters here.
-    private double _delay = 1.0;
+    private double _delay = 4.0;
 
 }
 
