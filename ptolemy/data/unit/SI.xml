@@ -1,16 +1,74 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<group>
+
+<!--Name of this file:-->
+<property name="SI" class="ptolemy.data.unit.UnitSystem">
+
+<!--Base Units: cm, gram, and second:-->
+  <property name="cm" class="ptolemy.data.unit.BaseUnit" value="1.0">
+  <property name="Length" class="ptolemy.data.unit.UnitCategory"/>
+  </property>
+
+  <property name="gram" class="ptolemy.data.unit.BaseUnit" value="1.0">
+  <property name="Mass" class="ptolemy.data.unit.UnitCategory"/>
+  </property>
+
+  <property name="second" class="ptolemy.data.unit.BaseUnit" value="1.0">
+  <property name="Time" class="ptolemy.data.unit.UnitCategory"/>
+  </property>
+
+    <property name="ampere" class="ptolemy.data.unit.BaseUnit" value="1.0">
+    <property name="electricCurrent" class="ptolemy.data.unit.UnitCategory"/>
+    </property>
+
+  <property name="population" class="ptolemy.data.unit.BaseUnit" value="1.0">
+  <property name="Count" class="ptolemy.data.unit.UnitCategory"/>
+  </property>
 
 
-<!-- References: -->
-<!--  (Look at 330Cory desktop &| at printout) -->
-<!--   Selected item(s) from:                     -->
-<!--     http://xdb.lbl.gov/Section5/Sec_5-1.html -->
-<!--       lightSpeed                             -->
+<!-- Constants -->
+  <property name="pi" class="ptolemy.data.expr.Parameter" value="3.1415926535898"/>
 
+<!--Support of the seven SI base units in terms of the above base units:-->
+  <property name="meter" class="ptolemy.data.expr.Parameter" value="100*cm"/>
+  <property name="kilogram" class="ptolemy.data.expr.Parameter" value="1000*gram"/>
+  <!-------------"second"-- is already defined as one of the base units above.-->
+  <!-------------"ampere"-- requires fractional unit powers in above base units, so define here:-->
+  <!-------------Ampere squared, however, *can* be defined using integer powers of the CGS basis units.-->
+  <property name="squareAmpere" class="ptolemy.data.expr.Parameter" value="0.01*(lightSpeed^2)*cm*gram/(second^2)"/>
+  <property name="kelvin" class="ptolemy.data.expr.Parameter" value="1.38065E-23*kilogram*(meter^2)/(second^2)"/>
+  <property name="mole" class="ptolemy.data.expr.Parameter" value="6.022142E+23"/>
+  <property name="candela" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/683"/>
 
+<!--Electricity related units in given terms of the Ampere:-->
+  <property name="volt" class="ptolemy.data.expr.Parameter" value="kilogram*(meter^2)/(second^3)/ampere"/>
+  <property name="ohm" class="ptolemy.data.expr.Parameter" value="volt/ampere"/>
+  <property name="mho" class="ptolemy.data.expr.Parameter" value="ampere/volt"/>
+  <property name="coulomb" class="ptolemy.data.expr.Parameter" value="ampere*second"/>
+  <property name="esu" class="ptolemy.data.expr.Parameter" value="coulomb/(299792458.0*10)"/>
+  <property name="statvolt" class="ptolemy.data.expr.Parameter" value="299.792458*volt"/>
+  <property name="gauss" class="ptolemy.data.expr.Parameter" value="statvolt/(meter/100)"/>
+  <property name="electronCharge" class="ptolemy.data.expr.Parameter" value="1.6021765E-19*coulomb"/>
+  <property name="farad" class="ptolemy.data.expr.Parameter" value="ampere*second/volt"/>
+  <property name="henry" class="ptolemy.data.expr.Parameter" value="volt*second/ampere"/>
+  <property name="watt" class="ptolemy.data.expr.Parameter" value="volt*ampere"/>
+
+<!--The physical constants h, hBar, and c:-->
+  <property name="planckConstant" class="ptolemy.data.expr.Parameter" value="hBar*2*pi"/>
+  <property name="planckConstantReduced" class="ptolemy.data.expr.Parameter" value="1.0545716E-34*joule*second"/>
+  <property name="hBar" class="ptolemy.data.expr.Parameter" value="planckConstantReduced"/>
+  <property name="lightSpeed" class="ptolemy.data.expr.Parameter" value="299792458.0*meter/second"/>
+<!-- The meter is defined as the length of the path traveled by light in vacuum during a time interval of 1/299792458 of a second. -->
+
+<!--Some more derived units:-->
+  <property name="dyne" class="ptolemy.data.expr.Parameter" value="gram*cm/second^2"/>
+  <property name="newton" class="ptolemy.data.expr.Parameter" value="kilogram*meter/second^2"/>
+  <property name="joule" class="ptolemy.data.expr.Parameter" value="newton*meter"/>
+  <property name="erg" class="ptolemy.data.expr.Parameter" value="dyne*cm"/>
+  <property name="degree" class="ptolemy.data.expr.Parameter" value="calorie/gram"/>
+
+<!--------------------- Unit Conversions---------------->
 <!-- TIME -->
 <property name="minute" class="ptolemy.data.expr.Parameter" value="60*second"/>
 <property name="hour" class="ptolemy.data.expr.Parameter" value="3600*second"/>
@@ -99,13 +157,29 @@
 <property name="centistoke" class="ptolemy.data.expr.Parameter" value="1E-6*meter^2/second"/>
 <property name="stoke" class="ptolemy.data.expr.Parameter" value="1E-4*meter^2/second"/>
 
+<!--------------------- Unit Aliases---------------->
+<property name="kg" class="ptolemy.data.expr.Parameter" value="kilogram"/>
+<property name="amp" class="ptolemy.data.expr.Parameter" value="ampere"/>
+<property name="sec" class="ptolemy.data.expr.Parameter" value="second"/>
 
+<property name="gallons" class="ptolemy.data.expr.Parameter" value="gallon"/> <!--Liquid-->
+<property name="watts" class="ptolemy.data.expr.Parameter" value="watt"/>
+<property name="calories" class="ptolemy.data.expr.Parameter" value="calorie"/>
+<property name="seconds" class="ptolemy.data.expr.Parameter" value="second"/>
+<property name="secs" class="ptolemy.data.expr.Parameter" value="second"/>
+<property name="time" class="ptolemy.data.expr.Parameter" value="second"/>
+<property name="degrees" class="ptolemy.data.expr.Parameter" value="degree"/>
 
-  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-    <configure>
-      <svg>
-        <rect x="-30" y="-15" width="60" height="30" style="fill:grey"/>
-      </svg>
-    </configure>
-  </property>
-</group>
+<property name="kg" class="ptolemy.data.expr.Parameter" value="kilogram"/>
+<property name="amp" class="ptolemy.data.expr.Parameter" value="ampere"/>
+<property name="sec" class="ptolemy.data.expr.Parameter" value="second"/>
+
+<property name="gallons" class="ptolemy.data.expr.Parameter" value="gallon"/> <!--Liquid-->
+<property name="watts" class="ptolemy.data.expr.Parameter" value="watt"/>
+<property name="calories" class="ptolemy.data.expr.Parameter" value="calorie"/>
+<property name="seconds" class="ptolemy.data.expr.Parameter" value="second"/>
+<property name="secs" class="ptolemy.data.expr.Parameter" value="second"/>
+<property name="time" class="ptolemy.data.expr.Parameter" value="second"/>
+<property name="degrees" class="ptolemy.data.expr.Parameter" value="degree"/>
+
+</property>

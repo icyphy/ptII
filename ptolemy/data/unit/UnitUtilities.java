@@ -101,9 +101,9 @@ public class UnitUtilities {
             if (isUnitless(units)) {
                 return "";
             }
-            
+
             System.out.println(summarizeUnitCategories());
-            
+
             String positiveUnits = "";
             String negativeUnits = "";
             boolean justOnePositive = true;
@@ -134,17 +134,17 @@ public class UnitUtilities {
                     }
                 }
             }
-            
+
             if (positiveUnits.equals("") && negativeUnits.equals("")) {
                 return "";
             }
-            
+
             if (positiveUnits.equals("")) {
                 positiveUnits = "1";
             } else if (!justOnePositive) {
                 positiveUnits = "(" + positiveUnits + ")";
             }
-            
+
             if (negativeUnits.equals("")) {
                 return positiveUnits;
             } else if (justOneNegative) {
@@ -161,7 +161,7 @@ public class UnitUtilities {
      *  exponents of this token.
      */
     public static int[] copyUnitsArray(int[] units) {
-        
+
         if (isUnitless(units)) {
             return null;
         }
