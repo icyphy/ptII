@@ -123,7 +123,7 @@ public abstract class MatrixToken extends Token {
      *  whose dimension is the same as the number of columns of
      *  the matrix contained in this token.
      *  The implementation in this base class just throws an
-     *  exception. This method should be overriden in the subclass
+     *  exception. This method should be overridden in the subclass
      *  when the right multiplicative identity exists.
      *  @return A new Token containing the right multiplicative identity.
      *  @exception IllegalActionException If this method is not
