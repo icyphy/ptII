@@ -8,19 +8,73 @@
 <body>
 <h1>Ptolemy II Frequently Asked Questions</h1>
 <menu>
-<li> <a href="#ptolemy0_x">Ptolemy 0.x Compatibility?</a>
+
+<li> <a href="#General Questions"><B>1. General</B></a>
+	<menu>
+	<li> <a href="#ptolemy II description"><B>1.1 What is Ptolemy II?</B></a>
+	<li> <a href="#ptolemy classic"><B>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</B></a>
+
+
+	<LI> <A HREF="#ptolemy II copyright"><B>1.3 What is the copyright?</B></A>
+	<LI> <A HREF="#mailing list"><B>1.4 Is there a mailing list?</B></A>
+	</menu>
+
+<LI> <A HREF="#ptolemy II faq: installation"><B>2. Installation questions</B></A>
+	<MENU>
+	<LI> <A HREF="#downloading Ptolemy II"><B>2.1 How do I download
+	Ptolemy II?</B></A>
+
+	<LI> <A HREF="#platforms that Ptolemy II runs under"><B>2.2 What
+	platforms does Ptolemy II run under?</B></A>
+
+	<LI> <A HREF="#ptolemy II installation, what do I need"><B>2.3 What do I need to Install Ptolemy II?</B></A>
+	<MENU>
+
 </menu>
+
+<h2><a name="General Questions"><B>1. General</B></a></h2>
 
 <dl>
 
-<dt> <a name="ptolemy0_x">Ptolemy 0.x Compatibility?</a>
+<dt> <a name="#ptolemy II description"><B>1.1 What is Ptolemy II?</B></a>
+<dd> 
+<p>
+Ptolemy II is a software framework developed as part of the Ptolemy project.
+It is a Java-based component assembly framework with a graphical
+user interface called Vergil.  Vergil itself is a component assembly
+defined in Ptolemy II.
+</p>
+<p>
+The Ptolemy project studies modeling, simulation, and design of
+concurrent, real-time, embedded systems. The focus is on assembly of
+concurrent components. The key underlying principle in the project is
+the use of well-defined <i>models of computation</i> that govern the
+interactions between components. A major problem area being addressed is
+the use of heterogeneous mixtures of models of computation.
+</p>
+<p>
+The <a href="http://ptolemy.eecs.berkeley.edu/index.html" target="_top">Ptolemy Project web page</a>
+contains much more information about the
+project. The work is conducted in the
+<a href="http://www.eecs.berkeley.edu/" target="_top">Department of Electrical Engineering and Computer Sciences</a>
+of the
+<a href="http://www.berkeley.edu/" target="_top">University of California at Berkeley</a>.
+The project is directed by
+<a href="http://ptolemy.eecs.berkeley.edu/~eal/index.html" target="_top">Prof. Edward Lee</a>.
+The project is named after
+<a href="http://ptolemy.eecs.berkeley.edu/people/ptolemy.htm" target="_top">Claudius Ptolemaeus</a>,
+the second century Greek astronomer, mathematician, and geographer.
+</p>
+</dl>
+
+
+
+<dt> <a name="#ptolemy classic"><B>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</B></a>
 <dd>
 Ptolemy II and Ptolemy 0.x are two very different software systems.
 
 Ptolemy 0.x is fairly mature software in that the design is stable and
-mostly unchanging. The Ptolemy II software system is still in the
-early stages of its life cycle, so the design is changing.
-
+mostly unchanging. The Ptolemy II software system is under active development.
 
 <menu>
 <li> They are written in different languages (Java vs. C++)
@@ -31,24 +85,90 @@ Ptolemy II uses a system based on XML
 <li> They have different user interfaces.
 </menu>
 
-However, all is not lost for Ptolemy 0.x users. We are considering various compatibility issues:
+<DT> <A NAME="ptolemy II copyright"><B>1.3 What is the copyright?</B></A>
+<DD> Ptolemy II is released under the fairly liberal UC Berkeley copyright,
+
+see 
+<a href="http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptIIcopyright.htm</CODE></a>
+
+Most files have the copyright at the top.
+
+ <p>Ptplot is free for academic and commercial use.  You an incorporate it
+into products, but you need to include follow the instructions in the
+copyright notice.
+
+ <p>This copyright is based on the Tcl copyright that was used when
+Prof. Ousterhout was developing Tcl here at UC Berkeley.  This
+copyright was also used in Ptolemy Classic, which has been used in
+commercial products, see
+<a href="http://ptolemy.eecs.berkeley.edu/archive/links.htm"><CODE>http://ptolemy.eecs.berkeley.edu/archive/links.htm</CODE></a>
+
+<DT> <A NAME="mailing list"><B>1.4 Is there a mailing list?</B></A>
+<DD> 
+The Ptolemy mailing lists are run by the Majordomo mailing list 
+server.  This server can automatically subscribe you to mailing
+lists and it can send you monthly archive files for each of the
+lists.  To find out more about our Majordomo sever, send an email
+letter to: majordomo@ptolemy.eecs.berkeley.edu with the word "help"
+in the body of the letter.
+
+<dl>
+<dt> Ptolemy Interest Mailing list
+<dd> This moderated mailing list is for Ptolemy announcements only. Thus,
+you cannot post to this group.  The amount of mail here is kept very
+light (a few messages a year).
+
+ <p>To subscribe to the ptolemy-interest mailing list, send mail to:
+ptolemy-interest-request@ptolemy.eecs.berkeley.edu with the word
+"subscribe" in the body (not the subject) of the letter.
+
+ <p>All mail to ptolemy-interest also goes to ptolemy-hackers, so if you
+subscribe to ptolemy-hackers, there is no need to subscribe to
+ptolemy-interest too.
 
 
-<menu>
+<dt>  Ptolemy Hackers Mailing list
+<dd> This is a discussion list for Ptolemy questions, bug reports, and to
+share Ptolemy additions and applications.  Since this is a discussion
+group, mail volume can sometimes be heavy.  All mail sent to Ptolemy-
+hackers is automatically cross posted to the comp.soft-sys.ptolemy
+newsgroup.
 
-<li> Once the Ptolemy II User Interface is mostly complete, it may be
-possible to modify it so that it can be used with Ptolemy 0.x.
-
-<li> We may develop file translators to help convert icon images and
-design layouts.
-
-<li> It may be possible to develop wrappers that run Ptolemy 0.x
-stars. This would be fairly tricky to do.
-</menu>
-
-
-
+ <p>To subscribe to the ptolemy-hackers mailing list, send mail to:
+ptolemy-hackers-request@ptolemy.eecs.berkeley.edu with the word 
+"subscribe" in the body of the letter.  To leave the newsgroup put
+the word "unsubscribe" in the body of your message.
 </dl>
+
+The best way to get questions answered is to subscribe to ptolemy-hackers
+and then send email to that list.
+
+ <p>Ptolemy is distributed without support or warranty.  However, if you
+really need to contact a human being with a Ptolemy question, you can
+send email to: ptolemy@eecs.berkeley.edu.
+
+<H2><A NAME="ptplot faq: installation"><B>2. Installation questions</B></A></H2>
+<dl>
+<dt> <A NAME="#downloading Ptolemy II"><B>2.1 How do I download	Ptolemy II?</B></A>
+<dd> Ptolemy II is available in several formats including applets, source code, a Windows installer and Web Start. 
+For details, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE></CODE></a>
+
+<dt> <A NAME="#platforms that Ptolemy II runs under"><B>2.2 What platforms does Ptolemy II run under?</B></A>
+<dd> Ptolemy II is written in Java, so it should run on any platform
+that supports a recent Java Virtual machine.  Locally, we use
+Windows 2000 with the Cygwin toolkit for development.  The nightly
+builds run under Solaris 8.  Some people in the group use Linux.
+
+<dl>
+<dt> <A NAME="#ptolemy II installation, what do I need"><B>2.3 What do I need to Install Ptolemy II?</B></A>
+<dd> At the minimum, you need the Java Runtime Environment.
+For details, see the installation pages at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><CODE></CODE></a>
+</dl>
+
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
