@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1999-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,22 +30,18 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
-
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare test [info procs createAndExecute]] == 1} then {
+    source [file join $PTII util testsuite auto.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
 proc _initialize {toplevel} {
     [$toplevel getManager] initialize
 #   [$toplevel getManager] wrapup
