@@ -437,8 +437,8 @@ public class Complex implements Cloneable, Serializable {
      */
     public final Complex[] roots(int n) {
         if (n < 1) {
-           throw new IllegalArgumentException("Complex.roots() : n must be greater " +
-            "than or equal to one.");
+            throw new IllegalArgumentException("Complex.roots() : n must be greater " +
+                    "than or equal to one.");
         }
 
         Complex[] retval = new Complex[n];

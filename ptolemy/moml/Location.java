@@ -120,15 +120,15 @@ public class Location extends Attribute implements Locatable, Settable {
         }
 
         output.write(_getIndentPrefix(depth)
-               + "<"
-               + getMoMLInfo().elementName
-               + " name=\""
-               + name
-               + "\" class=\""
-               + getMoMLInfo().className
-               + "\""
-               + valueTerm
-               + ">\n");
+                + "<"
+                + getMoMLInfo().elementName
+                + " name=\""
+                + name
+                + "\" class=\""
+                + getMoMLInfo().className
+                + "\""
+                + valueTerm
+                + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");

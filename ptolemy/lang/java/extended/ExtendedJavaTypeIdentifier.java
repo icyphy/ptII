@@ -48,7 +48,7 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
 
     public boolean isClassKind(int kind) {
         return (((kind >= TYPE_KIND_COMPLEX) &&
-                 (kind <= TYPE_KIND_FIX_POINT_MATRIX)) ||
+                (kind <= TYPE_KIND_FIX_POINT_MATRIX)) ||
                 super.isClassKind(kind));
     }
 
@@ -57,26 +57,26 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
      */
     public int kind(TypeNode type) {
 
-       if (type.classID() == ARRAYTYPENODE_ID) {
-          int arrayDim = TypeUtility.arrayDimension(type);
+        if (type.classID() == ARRAYTYPENODE_ID) {
+            int arrayDim = TypeUtility.arrayDimension(type);
 
-          if (arrayDim == 2) {
-             TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
+            if (arrayDim == 2) {
+                TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
 
-             switch (kind(baseTypeNode)) {
-               case TYPE_KIND_BOOLEAN:   return TYPE_KIND_BOOLEAN_MATRIX;
-               case TYPE_KIND_INT:       return TYPE_KIND_INT_MATRIX;
-               case TYPE_KIND_LONG:      return TYPE_KIND_LONG_MATRIX;
-               case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_MATRIX;
-               case TYPE_KIND_COMPLEX:   return TYPE_KIND_COMPLEX_MATRIX;
-               case TYPE_KIND_FIX_POINT: return TYPE_KIND_FIX_POINT_MATRIX;
+                switch (kind(baseTypeNode)) {
+                case TYPE_KIND_BOOLEAN:   return TYPE_KIND_BOOLEAN_MATRIX;
+                case TYPE_KIND_INT:       return TYPE_KIND_INT_MATRIX;
+                case TYPE_KIND_LONG:      return TYPE_KIND_LONG_MATRIX;
+                case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_MATRIX;
+                case TYPE_KIND_COMPLEX:   return TYPE_KIND_COMPLEX_MATRIX;
+                case TYPE_KIND_FIX_POINT: return TYPE_KIND_FIX_POINT_MATRIX;
 
-               // no default here
-             }
-          }
-       }
+                    // no default here
+                }
+            }
+        }
 
-       return super.kind(type);
+        return super.kind(type);
     }
 
     /** Return an integer representing the user type that has the specified ClassDecl,
@@ -85,22 +85,22 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
      */
     public int kindOfClassDecl(ClassDecl classDecl) {
         if (classDecl == PtolemyTypeIdentifier.COMPLEX_DECL) {
-           return TYPE_KIND_COMPLEX;
+            return TYPE_KIND_COMPLEX;
         } else if (classDecl == PtolemyTypeIdentifier.FIX_POINT_DECL) {
-           return TYPE_KIND_FIX_POINT;
+            return TYPE_KIND_FIX_POINT;
         } else if (classDecl == StaticResolution.STRING_DECL) {
-           return TYPE_KIND_STRING;
+            return TYPE_KIND_STRING;
         } else if (classDecl == TOKEN_DECL) {
-           return TYPE_KIND_TOKEN;
+            return TYPE_KIND_TOKEN;
         } else {
-           return super.kindOfClassDecl(classDecl);
+            return super.kindOfClassDecl(classDecl);
         }
     }
 
     // Ptolemy math kinds
 
     public static final int TYPE_KIND_COMPLEX
-     = PtolemyTypeIdentifier.TYPE_KIND_COMPLEX;
+    = PtolemyTypeIdentifier.TYPE_KIND_COMPLEX;
     public static final int TYPE_KIND_FIX_POINT = TYPE_KIND_COMPLEX + 1;
 
     // String kind
@@ -112,33 +112,33 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     // matrix kinds
 
     public static final int TYPE_KIND_BOOLEAN_MATRIX =
-     TYPE_KIND_TOKEN + 1;
+    TYPE_KIND_TOKEN + 1;
     public static final int TYPE_KIND_INT_MATRIX =
-     TYPE_KIND_BOOLEAN_MATRIX + 1;
+    TYPE_KIND_BOOLEAN_MATRIX + 1;
     public static final int TYPE_KIND_LONG_MATRIX =
-     TYPE_KIND_INT_MATRIX + 1;
+    TYPE_KIND_INT_MATRIX + 1;
     public static final int TYPE_KIND_DOUBLE_MATRIX =
-     TYPE_KIND_LONG_MATRIX + 1;
+    TYPE_KIND_LONG_MATRIX + 1;
     public static final int TYPE_KIND_COMPLEX_MATRIX =
-     TYPE_KIND_DOUBLE_MATRIX + 1;
+    TYPE_KIND_DOUBLE_MATRIX + 1;
     public static final int TYPE_KIND_FIX_POINT_MATRIX =
-     TYPE_KIND_COMPLEX_MATRIX + 1;
+    TYPE_KIND_COMPLEX_MATRIX + 1;
 
     // Token type (not currently used)
     public static final ClassDecl TOKEN_DECL =
-     PtolemyTypeIdentifier.TOKEN_DECL;
+    PtolemyTypeIdentifier.TOKEN_DECL;
     public static final TypeNameNode TOKEN_TYPE =
-     PtolemyTypeIdentifier.TOKEN_TYPE;
+    PtolemyTypeIdentifier.TOKEN_TYPE;
 
     // Ptolemy math types
 
     public static final ClassDecl COMPLEX_DECL =
-     PtolemyTypeIdentifier.COMPLEX_DECL;
+    PtolemyTypeIdentifier.COMPLEX_DECL;
     public static final TypeNameNode COMPLEX_TYPE =
-     PtolemyTypeIdentifier.COMPLEX_TYPE;
+    PtolemyTypeIdentifier.COMPLEX_TYPE;
 
     public static final ClassDecl FIX_POINT_DECL =
-     PtolemyTypeIdentifier.FIX_POINT_DECL;
+    PtolemyTypeIdentifier.FIX_POINT_DECL;
     public static final TypeNameNode FIX_POINT_TYPE =
-     PtolemyTypeIdentifier.FIX_POINT_TYPE;
+    PtolemyTypeIdentifier.FIX_POINT_TYPE;
 }

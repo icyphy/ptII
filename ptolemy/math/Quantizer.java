@@ -215,7 +215,7 @@ public class Quantizer {
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
-             case 1: //ZERO_SATURATE:
+            case 1: //ZERO_SATURATE:
                 result = new FixPoint(newprecision, BigInteger.ZERO);
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
@@ -294,17 +294,17 @@ public class Quantizer {
 
         if ( x.signum() >= 0 ) {
             // calculate epsilon
-        // This division divides two number in a precision of 40
-        // decimal behind the point. This is equvalent with a
-        // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
+            // This division divides two number in a precision of 40
+            // decimal behind the point. This is equvalent with a
+            // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
             epsilon = _one.divide(_getTwoRaisedTo(number+5),
                     40, BigDecimal.ROUND_HALF_EVEN);
             multiplier = x.add( epsilon );
         } else {
             // calculate epsilon
-        // This division divides two number in a precision of 40
-        // decimal behind the point. This is equvalent with a
-        // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
+            // This division divides two number in a precision of 40
+            // decimal behind the point. This is equvalent with a
+            // fractional precision of 128 bits. ( ln(1-^40)/ln(2) > 128)
             tmp = _one.divide(_two, 40, BigDecimal.ROUND_HALF_EVEN);
             epsilon = tmp.subtract( _one.divide(_getTwoRaisedTo(number+11),
                     40, BigDecimal.ROUND_HALF_EVEN));
@@ -375,7 +375,7 @@ public class Quantizer {
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
-             case 1: //ZERO_SATURATE:
+            case 1: //ZERO_SATURATE:
                 result = new FixPoint(newprecision, BigInteger.ZERO);
                 result.setError(FixPoint.OVERFLOW);
                 //return result;

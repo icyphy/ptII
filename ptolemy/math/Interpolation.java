@@ -108,7 +108,7 @@ public class Interpolation {
         for (int i = 0; i < indexes.length; i++) {
             if (indexes[i] <= prev ) {
                 throw new IllegalArgumentException("Interpolation.setIndexes" +
-		    " index array is not increasing and non-negative.");
+                        " index array is not increasing and non-negative.");
             }
             prev = indexes[i];
         }
@@ -123,7 +123,7 @@ public class Interpolation {
     public void setPeriod(int period) {
 	if (period < 0) {
 	    throw new IllegalArgumentException("Interpolation.setPeriod: " +
-		"The period is negative.");
+                    "The period is negative.");
 	}
 	_period = period;
     }
@@ -135,7 +135,7 @@ public class Interpolation {
     public void setOrder(int order) {
 	if (order != 0 && order != 1 && order != 3) {
 	    throw new IllegalArgumentException("Interpolation.setOrder: " +
-		"The order " + order + " is not valid.");
+                    "The order " + order + " is not valid.");
 	}
 	_order = order;
     }
@@ -158,13 +158,13 @@ public class Interpolation {
 	int numRefPoints = _indexes.length;
 	if (numRefPoints != _values.length) {
 	    throw new IllegalStateException("Interpolation.interpolate " +
-		"The index and value arrays do not have the same length.");
+                    "The index and value arrays do not have the same length.");
 	}
 
 	int largestIndex = _indexes[numRefPoints-1];
 	if (_period != 0 && _period <= largestIndex) {
 	    throw new IllegalStateException("Interpolation.interpolate " +
-		"The period is not 0 and not greater than the largest index.");
+                    "The period is not 0 and not greater than the largest index.");
 	}
 
 	if (index < 0 || index > largestIndex) {
@@ -293,8 +293,8 @@ public class Interpolation {
     // reference point, the index/value/tangent of the ending reference
     // point.
     private double _hermite(int index,
-			   int iStart, double vStart, double tanStart,
-			   int iEnd, double vEnd, double tanEnd) {
+            int iStart, double vStart, double tanStart,
+            int iEnd, double vEnd, double tanEnd) {
 	// forming the Hermite matrix M
 	double[][] M = new double[4][4];
 	double iStartSqr = iStart * iStart;
@@ -335,7 +335,7 @@ public class Interpolation {
 	// compute the interpolated value
 	double indexSqr = index*index;
 	return coef[0]*indexSqr*index + coef[1]*indexSqr
-		+ coef[2]*index + coef[3];
+            + coef[2]*index + coef[3];
     }
 
     ///////////////////////////////////////////////////////////////////

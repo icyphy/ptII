@@ -79,9 +79,9 @@ public class ImportAttribute extends Attribute {
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         String moml = "<import source=\""
-                    + _source
-                    + "\"/>";
-        output.write(_getIndentPrefix(depth) + moml + "\n");
+            + _source
+            + "\"/>";
+            output.write(_getIndentPrefix(depth) + moml + "\n");
     }
 
     ///////////////////////////////////////////////////////////////////

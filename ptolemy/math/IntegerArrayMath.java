@@ -79,7 +79,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] add(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.add");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -93,7 +93,7 @@ public class IntegerArrayMath {
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
     public static final int[] append(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -113,8 +113,8 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] append(final int[] array1,
-     final int idx1, final int length1, final int[] array2, final int idx2,
-     final int length2) {
+            final int idx1, final int length1, final int[] array2, final int idx2,
+            final int length2) {
         int[] retval = new int[length1 + length2];
 
         if (length1 > 0) {
@@ -135,7 +135,7 @@ public class IntegerArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final int[] applyBinaryOperation(
-     IntegerBinaryOperation op, final int[] array, final int z) {
+            IntegerBinaryOperation op, final int[] array, final int z) {
         int length = array.length;
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -151,7 +151,7 @@ public class IntegerArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final int[] applyBinaryOperation(
-     IntegerBinaryOperation op, final int z, final int[] array) {
+            IntegerBinaryOperation op, final int z, final int[] array) {
         int length = array.length;
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -170,9 +170,9 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] applyBinaryOperation(
-     IntegerBinaryOperation op, final int[] array1, final int[] array2) {
+            IntegerBinaryOperation op, final int[] array1, final int[] array2) {
         int length = _commonLength(array1, array2,
-         "IntegerArrayMath.applyBinaryOperation");
+                "IntegerArrayMath.applyBinaryOperation");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
             retval[i] = op.operate(array1[i], array2[i]);
@@ -186,7 +186,7 @@ public class IntegerArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final int[] applyUnaryOperation(
-     final IntegerUnaryOperation op, final int[] array) {
+            final IntegerUnaryOperation op, final int[] array) {
         int length = array.length;
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -215,7 +215,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] bitwiseAnd(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseAnd");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -257,7 +257,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] bitwiseOr(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseOr");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -286,7 +286,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] bitwiseXor(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.bitwiseXor");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -321,7 +321,7 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] divide(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.divide");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -336,9 +336,9 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int dotProduct(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2,
-                                   "IntegerArrayMath.dotProduct");
+                "IntegerArrayMath.dotProduct");
 
         int sum = 0;
 
@@ -365,17 +365,17 @@ public class IntegerArrayMath {
      *  @return A new array with values in the range [bottom, top].
      */
     public static final int[] limit(final int[] array,
-     final int bottom, final int top) {
+            final int bottom, final int top) {
         int[] retval = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) ||
 
-                (array[i] == Integer.MAX_VALUE)) {
+                    (array[i] == Integer.MAX_VALUE)) {
 
                 retval[i] = top;
             } else if ((array[i] < bottom) ||
 
-                (array[i] == Integer.MIN_VALUE)) {
+                    (array[i] == Integer.MIN_VALUE)) {
 
                 retval[i] = bottom;
 
@@ -405,7 +405,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final int[] modulo(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.modulo");
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
@@ -435,7 +435,7 @@ public class IntegerArrayMath {
      *  element of the input array (-array[i]).
      */
     public static final int[] negative(final int[] array) {
-            int length = array.length;
+        int length = array.length;
         int[] retval = new int[length];
         for (int i = 0; i < length; i++) {
             retval[i] = -array[i];
@@ -464,11 +464,11 @@ public class IntegerArrayMath {
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
-           throw new IllegalArgumentException("ptolemy.math." +
-            "IntegerArrayMath.padMiddle() : newLength must be >= length of " +
-            "array.");
+            throw new IllegalArgumentException("ptolemy.math." +
+                    "IntegerArrayMath.padMiddle() : newLength must be >= length of " +
+                    "array.");
         } else if (entriesNeeded == 0) {
-           return resize(array, newLength); // allocates a new array
+            return resize(array, newLength); // allocates a new array
         }
 
         double halfLength   = length * 0.5;
@@ -479,7 +479,7 @@ public class IntegerArrayMath {
         System.arraycopy(array, 0, retval, 0, halfLengthCeil);
 
         System.arraycopy(array,  halfLengthFloor, retval,
-         newLength - halfLengthCeil, halfLengthCeil);
+                newLength - halfLengthCeil, halfLengthCeil);
 
 
         return retval;
@@ -494,7 +494,7 @@ public class IntegerArrayMath {
      *  @return A new array of ints of length newLength.
      */
     public static final int[] resize(final int[] array,
-     final int newLength) {
+            final int newLength) {
         return resize(array,  newLength, 0);
     }
 
@@ -515,7 +515,7 @@ public class IntegerArrayMath {
      *  @return A new array of ints of length newLength.
      */
     public static final int[] resize(int[] array,
-     final int newLength, final int startIdx) {
+            final int newLength, final int startIdx) {
 
         int[] retval = new int[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
@@ -560,13 +560,13 @@ public class IntegerArrayMath {
         int[] retval = new int[array.length];
 
         if (shiftAmount >= 0) {
-           for (int i = 0; i < array.length; i++) {
-               retval[i] = array[i] << shiftAmount;
-           }
+            for (int i = 0; i < array.length; i++) {
+                retval[i] = array[i] << shiftAmount;
+            }
         } else if (shiftAmount < 0) {
-           for (int i = 0; i < array.length; i++) {
-               retval[i] = array[i] >>> -shiftAmount;
-           }
+            for (int i = 0; i < array.length; i++) {
+                retval[i] = array[i] >>> -shiftAmount;
+            }
         }
 
         return retval;
@@ -588,13 +588,13 @@ public class IntegerArrayMath {
         int[] retval = new int[array.length];
 
         if (shiftAmount >= 0) {
-           for (int i = 0; i < array.length; i++) {
-               retval[i] = array[i] << shiftAmount;
-           }
+            for (int i = 0; i < array.length; i++) {
+                retval[i] = array[i] << shiftAmount;
+            }
         } else if (shiftAmount < 0) {
-           for (int i = 0; i < array.length; i++) {
-               retval[i] = array[i] >> -shiftAmount;
-           }
+            for (int i = 0; i < array.length; i++) {
+                retval[i] = array[i] >> -shiftAmount;
+            }
         }
 
         return retval;
@@ -607,7 +607,7 @@ public class IntegerArrayMath {
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
     public static final int[] subtract(final int[] array1,
-     final int[] array2) {
+            final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.subtract");
         int[] retval = new int[length];
 
@@ -725,7 +725,7 @@ public class IntegerArrayMath {
      *  IllegalArgumentException.
      */
     public static final boolean within(final int[] array1,
-     final int[] array2, int maxError) {
+            final int[] array2, int maxError) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.within");
 
         for (int i = 0; i < length; i++) {
@@ -773,7 +773,7 @@ public class IntegerArrayMath {
      *  @return The common length of both arrays.
      */
     public static final int _commonLength(final int[] array1,
-     final int[] array2,
+            final int[] array2,
             String methodName) {
         if (array1 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName +

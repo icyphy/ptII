@@ -65,10 +65,10 @@ public class Sines {
 	// Construct a sound playback object that plays audio
 	//through the computer's speaker.
 	SoundPlayback soundPlayback = new SoundPlayback(sampleRate,
-					  sampleSizeInBits,
-					  channels,
-					  outBufferSize,
-					  putSamplesSize);
+                sampleSizeInBits,
+                channels,
+                outBufferSize,
+                putSamplesSize);
 
 	// Initialize and begin real-time capture and playback.
 	try{
@@ -104,7 +104,7 @@ public class Sines {
 
 		// Play the processed audio samples.
 		soundPlayback.putSamples(samplesArray);
-		}
+            }
 	} catch (Exception ex) {
 	    System.err.println(ex);
 	}

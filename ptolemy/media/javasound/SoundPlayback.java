@@ -252,7 +252,7 @@ public class SoundPlayback {
      *  or if stopPlayback() has already been called.
      */
     public void putSamples(double[][] putSamplesArray) throws IOException,
-                                   IllegalStateException {
+            IllegalStateException {
 	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
@@ -260,8 +260,8 @@ public class SoundPlayback {
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _doubleArrayToByteArray(putSamplesArray,
-						_bytesPerSample,
-						_channels);
+                        _bytesPerSample,
+                        _channels);
 
 		// Note: _data is a byte array containing data to
 		// be written to the output device.
@@ -275,8 +275,8 @@ public class SoundPlayback {
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _doubleArrayToByteArray(putSamplesArray,
-						_bytesPerSample,
-						_channels);
+                        _bytesPerSample,
+                        _channels);
 		// Add new audio data to the file buffer array.
 		for (int i = 0; i < _data.length; i++) {
 		    _toFileBuffer.add(new Byte(_data[i]));
@@ -286,9 +286,9 @@ public class SoundPlayback {
 	    }
 	} else {
 	    throw new IllegalStateException("SoundPlayback: " +
-	    "putSamples() was called while audio playback was" +
-	    " inactive (startPlayback() was never called or " +
-            "stopPlayback has already been called).");
+                    "putSamples() was called while audio playback was" +
+                    " inactive (startPlayback() was never called or " +
+                    "stopPlayback has already been called).");
 	}
     }
 
@@ -332,7 +332,7 @@ public class SoundPlayback {
      *  or if stopPlayback() has already been called.
      */
     public void putSamplesInt(int[][] putSamplesArray) throws IOException,
-                                   IllegalStateException {
+            IllegalStateException {
 	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
@@ -340,8 +340,8 @@ public class SoundPlayback {
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _intArrayToByteArray(putSamplesArray,
-						_bytesPerSample,
-						_channels);
+                        _bytesPerSample,
+                        _channels);
 
 		// Note: _data is a byte array containing data to
 		// be written to the output device.
@@ -355,8 +355,8 @@ public class SoundPlayback {
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _intArrayToByteArray(putSamplesArray,
-						_bytesPerSample,
-						_channels);
+                        _bytesPerSample,
+                        _channels);
 		// Add new audio data to the file buffer array.
 		for (int i = 0; i < _data.length; i++) {
 		    _toFileBuffer.add(new Byte(_data[i]));
@@ -366,9 +366,9 @@ public class SoundPlayback {
 	    }
 	} else {
 	    throw new IllegalStateException("SoundPlayback: " +
-	    "putSamples() was called while audio playback was" +
-	    " inactive (startPlayback() was never called or " +
-            "stopPlayback has already been called).");
+                    "putSamples() was called while audio playback was" +
+                    " inactive (startPlayback() was never called or " +
+                    "stopPlayback has already been called).");
 	}
     }
 
@@ -386,7 +386,7 @@ public class SoundPlayback {
      *  more than once between invocations of stopCapture().
      */
     public void startPlayback() throws IOException,
-                               IllegalStateException {
+            IllegalStateException {
 	//System.out.println("SoundPlayback: startPlayback(): invoked");
 	if (_isAudioPlaybackActive == false) {
 	    if (_playbackMode == "speaker") {
@@ -397,16 +397,16 @@ public class SoundPlayback {
 		_startPlaybackToFile();
 	    } else  {
 		throw new IOException("SoundPlayback: " +
-                "startPlayback(): unknown playback mode: " +
-                _playbackMode);
+                        "startPlayback(): unknown playback mode: " +
+                        _playbackMode);
 	    }
 	    _bytesPerSample = _sampleSizeInBits/8;
 	    _isAudioPlaybackActive = true;
 	} else {
 	    throw new IllegalStateException("SoundPlayback: " +
-	    "startPlayback() was called while audio playback was" +
-	    " already active (startPlayback() was called " +
-            "more than once between invocations of stopPlayback()).");
+                    "startPlayback() was called while audio playback was" +
+                    " already active (startPlayback() was called " +
+                    "more than once between invocations of stopPlayback()).");
 	}
     }
 
@@ -481,7 +481,7 @@ public class SoundPlayback {
 
 	} catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
-                        "real-time audio playback: " + ex);
+                    "real-time audio playback: " + ex);
 	}
 
 	// Array of audio samples in byte format.
@@ -535,8 +535,8 @@ public class SoundPlayback {
 	    // Do error checking:
 	    if (st.countTokens() != 2) {
 		throw new  IOException("Error: Incorrect " +
-					    "file name format. " +
-					    "Format: filename.extension");
+                        "file name format. " +
+                        "Format: filename.extension");
 	    }
 	    st.nextToken(); // Advance to the file extension.
 
@@ -621,10 +621,10 @@ public class SoundPlayback {
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		// Perform clipping, if necessary.
 		if (doubleArray[currChannel][currSamp] >=
-		    maxDoubleValuedSample) {
+                        maxDoubleValuedSample) {
 		    l = (int)maxSample - 2;
 		} else if (doubleArray[currChannel][currSamp] <=
-			   -maxDoubleValuedSample) {
+                        -maxDoubleValuedSample) {
 		    l = (int)(-maxSample) + 2;
 		} else {
 		    // signed integer representation of current sample of the

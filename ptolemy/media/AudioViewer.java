@@ -68,7 +68,7 @@ public class AudioViewer extends PlotApplication {
         super(args);
         JMenuItem play = new JMenuItem("Play", KeyEvent.VK_P);
         play.setAccelerator(
-            KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
         play.setActionCommand("Play");
         PlayListener playlistener = new PlayListener();
         play.addActionListener(playlistener);
@@ -183,9 +183,9 @@ public class AudioViewer extends PlotApplication {
                 _sound.write(new DataOutputStream(fout));
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                "Error writing file: " + ex,
-                "AudioViewer error",
-                JOptionPane.ERROR_MESSAGE);
+                        "Error writing file: " + ex,
+                        "AudioViewer error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } else {
             _saveAs();

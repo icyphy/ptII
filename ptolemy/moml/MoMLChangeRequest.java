@@ -178,7 +178,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (_context != null) {
             NamedObj toplevel = _context.toplevel();
             ParserAttribute parserAttribute =
-                    (ParserAttribute)toplevel.getAttribute("_parser");
+                (ParserAttribute)toplevel.getAttribute("_parser");
             if (parserAttribute != null) {
                 _parser = parserAttribute.getParser();
                 _parser.reset();

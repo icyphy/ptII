@@ -39,17 +39,17 @@ package ptolemy.moml;
 */
 public interface ErrorHandler {
 
-     /** Handle an error that occurred while parsing the specified
-      *  text. To prevent the parser from continuing to parse the
-      *  MoML, implementations of this method should throw an exception.
-      *  To prevent the parser from continuing, and also prevent if from
-      *  reporting the error (say, if the error has already been reported),
-      *  then an implementation of this method should throw CancelException.
-      *  @param text The text that caused the error.
-      *  @param exception The exception that was thrown.
-      *  @param parser The MoMLParser where the error occurred
-      */
-     public void handleError(String text, Exception exception,
-             MoMLParser parser) throws Exception;
+    /** Handle an error that occurred while parsing the specified
+     *  text. To prevent the parser from continuing to parse the
+     *  MoML, implementations of this method should throw an exception.
+     *  To prevent the parser from continuing, and also prevent if from
+     *  reporting the error (say, if the error has already been reported),
+     *  then an implementation of this method should throw CancelException.
+     *  @param text The text that caused the error.
+     *  @param exception The exception that was thrown.
+     *  @param parser The MoMLParser where the error occurred
+     */
+    public void handleError(String text, Exception exception,
+            MoMLParser parser) throws Exception;
 }
 

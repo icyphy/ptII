@@ -98,7 +98,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double geometricMean(double[] array) {
         if (array.length < 1) {
-           return 1.0;
+            return 1.0;
         }
 
         return Math.pow(productOfElements(array), 1.0 / array.length);
@@ -133,8 +133,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 1; i < length; i++) {
             if (array[i] > maxElement) {
-               maxElement = array[i];
-               maxIndex = i;
+                maxElement = array[i];
+                maxIndex = i;
             }
         }
         return new Object[] { new Double(maxElement), new Integer(maxIndex) };
@@ -168,8 +168,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 1; i < length; i++) {
             if (array[i] < minElement) {
-               minElement = array[i];
-               minIndex = i;
+                minElement = array[i];
+                minIndex = i;
             }
         }
         return new Object[] { new Double(minElement), new Integer(minIndex) };

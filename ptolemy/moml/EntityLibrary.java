@@ -144,7 +144,7 @@ The following, by contrast, is OK:
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
 
 public class EntityLibrary
-        extends CompositeEntity implements Configurable {
+    extends CompositeEntity implements Configurable {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -421,7 +421,7 @@ public class EntityLibrary
                     String trimmed = _text.trim();
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
-                                .trim();
+                            .trim();
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();
                             _parser.parse(_base, trimmed);

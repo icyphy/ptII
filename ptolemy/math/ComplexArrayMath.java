@@ -86,7 +86,7 @@ public class ComplexArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final Complex[] applyBinaryOperation(
-     ComplexBinaryOperation op, final Complex z, final Complex[] array) {
+            ComplexBinaryOperation op, final Complex z, final Complex[] array) {
         int length = array.length;
         Complex[] retval = new Complex[length];
         for (int i = 0; i < length; i++) {
@@ -105,9 +105,9 @@ public class ComplexArrayMath {
      *  IllegalArgumentException.
      */
     public static final Complex[] applyBinaryOperation(
-     ComplexBinaryOperation op, final Complex[] array1, final Complex[] array2) {
+            ComplexBinaryOperation op, final Complex[] array1, final Complex[] array2) {
         int length = _commonLength(array1, array2,
-         "ComplexArrayMath.applyBinaryOperation");
+                "ComplexArrayMath.applyBinaryOperation");
         Complex[] retval = new Complex[length];
         for (int i = 0; i < length; i++) {
             retval[i] = op.operate(array1[i], array2[i]);
@@ -121,7 +121,7 @@ public class ComplexArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final Complex[] applyUnaryOperation(
-     final ComplexUnaryOperation op, final Complex[] array) {
+            final ComplexUnaryOperation op, final Complex[] array) {
         int length = array.length;
         Complex[] retval = new Complex[length];
         for (int i = 0; i < length; i++) {
@@ -251,7 +251,7 @@ public class ComplexArrayMath {
      *  IllegalArgumentException.
      */
     public static final Complex dotProduct(final Complex[] array1,
-        final Complex[] array2) {
+            final Complex[] array2) {
         int length = _commonLength(array1, array2, "ComplexArrayMath.dotProduct");
         Complex retval = Complex.ZERO;
 
@@ -297,30 +297,30 @@ public class ComplexArrayMath {
         int size;
 
         if ((realPart != null) && (imagPart != null)) {
-           size = DoubleArrayMath._commonLength(realPart, imagPart,
-                       "ComplexArrayMath.formComplexArray");
-           retval = new Complex[size];
+            size = DoubleArrayMath._commonLength(realPart, imagPart,
+                    "ComplexArrayMath.formComplexArray");
+            retval = new Complex[size];
 
-           for (int i = 0; i < size; i++) {
-               retval[i] = new Complex(realPart[i], imagPart[i]);
-           }
+            for (int i = 0; i < size; i++) {
+                retval[i] = new Complex(realPart[i], imagPart[i]);
+            }
         } else if (realPart == null) {
-           // NullPointerException will be thrown here if both arrays are null.
-           size = imagPart.length;
+            // NullPointerException will be thrown here if both arrays are null.
+            size = imagPart.length;
 
-           retval = new Complex[size];
+            retval = new Complex[size];
 
-           for (int i = 0; i < size; i++) {
-               retval[i] = new Complex(0.0, imagPart[i]);
-           }
+            for (int i = 0; i < size; i++) {
+                retval[i] = new Complex(0.0, imagPart[i]);
+            }
         } else { // imagPart == null
-           size = realPart.length;
+            size = realPart.length;
 
-           retval = new Complex[size];
+            retval = new Complex[size];
 
-           for (int i = 0; i < size; i++) {
-               retval[i] = new Complex(realPart[i], 0.0);
-           }
+            for (int i = 0; i < size; i++) {
+                retval[i] = new Complex(realPart[i], 0.0);
+            }
         }
 
         return retval;
@@ -410,17 +410,17 @@ public class ComplexArrayMath {
      *  @return A new array of complex numbers.
      */
     public static final Complex[] padMiddle(final Complex[] array,
-     final int newLength) {
+            final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
-           throw new IllegalArgumentException("ptolemy.math." +
-            "ComplexArrayMath.padMiddle() : newLength must be >= length of " +
-            "array.");
+            throw new IllegalArgumentException("ptolemy.math." +
+                    "ComplexArrayMath.padMiddle() : newLength must be >= length of " +
+                    "array.");
         } else if (entriesNeeded == 0) {
-           return resize(array, newLength); // allocates a new array
+            return resize(array, newLength); // allocates a new array
         }
 
         double halfLength   = ((double) length) * 0.5;
@@ -431,7 +431,7 @@ public class ComplexArrayMath {
         System.arraycopy(array, 0, retval, 0, halfLengthCeil);
 
         System.arraycopy(array,  halfLengthFloor, retval,
-         newLength - halfLengthCeil, halfLengthCeil);
+                newLength - halfLengthCeil, halfLengthCeil);
 
         for (int i = halfLengthCeil; i < newLength - halfLengthCeil; i++) {
             retval[i] = Complex.ZERO;
@@ -499,7 +499,7 @@ public class ComplexArrayMath {
      *  If the size of the array is 0, return a new array of size 0.
      */
     public static final Complex[] pow(final Complex[] array,
-        final double exponent) {
+            final double exponent) {
         int length = array.length;
         Complex[] retval = new Complex[length];
 
@@ -550,7 +550,7 @@ public class ComplexArrayMath {
      *  @param newLength The desired size of the output array.
      */
     public static final Complex[] resize(final Complex[] array,
-        final int newLength) {
+            final int newLength) {
         return resize(array,  newLength, 0);
     }
 

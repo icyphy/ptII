@@ -55,55 +55,55 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
         int kind2 = _typeID.kind(type2);
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX)) {
-           return TypeUtility.makeArrayType((TypeNode)
-            ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone(), 2);
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX)) {
+            return TypeUtility.makeArrayType((TypeNode)
+                    ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone(), 2);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX)) {
-           return TypeUtility.makeArrayType((TypeNode)
-            ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(), 2);
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX)) {
+            return TypeUtility.makeArrayType((TypeNode)
+                    ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(), 2);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX)) {
-           return TypeUtility.makeArrayType(DoubleTypeNode.instance, 2);
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX)) {
+            return TypeUtility.makeArrayType(DoubleTypeNode.instance, 2);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX)) {
-           return TypeUtility.makeArrayType(LongTypeNode.instance, 2);
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX)) {
+            return TypeUtility.makeArrayType(LongTypeNode.instance, 2);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX)) {
-           return TypeUtility.makeArrayType(IntTypeNode.instance, 2);
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX)) {
+            return TypeUtility.makeArrayType(IntTypeNode.instance, 2);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX)) {
-           return TypeUtility.makeArrayType(BoolTypeNode.instance, 2);
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX)) {
+            return TypeUtility.makeArrayType(BoolTypeNode.instance, 2);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT)) {
-           return (TypeNode) ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone();
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT)) {
+            return (TypeNode) ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone();
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX)) {
-           return (TypeNode) ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone();
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX)) {
+            return (TypeNode) ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone();
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN) ||
-            (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN)) {
-           return (TypeNode) ExtendedJavaTypeIdentifier.TOKEN_TYPE.clone();
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_TOKEN)) {
+            return (TypeNode) ExtendedJavaTypeIdentifier.TOKEN_TYPE.clone();
         }
 
         if ((kind1 == TypeIdentifier.TYPE_KIND_NULL) &&
-            (kind2 == TypeIdentifier.TYPE_KIND_NULL)) {
-           return NullTypeNode.instance;
+                (kind2 == TypeIdentifier.TYPE_KIND_NULL)) {
+            return NullTypeNode.instance;
         }
 
         return super.arithPromoteType(type1, type2);

@@ -414,7 +414,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  "<i>integerbits . fractionbits</i>".
      *
      *  @return A bit string of the form "<i>integerbits . fractionbits</i>".
-    */
+     */
     public String toBitString() {
         // The the toString(2) method of BigInteger removes the most
         // significant bits that are zeros, this method recreates

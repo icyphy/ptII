@@ -86,8 +86,8 @@ public interface ArrayStringFormat {
      */
     public static class ArrayStringFormatBase implements ArrayStringFormat {
         public ArrayStringFormatBase(String elemDelim, String matrixBegin,
-         String matrixEnd, String vectorBegin, String vectorDelim,
-         String vectorEnd) {
+                String matrixEnd, String vectorBegin, String vectorDelim,
+                String vectorEnd) {
             _elemDelim = elemDelim;
             _matrixBegin = matrixBegin;
             _matrixEnd = matrixEnd;
@@ -165,7 +165,7 @@ public interface ArrayStringFormat {
      *  where x[i] is the ith element of the array.
      */
     public static final ArrayStringFormat javaASFormat =
-        new ArrayStringFormatBase(", ", "{", "}", "{", ", ", "}");
+    new ArrayStringFormatBase(", ", "{", "}", "{", ", ", "}");
 
     /** Implements ArrayStringFormat to produce strings in the format used
      *  in the Ptolemy II expression language and Matlab. More specifically,
@@ -173,5 +173,5 @@ public interface ArrayStringFormat {
      *  "[x[0] x[1] x[2] ...  x[n-1]]",
      */
     public static final ArrayStringFormat exprASFormat =
-        new ArrayStringFormatBase(" ", "[", "]", "[", "; ", "]");
+    new ArrayStringFormatBase(" ", "[", "]", "[", "; ", "]");
 }
