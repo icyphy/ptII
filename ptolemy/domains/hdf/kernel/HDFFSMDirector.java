@@ -853,11 +853,12 @@ public class HDFFSMDirector extends FSMDirector {
                                         if (portRateToSet
                                                 != transitionPortRate) {
                                             throw new IllegalActionException(
-                                                    this, "Consumption rate of" +
-                                                "transition refinement is" +
-                                                "not consistent with the" +
-                                                "consumption rate of the" +
-                                                "state refinement.");
+                                                    this, "Consumption rate of"
+                                                    + "transition refinement "
+                                                    + "not consistent with the"
+                                                    + "consumption rate of the"
+                                                    + "state refinement.");
+
                                         }
                                     }
                                 }
