@@ -68,9 +68,7 @@ install: all
 PTAUXJAR = Thermostat.jar
 
 demo: Thermostat.jar
-	CLASSPATH=$(CLASSPATH) appletviewer Thermostat.html
-
-
+	CLASSPATH="$(CLASSPATH)" appletviewer Thermostat.htm
 
 # 'make clean' removes everything in KRUFT
 KRUFT = Thermostat.jar

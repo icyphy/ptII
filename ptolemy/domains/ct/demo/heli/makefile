@@ -75,7 +75,7 @@ install: all
 PTAUXJAR = Helicopter.jar
 
 demo: Helicopter.jar
-	CLASSPATH=$(CLASSPATH) appletviewer HeliControl.html
+	CLASSPATH=$(CLASSPATH) appletviewer HeliControl.htm
 
 
 
