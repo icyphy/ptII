@@ -123,7 +123,9 @@ if test "`uname -s`" = "CYGWIN_NT-5.1"; then
         # -Dsun.java2d.d3d=false 
         # or
         # -Dsun.java2d.noddraw=true
-		J141BUGWORKAROUND=-Dsun.java2d.d3d=false 
+        # T30's seem to be happier with noddraw than with only d3d, at least
+	# under 1.4.1-beta-b14
+		J141BUGWORKAROUND=-Dsun.java2d.noddraw=true
 	;;	
    esac
 fi
@@ -238,6 +240,13 @@ case `basename "$0"` in
 	fi    
 	PTII_CLEAN="`echo "$PTII" | sed 's@\\\@/@g'`"
 	applicationflags="-template \"$PTII_CLEAN/doc/coding/templates/ptExtend.tpl\""
+	;;
+    jshrink)
+	# extractor/obfuscator
+	javastartupclass=jshrink.Jshrink
+	javasourcedir=
+	jarfile="$PTII/lib/jshrink.jar"
+	javaflag=""
 	;;
     jode)
 	# JAva decompiler
