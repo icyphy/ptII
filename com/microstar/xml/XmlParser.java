@@ -3765,7 +3765,11 @@ public class XmlParser {
     }
   }
 
-
+// Modified November 14, 1998 by Steve Neuendorffer
+// There was a bug because this was not skipping things that looked
+// like parameter entities properly.
+// Copied the appropriate code from readCh, excluding the lines referring to 
+// '%'.
   /**
     * Skip all data until we find the specified string.
     * <p>This is especially useful for scanning comments.
@@ -3779,7 +3783,48 @@ public class XmlParser {
     throws java.lang.Exception
   {
     while (!tryRead(delim)) {
-      readCh();
+    char c;
+
+    // As long as there's nothing in the
+    // read buffer, try reading more data
+    // (for an external entity) or popping
+    // the entity stack (for either).
+    while (readBufferPos >= readBufferLength)
+      {
+      switch (sourceType)
+        {
+        case INPUT_READER:
+        case INPUT_EXTERNAL:
+        case INPUT_STREAM:
+        readDataChunk();
+        while (readBufferLength < 1)
+          {
+          popInput();
+          if (readBufferLength <1)
+            {
+            readDataChunk();
+            }
+          }
+        break;
+
+        default:
+        popInput();
+        break;
+        }
+      }
+
+    c = readBuffer[readBufferPos++];
+
+    if (c == '\n')
+      {
+      line++;
+      column = 0;
+      }
+    else
+      {
+      column++;
+      }
+
     }
   }
 
