@@ -213,6 +213,12 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 		    The director is not a SDFDirector, it is a $director"
 	    return
 	}
+	if [java::instanceof \
+		$director ptolemy.domains.dt.kernel.DTDirector] {
+	    puts "$modelPath:  Deep codegen only works on SDF.\n\
+		    The director is not a SDFDirector, it is a $director"
+	    return
+	}
     
 	set deepEntityList [$compositeActor deepEntityList]
 	for {set i 0} {$i < [$deepEntityList size]} {incr i} {
