@@ -544,7 +544,8 @@ public class Graph implements Cloneable {
         return (Edge)(((ArrayList)_sameWeightEdges(weight)).get(0));
     }
 
-    /** Return an edge in this graph given the edge label.
+    /** Return an edge in this graph given the edge label;
+     *  the returned edge may be hidden {@see #hideEdge(Edge)}.
      *  @param edge The edge label.
      *  @return The edge.
      *  @exception IllegalArgumentException If the label is not associated
