@@ -39,7 +39,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
@@ -54,7 +53,6 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.MultirateFSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -183,7 +181,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Examine the non-preemptive transitions from the given state.
+    /** FIXME: comment is wrong.  
+     *  Examine the transitions from the given state.
      *  If there is more than one transition enabled, an exception is
      *  thrown. If there is exactly one non-preemptive transition
      *  enabled, then it is chosen and the choice actions contained by
@@ -424,10 +423,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             
         } else {
             // Make a state transition.
-            State newState = lastChosenTransition.destinationState();
-            _setCurrentState(newState);
             superPostfire = super.postfire();
-            currentState = newState;
+            currentState = controller.currentState();
             // Get the new current refinement actor.
             TypedActor[] actors = currentState.getRefinement();
             if (actors == null || actors.length != 1) {
@@ -457,14 +454,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return superPostfire;
     }
 
-    /** Return a new receiver of a type compatible with this director.
-     *  This returns an instance of SDFReceiver.
-     *  @return A new SDFReceiver.
-     */
-    public Receiver newReceiver() {
-        return new SDFReceiver();
-    }
-
     /** Make a state transition if this FSM is embedded in SDF.
      *  Otherwise, request a change of state transition to the manager.
      *  <p>
@@ -475,15 +464,19 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  if there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
+        
         FSMActor controller = getController();
         CompositeActor container = (CompositeActor)getContainer();
         TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
         
-        // NOTE: We have already checked that there is exactly
-        // one refinement of the current state.
+        if (currentRefinement == null || currentRefinement.length != 1) {
+            throw new IllegalActionException(this,
+                    "Current state is required to have exactly one refinement: "
+                    + _lastIntransientState.getName());
+        }
 
         boolean postfireReturn = currentRefinement[0].postfire();
-
+        
         if (_sendRequest && _embeddedInHDF) {
             _sendRequest = false;
             ChangeRequest request =
@@ -642,8 +635,13 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         analysis.addDependencyDeclaration(declaration);
     }
 
-    // Declare the reconfiguration dependency in the given analysis
-    // associated wiht the parameter name of the given port.
+    /** Declare the reconfiguration dependency in the given analysis
+     *  associated wiht the parameter name of the given port.
+     * @param analysis
+     * @param port
+     * @param parameterName
+     * @throws IllegalActionException
+     */
     private void _declareReconfigurationDependencyForRefinementRateVariables(
             ConstVariableModelAnalysis analysis,
             IOPort port, 
