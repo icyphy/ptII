@@ -152,7 +152,6 @@ public class Copernicus {
                 new GeneratorAttribute(toplevel, GENERATOR_NAME);
             _generatorAttribute.initialize();
         }
-        System.out.println(_generatorAttribute.toString());
   
         // Savecommand-line parameters in the generator attribute.
         _saveParsedArgs();
