@@ -410,7 +410,7 @@ public class ProcessDirector extends Director {
      *  This method is not synchronized on the workspace, so the caller
      *  should be.
      * @exception IllegalActionException if an error occurs while
-     *  accessing the receivers of all actors under the contol of
+     *  accessing the receivers of all actors under the control of
      *  this director.
      */
     public void wrapup() throws IllegalActionException {
