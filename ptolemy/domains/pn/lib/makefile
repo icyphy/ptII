@@ -36,13 +36,12 @@ ROOT =		../../../../..
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-#JAVAHOME =      ../../../../../../jdk1.1.5
 
 DIRS = 		#demo #test doc
 
 # Used to build zip files
-JPACKAGE = 	ptolemy.domains.pn.actors
-JPACKAGE_DIR = 	ptolemy/domains/pn/actors
+JPACKAGE = 	ptolemy.domains.pn.lib
+JPACKAGE_DIR = 	ptolemy/domains/pn/lib
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip

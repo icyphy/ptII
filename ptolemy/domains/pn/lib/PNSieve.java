@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.actors;
+package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
