@@ -363,6 +363,9 @@ test Scheduler-6.5 {Test Schedule.firingIterator} {
     # Test firingIterator
     set firingIterator [$S firingIterator]
 
+    # remove() is unsupported
+    catch {$firingIterator remove} errMsg
+
     set firing1 [$firingIterator next]
     set firing1 [java::cast ptolemy.actor.sched.Firing \
                                  $firing1]
@@ -491,9 +494,9 @@ test Scheduler-6.5 {Test Schedule.firingIterator} {
     set iterationCount16 [$firing16 getIterationCount]
 
 
-    list $iterationCount1 [$actor1 getName] $iterationCount2 [$actor2 getName] $iterationCount3 [$actor3 getName] $iterationCount4 [$actor4 getName] $iterationCount5 [$actor5 getName] $iterationCount6 [$actor6 getName] $iterationCount7 [$actor7 getName] $iterationCount8 [$actor8 getName] $iterationCount9 [$actor9 getName] $iterationCount10 [$actor10 getName] $iterationCount11 [$actor11 getName] $iterationCount12 [$actor12 getName] $iterationCount13 [$actor13 getName] $iterationCount14 [$actor14 getName] $iterationCount15 [$actor15 getName] $iterationCount16 [$actor16 getName]
+    list $errMsg $iterationCount1 [$actor1 getName] $iterationCount2 [$actor2 getName] $iterationCount3 [$actor3 getName] $iterationCount4 [$actor4 getName] $iterationCount5 [$actor5 getName] $iterationCount6 [$actor6 getName] $iterationCount7 [$actor7 getName] $iterationCount8 [$actor8 getName] $iterationCount9 [$actor9 getName] $iterationCount10 [$actor10 getName] $iterationCount11 [$actor11 getName] $iterationCount12 [$actor12 getName] $iterationCount13 [$actor13 getName] $iterationCount14 [$actor14 getName] $iterationCount15 [$actor15 getName] $iterationCount16 [$actor16 getName]
     
-} {1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D 1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D}
+} {java.lang.UnsupportedOperationException 1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D 1 A 1 B 1 C 1 B 1 C 1 B 1 C 2 D}
 
 
 ######################################################################
@@ -532,6 +535,9 @@ test Scheduler-6.6 {Test Schedule.actorIterator for simple schedule} {
     # Test actorIterator
     set actorIterator [$S actorIterator]
 
+    # remove() is unsupported
+    catch {$actorIterator remove} errMsg
+
     set actor1 [$actorIterator next]
     set actor1 [java::cast ptolemy.actor.AtomicActor \
                                  $actor1]
@@ -549,9 +555,9 @@ test Scheduler-6.6 {Test Schedule.actorIterator for simple schedule} {
                                  $actor4]
     
 
-    list [$actor1 getName] [$actor2 getName] [$actor3 getName] [$actor4 getName]
+    list $errMsg [$actor1 getName] [$actor2 getName] [$actor3 getName] [$actor4 getName]
     
-} {A A A A}
+} {java.lang.UnsupportedOperationException A A A A}
 
 ######################################################################
 ####
@@ -672,3 +678,39 @@ test Scheduler-6.8 {Test Schedule.actorIterator for another schedule} {
     list [$actor1 getName] [$actor2 getName] [$actor3 getName] 
     
 } {A B C}
+
+
+######################################################################
+####
+# This is the schedule in the Schedule.java class documentation.
+test Scheduler-6.8 { Schedule.actorIterator for another schedule} {
+    # Create actors
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set a [java::new ptolemy.actor.test.TestActor $toplevel A]
+    set b [java::new ptolemy.actor.test.TestActor $toplevel B]
+    set c [java::new ptolemy.actor.test.TestActor $toplevel C]
+
+    # Construct schedule (1, (1, A, B, C), (1, null)) 
+    set S [java::new ptolemy.actor.sched.Schedule]
+    set S1 [java::new ptolemy.actor.sched.Schedule]
+    set S2 [java::new ptolemy.actor.sched.Schedule]
+    set S2_1 [java::new ptolemy.actor.sched.Firing $a]
+    set S2_2 [java::new ptolemy.actor.sched.Firing $b]
+    set S2_3 [java::new ptolemy.actor.sched.Firing $c]
+    $S1 add $S2_1
+    $S1 add $S2_2
+    $S1 add $S2_3
+    $S add $S1
+    $S add $S2
+
+    # Test the schedule
+
+    # Test actorIterator on subschedule (1, A, B, C)
+    set actorIterator [$S1 actorIterator]
+
+    $S1 remove 0
+
+    catch {set actor1 [$actorIterator next]} errMsg
+    catch {set actor1 [$actorIterator next]} errMsg2
+    list $errMsg
+} {{java.util.ConcurrentModificationException: Schedule structure changed while iterator is active.}}
