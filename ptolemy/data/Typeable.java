@@ -53,19 +53,19 @@ public interface Typeable
      *  determined, return null.
      *  @return An instance of Class representing the type.
      */
-    Class getType();
+    public Class getType();
 
     /** Return an InequalityTerm representing this object.
      *  @return An InequalityTerm.
      */
-    InequalityTerm getTypeTerm();
+    public InequalityTerm getTypeTerm();
 
     /** Constrain the type of this object to be equal to or greater
      *  than the type of the argument.  Notice that this constraint
      *  is not enforced until type resolution is done, and is not
      *  enforced if type resolution is not done.
      */
-    void setTypeAtLeast(Typeable lesser);
+    public void setTypeAtLeast(Typeable lesser);
 
     /** Constrain the type of this object to be equal to or less
      *  than the argument.  Because the argument is a concrete type,
@@ -74,26 +74,27 @@ public interface Typeable
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint.
      */
-    void setTypeAtMost(Class type) throws IllegalActionException;
+    public void setTypeAtMost(Class type) throws IllegalActionException;
 
     /** Set a type constraint that the type of this object equal
      *  the specified value.
      *  @exception IllegalActionException If the type of this object
      *   already violates this constraint.
      */
-    void setTypeEquals(Class type) throws IllegalActionException;
+    public void setTypeEquals(Class type) throws IllegalActionException;
 
     /** Constrain the type of this object to be the same as the
      *  type of the argument.  Notice that this constraint
      *  is not enforced until type resolution is done, and is not
      *  enforced if type resolution is not done.
      */
-    void setTypeSameAs(Typeable equal);
+    public void setTypeSameAs(Typeable equal);
 
     /** Return the type constraints of this object.
      *  The constraints are an enumeration of inequalities.
      *  @return an enumeration of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    Enumeration typeConstraints();
+    public Enumeration typeConstraints();
 }
+
