@@ -57,15 +57,19 @@ proc speedComparison  {xmlFile \
 
 
     if {$codeGenType == "Deep"} {
-	set args [java::new {String[]} 0]
-	puts "Running builtin $codeGenType codegen $repeat times"
-	set codegenElapsed [time {java::call \
-		$targetClass \
-		main $args} $repeat]
+	puts "Not generation speed comparision stats for Deep yet"
+	#set args [java::new {String[]} 0]
+	#puts "Running builtin $codeGenType codegen $repeat times"
+	set codegenElapsed 0
+	#set codegenElapsed [time {java::call \
+	#	$targetClass \
+	#	main $args} $repeat]
+	#
+	#puts "Running exec $codeGenType codegen $repeat times"
+	set codegenExecElapsed 0
+	#set codegenExecElapsed \
+	#	[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
 
-	puts "Running exec $codeGenType codegen $repeat times"
-	set codegenExecElapsed \
-		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
     } else {
 	set args [java::new {String[]} 2 \
 		[list \
