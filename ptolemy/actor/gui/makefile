@@ -74,6 +74,7 @@ JSRCS = \
 	BrowserTableau.java \
 	ColorAttribute.java \
 	CompositeActorApplication.java \
+	CompositeActorSimpleApplication.java \
 	Configuration.java \
 	ConfigurationEffigy.java \
 	Configurer.java \
