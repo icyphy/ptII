@@ -42,7 +42,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
 /**
-A TypedAtomicActor is an AtomicActor whose ports have types.
+A TypedAtomicActor is an AtomicActor whose ports and parameters have types.
 The container is required to be an instance of TypedCompositeActor.
 Derived classes may further constrain the container by overriding
 setContainer(). The Ports of TypedAtomicActors are constrained to be
@@ -105,6 +105,22 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in the type of an attribute.  This method is 
+     *  called by a contained attribute when its type changes.
+     *  In this base class, the method throws an exception.
+     *  Thus, by default, attribute types are not allowed to change.
+     *  If an actor can allow attribute types to change, then it should
+     *  override this method.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this actor (always thrown in this base class).
+     */
+    public void attributeTypeChanged(Attribute attribute)
+           throws IllegalActionException {
+       throw new IllegalActionException(this,
+       "Attribute type changes are not allowed.");
+   }
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.

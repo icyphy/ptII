@@ -174,6 +174,16 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     public void attributeChanged(Attribute attribute)
            throws IllegalActionException {}
 
+    /** React to a change in the type of an attribute.  This method is 
+     *  called by a contained attribute when its type changes.
+     *  In this base class, the method does nothing.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeTypeChanged(Attribute attribute)
+           throws IllegalActionException {}
+
     /** Clone the object into the current workspace by calling the clone()
      *  method that takes a Workspace argument.
      *  This method read-synchronizes on the workspace.
