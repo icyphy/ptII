@@ -50,6 +50,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
+# Except: NOTE: HTMLEffigy has to come before Configuration
+# because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
 	CompositeActorApplication.java \
 	Configuration.java \
@@ -64,6 +66,7 @@ JSRCS = \
 	Effigy.java \
 	EffigyFactory.java \
 	HTMLEffigy.java \
+	HTMLEffigyFactory.java \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
 	ModelDirectory.java \

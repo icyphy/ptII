@@ -17,7 +17,7 @@
     <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
       <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor"/>
     </entity>
-    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigy$Factory"/>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
 

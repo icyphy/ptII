@@ -6,7 +6,7 @@
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <entity name="Run Panel" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/>
-    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigy$Factory"/>
+    <entity name="HTML Viewer" class="ptolemy.actor.gui.HTMLEffigyFactory"/>
   </entity>
   <entity name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <entity name="Run Panel" class="ptolemy.actor.gui.RunTableau$Factory"/>

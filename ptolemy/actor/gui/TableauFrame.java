@@ -201,7 +201,7 @@ public abstract class TableauFrame extends Top {
             if (effigy == null) {
                 try {
                     // No main welcome window.  Create one.
-                    EffigyFactory effigyFactory = new HTMLEffigy$Factory(
+                    EffigyFactory effigyFactory = new HTMLEffigyFactory(
                              directory.workspace());
                     effigy = effigyFactory.createEffigy(
                              directory, (URL)null, doc);
