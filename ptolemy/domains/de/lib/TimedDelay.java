@@ -160,6 +160,9 @@ public class TimedDelay extends DETransformer {
      *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
+        
+        super.fire();
+        
         // consume input
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
