@@ -93,7 +93,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 14, 815, 703}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 25, 815, 703}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -361,6 +361,12 @@ model is running.</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-5, 90, 1163, 568}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{474.0, 225.0}">
+        </property>
         <port name="subscribe" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 120.0">
@@ -368,7 +374,7 @@ model is running.</text></svg></configure>
         </port>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="835.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 190.0]">
             </property>
         </port>
         <port name="tooFar" class="ptolemy.actor.TypedIOPort">
@@ -397,6 +403,12 @@ model is running.</text></svg></configure>
                 </property>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-65, -7, 1155, 783}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{470.0, 332.5}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -481,7 +493,7 @@ model is running.</text></svg></configure>
             <entity name="compuSpeed" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="s2 + (t2-t1)* (a2 - miu * s2)">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 380.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 380.0]">
                 </property>
                 <property name="miu" class="ptolemy.data.expr.Parameter" value="0.5">
                 </property>
@@ -551,7 +563,7 @@ model is running.</text></svg></configure>
                 </property>
                 <property name="title" class="ptolemy.kernel.util.StringAttribute" value="fault">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 321, 290, 125}}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 321, 307, 125}, maximized=false}">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="764.2429504394531, 225.25301361083984">
                 </property>
@@ -573,7 +585,7 @@ model is running.</text></svg></configure>
                 </property>
             </entity>
             <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="500.0, 165.0">
+                <vertex name="vertex1" value="[515.0, 165.0]">
                 </vertex>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -585,11 +597,11 @@ model is running.</text></svg></configure>
                 </vertex>
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="130.0, 145.0">
+                <vertex name="vertex1" value="[140.0, 165.0]">
                 </vertex>
             </relation>
             <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="525.0, 380.0">
+                <vertex name="vertex1" value="[595.0, 225.0]">
                 </vertex>
             </relation>
             <relation name="relation13" class="ptolemy.actor.TypedIORelation">
@@ -601,15 +613,15 @@ model is running.</text></svg></configure>
                 </vertex>
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="180.0, 105.5">
+                <vertex name="vertex1" value="[175.0, 125.0]">
                 </vertex>
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="165.0, 115.0">
+                <vertex name="vertex1" value="{165.0, 135.0}">
                 </vertex>
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="150.0, 135.0">
+                <vertex name="vertex1" value="[150.0, 155.0]">
                 </vertex>
             </relation>
             <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -659,7 +671,7 @@ model is running.</text></svg></configure>
         <entity name="modal controller" class="ptolemy.domains.fsm.modal.ModalModel">
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 180.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -696,22 +708,15 @@ model is running.</text></svg></configure>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
                 </property>
-                <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                    </property>
-                    <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 40.0">
-                    </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                    </property>
-                </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[744, 458]">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 230]">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 96, 959, 576}, maximized=false}">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.0, 229.0}">
                 </property>
                 <port name="faulty" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
@@ -998,7 +1003,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="745.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 190.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -1014,7 +1019,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="Subtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 190.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -1022,7 +1027,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 235.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -1032,7 +1037,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 180.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 190.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -1050,7 +1055,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 95.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 180.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -1068,13 +1073,13 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 484, 508, 258}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 484, 508, 355}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="605.0, 95.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 105.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -1086,7 +1091,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="100.0"/>
-<yRange min="0.0" max="2.0"/>
+<yRange min="0.0" max="1.9999990228615299"/>
 </plot>?>
             </configure>
         </entity>
@@ -1097,13 +1102,13 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="2:relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="648.32958984375, 180.50244140625">
+            <vertex name="vertex1" value="[590.0, 190.0]">
             </vertex>
         </relation>
         <relation name="2:relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="475.0, 265.0">
+            <vertex name="vertex1" value="[425.0, 265.0]">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -1112,13 +1117,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="350.0, 180.0">
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[430.0, 180.0]">
             </vertex>
         </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="475.0, 95.0">
-            </vertex>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="subscribe" relation="relation2"/>
         <link port="position" relation="relation6"/>
@@ -1173,6 +1176,12 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-60, 122, 1144, 524}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{464.5, 203.0}">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 275.0">
@@ -1202,7 +1211,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="685.0, 290.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 280.0]">
             </property>
         </entity>
         <entity name="Switch" class="ptolemy.actor.lib.Switch">
@@ -1225,7 +1234,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
         </entity>
         <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="610.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 140.0]">
             </property>
             <port name="position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1259,7 +1268,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 169.5">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 170.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1279,7 +1288,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="fault">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 350.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 335.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -1376,7 +1385,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 6, 508, 280}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 6, 508, 355}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
