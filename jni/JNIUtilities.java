@@ -1076,7 +1076,7 @@ public class JNIUtilities {
                     + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
                     + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
                     + "\t\t-fno-exceptions \\\n"
-                    + "\t\t-shared $(PTJNI_SHAREDLIBRARY_CFLAG) \\\n"
+                    + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
                     + "\t\t-L" + libraryPath + " -l" + nativeLibrary + " \\\n"
                     + "\t\t -o $@ \\\n"
                     + "\t\tjni" + actor.getName() + ".cpp\n\n"
