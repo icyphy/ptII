@@ -181,13 +181,13 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             //correction
             double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
             pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
-            double cerror = Math.abs(pstate-integrator.getPotentialState());
+            double cerror = Math.abs(pstate-integrator.getTentativeState());
             if( !(cerror < dir.getValueResolution())) {
                 voteForConverge(false);
             }
-            integrator.setPotentialDerivative(f2);
+            integrator.setTentativeDerivative(f2);
         }
-        integrator.setPotentialState(pstate);
+        integrator.setTentativeState(pstate);
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 
@@ -201,7 +201,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getErrorTolerance();
             double[] k = integrator.getAuxVariables();
-            double lte = 0.5*Math.abs(integrator.getPotentialState() - k[0]);
+            double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
             integrator.setAuxVariables(1, lte);
             _debug("Integrator: "+ integrator.getName() +
                 " local truncation error = " + lte);

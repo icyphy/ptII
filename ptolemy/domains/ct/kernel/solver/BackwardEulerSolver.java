@@ -155,12 +155,12 @@ public class BackwardEulerSolver extends FixedStepSolver
         }
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
-        double cerror =Math.abs(pstate-integrator.getPotentialState());
+        double cerror =Math.abs(pstate-integrator.getTentativeState());
         if( !(cerror < dir.getValueResolution())) {
             voteForConverge(false);
         }
-        integrator.setPotentialState(pstate);
-        integrator.setPotentialDerivative(f);
+        integrator.setTentativeState(pstate);
+        integrator.setTentativeDerivative(f);
 
         integrator.output.broadcast(new DoubleToken(pstate));
     }

@@ -88,7 +88,9 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     public boolean resolveStates() throws IllegalActionException {
         
         super.resolveStates();
+        
         CTDirector dir = (CTDirector)getContainer();
+        /*
         Enumeration actors = ((CTScheduler)dir.getScheduler()
             ).dynamicActorSchedule();
         while(actors.hasMoreElements()) {
@@ -96,6 +98,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
             _debug(getFullName() + "update..."+((Nameable)next).getName());
             next.postfire();
         }
+        */
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         super.resolveStates();
         dir.setCurrentStepSize(-dir.getCurrentStepSize());

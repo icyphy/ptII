@@ -239,8 +239,8 @@ public class CTBaseIntegrator extends CTActor
      *
      *  @return the potential state.
      */
-    public double getPotentialState() {
-        return _potentialState;
+    public double getTentativeState() {
+        return _tentativeState;
     }
 
 
@@ -262,7 +262,7 @@ public class CTBaseIntegrator extends CTActor
     public void initialize() throws IllegalActionException {
         super.initialize();
         _initState = ((DoubleToken)InitialState.getToken()).doubleValue();
-        _potentialState = _initState;
+        _tentativeState = _initState;
     }
 
     /** Emit the tentative output, which is the tentative state of the
@@ -271,7 +271,7 @@ public class CTBaseIntegrator extends CTActor
      *  completed.
      */
     public void emitTentativeOutputs() throws IllegalActionException {
-        output.broadcast(new DoubleToken(_potentialState));
+        output.broadcast(new DoubleToken(_tentativeState));
     }
 
     /** Return true if last integration step is successful.
@@ -294,8 +294,8 @@ public class CTBaseIntegrator extends CTActor
      *       integratorInitialize() of the solver.
      */
     public boolean postfire() throws IllegalActionException {
-        _state = _potentialState;
-        _pushHistory(_potentialState, _potentialDerivative);
+        _state = _tentativeState;
+        _pushHistory(_tentativeState, _tentativeDerivative);
         return true;
     }
 
@@ -353,7 +353,7 @@ public class CTBaseIntegrator extends CTActor
      */
     public void goToMarkedState() {
         _setState(_storedState);
-        setPotentialState(_storedState);
+        setTentativeState(_storedState);
     }
 
     /** Remember the current state. This remembered state can be
@@ -392,24 +392,24 @@ public class CTBaseIntegrator extends CTActor
     public final void setHistoryCapacity(int cap) {
     }
 
-    /** Set the potential state. Potential state is the state that
+    /** Set the potential state. Tentative state is the state that
      *  the ODE solver think to be the new state for the integrator.
      *  It may not
      *  be the final state due to the event detection.
      *  @param value The value to be set. 
      */
-     public final void setPotentialState(double value) {
-         _potentialState = value;
+     public final void setTentativeState(double value) {
+         _tentativeState = value;
      }
 
-    /** Set the potential derivative dx/dt. Potential derivative
+    /** Set the potential derivative dx/dt. Tentative derivative
      *  is the derivative of the state that
      *  the ODE solver think to be at the fixed point. This may not
      *  be the final derivative due to the event detection.
      *  @param value The value to be set. 
      */
-    public final void setPotentialDerivative(double value) {
-         _potentialDerivative = value;
+    public final void setTentativeDerivative(double value) {
+         _tentativeDerivative = value;
      }
 
     ///////////////////////////////////////////////////////////////////
@@ -457,9 +457,9 @@ public class CTBaseIntegrator extends CTActor
     // State.
     private double _state;
     // potential state;
-    private double _potentialState;
-    // Potential derivative;
-    private double _potentialDerivative;
+    private double _tentativeState;
+    // Tentative derivative;
+    private double _tentativeDerivative;
 
     // The state stored, may be used for back up simulation
     private double _storedState;

@@ -179,7 +179,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
                 integrator.setAuxVariables(2, k2);
                 outvalue = xn + h * (k[0]*_B[2][0] + k[1]*_B[2][1]
                     + k2*_B[2][2]);
-                integrator.setPotentialState(outvalue);
+                integrator.setTentativeState(outvalue);
                 break;
             default:
                 throw new InvalidStateException(this,
@@ -207,7 +207,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             double errtol = dir.getErrorTolerance();
             double h = dir.getCurrentStepSize();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            integrator.setPotentialDerivative(f);
+            integrator.setTentativeDerivative(f);
             double[] k = integrator.getAuxVariables();
             double lte = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
                                 + k[2]*_E[2] + f* _E[3]);
