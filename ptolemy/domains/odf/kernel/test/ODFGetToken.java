@@ -103,6 +103,7 @@ public class ODFGetToken extends ODFGet {
 	                ODFThread thread = rcvr.getThread();
 			_threadTimes[cnt] = thread.getCurrentTime();
 		    }
+		    System.out.println(getName()+": set last time; cnt = "+cnt);
 		    _lastTime = rcvr.getLastTime();
 		}
 	    }
