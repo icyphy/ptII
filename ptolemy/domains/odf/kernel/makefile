@@ -52,7 +52,7 @@ JSRCS = \
         ODFActor.java \
         ODFDirector.java \
         ODFIOPort.java \
-        ODFConservativeRcvr.java \
+        ODFReceiver.java \
         ODFSourceActor.java \
         ODFThread.java \
         RcvrTimeTriple.java \

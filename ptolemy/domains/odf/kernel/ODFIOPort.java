@@ -41,9 +41,9 @@ import ptolemy.data.*;
 /** 
 An ODFIOPort is a timed input/output port used in the ODF domain. ODFIOPorts
 are used to send tokens between ODFActors, and in so doing, time is 
-associated with the tokens as they are placed in ODFConservativeRcvrs. The 
+associated with the tokens as they are placed in ODFReceivers. The 
 association of time with a token involves the use of an Event which is
-then stored in a ODFConservativeRcvr.
+then stored in a ODFReceiver.
 
 BEGIN FIXME 
        There are some critical semantic differences between actors that
@@ -261,7 +261,7 @@ public class ODFIOPort extends IOPort {
             }
             
             /*
-            // System.out.println("\nAbout to call ODFConservativeRcvr.put() within " +
+            // System.out.println("\nAbout to call ODFReceiver.put() within " +
                     "ODFIOPort.send() for " + getName() ); 
             */
 	    Thread thread = Thread.currentThread(); 
@@ -272,7 +272,7 @@ public class ODFIOPort extends IOPort {
             for (int j = 0; j < farRec[channelindex].length; j++) {
                 // double currentTime = odfthread.getCurrentTime();
                 double currentTime = ((ODFActor)getContainer()).getCurrentTime(); 
-                ((ODFConservativeRcvr)farRec[channelindex][j]).put(
+                ((ODFReceiver)farRec[channelindex][j]).put(
                         // FIXME 
                         // token, currentTime + delay);
                         token, delay);

@@ -53,10 +53,10 @@ which is dependent on the time of events that flow through its input
 receivers. An event is simply an object which contains a token, a
 time stamp and a receiver (to which the event is destined).
 <P>
-To facilitate this process, the ODFConservativeRcvrs contained by ODFThreads 
+To facilitate this process, the ODFReceivers contained by ODFThreads 
 each have 
 three important variables: rcvrTime, lastTime and priority. The rcvrTime 
-of an ODFConservativeRcvr is equal to the time of the oldest event that resides 
+of an ODFReceiver is equal to the time of the oldest event that resides 
 on the receiver. The lastTime is equal to the time of the newest event 
 residing in the receiver. 
 <P>
@@ -95,7 +95,7 @@ class will not have this constraint.
 <P>
 RcvrTimeTriple objects are used to facilitate the ordering of receivers 
 contained by an ODFThread according to rcvrTime/lastTime and priority. A
-RcvrTimeTriple is an object containing an ODFConservativeRcvr, the _rcvrTime of
+RcvrTimeTriple is an object containing an ODFReceiver, the _rcvrTime of
 the receiver and the priority of the receiver. Each actor contains a list 
 consisting of one RcvrTimeTriple per receiver contained by the actor. As 
 tokens are placed in and taken out of the receivers of an actor, the list 
@@ -218,9 +218,9 @@ public class ODFThread extends ProcessThread {
     
     /**
      */
-    public synchronized ODFConservativeRcvr getFirstRcvr() {
+    public synchronized ODFReceiver getFirstRcvr() {
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
-	return (ODFConservativeRcvr)triple.getReceiver();
+	return (ODFReceiver)triple.getReceiver();
     }
 
     /** Return true if the minimum receiver time is unique to a single
@@ -295,14 +295,14 @@ public class ODFThread extends ProcessThread {
 	    }
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
-	            ((ODFConservativeRcvr) rcvrs[i][j]).put(null, -1.0);
+	            ((ODFReceiver) rcvrs[i][j]).put(null, -1.0);
 		}
             }
 	}
 	}
 	/*
 	System.out.println(actor.getName()+": about to call requestFinish()");
-	ODFConservativeRcvr rcvr = getFirstRcvr();
+	ODFReceiver rcvr = getFirstRcvr();
 	rcvr.requestFinish();
 	getFirstRcvr().get();
 	*/
@@ -341,9 +341,9 @@ public class ODFThread extends ProcessThread {
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
                     double time = getCurrentTime();
-                    if( time > ( (ODFConservativeRcvr)rcvrs[i][j]
+                    if( time > ( (ODFReceiver)rcvrs[i][j]
                             ).getRcvrTime() ) {
-                        ((ODFConservativeRcvr)rcvrs[i][j]).put( 
+                        ((ODFReceiver)rcvrs[i][j]).put( 
                                 new NullToken(), time );
                     }
 		}
@@ -430,11 +430,11 @@ public class ODFThread extends ProcessThread {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((ODFConservativeRcvr)rcvrs[i][j]).setPriority(
+                    ((ODFReceiver)rcvrs[i][j]).setPriority(
 			    currentPriority); 
-                    ((ODFConservativeRcvr)rcvrs[i][j]).setThread(this); 
+                    ((ODFReceiver)rcvrs[i][j]).setThread(this); 
                     RcvrTimeTriple triple = new RcvrTimeTriple( 
-                            (ODFConservativeRcvr)rcvrs[i][j], 
+                            (ODFReceiver)rcvrs[i][j], 
 			    _currentTime, currentPriority );
                     updateRcvrList( triple );
                     currentPriority++;
@@ -457,8 +457,8 @@ public class ODFThread extends ProcessThread {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFConservativeRcvr rcvr =
-                            (ODFConservativeRcvr)rcvrs[i][j]; 
+		    ODFReceiver rcvr =
+                            (ODFReceiver)rcvrs[i][j]; 
                     RcvrTimeTriple triple = new RcvrTimeTriple( 
 			    rcvr, rcvr.getRcvrTime(), 
 			    rcvr.getPriority() );
@@ -487,8 +487,8 @@ public class ODFThread extends ProcessThread {
 	triple = (RcvrTimeTriple)_rcvrTimeList.first();
 	if( triple.getTime() == -1.0 ) {
 	    // noticeOfTermination();
-	    ODFConservativeRcvr firstRcvr = 
-		    (ODFConservativeRcvr)triple.getReceiver();
+	    ODFReceiver firstRcvr = 
+		    (ODFReceiver)triple.getReceiver();
 	    firstRcvr.requestFinish();
 	    firstRcvr.get();
 	}
@@ -528,11 +528,11 @@ public class ODFThread extends ProcessThread {
             String testString2 = "null";
             if( getName().equals("printer") ) {
 		System.out.println("   Printer -> size() = "
-                        +((ODFConservativeRcvr)testRcvr)._queue.size());
-		if( ((ODFConservativeRcvr)testRcvr)._queue.size() > 1 ) {
+                        +((ODFReceiver)testRcvr)._queue.size());
+		if( ((ODFReceiver)testRcvr)._queue.size() > 1 ) {
 		    /*
                     Event testEvent2 = 
-		            ((Event)((ODFConservativeRcvr)testRcvr)._queue.get(1));
+		            ((Event)((ODFReceiver)testRcvr)._queue.get(1));
                     StringToken testToken2 = 
 		            (StringToken)testEvent2.getToken();
 		    testString2 = testToken2.stringValue();
@@ -541,9 +541,10 @@ public class ODFThread extends ProcessThread {
 			    " and string: ");
 		    */
 		}
-		if( ((ODFConservativeRcvr)testRcvr)._queue.size() > 0 ) {
+                /*
+		if( ((ODFReceiver)testRcvr)._queue.size() > 0 ) {
                     Event testEvent = 
-                            ((Event)((ODFConservativeRcvr)testRcvr)._queue.get(0));
+                            ((Event)((ODFReceiver)testRcvr)._queue.get(0));
                     StringToken testToken = (StringToken)testEvent.getToken();
 		    if( testToken != null ) {
                         testString = testToken.stringValue();
@@ -551,6 +552,7 @@ public class ODFThread extends ProcessThread {
 		} else {
                     testString = "null";
 		}
+                */
             }
             System.out.println("\t"+name+"'s Receiver "+i+
 	            " has a time of " +time+" and string: "+testString);

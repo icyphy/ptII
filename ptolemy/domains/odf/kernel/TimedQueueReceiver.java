@@ -53,7 +53,7 @@ simulation run.
 
 @author John S. Davis II
 @version @(#)TimedQueueReceiver.java	1.17	11/18/98
-@see ptolemy.domains.odf.kernel.ODFConservativeRcvr
+@see ptolemy.domains.odf.kernel.ODFReceiver
 */
 
 public class TimedQueueReceiver implements Receiver {
@@ -221,7 +221,7 @@ public class TimedQueueReceiver implements Receiver {
      *  this receiver.
      * @param token The token to put on the queue.
      * @param time The time stamp of the token.
-     *  FIXME: Check for completion time here instead of ODFConservativeRcvr.put()
+     *  FIXME: Check for completion time here instead of ODFReceiver.put()
      */
     public void put(Token token, double time) {
         // System.out.println("Previous queue size = " + getSize() );

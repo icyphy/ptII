@@ -156,10 +156,10 @@ public class ODFDirector extends ProcessDirector {
      *  to this same value; otherwise set the completion time to -5.0
      *  which indicates that the receivers should ignore the completion
      *  time. 
-     *  @return A new ODFConservativeRcvr.
+     *  @return A new ODFReceiver.
      */
     public Receiver newReceiver() {
-        ODFConservativeRcvr rcvr = new ODFConservativeRcvr();
+        ODFReceiver rcvr = new ODFReceiver();
 	rcvr.setCompletionTime( _completionTime );
         return rcvr;
     }

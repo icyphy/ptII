@@ -46,7 +46,7 @@ RcvrTimeTriples are used to determine order.
 @author John S. Davis II 
 @version @(#)RcvrTimeTriple.java	1.9	11/17/98
 @see ptolemy.domains.odf.kernel.Event
-@see ptolemy.domains.odf.kernel.ODFConservativeRcvr
+@see ptolemy.domains.odf.kernel.ODFReceiver
 @see ptolemy.domains.odf.kernel.ODFActor
 
 */
