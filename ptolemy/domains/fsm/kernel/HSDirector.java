@@ -175,7 +175,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl._setInputsFromRefinement();
 
         // Note that the actions associated with the transition
-        // are not executed.
+        // are executed.
         tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
 
         // execute the refinements of the enabled transition
@@ -384,8 +384,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         // FIXME: why do we need to execute the update actions again in postfire?
         // From Xiaojun: actions of the event triggered transition need to be 
         // executed. 
-        Transition tr =
-            _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
+        Transition tr = _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
         // If there is one transition enabled, the HSDirector requests fire again
         // at the same time to see whether the next state has some outgoing
         // transition enabled.
@@ -410,15 +409,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 dir.fireAt(container, getCurrentTime());
             }
         }
-        
-//        // FIXME: the above actions may change some outputs, which need
-//        // to be propagated to outside.  This has to be done by
-//        // the executive director calling transferOutputs().
-//        Iterator outports = container.outputPortList().iterator();
-//        while (outports.hasNext() && !_stopRequested) {
-//            IOPort p = (IOPort)outports.next();
-//            dir.transferOutputs(p);
-//        }
         
         return super.postfire();
     }
