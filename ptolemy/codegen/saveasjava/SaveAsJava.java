@@ -63,14 +63,9 @@ class SaveAsJava {
      *  object and all of its descendants. It is assumed for now
      *  that the "toplevel" object is of type TypedCompositeActor.
      *  @param toplevel The root object of the topology to be saved.
-     *  @return The generated java code is returned in the first element
-     *  of the returned array, and the name of the model is returned in
-     *  the second element. 
+     *  @return The generated java code.
      */
-    public String[] save(NamedObj toplevel) throws IllegalActionException {
-
-        // The list of strings that is to be returned by the method
-        String[] returnlist = new String[2];
+    public String generate(NamedObj toplevel) throws IllegalActionException {
 
         // Data associated with a given class under consideration
         String clfullname;
@@ -89,20 +84,18 @@ class SaveAsJava {
         // The list of classes to import in the generated Java code.
         LinkedList importList = new LinkedList();
 
-
-
-
-
         // Check that the argument is a typed composite actor.
         if (!(toplevel instanceof TypedCompositeActor)) {
             throw new IllegalActionException(toplevel, 
             "SavaAsJava feature only operates on typed composite actors");
         }
-        compositeModel = (TypedCompositeActor)toplevel;
+        compositeModel = (CompositeEntity)toplevel;
 
         // Generate class header output 
         code += "public class " + compositeModel.getName() 
-                + " extends TypedCompositeActor {\n\n" + _indent(1)
+                + " extends "
+                + _getClassName(compositeModel)
+                + " {\n\n" + _indent(1)
                 + "public " + compositeModel.getName() 
                 + "(Workspace w) throws"
                 + " IllegalActionException {\n" + _indent(2) 
@@ -113,7 +106,9 @@ class SaveAsJava {
             clfullname = compositeModel.getDirector().getClass().getName();
             clname = _extractSuffix(clfullname);
             code += _indent(3) 
-                    + "setDirector(new " + clname + "(this, \"director\"));\n";
+                    + "setDirector(new "
+                    + _getClassName(compositeModel.getDirector())
+                    + "(this, \"director\"));\n";
             _insertIfUnique(clfullname, importList);
         } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
@@ -132,7 +127,7 @@ class SaveAsJava {
         "}\n";
          
         // Generate statements for importing classes.
-        _insertIfUnique("ptolemy.actor.TypedCompositeActor", importList);
+        _insertIfUnique("ptolemy.actor.GeneratorTableau", importList);
         _insertIfUnique("ptolemy.kernel.util.Workspace", importList);
         _insertIfUnique("ptolemy.kernel.util.IllegalActionException", 
                         importList);
@@ -151,11 +146,8 @@ class SaveAsJava {
            + "Exception raised while creating the import list '" 
            + importCode + "'.\n");
         }
-
-        returnlist[0] = code;
-        returnlist[1] = compositeModel.getName();
   
-        return returnlist;
+        return code;
     }
 
 
