@@ -294,7 +294,7 @@ public class Thermostat extends CTApplet {
              ctDecDir.BreakpointODESolver.setToken(tok);
              tok = new StringToken(
                      "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");                 ctDecDir.ODESolver.setToken(tok);
-             ctGain.gain.setToken(new DoubleToken(-1.0));
+             ctGain.factor.setToken(new DoubleToken(-1.0));
                                          
              // CT director parameters
              topdir.InitStepSize.setToken(new DoubleToken(0.01));
