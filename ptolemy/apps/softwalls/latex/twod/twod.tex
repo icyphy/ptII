@@ -5,17 +5,21 @@
 \usepackage[dvips]{color}
 \usepackage{epsfig}
 %\usepackage{subfigure}
-\usepackage[dvips,colorlinks,bookmarks,pdfpagemode=UseOutlines,linkcolor=blue,pagecolor=blue,urlcolor=blue,letterpaper]{hyperref}
+\usepackage[dvips, colorlinks, bookmarks, pdfpagemode=UseOutlines,
+linkcolor=blue, pagecolor=blue, urlcolor=blue, letterpaper]{hyperref}
 \begin{document}
 \input{definitions}
 
 \title{SoftWalls in 2D}
-\author{J. Adam Cataldo, Edward A. Lee, Ashwin Ganesan, and
-Stephen Neuendorffer\\ \{acataldo, eal, ganesan, neuendor\}@eecs.berkeley.edu\\ Electrical
-Engineering \& Computer Science\\ University of California, Berkeley\\
-\\} 
-\date{24 June 2002}
 
+\author{J. Adam Cataldo, Edward A. Lee, Xiaojun Liu, Ashwin Ganesan,\\
+and Stephen Neuendorffer\\ 
+\{acataldo, eal, liuxj, ganesan, neuendor\}@eecs.berkeley.edu\\
+Electrical Engineering \& Computer Science\\ 
+University of California, Berkeley\\ 
+\\}
+
+\date{25 June 2002}
 \maketitle
 
 %-----------------------------------------------------------------------------
@@ -49,24 +53,33 @@ center path.  The arc paths represtent turns at the minimum turning radius.
 \label{paths}}
 \end{figure}
 
-Now suppose we wish to prevent the aircraft from crossing a boundry.
-As the aircraft approaches the boundry, one of minimum-turning-radius
-paths will interesect with the boundry.  As long as the other path has
-not yet interestected the boundry, the aircraft can still avoid
-crossing the boundry by turning along this path.  When the other path
-intersects the boundry, turning along this path until one of the paths
-no longer intersects the boundry will prevent the aircraft from
-crossing the boundry.
+Now suppose we wish to prevent the aircraft from crossing a boundary,
+or entering a no-fly zone.  As the aircraft approaches the boundary,
+one of minimum-turning-radius paths from figure \ref{paths} will
+interesect with the boundary.  As long as the other path has not yet
+interestected the boundary, the aircraft can still avoid crossing the
+boundary by moving along this path.  At the instant the second path
+intersects the boundary, forcing the aircraft along the second path
+will prevent the aircraft from crossing the boundary.  This situation
+is depicted in figure \ref{crossing}.
 
-If the actual rate of change in aircraft heading angle be
-$\dot{\theta}$, and we limit this value to the safe range
-$[-s/r_{min}, s/r_{min}]$, we can view this controller as follows:
+\begin{figure}[btp]
+\centering
+\includegraphics[width=5in]{boundarycross.eps}
+\figcaption{On the left picture, the aircraft still has one free path.  On the
+right picture, the aircraft must move right at the minimum turning
+radius to avoid crossing the boundary.
+\label{crossing}}
+\end{figure}
 
-Let $\theta_{s}$, be the softwalls-generated control signal.  We
-calculate $\dot{\theta}$ from
+We can now pose this control algorithm in a more general control
+framework.  Let the actual rate of change in aircraft heading angle be
+$\dot{\theta}$, and let $\theta_{s}$, be the control signal generated
+by the SoftWalls algorithm.  Given the pilot's control signal,
+$\dot{\theta_{p}}$, we calculate $\dot{\theta}$ from
 \[
 \dot{\theta} = limit_{[-s/r_{min}, s/r_{min}]}(\dot{\theta_{p}} -
-\dot{\theta_{s}},
+\dot{\theta_{s}}),
 \]
 where
 \[
@@ -85,10 +98,14 @@ yoke, we can choose $\dot{\theta_{s}} = \dot{\theta_{M}} + s/r_{min}$
 to force the aircraft to turn right at the maximum turning radius,
 irrespective of pilot input.  Similarly $\dot{\theta_{s}} =
 -\dot{\theta_{M}} - s/r_{min}$ will force the aircraft to turn left.
-
-By applying the appropriate $\theta_{s}$ to the input, the softwalls
-algorithm (the path/boundry-interestection algorithm) can garauntee the
-plane to never crosses the boundry.  
+If the left path is the second path to interesect the boundary, the
+control signal $\dot{\theta_{s}} = \dot{\theta_{M}} + s/r_{min}$ will
+steer the aircraft right, and if the right path is the second to
+interestect the boundrary, the control signal $\dot{\theta_{s}} =
+-\dot{\theta_{M}} - s/r_{min}$ will steer the aircraft left.  By
+applying the appropriate $\theta_{s}$ to the input, the softwalls
+algorithm (the path/boundary-interestection algorithm) can garauntee
+the plane to never crosses the boundary.
 
 \end{document}
 
