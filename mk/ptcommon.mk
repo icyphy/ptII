@@ -611,8 +611,6 @@ distclean:
 
 # Remove the sources too, so that we can get them back from sccs
 extraclean:
-	rm -f $(CRUD) $(DISTCLEAN_STUFF) $(EXTRA_SRCS) $(JSRCS)
-	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
@@ -624,3 +622,5 @@ extraclean:
 		    fi ; \
 		done ; \
 	fi
+	rm -f $(CRUD) $(DISTCLEAN_STUFF) $(EXTRA_SRCS) $(JSRCS)
+	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
