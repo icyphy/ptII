@@ -260,7 +260,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Man in the Middle">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {655, 303, 292, 222}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {654, 532, 292, 222}, maximized = false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 160.0">
             </property>
@@ -296,7 +296,7 @@ which then causes an exception to be thrown.</text></svg></configure>
     <entity name="Ramp Output" class="ptolemy.actor.lib.gui.Display">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Ramp Outpu">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {652, 50, 292, 222}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {650, 286, 292, 222}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
         </property>
