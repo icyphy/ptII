@@ -110,17 +110,21 @@ public class XSLTUtilities {
             System.exit(2);
         }
         // Make sure we can write the output first
-        FileWriter fileWriter = new FileWriter(args[args.length - 1]);
-        Document inputDocument = parse(args[0]);
+        FileWriter fileWriter = null;
+        try {
+            new FileWriter(args[args.length - 1]);
+            Document inputDocument = parse(args[0]);
 
-        List transforms = new LinkedList();
-        for (int i = 1; i < args.length - 1; i++) {
-            transforms.add(args[i]);
+            List transforms = new LinkedList();
+            for (int i = 1; i < args.length - 1; i++) {
+                transforms.add(args[i]);
+            }
+            Document outputDocument =
+                XSLTUtilities.transform(inputDocument, transforms);
+            fileWriter.write(XSLTUtilities.toString(outputDocument));
+        } finally {
+            fileWriter.close();
         }
-        Document outputDocument =
-            XSLTUtilities.transform(inputDocument, transforms);
-        fileWriter.write(XSLTUtilities.toString(outputDocument));
-        fileWriter.close();
     }
 
     /** Parse an XML document using Saxon.
