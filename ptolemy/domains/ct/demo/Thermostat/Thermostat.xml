@@ -58,17 +58,16 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Thermostat</title>
-
-<xRange min="0.0" max="5.0"/>
-
-<yRange min="-1.6653345369377348E-16" max="0.2"/>
-
+<xRange min="0.17016208668691202" max="0.23433790269489688"/>
+<yRange min="0.18055781250000005" max="0.20570312500000007"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -228,7 +227,7 @@
                 </port>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.665334537E-16">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.110223025E-16">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="152.0, 228.0">
                 </property>
@@ -329,7 +328,7 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="86.66666666666666, 225.0">
+                <property name="_location" class="ptolemy.moml.Location" value="48.66666666666666, 216.0">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -348,7 +347,7 @@
                 </property>
             </port>
             <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-                <property name="_location" class="ptolemy.moml.Location" value="134.0, 140.0">
+                <property name="_location" class="ptolemy.moml.Location" value="108.0, 145.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -372,7 +371,7 @@
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="235.3333282470703, 140.0">
+                <property name="_location" class="ptolemy.moml.Location" value="207.3333282470703, 146.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>

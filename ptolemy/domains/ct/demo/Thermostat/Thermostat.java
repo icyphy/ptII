@@ -125,11 +125,11 @@ public class Thermostat extends TypedCompositeActor{
         Transition ctrlTr1 = new Transition(ctrl, "ctrlTr1");
         ctrlInc.outgoingPort.link(ctrlTr1);
         ctrlDec.incomingPort.link(ctrlTr1);
-        ctrlTr1.setGuardExpression("output_S");
+        ctrlTr1.setGuardExpression("output_isPresent");
         // ctrlTr1.setInitEntry(true);
         SetRefinementVariable act0 =
             new SetRefinementVariable(ctrlTr1, "act0");
-        act0.expression.setExpression("state_V");
+        act0.expression.setExpression("state");
         act0.variableName.setExpression("Integrator.initialState");
         ResetRefinement act1 =
             new ResetRefinement(ctrlTr1, "act1");
@@ -137,11 +137,11 @@ public class Thermostat extends TypedCompositeActor{
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
-        ctrlTr2.setGuardExpression("output_S");
+        ctrlTr2.setGuardExpression("output_isPresent");
         //ctrlTr2.setInitEntry(true);
         SetRefinementVariable act2 =
             new SetRefinementVariable(ctrlTr2, "act2");
-        act2.expression.setExpression("state_V");
+        act2.expression.setExpression("state");
         act2.variableName.setExpression("Integrator.initialState");
         ResetRefinement act3 =
             new ResetRefinement(ctrlTr2, "act3");
