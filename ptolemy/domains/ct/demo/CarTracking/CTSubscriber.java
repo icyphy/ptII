@@ -1,4 +1,4 @@
-/* A subscriber class that also checks the car model.
+/* A subscriber class that generates events in CT domain.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -33,12 +33,14 @@ package ptolemy.domains.ct.demo.CarTracking;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.jspaces.TokenEntry;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.lib.jspaces.util.SpaceFinder;
+import ptolemy.domains.ct.kernel.CTEventGenerator;
 
 import net.jini.space.JavaSpace;
 import net.jini.core.lease.Lease;
@@ -50,19 +52,19 @@ import java.util.LinkedList;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// CarInformationSubscriber
+//// Subscriber
 /**
-A subscriber to the JavaSpaces for car information and do a sanity
-check. It outputs whether the data subscribed is reliable, and 
-the data recieved which are the force, velocity and position of
-another car.
+A subscriber to the JavaSpaces. The subscriber token is available at
+the iteration of execution. If there are more than one notification
+occurs in one iteration, only the latest notification is presented
+in the next iteration.
 
 @author Jie Liu
 @version $Id$
 */
 
-public class CarInformationSubscriber extends TypedAtomicActor
-    implements RemoteEventListener {
+public class CTSubscriber extends Source
+    implements RemoteEventListener, CTEventGenerator {
 
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -73,51 +75,20 @@ public class CarInformationSubscriber extends TypedAtomicActor
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public CarInformationSubscriber(TypedCompositeActor container, String name)
+    public CTSubscriber(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     	jspaceName = new Parameter(this, "jspaceName", 
                 new StringToken("JaveSpaces"));
         jspaceName.setTypeEquals(BaseType.STRING);
+
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
-        
-        correct = new TypedIOPort(this, "correct", false, true);
-        correct.setMultiport(false);
-        correct.setTypeEquals(BaseType.BOOLEAN);
-
-        force = new TypedIOPort(this, "force", false, true);
-        force.setMultiport(false);
-        force.setTypeEquals(BaseType.DOUBLE);
-
-        velocity = new TypedIOPort(this, "velocity", false, true);
-        velocity.setMultiport(false);
-        velocity.setTypeEquals(BaseType.DOUBLE);
-
-        position = new TypedIOPort(this, "position", false, true);
-        position.setMultiport(false);
-        position.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** Output for the correctness of subscribed data. Default is true.
-     */
-    public TypedIOPort correct;
-
-    /** Output for the force. Default is 0.0.
-     */
-    public TypedIOPort force;
-    
-    /** Output for the velocity. Default is 0.0.
-     */
-    public TypedIOPort velocity;
-
-    /** Output for the position. Default is 0.0.
-     */
-    public TypedIOPort position;
 
     /** The Java Space name. The default name is "JavaSpaces" of 
      *  type StringToken.
@@ -143,14 +114,9 @@ public class CarInformationSubscriber extends TypedAtomicActor
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
 	try {
-	    CarInformationSubscriber newobj =
-                (CarInformationSubscriber)super.clone(ws);
+	    CTSubscriber newobj = (CTSubscriber)super.clone(ws);
 	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
             newobj.entryName = (Parameter)newobj.getAttribute("entryName");
-            newobj.correct = (TypedIOPort)newobj.getPort("correct");
-            newobj.force = (TypedIOPort)newobj.getPort("force");
-            newobj.velocity = (TypedIOPort)newobj.getPort("velocity");
-            newobj.position = (TypedIOPort)newobj.getPort("position");
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -182,30 +148,6 @@ public class CarInformationSubscriber extends TypedAtomicActor
         // it as the initial condition
         TokenEntry entryTemplate = new TokenEntry(_entryName, 
                 null, null);
-        TokenEntry entry;
-        boolean ready = false;
-        while(!ready) { 
-            try {
-                entry = (TokenEntry)_space.readIfExists(
-                        entryTemplate, null, Long.MAX_VALUE);
-            }catch (Exception e) {
-                throw new IllegalActionException(this,
-                        "error reading space." +
-                        e.getMessage());
-            }
-            if(entry == null) {
-                System.err.println("The publisher is not ready. Try again...");
-                try {
-                    Thread.sleep(1000);
-                } catch(InterruptedException ex) {
-                    throw new IllegalActionException(this,
-                            "sleep interrupted. " + ex.getMessage());
-                }
-            } else {
-                ready = true;
-                _lastData = (ArrayToken)entry.token;
-            }
-        }
         // request for notification
         try {
             _eventReg = _space.notify(
@@ -220,67 +162,32 @@ public class CarInformationSubscriber extends TypedAtomicActor
         }
     }
 
+    /** Emit the notified event. If there
+     *  is no such events, do nothing.
+     */
+    public void emitCurrentEvents() throws IllegalActionException {
+        if(_hasNewToken) {
+            synchronized(_lock) {
+                output.send(0, _notifiedToken);
+                _hasNewToken = false;
+            }
+        }
+    }
+        
+    /** Return true if there is an event notified.
+     *  @return True if there is a new event notification 
+     *  in the last iteratoin.
+     */
+    public boolean hasCurrentEvent() {
+        return _hasNewToken;
+    }
+
     /** Fork a new thread to handle the notify event.
      */
     public void notify(RemoteEvent event) {
         NotifyHandler nh = new NotifyHandler(this, event);
         new Thread(nh).start();
-    }
-    
-    /** Always output the last set of subscribed data.
-     *  The new data only takes effect after postfire.
-     */
-    public void fire() throws IllegalActionException {
-        correct.send(0, new BooleanToken(_correct));
-        force.send(0, _lastData.getElement(1));
-        velocity.send(0, _lastData.getElement(2));
-        position.send(0, _lastData.getElement(3));
-    }
-    
-    /** Check whether the newly comed set of data is correct, 
-     *  if there is any.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if(_hasNewData) {
-            // grab a lock so that the the set of data is consistent.
-            double lastTimeStamp =
-                ((DoubleToken)_lastData.getElement(0)).doubleValue();
-            double lastF = 
-                ((DoubleToken)_lastData.getElement(1)).doubleValue();
-            double lastV = 
-                ((DoubleToken)_lastData.getElement(2)).doubleValue();
-            double lastP = 
-                ((DoubleToken)_lastData.getElement(3)).doubleValue();
-            
-            synchronized(_lock) {
-                // do the sanity check.
-                double currentTimeStamp = 
-                    ((DoubleToken)_currentData.getElement(0)).doubleValue();
-                double timeInterval = currentTimeStamp - lastTimeStamp;
-                double fovermiu = lastF/_miu;
-                double expt = Math.exp((-1.0) * _miu * timeInterval);
-                double computedVelocity = 
-                    (lastV - fovermiu) * expt + fovermiu;
-                double computedPosition = lastP +
-                    (1.0/_miu)*(lastV - fovermiu) * (1.0 - expt) +
-                    fovermiu * timeInterval;
-                double currentVelocity = 
-                    ((DoubleToken)_currentData.getElement(2)).doubleValue();
-                double currentPosition =
-                    ((DoubleToken)_currentData.getElement(3)).doubleValue();
-                if(Math.abs(currentVelocity - computedVelocity) < _eps &&
-                        Math.abs(currentPosition - computedPosition) < _eps) {
-                    _correct = true;
-                } else {
-                    _correct = false;
-                }
-                _lastData = _currentData;
-                _hasNewData = false;
-            }
-        }
-        correct.send(0, new BooleanToken(_correct));
-        return true;
-    }                    
+    }             
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -292,33 +199,19 @@ public class CarInformationSubscriber extends TypedAtomicActor
     private JavaSpace _space;
     
     // Indicating whether there's new data came in.
-    private boolean _hasNewData;
-    
-    // The correctness of the current outputs, which are the last set of 
-    // subscribed data.
-    private boolean _correct;
+    private boolean _hasNewToken = false;
 
     // The lock that the access of local variables are synchronized on.
     private Object _lock;
-  
-    // Last set of data.
-    private ArrayToken _lastData;
 
     // Current set of data.
-    private ArrayToken _currentData;
+    private ArrayToken _notifiedToken;
 
     // Used to identify the event registration
     private EventRegistration _eventReg;
     
     // Used to identify notification.
     private long _notificationSeq;
-    
-    // Constants in the model
-    // Friction coefficient
-    private final double _miu = 0.5;
-    
-    // error tolerance.
-    private final double _eps = 1e-4;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -359,8 +252,8 @@ public class CarInformationSubscriber extends TypedAtomicActor
                         System.out.println(getName() + 
                                 " read null from space");
                     }
-                    _currentData = (ArrayToken)entry.token;
-                    _hasNewData = true;
+                    _notifiedToken = (ArrayToken)entry.token;
+                    _hasNewToken = true;
                 }
             }
         }

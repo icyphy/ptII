@@ -52,6 +52,8 @@ TCL_SRCS =
 JSRCS = \
 	CarInformationPublisher.java \
 	CarInformationSubscriber.java \
+	CTSubscriber.java \
+	DERealTimeSubscriber.java \
 	RealTimePublisher.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
@@ -74,8 +76,6 @@ all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
-
-demo:
 
 depend:
 	@echo "no dependencies in this directory"

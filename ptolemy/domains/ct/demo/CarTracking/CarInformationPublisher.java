@@ -243,7 +243,7 @@ public class CarInformationPublisher extends TypedAtomicActor
                 _nextSamplingTime += 
                     ((DoubleToken)samplingPeriod.getToken()).doubleValue();
                 getDirector().fireAt(this, _nextSamplingTime);
-                Token[] tokens = new Token[3];
+                Token[] tokens = new Token[4];
                 if(!((BooleanToken)malfunctioning.getToken()).booleanValue()) {
                     tokens[0] = 
                         new DoubleToken(getDirector().getCurrentTime());
