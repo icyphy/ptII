@@ -314,6 +314,7 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.moml.filter \
 			ptolemy.vergil \
 			ptolemy.vergil.actor \
+			ptolemy.vergil.actor.lib \
 			ptolemy.vergil.basic \
 			ptolemy.vergil.debugger \
 			ptolemy.vergil.icon \
