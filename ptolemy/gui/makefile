@@ -53,10 +53,12 @@ JSRCS = \
 	CloseListener.java \
 	ComponentDialog.java \
 	GraphicalMessageHandler.java \
+	JTextAreaExec.java \
 	MessageHandler.java \
 	Query.java \
 	QueryListener.java \
 	StatusBar.java \
+	SwingWorker.java \
 	Top.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -96,6 +98,10 @@ install: jclass $(PTCLASSJAR)
 
 depend:
 	@echo "no dependencies in this directory"
+
+exec: jclass
+	@echo "Running JTextAreaExec demo"
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.gui.JTextAreaExec
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
