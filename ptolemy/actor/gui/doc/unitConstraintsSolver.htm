@@ -6,10 +6,70 @@
 </head>
 <body>
 <h1>Unit Constraints Solver</h1>
+This dialog is used to run the Unit Constraints solver on selected parts of the model.
+It can be started by right mouse-click on a model and selecting "UnitConstraints Solver".
+An example of the dialog is shown below.
 <p>
 <center>
-<img src="unitConstraintsSolver1.gif" alt="image of a port dialog">
+<img src="unitConstraintsSolver1.gif" alt="image of UnitsConstraint Solver">
 </center>
 </p>
+There are three different subpanels of the dialog.
+<br><br>
+<b>Members</b> - Provides the means to modifiy the members of the model that are analyzed by the solver.
+When the dialog is created the model is inspected to see if any actors, and/or relations
+are selected.
+If so, then those actors and links are used in the solution process.
+If none are selected then <i>all</i> of the actors and relations are used.
+The membership can be modified by selecting the desired actors and/or relations and
+then pressing the <b>Set To Selected</b> button on the Memebers panel.
+The current membership can be viewed by pressing the <b>Show Members</b> button which
+will cause the current members to be selected.
+<br><br>
+<b>Full Solver</b> - Interface to the full solver.
+Pressing the <b>Run</b> button causes the solver to run to completion on the members.
+The results are displayed in the panel below the <b>Run</b> button.
+The possible results are
+<ul>
+<li> No Solution - Basically, this means that there is an inconsistency somewhere.
+Use the Minimal Spanning Solver below to learn more about the causes and possible
+ways to fix them.
+<li> NonUnique Solution - There are an infinite number of solutions.
+Usually, this means that the model is not constrained enough.
+That is, there are some ports that need to have Units specified, or
+there are some actors that need to have Units constraints specified.
+<li> Unique Solution - There is only one solution and it is consistent.
+This usuallly means that the model is "correct" from a Units perspective.
+</ul>
+<br><br>
+<b>Minimal Spanning Solver</b> Interface to solver that runs in a mode that attempts
+to isolate inconsistencies.
+The solver is run multiple times, each on a subset of the members.
+In this mode the solver stops when an inconsistency is found.
+This produces a set of solutions, each presenting a different perspective on the
+inconsistencies in the model.
+The results of running the minimal spanning solver are displayed in the panel below
+the <b>Run</b> button.
+There are two types of results.
+<ul>
+<li> NoSolution &ltRelatioName&gt &ltUnits&gt - This says that an inconsistency
+was found on the specified relation nad that a possible fix would be inserting
+an actor on the relation that would makes the conversion specified by the Units.
+<li> NonUnique
+</ul>
+<h2>Annotating the model</h2>
+The results of running the minimal spanning solver can be futher investigated 
+by selecting the result.
+Doing so will cause the model to be annotated in a way that gives a visual
+presentation of the result.
+For example, shown below is the model after selecting one of the results.
+<p>
+<center>
+<img src="unitConstraintsSolver2.gif" alt="image of UnitsConstraint Solver">
+</center>
+</p>
+The relations of the model are now colored so that green indicates the Units
+constraints of the relation are satisfied, and magenta indicates that the Units
+constraints of the relation are not satisfied.
 </body>
 </html>

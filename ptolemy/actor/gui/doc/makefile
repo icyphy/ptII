@@ -58,7 +58,8 @@ OTHER_FILES_TO_BE_JARED = \
 	unitConstraintsDialog.htm \
 	unitConstraintsDialog1.gif \
 	unitConstraintsSolver.htm \
-	unitConstraintsSolver1.gif
+	unitConstraintsSolver1.gif \
+	unitConstraintsSolver2.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
