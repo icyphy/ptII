@@ -761,6 +761,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/FileReader.xml" \
 	    || [string range $file 0 10] == "compat4/JAI" \
 	    || "$file" == "compat4/MobileModelTest.xml" \
+	    || "$file" == "compat4/ModelReference.xml" \
 	    || "$file" == "compat4/ModelReference3.xml" \
 	    || "$file" == "compat4/ModelReference4.xml" \
 	    || "$file" == "compat4/MovieReader.xml" \
