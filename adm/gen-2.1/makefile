@@ -667,7 +667,7 @@ remote1doc:
 	@echo "# the website link checker will find files in doc/codeDoc"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) JDOCFLAGS="-author -version -J-Xmx132m -breakiterator"")
+	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) JDOCFLAGS="-author -version -J-Xmx132m -breakiterator")
 
 # Remove the JavaScope instrumentation
 remote1build:
