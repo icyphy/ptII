@@ -100,10 +100,11 @@ public class State extends ComponentEntity {
 	if(icon == null) {
 	    icon = new NonpersistentProcessedString(this, "iconDescription");
 	}
-	icon.setInstruction("graphml");
-	icon.setString("<xmlgraphic>\n" + 
-		"<ellipse coords=\"0 0 40 40\" fill=\"white\"/>\n" +
-		"</xmlgraphic>\n");
+        // FIXME should be 'svg'
+	icon.setInstruction(null);
+	icon.setString("<svg>\n" + 
+		"<circle cx=\"0\" cy=\"0\" r=\"4o\" style=\"fill:white\"/>\n" +
+		"</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
