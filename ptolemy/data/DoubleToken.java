@@ -27,14 +27,16 @@
 
 package pt.data;
 
+import pt.kernel.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
 /** 
-A token that contains a double precision number.
-
-@author Yuhong Xiong
-$Id$
-*/
+ * A token that contains a double precision number.
+ * 
+ * @author Yuhong Xiong, Neil Smyth
+ * $Id$
+ */
 public class DoubleToken extends ScalarToken {
 
     /** Construct a token with double 0.0.
@@ -52,16 +54,139 @@ public class DoubleToken extends ScalarToken {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+
+    /** Add the value of the argument Token to this Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion. 
+     *  @param a The token to add to this Token
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   added to this Tokens value in a lossless fashion.
+     */
+    public Token add(Token a) throws IllegalActionException {
+        if (a instanceof StringToken) {
+            String result = toString() + a.toString();
+            return new StringToken(result);
+        } /*else if (a instanceof ComplexToken) {
+            return a.add(this);
+        }*/ else if (a instanceof ScalarToken) {
+            _value = _value + ((DoubleToken)a).doubleValue();
+            return this;
+        } else {
+            String str = " between " + this.getClass().getName() + " and ";
+            str = str + a.getClass().getName();
+            throw new IllegalActionException("add method not supported" + str);
+        }
+    }
+     
+    /** Subtract the value of the argument Token from this Token. Type 
+     *  resolution also occurs here, with the returned Token type chosen to 
+     *  achieve a lossless conversion. 
+     *  @param a The token to subtract to this Token
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   subtracted from this Tokens value in a lossless fashion.
+     */
+    public Token subtract(Token a) throws IllegalActionException {
+        if (a instanceof ScalarToken) {
+            _value = _value - ((DoubleToken)a).doubleValue();
+            return this;
+        } /*else if (a instanceof ComplexToken) {
+            return a.subtract(this);
+        }*/  else {
+            String str = "supported between " + this.getClass().getName();
+            str = str + " and " + a.getClass().getName();
+            throw new IllegalActionException("subtract method not " + str);
+        }
+    }
+  
+    /** Multiply the value of this Token with the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param a The token to multiply this Token by
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   multiplied by this Tokens value in a lossless fashion.
+     */
+    public Token multiply(Token a) throws IllegalActionException {
+         if (a instanceof ScalarToken) {
+            _value = _value * ((DoubleToken)a).doubleValue();
+            return this;
+        } /*else if (a instanceof ComplexToken) {
+            return a.multiply(this);
+        }*/ else {
+            String str = "supported between " + this.getClass().getName();
+            str = str + " and " + a.getClass().getName();
+            throw new IllegalActionException("multiply method not " + str);
+        }
+    }
+   
+    /** Divide the value of this Token with the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param a The token to divide this Token by
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   divide this Tokens value by in a lossless fashion.
+     */
+    public Token divide(Token a) throws IllegalActionException {
+        if (a instanceof ScalarToken) {
+            _value = _value / ((DoubleToken)a).doubleValue();
+            return this;
+        /*} else if (a instanceof ComplexToken) {
+            return a.divide(this);
+        }*/ 
+        } else {
+            String str = "supported between " + this.getClass().getName();
+            str = str + " and " + a.getClass().getName();
+            throw new IllegalActionException("divide method not " + str);
+        }
+    }
+
+  
+    /** Divide the value of this Token with the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param a The token to divide this Token by
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   divide this Tokens value by in a lossless fashion.
+     */
+    public Token modulo(Token a) throws IllegalActionException {
+        if (a instanceof ScalarToken) {
+            _value = _value % ((DoubleToken)a).doubleValue();
+            return this;
+        } else {
+            String str = "supported between " + this.getClass().getName();
+            str = str + " and " + a.getClass().getName();
+            throw new IllegalActionException("modulo method not " + str);
+        }
+    }
+
+    /** Test the values of this Token and the argument Token for equality.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param a The token to divide this Token by
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   compared this Tokens value.
+     */
+    public BooleanToken equality(Token a) throws IllegalActionException {
+        if (a instanceof ScalarToken) {
+            if (_value == ((DoubleToken)a).doubleValue()) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            } 
+        }
+        /*} else if (a instanceof ComplexToken) {
+            return a.equality(this);
+        }*/  else {
+            String str = "supported between " + this.getClass().getName();
+            str = str + " and " + a.getClass().getName();
+            throw new IllegalActionException("modulo method not " + str);
+        }
+    }
+
+
     /** Set the value of the token to be the specified value.
      */
     public void setValue(double value) {
 	_value = value;
-    }
-
-    /** Return the value in the token as a byte.
-     */
-    public byte byteValue() {
-	return (byte)_value;
     }
 
     // Return a reference to a Complex. The real part of the Complex
@@ -76,25 +201,7 @@ public class DoubleToken extends ScalarToken {
     public double doubleValue() {
 	return _value;
     }
-
-    // Return a reference to a Fix.
-    // FIXME: finish after the Fix class is available.
-
-//    public Fix fixValue() {
-//    }
-
-    /** Return the value in the token as an int.
-     */
-    public int intValue() {
-	return (int)_value;
-    }
-
-    /** Return the value in the token as a long integer.
-     */
-    public long longValue() {
-	return (long)_value;
-    }
-
+   
     /** Set the value in the token to the value represented by the
 	specified string.
 	@exception IllegalArgumentException The string does not contain
@@ -108,6 +215,13 @@ public class DoubleToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
+
+    /** Set the value in the token 
+     *  @param d The new value for the token 
+    public void setValue(double d) {
+        _value = d;
+    }
+
 
     /** Create a string representation of the value in the token.
      */
