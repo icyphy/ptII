@@ -111,11 +111,11 @@ public class JVMTableau extends Tableau {
 	    // Button to request GC.
 	    JButton GCButton = new JButton("Request Garbage Collection");
 	    GCButton.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent event) {
-			System.gc();
-			updateMemoryStatistics(memoryArea);
-		    }
-		});
+                public void actionPerformed(ActionEvent event) {
+                    System.gc();
+                    updateMemoryStatistics(memoryArea);
+                }
+            });
 	    component.add(GCButton);
 
 	    // Display system properties
@@ -127,8 +127,8 @@ public class JVMTableau extends Tableau {
 	    while (propertyNames.hasMoreElements()) {
 		String propertyName = (String)propertyNames.nextElement();
 		propertyBuffer.append(propertyName + " = "
-				      + properties.getProperty(propertyName)
-				      + lineSeparator);
+                        + properties.getProperty(propertyName)
+                        + lineSeparator);
 	    }
             final JTextArea messageArea =
 		new JTextArea(propertyBuffer.toString(), 20, 100);
@@ -206,12 +206,12 @@ public class JVMTableau extends Tableau {
 	long freeMemory = runtime.freeMemory()/1024;
 
 	textArea.setText("Memory: "
-			 + totalMemory + "K Free: "
-			 + freeMemory + "K ("
-			 + Math.round( (((double)freeMemory)/
-					((double)totalMemory))
-				       * 100.0)
-			 + "%)");
+                + totalMemory + "K Free: "
+                + freeMemory + "K ("
+                + Math.round( (((double)freeMemory)/
+                        ((double)totalMemory))
+                        * 100.0)
+                + "%)");
     }
 }
 
