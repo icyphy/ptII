@@ -166,16 +166,16 @@ test CompositeActor-6.1 {Invoke all the action methods} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
     list $output
-} {{Invoking preinitialize
-Invoking initialize
-Invoking prefire
+} {{Called preinitialize()
+Called initialize()
+Called prefire()
 Prefire returns (from director) true
-Invoking fire
-Invoking postfire
+Called fire()
+Called postfire()
 Postfire returns (from director) true
-Invoking wrapup
-Terminate
-Requesting stop
+Called wrapup()
+Called terminate()
+Called stop()
 }}
 
 ######################################################################
