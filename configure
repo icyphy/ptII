@@ -2045,7 +2045,26 @@ fi;
 	echo "$as_me:$LINENO: result: $CAL_DIR" >&5
 echo "${ECHO_T}$CAL_DIR" >&6
 	# We found cal
-	PTCAL_DIR=cal
+	echo "$as_me:$LINENO: checking for saxon7.jar (used by cal)" >&5
+echo $ECHO_N "checking for saxon7.jar (used by cal)... $ECHO_C" >&6
+	if test -f "$CAL_DIR/saxon7.jar"; then
+	   echo "$as_me:$LINENO: result: $CAL_DIR/saxon7.jar" >&5
+echo "${ECHO_T}$CAL_DIR/saxon7.jar" >&6
+	   PTCAL_DIR=cal
+	else
+           { echo "$as_me:$LINENO: WARNING: Failed to find $CAL_DIR/saxon7.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demosntrations  in ptolemy/cal" >&5
+echo "$as_me: WARNING: Failed to find $CAL_DIR/saxon7.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demosntrations  in ptolemy/cal" >&2;}
+	   # Note that we don't substitute in the ${PTII} here
+	   CAL_DIR='${PTII}/lib/'
+        fi
     else
         { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/ptCal.jar
     ptCal.jar should be present in your distribution.
