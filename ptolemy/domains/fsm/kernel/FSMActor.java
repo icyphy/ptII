@@ -386,7 +386,7 @@ public class FSMActor extends CompositeEntity
      * commit identifiers, even those not contained by the finite
      * state machine.
      * @return A list of variables.
-     * @see ptolemy.domains.fsm.FSMDirector#getModifiedVariables()
+     * @see FSMDirector#getModifiedVariables()
      */
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
