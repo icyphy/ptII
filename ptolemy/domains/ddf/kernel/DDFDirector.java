@@ -108,8 +108,9 @@ import ptolemy.kernel.util.Workspace;
    else if (D != 0) fire minimax(D)
    else deadlocked.
    </pre>
-   The function "minimax(D)" returns the a subset of D with the smallest
-   maximum number of tokens on their output paths.
+   The function "minimax(D)" returns a subset of D with the smallest maximum 
+   number of tokens on their output channels which satisfy the demand of 
+   destination actors.
    <p>
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
 
@@ -807,23 +808,26 @@ public class DDFDirector extends Director {
                     }
                     if (farReceiver.size() >= tokenConsumptionRate) {
                         deferrable = true;
+                        
+                        // Here we find the maximum of the token numbers for 
+                        // the actor's output channels which satisfy the demand 
+                        // of destination actors while checking deferrability.
+                        // The advantage of this is that it only adds a small
+                        // additional operation for now. If later on we need
+                        // this information, we don't need to do traversing
+                        // again. The disadvantage is that 1) we can return
+                        // from this method as soon as deferrable == true if we
+                        // don't perform this additional operation. 2) We will
+                        // not need this information if it turns out not all
+                        // enabled actors are deferrable. Therefore another
+                        // approach is to perform this operation only when 
+                        // needed, i.e., when all enabled actor are deferrable.
                         if (farReceiver.size() > maxSize) {
                             maxSize = farReceiver.size();
                         }
                     }
 
-                    // Here we find the maximum number of tokens in all
-                    // receivers at the same time checking deferrability.
-                    // The advantage of this is that it only adds a small
-                    // additional operation for now. If later on we need
-                    // this information, we don't need to do traversing
-                    // again. The disadvantage is that 1) we can return
-                    // from this method as soon as deferrable = true if we
-                    // don't perform this additional operation. 2) We will
-                    // not need this information if it turns out not all
-                    // enabled actors are deferrable. Therefore another
-                    // approach is to perform this operation only when needed,
-                    // i.e., when all enabled actor are deferrable.
+                    
                     
                 }
         }
