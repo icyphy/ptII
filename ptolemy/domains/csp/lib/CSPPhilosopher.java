@@ -53,12 +53,43 @@ both forks next to him. A Philosopher thinks for a while, then tries
 to eat. When he suceeds in obtaining both forks he eats for a while, 
 then puts both forks back on the table and continues thinking.
 <p>
+Due to the rendezvous nature of communication in the CSP domain, a 
+philosopher stalls if it tries to get a chopstick but cannot. When 
+it acquires the chopstick, it eats for a while and then sends a 
+message to the chopstick to say that it is finished using it.
+Note this actor has been slowed down with Thread.sleep() statements to 
+mimic the eating nature of the philosophers in real time.
+<p>
+This actor is aparameterized by three parameters: "eatingRate" which 
+controls the distribution of the eating times, and "thinkingRate" 
+which controls the distribution of the thinking times. Both these 
+rates characterize a uniform distribution between 0 and the rate.
+<p>
 @author Neil Smyth
 @version 
 
  */
 public class CSPPhilosopher extends CSPActor {
     
+    /** Construct a CSPPhilosopher in the specified container with the 
+     *  specified name.  The name must be unique within the container or 
+     *  an exception is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown. 
+     *  The actor is created with two input ports and two output 
+     *  ports, all of width one. The input ports are called "leftIn" 
+     *  and "rightIn", and similarly, the output ports are called "leftOut" 
+     *  and "rightOut".
+     *  <p>
+     *  The default values of the eatingRate and thinkingRate 
+     *  parameters are 1.0.
+     *  <p>
+     *  @param container The CompositeActor that contains this actor.
+     *  @param name The actor's name.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name argument coincides with
+     *   an entity already in the container.
+     */
     public CSPPhilosopher(CompositeActor cont, String name)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
@@ -77,7 +108,16 @@ public class CSPPhilosopher extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    public void fire() {
+    /** Executes the code in this actor. This actor randomly chooses 
+     *  whether to grab the chopstick to the left or right of it first. 
+     *  When it has one chopstick, it then tries to grab the other 
+     *  chopstick beside it. 
+     *  This process mimics the eating action of the philosopher twenty 
+     *  times, and then finishes normally. 
+     *  @exception IllegalActionException If an error occurs during 
+     *   executing the process.
+     */
+    public void fire() throws IllegalActionException {
         Random rand = new Random();
         Token t = new IntToken(0);
         double interval = 0.0;
@@ -132,12 +172,12 @@ public class CSPPhilosopher extends CSPActor {
                 count++;
             }
             return;
-        } catch (IllegalActionException ex) {
-            System.out.println(getName() + ": invalid get, exiting...");
         } catch (NoTokenException ex) {
-            System.out.println(getName() + ": invalid get, exiting...");
+            throw new IllegalActionException(getName() + ": cannot " +
+                    "get token.");
         } catch (InterruptedException ex) {
-            System.out.println(getName() + ": invalid get, exiting...");
+            throw new IllegalActionException(getName() + ": interrupted " +
+                    "while sleeping.");
         }
     }
 
@@ -168,17 +208,21 @@ public class CSPPhilosopher extends CSPActor {
         }
     }
 
-
-    public IOPort leftIn;
-    public IOPort leftOut;
-    public IOPort rightIn;
-    public IOPort rightOut;
-
+    // Variables that are used by the applet to get the state of 
+    // the philosopher.
     public boolean gotLeft = false;
     public boolean gotRight = false;
     public boolean waitingLeft = false;
     public boolean waitingRight = false;
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    private IOPort leftIn;
+    private IOPort leftOut;
+    private IOPort rightIn;
+    private IOPort rightOut;
+    
     private LinkedList _listeners;
     private Parameter _eating;
     private Parameter _thinking;
