@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/hde
 
-DIRS =		lib
+DIRS =		kernel lib
 
 # Root of Ptolemy II directory
 ROOT =		../../..
