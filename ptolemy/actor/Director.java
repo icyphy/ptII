@@ -100,7 +100,7 @@ Thus, the prefire() method repeatedly performs mutations and initializations
 until there are no more mutations to perform.
 
 @author Mudit Goel, Edward A. Lee
-@version @(#)Director.java	1.37	09/11/98
+@version: $Id$
 */
 public class Director extends NamedObj implements Executable {
 
