@@ -58,61 +58,69 @@ import java.io.PrintStream;
 //////////////////////////////////////////////////////////////////////////
 //// CIDirector
 /**
-Director of the component interaction(CI) domain. A CIDirector governs the
-execution of a CompositeActor with extended CORBA Event Service(ES) semantics.
-<p>
-CORBA ES has two basic models: push model and pull model. In a push model, the
-supplier decides when the data are sent; the consummer dosn't take any
-initiative and just waits for the data. In a pull model, the consummer decides
-when to go for data; the supplier dosn't take any initiative and just waits for
-those reqesting the data. In a CORBA ES model, there could be four kinds of
-components: event driven component(push input/push output), demand driven
-component(pull input/pull output), queueing component(push input/pull output),
-and active agent component(pull input/push output).
-<p>
-The CI domain doesn't aim for an implementation of CORBA ES. It abstracts the
-push/pull semantics, and creats an envionment to simulate different kinds of
-interaction among components in a model.
-<p>
-In the CI domain, a port contains a push/pull attribute. According to the input
-and output configuration, an actor can be sorted into four kinds as a
-component in CORBA ES. An actor with push output may trigger the actor
-receiving data from it to fire; an actor with pull input may pull the actor
-providing data to it to fire. An actor with a push output may not be connected
-to an actor with pull input directly(???)
-<p>
-An actor with pull input/push output, a source actor with push output, or
-a sink actor with pull input has to be executed by a single thread, otherwise
-it is a dead component in the model. This kind of actors is referred to active
-actors. The CI director creats a thread (an instance of ActiveActorManager) for
-each active actor.
-<p>
-In the CI domain, there are two kinds of threads: the director thread and the
-active actor thread. The director thread govens the execution of unactive
-actors. Active actors can register to the CI director to fire an unactive actor
-via _addAsyncPushedActor(Actor actor) or _requestAsyncPull(Actor actor) method.
-<p>
-The CI director maintains several lists: the _asyncPushedActors list for actors
-with push input and are trigged by active actors; the _asyncPulledActors
-list for actors pulled by active actors; the _actorsToFire list for actors ready
-to fire, including actors added by the director thread directly and actors from
-the _asyncPulledActors and _asyncPushedActors list.
-<p>
-Input ports in a CI model contain instances of CIReceiver. When a token is put
-into a CIReceiver, that receiver check whether the port is push or pull, and
-whether the current thread equals to the director thread. If it is a push port
-and the current thread equals to the director thread, the director will
-add the actor contains the port to _actorsToFire list. If it is a push port
-and the current thread doesn't equal to the director thread, the active actor
-thread will add the actor to _asyncPushedactors list. If it is a pull port,
-the current thread has to equal to the director thread. The director will check
-whether the actor which contains the port has been pulled. if so and the prefire
-is true, the director will remove this actor from _asyncPulledActors list and
-add it to _actorToFire list; if the prefire return false, the director then
-register actors providing data to this actor to be fired.
-<p>
-Currently this director does not properly deal with cooperating with other
-domains.
+
+Director of the component interaction(CI) domain. A CIDirector governs
+the execution of a CompositeActor with extended CORBA Event
+Service(ES) semantics.
+
+<p> CORBA ES has two basic models: push model and pull model. In a
+push model, the supplier decides when the data are sent; the consumer
+doesn't take any initiative and just waits for the data. In a pull
+model, the consumer decides when to go for data; the supplier doesn't
+take any initiative and just waits for those requesting the data. In a
+CORBA ES model, there could be four kinds of components: event driven
+component(push input/push output), demand driven component(pull
+input/pull output), queueing component(push input/pull output), and
+active agent component(pull input/push output).
+
+<p> The CI domain doesn't aim for an implementation of CORBA ES. It
+abstracts the push/pull semantics, and creates an environment to
+simulate different kinds of interaction among components in a model.
+
+<p> In the CI domain, a port contains a push/pull attribute. According
+to the input and output configuration, an actor can be sorted into
+four kinds as a component in CORBA ES. An actor with push output may
+trigger the actor receiving data from it to fire; an actor with pull
+input may pull the actor providing data to it to fire. An actor with a
+push output may not be connected to an actor with pull input
+directly(???)
+
+<p> An actor with pull input/push output, a source actor with push
+output, or a sink actor with pull input has to be executed by a single
+thread, otherwise it is a dead component in the model. This kind of
+actors is referred to active actors. The CI director creates a thread
+(an instance of ActiveActorManager) for each active actor.
+
+<p> In the CI domain, there are two kinds of threads: the director
+thread and the active actor thread. The director thread governs the
+execution of unactive actors. Active actors can register to the CI
+director to fire an unactive actor via _addAsyncPushedActor(Actor
+actor) or _requestAsyncPull(Actor actor) method.
+
+<p> The CI director maintains several lists: the _asyncPushedActors
+list for actors with push input and are trigged by active actors; the
+_asyncPulledActors list for actors pulled by active actors; the
+_actorsToFire list for actors ready to fire, including actors added by
+the director thread directly and actors from the _asyncPulledActors
+and _asyncPushedActors list.
+
+<p> Input ports in a CI model contain instances of CIReceiver. When a
+token is put into a CIReceiver, that receiver check whether the port
+is push or pull, and whether the current thread equals to the director
+thread. If it is a push port and the current thread equals to the
+director thread, the director will add the actor contains the port to
+_actorsToFire list. If it is a push port and the current thread
+doesn't equal to the director thread, the active actor thread will add
+the actor to _asyncPushedActors list. If it is a pull port, the
+current thread has to equal to the director thread. The director will
+check whether the actor which contains the port has been pulled. if so
+and the prefire is true, the director will remove this actor from
+_asyncPulledActors list and add it to _actorToFire list; if the
+prefire return false, the director then register actors providing data
+to this actor to be fired.
+
+<p> Currently this director does not properly deal with cooperating
+with other domains.
 
 @author Xiaojun Liu, Yang Zhao
 @version $Id$
@@ -159,8 +167,8 @@ public class CIDirector extends Director {
     ////                         public methods                    ////
 
     /** Check the _asyncPushedActors and _asyncPulledActors lists. For
-     *  asynchronouse pushed actors, add them to the _actorsToFire list. For
-     *  asynchronouse pulled actors, if its prefire returns true, add it to
+     *  asynchronous pushed actors, add them to the _actorsToFire list. For
+     *  asynchronous pulled actors, if its prefire returns true, add it to
      *  the _actorsToFire list, otherwise, request the actors providing data to
      *  it to be fired.
      *  <p>Fire all the actors ready to be fired in the _actorsToFire list.
@@ -234,7 +242,7 @@ public class CIDirector extends Director {
     }
 
     /** Initialize the model controlled by this director. For each actor deeply
-     *  contained by this director, check if it is an active actor. Creat
+     *  contained by this director, check if it is an active actor. Create
      *  a thread (an instance of ActiveActorManager) for each active actor and
      *  start it.
      *  <p>
@@ -527,7 +535,7 @@ public class CIDirector extends Director {
     }
 
     /** Handle the pull request from the given actor. Add actors providing data
-     *  to the given actor to the asychronously pulled actor list. Wake up the
+     *  to the given actor to the asynchronously pulled actor list. Wake up the
      *  director thread if it is waiting.
      *
      */
@@ -590,7 +598,7 @@ public class CIDirector extends Director {
     /** The CI director thread. */
     protected Thread _directorThread;
 
-    /** Interval between itrations of an actor. */
+    /** Interval between iterations of an actor. */
     protected long _interval;
 
     /** Flag that indicates that a stop has been requested. */
@@ -625,7 +633,7 @@ public class CIDirector extends Director {
         return (!outputIsPush && (!hasInput || !inputIsPush));
     }
 
-    //get the next actor from the ashnchronously pulled actor list.
+    //get the next actor from the asynchronously pulled actor list.
     //@return the next actor.
     private synchronized Actor _nextAsyncPulledActor() {
         Actor result = null;
@@ -635,7 +643,7 @@ public class CIDirector extends Director {
         return result;
     }
 
-    //get the next actor from the ashnchronously pushed actor list.
+    //get the next actor from the asynchronously pushed actor list.
     //@return the next actor.
     private synchronized Actor _nextAsyncPushedActor() {
         if (_asyncPushedActors.size() > 0)

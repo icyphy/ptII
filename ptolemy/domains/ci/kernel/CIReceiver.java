@@ -55,7 +55,7 @@ whether the current thread equals to the director thread. If it is a push port
 and the current thread equals to the director thread, the director will
 add the actor contains the port to _actorsToFire list. If it is a push port
 and the current thread doesn't equal to the director thread, the active actor
-thread will add the actor to _asyncPushedactors list. If it is a pull port,
+thread will add the actor to _asyncPushedActors list. If it is a pull port,
 the current thread has to equal to the director thread. The director will check
 whether the actor which contains the port has been pulled. if so and the prefire
 is true, the director will remove this actor from _asyncPulledActors list and
