@@ -154,21 +154,21 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Initialize the model controlled by this director.  This
+    /** Preinitialize the model controlled by this director.  This
      *  subclass overrides the base class to initialize the number of
-     *  running threads before creating individual threads for all the
-     *  actors.
+     *  running threads before proceeding with preinitialization of
+     *  the model.
      *
      *  @exception IllegalActionException If creating an actor thread
      *  throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void preinitialize() throws IllegalActionException {
  	_notDone = true;
 	_activeActorCount = 0;
         _blockedActorCount = 0;
 	_actorThreadList = new LinkedList();
 	_newActorThreadList = new LinkedList();
-        super.initialize();
+        super.preinitialize();
     }
 
     /** Initialize the given actor.  This class overrides the base
