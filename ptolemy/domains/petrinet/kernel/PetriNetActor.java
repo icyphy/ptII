@@ -56,20 +56,20 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     public PetriNetActor() {
         super();
         getMoMLInfo().className =
-                "ptolemy.domains.petrinet.kernel.PetriNetActor";
+            "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
     public PetriNetActor(Workspace workspace) {
 	super(workspace);
         getMoMLInfo().className =
-                 "ptolemy.domains.petrinet.kernel.PetriNetActor";
+            "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
     public PetriNetActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         getMoMLInfo().className =
-                 "ptolemy.domains.petrinet.kernel.PetriNetActor";
+            "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
 
@@ -93,10 +93,10 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
 
 
-   public ComponentRelation newRelation(String name)
-         throws NameDuplicationException {
-         try {
-             _workspace.getWriteAccess();
+    public ComponentRelation newRelation(String name)
+            throws NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
 
             TypedIORelation rel = new TypedIORelation(this, name);
             return rel;
@@ -110,7 +110,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
         finally {
             _workspace.doneWriting();
         }
-      }
+    }
 
 
     public void fire() throws IllegalActionException {
@@ -118,7 +118,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
     }
 
-   public Director getDirector() {
+    public Director getDirector() {
         CompositeEntity container = (CompositeEntity)getContainer();
         if (container instanceof CompositeActor) {
             return ((CompositeActor)container).getDirector();
@@ -147,7 +147,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     }
 
 
-   public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException {
         getDirector().initialize(this);
     }
 
@@ -178,7 +178,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
 
 
-   public int iterate(int count) throws IllegalActionException {
+    public int iterate(int count) throws IllegalActionException {
 	int n = 0;
 	while (n++ < count) {
 	    if (prefire()) {
@@ -314,7 +314,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
 
 
-       public void wrapup() throws IllegalActionException {
+    public void wrapup() throws IllegalActionException {
         //Iterator inputPorts = inputPortList().iterator();
         //while (inputPorts.hasNext()) {
         //    TypedIOPort inport = (TypedIOPort)inputPorts.next();

@@ -104,24 +104,24 @@ public class PetriNetDirector extends Director {
      */
 
 
-   public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
 
-     int i = 0;
+        int i = 0;
 
-     Nameable container = getContainer();
-     if (container instanceof NamedObj)
-           System.out.println("the top container is" + container.getFullName());
+        Nameable container = getContainer();
+        if (container instanceof NamedObj)
+            System.out.println("the top container is" + container.getFullName());
 
-     Transition nextTransition = _chooseTransition();
-     while (nextTransition != null) {
-         i++;
-         System.out.println("_"+i+
-                   "th firing __"+nextTransition.getFullName());
-         nextTransition.fire();
-         System.out.println("___________ start to choose next transition");
-         nextTransition = _chooseTransition();
-     }
-   }
+        Transition nextTransition = _chooseTransition();
+        while (nextTransition != null) {
+            i++;
+            System.out.println("_"+i+
+                    "th firing __"+nextTransition.getFullName());
+            nextTransition.fire();
+            System.out.println("___________ start to choose next transition");
+            nextTransition = _chooseTransition();
+        }
+    }
 
 
 
@@ -137,15 +137,15 @@ public class PetriNetDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
- /** The method first accumulates all the enabled transitions, and
-  * then randomly choose one to fire.
-  */
+    /** The method first accumulates all the enabled transitions, and
+     * then randomly choose one to fire.
+     */
 
     private Transition _chooseTransition()  throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors =
-                    ((CompositeActor)container).deepEntityList().iterator();
+                ((CompositeActor)container).deepEntityList().iterator();
 
             LinkedList readyTransitionList = new LinkedList();
             int i = 0;
@@ -167,7 +167,7 @@ public class PetriNetDirector extends Director {
                 System.out.print(i + "  transitions ready in choosing");
                 System.out.println(" transitions----------");
                 java.util.Random generator = new
-                java.util.Random(System.currentTimeMillis());
+                    java.util.Random(System.currentTimeMillis());
                 int j = generator.nextInt(i);
                 Object chosenTransition = readyTransitionList.get(j);
                 if(chosenTransition instanceof Transition)
@@ -185,8 +185,8 @@ public class PetriNetDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-   // private we have to set the current state here
-   // we also need the initial state, which is the places with markings.
+    // private we have to set the current state here
+    // we also need the initial state, which is the places with markings.
 
 
 }

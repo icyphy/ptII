@@ -90,52 +90,52 @@ public class Place extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-  /** getMarking() is to get the _currentMarking of the place */
+    /** getMarking() is to get the _currentMarking of the place */
 
     public int getMarking() {
         return _currentMarking;
     }
-  /** getTemporaryMarking() is to get the temporaryMarking of the place.
-      temporaryMarking is used for checking whether the _currentMarking
-      of the place is bigger than the sum of all links between the place
-      and a transition. TemporaryMarking is used in Transition.prefire.
-   */
+    /** getTemporaryMarking() is to get the temporaryMarking of the place.
+        temporaryMarking is used for checking whether the _currentMarking
+        of the place is bigger than the sum of all links between the place
+        and a transition. TemporaryMarking is used in Transition.prefire.
+    */
 
     public int getTemporaryMarking() {
         return _temporaryMarking;
     }
 
-   /** increaseMarking() is to increase the _currentMarking by i */
+    /** increaseMarking() is to increase the _currentMarking by i */
     public void increaseMarking(int i) {
-         _currentMarking = _currentMarking + i;
+        _currentMarking = _currentMarking + i;
     }
 
     /** decreaseMarking() is to decrease the _currentMarking by i */
     public void decreaseMarking(int i) {
-         _currentMarking = _currentMarking - i;
+        _currentMarking = _currentMarking - i;
     }
 
     /** decreaseTemporaryMarking() is to decrease the _tempoararyMarking by i */
     public void decreaseTemporaryMarking(int i) {
-         _temporaryMarking = _temporaryMarking - i;
+        _temporaryMarking = _temporaryMarking - i;
     }
 
     /** setTemporaryMarking() is to set the _tempoararyMarking to i */
     public void setTemporaryMarking(int i) {
-         _temporaryMarking = i;
+        _temporaryMarking = i;
     }
 
 
     /** setTemporaryMarking() is to set the _currentMarking to i */
     public void setMarking(int i) {
-         _currentMarking = i;
+        _currentMarking = i;
     }
 
     public void printMarking() {
         System.out.println("the current marking is " + _currentMarking);
     }
 
-   /** Set the current marking equal to the initial marking.
+    /** Set the current marking equal to the initial marking.
      *  @exception IllegalActionException If the initialMarking parameter
      *   throws it.
      */
@@ -163,7 +163,7 @@ public class Place extends Transformer {
     // Current marking.
     private int _currentMarking = 0;
     private int _temporaryMarking = 0;
-           // for dealing with multiple arcs between a place and a transition
+    // for dealing with multiple arcs between a place and a transition
 
 
 
