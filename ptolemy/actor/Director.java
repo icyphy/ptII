@@ -650,7 +650,7 @@ public class Director extends Attribute implements Executable {
      *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
-     *  @see IOPort.transferInputs
+     *  @see IOPort#transferInputs
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         return port.transferInputs();
@@ -664,7 +664,7 @@ public class Director extends Attribute implements Executable {
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
-     *  @see IOPort.transferOutputs
+     *  @see IOPort#transferOutputs
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         return port.transferOutputs();
