@@ -43,76 +43,67 @@ reference can be null.
   this work fall within the scope of 17 U.S.C. A7 105. <P>
 
 @version $Id$
-@see classname
-@see full-classname */
+
+*/
+
 public class NamedObj {
-    /** Constructor with no arguments - Set the name to empty string
-     */	
+    /** Construct an object with an empty string as its name. */	
     public NamedObj() {
         this("");
     }
 
-    /** Constructor with 1 argument - Set the name
-     */	
-    public NamedObj(String newName) {
+    /** Construct an object with the given name. */	
+    public NamedObj(String name) {
         super();
-	setName(newName);
+	setName(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Get the name of the object
-     */	
+    /** Get the name of the object. */	
     public String getName() {
         return _name;
     }
 
-   /** Set the name of the object
-     */	
-    public void setName(String newName) throws IllegalArgumentException {
-        if (newName.indexOf('.') >= 0) { 
+   /** Specify the name of the object.
+    *  The name may not have an embedded dot. */
+    public void setName(String name) throws IllegalArgumentException {
+        if (name.indexOf('.') >= 0) { 
 	  throw new IllegalArgumentException
-	    ("NamedObj name (" + newName + ") has illegal embedded dot (.)");
+	    ("NamedObj name (" + name + ") has illegal embedded dot (.)");
 	}
-        _name = newName;
+        _name = name;
     }
 
-    /** Specify the specific instance's place in the
-     * universe-galaxy-star hierarchy. The default implementation
-     * returns names that might look like
-     * 
-     * <P> .universe.galaxy.star.port <P>
-     * 
-     * for a porthole; the output is the fullName of the container, plus
-     * a period, plus the name of the NamedObj it is called on.
-     * This has no relation to the class name.
+    /** Return the object's full name.
+     *  If the object has no container,
+     *  the full name is the object name preceded by a dot.
      *
-     * @return The full object name
+     *  If the object has a container,
+     *  the full name is the name of the container
+     *  followed by a dot and the object name.
      */
     public String getFullName() {
         if(_container == null) { return "." + _name; }
         else { return _container.getFullName() + "." + _name; }
     }
 
-    /** Get the container entity
+    /** Return the Entity object that contains this object.
+     *  Return null if this object has no container.
      */	
     public Entity getContainer() {
         return _container;
     }
 
-    /** Set the container entity
-     */	
+    /** Specify the Entity object that contains this object. */	
     public void setContainer(Entity newContainer) {
         _container = newContainer;
     }
 
-    /** Prepare the object for system execution 
-     * (do nothing at this level - define in derived class)
-     */	
-    public void reset() {}
-
-    /** Return a description of the object
+    /** Return a description of the object.
+     *  The description is the full name followed by a colon
+     *  followed by the full class name.
      */	
     public String toString() {
         return getFullName() + ": " + getClass().getName();
