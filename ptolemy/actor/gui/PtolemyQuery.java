@@ -267,7 +267,8 @@ public class PtolemyQuery extends Query
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
 		request = new ChangeRequest(this, name) {
-                        protected void _execute() throws IllegalActionException {
+                        protected void _execute()
+                            throws IllegalActionException {
                             attribute.setExpression(stringValue(name));
 
                             attribute.validate();
@@ -275,10 +276,13 @@ public class PtolemyQuery extends Query
                                // Here, we need to handle instances of Variable
                                // specially.  This is too bad...
                                if (attribute instanceof Variable) {
-                               // FIXME: Will this ever happen?  A Variable that
-                               // is not a NamedObj???
-                               // Retrieve the token to force evaluation, so as to
-                               // check the validity of the new value.
+
+                               // FIXME: Will this ever happen?  A
+                               // Variable that is not a NamedObj???
+                               // Retrieve the token to force
+                               // evaluation, so as to check the
+                               // validity of the new value.
+
                                ((Variable)attribute).getToken();
                                }
                             */
@@ -407,11 +411,14 @@ public class PtolemyQuery extends Query
                                     "Expected attribute attached to entry name: "
                                     + entryName);
                         }
-                        _dialog = new ComponentDialog(null, "Error", _query, null);
+                        _dialog =
+                            new ComponentDialog(null, "Error", _query, null);
 
-                        // The above returns only when the modal dialog is closing.
-                        // The following will force a new dialog to
-                        // be created if the value is not valid.
+                        // The above returns only when the modal
+                        // dialog is closing.  The following will
+                        // force a new dialog to be created if the
+                        // value is not valid.
+
                         _query._isOpenErrorWindow = false;
 
                         if (_dialog.buttonPressed().equals("Cancel")) {
@@ -423,7 +430,8 @@ public class PtolemyQuery extends Query
                                 // that checks whether the string entry has
                                 // changed, and we want to force revert even
                                 // if it appears to not have changed.
-                                set(((NamedObj)attribute).getName(), revertValue);
+                                set(((NamedObj)attribute).getName(),
+                                        revertValue);
                                 changed(entryName);
                             }
                         } else {
