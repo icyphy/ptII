@@ -39,6 +39,7 @@ DIRS = \
 	MatlabWirelessSoundDetection \
 	PowerVariability \
 	SmallWorld \
+	SmartParking \
 	TerrainModel \
 	WirelessSoundDetection
 
@@ -71,6 +72,7 @@ PTCLASSALLJARS = \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
+	SmartParking/SmartParking.jar \
 	TerrainModel/TerrainModel.jar \
 	WirelessSoundDetection/WirelessSoundDetection.jar
 
