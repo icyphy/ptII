@@ -41,7 +41,8 @@ import ptolemy.actor.*;
 This thread is created to execute the actor iteration methods in a
 seperate thread.
 This calls the prefire(), fire() and postfire() method of the
-embedded actor.
+embedded actor. Before termination, the thread calls the wrapup() method
+of the actor.
 
 
 @author Mudit Goel, Neil Smyth
@@ -59,6 +60,7 @@ public class ProcessThread extends PtolemyThread {
         super();
 	_actor = actor;
         _director = director;
+        _manager = ((CompositeActor)actor.getContainer()).getManager();
     }
 
     /** Construct a thread to be used for the execution of the
@@ -72,20 +74,22 @@ public class ProcessThread extends PtolemyThread {
         super(name);
 	_actor = actor;
         _director = director;
+        _manager = ((CompositeActor)actor.getContainer()).getManager();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This returns the actor being executed by this thread
+    /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
     public Actor getActor() {
 	return _actor;
     }
 
-    /** This initializes the actor, and iterates it through the execution
-     *  cycle till it terminates.
+    /** Initialize the actor, iterate it through the execution cycle
+     *  till it terminates. At the end of the termination, calls wrapup 
+     *  on the actor.
      */
     public void run() {
 	try {
@@ -103,14 +107,16 @@ public class ProcessThread extends PtolemyThread {
         } catch (TerminateProcessException t) {
             // Process was terminated.
         } catch (IllegalActionException e) {
-            Nameable a = ((NamedObj)_actor).getContainer();
-            ((CompositeActor)a).getManager().fireExecutionError(e);
+            //Nameable a = ((NamedObj)_actor).getContainer();
+            //((CompositeActor)a).getManager().fireExecutionError(e);
+            _manager.fireExecutionError(e);
         } finally {
             try {
                 _actor.wrapup();
             } catch (IllegalActionException e) {
-                Nameable a = ((NamedObj)_actor).getContainer();
-                ((CompositeActor)a).getManager().fireExecutionError(e);
+                //Nameable a = ((NamedObj)_actor).getContainer();
+                //((CompositeActor)a).getManager().fireExecutionError(e);
+                _manager.fireExecutionError(e);
             }
             _director.decreaseActiveCount();
         }
@@ -121,6 +127,7 @@ public class ProcessThread extends PtolemyThread {
 
     private Actor _actor;
     private ProcessDirector _director;
+    private Manager _manager;
 }
 
 
