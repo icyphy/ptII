@@ -36,6 +36,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -367,7 +368,7 @@ public class FSMCreator implements AtomicActorCreator {
                 units.add(startStmt);
 
                 // Fire the refinement actor.
-                TypedActor[] refinements;
+                TypedActor[] refinements = null;
                 try {
                     refinements = state.getRefinement();
                 } catch (Exception ex) {
@@ -616,6 +617,72 @@ public class FSMCreator implements AtomicActorCreator {
                     _generateActionCode(entity, entityInstanceClass,
                             nameToField, nameToType, body, action);
                 }
+                
+                // Generate code to reinitialize the target state, if 
+                // reset is true.
+                TypedActor[] refinements = null;
+                try {
+                    BooleanToken resetToken =
+                        (BooleanToken)transition.reset.getToken();
+                    if(resetToken.booleanValue()) {
+                        refinements = ((State)transition.destinationState()).
+                            getRefinement();
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex.getMessage());
+                }
+                if (refinements != null) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        TypedActor refinement = refinements[i];
+                        
+                        Local containerLocal = Jimple.v().newLocal("container",
+                                RefType.v(PtolemyUtilities.namedObjClass));
+                        body.getLocals().add(containerLocal);
+                        Local entityLocal = Jimple.v().newLocal("entity",
+                                   RefType.v(PtolemyUtilities.entityClass));
+                        body.getLocals().add(entityLocal);
+                        
+                        NamedObj containerModel = 
+                            (NamedObj)entity.getContainer();
+                        String deepName
+                            = ((NamedObj)refinement).getName(containerModel);
+                        
+                        units.add(
+                                Jimple.v().newAssignStmt(containerLocal,
+                                        Jimple.v().newInterfaceInvokeExpr(
+                                                thisLocal,
+                                                PtolemyUtilities
+                                                .getContainerMethod)));
+                        units.add(
+                                Jimple.v().newAssignStmt(containerLocal,
+                                        Jimple.v().newCastExpr(
+                                                containerLocal,
+                                                RefType.v(PtolemyUtilities.compositeActorClass))));
+                        units.add(
+                                Jimple.v().newAssignStmt(entityLocal,
+                                        Jimple.v().newVirtualInvokeExpr(
+                                                containerLocal,
+                                                PtolemyUtilities.getEntityMethod,
+                                                StringConstant.v(deepName))));
+                        
+                        units.add(
+                                Jimple.v().newAssignStmt(entityLocal,
+                                        Jimple.v().newCastExpr(
+                                                entityLocal,
+                                                RefType.v(PtolemyUtilities.compositeActorClass))));
+                        
+                        SootMethod rinitializeMethod =
+                            SootUtilities.searchForMethodByName(
+                                    PtolemyUtilities.compositeActorClass,
+                                    "initialize");
+                        units.add(
+                                Jimple.v().newInvokeStmt(
+                                        Jimple.v().newVirtualInvokeExpr(
+                                                entityLocal,
+                                                rinitializeMethod)));
+                    }
+                }
+                       
                 units.add(Jimple.v().newGotoStmt(finishedStmt));
             }
             units.add(errorStmt);
