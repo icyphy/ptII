@@ -251,6 +251,7 @@ public class FIR extends SDFTransformer {
      *   or if there is no director, or if runtime type conflicts occur.
      */
     public void fire() throws IllegalActionException {
+     
         // If an attribute has changed since the last fire(), or if
         // this is the first fire(), then renitialize.
         if (_reinitializeNeeded) _reinitialize();
@@ -261,7 +262,7 @@ public class FIR extends SDFTransformer {
 
         if (--_mostRecent < 0) _mostRecent = _data.length - 1;
         _data[_mostRecent] = input.get(0);
-
+        
         // Interpolate once for each input consumed
         for (int inC = 1; inC <= _dec; inC++) {
 
@@ -305,6 +306,20 @@ public class FIR extends SDFTransformer {
         else return false;
     }
 
+   /** Perform domain-specific initialization by calling the
+    *  initialize(Actor) method of the director. The director may
+    *  reject the actor by throwing an exception if the actor is
+    *  incompatible with the domain.   
+    *  Set a flag that reinitializes the data buffer at the first firing.   
+    *  @exception IllegalActionException If the superclass throws it.
+    */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        // must be sure to throw away the old data buffer.
+        _data = null;
+        _reinitializeNeeded = true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -342,17 +357,15 @@ public class FIR extends SDFTransformer {
         if ((_taps.length % _interp) != 0) _phaseLength++;
 
         // Create new data array and initialize index into it.
-        int datalength = _taps.length/_interp;
-        if (_taps.length%_interp != 0) datalength++;
-
         // Avoid losing the data if possible.
-        if (_data == null || _data.length != datalength) {
-            _data = new Token[datalength];
-            for(int i = 0; i < datalength; i++ ) {
+        if (_data == null || _data.length != _phaseLength) {
+            _data = new Token[_phaseLength];
+            for(int i = 0; i < _phaseLength; i++ ) {
                 _data[i] = _zero;
             }
-            _mostRecent = datalength;
+            _mostRecent = _phaseLength;
         }
+        _reinitializeNeeded = false;
     }
 
     ///////////////////////////////////////////////////////////////////
