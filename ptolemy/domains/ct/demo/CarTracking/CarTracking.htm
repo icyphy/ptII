@@ -8,7 +8,8 @@
 <BODY>
 
 <H1>CarTracking</H1>
-
+This model shows a following car tracking a leading car in an unreliable 
+communication environment.
 
 <P>
  <!-- All of the controls of the applet should be visible when the
@@ -55,7 +56,21 @@ applet is displayed on a XGA screen-->
 </EMBED>
 </OBJECT>
 </CENTER>
-The <a href="CarTrackingVergil.htm">block diagram</a>
+In normal operation, the leading car informs
+the following car about its position, speed, acceleration, and a time 
+stamp for this information. The following car does a sanity check to make
+sure that the data are coherent. If so, the following car will apply the
+same acceleration, and thus (in this simple model) tracks the leading 
+car perfectly. A user can control the correctness of the leading car 
+information by setting the parameter "fault" to 0 or 1, (0 indicating 
+the correct information). If the following car receives uncorrect 
+information, it abandons the received acceleration, and relies on 
+distance measurements for the tacking. In this mode, the following car 
+will apply zero acceleration, if it is too close to the leading car, and 
+maximum acceleration if it is too far from the leading car. This (simple-
+minded) control law results in a rather jerky ride.
+
+<p>The <a href="CarTrackingVergil.htm">block diagram</a>
 for the model was constructed using the Ptolemy II schematic editor
 called Vergil.
 </p>
