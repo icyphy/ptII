@@ -75,12 +75,12 @@ be done, call repaint().
 A small set of key bindings are provided for convenience.
 They are:
 <ul>
-<li> Cntr-c: Export the plot to the clipboard (in PlotML).
+<li> Cntrl-c: Export the plot to the clipboard (in PlotML).
 <li> D: Dump the plot to standard output (in PlotML).
 <li> E: Export the plot to standard output in EPS format.
 <li> F: Fill the plot.
 <li> H or ?: Display a simple help message.
-<li> Cntr-D or Q: quit
+<li> Cntrl-D or Q: quit
 </ul>
 These commands are provided in a menu by the PlotFrame class.
 Note that exporting to the clipboard is not allowed in applets
@@ -2109,7 +2109,7 @@ public class PlotBox extends JPanel implements Printable {
             "Version " + PTPLOT_RELEASE +
             ", Build: $Id$\n\n" +
             "Key bindings:\n" +
-            "   Cntr-c:  copy plot to clipboard (EPS format), if permitted\n" +
+            "   Cntrl-c:  copy plot to clipboard (EPS format), if permitted\n" +
             "   D: dump plot data to standard out\n" +
             "   E: export plot to standard out (EPS format)\n" +
             "   F: fill plot\n" +
