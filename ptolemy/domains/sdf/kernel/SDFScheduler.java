@@ -397,11 +397,16 @@ public class SDFScheduler extends Scheduler {
 		// Revome this actor from the firing sequence if it will
 		// not be fired.
 		Fraction theFiring = (Fraction)firings.get(anActor);
-		_debug("************ actor name: " + anActor.getName());
-		_debug("************ has firings value: " + 
-		       theFiring.getNumerator());
+		if(_debugging) {
+                    _debug("actor name: " + anActor.getName());
+                    _debug("has firings value: " + 
+                            theFiring.getNumerator());
+                }
 		if (theFiring.getNumerator() == 0) {
-		    _debug("************ and will be removed");
+                    if(_debugging) {
+                        _debug("and will be removed because" +
+                                " it is not being fired.");
+                    }
 		    deadActors.add(anActor);
 		}
 	    }
@@ -411,16 +416,19 @@ public class SDFScheduler extends Scheduler {
 	    while (removeIt.hasNext()) {
 		ComponentEntity actorToRemove = 
 		    (ComponentEntity)removeIt.next();
-		_debug("Removing actor : " + 
-		       actorToRemove.getName() + 
-		       " from the schedule");
+                if(_debugging) {
+                    _debug("Removing actor : " + 
+                            actorToRemove.getName() + 
+                            " from the schedule");
+                }
 		firings.remove(actorToRemove);
 		// remove the actor from the list of all actors, as
 		// well.
 		AllActors.remove(actorToRemove);
 	    }
-
-	    _debug("theFiring string: " +  firings.toString());
+            if(_debugging) {
+                _debug("theFiring string: " +  firings.toString());
+            }
 
         } catch (IllegalActionException ex) {
             throw new NotSchedulableException(this, "Check expression of "
@@ -1063,15 +1071,19 @@ public class SDFScheduler extends Scheduler {
 		// we get rid of it entirely.
 		else {
 		    if(firingsRemaining == 0) {
-			_debug("Current Actor = " + currentActor);
+                        if(_debugging) {
+                            _debug("Current Actor = " + currentActor);
+                        }
 			// remove the actor from the readyToScheduleActorList
-			// so that it does not gt scheduled
+			// so that it does not get scheduled
 			while(readyToScheduleActorList.remove(currentActor));
 			// remove the actor from the unscheduledActorList
 			// so that it does not get added back to the
 			// readyToScheduleActorList
 			while(unscheduledActorList.remove(currentActor));
-			_debug("Remaining actors");
+			if(_debugging) {
+                            _debug("Remaining actors");
+                        }
 			Iterator actorsLeft =
                             readyToScheduleActorList.iterator();
 			while(actorsLeft.hasNext()) {

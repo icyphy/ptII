@@ -1270,9 +1270,9 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     $scheduler setValid false
     $s5 setValid false
 
-    set debuglistener [java::new ptolemy.kernel.util.StreamListener]
-    $scheduler addDebugListener $debuglistener
-    $director addDebugListener $debuglistener
+#    set debuglistener [java::new ptolemy.kernel.util.StreamListener]
+#    $scheduler addDebugListener $debuglistener
+#    $director addDebugListener $debuglistener
 
     set sched1 [_getSchedule $toplevel $scheduler]
     set sched2 [_testEnums schedule $s5]
