@@ -49,7 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	OrderedMerge/OrderedMerge.jar \
 	QR/QR.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
