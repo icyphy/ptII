@@ -41,7 +41,7 @@
 
 ME =		ptolemy/domains/ct/demo/Corba/util
 
-DIRS = 		
+DIRS = 	
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
