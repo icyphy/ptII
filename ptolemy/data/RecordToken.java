@@ -52,9 +52,9 @@ A token that contains a set of label/token pairs.
 
 public class RecordToken extends Token {
 
-    /** Construct a RecordToken with the specified labeles and values.
+    /** Construct a RecordToken with the specified labels and values.
      *  The labels and values array must have the same length, and have one
-     *  to one correspondance. That is, the i'th entry in the labels array
+     *  to one correspondence. That is, the i'th entry in the labels array
      *  is the label for the i'th value in the values array. Both arrays
      *  must be non-empty.
      *  @param labels An array of labels.
@@ -67,10 +67,11 @@ public class RecordToken extends Token {
         if (labels == null || values == null ||
                 labels.length != values.length) {
             throw new IllegalArgumentException("RecordToken: the labels or " +
-                    "the values array do not have the same length, or is null.");
+                    "the values array do not have the same length, " +
+                    "or is null.");
         }
 
-        for (int i=0; i<labels.length; i++) {
+        for (int i = 0; i<labels.length; i++) {
             if (labels[i] == null || values[i] == null) {
                 throw new IllegalArgumentException("RecordToken: the " + i +
                         "'th element of the labels or values array is null");
@@ -93,34 +94,34 @@ public class RecordToken extends Token {
      *  of the label sets of this token and the argument. The type of
      *  the result token is greater than or equal to the types of this
      *  token and the argument.
-     *  @param t The token to add to this token.
+     *  @param token The token to add to this token.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If the argument is not a
      *   RecordToken, or calling the add method of the element token
      *   throws it.
      */
-    public Token add(Token t) throws IllegalActionException {
-        if ( !(t instanceof RecordToken)) {
+    public Token add(Token token) throws IllegalActionException {
+        if ( !(token instanceof RecordToken)) {
             throw new IllegalActionException("RecordToken.add: The argument "
                     + "is not a RecordToken.");
         }
 
-        RecordToken argRecTok = (RecordToken)t;
+        RecordToken recordToken = (RecordToken)token;
 
         Set intersectionSet = new HashSet();
         Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecTok._fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
         intersectionSet.addAll(myLabelSet);
         intersectionSet.retainAll(argLabelSet);
 
-        Object[] labelsObj = intersectionSet.toArray();
-        int size = labelsObj.length;
+        Object[] labelsObjects = intersectionSet.toArray();
+        int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
-        for (int i=0; i<size; i++) {
-            labels[i] = (String)labelsObj[i];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
             Token value1 = this.get(labels[i]);
-            Token value2 = argRecTok.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
             values[i] = value1.add(value2);
         }
 
@@ -130,7 +131,7 @@ public class RecordToken extends Token {
     /** Throw an exception. Use the convert method in RecordType.
      *  @exception IllegalActionException Always thrown.
      */
-    public static Token convert(Token t) throws IllegalActionException {
+    public static Token convert(Token token) throws IllegalActionException {
         throw new IllegalActionException("RecordToken.convert: " +
                 "This method cannot be used, use the convert method " +
                 "in RecordType.");
@@ -150,13 +151,13 @@ public class RecordToken extends Token {
      *  @return An instance of RecordType.
      */
     public Type getType() {
-        Object[] labelsObj = _fields.keySet().toArray();
-        int size = labelsObj.length;
+        Object[] labelsObjects = _fields.keySet().toArray();
+        int size = labelsObjects.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
 
-        for (int i=0; i<size; i++) {
-            labels[i] = (String)labelsObj[i];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
             types[i] = this.get(labels[i]).getType();
         }
 
@@ -164,31 +165,31 @@ public class RecordToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument.
-     *  @param t The token with which to test equality.
+     *  @param token The token with which to test equality.
      *  @return A new BooleanToken which contains the result of the test.
      *  @exception IllegalActionException If the argument is not an
      *   RecordToken, or calling the isEqualTo method of the element token
      *   throws it.
      */
-    public BooleanToken isEqualTo(Token t) throws IllegalActionException {
-        if ( !(t instanceof RecordToken)) {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
+        if ( !(token instanceof RecordToken)) {
             throw new IllegalActionException("RecordToken.isEqualTo: The " +
                     "argument is not a RecordToken.");
         }
 
-        RecordToken argRecTok = (RecordToken)t;
+        RecordToken recordToken = (RecordToken)token;
 
         Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecTok._fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
         if ( !myLabelSet.equals(argLabelSet)) {
             return new BooleanToken(false);
         }
 
-        Iterator iter = myLabelSet.iterator();
-        while(iter.hasNext()) {
-            String label = (String)iter.next();
+        Iterator iterator = myLabelSet.iterator();
+        while(iterator.hasNext()) {
+            String label = (String)iterator.next();
             Token token1 = this.get(label);
-            Token token2 = argRecTok.get(label);
+            Token token2 = recordToken.get(label);
             BooleanToken result = token1.isEqualTo(token2);
             if (result.booleanValue() == false) {
                 return new BooleanToken(false);
@@ -214,13 +215,13 @@ public class RecordToken extends Token {
      *   supported by the element token.
      */
     public Token one() throws IllegalActionException {
-        Object[] labelsObj = _fields.keySet().toArray();
-        int size = labelsObj.length;
+        Object[] labelsObjects = _fields.keySet().toArray();
+        int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
 
-        for (int i=0; i<size; i++) {
-            labels[i] = (String)labelsObj[i];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
             values[i] = this.get(labels[i]).one();
         }
         return new RecordToken(labels, values);
@@ -228,39 +229,39 @@ public class RecordToken extends Token {
 
     /** Return the value of this token as a string.
      *  The syntax is similar to the ML record:
-     *  {<label>=<value>, <label>=<value>, ...}
+     *  {<label> = <value>, <label> = <value>, ...}
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
      *  @return A String beginning with "{" that contains label and value
      *  pairs separated by commas, ending with "}".
      */
     public String toString() {
-        Object[] labelsObj = _fields.keySet().toArray();
+        Object[] labelsObjects = _fields.keySet().toArray();
         // order the labels
-        int size = labelsObj.length;
-        for (int i=0; i<size-1; i++) {
-            for (int j=i+1; j<size; j++) {
-                String labeli = (String)labelsObj[i];
-                String labelj = (String)labelsObj[j];
+        int size = labelsObjects.length;
+        for (int i = 0; i < size-1; i++) {
+            for (int j = i + 1; j < size; j++) {
+                String labeli = (String)labelsObjects[i];
+                String labelj = (String)labelsObjects[j];
                 if (labeli.compareTo(labelj) >= 0) {
-                    Object temp = labelsObj[i];
-                    labelsObj[i] = labelsObj[j];
-                    labelsObj[j] = temp;
+                    Object temp = labelsObjects[i];
+                    labelsObjects[i] = labelsObjects[j];
+                    labelsObjects[j] = temp;
                 }
             }
         }
 
         // construct the string representation of this token.
-        String s = "{";
-        for (int i=0; i<size; i++) {
-            String label = (String)labelsObj[i];
+        String stringRepresentation = "{";
+        for (int i = 0; i < size; i++) {
+            String label = (String)labelsObjects[i];
             String value = get(label).toString();
             if (i != 0) {
-                s += ", ";
+                stringRepresentation += ", ";
             }
-            s += label + "=" + value;
+            stringRepresentation += label + "=" + value;
         }
-        return s + "}";
+        return stringRepresentation + "}";
     }
 
     /** Returns a new RecordToken representing the additive identity.
@@ -272,20 +273,17 @@ public class RecordToken extends Token {
      *   supported by the element token.
      */
     public Token zero() throws IllegalActionException {
-        Object[] labelsObj = _fields.keySet().toArray();
-        int size = labelsObj.length;
+        Object[] labelsObjects = _fields.keySet().toArray();
+        int size = labelsObjects.length;
         String[] labels = new String[size];
         Token[] values = new Token[size];
 
-        for (int i=0; i<size; i++) {
-            labels[i] = (String)labelsObj[i];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
             values[i] = this.get(labels[i]).zero();
         }
         return new RecordToken(labels, values);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
