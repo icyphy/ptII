@@ -231,6 +231,9 @@ fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)
 	echo "all:" > $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "	cd ptolemy/plot; $(MAKE) all" >> $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "sources:" > $(PTTMPDIR)/$(PTDIST)/makefile
+	echo "	cd ptolemy/plot; $(MAKE) sources" >> \
+		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "install:" >> $(PTTMPDIR)/$(PTDIST)/makefile
 	echo "	cd ptolemy/plot; $(MAKE) install" >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
