@@ -1270,36 +1270,36 @@ public class PortConfigurerDialog extends PtolemyDialog
     }
 
    
-    /** Editor for a table cell that takes a type.
-     */
-    class TypeCellEditor extends StringCellEditor implements TableCellEditor,
-                                                                 ActionListener {
-        /** Construct a Type Cell Editor. */
-        public TypeCellEditor() {
-            super();
-            typeCombo = _createPortTypeComboBox();
-        }
+//     /** Editor for a table cell that takes a type.
+//      */
+//     class TypeCellEditor2 extends StringCellEditor implements TableCellEditor,
+//                                                                  ActionListener {
+//         /** Construct a Type Cell Editor. */
+//         public TypeCellEditor2() {
+//             super();
+//             typeCombo = _createPortTypeComboBox();
+//         }
 
-        /** Return the message from the widget.
-         *  In this base class, the message is the text value of
-         *  the JTextField.
-         *  @return the message
-         */ 
-        protected String _getMessage() {
-            return (String)(typeCombo.getSelectedItem());
-        }
+//         /** Return the message from the widget.
+//          *  In this base class, the message is the text value of
+//          *  the JTextField.
+//          *  @return the message
+//          */ 
+//         protected String _getMessage() {
+//             return (String)(typeCombo.getSelectedItem());
+//         }
 
-        /** Set the message.
-         *  @return an Object suitable as an element in the
-         *  Object array that is passed JOptionPane.setMessage(Object[])
-         */ 
-        protected Object _setMessage() {
-            return typeCombo;
-        }
+//         /** Set the message.
+//          *  @return an Object suitable as an element in the
+//          *  Object array that is passed JOptionPane.setMessage(Object[])
+//          */ 
+//         protected Object _setMessage() {
+//             return typeCombo;
+//         }
 
-        /** The JComboBox. */
-        private JComboBox typeCombo;
-    }
+//         /** The JComboBox. */
+//         private JComboBox typeCombo;
+//     }
 
     /** Editor for a table cell that takes a unit.
      */
@@ -1792,28 +1792,31 @@ public class PortConfigurerDialog extends PtolemyDialog
             TableColumn _portTypeColumn = ((TableColumn) (_portTable.getColumnModel()
                                                    .getColumn(col)));
 
-           final TypeCellEditor portTypeEditor = new TypeCellEditor();
-            _portTypeColumn.setCellEditor(portTypeEditor);
-            portTypeEditor.setValidator(new CellValidator() {
-                    /////////////////////////////////////////
-                    //////////// inner class/////////////////
-                    public boolean isValid(String cellValue) {
-                        try {
-                            if (cellValue.equals("")) {
-                                return true;
-                            }
+            _portTypeColumn.setCellEditor(new TypeCellEditor(
+                                                  _createPortTypeComboBox()));
 
-                            ASTPtRootNode tree = _typeParser.generateParseTree(cellValue);
-                            Token result = _parseTreeEvaluator
-                                .evaluateParseTree(tree, null);
-                        } catch (IllegalActionException e) {
-                            setMessage(e.getMessage());
-                            return false;
-                        }
+//            final TypeCellEditor portTypeEditor = new TypeCellEditor();
+//             _portTypeColumn.setCellEditor(portTypeEditor);
+//             portTypeEditor.setValidator(new CellValidator() {
+//                     /////////////////////////////////////////
+//                     //////////// inner class/////////////////
+//                     public boolean isValid(String cellValue) {
+//                         try {
+//                             if (cellValue.equals("")) {
+//                                 return true;
+//                             }
 
-                        return true;
-                    }
-                });
+//                             ASTPtRootNode tree = _typeParser.generateParseTree(cellValue);
+//                             Token result = _parseTreeEvaluator
+//                                 .evaluateParseTree(tree, null);
+//                         } catch (IllegalActionException e) {
+//                             setMessage(e.getMessage());
+//                             return false;
+//                         }
+
+//                         return true;
+//                     }
+//                 });
         }
 
         if (_columnNames.contains(ColumnNames.COL_UNITS)) {
