@@ -33,6 +33,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.actor.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -53,6 +54,14 @@ public class PNDirector extends ProcessDirector {
     public PNDirector() {
         super();
         _eventQueue = new CalendarQueue(new DoubleCQComparator());
+        try {
+            Parameter param = new Parameter(this,"Initial queue capacity",
+                    new IntToken(1));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e.toString());
+        } catch (NameDuplicationException e) {
+            throw new InvalidStateException(e.toString());
+        }
     }
 
     /** Construct a director in the default workspace with the given name.
@@ -64,6 +73,14 @@ public class PNDirector extends ProcessDirector {
     public PNDirector(String name) {
         super(name);
         _eventQueue = new CalendarQueue(new DoubleCQComparator());
+        try {
+            Parameter param = new Parameter(this,"Initial queue capacity",
+                    new IntToken(1));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e.toString());
+        } catch (NameDuplicationException e) {
+            throw new InvalidStateException(e.toString());
+        }
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -77,6 +94,14 @@ public class PNDirector extends ProcessDirector {
     public PNDirector(Workspace workspace, String name) {
         super(workspace, name);
         _eventQueue = new CalendarQueue(new DoubleCQComparator());
+        try {
+            Parameter param = new Parameter(this,"Initial queue capacity",
+                    new IntToken(1));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e.toString());
+        } catch (NameDuplicationException e) {
+            throw new InvalidStateException(e.toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -180,6 +205,8 @@ public class PNDirector extends ProcessDirector {
 			    for (int j=0; j<receivers[i].length; j++) {
 				((PNQueueReceiver)receivers[i][j]).setPause(true);
 				pausedreceivers.insertFirst(receivers[i][j]);
+                                //The paused count is increased using 
+                                //increasePausedCount()
 			    }
 			}
 		    }
@@ -234,8 +261,9 @@ public class PNDirector extends ProcessDirector {
     public Receiver newReceiver() {
         PNQueueReceiver rec =  new PNQueueReceiver();
         try {
-            //FIXME: Make capacity a director parameter.
-            rec.setCapacity(1);
+            Parameter par = (Parameter)getAttribute("Initial queue capacity");
+            int cap = ((IntToken)par.getToken()).intValue();
+            rec.setCapacity(cap);
         } catch (IllegalActionException e) {
             //This exception should never be thrown, as size of queue should
             //be 0, and capacity should be set to a non-negative number
