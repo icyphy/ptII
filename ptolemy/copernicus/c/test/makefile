@@ -32,7 +32,8 @@
 
 ME =		ptolemy/copernicus/c/test
 
-DIRS =		FIR
+# FIXME: put FIR back when singleclass translation works again.
+# DIRS =		FIR
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -54,8 +55,8 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Object.tcl \
-	Simple.tcl
+	Simple.tcl \
+	Object.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
