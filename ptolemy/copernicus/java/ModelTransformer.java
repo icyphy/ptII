@@ -101,7 +101,7 @@ public class ModelTransformer extends SceneTransformer {
      */
     private ModelTransformer(CompositeActor model) {
         _model = model;
-    }
+     }
 
     /** Return an instance of this transformer that will operate on
      * the given model. The model is assumed to already have been
@@ -176,6 +176,12 @@ public class ModelTransformer extends SceneTransformer {
 
 	_entityLocalMap = new HashMap();
 	_portLocalMap = new HashMap();
+        try {
+            _constAnalysis = new ConstVariableModelAnalysis(_model);
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to calculate constant vars: " + 
+                    ex.getMessage());
+        }
 
         // Create a class for the model
         String modelClassName = getModelClassName(_model, options);
@@ -239,7 +245,7 @@ public class ModelTransformer extends SceneTransformer {
             HashSet createdSet, Map options) {
         //  System.out.println("composite = " + composite.getFullName());
         ActorTransformer.createActorsIn(composite, createdSet,
-                "modelTransformer", options);
+                "modelTransformer", _constAnalysis, options);
 
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
@@ -1082,6 +1088,8 @@ public class ModelTransformer extends SceneTransformer {
 
     // The model we are generating code for.
     public CompositeActor _model;
+
+    private static ConstVariableModelAnalysis _constAnalysis;
 
     private static SootClass _modelClass = null;
     private static Object[] _reflectionArguments = new Object[1];

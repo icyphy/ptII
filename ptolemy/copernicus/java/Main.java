@@ -117,7 +117,7 @@ public class Main extends KernelMain {
         // atomic) used by the model.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.mt", ModelTransformer.v(_toplevel)));
-
+        /*
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.idt",

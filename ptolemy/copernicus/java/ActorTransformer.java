@@ -83,7 +83,7 @@ public class ActorTransformer extends SceneTransformer {
      */
     private ActorTransformer(CompositeActor model) {
         _model = model;
-    }
+   }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -128,7 +128,8 @@ public class ActorTransformer extends SceneTransformer {
     }
 
     public static void createActorsIn(CompositeActor model, HashSet createdSet,
-            String phaseName, Map options) {
+            String phaseName, 
+            ConstVariableModelAnalysis constAnalysis, Map options) {
         // Create an instance class for every actor.
         for (Iterator i = model.deepEntityList().iterator();
              i.hasNext();) {
@@ -166,18 +167,14 @@ public class ActorTransformer extends SceneTransformer {
  
             if(entity instanceof CompositeActor) {
                 CompositeActor composite = (CompositeActor)entity;
-        //         if(composite.getDirector() instanceof ptolemy.domains.fsm.kernel.HSDirector) {
-//                     _createModalModel((FSMActor)entity, newClassName, options);
-//                 } else {
-                    createCompositeActor(composite, newClassName, options);
-                    //      }
+                createCompositeActor(composite, newClassName, options);
             } else if(entity instanceof Expression) {
                 _createExpressionActor((Expression)entity, newClassName, options);
             } else if(entity instanceof FSMActor) {
                 _createFSMActor((FSMActor)entity, newClassName, options);
             } else {
                 // Must be an atomicActor.
-                _createAtomicActor(model, (AtomicActor)entity, newClassName, options);
+                _createAtomicActor(model, (AtomicActor)entity, newClassName, constAnalysis, options);
             }
         }
     }
@@ -319,7 +316,8 @@ public class ActorTransformer extends SceneTransformer {
     // Populate the given class with code to create the contents of
     // the given entity.
     private static EntitySootClass _createAtomicActor(
-            CompositeActor model, AtomicActor entity, String newClassName, Map options) {
+            CompositeActor model, AtomicActor entity, String newClassName, 
+            ConstVariableModelAnalysis constAnalysis, Map options) {
 
         String className = entity.getClass().getName();
 
@@ -414,6 +412,27 @@ public class ActorTransformer extends SceneTransformer {
                     entity, body.getThisLocal(),
                     entity, body.getThisLocal(), 
                     entityInstanceClass);
+        }
+        
+        {
+            LinkedList notConstantAttributeList = new LinkedList(
+                    entity.attributeList(Variable.class));
+            notConstantAttributeList.removeAll(
+                    constAnalysis.getConstVariables(entity));
+            // Sort according to dependancies.
+            
+            // Add code to the beginning of the prefire method that
+            // computes the attribute values of anything that is not a
+            // constant.
+  
+            SootMethod method = theClass.getMethodByName("prefire");
+            JimpleBody body = (JimpleBody)method.getActiveBody();
+            Stmt insertPoint = body.getFirstNonIdentityStmt();
+            _computeAttributesBefore(body, insertPoint, 
+                    entity, body.getThisLocal(),
+                    entity, body.getThisLocal(), 
+                    entityInstanceClass, 
+                    notConstantAttributeList);
         }
         
         // Reinitialize the hierarchy, since we've added classes.
@@ -1321,10 +1340,11 @@ public class ActorTransformer extends SceneTransformer {
             }
         }
     }
-        
-    private static Local _generateExpressionCode(
+         
+    private static Local _generateExpressionCodeBefore(
             Entity entity, SootClass entityClass, String expression,
-            Map nameToField, Map nameToType, JimpleBody body) {
+            Map nameToField, Map nameToType, 
+            JimpleBody body, Stmt insertPoint) {
         
         Local local;
         try {
@@ -1333,26 +1353,37 @@ public class ActorTransformer extends SceneTransformer {
                 parser.generateParseTree(expression);
             ActorCodeGenerationScope scope = 
                 new ActorCodeGenerationScope(
-                        entity, entityClass, nameToField, nameToType, body);
+                        entity, entityClass, nameToField, 
+                        nameToType, body, insertPoint);
             ParseTreeCodeGenerator generator = 
                 new ParseTreeCodeGenerator();
             local = generator.generateCode(
-                    parseTree, body, scope);
+                    parseTree, body, insertPoint, scope);
         } catch (IllegalActionException ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex.toString());
         }
         return local;
     }
+       
+    private static Local _generateExpressionCode(
+            Entity entity, SootClass entityClass, String expression,
+            Map nameToField, Map nameToType, JimpleBody body) {
+        Stmt insertPoint = Jimple.v().newNopStmt();
+        body.getUnits().add(insertPoint);
+        return _generateExpressionCodeBefore(entity, entityClass, expression,
+                nameToField, nameToType, body, insertPoint);
+    }
 
     public static class ActorCodeGenerationScope
         implements CodeGenerationScope {
         public ActorCodeGenerationScope(
                 Entity entity, SootClass entityClass, Map nameToField, 
-                Map nameToType, JimpleBody body) {
+                Map nameToType, JimpleBody body, Stmt insertPoint) {
             _nameToField = nameToField;
             _nameToType = nameToType;
             _body = body;
+            _insertPoint = insertPoint;
             _units = body.getUnits();
             _entity = entity;
             _entityClass = entityClass;
@@ -1400,16 +1431,18 @@ public class ActorTransformer extends SceneTransformer {
                         PtolemyUtilities.tokenType);
                 _body.getLocals().add(tokenLocal);
                 
-                _units.add(
+                _units.insertBefore(
                         Jimple.v().newAssignStmt(tokenLocal,
                                 Jimple.v().newInstanceFieldRef(
-                                        thisLocal, portField)));
-                _units.add(
+                                        thisLocal, portField)),
+                        _insertPoint);
+                _units.insertBefore(
                         Jimple.v().newAssignStmt(portLocal,
                                 Jimple.v().newCastExpr(
                                         tokenLocal,
                                         PtolemyUtilities.getSootTypeForTokenType(
-                                                getType(name)))));
+                                                getType(name)))),
+                        _insertPoint);
              
                 return portLocal;
             }
@@ -1436,27 +1469,31 @@ public class ActorTransformer extends SceneTransformer {
                     String deepName = result.getName(toplevel);
                     
                     
-                    _units.add(
+                    _units.insertBefore(
                             Jimple.v().newAssignStmt(containerLocal,
                                     Jimple.v().newVirtualInvokeExpr(
                                             thisLocal,
-                                            PtolemyUtilities.toplevelMethod)));
-                   _units.add(
+                                            PtolemyUtilities.toplevelMethod)),
+                            _insertPoint);
+                   _units.insertBefore(
                             Jimple.v().newAssignStmt(attributeLocal,
                                     Jimple.v().newVirtualInvokeExpr(
                                             containerLocal,
                                             PtolemyUtilities.getAttributeMethod,
-                                            StringConstant.v(deepName))));
-                    _units.add(
+                                            StringConstant.v(deepName))),
+                            _insertPoint);
+                    _units.insertBefore(
                             Jimple.v().newAssignStmt(attributeLocal,
                                     Jimple.v().newCastExpr(attributeLocal,
                                             RefType.v(
-                                                    PtolemyUtilities.variableClass))));
-                    _units.add(
+                                                    PtolemyUtilities.variableClass))),
+                            _insertPoint);
+                    _units.insertBefore(
                             Jimple.v().newAssignStmt(tokenLocal,
                                     Jimple.v().newVirtualInvokeExpr(
                                             attributeLocal,
-                                            PtolemyUtilities.variableGetTokenMethod)));
+                                            PtolemyUtilities.variableGetTokenMethod)),
+                            _insertPoint);
                   
                     return tokenLocal;
                     // Create a local that has the correct value.
@@ -1525,6 +1562,7 @@ public class ActorTransformer extends SceneTransformer {
         private Map _nameToField;
         private Map _nameToType;
         private JimpleBody _body;
+        private Stmt _insertPoint;
         private Chain _units;
         private Entity _entity;
         private SootClass _entityClass;
@@ -1636,22 +1674,10 @@ public class ActorTransformer extends SceneTransformer {
              attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistence?
-            if (attribute instanceof Variable &&
-                    !(attribute instanceof Parameter)) {
+            if(_isIgnorableAttribute(attribute)) {
                 continue;
             }
-
-            // Ignore frame sizes and locations.  They aren't really
-            // necessary in the generated code, I don't think.
-            if (attribute instanceof SizeAttribute ||
-                attribute instanceof LocationAttribute ||
-                attribute instanceof LibraryAttribute ||
-                attribute instanceof TableauFactory) {
-                continue;
-            }
-
+           
             String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
@@ -1746,19 +1772,7 @@ public class ActorTransformer extends SceneTransformer {
              attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistence?
-            if (attribute instanceof Variable &&
-                    !(attribute instanceof Parameter)) {
-                continue;
-            }
-
-            // Ignore frame sizes and locations.  They aren't really
-            // necessary in the generated code, I don't think.
-            if (attribute instanceof SizeAttribute ||
-                attribute instanceof LocationAttribute ||
-                attribute instanceof LibraryAttribute ||
-                attribute instanceof TableauFactory) {
+            if (_isIgnorableAttribute(attribute)) {
                 continue;
             }
 
@@ -1855,7 +1869,6 @@ public class ActorTransformer extends SceneTransformer {
                         insertPoint);
 	    }
 
-            // FIXME: configurable??
             // recurse so that we get all parameters deeply.
             _initializeAttributesBefore(body, insertPoint,
                     context, contextLocal,
@@ -1863,19 +1876,14 @@ public class ActorTransformer extends SceneTransformer {
 	}
     }
 
-    // This is similar to ModelTransformer.createFieldsForAttributes,
-    // except that all attributes are initialized, even those that
-    // have already been created.
-    public static void _initializeAttributes(JimpleBody body,
+    public static void _computeAttributesBefore(
+            JimpleBody body, Stmt insertPoint,
             NamedObj context, Local contextLocal,
             NamedObj namedObj, Local namedObjLocal,
-            SootClass theClass, HashSet createdSet) {
-
-        //   System.out.println("initializing attributes in " + namedObj);
+            SootClass theClass, List attributeList) {
 
         // Check to see if we have anything to do.
         if(namedObj.attributeList().size() == 0) return;
-
         
         Type variableType = RefType.v(PtolemyUtilities.variableClass);
 
@@ -1900,19 +1908,8 @@ public class ActorTransformer extends SceneTransformer {
              attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistence?
-            if (attribute instanceof Variable &&
-                    !(attribute instanceof Parameter)) {
-                continue;
-            }
-
-            // Ignore frame sizes and locations.  They aren't really
-            // necessary in the generated code, I don't think.
-            if (attribute instanceof SizeAttribute ||
-                attribute instanceof LocationAttribute ||
-                attribute instanceof LibraryAttribute ||
-                attribute instanceof TableauFactory) {
+            if (_isIgnorableAttribute(attribute) ||
+                !attributeList.contains(attribute)) {
                 continue;
             }
 
@@ -1922,121 +1919,55 @@ public class ActorTransformer extends SceneTransformer {
             String fieldName = ModelTransformer.getFieldNameForAttribute(
                     attribute, context);
 
-            Local local;
-            if (createdSet.contains(attribute.getFullName())) {
-                //     System.out.println("already has " + attributeName);
-                // If the class for the object already creates the
-                // attribute, then get a reference to the existing attribute.
-                // Note that if the class creates the attribute, but
-                // doesn't also create a field for it, that we will
-                // fail later when we try to replace getAttribute
-                // calls with references to fields.
-                // if (theClass.declaresFieldByName(fieldName)) {
-                    local = attributeLocal;
-                    body.getUnits().add(Jimple.v().newAssignStmt(
+            Local local = attributeLocal;
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(
                             attributeLocal,
                             Jimple.v().newVirtualInvokeExpr(contextLocal,
                                     PtolemyUtilities.getAttributeMethod,
-                                    StringConstant.v(attributeName))));
-              //   } else {
-//                     System.out.println("Warning: " + theClass + " does " +
-//                             "not declare a field " + fieldName);
-//                     // FIXME: Try to analyze the constructor to set
-//                     // the field.  This is nontrivial.
-//                     // For the moment, we skip this case.
-//                     continue;
-//                 }
-            } else {
-                //System.out.println("creating " + attribute.getFullName());
-                // If the class does not create the attribute,
-                // then create a new attribute with the right name.
-                local = PtolemyUtilities.createNamedObjAndLocal(
-                        body, className,
-                        namedObjLocal, attribute.getName());
-                // System.out.println("created local");
-                Attribute classAttribute =
-                    (Attribute)ModelTransformer._findDeferredInstance(attribute);
-                ModelTransformer.updateCreatedSet(namedObj.getFullName() + "."
-                        + attribute.getName(),
-                        classAttribute, classAttribute, createdSet);
-            }
+                                    StringConstant.v(attributeName))),
+                    insertPoint);
             
-            // System.out.println("creating new field");
-            // Create a new field for the attribute, and initialize
-            // it to the the attribute above.
-            SootUtilities.createAndSetFieldFromLocal(body, local,
-                    theClass, attributeType, fieldName);
-
             if (attribute instanceof Variable) {
-                // If the attribute is a parameter, then set its
-                // token to the correct value.
+                // If the attribute is a parameter, then generateCode...
+                Local tokenLocal = _generateExpressionCodeBefore(
+                        (Entity)namedObj, theClass,
+                        ((Variable)attribute).getExpression(),
+                        new HashMap(), new HashMap(), body, insertPoint);
+                                     
 		// cast to Variable.
-                Stmt assignStmt = Jimple.v().newAssignStmt(
-                        variableLocal,
-                        Jimple.v().newCastExpr(
-                                local,
-                                variableType));
-                               
-              	body.getUnits().add(assignStmt);
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                variableLocal,
+                                Jimple.v().newCastExpr(
+                                        local,
+                                        variableType)),
+                        insertPoint);
                 
-                Token token = null;
-                try {
-                    token = ((Variable)attribute).getToken();
-                } catch (IllegalActionException ex) {
-                    throw new RuntimeException(ex.getMessage());
-                }
-
-                if (token == null) {
-                    throw new RuntimeException("Calling getToken() on '"
-                            + attribute + "' returned null.  This may occur "
-                            + "if an attribute has no value in the moml file");
-                }
-
-                Local tokenLocal = 
-                    PtolemyUtilities.buildConstantTokenLocal(body,
-                        assignStmt, token, "token");
-                        
 		// call setToken.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(
-                                variableLocal,
-                                PtolemyUtilities.variableSetTokenMethod,
-                                tokenLocal)));
+                body.getUnits().insertBefore(
+          
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(
+                                        variableLocal,
+                                        PtolemyUtilities.variableSetTokenMethod,
+                                        tokenLocal)),
+                        insertPoint);
                 // call validate to ensure that attributeChanged is called.
-                body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                variableLocal,
-                                PtolemyUtilities.validateMethod)));
+                body.getUnits().insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        variableLocal,
+                                        PtolemyUtilities.validateMethod)),
+                        insertPoint);
                 
-            } else if (attribute instanceof Settable) {
-                // If the attribute is settable, then set its
-                // expression.
-                
-		// cast to Settable.
-		body.getUnits().add(Jimple.v().newAssignStmt(
-                        settableLocal,
-                        Jimple.v().newCastExpr(
-                                local,
-                                PtolemyUtilities.settableType)));
-                String expression = ((Settable)attribute).getExpression();
+            }
 
-		// call setExpression.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.setExpressionMethod,
-                                StringConstant.v(expression))));
-                // call validate to ensure that attributeChanged is called.
-                body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newInterfaceInvokeExpr(
-                                settableLocal,
-                                PtolemyUtilities.validateMethod)));
-	    }
-
-            // FIXME: configurable??
             // recurse so that we get all parameters deeply.
-            _initializeAttributes(body, context, contextLocal,
-                    attribute, local, theClass, createdSet);
+            _computeAttributesBefore(
+                    body, insertPoint,
+                    context, contextLocal,
+                    attribute, local, theClass, attributeList);
 	}
     }
 
@@ -2163,6 +2094,26 @@ public class ActorTransformer extends SceneTransformer {
         }
     }
 
+    // Return true if the given attribute is one that can be ignored
+    // during code generation...
+    private static boolean _isIgnorableAttribute(Attribute attribute) {
+        // FIXME: This is horrible...  I guess we need an attribute for
+        // persistence?
+        if (attribute instanceof Variable &&
+                !(attribute instanceof Parameter)) {
+            return true;
+        }
+        
+        // Ignore frame sizes and locations.  They aren't really
+        // necessary in the generated code, I don't think.
+        if (attribute instanceof SizeAttribute ||
+                attribute instanceof LocationAttribute ||
+                attribute instanceof LibraryAttribute ||
+                attribute instanceof TableauFactory) {
+            return true;
+        }
+        return false;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
