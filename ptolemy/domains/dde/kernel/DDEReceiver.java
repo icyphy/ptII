@@ -157,7 +157,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    }
 	    Token token = super.get();
 	    if( _writePending ) {
-                director.removeWriteBlock( this );
+                director._removeWriteBlock( this );
 		_writePending = false;
 		notifyAll();
 	    }
@@ -235,7 +235,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    // Check Token Availability
 	    ///////////////////////////
             if( super.hasToken() && !_terminate && !sendNullTokens ) {
-	        if ( !hasNullToken() ) {
+	        if ( !_hasNullToken() ) {
 		    _hasToken = true;
 	            return true;
 	        } else {
@@ -256,7 +256,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ////////////////////////
 	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
 	        _readPending = true;
-                director.addInternalReadBlock();
+                director._addInternalReadBlock();
 	        while( _readPending && !_terminate ) {
 		    workspace.wait( this );
 	        }
@@ -268,7 +268,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    if( _terminate ) {
 	        if( _readPending ) {
 		    _readPending = false;
-		    director.removeInternalReadBlock();
+		    director._removeInternalReadBlock();
 	        }
                 throw new TerminateProcessException("");
 	    }
@@ -330,15 +330,15 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
         synchronized(this) {
 
-            if( time > getCompletionTime() &&
-                    getCompletionTime() != ETERNITY && !_terminate ) {
+            if( time > _getCompletionTime() &&
+                    _getCompletionTime() != ETERNITY && !_terminate ) {
 	        time = INACTIVE;
 	    }
 
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
 		if( _readPending ) {
-		    director.removeInternalReadBlock();
+		    director._removeInternalReadBlock();
 		    _readPending = false;
 		    notifyAll();
 		}
@@ -347,7 +347,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
             if ( !super.hasRoom() && !_terminate ) {
 		_writePending = true;
-                director.addWriteBlock(this);
+                director._addWriteBlock(this);
 		while( _writePending && !_terminate ) {
 		    workspace.wait( this );
 		}
@@ -356,7 +356,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if( _terminate ) {
 		if( _writePending ) {
 		    _writePending = false;
-                    director.removeWriteBlock( this );
+                    director._removeWriteBlock( this );
 		}
                 throw new TerminateProcessException( getContainer(),
                         "This receiver has been terminated "
@@ -419,7 +419,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @parameter hide The parameter indicating whether NullTokens
      *  should be taken into consideration by hasToken().
      */
-    void hideNullTokens(boolean hide) {
+    void _hideNullTokens(boolean hide) {
 	_hideNullTokens = hide;
     }
 

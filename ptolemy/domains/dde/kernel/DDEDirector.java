@@ -339,7 +339,7 @@ public class DDEDirector extends ProcessDirector {
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
 	}
-	rcvr.setCompletionTime( time );
+	rcvr._setCompletionTime( time );
         return rcvr;
     }
 
@@ -455,7 +455,7 @@ public class DDEDirector extends ProcessDirector {
 
     /** Increment the count of actors blocked on an external read.
      */
-    synchronized void addExternalReadBlock() {
+    synchronized void _addExternalReadBlock() {
         _externalReadBlocks++;
 	if( _isDeadlocked() ) {
 	    notifyAll();
@@ -464,7 +464,7 @@ public class DDEDirector extends ProcessDirector {
 
     /** Increment the count of actors blocked on an internal read.
      */
-    synchronized void addInternalReadBlock() {
+    synchronized void _addInternalReadBlock() {
         _internalReadBlocks++;
 	if( _isDeadlocked() ) {
 	    notifyAll();
@@ -474,7 +474,7 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the count of actors blocked on a write.
      * @param rcvr The DDEReceiver that has a write block.
      */
-    synchronized void addWriteBlock(DDEReceiver rcvr) {
+    synchronized void _addWriteBlock(DDEReceiver rcvr) {
         _writeBlocks++;
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
@@ -489,7 +489,7 @@ public class DDEDirector extends ProcessDirector {
     /** Return the initial time table of this director.
      * @return The initial time table of this actor.
      */
-    Hashtable getInitialTimeTable() {
+    Hashtable _getInitialTimeTable() {
 	if( _initialTimeTable == null ) {
 	    _initialTimeTable = new Hashtable();
 	}
@@ -498,7 +498,7 @@ public class DDEDirector extends ProcessDirector {
 
     /** Decrement the count of actors externally blocked on a read.
      */
-    synchronized void removeExternalReadBlock() {
+    synchronized void _removeExternalReadBlock() {
         if( _externalReadBlocks > 0 ) {
             _externalReadBlocks--;
         }
@@ -506,7 +506,7 @@ public class DDEDirector extends ProcessDirector {
 
     /** Decrement the count of actors internally blocked on a read.
      */
-    synchronized void removeInternalReadBlock() {
+    synchronized void _removeInternalReadBlock() {
         if( _internalReadBlocks > 0 ) {
             _internalReadBlocks--;
         }
@@ -516,7 +516,7 @@ public class DDEDirector extends ProcessDirector {
      *  @param rcvr The DDEReceiver that is no longer
      *   write blocked.
      */
-    synchronized void removeWriteBlock(DDEReceiver rcvr) {
+    synchronized void _removeWriteBlock(DDEReceiver rcvr) {
         if( _writeBlocks > 0 ) {
             _writeBlocks--;
         }
@@ -593,7 +593,7 @@ public class DDEDirector extends ProcessDirector {
             int cap = smallestQueue.getCapacity();
             smallestQueue.setCapacity(cap * 2);
         }
-        removeWriteBlock( smallestQueue );
+        _removeWriteBlock( smallestQueue );
         synchronized( smallestQueue ) {
             smallestQueue.notifyAll();
         }

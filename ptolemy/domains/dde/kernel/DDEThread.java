@@ -134,7 +134,7 @@ public class DDEThread extends ProcessThread {
     public void start() {
 	Actor actor = getActor();
 	DDEDirector director = (DDEDirector)actor.getDirector();
-	Hashtable table = director.getInitialTimeTable();
+	Hashtable table = director._getInitialTimeTable();
 	if( table != null ) {
 	    Double dTime = (Double)table.get(actor);
 	    if( dTime != null ) {

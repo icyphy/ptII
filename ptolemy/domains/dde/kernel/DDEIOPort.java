@@ -187,7 +187,7 @@ public class DDEIOPort extends TypedIOPort {
         if( thread instanceof DDEThread ) {
             ddeThread = (DDEThread)thread;
             TimeKeeper tKeeper = ddeThread.getTimeKeeper();
-            tKeeper.setOutputTime(sendTime);
+            tKeeper._setOutputTime(sendTime);
         }
 
         super.send( chIndex, token );

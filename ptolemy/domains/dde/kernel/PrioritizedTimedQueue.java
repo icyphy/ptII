@@ -173,7 +173,7 @@ public class PrioritizedTimedQueue {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
                 timeKeeper.setCurrentTime( event.getTime() );
-                timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
+                timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
@@ -319,7 +319,7 @@ public class PrioritizedTimedQueue {
             if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-		timeKeeper.setOutputTime( timeKeeper.getCurrentTime() );
+		timeKeeper._setOutputTime( timeKeeper.getCurrentTime() );
             }
         } catch( IllegalActionException e ) {
             System.err.println("An exception thrown while setting"
@@ -331,9 +331,23 @@ public class PrioritizedTimedQueue {
 	    if( thread instanceof DDEThread ) {
                 TimeKeeper timeKeeper =
                         ((DDEThread)thread).getTimeKeeper();
-		setRcvrTime( timeKeeper.getCurrentTime() );
+		_setRcvrTime( timeKeeper.getCurrentTime() );
 	    }
 	}
+    }
+
+    /** Reset local flags. The local flags of this receiver impact
+     *  the local notion of time of the actor that contains this
+     *  receiver.
+     *  This method is not synchronized so the caller should be.
+     */
+    public void reset() {
+        DDEDirector director = (DDEDirector)
+            ((Actor)_container.getContainer()).getDirector();
+	double time = director.getCurrentTime();
+	_rcvrTime = time;
+	_lastTime = time;
+	_queue.clear();
     }
 
     /** Set the queue capacity of this receiver.
@@ -379,7 +393,7 @@ public class PrioritizedTimedQueue {
      *  is not synchronized so the caller should be.
      * @return The completion time.
      */
-    double getCompletionTime() {
+    double _getCompletionTime() {
         return _completionTime;
     }
 
@@ -389,7 +403,7 @@ public class PrioritizedTimedQueue {
      * @return True if this receiver contains a NullToken in the
      *  oldest queue position; return false otherwise.
      */
-    boolean hasNullToken() {
+    boolean _hasNullToken() {
 	if( _queue.size() > 0 ) {
 	    Event event = (Event)_queue.get(0);
 	    if( event.getToken() instanceof NullToken ) {
@@ -399,20 +413,6 @@ public class PrioritizedTimedQueue {
         return false;
     }
 
-    /** Reset local flags. The local flags of this receiver impact
-     *  the local notion of time of the actor that contains this
-     *  receiver.
-     *  This method is not synchronized so the caller should be.
-     */
-    void reset() {
-        DDEDirector director = (DDEDirector)
-            ((Actor)_container.getContainer()).getDirector();
-	double time = director.getCurrentTime();
-	_rcvrTime = time;
-	_lastTime = time;
-	_queue.clear();
-    }
-
     /** Set the completion time of this receiver. If the
      *  completion time argument is negative but is not
      *  equal to PrioritizedTimedQueue.ETERNITY, then throw
@@ -420,7 +420,7 @@ public class PrioritizedTimedQueue {
      *  This method is not synchronized so the caller should be.
      * @param time The completion time of this receiver.
      */
-    void setCompletionTime(double time) {
+    void _setCompletionTime(double time) {
 	if( time < 0.0 && time != PrioritizedTimedQueue.ETERNITY ) {
 	    throw new IllegalArgumentException("Attempt to set "
             	    + "completion time to a negative value.");
@@ -434,7 +434,7 @@ public class PrioritizedTimedQueue {
      *  is not synchronized so the caller should be.
      * @param time The new rcvr time.
      */
-    synchronized void setRcvrTime(double time) {
+    synchronized void _setRcvrTime(double time) {
 	if( !(_queue.size() > 0) ) {
             _rcvrTime = time;
 	}

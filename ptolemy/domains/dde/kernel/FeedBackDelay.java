@@ -208,7 +208,7 @@ public class FeedBackDelay extends DDEActor {
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
 		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-		rcvr.hideNullTokens(false);
+		rcvr._hideNullTokens(false);
 	    }
 	}
     }

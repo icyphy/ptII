@@ -65,7 +65,7 @@ keeps track of its receivers' priorities as well. The receiver with the
 highest priority is enabled to have its token consumed if the receiver
 shares a common minimum receive time with one or more additional receivers.
 <P>
-The receiver priorities are set using the method setRcvrPriorities() in
+The receiver priorities are set using the method _setRcvrPriorities() in
 the following manner. All of the input receivers associated with a given
 TimeKeeper are prioritized according to the inverse order in which they
 were connected in the model topology. I.e., if two input receivers (rA
@@ -101,7 +101,7 @@ public class TimeKeeper {
         _rcvrList = new LinkedList();
 	_rcvrComparator = new RcvrComparator(this);
 
-        setRcvrPriorities();
+        _setRcvrPriorities();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -313,7 +313,7 @@ public class TimeKeeper {
      * @exception IllegalActionException If the output time is
      *  less than the current time.
      */
-    synchronized void setOutputTime(double outputTime)
+    synchronized void _setOutputTime(double outputTime)
             throws IllegalActionException {
 
         if( outputTime < _currentTime ) {
@@ -337,7 +337,7 @@ public class TimeKeeper {
      * @exception IllegalActionException If an error occurs during
      *  receiver access.
      */
-    synchronized void setRcvrPriorities()
+    synchronized void _setRcvrPriorities()
             throws IllegalActionException {
 
         LinkedList listOfPorts = new LinkedList();
