@@ -68,7 +68,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	$(PTCLASSJAR) \
+	'ImageDisplay$$1.class' \
+	'ImageDisplay$$_PictureFrame.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

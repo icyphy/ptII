@@ -61,7 +61,7 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
         doc \
-	'TxDatagram$$UpdateThread.class'
+	'DatagramReceiver$$ListenerThread.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
