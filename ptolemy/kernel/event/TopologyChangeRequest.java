@@ -116,7 +116,7 @@ public abstract class TopologyChangeRequest {
      *   been implemented.
      */
     public void performRequest () throws TopologyChangeFailedException,
-           IllegalActionException {
+            IllegalActionException {
         Enumeration elts = _events.elements();
         LinkedList doneEvents = new LinkedList();
         TopologyChangeFailedException exception;

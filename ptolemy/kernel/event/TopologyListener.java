@@ -79,7 +79,7 @@ public interface TopologyListener {
      * The <b>relation</b> and <b>port</b> fields of the
      * passed event will be valid.
      *
-      * @param event The mutation event
+     * @param event The mutation event
      */
     public void portLinked (TopologyEvent event);
 
@@ -104,7 +104,7 @@ public interface TopologyListener {
      * passed event will be valid.
      *
      * @param event The mutation event
-    */
+     */
     public void relationAdded (TopologyEvent event);
 
     /** Notify that a relation has been removed from a composite.
