@@ -124,8 +124,6 @@ public class UtilityFunctions {
      *  @return A token containing the names of all the constants
      *   and their values.
      *  @since Ptolemy II 2.1
-     *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh)
      */
     public static RecordToken constants() {
         return Constants.constants();

@@ -139,9 +139,9 @@ import diva.util.java2d.ShapeUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
 /**
-   A simple graph view for ptolemy models.  This represents a level of the
-   hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
-   are supported using MoML.
+   A simple graph view for ptolemy models.  This represents a level of
+   the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
+   paste operations are supported using MoML.
 
    @author  Steve Neuendorffer, Edward A. Lee
    @version $Id$
@@ -1087,8 +1087,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
-     *  @Pt.ProposedRating Red (cxh)
-     *  @Pt.AcceptedRating Red (cxh)
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {
