@@ -71,7 +71,8 @@ JSRCS = \
 	ColtZeta.java
 
 OTHER_FILES_TO_BE_JARED = \
-	colt.xml
+	colt.xml \
+	colt-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
