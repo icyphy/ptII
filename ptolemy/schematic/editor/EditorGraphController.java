@@ -85,7 +85,8 @@ public class EditorGraphController extends GraphController {
             InputEvent.SHIFT_MASK);
 
     /**
-     * Create a new basic controller with default terminal and edge interactors.
+     * Create a new basic controller with default 
+     * terminal and edge interactors.
      */
     public EditorGraphController () {
         // The interactors attached to terminals and edges

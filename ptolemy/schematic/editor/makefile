@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	DragRecognizer.java \
 	Editor.java \
 	EditorDropTarget.java \
 	EditorGraphController.java \

@@ -83,7 +83,8 @@ public class SchematicPalette extends JGraph {
         final EditorDragGestureListener dgl = new EditorDragGestureListener();
 	dgl.setPalette(this);
 
-        DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
+	new DragRecognizer(_controller, DragSource.getDefaultDragSource(),
+			   //DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
                 c, DnDConstants.ACTION_COPY_OR_MOVE,
 		(DragGestureListener) dgl);
     }
@@ -100,9 +101,14 @@ public class SchematicPalette extends JGraph {
 	    // The interactors attached to terminals and edges
 	    SelectionModel sm = getSelectionModel();	    
 	    NodeInteractor ni = new NodeInteractor(this, sm);
-	    ni.setDragInteractor(new NodeDnDInteractor(this, palette));
+	    DragInteractor di = new NodeDnDInteractor(this, palette);
+	    //	    di.addLayerListener(new DragRecognizerListener(this, 
+	    //DragSource.getDefaultDragSource(), palette, 
+	    //DnDConstants.ACTION_COPY_OR_MOVE,
+	    //(DragGestureListener) dgl));
+	    ni.setDragInteractor(di);
 	    setNodeInteractor(ni);
-	    
+
 	    NodeRenderer nr = new EditorNodeRenderer();
 	    setNodeRenderer(nr);
 	}
@@ -165,12 +171,6 @@ public class SchematicPalette extends JGraph {
 	    /** Drag all selected nodes and move any attached edges
 	     */
 	    public void translate (LayerEvent e, double x, double y) {
-		Iterator i = targets();
-		
-		while (i.hasNext()) {
-		    Figure t = (Figure) i.next();		    
-		    _palette.setDraggedNode((Node)t.getUserObject());
-		}
 	    }
 	}
     }
@@ -222,7 +222,7 @@ public class SchematicPalette extends JGraph {
 		    //intersection of the users selected action, and the
 		    //source and target actions
 		    int myaction = dsde.getDropAction();
-		    if( (myaction & DnDConstants.ACTION_COPY) != 0) { 
+		    if( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) { 
 			context.setCursor(DragSource.DefaultCopyDrop); 
 		    } else {
 			context.setCursor(DragSource.DefaultCopyNoDrop); 
