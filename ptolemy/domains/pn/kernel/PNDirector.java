@@ -206,12 +206,13 @@ public class PNDirector extends CompositeProcessDirector {
      *  of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        // Initialize these counts BEFORE creating threads.
         _readBlockCount = 0;
 	_writeBlockCount = 0;
 	_writeBlockedQueues = new LinkedList();
         //processListeners is not initialized as we might want to continue
         //with the same listeners.
+	super.initialize();
     }
 
     /** Return a new receiver compatible with this director. The receiver
