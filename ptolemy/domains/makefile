@@ -33,9 +33,7 @@ ME =		ptolemy/domains
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
-# FIXME: Temporarily
-# DIRS =		csp ct dde de fsm pn sdf
-DIRS =		ct dde de fsm pn sdf
+DIRS =		csp ct dde de fsm pn sdf
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -51,15 +49,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-#PTCLASSALLJARS = \
-#		csp/csp.jar \
-#		ct/ct.jar \
-#		dde/dde.jar \
-#		de/de.jar \
-#		fsm/fsm.jar \
-#		pn/pn.jar \
-#		sdf/sdf.jar
 PTCLASSALLJARS = \
+		csp/csp.jar \
 		ct/ct.jar \
 		fsm/fsm.jar \
 		dde/dde.jar \
