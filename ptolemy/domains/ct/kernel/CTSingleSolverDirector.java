@@ -35,6 +35,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.*;
 import java.util.Iterator;
 
@@ -418,6 +419,7 @@ public abstract class CTSingleSolverDirector extends CTDirector {
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             ODESolver = new Parameter(
                     this, "ODESolver", new StringToken(_solverclassname));
+            ODESolver.setTypeEquals(BaseType.STRING);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");

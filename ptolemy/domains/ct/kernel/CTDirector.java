@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.*;
 import java.util.Iterator;
 
@@ -578,25 +579,34 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
             StartTime = new Parameter(
                     this, "StartTime", new DoubleToken(_startTime));
+            StartTime.setTypeEquals(BaseType.DOUBLE);
             StopTime = new Parameter(
                     this, "StopTime", new DoubleToken(_stopTime));
+            StopTime.setTypeEquals(BaseType.DOUBLE);
             InitStepSize = new Parameter(
                     this, "InitialStepSize", new DoubleToken(_initStepSize));
+            InitStepSize.setTypeEquals(BaseType.DOUBLE);
             MinStepSize = new Parameter(
                     this, "MinimumStepSize", new DoubleToken(_minStepSize));
+            MinStepSize.setTypeEquals(BaseType.DOUBLE);
             MaxStepSize = new Parameter(
                     this, "MaximumStepSize", new DoubleToken(_maxStepSize));
+            MaxStepSize.setTypeEquals(BaseType.DOUBLE);
             MaxIterations = new Parameter(
                     this, "MaximumIterationsPerStep",
                     new IntToken(_maxIterations));
+            MaxIterations.setTypeEquals(BaseType.INT);
             ErrorTolerance =  new Parameter(
                     this, "ErrorTolerance",
                     new DoubleToken(_lteTolerance));
+            ErrorTolerance.setTypeEquals(BaseType.DOUBLE);
             ValueResolution =  new Parameter(
                     this, "ConvergeValueResolution",
                     new DoubleToken(_valueResolution));
+            ValueResolution.setTypeEquals(BaseType.DOUBLE);
             TimeResolution = new Parameter(
                     this, "TimeResolution", new DoubleToken(_timeResolution));
+            TimeResolution.setTypeEquals(BaseType.DOUBLE);
 
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.

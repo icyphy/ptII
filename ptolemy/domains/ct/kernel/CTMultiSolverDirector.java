@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.*;
 import java.util.Iterator;
 
@@ -169,6 +170,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             BreakpointODESolver = new Parameter(
                     this, "BreakpointODESolver",
                     new StringToken(_bpsolverclassname));
+            BreakpointODESolver.setTypeEquals(BaseType.STRING);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
