@@ -45,7 +45,7 @@ PTPACKAGE = 	Lorenz
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	LorenzApplet.java
+	Lorenz.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	Lorenz.htm \
