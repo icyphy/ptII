@@ -1,4 +1,4 @@
-/* An attribute that represents a waypoint in a relation.
+/* An attribute that represents a location in the schematic.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -42,19 +42,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Vertex
+//// Location
 /**
-This attribute represents a waypoint in a relation. It implements
-Locatable, meaning that can be associated with a physical location
-in a visual rendition.  It can optionally be associated with another
-instance of Vertex to indicate that there is a path from this
-one to the other one. Cyclic paths are not permitted, although
-currently that is not enforced by this class.
+This attribute represents a location in a schematic.  In some respects
+it can be thought of as a basic implementation of the Locatable interface.
+It is usually used to specify the location of objects that need
+a graphical location, and have no other way of specifying it (such as 
+an external port).
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class Vertex extends Location {
+public class Location extends Attribute implements Locatable {
 
     /** Construct an attribute with the given name and position.
      *  @param container The container.
@@ -64,58 +63,27 @@ public class Vertex extends Location {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public Vertex(Relation container, String name)
+    public Location(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	setMoMLElementName("vertex");
+	setLocation(null);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the specified port to the list of ports linked to this vertex.
-     *  @param port The port to link.
+    /** Get the location in some cartesian coordinate system.
+     *  @return The location.
      */
-    public void addLinkedPort(Port port) {
-	if (_ports == null) {
-            _ports = new LinkedList();
-        }
-        _ports.add(port);
+    public double[] getLocation() {
+        return _location;
     }
 
-    /** Return the other vertex to which there is a path from this vertex, or
-     *  null if there is none.  Note that the paths are one directional,
-     *  so this vertex might return null even though there is another vertex
-     *  with a path to it.
+    /** Set the location in some cartesian coordinate system.
+     *  @param location The location.
      */
-    public Vertex getLinkedVertex() {
-	return _linked;
-    }
-
-    /** Get the list of ports linked to this vertex.
-     *  @return A list of ports connected to this vertex.
-     */
-    public List linkedPorts() {
-        // FIXME: Perhaps this should return an unmodifiable version?
-        return _ports;
-    }
-
-    /** Remove the specified port from the list of ports linked to this vertex.
-     *  If the port is not linked, do nothing.
-     *  @param port The port to remove.
-     */
-    public void removeLinkedPort(Port port) {
-	if (_ports != null) {
-            _ports.remove(port);
-        }
-    }
-
-    /** Set the other vertex to which there is a path from this vertex.
-     *  If the argument is null, remove the path.
-     *  @param vertex The vertex to link to this one.
-     */
-    public void setLinkedVertex(Vertex vertex) {
-	_linked = vertex;
+    public void setLocation(double[] location) {
+        _location = location;
     }
 
     /** Get a description of the class, which is the class name and
@@ -123,8 +91,16 @@ public class Vertex extends Location {
      *  @return A string describing the object.
      */
     public String toString() {
-	// FIXME add linked ports.
-        return super.toString();
+        String className = getClass().getName();
+        if (_location == null) {
+            return "(" + className + ", Location = null)";
+        }
+        StringBuffer location = new StringBuffer();
+        for (int i = 0; i < _location.length; i++) {
+            if (i > 0) location.append(", ");
+            location.append("" +_location[i]);
+        }
+        return "(" + className + ", Location = (" + location.toString() + "))";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,18 +119,22 @@ public class Vertex extends Location {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
 	super._exportMoMLContents(output, depth);
-	if(_linked != null) {
-	    output.write(_getIndentPrefix(depth));
-	    output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
+	if(_location != null && _location.length > 0) {
+            output.write(_getIndentPrefix(depth));
+            output.write("<location value=\"" + _location[0]);
+            if (_location.length > 1) {
+                output.write(", " + _location[1]);
+                if (_location.length > 2) {
+                    output.write(", " + _location[1]);
+                }
+            }
+            output.write("\"/>\n");
 	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The vertex that this attribute is connected to.
-    private Vertex _linked;
-
-    // The list of linked ports.
-    private LinkedList _ports;
+    // The location.
+    private double[] _location;
 }

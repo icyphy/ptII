@@ -41,11 +41,14 @@ import java.io.*;
 /**
 An attribute that represents a renderable form of the container.
 It represents a visual depiction that can be placed on the screen.
+This class is almost identical to the Location class, except that it
+outputs moml with a "rendition" tag.  Subclasses will add
+the actual graphical information and methods to render the icon.
 
 @author  Edward A. Lee, Steve Neuendorffer
 @version $Id$
 */
-public class Icon extends Attribute implements Locatable {
+public class Icon extends Location {
 
     /** Construct an attribute with the specified container and name.
      *  The location contained by the attribute is initially null,
@@ -60,77 +63,18 @@ public class Icon extends Attribute implements Locatable {
     public Icon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	setLocation(null);
 	setMoMLElementName("rendition");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the location in some cartesian coordinate system.
-     *  @return The location.
-     */
-    public double[] getLocation() {
-        return _location;
-    }
-
-    /** Set the location in some cartesian coordinate system.
-     *  @param location The location.
-     */
-    public void setLocation(double[] location) {
-        _location = location;
-    }
-
-    /** Get a description of the class, which is the class name and
-     *  the location in parentheses.
-     *  @return A string describing the object.
-     */
-    public String toString() {
-        String className = getClass().getName();
-        if (_location == null) {
-            return "(" + className + ", null)";
-        }
-        StringBuffer location = new StringBuffer();
-        for (int i = 0; i < _location.length; i++) {
-            if (i > 0) location.append(", ");
-            location.append("" +_location[i]);
-        }
-
-        return "(" + className + ", Location = (" + location.toString() + "))";
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Write a MoML description of the contents of this object, which
-     *  in this base class is the attributes.  This method is called
-     *  by _exportMoML().  If there are attributes, then
-     *  each attribute description is indented according to the specified
-     *  depth and terminated with a newline character.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     *  @see NamedObj#_exportMoMLContents
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-	super._exportMoMLContents(output, depth);
-	if(_location != null && _location.length > 0) {
-            output.write(_getIndentPrefix(depth));
-            output.write("<location value=\"" + _location[0]);
-            if (_location.length > 1) {
-                output.write(", " + _location[1]);
-                if (_location.length > 2) {
-                    output.write(", " + _location[1]);
-                }
-            }
-            output.write("\"/>\n");
-	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The location.
-    private double[] _location;
 }
+
+
+
+
+
+
+
+
+
+
+
+
