@@ -140,7 +140,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  is exactly one transition enabled, then it is chosen and the choice
      *  actions contained by transition are executed. Return the destination
      *  state. If no transition is enabled, return the current state.
-     *  @param state The current state.
+     *  @param state The given state.
      *  @return The destination state, or the current state if no
      *   transition is enabled.
      *  @exception IllegalActionException If a non-transient state has
@@ -499,8 +499,8 @@ public class MultirateFSMDirector extends FSMDirector {
         // controller makes a state transition, unless the
         // corresponding refinement rate parameters are constant,
         // and have the same value.  (Note that the controller
-        // itself makes transitions less often if it is contained
-        // in an HDF model, rather than in an SDF model.)
+        // itself makes transitions less often if its executive director
+        // is an HDFFSMDirector, which is a subclass of MultirateFSMDirector.
         ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
             .getAnalysis(this);
         CompositeActor model = (CompositeActor) getContainer();
