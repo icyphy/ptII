@@ -1,4 +1,4 @@
-# Makefile for Java plot program, test directory
+# Makefile for Java ptplot program, demo directory
 #
 # @Authors: Christopher Hylands
 #
