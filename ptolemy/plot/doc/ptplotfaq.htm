@@ -101,7 +101,7 @@ with the word <CODE>subscribe</CODE> in the body, not the header.
 <DT> <A NAME="xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>
 <DD> The introduction contains a <A HREF="main.htm#xgraph">description</A> of the relationship between <CODE>xgraph</CODE> and ptplot.
  <br> Note that you can download sources and binaries for <CODE>pxgraph</CODE>, an extension to <CODE>xgraph</CODE> from
-<a href="http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm"><CODE>http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/other/pxgraph.htm</CODE></a>
 
  <br> Note that if you type a <CODE>x</CODE> while the mouse is
 over the Java <CODE>pxgraph</CODE> application window, and
@@ -123,15 +123,10 @@ MIF output facilities in the X11 version.
 has links to the tar and zip files.
 
 <DT> <A NAME="platforms that Ptplot runs under"><B>2.2 What platforms does Ptplot run under?</B></A>
-<DD> Ptplot was develop under JDK1.2.1.  Most of the simple applets
-should work under browsers that support JDK1.1 (Netscape 4.61 and IE 5).
- <p>The <a href="http://www.javasoft.com/products/plugin/" target="_top">Java Plug-in</a>
-allows JDK1.1 browsers under Windows to run JDK1.2 applets.
-As of the 3.1 release of Ptplot, none of the plugins we are shipping
-require the JDK1.2 Plug-in
-
- <p>Older browsers may not have support for JDK1.1, you may need to
-upgrade your browser.
+<DD> Ptplot was develop under JDK1.3, which requires the 
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Java Plug-in</a>.
+If you don't want to require your users to install the JDK plugin, then try 
+using Ptplot3.1 or earlier.
 
  <p>Note that Ptplot3.1 and later wll not compile with JDK1.1, the
 Plot class uses the <CODE>clear()</CODE> method from the Vector
@@ -144,13 +139,15 @@ supported JDK1.0.2, you can find those releases in
 
 <DT> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
 <DD>
-To use Ptplot, you will need the Java Development kit (JDK), which
+To use Ptplot, you will need the Java Runtime Environment, (JRE) 
+which 
 can be downloaded from
 <A HREF="http://www.javasoft.com" target="_top"><CODE>http://www.javasoft.com</CODE></A>.
  <p>See the <a href="install.htm">Installing Ptplot</a> page
 for more information
- <P>You can also run Ptplot as an applet in your local browser.
-
+ <P>You can also run Ptplot as an applet in your local browser by
+downloading the 
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Java Plug-in</a>.
 
 <DT> <A NAME="ptplot troubleshooting overview"><B>2.4 Troubleshooting</B></A>
 <DD> The <A HREF="troubleshooting.htm">Ptplot Troubleshooting</A> guide
@@ -298,12 +295,6 @@ support in the applet will print the applet only, not the rest of the
 browser page.
 </BLOCKQUOTE>
 
-Sun's
-<A HREF="http://java.sun.com/products/hotjava/index.htm" target="_top">HotJava</A>
-browser can be used to print pages that contain applets.  However, it
-seems like the Windows version sometimes crashes when printing.  The Solaris
-version of HotJava1.1 works fine.
-
  <P>For more information about printing, join the JavaSoft Developer
 Connection (it is free) and search for printing.
 
@@ -321,7 +312,7 @@ pxgraph -print -o /tmp/data.ps demo/data.plt
 pstogif /tmp/data.ps
 </pre>
 Under windows, you may want to try using
-<a href="http://www.techsmith.com/products/snagit/">Snagit</a>,
+<a href="http://www.techsmith.com/products/snagit/" target="_top">Snagit</a>,
 which is a commercially available program.
 
 <DT>  <A NAME="twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
