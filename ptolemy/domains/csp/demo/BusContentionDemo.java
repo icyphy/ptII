@@ -116,12 +116,14 @@ public class BusContentionDemo {
         
         
         // Set up connections
-        inReqs = (IORelation)topLevelActor.connect( reqIn, p1_ReqOut );
+        inReqs = (IORelation)topLevelActor.connect( reqIn, p1_ReqOut, "inReqs" );
         inReqs = (IORelation)topLevelActor.connect( reqIn, p2_ReqOut );
         inReqs = (IORelation)topLevelActor.connect( reqIn, p3_ReqOut );
         
         outContends = (IORelation)topLevelActor.connect( contendOut, alarmIn );
         inContends = (IORelation)topLevelActor.connect( contendIn, alarmOut );
+        
+        System.out.println("Made It");
         
         outReqs = (IORelation)topLevelActor.connect( reqOut, p1_ReqIn );
         outReqs = (IORelation)topLevelActor.connect( reqOut, p2_ReqIn );
