@@ -197,8 +197,9 @@ public class TNLManip {
      *  specified visitor. The specified <i>args</i> are passed to the
      *  accept() method of each element of the <i>list</i>, if that element
      *  is an instance of TreeNode.  If the element is a list, then its
-     *  elements are visited.  If it is neither a TreeNode nor a list,
-     *  then an exception is thrown. The returned
+     *  elements are visited. If it is neither a TreeNode nor a list,
+     *  then an exception is thrown (unless it is null, in which case an empty list
+     *  is returned). The returned
      *  list has the same size as the specified <i>list</i>, and contains
      *  of the return values of each visitation. If an accept() method
      *  returns null, the corresponding value in the returned list is
@@ -214,7 +215,12 @@ public class TNLManip {
     public static final ArrayList traverseList(IVisitor visitor,
             LinkedList args, List list, boolean setChildReturnValues) {
         Object returnValue;
+
+        // Return an empty list if the input list is null.
+        if (list == null) return new ArrayList();
+
         ArrayList retList = new ArrayList(list.size());
+
 
         Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
