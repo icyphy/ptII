@@ -271,8 +271,8 @@ public class LevelCrossingDetector extends Transformer
     public boolean isThisStepAccurate() {
         if (_first) {
             if (_debugging) {
-                _debug("It is the first iteration, the step size is " +
-                    "assumed to be accurate.");
+                _debug("It is the first iteration, the step size is "
+                         + "assumed to be accurate.");
             }
             _first = false;
             _eventNow = false;

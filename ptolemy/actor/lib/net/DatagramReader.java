@@ -474,8 +474,9 @@ public class DatagramReader extends TypedAtomicActor {
                         try {
                             _multicastSocket.leaveGroup(_address);
                         } catch (IOException exp) {
-                            throw new IllegalActionException("get an err " +
-                                                                "when disconnect from the multicast group?" + exp);
+                            throw new IllegalActionException(this, exp,
+                                    "Disconnecting from the multicast group "
+                                    "failed.");
                         }
                     }
                 }

@@ -808,7 +808,8 @@ public class TableauFrame extends Top {
                     Iterator instances = children.iterator();
                     int length = confirm.length();
                     while (instances.hasNext()) {
-                        WeakReference reference = (WeakReference)instances.next();
+                        WeakReference reference =
+                            (WeakReference)instances.next();
                         Instantiable instance = (Instantiable)reference.get();
                         if (instance != null) {
                             confirm.append(instance.getFullName());

@@ -391,10 +391,10 @@ public class DEEDirector extends DEDirector {
         //int depth = _getDepth(actor);
         int depth = 0;
 
-        if (_debugging) _debug("FIXME: possible issues may arise here. " +
-                "enqueue a pure event: ",
-                ((NamedObj)actor).getName(),
-                "time = " + time + " microstep = " + microstep + " depth = "
+        if (_debugging) _debug("FIXME: possible issues may arise here. "
+                + "enqueue a pure event: " 
+                + ((NamedObj)actor).getName()
+                + "time = " + time + " microstep = " + microstep + " depth = "
                 + depth);
         _eventQueue.put(new DEEvent(actor, time, microstep, depth));
     }
