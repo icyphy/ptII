@@ -278,15 +278,15 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return the determinate of a square matrix.
+    /** Return the determinant of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1].
      *
-     *  @param matrix The matrix for which to calculate the determinate.
-     *  @return The determinate of the matrix.
+     *  @param matrix The matrix for which to calculate the determinant.
+     *  @return The determinant of the matrix.
      */
-    public static final Complex determinate(final Complex[][] matrix) {
-        _checkSquare("determinate", matrix);
+    public static final Complex determinant(final Complex[][] matrix) {
+        _checkSquare("determinant", matrix);
 
         Complex[][] a;
         Complex det = Complex.ONE;
@@ -312,10 +312,10 @@ public class ComplexMatrixMath {
                 a[pivot] = a[swapRow];
                 a[swapRow] = aPtr;
 
-                // Change sign of determinate because of swap.
+                // Change sign of determinant because of swap.
                 det = det.multiply(a[pivot][pivot].negate());
             } else {
-                // Calculate the determinate by the product of the pivots.
+                // Calculate the determinant by the product of the pivots.
                 det = det.multiply(a[pivot][pivot]);
             }
 

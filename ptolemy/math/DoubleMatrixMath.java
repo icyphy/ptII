@@ -206,12 +206,12 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
-    /** Return the determinate of a square matrix.
+    /** Return the determinant of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1]
      */
-    public static final double determinate(final double[][] matrix) {
-        _checkSquare("determinate", matrix);
+    public static final double determinant(final double[][] matrix) {
+        _checkSquare("determinant", matrix);
 
         double[][] a;
         double det = 1.0;
@@ -237,10 +237,10 @@ public class DoubleMatrixMath {
                 a[pivot] = a[swapRow];
                 a[swapRow] = aPtr;
 
-                // change sign of determinate because of swap
+                // change sign of determinant because of swap
                 det *= -a[pivot][pivot];
             } else {
-                // calculate the determinate by the product of the pivots
+                // calculate the determinant by the product of the pivots
                 det *= a[pivot][pivot];
             }
 
