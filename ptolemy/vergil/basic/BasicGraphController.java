@@ -243,7 +243,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     }
 
     /** Initialize interactions for the specified controller.  This
-     *  method is called when a new constroller is constructed. This
+     *  method is called when a new controller is constructed. This
      *  base class does nothing, but derived classes may attach interactors
      *  to the specified controller.
      *  @param controller The controller for which to initialize interaction.
