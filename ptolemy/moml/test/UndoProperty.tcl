@@ -1,6 +1,6 @@
 # Tests for the undoable feature of MoMLParser class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -394,6 +394,103 @@ test UndoProperty-1.5b {Test undoing a change to a ports "multiport" value} {
                 <property name="input"/>
             </port>
         </entity>
+    </entity>
+</entity>
+}
+
+
+
+
+# The base model to use for the entity tests
+set parameterTestModelBody {
+  <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+     <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="test" class="ptolemy.data.expr.Parameter" value="&quot;foo&quot;">
+        </property>
+     </entity>
+</entity>
+}
+
+set parameterTestModel "$header $parameterTestModelBody"
+
+
+######################################################################
+####
+#
+
+test UndoProperty-2.1a {Test undoing a property value change} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor [$parser parse $parameterTestModel]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+    $toplevel setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".top.level">
+            <property name="test" class="ptolemy.data.expr.Parameter" value="3" />
+        </entity>
+    }]
+    # Mark the change as being undoable
+    $change setUndoable true
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change
+
+    # Export the modified MoML
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="test" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+    </entity>
+</entity>
+}
+
+
+test UndoProperty-2.1b {Test undoing a property value change } {
+    # Now create the MoMLUndoChangeRequest which will undo the change
+    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $undochange
+
+    # Should be back to the base model...
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="test" class="ptolemy.data.expr.Parameter" value="&quot;foo&quot;">
+        </property>
+    </entity>
+</entity>
+}
+
+
+test UndoProperty-2.1c {Test redoing a property value change } {
+    set redoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
+	$toplevel $toplevel] 
+    $redoChange setRedoable
+    $manager requestChange $redoChange 
+
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <entity name="level" class="ptolemy.actor.TypedCompositeActor">
+        <property name="test" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
     </entity>
 </entity>
 }
