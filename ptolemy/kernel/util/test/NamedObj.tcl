@@ -107,6 +107,24 @@ test NamedObj-2.3 { Check names with dots} {
 # 
 test NamedObj-3.1 {Experiment with Parameters} {
     set n [java::new pt.kernel.NamedObj]
-    set paramlist [ $n getParam]
-    list ""
-} {{}}
+    set paramlist [$n getParam]
+
+    # Create two ParamTest objects, add them to the ParamList
+    set paramtest1 [java::new pt.kernel.test.ParamTest]
+    $paramtest1 setName "first param"
+    $paramtest1 setValue int 42
+
+    set paramtest2 [java::new pt.kernel.test.ParamTest]
+    $paramtest2 setName "second param"
+    $paramtest2 setValue int -4
+
+    $paramlist append $paramtest2
+    $paramlist prepend $paramtest1
+
+    # Get the ParamList again.
+    set paramlist1a [$n getParam]
+    set paramtest1a [$paramlist1a get "first param"]
+    set paramtest2a [$paramlist1a get "second param"]
+    list [$paramtest1a getName] [$paramtest1a getValue] \
+	    [$paramtest2a getName] [$paramtest2a getValue]
+} {{first param} 42 {second param} -4}
