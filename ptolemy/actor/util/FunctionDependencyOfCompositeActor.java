@@ -1,5 +1,5 @@
 /* An instance of FunctionDependencyOfCompositeActor describes the
-   function dependency information of a composite actor.
+   function dependency of a composite actor.
 
    Copyright (c) 2003-2004 The Regents of the University of California.
    All rights reserved.
@@ -38,32 +38,40 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.graph.DirectedGraph;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependenceOfCompositeActor
+
 /** An instance of FunctionDependencyOfCompositeActor describes the function
-    dependency information of a composite actor. 
+    dependency information a composite actor. It provides both the abstracted
+    view, which gives the function dependency that output ports of the actor
+    have on input ports, and a detailed view from which it constructs
+    this information. The detailed view is a graph where the nodes correspond
+    to the ports of this composite actor and to the ports of all deeply
+    contained opaque actors, and the edges represent either the communication
+    dependencies implied by the connections within this composite actor or
+    the function dependencies of the contained opaque actors.
+    The detailed view can be used by a director to construct a schedule.
     <p>
-    The construction of the dependency graph is in a bottom-up way by 
-    composing the function dependencies of the contained actors, which may 
-    be either atomic or composite. 
-    <p>
-    To check if the dependecy graph has cycles, use the getCycleNodes() method.
-    The method returns an array of IOPorts in cycles. If there is no cycle, the
-    returned array is empty.
+    The detailed view may reveal dependency loops, which in many domains
+    means that the model cannot be executed.
+    To check whether there are such loops, use the getCycleNodes() method.
+    The method returns an array of IOPorts in such loops, of an empty
+    array if there are no such loops.
     
     @see FunctionDependency
     @author Haiyang Zheng
     @version $Id $
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (hyzheng)
-    @Pt.AcceptedRating Red (hyzheng)
+    @Pt.ProposedRating Green (hyzheng)
+    @Pt.AcceptedRating Yellow (eal)
 */
 public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
-    /** Construct a FunctionDependency in the given actor.
-     *  @param actor The actor.
+    /** Construct a FunctionDependency for the given actor.
+     *  @param actor The associated actor.
      */
     public FunctionDependencyOfCompositeActor(Actor actor) {
         super(actor);
@@ -72,12 +80,13 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a cycle loop in the dependency graph of this 
+    /** If there is a dependency loop in the dependency graph of this 
      *  FunctionDependency object, return the nodes in the 
-     *  cycle loop. If there are multiple cycles, all the nodes will 
-     *  be returned. If there is no cycle, an empty array is returned. 
-     *  The type of the returned nodes is IOPort.
-     *  @return An array contains the IOPorts in cycles.
+     *  dependency loop. If there are multiple loops, all the nodes will 
+     *  be returned. If there is no loops, return an empty array. 
+     *  The elements of the returned array are instances of IOPort.
+     *  @return An array that contains the IOPorts in dependency loops, or an
+     *   empty array if there are no such loops.
      */
     public Object[] getCycleNodes() {
         _validate();
@@ -85,9 +94,9 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     }
 
     /** Return a detailed dependency graph representing the function 
-     *  dependency information. The graph includes both the external
-     *  and internal ports. This dependency graph is used
-     *  by a director to construct a schedule.
+     *  dependency information. The graph includes both the ports of
+     *  this composite actor and the ports of ports of its deeply
+     *  contained opaque actors (composite or atomic). 
      *  @return A detailed dependency graph reflecting the dependency
      *  information between the input and output ports. 
      */
@@ -112,7 +121,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         
         // Initialize the dependency graph
         _dependencyGraph = 
-            _initializeDisconnectedDependencyGraph();
+            _constructDisconnectedDependencyGraph();
 
         // add an edge from input to output 
         // if the output depends on the input
@@ -133,37 +142,26 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         }
     }
 
-
-    /** Get a list of embedded entities for function dependency
-     *  calculation.
-     *  @return A list of embedded entities.
-     */
-    protected List _getEntities() {
-        return ((CompositeActor)getActor()).deepEntityList();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
     
     /** Construct a directed graph with the nodes representing input and
      *  output ports, and directed edges representing dependencies. This
-     *  graph includes both the externally and internally visible input 
-     *  and output ports.
+     *  graph includes both the ports of this actor and the ports of all
+     *  deeply contained opaque actors.
      */
-    // The following code has recursive calls.
-    // FIXME: Steve suggests the performance analysis.
     private void _constructDetailedDependencyGraph()  {
         // get the actor
         CompositeActor actor = (CompositeActor)getActor();
 
         // initialize the detailed dependency graph
         _detailedDependencyGraph = 
-            _initializeDisconnectedDependencyGraph();
+            _constructDisconnectedDependencyGraph();
         
-        // FIXME: for special domains, like Giotto, the inputs
+        // NOTE: for special domains, like Giotto, the inputs
         // and outputs are always independent if they are not 
-        // directly connected. How to implement this? 
-        // Domain-specific function dependency?
+        // directly connected. Such domains have no use for
+        // function dependency information.
 
         // Here we add constraints on which actors to be used to
         // construct graph. For example, in a composite actor, all
@@ -174,15 +172,15 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         
         // FIXME: the situation that a state has multiple refinements 
         // has to be considered.  
-        List embeddedActors = _getEntities();
+        List embeddedActors = ((CompositeEntity)getActor()).deepEntityList();
 
-        // merge dependency graphs of the internal actors into 
-        // the dependency graph of the actor 
+        // Merge dependency graphs of the internal actors into 
+        // the dependency graph of the actor.
         Iterator embeddedActorsIterator = embeddedActors.iterator();
         while (embeddedActorsIterator.hasNext()) {
             Actor embeddedActor = (Actor)embeddedActorsIterator.next();
             FunctionDependency functionDependency =
-                embeddedActor.getFunctionDependencies();
+                embeddedActor.getFunctionDependency();
             if (functionDependency != null) {
                 _detailedDependencyGraph.addGraph(
                     functionDependency.getDependencyGraph());
@@ -264,8 +262,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
     
-    // The detailed dependency graph that includes both the externally
-    // and internally visible input and output ports. 
+    // The detailed dependency graph that includes both the ports of
+    // this actor and the ports of all deeply contained opaque actors. 
     private DirectedGraph _detailedDependencyGraph;
-
 }

@@ -291,10 +291,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
     }
 
-    /** Remove the dependency between the dummy port returned by
-     *  getChannelPort() and itself.
+    /** Override the base class to declare that the dummy port
+     *  returned by getChannelPort() does not depend on itself
+     *  in a firing. This port is both an input and an output,
+     *  so by default there would be a self dependency.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(_channelPort, _channelPort);
     }
 

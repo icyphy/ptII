@@ -263,10 +263,12 @@ public class Backoff extends MACActorBase {
 
     }
     
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>BKDone</i>
+     *  output port does not depend on the <i>getBackoff</i>
+     *  of <i>fromDataPump</i> input ports in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         super.removeDependency(getBackoff, BKDone);
         super.removeDependency(fromDataPump, BKDone);
     }

@@ -142,10 +142,12 @@ public class DEMessageSource extends TypedAtomicActor {
 
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>output</i>
+     *  and <i>request</i> ports do not depend on the <i>next</i>
+     *  port in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(next, output);
         removeDependency(next, request);
     }

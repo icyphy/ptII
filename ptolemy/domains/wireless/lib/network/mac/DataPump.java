@@ -258,10 +258,13 @@ public class DataPump extends MACActorBase {
         _pdu = null;
     }
     
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>TXTXConfirm</i>
+     *  and <i>RXTXConfirm</i> output ports do not
+     *  depend on the <i>TXTXRequest</i> and <i>RXTXRequest</i>
+     *  in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         super.removeDependency(TXTXRequest, TXTXConfirm);
         super.removeDependency(RXTXRequest, RXTXConfirm);
         super.removeDependency(TXTXRequest, RXTXConfirm);

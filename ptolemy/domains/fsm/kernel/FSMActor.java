@@ -336,7 +336,7 @@ public class FSMActor extends CompositeEntity
      *  Otherwise, they are independent.
      *  @return A FunctionDependency object of an FSM actor.
      */
-    public FunctionDependency getFunctionDependencies() {
+    public FunctionDependency getFunctionDependency() {
         if (_functionDependency == null) {
             try {
                 TypedActor[] refinements = _currentState.getRefinement();

@@ -40,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.ImageFigure;
 
@@ -99,7 +100,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // NOTE: This gets called every time that the graph gets
         // repainted, which seems excessive to me.  This will happen
         // every time there is a modification to the model that is
-        // carried out by a MoMLChangeRequest.
+        // carried out by a ChangeRequest.
 
         // The Diva graph package implements a model-view-controller
         // architecture, which implies that this needs to return a new
@@ -146,39 +147,60 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             int width,
             int height) {
 
-        if (((infoflags | ImageObserver.WIDTH) != 0)
-                || ((infoflags | ImageObserver.HEIGHT) != 0)) {
-            // Width and height information is available now.
+        if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {
+            // NOTE: Incredibly stupidly, when Java calls this method
+            // with a new width and height, it hasn't set those fields
+            // in the image yet.  Thus, even though width and height
+            // have been updated, they are not accessible in the image,
+            // which will still return -1 to getWidth() and getHeight().
+            // Go figure...  I guess the idea is that we have to
+            // duplicate the image information locally. Dumb.
+            _height = height;
+            _width = width;
+
+            // Needed to trigger further updates.
+            _image.getWidth(this);
+            _image.getHeight(this);
+            
+            return true;
+        }
+            
+        if ((infoflags & ImageObserver.ALLBITS) != 0) {
+            // The image is now fully loaded.
             scaleImage(_scalePercentage);
 
-            // If the width and height change, then ports may need to be
-            // laid out again.
-            // FIXME: Regrettably, the only way to do this is to
+            // The ports may need to be laid out again.
+            // Regrettably, the only way to do this is to
             // trigger a graph listener, which lays out the entire graph.
-            // This is a flaw that needs to fixed. As a major hack,
-            // what we do here is to issue a MoMLChangeRequest, which
-            // will cause the graph to lay out again.  This will also
-            // introduce a bug in that there will be an empty undo action.
+            // Trigger this by issuing a change request.
+            // FIXME: Doesn't work for centering image properly!
+            requestChange(new MoMLChangeRequest(this, this, "<group></group>"));
 
-            return false;
-        }
-        if (((infoflags | ImageObserver.ERROR) != 0)
-                || ((infoflags | ImageObserver.ABORT) != 0)) {
-            // FIXME: Set an error image.
-            return false;
-        }
-        Runnable doRepaint = new Runnable() {
-                public void run() {
-                    // If this was called for any other reason, repaint.
-                    Iterator figures = _liveFigureIterator();
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((ImageFigure)figure).repaint();
+            /* FIXME: Probably not needed. */
+            Runnable doRepaint = new Runnable() {
+                    public void run() {
+                        // If this was called for any other reason, repaint.
+                        Iterator figures = _liveFigureIterator();
+                        while (figures.hasNext()) {
+                            Object figure = figures.next();
+                            ((ImageFigure)figure).repaint();
+                        }
                     }
-                }
-            };
-        SwingUtilities.invokeLater(doRepaint);
+                };
+            SwingUtilities.invokeLater(doRepaint);
 
+            return false;
+        }
+        if ((infoflags & (ImageObserver.ERROR
+                | ImageObserver.ABORT)) != 0) {
+            // FIXME: Set an error image.
+            // Return false as there is no more we can do.
+            return false;
+        }
+
+        // Needed to trigger further updates.
+        _image.getWidth(this);
+        _image.getHeight(this);
 
         // This method returns true to indicate that further
         // updates are needed.  However, I can't begin to understand
@@ -191,45 +213,59 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
      *  @param percentage The scaling percentage.
      */
     public void scaleImage(double percentage) {
+        // Do nothing if this matches the previous value.
+        if (percentage == _scalePercentage) {
+            return;
+        }
         _scalePercentage = percentage;
 
         // This needs to be in the swing thread.
         Runnable doScale = new Runnable() {
-                public void run() {
-                    if (_image == null) {
-                        // No image has been set yet, so return.
-                        return;
-                    }
-                    // NOTE: Oddly, the following two calls below may not
-                    // return the correct sizes unless the image is
-                    // already loaded.  Although it is not documented, it
-                    // appears that if the the returned size is not
-                    // positive, then it is not correct, and imageUpdate()
-                    // will be called later. So in that case, we do
-                    // nothing.
-                    int width = _image.getWidth(ImageIcon.this);
-                    int height = _image.getHeight(ImageIcon.this);
-                    if (width > 0 && height > 0) {
-                        int newWidth = (int) Math.round(
-                                width * _scalePercentage/100.0);
-                        int newHeight = (int) Math.round(
-                                height * _scalePercentage/100.0);
-                        _scaledImage = _image.getScaledInstance(
-                                newWidth, newHeight, Image.SCALE_SMOOTH);
-                        Iterator figures = _liveFigureIterator();
-                        while (figures.hasNext()) {
-                            Object figure = figures.next();
-                            // Repaint twice since the scale has changed
-                            // and we need to cover the damage area prior
-                            // the change as well as after.
-                            // ((ImageFigure)figure).repaint();
-                            ((ImageFigure)figure).setCentered(false);
-                            ((ImageFigure)figure).setImage(_scaledImage);
-                            // ((ImageFigure)figure).repaint();
-                        }
+            public void run() {
+                if (_image == null) {
+                    // No image has been set yet, so return.
+                    return;
+                }
+                // NOTE: Oddly, the following two calls below may not
+                // return the correct sizes unless the image is
+                // already loaded.  Although it is not documented, it
+                // appears that if the the returned size is not
+                // positive, then it is not correct, and imageUpdate()
+                // will be called later. So in that case, we do
+                // nothing.
+                int width = _image.getWidth(ImageIcon.this);
+                int height = _image.getHeight(ImageIcon.this);
+                if (width < 0 || height < 0) {
+                    // Try the locally saved values from imageUpdate.
+                    width = _width;
+                    height = _height;
+                }
+                if (width > 0 && height > 0) {
+                    int newWidth = (int) Math.round(
+                            width * _scalePercentage/100.0);
+                    int newHeight = (int) Math.round(
+                            height * _scalePercentage/100.0);
+                   
+                    _scaledImage = _image.getScaledInstance(
+                            newWidth, newHeight, Image.SCALE_SMOOTH);
+                    // To get notified of updates:
+                    _scaledImage.getWidth(ImageIcon.this);
+                    _scaledImage.getHeight(ImageIcon.this);
+                    
+                    Iterator figures = _liveFigureIterator();
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        // Repaint twice since the scale has changed
+                        // and we need to cover the damage area prior
+                        // the change as well as after.
+                        // ((ImageFigure)figure).repaint();
+                        ((ImageFigure)figure).setCentered(false);
+                        ((ImageFigure)figure).setImage(_scaledImage);
+                        // ((ImageFigure)figure).repaint();
                     }
                 }
-            };
+            }
+        };
         SwingUtilities.invokeLater(doScale);
     }
 
@@ -242,6 +278,12 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // Temporarily set the scaled image to the same image.
         // This will get reset when scaleImage() completes its work.
         _scaledImage = image;
+        
+        // In order to trigger a notification of completion
+        // of the image load, we have to access something
+        // about the image.
+        _image.getWidth(this);
+        _image.getHeight(this);
 
         // Update the images of all the figures that this icon has
         // created (which may be in multiple views). This has to be
@@ -249,22 +291,25 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // is also called in the Swing thread, there is no possibility of
         // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
-                public void run() {
-                    Iterator figures = _liveFigureIterator();
-                    while (figures.hasNext()) {
-                        Object figure = figures.next();
-                        ((ImageFigure)figure).setImage(_scaledImage);
-                        if (_scalePercentage != 100.0) {
-                            scaleImage(_scalePercentage);
-                        }
+            public void run() {
+                Iterator figures = _liveFigureIterator();
+                while (figures.hasNext()) {
+                    Object figure = figures.next();
+                    ((ImageFigure)figure).setImage(_scaledImage);
+                    if (_scalePercentage != 100.0) {
+                        scaleImage(_scalePercentage);
                     }
                 }
-            };
+            }
+        };
         SwingUtilities.invokeLater(doSet);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+   
+    // The locally saved height.
+    private int _height = -1;
 
     // The image that is the master.
     private Image _image;
@@ -274,4 +319,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     // The scale percentage.
     private double _scalePercentage = 100.0;
+    
+    // The locally saved width.
+    private int _width = -1;
 }

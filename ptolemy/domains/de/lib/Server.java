@@ -201,10 +201,12 @@ public class Server extends DETransformer {
         return super.postfire();
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> or <i>newServiceTime</i>
+     *  in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(input, output);
         removeDependency(newServiceTime, output);
     }

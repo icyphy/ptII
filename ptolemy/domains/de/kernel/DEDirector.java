@@ -696,19 +696,16 @@ public class DEDirector extends Director {
                     + getStopTime() + ").");
         }
         _exceedStopTime = false;
-        // use the protected variable directly, since time can go backward.
-        // This is the only place in DE where time can go backward.
-
         // Note: If it is embedded, it should get the current time from its
         // executive director. Modified by yang.
         if (_isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof Actor) {
-                _currentTime = ((Actor)container).
-                    getExecutiveDirector().getCurrentTime();
+                setCurrentTime(((Actor)container).
+                    getExecutiveDirector().getCurrentTime());
             }
         } else {
-            _currentTime = getStartTime();
+            setCurrentTime(getStartTime());
         }
         _realStartTime = System.currentTimeMillis();
         // We cannot call super.initialize() since it will set current time
@@ -1438,7 +1435,7 @@ public class DEDirector extends Director {
 
         // Get the FunctionDependency attribute of the container. 
         FunctionDependency functionDependency = 
-            castContainer.getFunctionDependencies();
+            castContainer.getFunctionDependency();
 
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
@@ -1480,7 +1477,7 @@ public class DEDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the FunctionDependency attribute of current actor.
-            functionDependency = actor.getFunctionDependencies();
+            functionDependency = actor.getFunctionDependency();
             // FIXME:
             // The following check may not be necessary since the 
             // FunctionDependency attribute is constructed before. 

@@ -126,10 +126,12 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
         return super.postfire();
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>dataOutput</i>
+     *  and <i>indexOutput</i> ports do not depend on the <i>dataInput</i>
+     *  port in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(dataInput, dataOutput);
         removeDependency(dataInput, indexOutput);
     }
