@@ -40,7 +40,7 @@ in RealAnalogFilter and ComplexAnalogFilter.  AnalogFilter class also contains
 method to designing an IIR filter with Butterworth and Chebychev.
 
 @author David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
-@version %W%	%G%
+@version $Id$
 
 */
 public abstract class AnalogFilter extends Filter {

@@ -33,15 +33,15 @@ import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealSFactor
 /**
+
 The RealSFactor class is used to implement RealAnalogFilter's transfer
-function.  This class is derived from RealFactor where pertinent data about
-the RealSFactor is held.  The coefficients of the transfer and the pole/zero
-locations are contained in RealFactor.
+function.  This class is derived from RealFactor where pertinent data
+about the RealSFactor is held.  The coefficients of the transfer and
+the pole/zero locations are contained in RealFactor.
 
 
 @author  David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
-@version %W%	%G%
-
+@version $Id$
 */
 public class RealSFactor extends RealFactor {
     /** Construct a real factor of unit one.  The transfer function is :

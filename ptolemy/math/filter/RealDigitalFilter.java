@@ -34,6 +34,7 @@ import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealDigitalFilter
 /**
+
    The RealDigitalFilter class implements, as the name states, real digital
    filters.  This class contains a list of factors that represent the transfer
    function of the filter.  Some methods supported are addPoleZero, addFactor,
@@ -49,7 +50,7 @@ import ptolemy.math.*;
    filter  are also cached in the same style.
 
    @author  David Teng (davteng@hkn.eecs.berkeley.edu)
-   @version %W%	%G%
+   @version $Id$
 */
 
 

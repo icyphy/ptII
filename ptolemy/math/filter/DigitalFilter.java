@@ -33,19 +33,17 @@ import collections.*;
 //////////////////////////////////////////////////////////////////////////
 //// DigitalFilter
 /**
-The DigitalFilter class is an abstract class from which RealDigitalFilter and
-ComplexDigitalFilter class will be derived.  This class contains abstract
-methods for RealDigitalFilter and ComplexDigitalFilter to share.  These methods
-should be overwritten in the derived classes.  DigitalFilter also contains a
-IIR filter designing method that will return a RealDigitalFilter with the given
+
+The DigitalFilter class is an abstract class from which
+RealDigitalFilter and ComplexDigitalFilter class will be derived.
+This class contains abstract methods for RealDigitalFilter and
+ComplexDigitalFilter to share.  These methods should be overwritten in
+the derived classes.  DigitalFilter also contains a IIR filter
+designing method that will return a RealDigitalFilter with the given
 specifications.
 
 @author  David Teng(davteng@hkn.eecs.berkeley.edu), William Wu(wbwu@eecs.berkeley.edu)
-
-@version %W%	%G%
-
-@see classname
-@see full-classname
+@version $Id$
 */
 
 public abstract class DigitalFilter extends Filter{

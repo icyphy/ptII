@@ -33,8 +33,9 @@ package ptolemy.math.filter;
 The Filter class is an abstract class from which the AnalogFilter and
 DigitalFilter are derived.  This class contains the shared methods of
 AnalogFilter and DigitalFilter.
+
 @author  David Teng (davteng@hkn.eecs.berkeley.edu)
-@version %W%	%G%
+@version $Id$
 */
 
 public abstract class Filter {

@@ -32,16 +32,19 @@ import ptolemy.math.*;
 //////////////////////////////////////////////////////////////////////////
 //// RealAnalogFilter
 /**
-The RealAnalogFilter contains RealSFactor that represent the RealAnalogFilter's
-transfer function.  This class will support similar functions to
-RealDigitalFilter such as movePole, moveZero, addPoleZero, getResponse, etc;
-Methods that change the properties of a filter.  To improve displaying
-efficiency, a cached/refined version of the filter's poles and zeroes will be
-kept inside the RealAnalogFilter.  The poles and zeroes will be updated when it
-is necessary.  The transfer function and gain of the filter is also cached.
+
+The RealAnalogFilter contains RealSFactor that represent the
+RealAnalogFilter's transfer function.  This class will support similar
+functions to RealDigitalFilter such as movePole, moveZero,
+addPoleZero, getResponse, etc; Methods that change the properties of a
+filter.  To improve displaying efficiency, a cached/refined version of
+the filter's poles and zeroes will be kept inside the
+RealAnalogFilter.  The poles and zeroes will be updated when it is
+necessary.  The transfer function and gain of the filter is also
+cached.
 
 @author  David Teng(davteng@hkn.eecs.berkeley.edu)
-@version %W%	%G%
+@version $Id$
 */
 
 public class RealAnalogFilter extends AnalogFilter {

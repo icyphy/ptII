@@ -44,9 +44,8 @@ import ptolemy.math.*;
  the changes.  The factor also stores the internal states of the factor.
  The states is stored in a circular array.
 
-<p>
 @author  David Teng(davteng@hkn.eecs.berkeley.edu)
-@version %W%	%G%
+@version $Id$
 */
 
 public abstract class RealFactor extends Factor{

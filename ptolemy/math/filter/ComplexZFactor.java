@@ -32,19 +32,20 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// ComplexZFactor
 /**
- This is the complex number factor class.  It is the component that will be used
- to build complex number LTI transfer function for a digital system.  It store
- two polynomial of negative power of z with complex coefficients, and a complex
- number gain.  Internal function is used to factor pole/zero of this factor.
- Methods are provided to extract and modify these poles and zeroes.
- When pole/zero are modified the two polynomials are also updated to reflect
- the changes.  The factor also stores the internal states of the factor.
- state is stored in an array with ordering latest state will be at the end
- of array, while the earliest will be at the beginning.
 
-<p>
+ This is the complex number factor class.  It is the component that
+ will be used to build complex number LTI transfer function for a
+ digital system.  It store two polynomial of negative power of z with
+ complex coefficients, and a complex number gain.  Internal function
+ is used to factor pole/zero of this factor.  Methods are provided to
+ extract and modify these poles and zeroes.  When pole/zero are
+ modified the two polynomials are also updated to reflect the changes.
+ The factor also stores the internal states of the factor.  state is
+ stored in an array with ordering latest state will be at the end of
+ array, while the earliest will be at the beginning.
+
 @author  William Wu (wbwu@eecs.berkeley.edu)
-@version %W%	%G%
+@version $Id$
 */
 
 public class ComplexZFactor extends Factor{
