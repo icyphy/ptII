@@ -92,6 +92,7 @@ PTII_TOPDIR=	.cshrc \
 		.eclipse.epf \
 		README.txt \
 		bin \
+		build.xml \
 		com/JLex \
 		com/makefile \
 		com/microstar \
