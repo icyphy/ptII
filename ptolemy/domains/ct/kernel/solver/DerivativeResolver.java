@@ -93,9 +93,9 @@ public class DerivativeResolver extends ODESolver
         super(workspace);
         try {
             setName(_DEFAULT_NAME);
-        } catch (KernelException e) {
+        } catch (KernelException ex) {
             // this should never happen.
-            throw new InternalErrorException(e.toString());
+            throw new InternalErrorException(ex);
         }
     }
 
