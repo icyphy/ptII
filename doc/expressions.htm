@@ -18,11 +18,6 @@
 </h1><hr>
 </div>
 
-This version is in HTML, a <a href="expressions.pdf">PDF version</a>
-is also available. 
-<br>The using vergil is documented in a separate
-<a href="index.htm">file</a>
-
 <a name="162678"> </a><font  >Authors:		Edward A. Lee<br></font>
 
 
@@ -189,7 +184,7 @@ is also available.
 
 
 <p>
-  <a name="171267"> </a><font  >The <font  ><i>Expression</i></font> actor is a particularly useful actor found in the <font  ><i>math</i></font> library. By default, it has one output an no inputs, as shown in Figure <img src="images/expressions7.gif" height="455" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="171267"> </a><font  >The <font  ><i>Expression</i></font> actor is a particularly useful actor found in the <font  ><i>math</i></font> library. By default, it has one output an no inputs, as shown in Figure <img src="img/expressions7.gif" height="455" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="expressions.htm#171267">3.1</a>(a). The first step in using it is to add ports, as shown in (b) and (c), resulting in a new icon as shown in (d). Note: In (c) when you click on Add, you will be prompted for a Name (pick one) and a Class. Leave the Class entry blank and click OK. You then specify an expression using the port names, as shown in (e), resulting in the icon shown in (f).</font>
 </p>
 
@@ -260,8 +255,8 @@ is also available.
 
 
 <p>
-  <a name="169189"> </a><font  >The expression language includes an extensible set of functions, such as sin(), cos(), etc. The functions that are built in include all static methods of the java.lang.Math class and the ptolemy.data.expr.UtilityFunctions class. This can easily be extended by registering another class that includes static methods. The functions currently available are shown in Figures <img src="images/expressions5.gif" height="815" width="600" align="left" border="0" hspace="0" vspace="0">
-<a href="expressions.htm#169189">3.2</a> and <img src="images/expressions6.gif" height="455" width="600" align="left" border="0" hspace="0" vspace="0">
+  <a name="169189"> </a><font  >The expression language includes an extensible set of functions, such as sin(), cos(), etc. The functions that are built in include all static methods of the java.lang.Math class and the ptolemy.data.expr.UtilityFunctions class. This can easily be extended by registering another class that includes static methods. The functions currently available are shown in Figures <img src="img/expressions5.gif" height="815" width="600" align="left" border="0" hspace="0" vspace="0">
+<a href="expressions.htm#169189">3.2</a> and <img src="img/expressions6.gif" height="455" width="600" align="left" border="0" hspace="0" vspace="0">
 <a href="expressions.htm#169189">3.3</a>, with the argument types and return types<a href="#169470"><sup>2</sup></a>.</font>
 </p>
 
@@ -486,14 +481,14 @@ is also available.
 
 
 <p>
-  <a name="176062"> </a><font  >A model using one of the simple provided units systems is shown in figure <img src="images/expressionsa.gif" height="330" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="expressions.htm#176062">3.4</a>. This unit system is called BasicUnits; the units it defines can be examined by double clicking on its icon, or by invoking Configure, as shown in figure <img src="images/expressions2.gif" height="382" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="176062"> </a><font  >A model using one of the simple provided units systems is shown in figure <img src="img/expressionsa.gif" height="330" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="expressions.htm#176062">3.4</a>. This unit system is called BasicUnits; the units it defines can be examined by double clicking on its icon, or by invoking Configure, as shown in figure <img src="img/expressions2.gif" height="382" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="expressions.htm#176062">3.5</a>. In that figure, we see that "meters", "meter", and "m" are defined, and are all synonymous. Moreover, "cm" is defined, and given value "0.01*meters", and "in", "inch" and "inches" are defined, all with value "2.54*cm".</font>
 </p>
 
 
 <p>
-  <a name="176135"> </a><font  >In the example in figure <a href="expressions.htm#176062">3.4</a>, a constant with value "1.0 * meter" is fed into a Scale actor with scale factor equal to "2.0/ms". This produces a result with dimensions of length over time. If we feed this result directly into a Display actor, then it is displayed as "2000.0 meters/seconds", as shown in figure <img src="images/expressions4.gif" usemap="#expressions4_gif" height="264" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="176135"> </a><font  >In the example in figure <a href="expressions.htm#176062">3.4</a>, a constant with value "1.0 * meter" is fed into a Scale actor with scale factor equal to "2.0/ms". This produces a result with dimensions of length over time. If we feed this result directly into a Display actor, then it is displayed as "2000.0 meters/seconds", as shown in figure <img src="img/expressions4.gif" usemap="#expressions4_gif" height="264" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="expressions4_gif">
 
 <area href="expressions.htm#176062" shape=rect coords="1,238,598,263">
@@ -508,7 +503,7 @@ is also available.
 
 
 <p>
-  <a name="176157"> </a><font  >The <font  ><i>InUnitsOf</i></font> actor can be used to ensure that numbers are interpreted correctly in a model, which can be effective in catching certain kinds of critical errors. For example, if in figure <a href="expressions.htm#176062">3.4</a> we had entered "seconds/inch" instead of "inches/second" in the InUnitsOf actor, we would have gotten the exception in figure <img src="images/expressions3.gif" height="184" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="176157"> </a><font  >The <font  ><i>InUnitsOf</i></font> actor can be used to ensure that numbers are interpreted correctly in a model, which can be effective in catching certain kinds of critical errors. For example, if in figure <a href="expressions.htm#176062">3.4</a> we had entered "seconds/inch" instead of "inches/second" in the InUnitsOf actor, we would have gotten the exception in figure <img src="img/expressions3.gif" height="184" width="600" align="center" border="0" hspace="0" vspace="0">
 <a href="expressions.htm#176157">3.7</a> instead of the execution in figure <a href="expressions.htm#176135">3.6</a>.</font>
 </p>
 
