@@ -1,6 +1,6 @@
 /* A queue with optional capacity and history.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,9 +28,9 @@
 
 */
 
-// FIXME: This should be moved to another package.
-package pt.kernel;
+package pt.actors;
 
+import pt.kernel.*;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 import java.util.NoSuchElementException;
