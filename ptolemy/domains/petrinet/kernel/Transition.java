@@ -92,111 +92,27 @@ public class Transition extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**  Fire has two parts: to modify the marking in the output places and
-     *   to modify the marking at the input places. For each output place,
-     *   the fire increases the marking by the weight at the arcs.
-     *   For each input place, the fire decreases the marking by the weight
-     *   at the connected arcs.
-     *   Multiple arcs can exist between a place and a transition.
-     *   Furthermore, the arcs can be marked as a "Weight" parameter or
-     *   not marked. Not-marked arcs are treated as default weight 1.
-     *   Loops can exist as well.
-     */
-    public void fire() throws IllegalActionException {
 
-        System.out.print("start to increase the place marking for outputs");
-        System.out.println(" width is " + output.getWidth()  );
-        Iterator outRelations = output.linkedRelationList().iterator();
-        while(outRelations.hasNext())  {
 
-            IORelation weights = (IORelation) outRelations.next();
-            if (weights != null) {
-                Iterator placePorts =
-                    weights.linkedDestinationPortList().iterator();
-                while(placePorts.hasNext()) {
-                    IOPort placePort = (IOPort) placePorts.next();
-                    Place place = (Place) placePort.getContainer();
-                    int i = place.getMarking();
-                    Attribute temporaryAttribute = (Attribute )
-                        weights.getAttribute("Weight");
-                    if (temporaryAttribute == null) {
-                        place.increaseMarking(1);
-                        System.out.print("default value 1");
-                        System.out.print(" source place "
-                                + place.getFullName()
-                                + " original tokens " + i);
-                        System.out.println(" new token "
-                                + place.getMarking());
-                    }
-                    else if (temporaryAttribute instanceof Variable) {
-                        Variable tAttribute = (Variable) temporaryAttribute;
-                        Token weightToken = (Token) tAttribute.getToken();
-                        if (weightToken instanceof ScalarToken) {
-                            ScalarToken wToken = (ScalarToken) weightToken;
-                            int j = wToken.intValue();
-                            place.increaseMarking(j);
-                            System.out.print("source place "
-                                    + place.getFullName()
-                                    + " original tokens " + i);
-                            System.out.println("  new token  "
-                                    + place.getMarking());
-                        }
-                    }
-                    place.setTemporaryMarking(place.getMarking());
-                }
-            }
-            else
-                System.out.println("the arc weight is null");
-        }
+public void fire() throws IllegalActionException {
 
-        System.out.print("start to decrease the place " +
-                "marking for input places"  );
-        System.out.println("the input width is "
-                + input.getWidth());
+  
+}
 
-        Iterator inRelations = input.linkedRelationList().iterator();
-        while(inRelations.hasNext())  {
-            IORelation weights = (IORelation) inRelations.next();
-            if (weights != null) {
-                Iterator placePorts =
-                    weights.linkedSourcePortList().iterator();
-                while(placePorts.hasNext()) {
-                    IOPort placePort = (IOPort) placePorts.next();
-                    Place place = (Place) placePort.getContainer();
-                    int i = place.getMarking();
 
-                    Attribute temporaryAttribute = (Attribute )
-                        weights.getAttribute("Weight");
-                    if (temporaryAttribute == null) {
-                        place.decreaseMarking(1);
-                        System.out.print("default value 1");
-                        System.out.print(" source place "
-                                + place.getFullName()
-                                + " original tokens " +i);
-                        System.out.println("  new token  "
-                                + place.getMarking());
-                    }
-                    else if (temporaryAttribute instanceof Variable) {
-                        Variable tAttribute = (Variable) temporaryAttribute;
-                        Token weightToken = (Token) tAttribute.getToken();
-                        if (weightToken instanceof ScalarToken) {
-                            ScalarToken wToken = (ScalarToken) weightToken;
-                            int j = wToken.intValue();
-                            place.decreaseMarking(j);
-                            System.out.print("source place "
-                                    + place.getFullName()
-                                    + " original tokens " + i);
-                            System.out.println("  new token  "
-                                    + place.getMarking());
-                        }
-                    }
-                    place.setTemporaryMarking(place.getMarking());
-                }
-            }
-            else
-                System.out.println("the arc weight is null");
-        }
-    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Prefire is similar with fire. It checks all the input places
      *  to see whether the marking in that place is bigger than
@@ -212,7 +128,7 @@ public class Transition extends Transformer {
      *  temporaryMarking decreases the value of the weight on the
      *  link. If at the end, the temporaryMarking is less than 0, then
      *  the sum of the weights of all links between the place and the
-     *  transition is bigger than the marking in the place the
+     *  transition is bigger than the marking in the place and the
      *  transition is not ready to fire.
      */
     public boolean prefire() throws IllegalActionException {
