@@ -75,7 +75,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil karplusStrong.xml
+	vergil router.xml
 
 depend:
 	@echo "no dependencies in this directory"
