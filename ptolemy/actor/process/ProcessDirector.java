@@ -163,6 +163,7 @@ public class ProcessDirector extends Director {
                 _threadList.insertFirst(pnt);
                 // FIXME: perhaps we want ot destroy the threadlist?
             }
+            setCurrentTime(0.0);
         }
     }
 
