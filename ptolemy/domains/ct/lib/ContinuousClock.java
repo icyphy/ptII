@@ -149,8 +149,12 @@ public class ContinuousClock extends Clock {
             // expected break point, it should be treated as a break point
             // as what the director does in processBreakPoints method.
 
-            if (currentTime + ((CTDirector)getDirector()).getTimeResolution()
-                    >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+           double currentPhaseTime = 
+               _tentativeCycleStartTime + _offsets[_tentativePhase];
+           currentPhaseTime = Utilities.round(currentPhaseTime, 
+               getDirector().getTimeResolution());            
+           // Adjust the phase if time has moved beyond the current phase.
+           if (currentTime >= currentPhaseTime) {
                 if (_tPlus) {
                     if (_debugging)_debug("phase is: tPlus");
 
