@@ -1800,6 +1800,20 @@ public class Plot extends PlotBox {
         return false;
     }
 
+    /** Return a string summarizing the command-line arguments.
+     *  @return A usage string.
+     */
+    protected String _usage() {
+        return super._usage() +
+                "   Marks: none|points|dots|various\n" +
+                "   Lines: on|off\n" +
+                "   Impulses: on|off\n" +
+                "   Bars: on|off|width|width,offset\n" +
+                "   Dataset: string\n" +
+                "   ReuseDataSets: on|off\n" +
+                "   x y|x,y\n";
+    }
+
     /** Write plot information to the specified output stream.
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
