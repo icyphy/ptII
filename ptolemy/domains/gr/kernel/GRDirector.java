@@ -661,6 +661,17 @@ public class GRDirector extends StaticSchedulingDirector {
      *    - set period value
      */
     private void _init() {
+	try {
+	    // If Java3D is not present, then this class is usually
+	    // the class that is reported as missing
+	    Class java3dClass = Class.forName("javax/vecmath/Tuple3f");
+	} catch (Exception ex) {
+	    throw new InternalErrorException(this, ex,
+	        "The GR domain requires that Java 3D be installed.\n" +
+	        "Java 3D can be downloaded from\n" +
+	        "http://java.sun.com/products/java-media/3D/\n" +
+	        "For details see $PTII/ptolemy/domains/gr/main.htm");
+	}
         try {
             GRScheduler scheduler = new GRScheduler(workspace());
             setScheduler(scheduler);
