@@ -81,7 +81,7 @@ process has been received.
 @see ptolemy.actor.QueueReceiver
 */
 public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
-    /** Construct an empty receiver with no container
+    /** Construct an empty receiver with no container.
      */
     public PNQueueReceiver() {
         super();
