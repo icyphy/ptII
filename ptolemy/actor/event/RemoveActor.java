@@ -100,18 +100,19 @@ public class RemoveActor extends ChangeRequest {
                 }
                 port.unlinkAll();
             }
-            Iterator farPorts = farPortList.iterator();
-            while (farPorts.hasNext()) {
-                Port port = (Port)farPorts.next();
-		if (port instanceof IOPort) {
-		    ((IOPort)port).createReceivers();
-		}
-            }
 	    if(_entity instanceof Actor) {
 		Director director = ((Actor)_entity).getDirector();
 		if(director != null) {
 		    director.invalidateSchedule();
 		    director.invalidateResolvedTypes();
+		    
+		    Iterator farPorts = farPortList.iterator();
+		    while (farPorts.hasNext()) {
+			Port port = (Port)farPorts.next();
+			if (port instanceof IOPort) {
+			    ((IOPort)port).createReceivers();
+			}
+		    }
 		}
 	    }
             _entity.setContainer(null);
