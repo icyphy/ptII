@@ -44,7 +44,6 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
-	DataType.java \
 	Entity.java \
 	GenericPort.java \
 	IntParam.java \
@@ -55,7 +54,6 @@ JSRCS = \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
-	Particle.java \
 	Port.java \
 	Relation.java \
 	StatusArray.java 
