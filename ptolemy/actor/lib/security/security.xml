@@ -10,21 +10,14 @@
 	  <doc>Create a key and output it.</doc>
 	</entity>  	  
 
-	<entity name="KeyReader"
-	        class="ptolemy.actor.lib.security.KeyReader">
-	  <doc>Read a key public or private key from a key store
-	   and output it.</doc>
+	<entity name="PublicKeyReader"
+	        class="ptolemy.actor.lib.security.PublicKeyReader">
+	  <doc>Read a public key from a key store and output it.</doc>
 	</entity>  	  
 
-	<entity name="KeyWriter"
-	        class="ptolemy.actor.lib.security.KeyWriter">
-	  <doc>Read a key from the input and write it to a key store</doc>
-	</entity>  	  
-
-	<entity name="ServiceInformation"
-	        class="ptolemy.actor.lib.security.ServiceInformation">
-	  <doc>Determine the cryptographic services available on the
-	  system.</doc>
+	<entity name="PrivateKeyReader"
+	        class="ptolemy.actor.lib.security.PrivateKeyReader">
+	  <doc>Read a private key from a key store and output it.</doc>
 	</entity>  	  
 
         <entity name="SignatureSigner"
