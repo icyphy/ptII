@@ -359,8 +359,7 @@ public class FractionMatrixMath {
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
      *  <p>Note that this method does pointwise matrix multiplication.
-     *  @see #multiply(Fraction[][], Fraction[][])} 
-     *  @param matrix1 The first matrix of Fractions.
+     * @param matrix1 The first matrix of Fractions.
      *  @param matrix2 The second matrix of Fractions.
      *  @return A new matrix of ints.
      */
@@ -537,7 +536,7 @@ public class FractionMatrixMath {
     /** Return a new matrix that is constructed by transposing the input
      *  matrix. If the input matrix is m x n, the output matrix will be
      *  n x m.
-     *  @param The input matrix.
+     *  @param matrix The input matrix.
      *  @return The matrix transpose.
      */
     public static final Fraction[][] transpose(final Fraction[][] matrix) {
