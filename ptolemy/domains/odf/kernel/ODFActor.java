@@ -99,9 +99,11 @@ public class ODFActor extends AtomicActor {
      * @return The current time of this ODFActor.
      */
     public double getCurrentTime() {
+	/*
 	Thread thread = Thread.currentThread();
 	TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
-	_currentTime = timeKeeper.getCurrentTime();
+	*/
+	_currentTime = _timeKeeper.getCurrentTime();
 	/*
 	if( thread instanceof ODFThread ) {
 	    _currentTime = ((ODFThread)thread).getCurrentTime();
@@ -152,18 +154,21 @@ public class ODFActor extends AtomicActor {
     public void initialize() throws IllegalActionException {
 	Enumeration enum = inputPorts();
 	ODFReceiver rcvr = null;
+	boolean rcvrSet = false;
+
 	while( enum.hasMoreElements() ) {
 	    IOPort port = (IOPort)enum.nextElement();
 	    Receiver[][] rcvrs = port.getReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
 		    rcvr = (ODFReceiver)rcvrs[i][j];
-		    j = rcvrs[i].length;
-		    i = rcvrs.length;
+		    if( rcvr != null && !rcvrSet ) {
+	                _timeKeeper = rcvr.getReceivingTimeKeeper();
+			rcvrSet = true; 
+		    }
 		}
 	    }
 	}
-	_timeKeeper = rcvr.getReceivingTimeKeeper();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -186,40 +191,7 @@ public class ODFActor extends AtomicActor {
      * @see ptolemy.domains.odf.kernel.ODFThread
      */
     private Token _getNextInput() throws IllegalActionException {
-	/*
-	Enumeration enum = inputPorts();
-	ODFReceiver rcvr = null;
-	while( enum.hasMoreElements() ) {
-	    IOPort port = (IOPort)enum.nextElement();
-	    Receiver[][] rcvrs = port.getReceivers();
-            for (int i = 0; i < rcvrs.length; i++) {
-                for (int j = 0; j < rcvrs[i].length; j++) {
-		    rcvr = (ODFReceiver)rcvrs[i][j];
-		    j = rcvrs[i].length;
-		    i = rcvrs.length;
-		}
-	    }
-	}
-	TimeKeeper timeKeeper = rcvr.getReceivingTimeKeeper();
-        ODFReceiver lowestRcvr = timeKeeper.getFirstRcvr();
-	*/
         ODFReceiver lowestRcvr = getTimeKeeper().getFirstRcvr();
-
-	/*
-	Thread thread = Thread.currentThread();
-	TimeKeeper timeKeeper = thread.getTimeKeeper();
-	ODFThread odfthread = null;
-        ODFReceiver lowestRcvr = null;
-	lowestRcvr = timeKeeper.getFirstRcvr();
-	if( thread instanceof ODFThread ) {
-	    odfthread = (ODFThread)thread;
-            lowestRcvr = odfthread.getFirstRcvr();
-	} else {
-	    System.err.println("Error: Non-ODFThread controlling "
-                    +getName());
-	}
-	*/
-
 	if( lowestRcvr.hasToken() ) {
 	    return lowestRcvr.get();
 	} else {
