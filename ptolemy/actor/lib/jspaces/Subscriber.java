@@ -200,8 +200,8 @@ public class Subscriber extends Source implements RemoteEventListener {
         new Thread(nh).start();
     }
 
-    /** Output the latest token read from the JavaSpace after the 
-     *  last fire() method call.
+    /** Consume the trigger input if there are any, and output the latest
+     *  token read from the JavaSpace after the last fire() method call.
      *  If there's no token available, then the behavior depends
      *  on the <i>blocking</i> parameter. If blocking is true, the
      *  execution blocks until there's a token coming in.
@@ -209,6 +209,8 @@ public class Subscriber extends Source implements RemoteEventListener {
      *  @exception IllegalActionException If the blocking is interrupted.
      */
     public void fire() throws IllegalActionException {
+        // Cosume tokens at the trigger input.
+        super.fire();
         synchronized(_lock) {
             while(true) {
                 if (_lastReadToken == null) {

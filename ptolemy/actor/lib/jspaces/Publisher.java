@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jspaces;
@@ -62,10 +62,12 @@ the token, to the JavaSpace with the name specified by the
 token entry is not used, and is always set to 0. Derived class may use
 the serial number to keep track of the order of the published
 tokens. If there is already an entry in the JavaSpace with the entry
-name, the new token will override the existing one. The entry exists
-in the JavaSpace as long as the lease time has not expired. The lease
-time of an entry is specified by the <i>leaseTime</i> parameter in
-milliseconds.
+name, the new token will override the existing one. In thoery, an entry
+only exist in the JavaSpace for a limited amount of time, denoted
+as the <i>lease time</i>. If the lease time expires, the JavaSpace 
+can freely remote the entry from it. The lease time of an entry 
+published by this publisher is specified by the <i>leaseTime</i> 
+parameter in milliseconds.
 
 @see TokenEntry
 @author Jie Liu, Yuhong Xiong

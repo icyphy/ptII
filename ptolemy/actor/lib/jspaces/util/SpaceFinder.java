@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yelloe (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jspaces.util;
@@ -42,8 +42,9 @@ import com.sun.jini.outrigger.Finder;
 /**
 An utility that finds a JavaSpace with a given name.
 
-This class is based on Sun's SpaceAccessor class in the book "JavaSpaces
-Principles, Patterns, and Practice", by Freeman, Hupfer, and Arnold.
+This implementation is based on Sun's SpaceAccessor class in the book 
+"JavaSpaces Principles, Patterns, and Practice", by Freeman, Hupfer,
+and Arnold.
 
 @author Yuhong Xiong, Jie Liu
 @version $Id$
@@ -95,7 +96,7 @@ public class SpaceFinder {
         }
     }
 
-    /** Return a JavaSpace with the default name "JavaSpaces".
+    /** Return a proxy for the JavaSpace with the default name "JavaSpaces".
      *  @return A JavaSpace.
      *  @exception IllegalActionException If a JavaSpace cannot be
      *   found.
