@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 @AcceptedRating Red
-@ProposedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -41,11 +41,25 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImageUnpartition
 /**
+Combine subimages into a larger image. Each input image
+should have dimensions imageColumns by imageRows, and each output image
+will have dimensions partitionColumns by partitionRows.  The input images
+will be placed in row-scanned order from top to bottom into the output image.
+
 @author Steve Neuendorffer
 @version $Id$
 */
 
 public final class ImageUnpartition extends SDFAtomicActor {
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this adder within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public ImageUnpartition(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
@@ -121,8 +135,9 @@ public final class ImageUnpartition extends SDFAtomicActor {
     }
 
     /**
-     * Initialize this actor
-     *  @exception IllegalActionException If the parent class throws it.
+     * Initialize this actor.
+     * @exception IllegalActionException If a parameter does not contain a 
+     * legal value.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -139,7 +154,7 @@ public final class ImageUnpartition extends SDFAtomicActor {
     }
 
     /**
-     * Fire this actor
+     * Fire this actor.
      * Consume IntMatrixTokens on the input port corresponding to the
      * partitions of an image.  Reassemble the image and produce a
      * single IntMatrixToken on the output port.

@@ -1,4 +1,5 @@
-/*
+/* Load a sequence of binary images from files.
+
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -24,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 @AcceptedRating Red
-@ProposedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -42,7 +43,7 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImageSequence
 /**
-This actor loads a sequence of binary images from files, and creates
+Load a sequence of binary images from files, and create a sequence of
 IntMatrixTokens from them.  The data is assumed to row scanned, starting 
 at the top row.  Each byte of the binary file is assumed to be the 
 greyscale intensity of a single pixel in the image.
@@ -59,8 +60,8 @@ zero, will create the names:
 <li>missa002.qcf
 <li>...
 </ul>
-The name manufacturing algorithm is not especially robust, so attaching
-a debug listener to this actor will print out a list of the file names.
+The name manufacturing algorithm is not especially robust, so
+debug listeners attached to this actor will receive a list of the file names.
 
 This actor could be greatly expanded to use the Java Advanced Imaging API
 for loading images.
@@ -106,10 +107,19 @@ public final class ImageSequence extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
+    /** The image filename templates. */
     public Parameter imageURLTemplate;
+
+    /** The number of columns in each image. */
     public Parameter imageColumns;
+
+    /** The number of rows in each image. */
     public Parameter imageRows;
+
+    /** The starting frame number. */
     public Parameter startFrame;
+
+    /** The ending frame number. */
     public Parameter endFrame;
 
 
@@ -143,6 +153,11 @@ public final class ImageSequence extends SDFAtomicActor {
         }
     }
 
+    /** Initialize this actor.
+     *  Read in the image files.
+     *  @exception IllegalActionException If any of the input files could not
+     *  be read.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         InputStream source = null;
@@ -238,11 +253,19 @@ public final class ImageSequence extends SDFAtomicActor {
         _frameNumber = 0;
     }
 
+    /**
+     * Set the base URL from which this actor was loaded.  This actor should
+     * load any data that it needs relative to this URL.
+     */
     // FIXME this should be made a parameter.
     public void setBaseURL(URL baseurl) {
         _baseurl = baseurl;
     }
 
+    /** Fire this actor.
+     *  Output the next image in the sequence.  If the sequence has no more
+     *  images, then loop back to the first image in the sequence.
+     */
     public void fire() throws IllegalActionException {
         int i, j, n;
 
@@ -251,14 +274,17 @@ public final class ImageSequence extends SDFAtomicActor {
         if(_frameNumber >= _frameCount) _frameNumber = 0;
     }
 
-    int _fullread(InputStream s, byte b[]) throws IOException {
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    private int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;
         int bytesread = 0;
         while(remaining > 0) {
             bytesread = s.read(b, len, remaining);
             if(bytesread == -1) throw new IOException(
-                    "HTVQEncode: _fullread: Unexpected EOF");
+                    "Unexpected EOF");
             remaining -= bytesread;
             len += bytesread;
         }

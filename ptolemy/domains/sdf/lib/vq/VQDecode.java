@@ -1,4 +1,4 @@
-/*
+/* This actor decompresses a vector quantized signal. 
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 @AcceptedRating Red
-@ProposedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -43,13 +43,23 @@ import java.net.*;
 /**
 This actor decompresses a vector quantized signal.   This operation is simply
 a table lookup into the codebook.
-FIXME This should be generalized to a Table-lookup actor.
+
+@see HTVQEncode
 
 @author Steve Neuendorffer
 @version $Id$
 */
-
+// FIXME This should be generalized to a Table-lookup actor.
 public final class VQDecode extends SDFAtomicActor {
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this adder within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public VQDecode(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
@@ -131,27 +141,37 @@ public final class VQDecode extends SDFAtomicActor {
 
     /**
      * Fire this actor.
-     * Consume a Vector on the input, and perform Vector Quantization using
-     * Hierarchical Table-Lookup Vector Quantization.  Send the computed
-     * codeword on the output.
-     * @exception IllegalActionException if a contained method throws it.
+     * Consume a number of tokens on the input port, each representing a 
+     * VQ codeword.  Index into the appropriate codebook given by the 
+     * blockWidth and blockHeight parameters to find the decoded vector for
+     * each codeword.  Output an IntMatrixToken representing each decoded
+     * vector on the output port.  
+     * @exception IllegalActionException If the input or output are not
+     * connected
+     * @exception ArrayOutOfBoundsException If the input codewords are
+     * not between 0 and 255.
      */
     public void fire() throws IllegalActionException {
         int j;
+        int stage = _stages(_blockWidth * _blockHeight);
         input.getArray(0, _codewords);
 
         for(j = 0; j < _blockCount; j++) {
-            /*           System.arraycopy(_codebook[2][_codewords[j].intValue()], 0,
-                    _part, 0,
-                    _xpartsize * _ypartsize);
-            _blocks[j] = new IntMatrixToken(_part, _ypartsize, _xpartsize);
-            */
-            _blocks[j] = new IntMatrixToken(_codebook[2][_codewords[j].intValue()], _blockHeight, _blockWidth);
+            _blocks[j] = 
+                new IntMatrixToken(_codebook[stage][_codewords[j].intValue()], 
+                        _blockHeight, _blockWidth);
         }
 
         output.sendArray(0, _blocks);
     }
 
+    /**
+     * Initialize this actor. 
+     * Load the codebooks and lookup tables from the file given by the
+     * parameter "codeBook".
+     * @exception IllegalActionException If the parameters do not have
+     * legal values, or the codebook file cannot be read.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 
@@ -172,19 +192,16 @@ public final class VQDecode extends SDFAtomicActor {
             if (filename != null) {
                 if(_baseurl != null) {
                     try {
-                        // showStatus("Reading data");
                         URL dataurl = new URL(_baseurl, filename);
-                        System.out.println("dataurl = " + dataurl);
+                        _debug("VQDecode: codebook = " + dataurl);
                         source = dataurl.openStream();
-                        //showStatus("Done");
                     } catch (MalformedURLException e) {
                         System.err.println(e.toString());
                     } catch (FileNotFoundException e) {
-                        System.err.println("VQDecode: " +
-                                "file not found: " + e);
+                        System.err.println("File not found: " + e);
                     } catch (IOException e) {
                         System.err.println(
-                                "VQDecode: error reading"+
+                                "Error reading"+
                                 " input file: " + e);
                     }
                 } else {
@@ -236,22 +253,41 @@ public final class VQDecode extends SDFAtomicActor {
         }
     }
 
+    /**
+     * Set the url representing the root classpath from which to load files.
+     */
     public void setBaseURL(URL baseurl) {
         _baseurl = baseurl;
     }
 
-    protected int _fullread(InputStream s, byte b[]) throws IOException {
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    private int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;
         int bytesread = 0;
         while(remaining > 0) {
             bytesread = s.read(b, len, remaining);
             if(bytesread == -1) throw new IOException(
-                    "HTVQEncode: _fullread: Unexpected EOF");
+                    "Unexpected EOF");
             remaining -= bytesread;
             len += bytesread;
         }
         return len;
+    }
+
+    /** Given a vector of the given length, compute the codebook stage
+     *  appropriate.  Basically, compute log base 2 of len, assuming
+     *  len is a power of 2.
+     */ 
+    private int _stages(int len) {
+        int x = 0;
+        if(len < 2) throw new RuntimeException(
+                "Vector length of " + len +
+                "must be greater than 1");
+        while(len > 2) { len = len >> 1; x++;}
+        return x;
     }
 
     private int _codebook[][][] = new int[6][256][];

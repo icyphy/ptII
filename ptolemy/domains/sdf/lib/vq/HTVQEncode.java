@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 @AcceptedRating Red
-@ProposedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -43,19 +43,57 @@ import java.net.*;
 /**
 This actor encodes a matrix using Hierarchical Table-Lookup Vector
 Quantization.   The matrix must be of dimensions that are amenable to this
-method. (i.e. 2x1, 2x2, 4x2, 4x4, etc..).  Instead of performing a
+method. (i.e. 2x1, 2x2, 4x2, 4x4, etc.) Instead of performing a
 full-search vector quantization during execution, all the optimal encoding
 vectors are calculated before hand and stored in a lookup table. (This is
 known as Table-lookup Vector Quantization).  However, for large vector sizes
 the lookup tables are unmanageably large.   This actor approximates a
 full search VQ by storing the lookup tables hierarchically.
 The encoding is broken up into stages, and at each stage a number of 2x1
-table lookup VQs are performed.  As follows:<br>
-Starting with a 4x2 vector in the first stage, codebook 0 (which operates
-on raw pixels is used 4 times.  In the second stage, codebook 1 is used
-twice.  Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
+table lookup VQs are performed. For example, 
+starting with a 4x2 vector in the first stage, codebook 0 (which operates
+on raw pixels) is used 4 times, resulting in a 2x2 vector of codewords.  
+In the second stage, codebook 1 is used twice, resulting in a 2x1 vector.  
+Lastly, a single 2x1 VQ using codebook 2 (which operates on codewords
 representing 2x2 vectors) returns a single codeword for the 4x2 vector.
-
+<p>
+The input is an IntMatrixToken corresponding to the block to be encoded.  
+The values in this matrix are assumed to be between 0 and 255.  The output
+is an IntToken with value between 0 and 255.  Integers are used here because
+of the minimal byte support in Ptolemy or JAVA.
+The size of the input matrix should be the same as the parameters blockHeight
+and blockWidth.
+<p>
+The codebook is specified as a binary file that will be read during
+initialization.  This file actually contains five sets of codebooks and 
+lookups tables.  The first set is for 2x1 blocks, the second is for 2x2 
+blocks, etc.  (Thus the supplied codebook is only sufficient for block sizes
+up to 8x4 pixels.) In each set, the codebook precedes the lookup-tables.
+The codebook consists of all 256 codevectors, row scanned from top to bottom.
+The lookup table consists of 64K entries (one for each pair of codewords from
+the previous stage).  Each entry in the lookup table is an 8-bit codeword.
+<p>
+<pre>
+Stage 0: 2x1 blocksize
+codebook = 256 blocks x 2 bytes = 512 bytes
+lookup tables = 65536 entries x 1 byte = 65536 bytes
+Stage 1: 2x2 blocksize
+codebook = 256 blocks x 4 bytes = 1024 bytes
+lookup tables = 65536 entries x 1 byte = 65536 bytes
+Stage 2: 4x2 blocksize
+codebook = 256 blocks x 8 bytes = 2048 bytes
+lookup tables = 65536 entries x 1 byte = 65536 bytes
+Stage 3: 4x4 blocksize
+codebook = 256 blocks x 16 bytes = 4096 bytes
+lookup tables = 65536 entries x 1 byte = 65536 bytes
+Stage 4: 8x4 blocksize
+codebook = 256 blocks x 32 bytes = 8192 bytes
+lookup tables = 65536 entries x 1 byte = 65536 bytes
+</pre>
+<br>
+The supplied codebook was trained using images from the
+USC image archive and is suitable for most general applications.
+<br>
 For more information here are some interesting references: <br>
 A. Gersho and R. M. Gray, <i>Vector Quantization and Signal Compression</i>.
 Kluwer Academic Publishers, Boston, 1992.  <br>
@@ -66,13 +104,20 @@ M. Vishwanath and P. Chou, "An Efficient Algorithm for Hierarchical
 Compression of Video," <i>International Conference on Image Processing</i>,
 vol. 3, pp. 275-279, Nov. 1994. <br>
 
-@see VQDecode
-
 @author Steve Neuendorffer
 @version $Id$
 */
 
 public final class HTVQEncode extends SDFAtomicActor {
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this adder within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public HTVQEncode(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
@@ -173,7 +218,9 @@ public final class HTVQEncode extends SDFAtomicActor {
     /**
      * Initialize this actor.
      * Load the codebooks and lookup tables from the file given by the
-     * parameter "Codebook".
+     * parameter "codeBook".
+     * @exception IllegalActionException If the parameters do not have
+     * legal values, or the codebook file cannot be read.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -195,11 +242,9 @@ public final class HTVQEncode extends SDFAtomicActor {
             if (filename != null) {
                 if(_baseurl != null) {
                     try {
-                        // showStatus("Reading data");
                         URL dataurl = new URL(_baseurl, filename);
-                        System.out.println("dataurl = " + dataurl);
+                        _debug("HTVQEncode: codebook = " + dataurl);
                         source = dataurl.openStream();
-                        //showStatus("Done");
                     } catch (MalformedURLException e) {
                         System.err.println(e.toString());
                     } catch (FileNotFoundException e) {
@@ -268,14 +313,8 @@ public final class HTVQEncode extends SDFAtomicActor {
         _baseurl = baseurl;
     }
 
-    private int _stages(int len) {
-        int x = 0;
-        if(len < 2) throw new RuntimeException(
-                "HTVQEncode: vector length of " + len +
-                "must be greater than 1");
-        while(len > 2) { len = len >> 1; x++;}
-        return x;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
 
     private int _encode(int p[], int len) {
         int[][] p5, p4, p3, p2, p1, p0;
@@ -288,7 +327,7 @@ public final class HTVQEncode extends SDFAtomicActor {
 
 	if(numstages>4)
             throw new RuntimeException(
-                    "HTVQEncode: _encode: imagepart too large... exiting");
+                    "imagepart too large... exiting");
         p5 = ipbuf_encodep1;
         p4 = ipbuf_encodep2;
         p3 = ipbuf_encodep1;
@@ -298,6 +337,7 @@ public final class HTVQEncode extends SDFAtomicActor {
 
 	switch(numstages) {
         case 4:
+            // System.arraycopy is faster for large vectors
             System.arraycopy(p, 0, p5[0], 0, 8);
             System.arraycopy(p, 8, p5[1], 0, 8);
             System.arraycopy(p, 16, p5[2], 0, 8);
@@ -421,29 +461,31 @@ public final class HTVQEncode extends SDFAtomicActor {
         return p0[0][0];
     }
 
-    protected long _distortion(int a[], int b[], int len) {
-        long c, d = 0;
-        int i;
-        for(i = 0;i < len;i++)
-            {
-                c = ((a[i] & 255) - (b[i] & 255));
-                d += c * c;
-            }
-        return d;
-    }
-
-    protected int _fullread(InputStream s, byte b[]) throws IOException {
+    private int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;
         int bytesread = 0;
         while(remaining > 0) {
             bytesread = s.read(b, len, remaining);
             if(bytesread == -1) throw new IOException(
-                    "HTVQEncode: _fullread: Unexpected EOF");
+                    "Unexpected EOF");
             remaining -= bytesread;
             len += bytesread;
         }
         return len;
+    }
+
+    /** Given a vector of the given length, compute the codebook stage
+     *  appropriate.  Basically, compute log base 2 of len, assuming
+     *  len is a power of 2.
+     */ 
+    private int _stages(int len) {
+        int x = 0;
+        if(len < 2) throw new RuntimeException(
+                "Vector length of " + len +
+                "must be greater than 1");
+        while(len > 2) { len = len >> 1; x++;}
+        return x;
     }
 
     private int ipbuf_encodep1[][] = new int[8][8];

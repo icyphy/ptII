@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 @AcceptedRating Red
-@ProposedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 

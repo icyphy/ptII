@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
 @AcceptedRating Red
-@ProposedRating Red
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -41,16 +41,25 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImagePartition
 /**
-This actor partitions a image into smaller submatrices.  Each input image
+Partition an image into smaller subimages.  Each input image
 should have dimensions imageColumns by imageRows, and each output image
 will have dimensions partitionColumns by partitionRows.  The output matrices
-are row scanned from the input image.
+are row scanned from the top of input image.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 
 public final class ImagePartition extends SDFAtomicActor {
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this adder within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public ImagePartition(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
@@ -128,7 +137,8 @@ public final class ImagePartition extends SDFAtomicActor {
 
     /**
      * Initialize this actor
-     * @exception IllegalActionException If a contained method throws it.
+     * @exception IllegalActionException If a parameter does not contain a 
+     * legal value.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -146,7 +156,7 @@ public final class ImagePartition extends SDFAtomicActor {
     }
 
     /**
-     * Fire this actor
+     * Fire this actor.
      * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
      * on the output port by partitioning the input image.
      *
@@ -167,9 +177,9 @@ public final class ImagePartition extends SDFAtomicActor {
                     System.arraycopy(image, (j + y) * _imageColumns + i,
                             part, y * _partitionColumns, _partitionColumns);
                 partitions[a] = 
-                    new IntMatrixToken(part, _partitionRows, _partitionColumns);
+                    new IntMatrixToken(part, _partitionRows,
+                            _partitionColumns);
             }
-
         output.sendArray(0, partitions);
     }
 

@@ -50,7 +50,15 @@ output port as a DoubleToken.
 @version $Id$
 */
 public final class PSNR extends SDFAtomicActor {
-    /** Create a new PSNR actor with the given container and name. */
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this adder within the container.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public PSNR(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
@@ -72,8 +80,10 @@ public final class PSNR extends SDFAtomicActor {
 
     /** The input signal. */
     public SDFIOPort signal;
+
     /** A distorted version of the input signal. */
     public SDFIOPort distortedSignal;
+
     /** The calculated PSNR between the two inputs. */
     public SDFIOPort output;
 
@@ -99,7 +109,6 @@ public final class PSNR extends SDFAtomicActor {
      *  @exception IllegalActionException if a pixel value is not between 
      *  zero and 255, or the dimensions of the input tokens do not match.
      */
-
     public void fire() throws IllegalActionException {
 
         int i, j;
