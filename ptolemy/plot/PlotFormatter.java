@@ -403,8 +403,7 @@ public class PlotFormatter extends JPanel {
         _originalMarks, _originalXTicksSpec, _originalYTicksSpec;
     private double[] _originalXRange, _originalYRange;
     private Vector[] _originalXTicks, _originalYTicks;
-    private boolean _originalGrid, _originalStems, _originalColor,
-        _originalXLog, _originalYLog;
+    private boolean _originalGrid, _originalStems, _originalColor;
     private boolean[][] _originalConnected;
     private PlotPoint[][] _originalPoints;
 }
