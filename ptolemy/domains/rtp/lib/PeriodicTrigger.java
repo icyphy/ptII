@@ -117,7 +117,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
 
     public boolean postfire() throws IllegalActionException {
         Director director = getDirector();
-        Time time = director.getCurrentTime();
+        Time time = director.getCurrentTimeObject();
         if (_debugging) _debug("Next iteration at " 
             + time.add(_period).getTimeValue());
         director.fireAt(this, time.add(_period));

@@ -220,13 +220,13 @@ public class CSPDirector extends CompositeProcessDirector
      *   are delayed.
      *  @param newTime The new current model time.
      */
-    public synchronized void setCurrentTime(Time newTime)
+    public synchronized void setCurrentTimeObject(Time newTime)
             throws IllegalActionException {
         if (_actorsDelayed != 0) {
             throw new IllegalActionException("CSPDirector.setCurrentTime()"
                     + " can only be called when no processes are delayed.");
         }
-        super.setCurrentTime(newTime);
+        super.setCurrentTimeObject(newTime);
     }
 
     /** Override the base class to stop any actors that might be stalled
@@ -286,7 +286,7 @@ public class CSPDirector extends CompositeProcessDirector
             _actorsDelayed++;
             // Enter the actor and the time to wake it up into the
             // LinkedList of delayed actors.
-            _registerDelayedActor( getCurrentTime().add(delta), actor);
+            _registerDelayedActor( getCurrentTimeObject().add(delta), actor);
             notifyAll();
             return;
         }
@@ -343,7 +343,7 @@ public class CSPDirector extends CompositeProcessDirector
         if (_actorsDelayed > 0) {
             // Time deadlock.
             Time nextTime = _getNextTime();
-            setCurrentTime(nextTime);
+            setCurrentTimeObject(nextTime);
 
             // Now go through list of delayed actors
             // and wake up those at this time

@@ -264,14 +264,14 @@ public class CTMultiSolverDirector extends CTDirector {
         _postfireReturns = true;
 
         // set the start time of the current iteration
-        _setIterationBeginTime(getCurrentTime());
+        _setIterationBeginTime(getCurrentTimeObject());
         
         // discrete phase execution to process discrete events.
         _discretePhaseExecution();
 
         // If the current time is the stop time, the fire method 
         // should return because no further execution is necessary.
-        if (getCurrentTime().equalTo(getStopTime()) || !_postfireReturns) {
+        if (getCurrentTimeObject().equalTo(getStopTimeObject()) || !_postfireReturns) {
             return;
         }
         
@@ -330,7 +330,7 @@ public class CTMultiSolverDirector extends CTDirector {
             }
             // Also check breakpoint table for explicit requests from discrete
             // actors.
-            if (getBreakPoints().contains(getCurrentTime())) {
+            if (getBreakPoints().contains(getCurrentTimeObject())) {
             if (_debugging) _debug(
                     " <<< First breakpoint in the break-point list is at "
                     + getBreakPoints().first());
@@ -402,15 +402,15 @@ public class CTMultiSolverDirector extends CTDirector {
         // register two breakpoints, the start time and stop time.
         if (_debugging) {
             _debug("Set the start time (the current time) as a break point: "
-                    + getCurrentTime());
+                    + getCurrentTimeObject());
         }
-        fireAt(null, getCurrentTime());
+        fireAt(null, getCurrentTimeObject());
         
         if (_debugging) {
             _debug("Set the stop time as a break point: "
-                    + getStopTime());
+                    + getStopTimeObject());
         }
-        fireAt(null, getStopTime());
+        fireAt(null, getStopTimeObject());
         
         if (_debugging) {
             _debug("----- End of Initialization of: " + getFullName());
@@ -425,7 +425,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public boolean postfire() throws IllegalActionException {
 
-        if (getCurrentTime().compareTo(getStopTime()) > 0) {
+        if (getCurrentTimeObject().compareTo(getStopTimeObject()) > 0) {
             // This should never happen. Otherwise, there is a bug. 
             throw new InternalErrorException("Execution can not exceed " +
                 "stop time.");
@@ -433,16 +433,16 @@ public class CTMultiSolverDirector extends CTDirector {
         
         // Now, the current time is equal to the stop time. 
         // If the breakpoints does not contain the current time, return false.
-        if (getCurrentTime().equalTo(getStopTime()) &&
-            !getBreakPoints().contains(getCurrentTime()))  {
+        if (getCurrentTimeObject().equalTo(getStopTimeObject()) &&
+            !getBreakPoints().contains(getCurrentTimeObject()))  {
             if (_debugging) 
-                _debug("Postfire returns false at: " + getCurrentTime());
+                _debug("Postfire returns false at: " + getCurrentTimeObject());
             return false;
         }
         
         if (_debugging) {
             _debug("Postfire returns " + (_postfireReturns && !_stopRequested) 
-                + " at: " + getCurrentTime());
+                + " at: " + getCurrentTimeObject());
         }
         return super.postfire();
     }
@@ -456,7 +456,7 @@ public class CTMultiSolverDirector extends CTDirector {
     public boolean prefire() throws IllegalActionException {
         // FIXME: check whether there are events, and decide the current
         // execution is in discrete phase or continuous phase.
-        if (_debugging) _debug("Prefire returns true at: " + getCurrentTime());
+        if (_debugging) _debug("Prefire returns true at: " + getCurrentTimeObject());
         _postfireReturns = true;
         return true;
     }
@@ -490,7 +490,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     protected void _continuousPhaseExecution() throws IllegalActionException {
         if (_debugging) _debug(" !!! " + getName(), 
-            ": continuous phase execution at " + getCurrentTime());
+            ": continuous phase execution at " + getCurrentTimeObject());
         
         // Choose a suggested step size        
         setCurrentStepSize(getSuggestedNextStepSize());
@@ -501,7 +501,7 @@ public class CTMultiSolverDirector extends CTDirector {
         
         // Fire one iteration with the given step size.
         if (_debugging) _debug("execute the system from "+
-                getCurrentTime() + " step size " + getCurrentStepSize()
+        getCurrentTimeObject() + " step size " + getCurrentStepSize()
                 + " using solver " + getCurrentODESolver().getName());
         _fireOneIteration();
     }
@@ -538,7 +538,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     protected void _discretePhaseExecution() throws IllegalActionException {
         if (_debugging) _debug(" !!! " + getName(), 
-            ": discrete phase execution at " + getCurrentTime());
+            ": discrete phase execution at " + getCurrentTimeObject());
         _setDiscretePhase(true);
 
         // Choose a suggested step size        
@@ -637,7 +637,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     protected void _fireExactlyOneIteration() throws IllegalActionException {
         if (_debugging && _verbose) _debug(
-                "Fire one iteration from " + getCurrentTime(),
+                "Fire one iteration from " + getCurrentTimeObject(),
                 "using step size " + getCurrentStepSize());
         ODESolver solver = getCurrentODESolver();
         if (_debugging && _verbose) _debug( "Using ODE solver: " + solver.getName());
@@ -680,7 +680,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     protected void _fireOneIteration() throws IllegalActionException {
         if (_debugging && _verbose) _debug(
-                "Fire one iteration from " + getCurrentTime(),
+                "Fire one iteration from " + getCurrentTimeObject(),
                 "using step size " + getCurrentStepSize());
         ODESolver solver = getCurrentODESolver();
         if (_debugging && _verbose) _debug( "Using ODE solver: " + solver.getName());
@@ -729,11 +729,11 @@ public class CTMultiSolverDirector extends CTDirector {
                         _debug("State resolved by solver.");
                     // Check whether this step is acceptable
                     if (!_isStateAccurate()) {
-                        setCurrentTime(getIterationBeginTime());
+                        setCurrentTimeObject(getIterationBeginTime());
                         setCurrentStepSize(_refinedStepWRTState());
                         if (_debugging && _verbose) {
                             _debug("Execute the system from "
-                                    + getCurrentTime()
+                                    + getCurrentTimeObject()
                                     + " with step size" +
                                     getCurrentStepSize());
                         }
@@ -750,9 +750,9 @@ public class CTMultiSolverDirector extends CTDirector {
                         throw new IllegalActionException(this,
                                 "Cannot resolve new states even using "+
                                 "the minimum step size, at time "+
-                                getCurrentTime());
+                        getCurrentTimeObject());
                     }
-                    setCurrentTime(getIterationBeginTime());
+                    setCurrentTimeObject(getIterationBeginTime());
                     setCurrentStepSize(0.5*getCurrentStepSize());
                 }
             }
@@ -770,7 +770,7 @@ public class CTMultiSolverDirector extends CTDirector {
             fireEventGenerators();
             
             if (!_isOutputAccurate()) {
-                setCurrentTime(getIterationBeginTime());
+                setCurrentTimeObject(getIterationBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
             } else {
                 break;
@@ -915,21 +915,21 @@ public class CTMultiSolverDirector extends CTDirector {
                 _debug("Prefire actor: "
                         + ((Nameable)actor).getName()
                         + " at time "
-                        + getCurrentTime());
+                        + getCurrentTimeObject());
             }
             if (actor.prefire()) {
                 if (_debugging && _verbose) {
                     _debug("Fire actor: "
                             + ((Nameable)actor).getName()
                             + " at time "
-                            + getCurrentTime());
+                            + getCurrentTimeObject());
                 }
                 actor.fire();
                 if (_debugging && _verbose) {
                     _debug("Postfire actor: "
                             + ((Nameable)actor).getName()
                             + " at time "
-                            + getCurrentTime());
+                            + getCurrentTimeObject());
                 }
                 _postfireReturns = actor.postfire() && _postfireReturns;
             }
@@ -1047,7 +1047,7 @@ public class CTMultiSolverDirector extends CTDirector {
     protected boolean _processBreakpoints() throws IllegalActionException  {
         boolean currentTimeIsABreakpoint = false;
         TotallyOrderedSet breakPoints = getBreakPoints();
-        Time now = getCurrentTime();
+        Time now = getCurrentTimeObject();
         // If now is a break point, remove the break point from table;
         if (breakPoints != null && !breakPoints.isEmpty()) {
             // FIXME: the following statement is unnecessary and may
@@ -1078,10 +1078,10 @@ public class CTMultiSolverDirector extends CTDirector {
     protected double _refinedStepWRTBreakpoints() 
         throws IllegalActionException {
         TotallyOrderedSet breakPoints = getBreakPoints();
-        Time now = getCurrentTime();
+        Time now = getCurrentTimeObject();
         double currentStepSize = getCurrentStepSize();
         Time iterationEndTime =
-            getCurrentTime().add(currentStepSize);
+        getCurrentTimeObject().add(currentStepSize);
         _setIterationEndTime(iterationEndTime);
             
         if (breakPoints != null && !breakPoints.isEmpty()) {
@@ -1096,7 +1096,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     "Refining the current step size w.r.t. " 
                     + "the next breakpoint:");
                 currentStepSize 
-                    = point.subtract(getCurrentTime()).getTimeValue();
+                    = point.subtract(getCurrentTimeObject()).getTimeValue();
                 _setIterationEndTime(point);
             }
         }
@@ -1129,14 +1129,14 @@ public class CTMultiSolverDirector extends CTDirector {
         if (refinedStep < getTimeResolution()) {
             throw new IllegalActionException(this,
                     "The refined step size is less than the minimum time "
-                    + "resolution, at time " + getCurrentTime());
+                    + "resolution, at time " + getCurrentTimeObject());
         }
 
         if (_debugging)
             _debug(getFullName(), "refine step with respect to output to"
                     + refinedStep);
 
-        _setIterationEndTime(getCurrentTime().add(refinedStep));
+        _setIterationEndTime(getCurrentTimeObject().add(refinedStep));
         return refinedStep;
     }
 
@@ -1169,9 +1169,9 @@ public class CTMultiSolverDirector extends CTDirector {
             throw new IllegalActionException(this,
                     "Cannot resolve new states even using "+
                     "the minimum step size, at time "+
-                    getCurrentTime());
+            getCurrentTimeObject());
         }
-        _setIterationEndTime(getCurrentTime().add(refinedStep));
+        _setIterationEndTime(getCurrentTimeObject().add(refinedStep));
         return refinedStep;
     }
 
@@ -1269,7 +1269,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     _debug("Prefire output actor: "
                             + ((Nameable)actor).getName()
                             + " at time "
-                            + getCurrentTime());
+                            + getCurrentTimeObject());
                 }
                 if (!actor.prefire()) {
                     throw new IllegalActionException((Nameable)actor,
@@ -1284,7 +1284,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 _debug("Fire output actor: "
                         + ((Nameable)actor).getName()
                         + " at time "
-                        + getCurrentTime());
+                        + getCurrentTimeObject());
             }
             actor.fire();
         }
@@ -1311,7 +1311,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     _debug("Prefire event generator: "
                             + ((Nameable)actor).getName()
                             + " at time "
-                            + getCurrentTime());
+                            + getCurrentTimeObject());
                 }
                 if (!actor.prefire()) {
                     _inFiringEventGenerators = false;
@@ -1327,7 +1327,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 _debug("Fire event generator : "
                         + ((Nameable)actor).getName()
                         + " at time "
-                        + getCurrentTime());
+                        + getCurrentTimeObject());
             }
             actor.fire();
         }
@@ -1348,8 +1348,8 @@ public class CTMultiSolverDirector extends CTDirector {
         if (((BooleanToken)synchronizeToRealTime.getToken()).booleanValue()) {
             long realTime = System.currentTimeMillis()-_timeBase;
             long simulationTime = 
-                (long)((getCurrentTime().subtract(getStartTime()).getTimeValue())
-                *1000);
+                (long)((getCurrentTimeObject()
+                    .subtract(getStartTimeObject()).getTimeValue())*1000);
             if (_debugging) _debug("real time " + realTime,
                     "simulation time " + simulationTime);
             long timeDifference = simulationTime-realTime;
@@ -1365,7 +1365,7 @@ public class CTMultiSolverDirector extends CTDirector {
             } else {
                 if (_debugging) _debug("Warning: " + getFullName(),
                         " cannot achieve real-time performance",
-                        " at simulation time " + getCurrentTime());
+                        " at simulation time " + getCurrentTimeObject());
             }
         }
         _inUpdatingContinuousStates = true;

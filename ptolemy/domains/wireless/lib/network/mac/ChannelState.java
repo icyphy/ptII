@@ -157,7 +157,7 @@ public class ChannelState extends MACActorBase {
         super.fire();
 
         Director director = getDirector();
-        _currentTime = director.getCurrentTime();
+        _currentTime = director.getCurrentTimeObject();
         int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
         // kind = UNKNOWN means no timer event.

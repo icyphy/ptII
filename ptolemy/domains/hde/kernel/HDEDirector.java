@@ -321,14 +321,14 @@ public class HDEDirector extends DEDirector {
                     DEEvent next = _eventQueue.get();
                     // If the next event is in the future,
                     // proceed to postfire().
-                    if (next.timeStamp().compareTo(getCurrentTime()) > 0) {
+                    if (next.timeStamp().compareTo(getCurrentTimeObject()) > 0) {
                         break;
-                    } else if (next.timeStamp().compareTo(getCurrentTime()) 
+                    } else if (next.timeStamp().compareTo(getCurrentTimeObject()) 
                         < 0) {
                         throw new InternalErrorException(
                                 "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
-                                + "current time " + getCurrentTime() + " !");
+                                + "current time " + getCurrentTimeObject() + " !");
                     }
                 } else {
                     // The queue is empty, proceed to postfire().

@@ -307,13 +307,13 @@ public class TMDirector extends Director implements TimedDirector {
         while (!_interruptQueue.isEmpty()) {
             DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
             Time timeStamp = interruptEvent.timeStamp();
-            if (timeStamp.compareTo(getCurrentTime()) < 0) {
+            if (timeStamp.compareTo(getCurrentTimeObject()) < 0) {
                 // This should never happen.
                 throw new IllegalActionException(this,
                         "external input in the past: "
                         + "input time stamp is " + timeStamp
-                        + "current time in TM is " + getCurrentTime());
-            } else if (timeStamp == getCurrentTime()) {
+                        + "current time in TM is " + getCurrentTimeObject());
+            } else if (timeStamp == getCurrentTimeObject()) {
                 _interruptQueue.take();
                 Actor actor = interruptEvent.actor();
                 if (actor != null) {
@@ -395,7 +395,7 @@ public class TMDirector extends Director implements TimedDirector {
 
                         // Actor stops executing, i.e. finishing
                         _displaySchedule(((Nameable)actor).getName(),
-                                getCurrentTime().getTimeValue(),
+                        getCurrentTimeObject().getTimeValue(),
                                 ScheduleListener.TASK_SLEEPING);
                         _displaySchedule();
 
@@ -440,7 +440,7 @@ public class TMDirector extends Director implements TimedDirector {
         // it is an event at the output boundary.
         if (event != null && event.processingTime() > 0) {
             // Check the finish processing time.
-            Time finishTime = getCurrentTime().add(event.processingTime());
+            Time finishTime = getCurrentTimeObject().add(event.processingTime());
             if (_debugging) _debug("finishing time = " + finishTime);
             if ( finishTime.compareTo(_nextIterationTime) < 0) {
                 _nextIterationTime = finishTime;
@@ -472,7 +472,7 @@ public class TMDirector extends Director implements TimedDirector {
                     + " at time "
                     + time);
         }
-        if (time.compareTo(getCurrentTime()) < 0) {
+        if (time.compareTo(getCurrentTimeObject()) < 0) {
             throw new IllegalActionException(this, ((NamedObj)actor).getName()
                     + " request an interrupt in the past.");
         }
@@ -495,7 +495,7 @@ public class TMDirector extends Director implements TimedDirector {
 
         if (_isEmbedded()) {
             _outsideTime = ((CompositeActor)getContainer()).
-                getExecutiveDirector().getCurrentTime();
+                getExecutiveDirector().getCurrentTimeObject();
         } else {
             _outsideTime = new Time(this);
             _nextIterationTime = new Time(this);
@@ -534,7 +534,7 @@ public class TMDirector extends Director implements TimedDirector {
     public boolean prefire() throws IllegalActionException {
         if (_isEmbedded()) {
             _outsideTime = ((CompositeActor)getContainer())
-                .getExecutiveDirector().getCurrentTime();
+                .getExecutiveDirector().getCurrentTimeObject();
         } else {
             // set outside time to the next iteration time, which
             // is the smaller one of the next interrupt event time and
@@ -542,7 +542,7 @@ public class TMDirector extends Director implements TimedDirector {
             _outsideTime = _nextIterationTime;
         }
         if (_debugging) _debug("Prefire: outside time = " + _outsideTime,
-                " current time = " + getCurrentTime());
+                " current time = " + getCurrentTimeObject());
         if (!_isEmbedded() && _synchronizeToRealTime) {
             // Wait for real time to cache up.
             long elapsedTime = System.currentTimeMillis()
@@ -569,10 +569,10 @@ public class TMDirector extends Director implements TimedDirector {
 
         // cache the current time for calculation of elapsed time of
         // started tasks, or, the checkpoint time.
-        Time cachedCurrentTime = getCurrentTime();
+        Time cachedCurrentTime = getCurrentTimeObject();
 
         // Synchronized to outside time to process DEEvents and TMEvents.
-        setCurrentTime(_outsideTime);
+        setCurrentTimeObject(_outsideTime);
 
         if (_debugging) {
             _debug("The size of the eventQueue " + _eventQueue.size());
@@ -581,11 +581,11 @@ public class TMDirector extends Director implements TimedDirector {
         if (!_eventQueue.isEmpty()) {
             TMEvent event = (TMEvent)_eventQueue.get();
             if (event.hasStarted()) {
-                if (_debugging) _debug("deduct "+ getCurrentTime()
+                if (_debugging) _debug("deduct "+ getCurrentTimeObject()
                     .subtract(cachedCurrentTime).getTimeValue(),
                         " from processing time of event",
                         event.toString());
-                event.timeProgress(getCurrentTime()
+                event.timeProgress(getCurrentTimeObject()
                     .subtract(cachedCurrentTime).getTimeValue());
                 // Finish the tasks if it ends at this time.
                 // We do it here to ensure that it is done before
@@ -600,7 +600,7 @@ public class TMDirector extends Director implements TimedDirector {
                     actor.fire();
                     // Actor stops executing, i.e. finishing
                     _displaySchedule(((Nameable)actor).getName(),
-                            getCurrentTime().getTimeValue(),
+                    getCurrentTimeObject().getTimeValue(),
                             ScheduleListener.TASK_SLEEPING);
                     _displaySchedule();
                     // Should handle dead actors.
@@ -623,7 +623,7 @@ public class TMDirector extends Director implements TimedDirector {
                 throw new IllegalActionException(this,
                         "external input in the past: "
                         + "input time stamp is " + timeStamp
-                        + "current time in TM is " + getCurrentTime());
+                        + "current time in TM is " + getCurrentTimeObject());
             } else if (timeStamp.compareTo(_outsideTime) == 0) {
                 _interruptQueue.take();
                 Actor actor = interruptEvent.actor();
@@ -677,10 +677,10 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging) _debug("Finish one iteration at time:" +
-                getCurrentTime(),
+        getCurrentTimeObject(),
                 " Next iteration time = " + _nextIterationTime);
         if (!_isEmbedded()) {
-            if (getCurrentTime().compareTo(_stopTime) >= 0) {
+            if (getCurrentTimeObject().compareTo(_stopTime) >= 0) {
                 return false;
             }
             if (_eventQueue.isEmpty() && _interruptQueue.isEmpty()) {
@@ -741,7 +741,7 @@ public class TMDirector extends Director implements TimedDirector {
             for (int i = events.length-1; i >= 0; i-- ) {
                 String actorName =
                     ((Nameable)((TMEvent)events[i]).actor()).getName();
-                double timeValue = getCurrentTime().getTimeValue();
+                double timeValue = getCurrentTimeObject().getTimeValue();
                 int scheduleEvent = ScheduleListener.TASK_BLOCKED;
                 if (i == 0) {
                     scheduleEvent = ScheduleListener.TASK_RUNNING;

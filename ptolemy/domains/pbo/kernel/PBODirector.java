@@ -187,19 +187,19 @@ public class PBODirector extends Director {
                 _getExecutionTime(actor).add(requestTime);
             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
-            setCurrentTime(requestTime);
+            setCurrentTimeObject(requestTime);
             return;
         }
 
-        _debug("Starting iteration at " + getCurrentTime());
+        _debug("Starting iteration at " + getCurrentTimeObject());
         PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
         Actor executingActor = deadlineEvent.actor();
         // The time the actor expected to finish by.
         Time executingTime = deadlineEvent.time();
         // The time the actor actually started executing.
-        Time firingTime = getCurrentTime();
+        Time firingTime = getCurrentTimeObject();
         // The time the actor actually finished.
-        Time endFiringTime = getCurrentTime().add(
+        Time endFiringTime = getCurrentTimeObject().add(
             _getExecutionTime(executingActor));
 
         // first process any new activations that will
@@ -228,8 +228,8 @@ public class PBODirector extends Director {
             executingActor.fire();
 
             // This is the time when the actor finishes.
-            setCurrentTime(endFiringTime);
-            _debug("Postfiring actor at " + getCurrentTime());
+            setCurrentTimeObject(endFiringTime);
+            _debug("Postfiring actor at " + getCurrentTimeObject());
             postfireReturns = executingActor.postfire();
             _debug("done firing");
 
@@ -278,7 +278,21 @@ public class PBODirector extends Director {
      *  time should always be greater than or equal to the current time.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTime() {
+    public double getNextIterationTime() {
+        return getNextIterationTimeObject().getTimeValue();
+    }
+
+    /** Return the next time of interest in the model being executed by
+     *  this director. This method is useful for domains that perform
+     *  speculative execution (such as CT).  Such a domain in a hierarchical
+     *  model (i.e. CT inside DE) uses this method to determine how far
+     *  into the future to execute.
+     *  <p>
+     *  In this class, we return the time that the next actor will fire.  This
+     *  time should always be greater than or equal to the current time.
+     *  @return The time of the next iteration.
+     */
+    public Time getNextIterationTimeObject() {
         if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
@@ -351,7 +365,7 @@ public class PBODirector extends Director {
     public boolean postfire() throws IllegalActionException {
         _debug("postfiring");
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
-        Time curtime = getCurrentTime();
+        Time curtime = getCurrentTimeObject();
         _debug("CurrentTime = " + curtime);
         if (curtime.getTimeValue() > stoptime)
             return false;

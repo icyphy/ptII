@@ -146,9 +146,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 // NOTE: A ct composite actor is also a waveform generator.
                 CompositeActor container = (CompositeActor)getContainer();
                 Director exe = container.getExecutiveDirector();
-                Time time = exe.getCurrentTime();
-                setCurrentTime(exe.getCurrentTime());
-                _setIterationBeginTime(exe.getCurrentTime());
+                Time time = exe.getCurrentTimeObject();
+                setCurrentTimeObject(exe.getCurrentTimeObject());
+                _setIterationBeginTime(exe.getCurrentTimeObject());
                 
                 super._iterateWaveformGenerators(schedule);
             }
@@ -362,7 +362,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public double predictedStepSize() {
         try {
-            if (_debugging) _debug(getName(), "at " + getCurrentTime(),
+            if (_debugging) _debug(getName(), "at " + getCurrentTimeObject(),
                     " predict next step size" + _predictNextStepSize());
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {

@@ -298,7 +298,7 @@ public class ExplicitRK23Solver extends ODESolver {
         // FIXME: why is the current time changed here?
         // Some state transition actors may be some functions 
         // defined on the current time, such as the CurrentTime actor.            
-        dir.setCurrentTime(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
+        dir.setCurrentTimeObject(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
         actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS).
             actorIterator();
         while (actors.hasNext()) {
@@ -313,7 +313,7 @@ public class ExplicitRK23Solver extends ODESolver {
             setConvergence(true);
             // enforce the current iteration stops at the expected time
             // specially for the breakpoints.
-            dir.setCurrentTime(dir.getIterationEndTime());
+            dir.setCurrentTimeObject(dir.getIterationEndTime());
         }
     }
 
@@ -347,7 +347,7 @@ public class ExplicitRK23Solver extends ODESolver {
         // FIXME: why is the current time changed here?
         // Some state transition actors may be some functions 
         // defined on the current time, such as the CurrentTime actor.            
-        dir.setCurrentTime(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
+        dir.setCurrentTimeObject(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
     }
 
     /* (non-Javadoc)
@@ -386,7 +386,7 @@ public class ExplicitRK23Solver extends ODESolver {
             // [0.5, 0.75, 1.0] as the time increment array. We may not
             // need the following statement. However, it is still here 
             // just to make sure that time goes where we expected.
-            dir.setCurrentTime(dir.getIterationEndTime());
+            dir.setCurrentTimeObject(dir.getIterationEndTime());
         }
     }
 }

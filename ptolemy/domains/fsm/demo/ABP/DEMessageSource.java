@@ -93,7 +93,7 @@ public class DEMessageSource extends TypedAtomicActor {
         //System.out.println("DEChannel " + getFullName() +
         //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
-        Time now = dir.getCurrentTime();
+        Time now = dir.getCurrentTimeObject();
         dir.fireAt(this, now.add(
                 ((DoubleToken)maxDelay.getToken()).doubleValue() *
                 Math.random()));
@@ -113,7 +113,7 @@ public class DEMessageSource extends TypedAtomicActor {
             return;
         }
         DEDirector dir = (DEDirector)getDirector();
-        Time now = dir.getCurrentTime();
+        Time now = dir.getCurrentTimeObject();
         double maxDelayValue =
             ((DoubleToken)maxDelay.getToken()).doubleValue();
 

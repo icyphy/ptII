@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTGeneralDirector
@@ -55,41 +54,101 @@ public interface CTGeneralDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the current step size used by the solver.
+     *  @return The current step size.
+     */
     public double getCurrentStepSize();
 
     /** Return the ODE solver.
      *  @return The default ODE solver
      */
     public ODESolver getODESolver();
+    
+    /** Return true if the current execution phase deals with 
+     *  generating the starting states for the following continuous phase
+     *  execution. 
+     *  @return true if the current execution phase deals with
+     *  generating the starting states for the following continuous phase
+     *  execution.
+     */
+    public boolean isCreatingIterationStartingStatesPhase();
 
-    /**
-     * @return
+    /** Return true if the current execution phase is a discrete one. 
+     *  @return true if the current execution phase is a discrete one.
      */
     public boolean isDiscretePhase();
 
-    /**
-     * @return
+    /** Return true if the current execution phase deals with 
+     *  event generator actors only. Event generator actors are 
+     *  those actors transform continuous signals into discrete signals.   
+     *  @return true if the current execution phase deals with
+     *  event generator actors only.
+     */
+    public boolean isEventGeneratingPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  firing dynamic actors only.  
+     *  @return true if the current execution phase deals with
+     *  firing dynamic actors only.  
+     */
+    public boolean isFiringDynamicActorsPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  firing event generator actors only.  
+     *  @return true if the current execution phase deals with
+     *  firing event generator actors only.  
+     */
+    public boolean isFiringEventGeneratorsPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  firing state transition actors only.  
+     *  @return true if the current execution phase deals with
+     *  firing state transition actors only.  
+     */
+    public boolean isFiringStateTransitionActorsPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  prefiring dynamic actors only.  
+     *  @return true if the current execution phase deals with
+     *  prefiring dynamic actors only.  
+     */
+    public boolean isPrefiringDynamicActorsPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  producing outputs of output actors only.  
+     *  @return true if the current execution phase deals with
+     *  producing outputs of output actors only.  
+     */
+    public boolean isProducingOutputsPhase();    
+
+    /** Return true if the current execution phase deals with 
+     *  pure discrete actors only. Pure discrete actors are those actors
+     *  transform discrete signals into discrete signals.   
+     *  @return true if the current execution phase deals with
+     *  pure discrete actors only.
      */
     public boolean isPureDiscretePhase();
 
-    /**
-     * @return
+    /** Return true if the current execution phase deals with 
+     *  solving states of stateful actors only.  
+     *  @return true if the current execution phase deals with
+     *  solving states of stateful actors only.
+     */
+    public boolean isSolvingStatesPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  updating the states of continuous actors only.  
+     *  @return true if the current execution phase deals with
+     *  updating the states of continuous actors only.  
+     */
+    public boolean isUpdatingContinuousStatesPhase();
+
+    /** Return true if the current execution phase deals with 
+     *  waveform generator actors only. Waveform generator actors are 
+     *  those actors transform discrete signals into continuous signals.   
+     *  @return true if the current execution phase deals with
+     *  waveform generator actors only.
      */
     public boolean isWaveformGeneratingPhase();
-
-    /**
-     * @return
-     */
-    public boolean isEventGeneratingPhase();
-    
-    public boolean isCreatingIterationStartingStatesPhase();
-
-    public boolean isSolvingStatesPhase();
-    public boolean isProducingOutputsPhase();    
-    public boolean isUpdatingContinuousStatesPhase();
-    public boolean isPrefiringDynamicActorsPhase();
-    public boolean isFiringEventGeneratorsPhase();
-    public boolean isFiringDynamicActorsPhase();
-    public boolean isFiringStateTransitionActorsPhase();
 }
 

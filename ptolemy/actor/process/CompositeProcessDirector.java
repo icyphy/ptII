@@ -247,13 +247,13 @@ public class CompositeProcessDirector extends ProcessDirector {
             if ( containersContainer == null ) {
                 // Use the overridden setCurrentTime() method 
                 // to set time backwards.
-                setCurrentTime(new Time(this));
+                setCurrentTimeObject(new Time(this));
             } else {
                 Time currentTime =
-                    containersContainer.getDirector().getCurrentTime();
+                    containersContainer.getDirector().getCurrentTimeObject();
                 // Use the overridden setCurrentTime() method 
                 // to set time backwards.
-                setCurrentTime(currentTime);
+                setCurrentTimeObject(currentTime);
             }
         }
 
@@ -319,7 +319,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  The new time may be earlier than the current time.
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(Time newTime) 
+    public void setCurrentTimeObject(Time newTime) 
         throws IllegalActionException {
         if (_debugging) {
             _debug("----- Setting current time to " + newTime);

@@ -225,7 +225,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
                 Time firingTime = _getCurrentTime(); // JDK1.2 bug
 
                 Director director = getDirector();
-                Time currentTime = director.getCurrentTime();
+                Time currentTime = director.getCurrentTimeObject();
                 if (firingTime.compareTo(currentTime) < 0) {
                     // This shouldn't happen, but it will prevent us
                     // from enqueuing events in the past

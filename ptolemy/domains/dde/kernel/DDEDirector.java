@@ -185,16 +185,27 @@ public class DDEDirector extends CompositeProcessDirector
      *  method on behalf of an actor. If this method is called by
      *  other than a DDEThread, then return the current time as
      *  specified by the superclass of this method.
-     * @return The current time of the DDEThread that calls this
+     *  @return The current time of the DDEThread that calls this
      *  method.
      */
-    public Time getCurrentTime() {
+    public double getCurrentTime() {
+        return getCurrentTimeObject().getTimeValue();
+    }
+
+    /** Return the current time of the DDEThread that calls this
+     *  method on behalf of an actor. If this method is called by
+     *  other than a DDEThread, then return the current time as
+     *  specified by the superclass of this method.
+     *  @return The current time of the DDEThread that calls this
+     *  method.
+     */
+    public Time getCurrentTimeObject() {
         Thread thread = Thread.currentThread();
         if (thread instanceof DDEThread) {
             TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
             return timeKeeper.getCurrentTime();
         } else {
-            return super.getCurrentTime();
+            return super.getCurrentTimeObject();
         }
     }
 

@@ -173,7 +173,7 @@ public class NetworkActorBase extends TypedAtomicActor {
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
             if (timer.expirationTime.compareTo(
-                getDirector().getCurrentTime()) == 0)
+                getDirector().getCurrentTimeObject()) == 0)
                 {
                     // remove it from the set no matter that
                     // it will be processed or ignored

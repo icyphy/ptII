@@ -166,7 +166,7 @@ public class PBOThreadDirector extends Director {
     }
 
     private synchronized void _scheduleNew() throws IllegalActionException {
-        Time currentTime = getCurrentTime();
+        Time currentTime = getCurrentTimeObject();
 
         // process new activations.
         PBOEvent event = (PBOEvent)_requestQueue.get();
@@ -341,7 +341,18 @@ public class PBOThreadDirector extends Director {
      *
      *  @return The current time.
      */
-    public Time getCurrentTime() {
+    public double getCurrentTime() {
+        return getCurrentTimeObject().getTimeValue();
+    }
+
+    /** Return the current time of the model being executed by this director.
+     *  This time can be set with the setCurrentTime method. In this base
+     *  class, time never passes, and there are no restrictions on valid
+     *  times.
+     *
+     *  @return The current time.
+     */
+    public Time getCurrentTimeObject() {
         if (_startTime.getTimeValue() > 0.0)
             return new Time(this, (double)
                 System.currentTimeMillis() - _startTime.getTimeValue());
@@ -359,7 +370,21 @@ public class PBOThreadDirector extends Director {
      *  time should always be greater than or equal to the current time.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTime() {
+    public double getNextIterationTime() {
+        return getNextIterationTimeObject().getTimeValue();
+    }
+    
+    /** Return the next time of interest in the model being executed by
+     *  this director. This method is useful for domains that perform
+     *  speculative execution (such as CT).  Such a domain in a hierarchical
+     *  model (i.e. CT inside DE) uses this method to determine how far
+     *  into the future to execute.
+     *  <p>
+     *  In this class, we return the time that the next actor will fire.  This
+     *  time should always be greater than or equal to the current time.
+     *  @return The time of the next iteration.
+     */
+    public Time getNextIterationTimeObject() {
         if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
@@ -367,13 +392,13 @@ public class PBOThreadDirector extends Director {
         } else {
             PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.get();
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
-            double minTimeValue = 
-                Math.min(deadlineEvent.time().getTimeValue(), 
+            double minimumTimeValue
+                = Math.min(deadlineEvent.time().getTimeValue(), 
                     requestEvent.time().getTimeValue());
-            return new Time(this, minTimeValue);
+            return new Time(this, minimumTimeValue);
         }
     }
-
+    
     /** Create receivers and then invoke the initialize()
      *  methods of all its deeply contained actors.
      *  Set the current time to be 0.0.
@@ -438,7 +463,7 @@ public class PBOThreadDirector extends Director {
     public boolean postfire() throws IllegalActionException {
         _debug("postfiring");
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
-        double curtimeValue = getCurrentTime().getTimeValue();
+        double curtimeValue = getCurrentTimeObject().getTimeValue();
         _debug("CurrentTime = " + curtimeValue);
         if (curtimeValue > stoptime)
             return false;

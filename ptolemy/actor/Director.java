@@ -362,14 +362,28 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Return the current time of the model being executed by this director.
+    /** Return the current time value of the model being executed by this 
+     *  director. This time can be set with the setCurrentTime method. 
+     *  In this base class, time never passes, and there are no restrictions 
+     *  on valid times.
+     *
+     *  @return The current time value.
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getCurrentTimeObject()}
+     */
+    public double getCurrentTime() {
+        return _currentTime.getTimeValue();
+    }
+
+    /** Return the current time object of the model being executed by this 
+     *  director.
      *  This time can be set with the setCurrentTime method. In this base
      *  class, time never passes, and there are no restrictions on valid
      *  times.
      *
      *  @return The current time.
      */
-    public Time getCurrentTime() {
+    public Time getCurrentTimeObject() {
         return _currentTime;
     }
 
@@ -386,8 +400,28 @@ public class Director extends Attribute implements Executable {
      *  Note that this method is not made abstract to facilitate the use
      *  of the test suite.
      *  @return The time of the next iteration.
+     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  {@link #getNextIterationTimeObject}
      */
-    public Time getNextIterationTime() {
+    public double getNextIterationTime() {
+        return _currentTime.getTimeValue();
+    }
+
+    /** Return the next time of interest in the model being executed by
+     *  this director. This method is useful for domains that perform
+     *  speculative execution (such as CT).  Such a domain in a hierarchical
+     *  model (i.e. CT inside DE) uses this method to determine how far
+     *  into the future to execute.
+     *  <p>
+     *  In this base class, we return the current time.
+     *  Derived classes should override this method to provide an appropriate
+     *  value, if possible.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of the test suite.
+     *  @return The time of the next iteration.
+     */
+    public Time getNextIterationTimeObject() {
         return _currentTime;
     }
 
@@ -420,9 +454,21 @@ public class Director extends Attribute implements Executable {
      *  For example, CT director and DE director use the value of 
      *  the startTime parameter to specify the real start time. 
      *  @return The start time of the model.
+     *  @deprecated As of Ptolemy II 4.1, replaced by {@link #getStartTimeObject}
      */
-    public Time getStartTime() {
-        // FIXME: Which one to choose? 0.0, or -1* Double.MAX_VALUE? 
+    public double getStartTime() {
+        return 0.0;
+    }
+
+    /** Get the start time of the model. This base class returns 
+     *  a Time object with 0.0 as the value of the start time. 
+     *  Subclasses need to override this method to get a different 
+     *  start time. 
+     *  For example, CT director and DE director use the value of 
+     *  the startTime parameter to specify the real start time. 
+     *  @return The start time of the model.
+     */
+    public Time getStartTimeObject() {
         return new Time(this);
     }
 
@@ -434,8 +480,22 @@ public class Director extends Attribute implements Executable {
      *  For example, CT director and DE director use the value of 
      *  the stopTime parameter to specify the real stop time. 
      *  @return The stop time of the model.
+     *  @deprecated As of Ptolemy II 4.1, replaced by {@link #getStopTimeObject}
      */
-    public Time getStopTime() {
+    public double getStopTime() {
+        return new Time(this, Double.MAX_VALUE).getTimeValue();
+    }
+
+    /** Get the stop time of the model. This base class returns
+     *  a new Time object with Double.MAX_VALUE as the value of the 
+     *  stop time. 
+     *  Subclasses need to override this method to get a different 
+     *  stop time.
+     *  For example, CT director and DE director use the value of 
+     *  the stopTime parameter to specify the real stop time. 
+     *  @return The stop time of the model.
+     */
+    public Time getStopTimeObject() {
         return new Time(this, Double.MAX_VALUE);
     }
 
@@ -471,14 +531,14 @@ public class Director extends Attribute implements Executable {
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
                 Time currentTime = ((CompositeActor)containersContainer)
-                    .getDirector().getCurrentTime();
+                    .getDirector().getCurrentTimeObject();
                 _currentTime = currentTime;
             } else {
                 // The container is at the top level.
                 // There is no reason to set the current time to 0.0.
                 // Instead, it has to be set to start time of a model. 
                 // FIXME: simplify the initilize method of DE director
-                _currentTime = getStartTime();
+                _currentTime = getStartTimeObject();
             }
             // Initialize the contained actors.
             Iterator actors = ((CompositeActor)container)
@@ -683,9 +743,9 @@ public class Director extends Attribute implements Executable {
             Director executiveDirector =
                 ((Actor)container).getExecutiveDirector();
             if (executiveDirector != null) {
-                Time outTime = executiveDirector.getCurrentTime();
+                Time outTime = executiveDirector.getCurrentTimeObject();
                 if (_currentTime.compareTo(outTime) < 0) {
-                    setCurrentTime(outTime);
+                    setCurrentTimeObject(outTime);
                 }
             }
         }
@@ -712,7 +772,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging && _verbose) _debug("Preinitializing ...");
         // preinitialize protected variables. 
         // FIXME: a duplicate operation also appears in the initialize method.
-        _currentTime = getStartTime();
+        _currentTime = getStartTimeObject();
         _stopRequested = false;
         _timeResolution = 1.0e-10;
                 
@@ -840,13 +900,27 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
+     *  @deprecated As of Ptolemy 4.1, replaced by {@link #setCurrentTimeObject}
      */
-    public void setCurrentTime(Time newTime) throws IllegalActionException {
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        setCurrentTimeObject(new Time(this, newTime));
+    }
+
+    /** Set a new value to the current time of the model, where 
+     *  the new time must be no earlier than the current time.
+     *  Derived classes will likely override this method to ensure that
+     *  the time is valid.
+     *
+     *  @exception IllegalActionException If the new time is less than
+     *   the current time returned by getCurrentTime().
+     *  @param newTime The new current simulation time.
+     */
+    public void setCurrentTimeObject(Time newTime) throws IllegalActionException {
         int comparisonResult = _currentTime.compareTo(newTime);
         if (comparisonResult > 0) {
             throw new IllegalActionException(this, "Attempt to move current "
                     + "time backwards. (newTime = " + newTime
-                    + ") < (getCurrentTime() = " + getCurrentTime() + ")");
+                    + ") < (getCurrentTime() = " + getCurrentTimeObject() + ")");
         } else if (comparisonResult < 0) {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);

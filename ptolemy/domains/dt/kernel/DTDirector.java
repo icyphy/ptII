@@ -349,33 +349,27 @@ public class DTDirector extends SDFDirector {
         // fire_
     }
 
-
-    /** Return the DT global time. Actors who wish to take
-     *  advantage of DT's multi-rate time-keeping capabilities should
-     *  call getCurrentTime(channel_number) on a specific IOPort instead.
+    /** Return the time value of the next iteration.
      *
-     *  @return the current time
+     *  @return The time of the next iteration.
      */
-    public Time getCurrentTime() {
-        return _currentTime;
-        //FIXME: 
-        //this is a duplicate of the getCurrentTime method of Director?
+    public double getNextIterationTime() {
+        return getNextIterationTimeObject().getTimeValue();
     }
-
 
 
     /** Return the time value of the next iteration.
      *
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTime() {
+    public Time getNextIterationTimeObject() {
         double period = 0.0;
         try {
             period = getPeriod();
         } catch (IllegalActionException exception) {
             // FIXME: handle this
         }
-        return getCurrentTime().add(period);
+        return getCurrentTimeObject().add(period);
     }
 
 
@@ -571,8 +565,8 @@ public class DTDirector extends SDFDirector {
     public boolean postfire() throws IllegalActionException {
         _makeTokensAvailable();
         double timeIncrement = getPeriod();
-        setCurrentTime(_formerValidTimeFired.add(timeIncrement));
-        _requestRefireAt(getCurrentTime());
+        setCurrentTimeObject(_formerValidTimeFired.add(timeIncrement));
+        _requestRefireAt(getCurrentTimeObject());
         if (! _isFiringAllowed) {
             return true;
         }
@@ -614,7 +608,7 @@ public class DTDirector extends SDFDirector {
      *
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(Time newTime) {
+    public void setCurrentTimeObject(Time newTime) {
         // _currentTime is inherited from base Director
         _currentTime = newTime;
     }
@@ -859,18 +853,18 @@ public class DTDirector extends SDFDirector {
 
         // No need to check if this director is in the top level.
         if (outsideDirector == null) {
-            _formerValidTimeFired = getCurrentTime();
+            _formerValidTimeFired = getCurrentTimeObject();
             return;
         }
 
         // No need to check if the executive director is also a DTDirector
         if (outsideDirector instanceof DTDirector) {
-            _formerValidTimeFired = getCurrentTime();
+            _formerValidTimeFired = getCurrentTimeObject();
             return;
         }
 
 
-        Time currentTime = outsideDirector.getCurrentTime();
+        Time currentTime = outsideDirector.getCurrentTimeObject();
         Time currentPeriod = new Time(this, getPeriod());
         Time timeElapsed = currentTime.subtract(_formerValidTimeFired);
 
@@ -1169,7 +1163,7 @@ public class DTDirector extends SDFDirector {
         _receiverTable = new ArrayList();
         _outputPortTable = new ArrayList();
         _allActorsTable = new Hashtable();
-        setCurrentTime(new Time(this));
+        setCurrentTimeObject(new Time(this));
         _formerTimeFired = new Time(this);
         _formerValidTimeFired = new Time(this);
         _isFiringAllowed = true;

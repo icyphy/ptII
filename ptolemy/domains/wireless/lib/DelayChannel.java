@@ -139,7 +139,7 @@ public class DelayChannel extends ErasureChannel {
         super.fire();
         if (_receptions != null) {
             // We may be getting fired because of an impending event.
-            Time currentTime = getDirector().getCurrentTime();
+            Time currentTime = getDirector().getCurrentTimeObject();
             Double timeDouble = new Double(currentTime.getTimeValue());
             Reception reception = (Reception)_receptions.get(timeDouble);
             if (reception != null) {
@@ -209,7 +209,7 @@ public class DelayChannel extends ErasureChannel {
             WirelessIOPort destination
                 = (WirelessIOPort)receiver.getContainer();
             double distance = _distanceBetween(sender, destination);
-            Time time = director.getCurrentTime().add(distance/speed);
+            Time time = director.getCurrentTimeObject().add(distance/speed);
 
             if (_receptions == null) {
                 _receptions = new HashMap();

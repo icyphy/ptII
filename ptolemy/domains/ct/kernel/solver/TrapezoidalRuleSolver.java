@@ -324,7 +324,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             _debug("Guessing..."+((Nameable)next).getName());
             next.fire();
         }
-        dir.setCurrentTime(dir.getCurrentTime().add(dir.getCurrentStepSize()));
+        dir.setCurrentTimeObject(dir.getCurrentTimeObject().add(dir.getCurrentStepSize()));
     }
 
     /* (non-Javadoc)

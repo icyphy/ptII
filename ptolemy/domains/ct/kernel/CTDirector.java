@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.kernel;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -38,7 +37,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -388,7 +386,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException{
         double resolution = getTimeResolution();
-        Time currentTime = getCurrentTime();
+        Time currentTime = getCurrentTimeObject();
 
         // Check if the request time is earlier than the current time.
         if (time.compareTo(currentTime) < 0 ) {
@@ -507,7 +505,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  step size.
      *  @return The iteration begin time plus the current step size.
      */
-    public Time getNextIterationTime() {
+    public double getNextIterationTime() {
+        return getIterationBeginTime().add(getCurrentStepSize()).getTimeValue();
+    }
+
+    /** Return the current iteration begin time plus the current
+     *  step size.
+     *  @return The iteration begin time plus the current step size.
+     */
+    public Time getNextIterationTimeObject() {
         return getIterationBeginTime().add(getCurrentStepSize());
     }
 
@@ -520,7 +526,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  for performance reason.
      *  @return the start time.
      */
-    public final Time getStartTime() {
+    public final double getStartTime() {
+        return _startTime.getTimeValue();
+    }
+
+    /** Return the start time parameter value. This method is final
+     *  for performance reason.
+     *  @return the start time.
+     */
+    public final Time getStartTimeObject() {
         return _startTime;
     }
 
@@ -528,7 +542,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  for performance reason.
      *  @return the stop time.
      */
-    public final Time getStopTime() {
+    public final double getStopTime() {
+        return _stopTime.getTimeValue();
+    }
+
+    /** Return the stop time. This method is final
+     *  for performance reason.
+     *  @return the stop time.
+     */
+    public final Time getStopTimeObject() {
         return _stopTime;
     }
 
@@ -721,7 +743,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  actors are not supposed to call it.
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(Time newTime) {
+    public void setCurrentTimeObject(Time newTime) {
         // FIXME: we must be very careful about this...
         // If this feature is only necessary for the CTMixedSignalDirector,
         // but not the others... put the following code into there only...

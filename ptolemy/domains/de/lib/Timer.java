@@ -141,7 +141,7 @@ public class Timer extends TimedDelay {
         } else {
             _currentInput = null;
         }
-        Time currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTimeObject();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
             _currentOutput = (Token)_delayedTokens.get(currentTime);
@@ -166,7 +166,7 @@ public class Timer extends TimedDelay {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        Time currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTimeObject();
         Time delayToTime = currentTime.add(_delay);
         // Remove the token that is scheduled to be sent 
         // at the current time.

@@ -206,7 +206,7 @@ public class FSMDirector extends Director
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug(getFullName(), "fire at time: " + getCurrentTime());
+            _debug(getFullName(), "fire at time: " + getCurrentTimeObject());
         }
         FSMActor ctrl = getController();
         ctrl._readInputs();
@@ -360,7 +360,7 @@ public class FSMDirector extends Director
             if (executiveDirector != null) {
                 executiveDirector.fireAt(cont, time);
             } else {
-                setCurrentTime(time);
+                setCurrentTimeObject(time);
             }
         }
     }
@@ -472,11 +472,20 @@ public class FSMDirector extends Director
      *  provide this, return that given by the superclass.
      *  @return The time of the next iteration.
      */
-    public Time getNextIterationTime() {
+    public double getNextIterationTime() {
+        return super.getNextIterationTimeObject().getTimeValue();
+    }
+
+    /** Return the next iteration time provided by the refinement of the
+     *  current state of the mode controller. If the refinement does not
+     *  provide this, return that given by the superclass.
+     *  @return The time of the next iteration.
+     */
+    public Time getNextIterationTimeObject() {
         try {
             Actor[] actors = getController().currentState().getRefinement();
             if (actors == null || actors.length == 0) {
-                return super.getNextIterationTime();
+                return super.getNextIterationTimeObject();
             }
             double result = Double.MAX_VALUE;
             boolean givenByRefinement = false;
@@ -484,23 +493,22 @@ public class FSMDirector extends Director
                 if (actors[i].getDirector() != this) {
                     // The refinement has a local director.
                     result = Math.min(result,
-                            actors[i].getDirector().getNextIterationTime()
-                            .getTimeValue());
+                            actors[i].getDirector()
+                            .getNextIterationTimeObject().getTimeValue());
                     givenByRefinement = true;
                 }
             }
             if (givenByRefinement) {
                 return new Time(this, result);
             } else {
-                return super.getNextIterationTime();
+                return super.getNextIterationTimeObject();
             }
         } catch (IllegalActionException ex) {
             // No mode controller, return that given by the superclass.
         }
 
-        return super.getNextIterationTime();
+        return super.getNextIterationTimeObject();
     }
-
 
     /** Handle a model error by checking if there is any enabled
      *  non-preemptive transitions. If there is some one, the model
@@ -623,7 +631,7 @@ public class FSMDirector extends Director
         // FIXME: Changed by liuj, not yet reviewed.
         if (_debugging) {
             _debug(getFullName(),
-                    "postfire called at time: " + getCurrentTime());
+                    "postfire called at time: " + getCurrentTimeObject());
         }
         FSMActor controller = getController();
         boolean result = controller.postfire();
@@ -660,7 +668,7 @@ public class FSMDirector extends Director
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug(getFullName(),
-                    "prefire called at time: "+getCurrentTime());
+                    "prefire called at time: "+getCurrentTimeObject());
         }
         // Clear the inside receivers of all output ports of the container.
         CompositeActor actor = (CompositeActor)getContainer();
@@ -718,7 +726,7 @@ public class FSMDirector extends Director
      *  @exception IllegalActionException Not thrown in this base class.
      *  FIXME: Changed by liuj, not yet reviewed.
      */
-    public void setCurrentTime(Time newTime) 
+    public void setCurrentTimeObject(Time newTime) 
         throws IllegalActionException {
         _currentTime = newTime;
     }

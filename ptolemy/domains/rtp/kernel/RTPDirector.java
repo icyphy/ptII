@@ -119,7 +119,17 @@ public class RTPDirector extends ProcessDirector
      *  starting from 1/1/1970 (UTC).
      *  @return The current computer time.
      */
-    public Time getCurrentTime() {
+    public double getCurrentTime() {
+        double currentTime = 
+            (double)(System.currentTimeMillis()-_realStartTime);
+        return currentTime;
+    }
+
+    /** Return the time count of the computer in the number of milliseconds,
+     *  starting from 1/1/1970 (UTC).
+     *  @return The current computer time.
+     */
+    public Time getCurrentTimeObject() {
         double currentTime = 
             (double)(System.currentTimeMillis()-_realStartTime);
         return new Time(this, currentTime);
@@ -139,13 +149,13 @@ public class RTPDirector extends ProcessDirector
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
-        Time timeNow = getCurrentTime();
+        Time timeNow = getCurrentTimeObject();
         if (time.compareTo(timeNow) > 0){
             long delay = (long) (time.subtract(timeNow)).getTimeValue();
             try {
                 if (_debugging) _debug("Sleep " + delay);
                 Thread.sleep(delay+ 5);
-                if (_debugging) _debug("Wake up at " + getCurrentTime());
+                if (_debugging) _debug("Wake up at " + getCurrentTimeObject());
             } catch (InterruptedException ex) {
                 if (_debugging) _debug("interrupted.");
                 // ignore...

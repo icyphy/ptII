@@ -138,7 +138,7 @@ public class TriggeredClock extends Clock {
                 start.get(0);
                 // Indicate to postfire() that it can call fireAt().
                 _tentativeDone = false;
-                Time currentTime = getDirector().getCurrentTime();
+                Time currentTime = getDirector().getCurrentTimeObject();
                 _tentativeCycleStartTime = currentTime;
                 _tentativeStartTime = currentTime;
                 _tentativePhase = 0;

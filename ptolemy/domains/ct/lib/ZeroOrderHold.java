@@ -149,7 +149,7 @@ public class ZeroOrderHold extends Transformer
                 _lastToken = input.get(0);
                 CTDirector dir = (CTDirector) getDirector();
                 _debug(getFullName() + " receives an event at: " +
-                        dir.getCurrentTime() +
+                        dir.getCurrentTimeObject() +
                         " with token " + _lastToken.toString());
             }
         }

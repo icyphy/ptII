@@ -119,7 +119,7 @@ public class ValidateMpdu extends MACActorBase {
         // perform the actions/computation done in the handleMessage()
         // method
         int kind=whoTimeout();        // check if a timer times out and which
-        Time currentTime =getDirector().getCurrentTime();
+        Time currentTime =getDirector().getCurrentTimeObject();
         switch(_currentState)
             {
             case Rx_Idle:

@@ -180,18 +180,18 @@ public class FeedBackDelay extends DDEActor {
             if ( token instanceof NullToken ) {
                 if ( delayNullVal ) {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime().add(getDelay()));
+                            getDirector().getCurrentTimeObject().add(getDelay()));
                 } else {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime());
+                            getDirector().getCurrentTimeObject());
                 }
             } else {
                 if ( delayRealVal ) {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime().add(getDelay()));
+                            getDirector().getCurrentTimeObject().add(getDelay()));
                 } else {
                     _sendOutToken( token,
-                            getDirector().getCurrentTime());
+                            getDirector().getCurrentTimeObject());
                 }
             }
         }

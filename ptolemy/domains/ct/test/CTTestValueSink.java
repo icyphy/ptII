@@ -109,7 +109,7 @@ public class CTTestValueSink extends TypedAtomicActor {
         if (((BooleanToken)print.getToken()).booleanValue()) {
             Director dir = getDirector();
             if (dir != null) {
-                System.out.println(dir.getCurrentTime() + " " +
+                System.out.println(dir.getCurrentTimeObject() + " " +
                         ((DoubleToken)_lastToken).doubleValue());
             }
         }

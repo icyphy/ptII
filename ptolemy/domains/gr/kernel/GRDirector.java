@@ -259,7 +259,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
-        setCurrentTime(time);
+        setCurrentTimeObject(time);
     }
 
     /** Return the current "time". The GR domain is not a timed domain,
@@ -270,11 +270,23 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The current "time"
      */
-    public Time getCurrentTime() {
+    public double getCurrentTime() {
+        return getCurrentTimeObject().getTimeValue();
+    }
+
+    /** Return the current "time". The GR domain is not a timed domain,
+     *  so this method is semantically meaningless.  However, this method
+     *  is implemented in order to get timed domains to work inside the
+     *  GR domain. In particular, this method will give actors a "fake"
+     *  impression of advancement of time.
+     *
+     *  @return The current "time"
+     */
+    public Time getCurrentTimeObject() {
         if (_pseudoTimeEnabled == true) {
-            return _insideDirector.getCurrentTime();
+            return _insideDirector.getCurrentTimeObject();
         } else {
-            return super.getCurrentTime();
+            return super.getCurrentTimeObject();
         }
     }
 
@@ -285,7 +297,18 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @return The maximum value for type double.
      */
-    public Time getNextIterationTime() {
+    public double getNextIterationTime() {
+        return getNextIterationTimeObject().getTimeValue();
+    }
+
+    /** Return maximum value for type double. Since the GR domain is not a
+     *  timed domain, so this method does not return any meaningful value.
+     *  However, this method is implemented so that GR will work within
+     *  timed domains.
+     *
+     *  @return The maximum value for type double.
+     */
+    public Time getNextIterationTimeObject() {
         return new Time(this, Double.MAX_VALUE);
     }
 

@@ -212,7 +212,7 @@ public class DEEDirector extends DEDirector {
 
             // An embedded director should not process events in the future.
             if (!_isTopLevel() &&
-                    _eventQueue.get().timeStamp().compareTo(getCurrentTime()) 
+                    _eventQueue.get().timeStamp().compareTo(getCurrentTimeObject()) 
                     > 0) {
                 break;
             }
@@ -276,7 +276,7 @@ public class DEEDirector extends DEDirector {
 
                     // Deal with a fireAtCurrentTime event.
                     if (currentTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
-                        currentTime = getCurrentTime();
+                        currentTime = getCurrentTimeObject();
                     }
 
                     if (_disabledActors != null &&
@@ -290,7 +290,7 @@ public class DEEDirector extends DEDirector {
 
                     // Advance current time.
                     try {
-                        setCurrentTime(currentTime);
+                        setCurrentTimeObject(currentTime);
                     } catch (IllegalActionException ex) {
                         // Thrown if time moves backwards.
                         throw new InternalErrorException(this, ex, null);
@@ -299,7 +299,7 @@ public class DEEDirector extends DEDirector {
 
                 _microstep = currentEvent.microstep();
 
-                if (currentTime.compareTo(getStopTime()) > 0) {
+                if (currentTime.compareTo(getStopTimeObject()) > 0) {
                     if (_debugging) {
                         _debug("Current time has passed the stop time.");
                     }
@@ -376,13 +376,13 @@ public class DEEDirector extends DEDirector {
             throws IllegalActionException {
         if (_eventQueue == null) return;
         int microstep = 0;
-        if (time.compareTo(getCurrentTime()) == 0) {
+        if (time.compareTo(getCurrentTimeObject()) == 0) {
             microstep = _microstep + 1;
         } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
-                time.compareTo(getCurrentTime()) < 0) {
+                time.compareTo(getCurrentTimeObject()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
-                    + " Current time is " + getCurrentTime()
+                    + " Current time is " + getCurrentTimeObject()
                     + " while event time is " + time);
         }
         // FIXME: what depth for this pure event?
@@ -444,14 +444,14 @@ public class DEEDirector extends DEDirector {
         if (_eventQueue == null) return;
         int microstep = 0;
 
-        if (time.compareTo(getCurrentTime()) == 0) {
+        if (time.compareTo(getCurrentTimeObject()) == 0) {
             microstep = _microstep;
         } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
-                time.compareTo(getCurrentTime()) < 0) {
+                time.compareTo(getCurrentTimeObject()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
-                    + " Current time is " + getCurrentTime()
+                    + " Current time is " + getCurrentTimeObject()
                     + " while event time is " + time);
         }
 
@@ -488,10 +488,10 @@ public class DEEDirector extends DEDirector {
 
         if (_debugging) _debug("enqueue event: to",
                 receiver.getContainer().getFullName() + " ("+token.toString()+") ",
-                "time = "+ getCurrentTime() + " microstep = "+ (_microstep + 1) + " depth = "
+                "time = "+ getCurrentTimeObject() + " microstep = "+ (_microstep + 1) + " depth = "
                 + depth);
         _eventQueue.put(new DEEvent(receiver, token,
-                                getCurrentTime(), _microstep + 1, depth));
+        getCurrentTimeObject(), _microstep + 1, depth));
     }
 
     /** Return the depth of an ioPort.

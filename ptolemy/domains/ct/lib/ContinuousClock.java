@@ -118,7 +118,7 @@ public class ContinuousClock extends Clock //implements CTEventGenerator
 
         output.send(0, _currentValue);
         if (_debugging)_debug("Output: " + _currentValue + " at " + 
-            getDirector().getCurrentTime() + ".");
+            getDirector().getCurrentTimeObject() + ".");
 
         if (_debugging) 
             _debug(" --- Firing finished.");
@@ -158,7 +158,7 @@ public class ContinuousClock extends Clock //implements CTEventGenerator
             // requires that the current time passes the stop time.
             // That is, not only discrete phase execution, but also the continuous
             // phase execution is performed.
-            if (getDirector().getCurrentTime().compareTo(getStopTime()) > 0) {
+            if (getDirector().getCurrentTimeObject().compareTo(getStopTime()) > 0) {
                 if (_debugging) 
                     _debug(" --- Postfire returns false.");
                 return false;
@@ -170,7 +170,7 @@ public class ContinuousClock extends Clock //implements CTEventGenerator
         }
         
         // Get the current time and period.
-        Time currentTime = getDirector().getCurrentTime();
+        Time currentTime = getDirector().getCurrentTimeObject();
         double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
         if (_debugging)_debug("--- Postfiring at time " + currentTime + ".");

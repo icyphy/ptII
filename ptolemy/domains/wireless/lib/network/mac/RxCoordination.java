@@ -203,7 +203,7 @@ public class RxCoordination extends MACActorBase {
                                             break;
 
                                         case Rts:
-                                            Time currentTime =getDirector().getCurrentTime();
+                                            Time currentTime =getDirector().getCurrentTimeObject();
                                             Time navEnd = currentTime.add(1.0);
                                             if (_tNavEnd != null && _tNavEnd instanceof Variable) {
                                                 Token token = ((Variable) _tNavEnd).getToken();

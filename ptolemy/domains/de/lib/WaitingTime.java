@@ -127,7 +127,7 @@ public class WaitingTime extends DEActor {
      */
     public void fire() throws IllegalActionException {
 
-        Time currentTime = ((DEDirector)getDirector()).getCurrentTime();
+        Time currentTime = ((DEDirector)getDirector()).getCurrentTimeObject();
         while (waiter.hasToken(0)) {
             waiter.get(0);
             _waiting.addElement(currentTime);

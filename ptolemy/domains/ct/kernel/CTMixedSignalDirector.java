@@ -220,14 +220,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             CompositeActor container = (CompositeActor) getContainer();
             // ca should have beed checked in _isTopLevel()
             Director exe = container.getExecutiveDirector();
-            _outsideTime = exe.getCurrentTime();
+            _outsideTime = exe.getCurrentTimeObject();
             double timeResolution = getTimeResolution();
-            Time nextIterationTime = exe.getNextIterationTime();
+            Time nextIterationTime = exe.getNextIterationTimeObject();
     
             double aheadLength 
                 = nextIterationTime.subtract(_outsideTime).getTimeValue();
             if (_debugging) _debug(getName(),
-                    " current time = " + getCurrentTime(),
+                    " current time = " + getCurrentTimeObject(),
                     " Outside Time = " + _outsideTime,
                     " NextIterationTime = " + nextIterationTime +
                     " Inferred run length = " + aheadLength);
@@ -296,7 +296,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     ((Nameable)actor).getName());
             actor.markState();
         }
-        _knownGoodTime = getCurrentTime();
+        _knownGoodTime = getCurrentTimeObject();
     }
 
     /** The number of rollbacks. Used for statistics.
