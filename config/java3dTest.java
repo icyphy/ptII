@@ -27,11 +27,12 @@
 @ProposedRating Green (cxh@eecs.berkeley.edu)
 @AcceptedRating Red
 */
-import javax.media.j3d;
+import javax.media.j3d.*;
 
 /** Simple class used by configure to test whether the Java 3D
-    is present
-    If this file will not compile, then try installing Java 3D from
+    is present.
+    If this file will not compile because the import statement fails,
+    then try installing Java 3D from
     http://java.sun.com/products/java-media/3D/download.html
 @author Christopher Hylands
 @version $Id$
