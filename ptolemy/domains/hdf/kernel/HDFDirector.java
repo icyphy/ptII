@@ -99,7 +99,8 @@ public class HDFDirector extends SDFDirector {
      *  the workspace. Increment the version number of the workspace.
      *
      */
-    public HDFDirector() {
+    public HDFDirector()
+            throws IllegalActionException, NameDuplicationException {
         super();
 	_init();
     }
@@ -110,7 +111,8 @@ public class HDFDirector extends SDFDirector {
      *
      *  @param workspace The workspace for this object.
      */
-    public HDFDirector(Workspace workspace) {
+    public HDFDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 	_init();
     }
