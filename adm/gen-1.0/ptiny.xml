@@ -87,11 +87,11 @@ Berkeley, CA 94706</property>
         <built>19691131 160000.000-0800</built>
         <name>product1</name>
         <displayName>Ptolemy II 1.0 beta (Ptiny version)</displayName>
-        <localizedDisplayName>Ptolemy II</localizedDisplayName>
+        <localizedDisplayName>Ptolemy II 1.0ptiny beta</localizedDisplayName>
         <vendor>University of California EECS Dept.  Ptolemy Project</vendor>
         <website>http:/ptolemy.eecs.berkeley.edu/ptolemyII</website>
-        <number>1.0 beta (IPtiny version)</number>
-        <location>$D(install)/Ptolemy/$P(displayName) $P(productNumber)</location>
+        <number>1.0ptiny beta</number>
+        <location>$D(install)/Ptolemy/$P(displayName)</location>
         <shareable>false</shareable>
         <active>true</active>
         <installStatus>0</installStatus>
@@ -169,7 +169,7 @@ Berkeley, CA 94706</property>
                     <displayName>Vergil Launcher</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
-                        <property name="showConsole">True</property>
+                        <property name="showConsole">False</property>
                         <property name="launcherUIDisplayTime">10</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
