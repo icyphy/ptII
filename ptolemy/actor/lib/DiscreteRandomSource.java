@@ -47,7 +47,7 @@ An actor that produces tokens with a given probability mass function.
 <p>
 The probability mass function is a parameter, <i>pmf</i>, of this
 actor. The <i>pmf</i> must be a row vector that contains entries that
-are all between 0 and 1, and sum to 1. By default, the PMF is
+are all between 0 and 1, and sum to 1. By default, <i>pmf</i> is
 initialized to [0.5, 0.5].
 <p>
 Output values are selected at random from the <i>values</i> parameter,

@@ -46,7 +46,7 @@ import java.util.Hashtable;
 /**
 This actor works similar to a Delay actor, but the amount of delay
 (or the firing time in the future) is computed from the input token 
-rather than a paramter.
+rather than a parameter.
 The actor has an input port that taks a double number which is a future
 time. When that time is reached, a token is produced from the output.
 The produced token is set by the parameter "bombValue".
