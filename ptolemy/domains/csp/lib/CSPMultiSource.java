@@ -32,6 +32,9 @@ package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.data.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.actor.IOPort;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,13 +47,18 @@ import java.util.Random;
 
 */
 public class CSPMultiSource extends CSPActor {
-  public CSPMultiSource(String name, CSPReceiver[] recs ) {
-    super();
-    setName(name);
-    receivers = recs;
-  }
+  public CSPMultiSource() {
+        super();
+    }
+    
+    public CSPMultiSource(CSPCompositeActor cont, String name, CSPReceiver[] 
+            recs) throws IllegalActionException, NameDuplicationException {
+                super(cont, name);
+                receivers = recs;
+                //output = new IOPort(this, "output", false, true);
+    }
 
-  public void run() {
+  public void _run() {
     try {
       int count = 0;
       int size = receivers.length;
@@ -65,7 +73,7 @@ public class CSPMultiSource extends CSPActor {
 	boolean flag = false;
 	for (i=0; i<size; i++) {
 	  if (successfulBranch == i) {
-	    System.out.println(getName() + ": sent Token: " +t.toString() + " to " + receivers[i].getName());
+	    System.out.println(getName() + ": sent Token: " +t.toString() + " to receiver " + i);
 	    flag = true;
 	  }
 	}

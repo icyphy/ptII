@@ -31,6 +31,9 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.actor.IOPort;
 import ptolemy.data.*;
 import java.util.Random;
 
@@ -44,13 +47,18 @@ import java.util.Random;
 
 */
 public class CSPMultiSink extends CSPActor {
-  public CSPMultiSink(String name, CSPReceiver[] recs ) {
-    super();
-    setName(name);
-    receivers = recs;
-  }
+    public CSPMultiSink() {
+        super();
+    }
+    
+    public CSPMultiSink  (CSPCompositeActor cont, String name, CSPReceiver[]
+            recs) throws IllegalActionException, NameDuplicationException {
+        super(cont, name);
+	receivers = recs;
+        //output = new IOPort(this, "output", false, true);
+    }
 
-  public void run() {
+  public void _un() {
     try {
       int count = 0;
       int size = receivers.length;
@@ -71,7 +79,7 @@ public class CSPMultiSink extends CSPActor {
 	boolean flag = false;
 	for (i=0; i<size; i++) {
 	  if (successfulBranch == i) {
-	    System.out.println(getName() + ": received Token: " +getToken().toString() + " from " + receivers[i].getName());
+	    System.out.println(getName() + ": received Token: " +getToken().toString() + " from receiver " + i);
 	    flag = true;
 	    if (getToken() instanceof NullToken) {
 	      System.out.println(getName() + ": finished on branch " + i);

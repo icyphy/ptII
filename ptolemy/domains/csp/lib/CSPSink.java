@@ -31,6 +31,9 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.actor.IOPort;
 import ptolemy.data.*;
 import java.util.Random;
 
@@ -44,34 +47,41 @@ import java.util.Random;
 
  */
 public class CSPSink extends CSPActor {
-  public CSPSink(String name, CSPReceiver rec) {
-    super();
-    setName(name);
-    receiver = rec;
-  }
-
-  public void run() {
-    int times = 0;
-    Random rand = new Random();
-    try {
-      int count = 0;
-      while (count < 1000 ) {
-	Token t = receiver.get();
-	if (t instanceof NullToken ) {
-	  System.out.println("\n" + getName() + ": fired " + times + " times.");
-	  return;
-	}
-	System.out.println(getName() + "  received Token: " + t.toString());
-	times++;
-	count++;
-	Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-      }
-    } catch (Exception ex) {
-      System.out.println("Error in " + getName() + ": " + ex.getMessage());
+    public CSPSink() {
+        super();
     }
- 
-    return;
-  }
-  
-  private CSPReceiver receiver;
+    
+    public CSPSink(CSPCompositeActor cont, String name, CSPReceiver rec) 
+        throws IllegalActionException, NameDuplicationException {
+        super(cont, name);
+	receiver = rec;
+        input = new IOPort(this, "input", true, false);
+    }
+
+    public void _run() {
+        int times = 0;
+        Random rand = new Random();
+        try {
+            int count = 0;
+            while (count < 1000 ) {
+	        // Token t = input.get(0);
+                Token t = receiver.get();
+                if (t instanceof NullToken ) {
+                    System.out.println("\n" + getName() + ": fired " + times + " times.");
+                    return;
+                }
+                System.out.println(getName() + "  received Token: " + t.toString());
+                times++;
+                count++;
+                Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+            }
+        } catch (Exception ex) {
+            System.out.println("Error in " + getName() + ": " + ex.getMessage());
+        }
+        
+        return;
+    }
+    
+    public IOPort input;
+    public CSPReceiver receiver;
 }

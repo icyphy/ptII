@@ -31,6 +31,9 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.actor.IOPort;
 import ptolemy.data.*;
 import java.util.Random;
 
@@ -45,28 +48,38 @@ import java.util.Random;
 */
 
 public class CSPSource extends CSPActor {
-  public CSPSource(String name, CSPReceiver rec) {
-    super();
-    setName(name);
-    receiver = rec;
-  }
-
-  public void run() {
-    try {
-      int count = 0;
-      while (count < 10 ) {
-	Token t = new IntToken(count);
-	receiver.put(t);
-	System.out.println("Source sent Token: " +t.toString() + " to " + receiver.getName());
-	count++;
-      }
-      // terminate 
-      receiver.put(new NullToken());
-    } catch (Exception ex) {
-      System.out.println(ex.getMessage() + ":" + ex.getClass().getName());
+  public CSPSource() {
+        super();
     }
-    return;
-  }
+    
+    public CSPSource(CSPCompositeActor cont, String name, CSPReceiver rec) 
+        throws IllegalActionException, NameDuplicationException {
+        super(cont, name);
+	receiver = rec;
+        output = new IOPort(this, "output", false, true);
+    }
 
-  private CSPReceiver receiver;
+
+    public void _run() {
+        try {
+            int count = 0;
+            while (count < 10 ) {
+                Token t = new IntToken(count);
+                //System.out.println(getName() + ": created token about to send it");
+		//output.send(0,t);
+		receiver.put(t);
+                System.out.println("Source sent Token: " +t.toString() + " to " + getName());
+                count++;
+            }
+            // terminate 
+            //output.send(0, new NullToken());
+	    receiver.put( new NullToken());
+        } catch (Exception ex) {
+            System.out.println(getName() + ": " + ex.getMessage() + ":" +ex.getClass().getName());
+            //throw new IllegalActionException(this, "error in source");
+        }
+        return;
+    }
+    public IOPort output;
+    public CSPReceiver receiver;
 }
