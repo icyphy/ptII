@@ -74,25 +74,40 @@ public class MatlabRootDirectory {
         // Under Windows: 
         //   /cygdrive/c/matlab6p1/bin/win32/matlab
 
-        // We could use java.io.File here, but the problem is that
-        // if we pass in /cygwin/c/ptII/bin/matlab, then
-        // the name we will return will be \cygwin\c\ptII, which
-        // will cause problems with the backslash when we do
-        // 'if test -d \cygwin\c\ptII'
-        
+        if (File.separatorChar == '\\') {
+	    // We are under Windows.  Messing with cygdrive paths
+	    // is just too complex.  Autoconf will pass in something
+	    // that starts with /cygdrive/c, which Java will not
+	    // know how to interpret
+
+	    // We could use java.io.File here, but the problem is that
+	    // if we pass in /cygwin/c/ptII/bin/matlab, then
+	    // the name we will return will be \cygwin\c\ptII, which
+	    // will cause problems with the backslash when we do
+	    // 'if test -d \cygwin\c\ptII'
+
+	    // We could call cygpath -m and pass in the results, but
+	    // cygpath -m does not work in the version of Cygwin that
+	    // we shipped with Ptolemy II 2.0.1
+	    _checkForBin(matlabExecutable);
+	    return matlabExecutable.substring(0,matlabExecutable.lastIndexOf("/bin/"));
+	} 
+
+	// matlabExecutable might be a symbolic link, so dereference it.
         File matlabFile = new File(matlabExecutable);
-        File matlabCanonicalFile = matlabFile.getCanonicalFile();
+        String matlabCanonicalPath = matlabFile.getCanonicalPath();
 
-        // We need to be careful and not try call new URI() with
-        // a String that contains backslashes.
-        URI matlabURI = matlabCanonicalFile.toURI();
+	_checkForBin(matlabCanonicalPath);
+	return matlabCanonicalPath.substring(0,matlabCanonicalPath.lastIndexOf("/bin/"));
 
-        String matlabPath = matlabURI.getPath();
-        if (File.separatorChar == '\\' 
-            && matlabPath.startsWith("/")) {
-            // We probably have /c:/foo, strip off the leading /
-            matlabPath = matlabPath.substring(1);
-        }
-        return matlabPath.substring(0,matlabPath.lastIndexOf("/bin/"));
+    }
+
+    // Throw an exception if the path does not contain /bin/
+    private static void _checkForBin(String path) throws Exception {
+	if (path.indexOf("/bin/") == -1) {
+	    throw new Exception("Cannot determine Matlab directory: '"
+				+ path + "' does not contain "
+				+ "/bin/");
+	}
     }
 }
