@@ -30,7 +30,8 @@
 
 ME = 		ptolemy/domains/fsm/demo
 
-DIRS =		ABP Blending ModalBSC MultipleRuns StateTracker systemLevelType
+DIRS =		ABP ChainedTransitions Blending ModalBSC \
+		MultipleRuns StateTracker systemLevelType
 
 # Root of ptII directory
 ROOT =		../../../..
@@ -50,6 +51,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	ABP/ABP.jar \
 	Blending/Blending.jar \
+	ChainedTransitions/ChainedTransitions.jar \
 	ModalBSC/ModalBSC.jar \
 	StateTracker/StateTracker.jar
 
