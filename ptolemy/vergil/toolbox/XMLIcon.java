@@ -76,29 +76,53 @@ public class XMLIcon extends EditorIcon implements Configurable {
         _graphics.add(g);
     }
 
-    /** Configure the object with data from the specified input stream.
-     *  This method is defined to throw a very general exception to allow
-     *  classes that implement the interface to use whatever exceptions
-     *  are appropriate.
+    /** Configure the icon with XML data.  The XML data is given by
+     *  either a URL (the <i>source</i> argument), or by text
+     *  (the <i>text</i> argument), or both.
      *  @param base The base relative to which references within the input
-     *   stream are found, or null if this is not known.
-     *  @param in InputStream
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
      *  @exception Exception If the stream cannot be read or its syntax
      *   is incorrect.
      */
-    public void configure(URL base, InputStream in) throws Exception {
+    public void configure(URL base, String source, String text)
+            throws Exception {
         _graphics.clear();
-        XmlDocument document = new XmlDocument(base);
-        XmlReader reader = new XmlReader();
-        reader.parse(document, in);
-        XmlElement root = document.getRoot();
+        if (source != null && !source.equals("")) {
+            URL xmlFile = new URL(base, source);
+            InputStream in = xmlFile.openStream();
 
-        // FIXME this should be a little nicer, but it will work for now.
-        Iterator graphics = root.elements();
-        while(graphics.hasNext()) {
-            XmlElement graphic = (XmlElement)graphics.next();
-            GraphicElement g = _createGraphicElement(graphic);
-            addGraphicElement(g);
+            XmlDocument document = new XmlDocument(base);
+            XmlReader reader = new XmlReader();
+            reader.parse(document, in);
+            XmlElement root = document.getRoot();
+
+            // FIXME this should be a little nicer, but it will work for now.
+            Iterator graphics = root.elements();
+            while(graphics.hasNext()) {
+                XmlElement graphic = (XmlElement)graphics.next();
+                GraphicElement g = _createGraphicElement(graphic);
+                addGraphicElement(g);
+            }
+        }
+        if (text != null && !text.equals("")) {
+            Reader in = new StringReader(text);
+
+            XmlDocument document = new XmlDocument(base);
+            XmlReader reader = new XmlReader();
+            reader.parse(document, in);
+            XmlElement root = document.getRoot();
+
+            // FIXME this should be a little nicer, but it will work for now.
+            Iterator graphics = root.elements();
+            while(graphics.hasNext()) {
+                XmlElement graphic = (XmlElement)graphics.next();
+                GraphicElement g = _createGraphicElement(graphic);
+                addGraphicElement(g);
+            }
         }
     }
 

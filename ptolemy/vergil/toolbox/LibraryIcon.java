@@ -66,27 +66,31 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	_iconName = null;
     }
 
-    /** Read a string representing an icon name from the input stream and
-     *  set the pattern of this
-     *  icon to the icon in the icon library with that name.  If the 
-     *  string is not the name of an icon in the icon library, or if the 
-     *  icon library has not been set, then do not change the pattern.
+    /** Configure the icon by giving a name of an icon in the icon
+     *  library.  The name is given in the <i>text</i> argument.
+     *  Although the configure tag allows configuration information
+     *  to be given in a URL, this hardly makes sense in this case,
+     *  so we disallow it.
+     *  If the string is not the name of an icon in the icon library,
+     *  or if the icon library has not been set, then do not change
+     *  the pattern.
      *  @param base The base relative to which references within the input
-     *   stream are found, or null if this is not known.
-     *  @param in InputStream
-     *  @exception Exception If the stream cannot be read or its syntax
-     *   is incorrect.
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
+     *  @exception IllegalActionException If the source argument is given.
      */
-    public void configure(URL base, InputStream in) throws Exception {
-	int bytesread = 0;
-	// FIXME: There must be a better way to do this.
-	byte[] b = new byte[100];
-	bytesread = in.read(b, 0, 100);
-	if(bytesread > 90) {
-	    throw new RuntimeException("buffer overrun");
-	}
-	String name = new String(b, 0, bytesread);
-	setIconName(name);
+    public void configure(URL base, String source, String text)
+           throws IllegalActionException {
+        if (source != null && !source.equals("")) {
+            throw new IllegalActionException(this,
+                   "LibraryIcon cannot be configured via a URL.");
+        }
+        if (text != null && !text.equals("")) {
+            setIconName(text);
+        }
     }
 
     /** 
