@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Lorenz" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -20,6 +22,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -85,6 +89,8 @@ model is known as a Lorenz attractor.</text>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="355.0, 185.0">
         </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -100,6 +106,8 @@ model is known as a Lorenz attractor.</text>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
         </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
     </property>
     <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -114,6 +122,8 @@ model is known as a Lorenz attractor.</text>
     </configure>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="355.0, 215.0">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
     <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion" value="2.0">
@@ -196,7 +206,8 @@ model is known as a Lorenz attractor.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Strange Attractor</title>
@@ -206,7 +217,8 @@ model is known as a Lorenz attractor.</text>
 <yRange min="-22.046363884800513" max="23.73924082335812"/>
 <noGrid/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Expression 1" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
         </property>

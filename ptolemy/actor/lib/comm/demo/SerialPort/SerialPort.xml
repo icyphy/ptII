@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SerialPort" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 129]">
@@ -95,6 +97,12 @@ watch the display change!</text></svg></configure>
         <property name="serialPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
         </property>
         <property name="baudRate" class="ptolemy.data.expr.Parameter" value="19200">
+        </property>
+        <property name="threshold" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="truncation" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="350.0, 180.0">
         </property>

@@ -199,6 +199,31 @@ public class VersionAttribute
         }
         return false;
     }
+    /** Write a MoML description of this object if the depth is less than
+     *  two, otherwise write nothing.
+     *  We handle exporting this attribute in {@link NamedObj#exportMoML()}.
+     *
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+	// If the depth is 0, then it is likely that the user dragged 
+	// in the requiredVersion utility.
+	
+	// If the depth is 1, then it is likely that we are 
+	// exporting a NamedObj, and we want to have the
+	// _createdBy attribute appear once and only once.
+
+	// If the depth is 2 or more, then we are probably inside
+	// a composite entity that is not a top level, so we
+	// do _not_ want to export any moml.
+
+	if (depth < 2) {
+	    super.exportMoML(output, depth, name);
+	}
+    }
 
     /** Return true if this version is less than the specified version.
      *  This method uses compareTo(), but may yield more readable code

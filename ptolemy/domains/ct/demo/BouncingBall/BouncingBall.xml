@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -24,6 +26,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-8">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-12">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -90,8 +94,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Position</title>
@@ -549,6 +553,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
                         <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -613,6 +619,8 @@ falling in a gravitational field.</text></svg></configure>
                 </property>
             </port>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="415.0, 125.0">

@@ -2,7 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sdf_sdf" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -40,6 +44,8 @@
         <property name="_location" class="ptolemy.moml.Location" value="244.0, 159.0">
         </property>
         <property name="SDF0" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -116,6 +122,8 @@
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
+            <property name="title" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_location" class="ptolemy.moml.Location" value="284.0, 225.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -127,6 +135,8 @@
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+            <property name="title" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="529.0, 271.0">
             </property>

@@ -2,11 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CommitActionsAttribute" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -16,6 +20,8 @@
     </property>
     <entity name="fsm actor0" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State 0">
+        </property>
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
@@ -61,6 +67,16 @@
         <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
@@ -70,6 +86,16 @@
         </relation>
         <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>

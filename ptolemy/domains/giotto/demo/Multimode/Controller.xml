@@ -6,6 +6,8 @@
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 152]">
@@ -69,6 +71,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -85,6 +89,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -100,6 +106,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode0.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode0.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
         </property>

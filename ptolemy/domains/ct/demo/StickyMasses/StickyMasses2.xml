@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -20,6 +22,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
         </property>
@@ -74,8 +78,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
@@ -239,6 +243,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -257,6 +263,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -272,6 +280,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -310,6 +320,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -370,6 +382,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
             </port>
             <entity name="1:ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="365.0, 360.0">
@@ -572,6 +586,8 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">

@@ -6,6 +6,8 @@
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
         <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
@@ -124,6 +126,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004217516139700332">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -141,6 +145,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004854951416122881">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -160,6 +166,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="3.1898439772641216E-4">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -177,6 +185,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.0015868888123370083">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -196,6 +206,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.0028393414061350254">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -213,6 +225,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.30292995193989924">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -232,6 +246,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2537777114101556">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -250,6 +266,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.28513660132915297">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -267,6 +285,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.31313071225056976">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -6,6 +6,8 @@
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="f" class="ptolemy.data.expr.Parameter">
     </property>
     <property name="g" class="ptolemy.data.expr.Parameter">

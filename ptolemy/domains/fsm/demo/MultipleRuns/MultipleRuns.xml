@@ -8,6 +8,8 @@
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
     </property>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
         </property>
@@ -265,7 +267,8 @@
                 <property name="input"/>
                 <property name="multiport"/>
             </port>
-            <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -275,7 +278,8 @@
 <yRange min="-0.9900000000000001" max="0.9900000000000001"/>
 <default marks="dots"/>
 </plot>?>
-                                    </configure>        </entity>
+            </configure>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">

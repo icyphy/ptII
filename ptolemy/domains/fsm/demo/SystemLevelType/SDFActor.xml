@@ -6,6 +6,8 @@
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
     </property>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
         <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
@@ -99,6 +101,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.014689352738551854">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -116,6 +120,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.019031612900621678">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -135,6 +141,8 @@
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5664533765736655">
         </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -152,6 +160,8 @@
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -2,6 +2,8 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="TimedSine" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <doc>This composite actor generates a timed sine wave.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
     </property>
@@ -69,6 +71,12 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="395.0, 215.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

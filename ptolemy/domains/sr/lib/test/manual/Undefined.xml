@@ -2,11 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="98.0, 51.0">
@@ -86,6 +90,8 @@
         </port>
     </entity>
     <entity name="Undefined" class="ptolemy.domains.sr.lib.Undefined">
+        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        </property>
         <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="boolean">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="boolean" class="ptolemy.kernel.util.StringAttribute" value="boolean">
@@ -103,8 +109,6 @@
                 <property name="string" class="ptolemy.kernel.util.StringAttribute" value="string">
                 </property>
             </property>
-        </property>
-        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 255.0">
         </property>

@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="QR" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.BasePNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -85,7 +87,8 @@ of antennas used.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
@@ -96,7 +99,8 @@ of antennas used.</text>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-                </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Zeros" class="ptolemy.domains.pn.demo.QR.ND_1">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>

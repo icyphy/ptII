@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testAudioReader" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, 100]">
@@ -18,6 +20,8 @@
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
         <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;">
+        </property>
+        <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="144.0, 184.5">
         </property>
