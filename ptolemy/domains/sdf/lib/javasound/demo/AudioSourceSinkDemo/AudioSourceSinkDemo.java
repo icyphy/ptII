@@ -1,4 +1,5 @@
-/* An application that uses Ptolemy II SDF domain to demonstrate the AudioSource actor.
+/* A model that uses Ptolemy II SDF domain to perform
+ * real-time pitch shifting of audio signals.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -30,9 +31,13 @@
 
 package ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.domains.sdf.lib.javasound.*;
-//import ptolemy.domains.sdf.lib.javasound.demo.*;
 import ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo.*;
 
 
@@ -44,9 +49,12 @@ import java.net.*;
 import java.applet.Applet;
 import java.util.Enumeration;
 
+import ptolemy.gui.*;
+import ptolemy.gui.QueryListener;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
@@ -60,117 +68,146 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// AudioSourceSinkDemo
 /**
-A simple application demonstrating the use of the AudioSource and 
-AudioSink actors.
-Note that AudioSource will not work unless a Java Sound API implementation
-is installed.
-
+A simple model demonstrating the use of the AudioSource and 
+AudioSink actors. 
+Note that AudioSource will not work unless the Java 1.3 SDK
+is used.
+// FIXME: currently requies that a soundfile with name 
+// "1-welcome.wav", mono, 11 kHz sample rate, be in
+// current directory.
 @author Brian K. Vogel
+@version $Id$
 */
-public class AudioSourceSinkDemo extends SDFApplet {   
+public class AudioSourceSinkDemo extends TypedCompositeActor {   
+    
+
+    public AudioSourceSinkDemo() {
+        super();
+	create();
+    }
+
+    public AudioSourceSinkDemo(Workspace workspace) {
+	super(workspace);
+	create();
+    }
+
+    public AudioSourceSinkDemo(TypedCompositeActor container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+	create();
+    }
 
 
-    /** After invoking super.init(), create and connect the actors.
-     */
-    public void init() {
-        super.init();
-        // The 1 argument requests a go and a stop button.
-        add(_createRunControls(2));	
+    public void create() {
 
 	try {
-	    AudioSource soundSource = new AudioSource(_toplevel, "soundSource");
+
+	    System.out.println("Create invoked");
+
+	    //this.setName("topLevel");
+	    //this.setManager(_manager);
+	     // Initialization
+            SDFDirector _sdfDirector = new SDFDirector(this, "SDFDirector");
+
+
+	    // Begin debug.
+	    //StreamListener sa2 = new StreamListener();
+	    //_sdfDirector.addDebugListener(sa2);
+	    // End debug.
+
+            //Parameter iterparam = _sdfDirector.iterations;
+
+	    // Why is this 0????
+            //iterparam.setToken(new IntToken(0));
+	    
+
+
+            SDFScheduler scheduler = new SDFScheduler(_workspace);
+
+            _sdfDirector.setScheduler(scheduler);
+            _sdfDirector.setScheduleValid(false);
+
+	    //_sdfDirector.iterations.setToken(new IntToken(0));
+
+	    // gui stuff goes here.
+
+	    //Create the top-level container and add contents to it.
+	    //  JFrame frame = new JFrame("Real-time Pitch Shifter");
+	    
+	    //JPanel controlpanel = new JPanel();
+
+	    //controlpanel.setLayout(new BorderLayout());
+
+	    
+	     // PtolemyQuery _ptQuery = new PtolemyQuery();
+	    
+	     //controlpanel.add("West", _ptQuery);
+           
+	     //_ptQuery.addSlider("pitchSlider", "Pitch Scale Factor",
+	     //	     1000, 400, 3000);
+
+            //_ptQuery.addQueryListener(new ParameterListener());
+            //_query.setBackground(_getBackground());
+
+	    //frame.getContentPane().add(controlpanel, BorderLayout.CENTER);
+	    //Finish setting up the frame, and show it.
+	    // frame.addWindowListener(new WindowAdapter() {
+	    //    public void windowClosing(WindowEvent e) {
+	    //	System.exit(0);
+	    //    }
+	    //});
+	    // frame.pack();
+	    //frame.setVisible(true);
+
+	   
+
+
+	    // End of gui stuff.
+
+	    // Set the sampling rate to use.
+	    int sampleRate = 11025;
+
+	    // Set the token consumption rate and production rate to use.
+	    // Larger values may speed up execution.
+	    int cPRate = 512;
+
+	    AudioSource soundSource = new AudioSource(this, "soundSource");
 	    // Specify where to get the sound file.
 	    //soundSource.pathName.setToken(new StringToken("NylonGtrSusB2.aiff"));
-	    soundSource.pathName.setToken(new StringToken("3violin1.aiff"));
+	    soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
+	    // soundSource.pathName.setToken(new StringToken("suzanne.aiff"));
+	    //soundSource.pathName.setToken(new StringToken("chamel.aiff"));
+	    //soundSource.pathName.setToken(new StringToken("3violin1.aiff"));
 	    
             // Read audio data from a local file instread of a URL.
             soundSource.isURL.setToken(new BooleanToken(false));
 	
+	   
+	    
+	    
 
-            AudioSink soundSink = new AudioSink(_toplevel, "soundSink");
+	   
+
+            AudioSink soundSink = new AudioSink(this, "soundSink");
 	  soundSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
 	  
-          
-          // Set the sampling rate to use.
-          int sampleRate = 44100;
+         
 	  soundSink.sampRate.setToken(new IntToken(sampleRate));
 	  
 
-            _toplevel.connect(soundSource.output, soundSink.input);
- 
+            this.connect(soundSource.output, soundSink.input);
+	    
+	    
+
+	    //_ptQuery.attachParameter(soundSink.fileName, "pitchSlider");
+
+
+	   
         } catch (Exception ex) {
-            report("Setup failed:", ex);
-        }
-
-    }
-
-    // Now override some methods of PtolemyApplet. This needs to be done
-    // so that a NullPointer exception will not be thrown when an application
-    // is run. The changes involve catching NullPointer exceptions thrown by
-    // getParameter() and replacing Applet methods by non-Applet methods.
-
-    
-    /** Report that execution of the model has finished.  This is
-     *  called by the manager.
-     *  @param manager The manager in charge of the execution.
-     */
-    public void executionFinished(Manager manager) {
-	// showStatus() is an Applet method. If showStatus() is called
-	// from within an application, it will throw a nullpointer exception.
-	// Therefore, I comment it out and print to standard out instead so
-	// that applications will run. Maybe I should put a try {} catch {} here
-	// to handle the nullpointerexceptions.
-      // FIXME: implement showStatus() in the applet stub.
-        //showStatus("Execution finished.");
-	System.out.println("Execution finished.");
-    }
-
-
-    /** Report that the manager state has changed.  This is
-     *  called by the manager.
-     */
-    public void managerStateChanged(Manager manager) {
-        Manager.State newState = manager.getState();
-        if (newState != _previousState) {
-	    // showStatus() is an Applet method. If showStatus() is called
-	    // from within an application, it will throw a nullpointer exception.
-	    // Therefore, I comment it out and print to standard out instead so
-	    // that applications will run. Maybe I should put a try {} catch {} here
-	    // to handle the nullpointerexceptions.
-	    //showStatus(manager.getState().getDescription());
-	  // FIXME: implement showStatus() in the applet stub.
-	    System.out.println(manager.getState().getDescription());
-            
-            _previousState = newState;
+            System.err.println("Setup failed:" + ex);
         }
     }
-    
-    static public void main (String argv[]) {
-	final Applet applet = new AudioSourceSinkDemo();
-	System.runFinalizersOnExit(true);
-	Frame frame = new Frame ("AudioSourceSinkDemo");
-	frame.addWindowListener (new WindowAdapter()
-	    {
-		public void windowClosing (WindowEvent event)
-		{
-		    applet.stop();
-		    applet.destroy();
-		    System.exit(0);
-		}
-	    });
-	frame.add ("Center", applet);
-	applet.setStub (new MyAppletStub (argv, applet));
-	frame.show();
-	applet.init();
-	applet.start();
-	frame.pack();
-    }
-     
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
-    // Used by overriden method from PtolemyApplet
-    private Manager.State _previousState;
-            
+ 
 }
 

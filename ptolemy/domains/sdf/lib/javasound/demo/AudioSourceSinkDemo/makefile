@@ -42,8 +42,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	AudioSourceSinkDemo.java \
-	MyAppletStub.java
+	AudioSourceSinkDemo.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
@@ -67,7 +66,8 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH="$(CLASSPATH)" java  ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo.AudioSourceSinkDemo
+	CLASSPATH="$(CLASSPATH)" java ptolemy.actor.gui.CompositeActorApplication \
+      -class ptolemy.domains.sdf.lib.javasound.demo.AudioSourceSinkDemo.AudioSourceSinkDemo
 
 depend:
 	@echo "no dependencies in this directory"
