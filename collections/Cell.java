@@ -15,7 +15,7 @@ package collections;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-
+import java.io.Serializable;
 /**
  *
  *
@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 
-public class Cell implements Cloneable {
+public class Cell implements Cloneable, Serializable{
 
 // instance variables
 

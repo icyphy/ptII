@@ -17,6 +17,7 @@ package collections;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
+import java.io.Serializable;
 
 /**
  *
@@ -32,7 +33,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableImpl implements UpdatableCollection { 
+abstract class UpdatableImpl implements UpdatableCollection, Serializable { 
 
 // instance variables
 
