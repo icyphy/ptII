@@ -117,14 +117,14 @@ public class ComponentPort extends Port {
 
     /** Enumerate the deep entities linked to this port and all of its
      *  up aliases.  This is simply the containers of the ports returned
-     *  by deepGetLinkedPorts().  Note that a particular entity may be
+     *  by deepGetConnectedPorts().  Note that a particular entity may be
      *  listed more than once if there is more than one link to it.
      *  If any port has no container then nothing is included for that
      *  that port.
      *  @return An enumeration of ComponentEntity objects.
      */	
     public Enumeration deepGetLinkedEntities() {
-        Enumeration ports = deepGetLinkedPorts();
+        Enumeration ports = deepGetConnectedPorts();
         LinkedList result = new LinkedList();
         
         while (ports.hasMoreElements()) {
@@ -137,12 +137,12 @@ public class ComponentPort extends Port {
         return result.elements();
     }
 
-    /** Enumerate the ports linked to this port and all of its up aliases.
+    /** Enumerate the ports connected to this port and all of its up aliases.
      *  If any ports are found that have down aliases, then the deep down
      *  alias of that port is the one listed.
      *  @return An enumeration of ComponentPort objects.
      */	
-    public Enumeration deepGetLinkedPorts() {
+    public Enumeration deepGetConnectedPorts() {
 
         Enumeration nearrelations = getLinkedRelations();
         LinkedList result = new LinkedList();
@@ -153,7 +153,7 @@ public class ComponentPort extends Port {
             if (relation.isAlias()) {
                 ComponentPort upport = ((AliasRelation)relation).getUpAlias();
                 if (upport != null) {
-                    result.appendElements(upport.deepGetLinkedPorts());
+                    result.appendElements(upport.deepGetConnectedPorts());
                 }
             } else {
                 result.appendElements(relation.deepGetLinkedPortsExcept(this));
@@ -206,6 +206,19 @@ public class ComponentPort extends Port {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
+
+    /** Do nothing if the specified relation is compatible with this port.
+     *  Otherwise, throw an exception.
+     *  @param relation
+     *  @exception IllegalActionException Incompatible relation.
+     */	
+    public void _checkRelation(Relation relation) 
+            throws IllegalActionException {
+        if (!(relation instanceof ComponentRelation)) {
+            throw new IllegalActionException(this,
+                   "Attempt to link to an incompatible relation.");
+        }
+    }
 
     /** Set the down alias of this port without ensuring consistency.
      *  This method should be used only by the public method setUpAlias().
