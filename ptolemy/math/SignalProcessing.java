@@ -138,12 +138,24 @@ public final class SignalProcessing {
     /** Return a new array of doubles that is the forward, normalized
      *  DCT of the input array of doubles.
      *  This method automatically computes the order of the transform
-     *  based on the length of the input array.
+     *  based on the length of the input array, and returns :
+     *  DCT(x, order, DCT_TYPE_NORMALIZED)
      *  @param x An array of doubles.
      *  @retval A new array of doubles.
      */
     public static double[] DCT(double[] x) {
         return DCT(x, order(x.length), DCT_TYPE_NORMALIZED);
+    }
+
+    /** Return a new array of doubles that is the forward, normalized
+     *  DCT of the input array of doubles.
+     *  This method simply returns :
+     *  DCT(x, order, DCT_TYPE_NORMALIZED)
+     *  @param x An array of doubles.
+     *  @retval A new array of doubles.
+     */
+    public static double[] DCT(double[] x, int order) {
+        return DCT(x, order, DCT_TYPE_NORMALIZED);
     }
 
     /** Return a new array of doubles that is the forward DCT of the 
@@ -156,7 +168,8 @@ public final class SignalProcessing {
      *  @retval A new array of doubles.
      */
     public static double[] DCT(double[] x, int order, int type) {
-        // check if order > 31
+        
+        _checkTransformArgs(x, order);
 
         if (type >= DCT_TYPES) {
           throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
@@ -625,10 +638,17 @@ public final class SignalProcessing {
     
     /** Return the "order" of a transform size, i.e. the base-2 logarithm
      *  of the size. The order will be rounded up to the nearest integer.
+     *  If the size is zero or negative, throw an IllegalArgumentException.
      *  @param size The size of the transform.
      *  @retval The order of the transform.
      */
     public static int order(int size) {
+       if (size <= 0) {
+          throw new IllegalArgumentException( 
+            "ptolemy.math.SignalProcessing : size of transform must be "+
+            "positive.");
+       }
+
        double m = Math.log(size)*_LOG2SCALE;
        double exp = Math.ceil(m);
        return (int) exp;
@@ -675,8 +695,7 @@ public final class SignalProcessing {
     /** Return the next power of two larger than the argument.
      *  @param x A positive real number.
      *  @exception IllegalArgumentException If the argument is less than
-     *   or equal to zero. This is a runtime exception, so it need not be
-     *   declared by the caller.
+     *   or equal to zero.      
      */
     public static int powerOfTwo(double x) {
         if (x <= 0.0) {
@@ -992,45 +1011,13 @@ public final class SignalProcessing {
     /////////////////////////////////////////////////////////////////////////
     ////                         private methods                         ////
 
-    // Check the input array for a transform. Throw an exception if the 
-    // array is null or of zero length.
-    private static void _checkTransformInput(Complex[] x) {
-        if (x == null) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : null array passed to " +
-            "transform method.");           
-        }
-  
-        if (x.length <= 0) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : empty array passed to " +
-            "transform method.");
-        }
-    }
-
-    // Check the input array for a transform. Throw an exception if the 
-    // array is null or of zero length.
-    private static void _checkTransformInput(double[] x) {
-        if (x == null) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : null array passed to " +
-            "transform method.");           
-        }
-  
-        if (x.length <= 0) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.SignalProcessing : empty array passed to " +
-            "transform method.");
-        }
-    }
-
-    // Check that the order of a transform is between 1 and 31, inclusive.
+    // Check that the order of a transform is between 0 and 31, inclusive.
     // Throw an exception otherwise.
     private static void _checkTransformOrder(int order) {
-        if (order < 1) {
+        if (order < 0) {
            throw new IllegalArgumentException( 
             "ptolemy.math.SignalProcessing : order of transform must be "+
-            "positive.");
+            "non-negative.");
         } else if (order > 31) {
            throw new IllegalArgumentException(
             "ptolemy.math.SignalProcessing : order of transform must be "+
@@ -1042,7 +1029,6 @@ public final class SignalProcessing {
     // _checkTransformInput() and _checkTransformOrder(). Return an 
     // appropriately padded array on which to perform the transform.    
     private static double[] _checkTransformArgs(double[] x, int order) {
-        _checkTransformInput(x);
         _checkTransformOrder(order);
 
         int size = 1 << order;
@@ -1058,7 +1044,6 @@ public final class SignalProcessing {
     // _checkTransformInput() and _checkTransformOrder(). Return an 
     // appropriately padded array on which to perform the transform.    
     private static Complex[] _checkTransformArgs(Complex[] x, int order) {
-        _checkTransformInput(x);
         _checkTransformOrder(order);
 
         int size = 1 << order;
@@ -1198,6 +1183,12 @@ public final class SignalProcessing {
     private static double[] _DCT(double[] x, int size, int order) {
 
         double[] retval;
+
+        if (size == 1) {
+           retval = new double[1];
+           retval[0] = x[0];
+           return retval;
+        }
 
         if (size == 2) {
            retval = new double[2];

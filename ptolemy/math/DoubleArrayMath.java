@@ -160,7 +160,7 @@ public class DoubleArrayMath {
      *  If any value is infinite or NaN (not a number),
      *  then it is replaced by either the top or the bottom, depending on
      *  its sign.  To leave either the bottom or the top unconstrained,
-     *  specify Double.MIN_VALUE or Double.MAX_VALUE.
+     *  specify Double.NEGATIVE_INFINITY or Double.POSITIVE_INFINITY.
      *  If the size of the array is 0, return a new array of size 0.
      *  @param array An array of doubles.
      *  @param bottom The bottom limit.
@@ -171,13 +171,13 @@ public class DoubleArrayMath {
      double top) {
         double[] result = new double[array.length];
         for (int i = 0; i < array.length; i++) {
-            if (array[i] > top ||
-                    array[i] == Double.NaN ||
-                    array[i] == Double.POSITIVE_INFINITY) {
+            if ((array[i] > top) ||
+                (array[i] == Double.NaN) ||
+                (array[i] == Double.POSITIVE_INFINITY)) {
                 result[i] = top;
-            } else if (array[i] < bottom ||
-                    array[i] == -Double.NaN ||
-                    array[i] == Double.NEGATIVE_INFINITY) {
+            } else if ((array[i] < bottom) ||
+                       (array[i] == -Double.NaN) ||
+                       (array[i] == Double.NEGATIVE_INFINITY)) {
                 result[i] = bottom;
             } else {
                 result[i] = array[i];
