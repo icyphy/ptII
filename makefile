@@ -78,7 +78,11 @@ KRUFT =
 DISTCLEAN_STUFF = \
 	mk/ptII.mk config.log config.status config.cache
 
+# Make copyright.txt readonly so that when we open up the text editor
+# we open up a readonly texteditor
 all: mk/ptII.mk suball
+	chmod a-w copyright.txt
+
 install: subinstall
 
 # Glimpse is a tool that prepares an index of a directory tree.
