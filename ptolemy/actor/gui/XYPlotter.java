@@ -109,7 +109,7 @@ public class XYPlotter extends Plotter implements Placeable {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        boolean hasX= false, hasY=false;
+        boolean hasX = false, hasY = false;
         double xValue = 0.0;
         double yValue = 0.0;
         if (inputX.hasToken(0)) {
