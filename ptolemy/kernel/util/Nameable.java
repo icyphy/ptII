@@ -56,7 +56,7 @@ public interface Nameable {
 
     /** Return a description of the object. The general
      *  form of the description is a space-delimited list of the form
-     *  "classname fullname <i>keyword</i> field <i>keyword</i> field ...".
+     *  "className fullName <i>keyword</i> field <i>keyword</i> field ...".
      *  If any of the items contain spaces, then they must be surrounded
      *  by braces, as in "{two words}". Return characters or newlines
      *  may be be used as delimiters as well. The fields are usually
