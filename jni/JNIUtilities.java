@@ -52,9 +52,12 @@ import java.util.Vector;
 //////////////////////////////////////////////////////////////////////////
 //// JNIUtilities
 /**
-A collection of utilities for generating Java Native Interface classes
+A collection of utilities for generating Java Native Interface (JNI) classes.
 
-For information about how to create shared libraries under Windows using
+<p>For information about JNI, see
+<a href="http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html"><code>http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html</code></a>
+
+<p>For information about how to create shared libraries under Windows using
 Cygwin, see
 <a href="http://cygwin.com/cygwin-ug-net/dll.html" target="_top"><code>http://cygwin.com/cygwin-ug-net/dll.html</code></a>
 
