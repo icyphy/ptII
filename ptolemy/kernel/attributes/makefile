@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile for the Java classes used to implement specialized attributes.
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,15 +29,14 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/kernel
+ME = 		ptolemy/kernel/attributes
 
-# Order matters here, go into util first, since mutation depends on it
-DIRS = 		util attributes test
+DIRS = 		test
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -47,24 +46,12 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Used to build jar files
-PTPACKAGE = 	ptolemy.kernel
+PTPACKAGE = 	attributes
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		util/util.jar
-
-PTCLASSALLJAR = kernel.jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ComponentEntity.java \
-	ComponentPort.java \
-	ComponentRelation.java \
-	CompositeEntity.java \
-	Entity.java \
-	Port.java \
-	Relation.java
+	FileAttribute.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -76,13 +63,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules
