@@ -48,8 +48,8 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Simple-1.1 {Generate .c, .i.h, and .h files for Simple} {
-    file delete -force Simple.c Simple.h Simple.i.h
+test Simple-1.1 {Generate .c, _i.h, and .h files for Simple} {
+    file delete -force Simple.c Simple.h Simple_i.h
 
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
@@ -57,17 +57,16 @@ test Simple-1.1 {Generate .c, .i.h, and .h files for Simple} {
     set rtjar [java::call System getProperty "sun.boot.class.path"]
     set classpath .[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
 
-    set args [java::new {String[]} 3 \
+    set args [java::new {String[]} 2 \
 	    [list \
 	    $classpath \
-	    "-singleClass" \
         "Simple" \
 	    ]]
     set main [java::call ptolemy.copernicus.c.JavaToC main $args]
     list \
 	    [file readable Simple.c] \
 	    [file readable Simple.h] \
-	    [file readable Simple.i.h]
+	    [file readable Simple_i.h]
 
 } {1 1 1}
 

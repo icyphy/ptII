@@ -54,6 +54,8 @@ JSRCS = \
 	Simple.java
 
 # Non-graphical Java tests written in Tcl
+# FIXME: Simple.tcl fails if the order of the following two tests is
+# reversed.
 JSIMPLE_TESTS = \
 	Simple.tcl \
 	Object.tcl
