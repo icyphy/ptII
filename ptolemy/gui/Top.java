@@ -113,6 +113,15 @@ public abstract class Top extends JFrame {
     public Top() {
         super();
 
+        // Ensure that user is prompted before closing if the data
+        // has been modified.
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+	    public void windowClosing(WindowEvent e) {
+                _close();
+	    }
+	});
+
         getContentPane().setLayout(new BorderLayout());
 
         // Set up the menus.
@@ -191,6 +200,16 @@ public abstract class Top extends JFrame {
                (tk.getScreenSize().height - getSize().height)/2);
     }
 
+    /** Return true if the data associated with this window has been
+     *  modified since it was first read or last saved.  This returns
+     *  the value set by calls to setModified(), or false if that method
+     *  has not been called.
+     *  @return True if the data has been modified.
+     */
+    public boolean isModified() {
+        return _modified;
+    }
+
     /** Report an exception.  This displays a message in a dialog and
      *  prints the stack trace to the standard error stream.
      *  @param ex The exception to report.
@@ -225,6 +244,16 @@ public abstract class Top extends JFrame {
         // This seems to be called in a base class constructor, before
         // this variable has been set. Hence the test against null.
         if (_statusBar != null) _statusBar.setBackground(background);
+    }
+
+    /** Record whether the data associated with this window has been
+     *  modified since it was first read or last saved.  If you call
+     *  this with a true argument, then subsequent attempts to close
+     *  the window will trigger a dialog box to confirm the closing.
+     *  @param modified Indicator of whether the data has been modified.
+     */
+    public void setModified(boolean modified) {
+        _modified = modified;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -310,15 +339,24 @@ public abstract class Top extends JFrame {
      *  @return False if the user cancels the clear.
      */
     protected boolean _clear() {
-        // FIXME: Check to see whether the data has changed.
-        return true;
+        return _queryForSave();
     }
 
     /** Close the window.
      */
     protected void _close() {
-        // FIXME: Check to see whether the data has changed.
-        dispose();
+        // NOTE: We use dispose() here rather than just hiding the
+        // window.  This ensures that derived classes can react to
+        // windowClosed events rather than overriding the
+        // windowClosing behavior given here.
+        if (isModified()) {
+            if (_queryForSave()) {
+                dispose();
+            }
+        } else {
+            // Window is not modified, so just dispose.
+            dispose();
+        }
     }
 
     /** Display the same information given by _about().
@@ -387,22 +425,26 @@ public abstract class Top extends JFrame {
 
     /** Save the model to the current file, determined by the
      *  and _file protected variable.  This calls _writeFile().
+     *  @return True if the save succeeds.
      */
-    protected void _save() {
+    protected boolean _save() {
         if (_file != null) {
             try {
                 _writeFile(_file);
+                return true;
             } catch (IOException ex) {
                 report("Error writing file", ex);
+                return false;
             }
         } else {
-            _saveAs();
+            return _saveAs();
         }
     }
 
     /** Query the user for a filename and save the model to that file.
+     *  @return True if the save succeeds.
      */
-    protected void _saveAs() {
+    protected boolean _saveAs() {
         JFileChooser fileDialog = new JFileChooser();
         fileDialog.setDialogTitle("Save as...");
         if (_directory != null) {
@@ -424,8 +466,10 @@ public abstract class Top extends JFrame {
 	    
             setTitle(_file.getName());
             _directory = fileDialog.getCurrentDirectory();
-            _save();
+            return _save();
         }
+        // Action was canceled.
+        return false;
     }
 
     /** Write the model to the specified file.
@@ -433,6 +477,43 @@ public abstract class Top extends JFrame {
      *  @exception IOException If the write fails.
      */
     protected abstract void _writeFile(File file) throws IOException;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Indicator that the data represented in the window has been modified.
+    private boolean _modified = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Open a dialog to prompt the user to save the data.
+    // Return false if the user clicks "cancel", and otherwise return true.
+    private boolean _queryForSave() {
+        Object[] options = {"Save", "Discard changes", "Cancel"};
+
+        String query = "Save changes?";
+        if (_file != null) {
+            query = "Save changes to " + _file.getName();
+        }
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(
+                this,
+                query,
+                "Save Changes?",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, 
+                null,
+                options,
+                options[0]);
+        
+        if (selected == 0) {
+            return _save();
+        } else if(selected == 1) {
+            return true;
+        }
+        return false;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -103,8 +103,9 @@ public abstract class PtolemyTop extends Top {
     /** Query the user for a filename and save the model to that file.
      *  This overrides the base class to update the entry in the
      *  ModelDirectory.
+     *  @return True if the save succeeds.
      */
-    protected void _saveAs() {
+    protected boolean _saveAs() {
         JFileChooser fileDialog = new JFileChooser();
         fileDialog.setDialogTitle("Save as...");
         if (_directory != null) {
@@ -147,8 +148,10 @@ public abstract class PtolemyTop extends Top {
 	    // FIXME: better title.
 	    setTitle(_file.getName());
 	    _directory = fileDialog.getCurrentDirectory();
-            _save();
+            return _save();
         }
+        // Action was cancelled.
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

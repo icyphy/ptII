@@ -29,17 +29,17 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Debuggable;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Top;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -66,8 +66,7 @@ public class RunTableau extends Tableau {
      *  name and make it visible.  This tableau is managed by the given model
      *  directory.
      */
-    public RunTableau(PtolemyEffigy container,
-		   String name)
+    public RunTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
         NamedObj model = container.getModel();
@@ -85,8 +84,8 @@ public class RunTableau extends Tableau {
         }
 
 	ModelFrame frame = new RunFrame(actor);
-	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
+	frame.setBackground(BACKGROUND_COLOR);
 	frame.setTableau(this);
 	frame.setVisible(true);
 	frame.pack();
@@ -97,7 +96,8 @@ public class RunTableau extends Tableau {
 
     /** The frame that is created by this tableau.
      */
-    public class RunFrame extends ModelFrame {	
+    public class RunFrame extends ModelFrame {
+
 	/** Construct a frame to control the specified Ptolemy II model.
 	 *  After constructing this, it is necessary
 	 *  to call setVisible(true) to make the frame appear.
@@ -105,58 +105,75 @@ public class RunTableau extends Tableau {
 	 */
 	public RunFrame(CompositeActor model) {
 	    super(model);
-
-	    // Debug menu
-	    JMenuItem[] debugMenuItems = {
-		new JMenuItem("Listen to Manager", KeyEvent.VK_M),
-		new JMenuItem("Listen to Director", KeyEvent.VK_D),
-	    };
-	    _debugMenu.setMnemonic(KeyEvent.VK_D);
-	    DebugMenuListener sml = new DebugMenuListener();
-	    // Set the action command and listener for each menu item.
-	    for(int i = 0; i < debugMenuItems.length; i++) {
-		debugMenuItems[i].setActionCommand(
-		    debugMenuItems[i].getText());
-		debugMenuItems[i].addActionListener(sml);
-		_debugMenu.add(debugMenuItems[i]);
-	    }
-	    _menubar.add(_debugMenu);
 	}
 
-	/** Listener for debug menu commands. */
-	public class DebugMenuListener implements ActionListener {
-	    public void actionPerformed(ActionEvent e) {
-		JMenuItem target = (JMenuItem)e.getSource();
-		String actionCommand = target.getActionCommand();
-		try {
-		    Debuggable debug;
-		    if (actionCommand.equals("Listen to Manager")) {
-			debug = getModel().getManager();
-		    } else if (actionCommand.equals("Listen to Director")) {
-			debug = getModel().getDirector();
-		    } else {
-			debug = null;
-		    }
-		    if(debug != null) {
-			Effigy proxy = (Effigy)getContainer();
-			DebugListenerTableau tableau =
+        /** Add a Debug menu.
+        */
+        protected void _addMenus() {
+            JMenuItem[] debugMenuItems = {
+                new JMenuItem("Listen to Manager", KeyEvent.VK_M),
+                new JMenuItem("Listen to Director", KeyEvent.VK_D),
+            };
+            // NOTE: This has to be initialized here rather than
+            // statically because this method is called by the constructor
+            // of the base class, and static initializers have not yet
+            // been run.
+            _debugMenu = new JMenu("Debug");
+            _debugMenu.setMnemonic(KeyEvent.VK_D);
+            DebugMenuListener sml = new DebugMenuListener();
+            // Set the action command and listener for each menu item.
+            for(int i = 0; i < debugMenuItems.length; i++) {
+                debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
+                debugMenuItems[i].addActionListener(sml);
+                _debugMenu.add(debugMenuItems[i]);
+            }
+            _menubar.add(_debugMenu);
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected variables               ////
+        
+        /** Debug menu for this frame. */
+        protected JMenu _debugMenu;
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                         inner classes                     ////
+
+        /** Listener for debug menu commands. */
+        public class DebugMenuListener implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                JMenuItem target = (JMenuItem)e.getSource();
+                String actionCommand = target.getActionCommand();
+                try {
+                    Debuggable debug;
+                    if (actionCommand.equals("Listen to Manager")) {
+                        debug = getModel().getManager();
+                    } else if (actionCommand.equals("Listen to Director")) {
+                        debug = getModel().getDirector();
+                    } else {
+                        debug = null;
+                    }
+                    if(debug != null) {
+                        Effigy proxy = (Effigy)getContainer();
+                        DebugListenerTableau tableau =
                                 new DebugListenerTableau(proxy,
-                                proxy.uniqueName("debugListener"));
+                        proxy.uniqueName("debugListener"));
                         tableau.setDebuggable(debug);
-		    }
-		} catch (KernelException ex) {
-		    try {
-			MessageHandler.warning("Failed to create debug listener: "
-					       + ex);
-		    } catch (CancelException exception) {}
-		}
-	    }
-	}
+                    }
+                } catch (KernelException ex) {
+                    try {
+                        MessageHandler.warning("Failed to create debug listener: "
+                        + ex);
+                    } catch (CancelException exception) {}
+                }
+            }
+        }
     }
 
     /** A factory that creates run control panel tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
+
 	/** Create an factory with the given name and container.
 	 *  The container argument must not be null, or a
 	 *  NullPointerException will be thrown.  This entity will use the
@@ -175,35 +192,27 @@ public class RunTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
+
 	/** Create a tableau in the default workspace with no name for the 
-	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model proxy.  If this factory cannot create a tableau
-	 *  for the given proxy (perhaps because the proxy is not of the
+	 *  given effigy.  The tableau will created with a new unique name
+	 *  in the given effigy.  If this factory cannot create a tableau
+	 *  for the given effigy (perhaps because the effigy is not of the
 	 *  appropriate subclass) then return null.
-	 *  @param proxy The model proxy.
-	 *  @return A new RunView, if the proxy is a PtolemyEffigy, or null
-	 *  if the proxy is not a PtolemyEffigy, 
-	 *  or creating the tableau fails.
+	 *  @param effigy The model effigy.
+	 *  @return A new RunView, if the effigy is a PtolemyEffigy, or null
+	 *   otherwise.
+         *  @exception Exception If the factory should be able to create a
+         *   Tableau for the effigy, but something goes wrong.
 	 */
-	public Tableau createTableau(Effigy proxy) {
+	public Tableau createTableau(Effigy proxy) throws Exception {
 	    if(proxy instanceof PtolemyEffigy) {
-		try {
-		    return new RunTableau((PtolemyEffigy)proxy,
-				       proxy.uniqueName("tableau"));
-		} catch (Exception ex) {
-		    return null;
-		}
+                return new RunTableau((PtolemyEffigy)proxy,
+                       proxy.uniqueName("tableau"));
 	    } else {
 		return null;
 	    }
 	}
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** @serial Debug menu for this frame. */
-    protected JMenu _debugMenu = new JMenu("Debug");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
