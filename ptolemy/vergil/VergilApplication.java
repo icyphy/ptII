@@ -34,10 +34,24 @@ package ptolemy.vergil;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.gui.ModelDirectory;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.ErrorHandler;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 import javax.swing.SwingUtilities;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URL;
 
 // Java imports
@@ -98,6 +112,121 @@ public class VergilApplication extends MoMLApplication {
         }
     }
 
+    /**
+     *  Open the MoML file at the given location as a new library in the 
+     *  actor library for this application.
+     */
+    public static void openLibrary(Configuration configuration, 
+            File file) throws Exception {       
+        final CompositeEntity libraryContainer = (CompositeEntity)
+            configuration.getEntity("actor library");
+        if (libraryContainer == null) {
+            return;
+        }
+               
+        final ModelDirectory directory = (ModelDirectory)
+            configuration.getEntity(Configuration._DIRECTORY_NAME);
+        if (directory == null) {
+            return;
+        }
+        
+        //FIXME: why do we have problems with spaces?
+        //URL fileURL = file.toURL();
+        URL fileURL =
+            new URL( StringUtilities.substitute(file.toURL().toExternalForm(),
+                             " ", "%20"));
+        String identifier = fileURL.toExternalForm();
+
+        // Check to see whether the library is already open.
+        Effigy libraryEffigy = directory.getEffigy(identifier);
+        if (libraryEffigy == null) {
+            // No previous libraryEffigy exists that is identified by this URL.
+            // Parse the user library into the workspace of the actor library.
+            MoMLParser parser = new MoMLParser(libraryContainer.workspace());
+            parser.parse(fileURL, fileURL);
+
+            // Now create the effigy with no tableau.
+            final PtolemyEffigy finalLibraryEffigy = 
+                new PtolemyEffigy(directory.workspace());
+            finalLibraryEffigy.setSystemEffigy(true);
+
+            final ComponentEntity userLibrary = 
+                (ComponentEntity)parser.getToplevel();
+
+            finalLibraryEffigy.setName(
+                    directory.uniqueName(userLibrary.getName()));
+            
+            ChangeRequest request =
+                new ChangeRequest(configuration, file.toURL().toString()) {
+                    protected void _execute() throws Exception {
+                        userLibrary.setContainer(libraryContainer);
+                        finalLibraryEffigy.setContainer(directory);
+                    }
+                };
+
+            libraryContainer.requestChange(request);
+            request.waitForCompletion();
+      
+            finalLibraryEffigy.setModel(userLibrary);
+    
+            // Identify the URL from which the model was read
+            // by inserting an attribute into both the model
+            // and the effigy.
+            URIAttribute uri =
+                new URIAttribute(userLibrary, "_uri");
+            uri.setURL(fileURL);
+           
+            // This is used by TableauFrame in its
+            //_save() method.
+            finalLibraryEffigy.uri.setURL(fileURL);
+
+            finalLibraryEffigy.identifier.setExpression(identifier);
+        }
+    }
+
+    /** Save the given entity in the user library in the given
+     *  configuration.
+     *  @param entity The entity to save.
+     */
+    public static void saveComponentInLibrary(Configuration configuration, 
+            Entity entity) {
+        try {
+            CompositeEntity library = (CompositeEntity)
+                configuration.getEntity("actor library.vergilUserLibrary");
+            if(library == null) {
+                MessageHandler.error(
+                        "Save In Library failed: " +
+                        "Could not find user library with name " +
+                        "\"vergilUserLibrary\".");
+                return;
+            }
+            configuration.openModel(library);
+            
+            StringWriter buffer = new StringWriter();
+            
+            // Check if there is already something existing in the 
+            // user library with this name.
+            if(library.getEntity(entity.getName()) != null) {
+                MessageHandler.error(
+                        "Save In Library failed: An object" +
+                        " already exists in the user library with name " +
+                        "\"" + entity.getName() + "\".");
+                return;
+            }  
+            entity.exportMoML(buffer, 1);
+            
+            ChangeRequest request =
+                new MoMLChangeRequest(entity, library, buffer.toString());
+            library.requestChange(request);
+        }
+        catch (IOException ex) {
+            // Ignore.
+        }
+        catch (KernelException ex) {
+            // Ignore.
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -107,7 +236,34 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        return _readConfiguration("ptolemy/configs/vergilConfiguration.xml");
+        Configuration configuration = 
+            _readConfiguration("ptolemy/configs/vergilConfiguration.xml");
+
+        String libraryName = System.getProperty("user.home") + 
+            System.getProperty("file.separator") + "vergilUserLibrary.xml";
+        System.out.println("Attempting to open user library from " +
+                libraryName);
+        File file = new File(libraryName);
+        if(!file.isFile() || !file.exists()) {
+            try {
+                file.createNewFile();
+                FileWriter writer = new FileWriter(file);
+                writer.write("<entity name=\"vergilUserLibrary\" " +
+                        "class=\"ptolemy.moml.EntityLibrary\"/>");
+                writer.close();
+            } catch (Exception ex) {
+                MessageHandler.error("Failed to create an empty user library:"
+                        + libraryName, ex);
+            }
+        }
+
+        // Load the user library.
+        try {
+            openLibrary(configuration, file);
+        } catch (Exception ex) {
+            MessageHandler.error("Failed to display user library.", ex);
+        }
+        return configuration;
     }
 
     /** Return a default Configuration to use when there are no command-line
