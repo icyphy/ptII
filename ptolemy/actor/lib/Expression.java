@@ -135,6 +135,19 @@ public class Expression extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in the type of an attribute.  This method is
+     *  called by a contained attribute when its type changes.
+     *  This class overrides the base class to allow all type changes.
+     *  The types of the attributes do not affect the types of the ports.
+     *  If an actor does not allow attribute types to change, then it should
+     *  override this method.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeTypeChanged(Attribute attribute)
+            throws IllegalActionException {
+    }
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
      *  @param workspace The workspace for the new object.
@@ -167,7 +180,7 @@ public class Expression extends TypedAtomicActor {
         while(inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());
             // FIXME: Handle multiports
-            if (port.getWidth()>0) {
+            if (port.getWidth() > 0) {
                 if(port.hasToken(0)) {
                     Token inputToken = port.get(0);
                     Variable var =
