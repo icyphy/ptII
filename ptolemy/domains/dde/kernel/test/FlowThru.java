@@ -110,7 +110,7 @@ public class FlowThru extends TypedAtomicActor {
 		    }
 		} else {
 		    /*
-		    System.out.println("actorThru: Weird error; hasToken=false");
+		    System.out.println("actorThru: Weird error; hasToken = false");
 		    Thread thr = Thread.currentThread();
 		    if( thr instanceof DDEThread ) {
 			TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
