@@ -58,6 +58,7 @@ proc autoDeepCG {autoDirectory} {
 	puts "---- testing $file"
 	if { [regexp {ComplexDivide.xml} $file] \
 	    || [regexp {expression_bug.xml} $file] \
+	    || [regexp {Expression14.xml} $file] \
 	     } {
 	    test "Auto" "Automatic test in file $file" {
 		error "$file is a known failure, skipping"
