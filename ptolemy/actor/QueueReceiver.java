@@ -1,4 +1,4 @@
-/* A queue with optional capacity and history.
+/* A FIFO queue receiver with variable capacity and optional history.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (liuj@eecs.berkeley.edu)
 
 */
 
@@ -43,28 +43,29 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
 /**
-A first-in, first-out (FIFO) queue with optional capacity and
-history. Objects are appended to the queue with the put() method,
-and removed from the queue with the take() method. The object
-removed is the oldest one in the queue. By default, the capacity is
-unbounded, but it can be set to any nonnegative size. If the history
-capacity is greater than zero (or infinite, indicated by a capacity
-of -1), then objects removed from the queue are transferred to a
-second queue rather than simply deleted. By default, the history
-capacity is zero.
+A first-in, first-out (FIFO) queue receiver with variable capacity and 
+optional history. Tokens are put into the receiver with the put() method,
+and removed from the receiver with the get() method. The token removed is 
+the oldest one in the receiver. By default, the capacity is unbounded, but 
+it can be set to any nonnegative size. If the history capacity is greater 
+than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY), 
+then tokens removed from the receiver are stored in a history queue rather 
+than simply removed. By default, the history capacity is zero.
 
-@author Edward A. Lee, Lukito Muliadi
+@author Edward A. Lee, Lukito Muliadi, Xiaojun Liu
 @version $Id$
+@see ptolemy.actor.util.FIFOQueue
 */
 public class QueueReceiver implements Receiver {
 
-    /** Construct an empty queue with no container.
+    /** Construct an empty receiver with no container.
      */
     public QueueReceiver() {
         super();
     }
 
-    /** Construct an empty queue with the specified container.
+    /** Construct an empty receiver with the specified container.
+     *  @param container The container of the receiver.
      */
     public QueueReceiver(IOPort container) {
         super();
@@ -74,130 +75,122 @@ public class QueueReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the capacity, or -1 if it is unbounded.
-     */
-    public int capacity() {
-        return _queue.capacity();
-    }
-
-    /** Enumerate the tokens on the queue, beginning with the oldest.
-     *  @return An enumeration of Tokens.
+    /** Enumerate the tokens in the receiver, beginning with the oldest.
+     *  @return An enumeration of tokens.
      */
     public Enumeration elements() {
         return _queue.elements();
     }
 
-    /** Take the first token (the oldest one) off the queue and return it.
-     *  If the queue is empty, throw an exception.
-     *  @exception NoTokenException If there is no token.
+    /** Remove the first token (the oldest one) from the receiver and 
+     *  return it. If there is no token in the receiver, throw an 
+     *  exception.
+     *  @return The oldest token in the receiver.
+     *  @exception NoTokenException If there is no token in the receiver.
      */
     public Token get() {
-        Token t = (Token)_queue.take();
-        if (t == null) {
+        Token t = null;
+        try {
+            t = (Token)_queue.take();
+        } catch (NoSuchElementException ex) {
+            // The queue is empty.
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty FIFO queue.");
+                    "Attempt to get token from an empty QueueReveiver.");
         }
         return t;
     }
 
-    /** Return a token on the queue.  If the offset argument is
-     *  zero, return the most recent token that was put on the queue.
-     *  If the offset is 1, return the second most recent token, etc.
-     *  Do not remove the token from the queue.
-     *  If there is no such token on the queue (the offset is greater
-     *  than or equal to the size, or is negative), throw an exception.
-     *
-     *  @param offset The offset from the most recent item on the queue.
-     *  @exception NoTokenException The offset is out of range.
+    /** Return a token in the receiver or its history. If the offset 
+     *  argument is zero, return the oldest token in the receiver. 
+     *  If the offset is 1, return the second oldest token, etc. The 
+     *  token is not removed from the receiver. If there is no such 
+     *  token in the receiver (the offset is greater than or equal 
+     *  to the number of tokens currently in the receiver), throw an 
+     *  exception. If the offset is -1, return the most recent token 
+     *  removed from the receiver. If it is -2, return the second 
+     *  most recent token removed from the receiver, etc. If there is 
+     *  no such token in the receiver's history (the history capacity 
+     *  is zero or the absolute value of offset is greater than the
+     *  number of tokens currently in the receiver's history), an
+     *  exception is thrown. 
+     *  @param offset The offset from the oldest token in the receiver.
+     *  @return The token at the desired offset in the receiver or its
+         history.
+     *  @exception NoTokenException If the offset is out of range.
      */
     public Token get(int offset) {
-        // FIXME: should this throw NoTokenException ??
-	// Should the method get(int offset) throw NoTokenException or keep
-	// it unchanged (NoSuchItemException). If we want to change it to
-	// NoTokenException, what's it's precondition ?
         try {
             return (Token)_queue.get(offset);
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
-                    "Offset " + offset + " out of range in queue of size " +
-                    _queue.size());
+                    "Offset " + offset + " out of range with " + _queue.size()
+                    + " tokens in the receiver and " + _queue.historySize() 
+                    + " in history.");
         }
     }
 
+    /** Return the capacity, or INFINITE_CAPACITY if it is unbounded.
+     *  @return The capacity of the receiver.
+     */
+    public int getCapacity() {
+        return _queue.getCapacity();
+    }
 
     /** Return the container of this receiver, or null if there is none.
+     *  @return The IOPort containing this receiver.
      */
     public IOPort getContainer() {
         return _container;
     }
 
-    /** Return true if put() will succeed in accepting a token.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *  does not support this query.
+    /** Return the capacity of the history queue.
+     *  This will be zero if the history mechanism is disabled
+     *  and INFINITE_CAPACITY if the history capacity is unbounded.
+     *  @return The capacity of the history queue.
      */
-    public boolean hasRoom() throws IllegalActionException {
-        return !_queue.full();
+    public int getHistoryCapacity() {
+        return _queue.getHistoryCapacity();
+    }
+
+    /** Return true if put() will succeed in accepting a token.
+     *  @return A boolean indicating whether a token can be put in this
+     *   receiver.
+     */
+    public boolean hasRoom() {
+        return !_queue.isFull();
     }
 
     /** Return true if get() will succeed in returning a token.
-     *
-     *  @exception IllegalActionException If the Receiver implementation
-     *  does not support this query.
+     *  @return A boolean indicating whether there is a token in this
+     *   receiver.
      */
-    public boolean hasToken() throws IllegalActionException {
+    public boolean hasToken() {
         return _queue.size() > 0;
     }
 
-    /** Enumerate the items stored in the history queue, which are
-     *  the N most recent items taken from the queue, beginning with
+    /** Enumerate the tokens stored in the history queue, which are
+     *  the N most recent tokens taken from the receiver, beginning with
      *  the oldest, where N is less than or equal to the history capacity.
-     *  If the history capacity is -1, then the enumeration includes all
-     *  items previously taken from the queue.  If the history capacity
-     *  is zero, then return an empty enumeration.
-     *
-     *  @return An enumeration of Tokens.
+     *  If the history capacity is INFINITE_CAPACITY, then the enumeration 
+     *  includes all tokens previously taken from the receiver. If the 
+     *  history capacity is zero, then return an empty enumeration.
+     *  @return An enumeration of tokens.
      */
-    public Enumeration history() {
-        return _queue.history();
+    public Enumeration historyElements() {
+        return _queue.historyElements();
     }
 
-    /** Return the capacity of the history queue.
-     *  This will be zero if the history mechanism is disabled
-     *  and -1 if the history capacity is unbounded.
-     */
-    public int historyCapacity() {
-        return _queue.historyCapacity();
-    }
-
-    /** Return the number of objects in the history.
+    /** Return the number of tokens in history.
+     *  @return The number of tokens in history.
      */
     public int historySize() {
         return _queue.historySize();
     }
 
-    /** Return an element from the history.  If the offset argument is
-     *  zero, return the most recent token in the history, which is
-     *  the token most recently taken from the queue.
-     *  If the offset is 1, return the second most recent token, etc.
-     *  If there is no such token in the history (the offset is greater
-     *  than or equal to the number of objects in the history, or is
-     *  negative), throw an exception.
-     *  @exception NoSuchItemException The offset is out of range.
-     */
-    public Token previous(int offset) throws NoSuchItemException {
-        try {
-            return (Token)_queue.previous(offset);
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchItemException(getContainer(),
-                    "Offset " + offset + " out of range in history queue of " +
-                    "size " + historySize());
-        }
-    }
-
-    /** Put a token on the queue.  If the queue is full, throw an exception.
-     *  @param token The token to put on the queue.
-     *  @exception NoRoomException If the queue is full.
+    /** Put a token to the receiver. If the receiver is full, throw an 
+     *  exception.
+     *  @param token The token to be put to the receiver.
+     *  @exception NoRoomException If the receiver is full.
      */
     public void put(Token token) {
         if (!_queue.put(token)) {
@@ -206,38 +199,59 @@ public class QueueReceiver implements Receiver {
         }
     }
 
-    /** Set the capacity.  Use -1 to indicate unbounded capacity
-     *  (which is the default).  If the size of the queue exceeds the
-     *  desired capacity, throw an exception.
-     *  @exception IllegalActionException Queue contains more elements
-     *   than the proposed capacity.
+    /** Set receiver capacity. Use INFINITE_CAPACITY to indicate unbounded 
+     *  capacity (which is the default). If the number of tokens currently
+     *  in the receiver exceeds the desired capacity, throw an exception.
+     *  @param capacity The desired receiver capacity.
+     *  @exception IllegalActionException If the receiver has more tokens
+     *   than the proposed capacity or the proposed capacity is illegal.
      */
     public void setCapacity(int capacity) throws IllegalActionException {
-        _queue.setCapacity(capacity);
+        try {
+            _queue.setCapacity(capacity);
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(getContainer(), ex.getMessage());
+        }
     }
 
-    /** Set the capacity of the history queue.
-     *  Use 0 to disable the history mechanism
-     *  and -1 to make the history capacity unbounded.
-     *  If the size of the history list exceeds the
-     *  desired capacity, then remove the oldest items from
-     *  the history list until its size equals the proposed capacity.
-     *  Note that this can be used to clear the history list.
+    /** Set the container.
+     *  @param port The IOPort containing this receiver.
      */
-    public void setHistoryCapacity(int capacity) {
-        _queue.setHistoryCapacity(capacity);
-    }
-
-    /** Set the container. */
     public void setContainer(IOPort port) {
         _container = port;
     }
 
-    /** Return the number of objects in the queue.
+    /** Set the capacity of the history queue. Use 0 to disable the 
+     *  history mechanism and INFINITE_CAPACITY to make the history 
+     *  capacity unbounded. If the size of the history queue exceeds 
+     *  the desired capacity, then remove the oldest tokens from the 
+     *  history queue until its size equals the proposed capacity.
+     *  Note that this can be used to clear the history queue by
+     *  supplying 0 as the argument.
+     *  @param capacity The desired history capacity.
+     *  @exception IllegalActionException If the desired capacity is illegal.
+     */
+    public void setHistoryCapacity(int capacity) 
+            throws IllegalActionException {
+        try {
+            _queue.setHistoryCapacity(capacity);
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(getContainer(), ex.getMessage());
+        }
+    }
+
+    /** Return the number of tokens in the receiver.
+     *  @return The number of tokens in the receiver.
      */
     public int size() {
         return _queue.size();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    public static final int INFINITE_CAPACITY = 
+            FIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -245,3 +259,14 @@ public class QueueReceiver implements Receiver {
     private FIFOQueue _queue = new FIFOQueue();
     private IOPort _container;
 }
+
+
+
+
+
+
+
+
+
+
+
