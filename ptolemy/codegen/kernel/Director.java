@@ -141,26 +141,6 @@ public class Director implements ActorCodeGenerator {
         }
     }
 
-    /** Return the buffer size of a given port, which is the maximum of
-     *  the bufferSizes of all channels of the given port. This method is
-     *  used to declare memory allocation for the variables.
-     *  @param port The given port.
-     *  @return The buffer size of the given port.
-     *  @exception IllegalActionException If the getBufferSize(IOPort, int)
-     *   method throws it.
-     */
-    public int getBufferSize(IOPort port) 
-            throws IllegalActionException {
-        int bufferSize = 1;
-        for (int i = 0; i < port.getWidth(); i ++) {
-            int channelBufferSize = getBufferSize(port, i);
-            if (channelBufferSize > bufferSize) {
-                bufferSize = channelBufferSize;
-            }
-        }
-        return bufferSize;
-    }
-    
     /** Return the buffer size of a given channel (i.e, a given port
      *  and a given channel number). In this base class, this method
      *  always returns 1.

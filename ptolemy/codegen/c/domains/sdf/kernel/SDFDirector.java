@@ -250,11 +250,4 @@ public class SDFDirector extends Director {
         }
         return connectedRelations;
     }
-
-    ////////////////////////////////////////////////////////////////
-    ////               private variables                        ////
-
-    // A May of ports that need dynamic (non-static) buffering.
-    // The key is the port, the value is the offset over one iteration.
-    //private HashMap _dynamicBufferingPorts = new HashMap();
 }

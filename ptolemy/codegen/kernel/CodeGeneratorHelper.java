@@ -177,23 +177,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The buffer size of the given port of this actor.
      */
     public int getBufferSize(IOPort port, int channelNumber) {
-        //Channel channel = getChannel(port, channelNumber);
         return ((int[]) _bufferSizes.get(port))[channelNumber];
-        //return ((Integer) _bufferSizes.get(channel)).intValue();
     }
 
-    /** Get the channel object in the channel hashmap given the port
-     *  and channel number.
-     *  @param port The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The channel Object.
-     */
-    //public Channel getChannel(IOPort port, int channelNumber) {
-      //  Channel[] channels = (Channel[]) _channels.get(port);
-        //Channel channel = channels[channelNumber];
-        //return channel;
-    //}
-    
     /** Get the component associated with this helper.
      *  @return The associated component.
      */
@@ -210,19 +196,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   should be put.
      */
     public Object getOffset(IOPort port, int channelNumber) {
-        /*Channel channel = getChannel(port, channelNumber);
-        if (channel == null) {
-            System.out.println("can't find channel " + port.getFullName() +
-                    "," + channelNumber);
-            return new Integer(0);
-        }
-        if (_offsets.get(channel) == null) {
-            System.out.println("can't find channel in the _offsets map"
-                    + port.getFullName() + "," + channelNumber);
-            return new Integer(0);
-        }*/
         return ((Object[]) _offsets.get(port))[channelNumber];
-        //return _offsets.get(channel);
     }
 
     /** Return the value of the specified parameter of the associated actor.
@@ -474,36 +448,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return sinkChannels;
     }
-    
-    /** Return a set of channel objects that are the source output ports
-     *  given an input port and a given channel.
-     *  @param inputPort The given input port.
-     *  @param channelNumber The given channel number.
-     *  @return The list of channel objects that are the source output ports
-     *  of the given input port and channel.
-     */
-    /*
-    public Set getSourceChannel(IOPort inputPort, int channelNumber) {
-        Set sourceChannels = new HashSet();
-        // local receivers of the given input channel.
-        Receiver[] receivers = inputPort.getReceivers()[channelNumber];
-        Iterator connectedPorts = inputPort.connectedPortList().iterator();
-        while (connectedPorts.hasNext()) {
-            IOPort sourcePort = (IOPort) connectedPorts.next();
-            Receiver[][] remoteReceivers = sourcePort.getRemoteReceivers();
-            for (int i = 0; i < remoteReceivers.length; i ++) {
-                for (int j = 0; j < remoteReceivers[i].length; j ++) {
-                    for (int k = 0; k < receivers.length; k ++) {
-                        if (receivers[k] == remoteReceivers[i][j]) {
-                            Channel channel = new Channel(sourcePort, i);
-                            sourceChannels.add(channel);
-                        }
-                    }
-                }
-            }
-        }
-        return sourceChannels;
-    }*/
 
     /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,
@@ -648,7 +592,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param bufferSize The buffer size to be set to that port.
      */
     public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
-        //Channel channel = getChannel(port, channelNumber);
         int[] bufferSizes =(int[]) _bufferSizes.get(port);
         bufferSizes[channelNumber] = bufferSize;
         // perhaps this step is redundant?
@@ -661,7 +604,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param offset The offset to be set to the buffer of that channel.
      */
     public void setOffset(IOPort port, int channelNumber, Object offset) {
-        //Channel channel = getChannel(port, channelNumber);
         Object[] offsets = (Object[]) _offsets.get(port);
         offsets[channelNumber] = offset;
         _offsets.put(port, offsets);
@@ -717,14 +659,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  the actor.
      */
     private HashMap _offsets = new HashMap();
-
-    /** A hashmap that maintains an array of channel objects for each
-     *  port of the actor. A key of the hashmap is an IOPort of the actor.
-     *  The corresponding value is an array of Channel objects. The i-th
-     *  Channel object in the array correponds to the i-th channel of that
-     *  port.
-     */
-    //private HashMap _channels = new HashMap();
 
     /** A set of parameters that have been referenced.
      */
