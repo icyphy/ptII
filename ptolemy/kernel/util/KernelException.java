@@ -102,8 +102,8 @@ public class KernelException extends Exception {
      */
     public KernelException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        _cause = cause;
-        _setMessage(generateMessage(object1, object2, _cause, detail));
+        _setMessage(generateMessage(object1, object2, cause, detail));
+        _setCause(cause);
     }
 
     ///////////////////////////////////////////////////////////////////
