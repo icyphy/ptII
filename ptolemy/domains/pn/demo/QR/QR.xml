@@ -47,7 +47,7 @@ of samples need to be processed.</text>
             <configure>
            <svg>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">Zeros are used to initialize
-the Rotate and Vectorize processe 
+the Rotate and Vectorize processes 
 with value zero.</text>
            </svg>
            </configure>
