@@ -110,6 +110,18 @@ public class MakefileWriter extends SceneTransformer {
             " _generatorAttributeFileName outDir targetPackage templateDirectory";
     }
 
+    /** Return the list of C files that will appear in the makefile.
+     *  The default is the empty string.
+     */
+    public static String getCFiles() {
+        return _cFiles;
+    }
+
+    /** Set the list of C files that must appear in the makefile.
+     */
+    public static void setCFiles(String cFiles) {
+        _cFiles = cFiles;
+    }
 
     /** Convert targetPackage "foo/bar" to codeBase
      *  "../../.."  
@@ -292,6 +304,7 @@ public class MakefileWriter extends SceneTransformer {
             substituteMap.put("@outDir@", _outputDirectory);
             substituteMap.put("@targetPackage@", _targetPackage);
             substituteMap.put("@templateDirectory@", _templateDirectory);
+            substituteMap.put("@cFiles@", _cFiles);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(_model, ex,
                     "Problem generating substitution map from " 
@@ -371,6 +384,9 @@ public class MakefileWriter extends SceneTransformer {
     // The relative path to $PTII, for example "../../..".
     private String _codeBase;
 
+    // The list of C files.
+    private static String _cFiles;
+    
     // The file name of the MoML file that contains the GeneratorAttribute
     // that contains the key/value pairs we will use when substituting
     // in the makefile.

@@ -131,10 +131,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
-
-	// Generate the makefile files in outDir
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel)));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
@@ -521,9 +517,13 @@ public class Main extends KernelMain {
                         JimpleWriter.v()));
      
         // And write C!
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.finalSnapshot", CWriter.v()));
+       //  Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.finalSnapshot", CWriter.v()));
              
+	// Generate the makefile files in outDir
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel)));
+
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
                         WatchDogTimer.v(), "cancel:true"));
