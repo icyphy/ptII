@@ -1,12 +1,18 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="" class="ptolemy.actor.TypedCompositeActor">
+<entity name="FixToDoubleAndBack" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="480.0, 315.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -17,6 +23,8 @@
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -33,17 +41,15 @@
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="480.0, 135.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="FixToDouble2" class="ptolemy.actor.lib.conversions.FixToDouble">
-        <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;16/4&quot;">
-        </property>
-        <property name="overflow" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+    <entity name="FixToDouble0" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.moml.Location" value="354.0, 152.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -52,12 +58,18 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="DoubleToFix3" class="ptolemy.actor.lib.conversions.DoubleToFix">
-        <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;(16/4)&quot;">
+    <entity name="DoubleToFix4" class="ptolemy.actor.lib.conversions.DoubleToFix">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="[16, 4]">
         </property>
-        <property name="quantizer" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
         </property>
-        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        <property name="_location" class="ptolemy.moml.Location" value="219.0, 138.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,16 +78,16 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ramp0.output" relation="relation5"/>
-    <link port="Test1.input" relation="relation9"/>
-    <link port="FixToDouble2.input" relation="relation7"/>
-    <link port="FixToDouble2.output" relation="relation9"/>
-    <link port="DoubleToFix3.input" relation="relation5"/>
-    <link port="DoubleToFix3.output" relation="relation7"/>
+    <link port="Ramp0.output" relation="relation6"/>
+    <link port="Test1.input" relation="relation2"/>
+    <link port="FixToDouble0.input" relation="relation8"/>
+    <link port="FixToDouble0.output" relation="relation2"/>
+    <link port="DoubleToFix4.input" relation="relation6"/>
+    <link port="DoubleToFix4.output" relation="relation8"/>
 </entity>

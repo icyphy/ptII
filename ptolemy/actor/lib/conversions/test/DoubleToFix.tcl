@@ -58,8 +58,8 @@ test DoubleToFix-1.1 {Test DoubleToFix} {
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} 3.0]
 
-    set precision [getParameter $clone precision]
-    $precision setToken [java::new {ptolemy.data.StringToken String} (4.1) ]
+    set precision [java::field $clone precision]
+    $precision setExpression {[5, 4]}
 
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
@@ -79,12 +79,11 @@ test DoubleToFix-2.1 {Test the Round Mode} {
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} 0.9]
 
-    set precision [getParameter $clone precision]
-    $precision setToken [java::new {ptolemy.data.StringToken String} (2.1) ]
+    set precision [java::field $clone precision]
+    $precision setExpression {[3, 2]}
 
-    # quantizer mode 0 is rounding.
-    set quantize [getParameter $clone quantizer ]
-    $quantize setToken [java::new {ptolemy.data.IntToken int} 0 ]
+    set quantize [java::field $clone quantization]
+    $quantize setExpression {round}
 
     [$e0 getManager] execute
     set result [list [enumToTokenValues [$rec getRecord 0]]]
@@ -96,12 +95,12 @@ test DoubleToFix-3.1 {Test the Truncate Mode} {
     set value [getParameter $const value]
     $value setToken [java::new {ptolemy.data.DoubleToken double} 0.9]
 
-    set precision [getParameter $clone precision]
-    $precision setToken [java::new {ptolemy.data.StringToken String} (2.1) ]
+    set precision [java::field $clone precision]
+    $precision setExpression {[3, 2]}
 
     # quantizer mode 1 is truncate
-    set quantize [getParameter $clone quantizer ]
-    $quantize setToken [java::new {ptolemy.data.IntToken int} 1 ]
+    set quantize [java::field $clone quantization]
+    $quantize setExpression {truncate}
 
     [$e0 getManager] execute 
     set result [list [enumToTokenValues [$rec getRecord 0]]]

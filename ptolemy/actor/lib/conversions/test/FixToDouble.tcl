@@ -50,16 +50,17 @@ test FixToDouble-1.1 {Test FixToDouble} {
 
     # Get a clone to test cloning.
     set clone [java::cast ptolemy.actor.lib.conversions.FixToDouble \
-    [$conver clone]]
+              [$conver clone]]
     $conver setContainer [java::null]
     $clone setName f2dClone
     $clone setContainer $e0
 
     set value [getParameter $const value]
-    $value setToken [java::new {ptolemy.data.FixToken double int int} 4.0 5 3 ]
+    $value setToken [java::new {ptolemy.data.FixToken double int int} 4.0 5 2 ]
 
-    #set precision [getParameter $clone precision]
-    #$precision setToken [java::new {ptolemy.data.StringToken String} "5/3" ]
+    # FixToDouble no longer has a precision parameter.
+    # set precision [getParameter $clone precision]
+    # $precision setExpression "\[5, 3\]"
    
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
@@ -72,33 +73,7 @@ test FixToDouble-1.1 {Test FixToDouble} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-} {1.999939}
-
-######################################################################
-#### Test FixToDouble in an SDF model
-
-test FixToDouble-2.1 {Test changing the precision parameter} {
-
-    set precision [getParameter $clone precision]
-    $precision setToken [java::new {ptolemy.data.StringToken String} "5/3" ]
-
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-
-} {3.75}
-
-test FixToDouble-2.2 {Test changing the overflow} {
-
-    set overflow [getParameter $clone overflow]
-    $overflow setToken [java::new {ptolemy.data.IntToken int} 1 ]
-
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-
-    # because the default precision is 16/2, the Saturate to Zero
-    # causes the result to go to Zero.
-
-} {0.0}
+} {1.875}
 
 ######################################################################
 #### Test FixToDouble in an SDF model
@@ -109,15 +84,21 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
     set e0 [sdfModel 12]
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver [java::new ptolemy.actor.lib.conversions.FixToDouble \
+    set conver [java::new ptolemy.actor.lib.conversions.FixToFix \
                     $e0 conver]
+    set represent [java::new ptolemy.actor.lib.conversions.FixToDouble \
+                    $e0 represent]
 
     $e0 connect \
       [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
       [java::field [java::cast ptolemy.actor.lib.Transformer $conver] input]
 
     $e0 connect \
-     [java::field [java::cast ptolemy.actor.lib.Transformer $conver] output] \
+      [java::field [java::cast ptolemy.actor.lib.Transformer $conver] output] \
+      [java::field [java::cast ptolemy.actor.lib.Transformer $represent] input]
+
+    $e0 connect \
+     [java::field [java::cast ptolemy.actor.lib.Transformer $represent] output] \
      [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     set val0 [java::new {ptolemy.data.FixToken double int int} 4.0 5 3]
@@ -144,10 +125,10 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
 
     set precision [getParameter $conver precision]
-    $precision setToken [java::new {ptolemy.data.StringToken String} "3/2" ]
+    $precision setExpression "\[3, 2\]"
 
-    set overflow [getParameter $conver overflow ]
-    $overflow setToken [java::new {ptolemy.data.IntToken int} 0 ]
+    set overflow [java::field $conver overflow ]
+    $overflow setExpression {saturate}
    
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -157,19 +138,10 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
 test DoubleToFix-3.2 {Test rescaling to other Precision with zero staturate \
 	 overflow} {
 
-    set overflow [getParameter $conver overflow ]
-    $overflow setToken [java::new {ptolemy.data.IntToken int} 1 ]
+    set overflow [java::field $conver overflow ]
+    $overflow setExpression {overflow_to_zero}
    
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
 } {0.0 0.0 0.0 1.0 0.5 0.0 0.0 -0.5 -1.0 0.0 0.0 0.0}
-
-
-
-
-
-
-
-
-
