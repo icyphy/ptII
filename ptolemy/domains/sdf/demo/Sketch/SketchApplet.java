@@ -53,10 +53,26 @@ import ptolemy.plot.*;
 @author Edward A. Lee
 @version $Id$
 */
-public class SketchApplet extends SDFApplet {
+public class SketchApplet extends SDFApplet implements EditListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Execute the model.  This is called by the editable plot widget
+     *  when the user edits the data in the plot.  The execution is
+     *  carried out only if the model is idle (not currently executing).
+     *  @param source The plot containing the modified data.
+     *  @param dataset The data set that has been modified.
+     */
+    public void editDataModified(EditablePlot source, int dataset) {
+        try {
+            if (_manager.getState() == _manager.IDLE) {
+                _go();
+            }
+        } catch (IllegalActionException ex) {
+            report(ex);
+        }
+    }
 
     /** Initialize the applet.
      */
@@ -101,12 +117,12 @@ public class SketchApplet extends SDFApplet {
             add(plot);
             plotter.setPanel(plot);
             source.setPanel(plot);
+            plot.addEditListener(this);
 
             _toplevel.connect(ramp.output, sine.input);
             _toplevel.connect(sine.output, mult.multiply);
             _toplevel.connect(source.output, mult.multiply);
             _toplevel.connect(mult.output, plotter.input);
-            add(_createRunControls(1));
         } catch (Exception ex) {
             report("Error constructing model.", ex);
         }

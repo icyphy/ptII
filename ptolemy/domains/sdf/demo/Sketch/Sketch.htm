@@ -8,17 +8,11 @@
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1>Sketch<I>Should be the same as the title</I></H1>
+<H1>Sketch</H1>
 <P>
- <!-- All of the controls of the applet should be visible when the
-applet is displayed on a XGA screen-->
+Using the right mouse button, sketch a signal below.
+The signal is multiplied by a sine wave.
 <center>
-
-<PARAM NAME=ARCHIVE VALUE="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/sdf/sdf.jar,
-	ptolemy/domains/sdf/demo/Sketch/Sketch.jar">
-
 <!-- The HTML below is for the Java Plugin.  
 	The first section is for IE, 
 	the second is for appletviewer, 
@@ -32,6 +26,10 @@ applet is displayed on a XGA screen-->
 <PARAM NAME="codebase" VALUE="../../../../..">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME="iterations" VALUE="500">
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar,
+	ptolemy/domains/sdf/demo/Sketch/Sketch.jar">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.2"
    width="700"
@@ -39,7 +37,11 @@ applet is displayed on a XGA screen-->
    code="ptolemy.domains.sdf.demo.Sketch.SketchApplet.class"
    codebase="../../../../.."
    iterations="500"
-   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+   pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html"
+   archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/sdf/sdf.jar,
+	ptolemy/domains/sdf/demo/Sketch/Sketch.jar">
 </COMMENT>
 <NOEMBED>
 No JDK 1.2 support for applet!
@@ -47,18 +49,14 @@ No JDK 1.2 support for applet!
 </EMBED>
 </OBJECT>
 </center>
-
-
-   archive="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/sdf/sdf.jar,
-	ptolemy/domains/sdf/demo/Sketch/Sketch.jar"
-
-FIXME:
-Notice that you can zoom in and very pricely control the sketched curve.
-You can update just portion of the curve.
-You can undo your updates (the undo history is infinite).
-
-<p><font size="2" color="#cc0000">Last Updated: : 1999/06/13 21:47:21 $</font>
+<p>
+Notice that you can zoom in with the left mouse button
+and very pricely control the sketched curve.
+You can also update just portion of the curve by sketching over
+only a subset of the horizontal axis.
+You can undo your updates by typing Control-Z (the undo history is infinite).
+You can redo what you have undone by typing Control-Y.  For undo and
+redo to work, you have to make sure the focus is in the plot window
+(clicking on the fill button will do this).
 </body>
 </html>
