@@ -52,9 +52,11 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	BackwardEulerSolver.java \
+	ExplicitRK23Solver.java \
 	FixedStepSolver.java \
 	ForwardEulerSolver.java \
-	ImplicitMethodSolver.java 
+	ImplicitMethodSolver.java \
+	VariableStepSolver.java 
 	
 
 EXTRA_SRCS =	$(JSRCS)
