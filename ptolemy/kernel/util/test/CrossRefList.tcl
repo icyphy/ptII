@@ -48,6 +48,29 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 ######################################################################
+#### _testGetCrossRefList
+# Given a CrossRefList, return a Tcl List containing its contents
+#
+proc _testGetCrossRefList {crossreflist} {
+    set results {}
+    if {$crossreflist == [java::null]} {
+	return $results
+    } 
+    for {set crossrefenum [$crossreflist enumerate]} \
+	    {$crossrefenum != [java::null] && \
+	    [$crossrefenum hasMoreElements] == 1} \
+	    {} {
+	set enumelement [$crossrefenum nextElement]
+	if [ java::instanceof $enumelement pt.kernel.NamedObj] {
+	    lappend results [$enumelement getName]
+	} else {
+	    lappend results $enumElement
+	}
+    }
+    return $results
+}
+
+######################################################################
 ####
 # 
 test CrossRefList-1.1 {Get information about an instance of CrossRefList} {
@@ -74,3 +97,26 @@ test CrossRefList-2.1 {Create a CrossRefList, copy it} {
     set crltwo [java::new pt.kernel.CrossRefList $owner $crlone]
     list [$crlone isEmpty] [$crltwo isEmpty] [$crlone size] [$crlone size]
 } {1 1 0 0}
+
+######################################################################
+####
+# 
+test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
+    set owner [java::new Object]
+    set crlone [java::new pt.kernel.CrossRefList $owner]
+    set enum [$crlone enumerate]
+    list [$enum hasMoreElements] [expr {[$enum nextElement]== [java::null]}]
+} {0 1}
+
+
+######################################################################
+####
+# 
+test CrossRefList-3.1 {associate CrossRefLists} {
+    set ownerone [java::new pt.kernel.NamedObj "Owner One"]
+    set crlone [java::new pt.kernel.CrossRefList $ownerone]
+    set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
+    set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
+    $crlone associate $crltwo
+    list [_testGetCrossRefList $crlone] [_testGetCrossRefList $crltwo]
+} {{{Owner Two}} {{Owner One}}}
