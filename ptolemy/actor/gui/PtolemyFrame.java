@@ -102,6 +102,9 @@ public abstract class PtolemyFrame extends TableauFrame {
         LinkedList extensions = new LinkedList();
         extensions.add("xml");
         extensions.add("moml");
+        extensions.add("XML");
+        extensions.add("MOML");
+        extensions.add("MoML");
         _fileFilter = new ExtensionFileFilter(extensions);
 
         setModel(model);

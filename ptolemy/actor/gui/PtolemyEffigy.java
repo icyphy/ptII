@@ -277,8 +277,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  named "blank", then
          *  the new model will be a clone of that object.  Otherwise,
          *  it will be an instance of TypedCompositeActor.
-         *  If the URL does not end with extension ".xml" or ".moml", then
-         *  return null.  If the URL points to an XML file that is not
+         *  If the URL does not end with extension ".xml" or ".moml"
+         *  (case insensitive), then return null.  If the URL points
+         *  to an XML file that is not
          *  a MoML file, then also return null.
          *  The specified base is used to expand any relative file references
          *  within the URL.
@@ -339,7 +340,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 effigy.setModel(newModel);
                 return effigy;
             } else {
-                String extension = getExtension(input);
+                String extension = getExtension(input).toLowerCase();
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     if (extension.equals("hsif")) {
                         // FIXME: We could try using reflection to invoke
