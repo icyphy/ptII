@@ -541,11 +541,11 @@ public class PxgraphParser {
                     _endian = _LITTLE_ENDIAN;
                     continue;
                 } else if (arg.equals("-db")) {
-                    // Ignore.  Debug flag.
+                    _debug = 10;
                     continue;
                 } else if (arg.equals("-debug")) {
                     // -debug is not in the original X11 pxgraph.
-                    // _debug = (int)Integer.valueOf(args[i++]).intValue();
+                    _debug = (int)Integer.valueOf(args[i++]).intValue();
                     continue;
                 } else if (arg.equals("-fg")) {
                     _plot.setForeground(_plot.getColorByName(args[i++]));
