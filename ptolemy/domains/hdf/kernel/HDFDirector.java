@@ -44,19 +44,17 @@ import java.util.*;
 //// HDFDirector
 /**
 The heterochronous dataflow (HDF) domain implements the HDF model 
-of computation. The HDF model of computation is a generalization 
+of computation [1]. The HDF model of computation is a generalization 
 of synchronous dataflow (SDF). In SDF, the set of port rates of an 
-actor (called the type signature) is not allowed to change at 
-runtime. In HDF, however, an actor has a finite number of type 
-signatures which are allowed to change at controlled points at 
-runtime.
+actor (called the type signature) are constant. In HDF, however, 
+an actor has a finite number of type signatures which are allowed 
+to change between iterations of the HDF schedule.
 <p>
 An HDF actor has an initial type signature when execution begins. 
-As in SDF, the balance equations can then be solved to find a 
-periodic schedule. Unlike SDF, an HDF actor is allowed to 
+The balance equations can then be solved to find a 
+periodic schedule, as in SDF. Unlike SDF, an HDF actor is allowed to 
 change its type signature after an iteration of the schedule. 
-HDF actors are allowed to change their port rates at the end of 
-each iteration. If a port rate change occurs, a new schedule 
+If a port rate change occurs, a new schedule 
 corresponding to the new ports rates must then be obtained.
 <p>
 Since an HDF actor has a finite number of type signatures, it 
@@ -66,10 +64,11 @@ may occur. The HDFFSMDirector may be used to compose HDF with
 <p>
 Since an HDF actor has a finite number of possible type 
 signatures, the number of possible schedules is also finite. 
-As a result, deadlock and bounded channel lengths are decidable 
-in HDF. In principle, all possible schedules could be computed 
-at compile time. However, the number of schedules can be 
-exponential in the number of actors, so this may not be practical.
+As a result of this finite state space, deadlock and bounded 
+channel lengths are decidable in HDF. In principle, all possible 
+schedules could be computed at compile time. However, the number 
+of schedules can be exponential in the number of actors, so this 
+may not be practical.
 <p>
 This director makes use of an HDF scheduler that computes the 
 schedules dynamically, and caches them. The size of the cache 
@@ -80,7 +79,8 @@ value of this parameter is 100.
 <p>
 <OL>
 <LI>
-A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+A. Girault, B. Lee, and E. A. Lee, 
+``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
 Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
 1998.</LI>
 </ol>

@@ -76,10 +76,12 @@ An HDFFSMDirector governs the execution of a finite state machine
 (FSM) in a heterochronous dataflow (HDF) or synchronous dataflow 
 (SDF) model according to the *charts [1] semantics. *charts is a 
 family of models of computation that specifies an operational 
-semantics for hierarchical FSMs composed with multiple concurrency 
+semantics for composing hierarchical FSMs with various concurrency 
 models.
 <p>
-This class should be used as the director of an FSM when the FSM 
+The subset of *charts that this class supports is HDF inside FSM
+inside HDF, and SDF inside FSM inside SDF.
+This class must be used as the director of an FSM when the FSM 
 refines an HDF actor. This class may also be used as the director 
 of an FSM for an FSM when the FSM refines an SDF actor.
 <p>
@@ -90,11 +92,13 @@ represent textually, even for simple models. It is therefore
 recommended that a graphical model editor like Vergil be used to 
 construct the model.
 <p>
-The toplevel modal must be HDF or SDF. Otherwise an exception
-will occur. An HDF actor that refines to an FSM will use this 
-class as the FSM's local director. All states in the FSM must 
-refine to either another FSM, an HDF model or a SDF model. There 
-is no constraint on the number of levels in the hierarchy.
+The executive director must be HDF, SDF, or HDFFSMDirector. 
+Otherwise an exception will occur. An HDF actor that refines to 
+an FSM will use this class as the FSM's local director. All states 
+in the FSM must refine to either another FSM, an HDF model or a SDF
+model. That is, all refinement actors must be opaque and must 
+externally have HDF or SDF semantics. There is no constraint on 
+the number of levels in the hierarchy.
 <p>
 Currently, constructing the FSM is somewhat awkward. To construct 
 an FSM, first create a TypedCompositeActor in the HDF model to contain
@@ -107,10 +111,11 @@ This TypedComposite actor is henceforth referred to as "the refinement."
 Create the necessary ports on each refinement such that each 
 refining state actor contains the same number and type of ports 
 (typically input or output TypedIOPort) with the same name as the 
-corresponding ports of the HDF actor. Zero-rate ports do not need 
-to be explicitly connected. Create a relation for each port of the 
-HDF actor. For each relation, link all ports with the same name to 
-the relation. 
+corresponding ports of the opaque HDF actor. Create a relation for 
+each port of the HDF actor. For each relation, link all ports with 
+the same name to the relation. If a port of the opaque
+HDF actor has zero-rate when in a certain refinement, then the
+refinement does not need to explicitely contain the port.
 <p>
 The FSM diagram itself is constructed inside the HDFFSMActor.
 To construct the FSM diagram, create an instance of State for
@@ -267,7 +272,6 @@ public class HDFFSMDirector extends FSMDirector {
         return getController().prefire();
     }
 
-
     /** Return true if the mode controller wishes to be scheduled for
      *  another iteration. Postfire the refinement of the current state
      *  of the mode controller. If a type B firing has occurred and exactly
@@ -276,16 +280,19 @@ public class HDFFSMDirector extends FSMDirector {
      *  the last firing of an actor in an iteration of the HDF graph in
      *  which it is embedded.
      *  <p>
-     *  If a state change occurs to a refinement with different port 
-     *  rates from the previous refinement, change the port rates of 
-     *  the container of this director to be consistant with the port 
-     *  rates of the new state's refinement and tell the HDF director 
-     *  to invalidate its current schedule and compute a new schedule.
+     *  If a state transition to a refinement with different port 
+     *  rates from the previous refinement occurs, then the port rates of 
+     *  the container of this director are updated to be consistant 
+     *  with the port rates of the new state's refinement. The HDF
+     *  director will be notified of the change in port rates. If
+     *  a change in port rates occurs and this FSM is governed by
+     *  an SDF director, an exception will occur.
      *
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
-     *  @exception IllegalActionException If a refinement throws it or
-     *   if there is no controller.
+     *  @exception IllegalActionException If a refinement throws it,
+     *   if there is no controller, or if an inconsistancy in port
+     *   rates is detected between refinement actors.
      */
     public boolean postfire() throws IllegalActionException {
         HDFFSMActor ctrl = (HDFFSMActor)getController();
@@ -598,7 +605,7 @@ public class HDFFSMDirector extends FSMDirector {
     ////                         private methods                   ////
 
 
-    /** Debug postfire.
+    /** Debug.
      */
     private void _debugPostfire(State curState) 
 	throws IllegalActionException {

@@ -44,7 +44,7 @@ import java.util.*;
 ///////////////////////////////////////////////////////////
 //// HDFScheduler
 /**
-A scheduler that implements basic scheduling of HDF graphs. 
+This class is a scheduler that implements basic scheduling of HDF graphs. 
 HDF is similar to SDF in that a schedule is constructed by 
 solving the balance equations. In SDF the actors in a graph 
 typically have constant rates throughout the execution of a 
@@ -53,7 +53,7 @@ of port rates, which are allowed to change after each minimal
 period of the schedule. A particular combination of port rates 
 for an actor constitutes its type signature.
 <p>
-The SDF scheduler could be used to compute schedules for HDF. 
+Note that SDF scheduler could be used to compute schedules for HDF. 
 This could be done be invalidating the current SDF schedule and 
 computing a new one whenever a type signature change occurs. 
 However, since actor type signatures generally change often at 
@@ -64,9 +64,9 @@ This class attempts to minimize the cost of computing schedules
 by caching the schedules and reusing them. The method 
 <i>setCacheSize()</i> is used to set the cache size. The 
 default schedule cache size is 100.
-<p>
 
 @see ptolemy.actor.sched.Scheduler
+@see ptolemy.domains.sdf.kernel.SDFScheduler
 
 @author Brian K. Vogel
 @version $Id$
@@ -137,6 +137,7 @@ public class HDFScheduler extends SDFScheduler {
 	return super._getSchedule();
 	// FIXME: This method is not implemented as documented. 
 	// The cache size parameter is currently ignored.
+	// Implement this!
     }
 
     ///////////////////////////////////////////////////////////////////
