@@ -160,7 +160,8 @@ HYBRIDSYSTEMSPACKAGES = \
 			ptolemy.domains.ct.kernel.util \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.fsm.kernel \
-
+			ptolemy.domains.sdf.kernel \
+			ptolemy.domains.sdf.lib
 
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
@@ -170,8 +171,6 @@ PTINYPACKAGES = \
 			$(HYBRIDSYSTEMSPACKAGES) \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
-			ptolemy.domains.sdf.kernel \
-			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq
 
 # actor.lib.comm uses the Java comm api for communicating with
