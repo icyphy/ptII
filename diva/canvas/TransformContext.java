@@ -93,7 +93,7 @@ public class TransformContext {
         }
     }
 
-    /** Concatenate this transform context with the given tranform.
+    /** Concatenate this transform context with the given transform.
      */
     public void concatenate (AffineTransform at) {
         _transform.concatenate(at);
@@ -170,7 +170,7 @@ public class TransformContext {
         }
     }
 
-    /** Get the version number of the transfom context. The version number
+    /** Get the version number of the transform context. The version number
      * is incremented whenever the transform changes, so can be
      * used by client components to figure out when to update cached
      * data based upon the transform.
@@ -208,7 +208,7 @@ public class TransformContext {
         g.setTransform(_graphicsTransform);
     }
 
-    /** Pre-concatenate this transform context with the given tranform.
+    /** Pre-concatenate this transform context with the given transform.
      */
     public void preConcatenate (AffineTransform at) {
         _transform.preConcatenate(at);

@@ -81,7 +81,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
     private Figure _pointerOver = null;
 
     /** Create a new figure layer that is not in a pane. The layer will
-     * not be displayed, and its coordinate tranformation will be
+     * not be displayed, and its coordinate transformation will be
      * as though it were a one-to-one mapping. Use of this constructor
      * is strongly discouraged, as many of the geometry-related methods
      * expect to see a pane.
