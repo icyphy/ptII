@@ -41,7 +41,7 @@ import ptolemy.actor.*;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.data.expr.Variable;
-import collections.LinkedList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.*;
 
@@ -251,7 +251,7 @@ public class HDFFSMDirector extends FSMDirector {
 	//if (_debugging) _debug("HDFFSMDirector: initialize()");
         CompositeActor container = (CompositeActor)getContainer();
         if (container != null) {
-            Enumeration allActors = container.deepGetEntities();
+            Enumeration allActors = Collections.enumeration(container.deepEntityList());
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 if (actor == _controller) {
@@ -355,7 +355,7 @@ public class HDFFSMDirector extends FSMDirector {
 		_portNameToArrayFIFOQueue = new HashMap();
 	    }
 
-	    Enumeration containPorts = container.getPorts();
+	    Enumeration containPorts = Collections.enumeration(container.portList());
 	    while (containPorts.hasMoreElements()) {
 		TypedIOPort aPort = (TypedIOPort)containPorts.nextElement();
 		//if (_debugging) _debug("guard: port name:" + aPort.getName());
@@ -396,7 +396,7 @@ public class HDFFSMDirector extends FSMDirector {
 	    // End of Initialize guard variables.
 
 
-            Enumeration allactors = container.deepGetEntities();
+            Enumeration allactors = Collections.enumeration(container.deepEntityList());
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
                 //if (_debugging) _debug("Invoking preinitialize(): ",
