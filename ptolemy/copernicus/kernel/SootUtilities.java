@@ -120,6 +120,7 @@ import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.StringUtilities;
+import ptolemy.kernel.util.KernelRuntimeException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities
@@ -995,7 +996,7 @@ public class SootUtilities {
      */
     public static void foldClass(SootClass theClass) {
         SootClass superClass = theClass.getSuperclass();
-        // System.out.println("folding " + theClass + " into " + superClass);
+        //System.out.println("folding " + theClass + " into " + superClass);
         Scene.v().setActiveHierarchy(new Hierarchy());
 
         // Copy the interface declarations.
@@ -1114,8 +1115,60 @@ public class SootUtilities {
                     if (invoke.getMethod().getDeclaringClass() == superClass) {
                         // Force the body of the thing we are inlining to be
                         // loaded
-                        invoke.getMethod().retrieveActiveBody();
-                        SiteInliner.inlineSite(invoke.getMethod(),
+                        SootMethod invokeMethod = invoke.getMethod();
+
+                        try {
+                            if (invokeMethod.isConcrete()) {
+                                invokeMethod.retrieveActiveBody();
+                            } else {
+                                System.out.println("SootUtilities."
+                                        + "foldClass() " + invokeMethod
+                                        + " is not concrete!");
+                                // javac -target 1.2 and greater
+                                // ends up causing problems here when
+                                // calling super on a method, but the
+                                // direct parent does not have a
+                                // method by that name.
+                                //
+                                // If I have 3 classes A, B and C,
+                                // where C extends B which extends A
+                                // and A and C define a method foo and
+                                // C calls super.foo, then under javac
+                                // -target 1.2 the constant pool ends
+                                // up with a reference to
+                                // [2] methodref=soot/coffi/B.foo
+                                // and under javac -target 1.1, we end up with
+                                // [2] methodref=soot/coffi/A.foo
+
+                                // So, we look for the method in the superclass
+                                SootClass scratchClass =
+                                    invokeMethod.getDeclaringClass();
+                                while (scratchClass.hasSuperclass()) {
+                                    SootClass superC =
+                                        scratchClass.getSuperclass();
+                                    if (superC
+                                            .declaresMethod(invokeMethod.getSubSignature())) {
+                                        invokeMethod =
+                                            superC.getMethod(invokeMethod.getSubSignature());
+                                        System.out.println("SootUtilties."
+                                                + "foldClass() "
+                                                + "found " + superC + " "
+                                                + invokeMethod);
+                                        if (superC.isContextClass()) {
+                                            superC.setApplicationClass();
+                                        }
+                                        invokeMethod.retrieveActiveBody();
+                                        break;
+                                    }
+                                    scratchClass = superC;
+                                }
+                            }
+                        } catch (Exception ex) {
+                            throw new KernelRuntimeException(ex, 
+                                    "foldClass: Problem with "
+                                    + "retrieveActiveBody()");
+                        } 
+                        SiteInliner.inlineSite(invokeMethod,
                                 stmt, newMethod);
                     }
                 }
