@@ -42,6 +42,7 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.MoMLParser;
 
 import com.microstar.xml.XmlException;
@@ -158,18 +159,45 @@ public class KernelMain {
 	if (javaSpecificationVersion == null) {
 	    System.err.println("Warning: could not read "
 			       + "'java.specification.version' property. "
-			       + "Soot only work with JDK1.3.1 and earlier");
+			       + "Soot work best with JDK1.3.1");
 	} else {
-	    if ( javaSpecificationVersion.equals("1.4")) {
-		throw new IllegalActionException("Soot only works with JDK "
-						 + "1.3.1 and earlier, "
+	    VersionAttribute javaSpecificationVersionAttribute =
+		new VersionAttribute(javaSpecificationVersion);
+	    if ( javaSpecificationVersionAttribute.compareTo(new VersionAttribute("1.4")) >= 0) {
+		System.err.println("Won't work with Java specification '" 
+				   + javaSpecificationVersion + "'");
+		throw new IllegalActionException("Soot does not work with "
+						 + " JDK 1.4. "
 						 + "java.specification.version"
-						 + " is '"
+						 + " was '"
 						 + javaSpecificationVersion
 						 + "'");
 	    }
+
 	}
 
+
+	String javaVersion =
+	    System.getProperty("java.version");
+	if (javaSpecificationVersion == null) {
+	    System.err.println("Warning: could not read "
+			       + "'java.version' property. "
+			       + "Soot works best with JDK1.3.1");
+	} else {
+	    VersionAttribute javaVersionAttribute =
+		new VersionAttribute(javaVersion);
+	    if ( javaVersionAttribute
+		 .compareTo(new VersionAttribute("1.3.1")) < 0) {
+		System.err.println("Warning: deep codegen works best with "
+				   + "JVMS that have a "
+				   + " java.version > 1.3.0. "
+				   + " java.version was '"
+				   + javaVersion + "'."
+				   + "The problem is that "
+				   + "actor.lib.auto.MathFunction3 will run "
+				   + "forever and not terminate");
+	    }
+	}
 
 	// If the name of the model is the empty string, change it to
 	// the basename of the file.
