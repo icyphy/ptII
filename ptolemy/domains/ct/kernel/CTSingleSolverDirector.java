@@ -37,7 +37,7 @@ import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
 import java.util.Iterator;
-//import collections.LinkedList;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CTSingleSolverDirector
@@ -164,15 +164,6 @@ public abstract class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
-        // If this is the first fire, the states are not resolved.
-        /*
-        if (_first) {
-            _first = false;
-            _prefireSystem();
-            produceOutput();
-            updateStates();
-            return;
-        }*/
         //event phase:
         _eventPhaseExecution();
         _setIterationBeginTime(getCurrentTime());
@@ -445,7 +436,6 @@ public abstract class CTSingleSolverDirector extends CTDirector {
         CTScheduler sched = (CTScheduler)getScheduler();
         Iterator sscs = sched.outputSSCActorList().iterator();
         while (sscs.hasNext()) {
-            System.out.println("********************************");
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
             if(_debugging) _debug("Checking Output Step Size Control Actor: "
