@@ -423,12 +423,12 @@ public class RLEDiva extends PNApplet implements Runnable {
 	traceWidget.setPreferredSize(new Dimension(800, 300));
 
         // Configure the view
-        final TraceView traceView = tracePane.getTraceView();
-	final TraceModel mod = traceModel;
+        TraceView traceView = tracePane.getTraceView();
+	//final TraceModel mod = traceModel;
 
 	traceView.setTimeScale(0.02);
-	traceView.setLayout(10,10,500,30,5);
-	traceView.setTraceModel(mod);
+	traceView.setLayout(10,10,500,20,15);
+	traceView.setTraceModel(traceModel);
     }
 
 
