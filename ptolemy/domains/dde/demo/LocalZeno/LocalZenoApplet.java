@@ -31,8 +31,7 @@
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import diva.graph.*;
-import diva.graph.model.*;
-import diva.graph.model.Node;
+import diva.graph.basic.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
@@ -108,15 +107,21 @@ public class LocalZenoApplet extends DDEApplet {
 	getContentPane().add( _divaPanel, BorderLayout.CENTER );
 
         _graph = constructDivaGraph();
-	final Graph finalGraph = _graph;
+	final MutableGraphModel finalGraphModel = _graph;
+	// display the graph.
+	final GraphController gc = new LocalZenoGraphController();
+	final GraphPane gp = new GraphPane(gc, _graph);
+	_jgraph = new JGraph(gp);
+	_divaPanel.add(_jgraph, BorderLayout.NORTH );
+	_jgraph.setPreferredSize( new Dimension(600, 400) );
 
         try {
-	    SwingUtilities.invokeAndWait(new Runnable() {
+	    SwingUtilities.invokeAndWait(new Runnable(){
 		public void run() {
-		    displayGraph(_jgraph, finalGraph);
+		    doLayout(finalGraphModel, gp);
 		}
 	    });
-        }
+        } 
         catch(Exception ex) {
             ex.printStackTrace();
             System.exit(0);
@@ -139,32 +144,32 @@ public class LocalZenoApplet extends DDEApplet {
      *  This is sort of bogus because it's totally hard-wired,
      *  but it will do for now...
      */
-    public Graph constructDivaGraph() {
-	GraphImpl impl = new BasicGraphImpl();
-	Graph graph = impl.createGraph(null);
+    public MutableGraphModel constructDivaGraph() {
+	BasicGraphModel model = new BasicGraphModel();
+	Object root = model.getRoot();
 
-        // Nodes, with user object set to the actor
-        Node n1 = impl.createNode(_clock);
+        // Objects, with user object set to the actor
+        Object n1 = model.createNode(_clock);
 
-        Node n2 = impl.createNode(_join1);
-        Node n3 = impl.createNode(_fork1);
-        Node n4 = impl.createNode(_fBack1);
-        Node n5 = impl.createNode(_rcvr1);
+        Object n2 = model.createNode(_join1);
+        Object n3 = model.createNode(_fork1);
+        Object n4 = model.createNode(_fBack1);
+        Object n5 = model.createNode(_rcvr1);
 
-        Node n6 = impl.createNode(_join2);
-        Node n7 = impl.createNode(_fork2);
-        Node n8 = impl.createNode(_fBack2);
-        Node n9 = impl.createNode(_rcvr2);
+        Object n6 = model.createNode(_join2);
+        Object n7 = model.createNode(_fork2);
+        Object n8 = model.createNode(_fBack2);
+        Object n9 = model.createNode(_rcvr2);
 
-        impl.addNode(n1, graph);
-        impl.addNode(n2, graph);
-        impl.addNode(n3, graph);
-        impl.addNode(n4, graph);
-        impl.addNode(n5, graph);
-        impl.addNode(n6, graph);
-        impl.addNode(n7, graph);
-        impl.addNode(n8, graph);
-        impl.addNode(n9, graph);
+        model.addNode(n1, root);
+        model.addNode(n2, root);
+        model.addNode(n3, root);
+        model.addNode(n4, root);
+        model.addNode(n5, root);
+        model.addNode(n6, root);
+        model.addNode(n7, root);
+        model.addNode(n8, root);
+        model.addNode(n9, root);
 
         _nodeMap.put(_clock, n1);
 
@@ -179,49 +184,49 @@ public class LocalZenoApplet extends DDEApplet {
         _nodeMap.put(_rcvr2, n9);
 
         // Edges
-	Edge e;
+	Object e;
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n1);
-	impl.setEdgeHead(e, n2);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n1);
+	model.setEdgeHead(e, n2);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n2);
-	impl.setEdgeHead(e, n3);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n2);
+	model.setEdgeHead(e, n3);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n4);
-	impl.setEdgeHead(e, n2);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n4);
+	model.setEdgeHead(e, n2);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n3);
-	impl.setEdgeHead(e, n4);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n3);
+	model.setEdgeHead(e, n4);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n3);
-	impl.setEdgeHead(e, n5);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n3);
+	model.setEdgeHead(e, n5);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n1);
-	impl.setEdgeHead(e, n6);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n1);
+	model.setEdgeHead(e, n6);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n7);
-	impl.setEdgeHead(e, n8);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n7);
+	model.setEdgeHead(e, n8);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n6);
-	impl.setEdgeHead(e, n7);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n6);
+	model.setEdgeHead(e, n7);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n7);
-	impl.setEdgeHead(e, n9);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n7);
+	model.setEdgeHead(e, n9);
 
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, n8);
-	impl.setEdgeHead(e, n6);
+	e = model.createEdge(null);
+	model.setEdgeTail(e, n8);
+	model.setEdgeHead(e, n6);
 
-        return graph;
+        return model;
     }
 
     /** Construct the Ptolemy model; instantiate all
@@ -295,30 +300,12 @@ public class LocalZenoApplet extends DDEApplet {
         }
     }
 
-    /** Construct the graph widget with the default constructor
-     *  (giving it an empty graph), and then set the model once
-     *  the _window is showing. Add control buttons to the _window.
-     */
-    public void displayGraph(JGraph g, Graph graph) {
-	_divaPanel.add( g, BorderLayout.NORTH );
-	g.setPreferredSize( new Dimension(600, 300) );
-
-        // Make sure we have the right renderers and then
-	// display the graph
-	final GraphController gc = new LocalZenoGraphController();
-	final GraphPane gp = new GraphPane(gc);
-	g.setCanvasPane(gp);
-	gc.setGraph(graph);
-
-	doLayout(graph, gp);
-    }
-
     /** Layout the graph again.
      */
-    public void doLayout(Graph graph, GraphPane gp) {
+    public void doLayout(GraphModel graph, GraphPane gp) {
         // Do the layout
 	try {
-	    final Graph layoutGraph = graph;
+	    final GraphModel layoutGraph = graph;
 	    final GraphController gc = gp.getGraphController();
 	    final GraphPane pane = gp;
 	    SwingUtilities.invokeLater(new Runnable() {
@@ -327,7 +314,7 @@ public class LocalZenoApplet extends DDEApplet {
 		    LevelLayout staticLayout = new LevelLayout();
 		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
 		    LayoutTarget target = new BasicLayoutTarget(gc);
-		    staticLayout.layout(target, layoutGraph);
+		    staticLayout.layout(target, layoutGraph.getRoot());
 		    pane.repaint();
 		}
 	    });
@@ -389,13 +376,13 @@ public class LocalZenoApplet extends DDEApplet {
     private HashMap _nodeMap = new HashMap();
 
     // The Diva JGraph where we display stuff
-    private JGraph _jgraph = new JGraph();
+    private JGraph _jgraph;
 
     // The Diva panel where we display stuff
     private JPanel _divaPanel;
 
     // The Diva graph
-    private Graph _graph;
+    private MutableGraphModel _graph;
 
     // Flag to prevent spurious exceptions being thrown during _go().
     private boolean _initCompleted = false;
@@ -410,7 +397,7 @@ public class LocalZenoApplet extends DDEApplet {
     private class LayoutListener implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
-	    final Graph g = _graph;
+	    final GraphModel g = _graph;
 	    doLayout(g, gp);
 	}
     }
@@ -427,7 +414,7 @@ public class LocalZenoApplet extends DDEApplet {
 	    // The interactors attached to nodes and edges
 	    setNodeController(new NodeController(this));
 	    setEdgeController(new EdgeController(this));
-	    getNodeController().setNodeRenderer(new ThreadRenderer());
+	    getNodeController().setNodeRenderer(new ThreadRenderer(this));
 	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
 
@@ -461,7 +448,7 @@ public class LocalZenoApplet extends DDEApplet {
         /**
          * Render the edge
          */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Object edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
@@ -501,8 +488,8 @@ public class LocalZenoApplet extends DDEApplet {
             String name = ((Nameable)actor).getName();
 
             // Get the corresponding graph node and its figure
-            Node node = (Node) _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper)node.getVisualObject();
+            Object node = _nodeMap.get(actor);
+            LabelWrapper wrapper = (LabelWrapper)_graphPane.getGraphController().getGraphModel().getVisualObject(node);
 	    final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 
@@ -547,11 +534,20 @@ public class LocalZenoApplet extends DDEApplet {
          */
         private double _size = 40;
 
+	/** The graph controller
+	 */
+	private GraphController _controller;
+	
+	public ThreadRenderer(GraphController controller) {
+	    _controller = controller;
+	}
+
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render(Node n) {
-            ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
+        public Figure render(Object n) {
+            ComponentEntity actor = (ComponentEntity) 
+		_controller.getGraphModel().getSemanticObject(n);
 
             boolean isEllipse =
                 actor instanceof ListenWire
