@@ -175,7 +175,7 @@ public class SigmaDeltaApplet extends CTApplet {
 
             // DE System
             ptolemy.domains.de.lib.Delay delay =
-                    new ptolemy.domains.de.lib.Delay(_toplevel, "delay");
+                new ptolemy.domains.de.lib.Delay(_toplevel, "delay");
             delay.delay.setToken(new DoubleToken(0.02));
             FIR fir = new FIR(_toplevel, "fir");
             fir.taps.setExpression("[0.7, 0.3]");
@@ -202,8 +202,8 @@ public class SigmaDeltaApplet extends CTApplet {
 
             FIR mav = new FIR(_toplevel, "MAV");
             mav.taps.setExpression(
-                "[0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
-                + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]");
+                    "[0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
+                    + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]");
 
             // DE connections.
             Relation dr0 = _toplevel.connect(subout,  delay.input);

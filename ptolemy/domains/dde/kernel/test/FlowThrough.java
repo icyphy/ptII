@@ -100,7 +100,7 @@ public class FlowThrough extends TypedAtomicActor {
 			    Thread thr = Thread.currentThread();
 			    if( thr instanceof DDEThread ) {
 				TimeKeeper kpr =
-                                        ((DDEThread)thr).getTimeKeeper();
+                                    ((DDEThread)thr).getTimeKeeper();
 			        outRcvr.put(token, kpr.getCurrentTime());
 			    }
 			}

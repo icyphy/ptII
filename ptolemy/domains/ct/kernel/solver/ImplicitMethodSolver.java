@@ -44,7 +44,7 @@ public interface ImplicitMethodSolver {
     /** Return true if the fixed-point iteration is converged.
      *  @return True if the fixed-point iteration is converged.
      */
-     public boolean isConverged();
+    public boolean isConverged();
 
     /** Vote if a fixed point has reached. The final result is the
      *  <i>and</i> of all votes.

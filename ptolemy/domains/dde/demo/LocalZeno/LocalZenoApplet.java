@@ -266,7 +266,7 @@ public class LocalZenoApplet extends DDEApplet {
 
 	    // Set up ports, relations and connections
             Relation clkRelation =
-            	    _toplevel.connect( _clock.output, _join1.input );
+                _toplevel.connect( _clock.output, _join1.input );
             _join2.input.link( clkRelation );
 
 	    _toplevel.connect( _join1.output, _fork1.input );
@@ -442,9 +442,9 @@ public class LocalZenoApplet extends DDEApplet {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-		(SelectionInteractor)getEdgeController().getEdgeInteractor());
+                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)getNodeController().getNodeInteractor());
+                    (SelectionInteractor)getNodeController().getNodeInteractor());
 	}
     }
 

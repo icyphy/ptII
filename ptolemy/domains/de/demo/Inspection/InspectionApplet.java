@@ -104,12 +104,12 @@ public class InspectionApplet extends DEApplet implements QueryListener {
         try {
             if (_regular) {
                 _regularBus.period.setToken
-                        (new DoubleToken(_query.doubleValue("busmean")));
+                    (new DoubleToken(_query.doubleValue("busmean")));
             } else {
                 _poissonBus.meanTime.setToken
-                        (new DoubleToken(_query.doubleValue("busmean")));
+                    (new DoubleToken(_query.doubleValue("busmean")));
                 _passenger1.meanTime.setToken
-                        (new DoubleToken(_query.doubleValue("passmean")));
+                    (new DoubleToken(_query.doubleValue("passmean")));
             }
             _go();
         } catch (IllegalActionException ex) {
@@ -140,7 +140,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
                     "Passenger mean interarrival time", "1.0");
             _query.addCheckBox("regular", "Regular bus arrivals", false);
             _query.addDisplay("average",
-                "Average waiting time of passengers", "");
+                    "Average waiting time of passengers", "");
             _query.addQueryListener(this);
             getContentPane().add(_query);
 
@@ -260,7 +260,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
                 throw new InternalErrorException(ex.toString());
             }
             _regularBus.period.setToken
-                    (new DoubleToken(_query.doubleValue("busmean")));
+                (new DoubleToken(_query.doubleValue("busmean")));
             _regularBus.output.link(_busRelation);
         } else {
             try {
@@ -270,9 +270,9 @@ public class InspectionApplet extends DEApplet implements QueryListener {
                 throw new InternalErrorException(ex.toString());
             }
             _poissonBus.meanTime.setToken
-                    (new DoubleToken(_query.doubleValue("busmean")));
+                (new DoubleToken(_query.doubleValue("busmean")));
             _passenger1.meanTime.setToken
-                    (new DoubleToken(_query.doubleValue("passmean")));
+                (new DoubleToken(_query.doubleValue("passmean")));
             _poissonBus.output.link(_busRelation);
         }
 
