@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (bilung@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -66,7 +66,7 @@ parameter to control the sequence that is generated.
 
 @author Rachel Zhou
 @version $Id$
-@since Ptolemy II 0.2
+@since Ptolemy II 3.0
 */
 
 public class Rician extends RandomSource {
