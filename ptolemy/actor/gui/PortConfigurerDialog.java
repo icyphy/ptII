@@ -138,7 +138,7 @@ public class PortConfigurerDialog extends ComponentDialog
             }
         } else if (buttonPressed().equals("Help")) {
             URL toRead = getClass().getClassLoader().getResource(
-                    "doc/help/portDialog.htm");
+                    "ptolemy/configs/doc/portDialog.htm");
             if (toRead != null && configuration != null) {
                 try {
                     configuration.openModel(
