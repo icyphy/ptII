@@ -50,6 +50,7 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
+		doc/doc.jar \
 		dll/dll.jar
 
 # Keep this list alphabetized.
