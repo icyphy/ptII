@@ -869,6 +869,17 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Return the top level of the containment hierarchy.
+     *  @return The top level, or this if this has no container.
+     */
+    public NamedObj toplevel() {
+        NamedObj result = this;
+        while (result.getContainer() != null) {
+            result = (NamedObj)result.getContainer();
+        }
+        return result;
+    }
+
     /** Return the class name and the full name of the object,
      *  with syntax "className {fullName}".
      *  @return The class name and the full name. */
