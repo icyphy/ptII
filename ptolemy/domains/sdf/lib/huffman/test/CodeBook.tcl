@@ -79,9 +79,9 @@ test CodeBook-2.1 {This the huffman Encoder} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
             [java::field $codebook input]
-    $e0 connect \
-            [java::field $codebook output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    ##$e0 connect \
+    ##        [java::field $codebook output] \
+    ##        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     
 
     [$e0 getManager] execute
