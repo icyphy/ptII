@@ -46,7 +46,7 @@ import java.util.*;
 
 A scheduler that implements basic scheduling of SDF graphs.  This
 class calculates the SDF schedule in two phases.  First, the balance
-equations for the rates between actors are solved to tdetermine the
+equations for the rates between actors are solved to determine the
 <i>firing vector</i> (also known as the repetitions vector).  The
 firing vector is the least integer solution such that the number of
 tokens created on each channel of each relation is equal to the number
