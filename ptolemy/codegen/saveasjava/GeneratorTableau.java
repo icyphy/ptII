@@ -304,13 +304,18 @@ public class GeneratorTableau extends Tableau {
 				// button.
 
 				// Soot is a memory pig, so we run
-				// it in a separate process
+				// it in a separate process.
 				try {
 				    execCommands
 					.add(_generateJavaCommand(model,
-								  directoryName));
+								  directoryName,
+
+								  options
+								  .packageName
+								  .getExpression()));
 				} catch (Exception exception) {
-				    throw new IllegalActionException(exception.toString());
+				    throw new IllegalActionException(exception
+								     .toString());
 				}
 
 				//ptolemy.copernicus.java
@@ -393,14 +398,15 @@ public class GeneratorTableau extends Tableau {
 						     + "complete.");
 			    }
 
+
 			    String className = options
 				.packageName.getExpression();
 			    if (className.length() > 0
 				&& ! className.endsWith(".") ) {
 				className = className + '.'
-				    + model.getName();
+				    + "CG" + model.getName();
 			    } else {
-				className = model.getName();
+				className = "CG" + model.getName();
 			    }
 
 			    String runOptions = options
@@ -487,7 +493,8 @@ public class GeneratorTableau extends Tableau {
     // Return a command string that will generate Java for model
     // in the directoryName directory
     private String _generateJavaCommand(CompositeEntity model,
-					String directoryName)
+					String directoryName,
+					String targetPackage)
 	throws IllegalArgumentException, InternalErrorException
     {
 	// This method is only called in one place, but the method
@@ -553,32 +560,34 @@ public class GeneratorTableau extends Tableau {
 	    return "# Could not write temporary moml file";
 	}
 
-//  	URL temporaryMoMLURL = null;
-//  	try {
-//  	    temporaryMoMLURL = temporaryMoMLFile.toURL();
-//  	} catch (MalformedURLException malformedURL) {
-//  	    InternalErrorException internalError =
-//  		new InternalErrorException("Failed to convert '"
-//  					   + temporaryMoMLFile + "' to a URL: "
-//  					   + malformedURL);
-//  	    internalError.fillInStackTrace();
-//  	    throw internalError;
-//  	}
-
-	String temporaryMoMLCanonicalPath = null;
-	try {
-	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
-  	} catch (IOException io) {
+  	URL temporaryMoMLURL = null;
+  	try {
+  	    temporaryMoMLURL = temporaryMoMLFile.toURL();
+  	} catch (MalformedURLException malformedURL) {
   	    InternalErrorException internalError =
-  		new InternalErrorException("Failed to get canonical pathe '"
-  					   + temporaryMoMLFile + ": " + io);
+  		new InternalErrorException("Failed to convert '"
+  					   + temporaryMoMLFile + "' to a URL: "
+  					   + malformedURL);
   	    internalError.fillInStackTrace();
   	    throw internalError;
-	}
+  	}
+
+//  	String temporaryMoMLCanonicalPath = null;
+//  	try {
+//  	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
+//    	} catch (IOException io) {
+//    	    InternalErrorException internalError =
+//    		new InternalErrorException("Failed to get canonical pathe '"
+//    					   + temporaryMoMLFile + ": " + io);
+//    	    internalError.fillInStackTrace();
+//    	    throw internalError;
+//  	}
 
 	return "make -C \"" + makefileDirectory
 	    + "\" MODEL=\"" + model.getName()
-	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
+	    + "\" SOURCECLASS=\"" + temporaryMoMLURL
+	    //	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
+	    + "\" SHALLOWTARGETPACKAGE=\"" + targetPackage
 	    + "\" compileShallowDemo";
     }
 }

@@ -121,6 +121,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         // Initialize the default directory.
         String defaultDirectory = "";
         String defaultClasspath = ".";
+	String ptIIDirectory = null;
         try {
             // NOTE: getProperty() will probably fail in applets, which
             // is why this is in a try block.
@@ -133,11 +134,11 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
             // Identify a reasonable classpath.
             // NOTE: This property is set by the vergil startup script.
-            String home = System.getProperty("ptolemy.ptII.dir");
-            if (home == null) {
+            ptIIDirectory = System.getProperty("ptolemy.ptII.dir");
+            if (ptIIDirectory == null) {
                 defaultClasspath = ".";
             } else {
-                defaultClasspath = home + File.pathSeparator + ".";
+                defaultClasspath = ptIIDirectory + File.pathSeparator + ".";
             }
         } catch (SecurityException ex) {
             // Ignore and use the default.
@@ -159,7 +160,31 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         doc.setValue("Options to use when executing the code.");
 
         packageName = new StringAttribute(this, "packageName");
-        packageName.setExpression("");
+	// Attempt to figure out the package by comparing
+	// current director and the ptIIDirectory and removing
+	// the common prefix
+	String packageNameString = "";
+	try {
+	    String canonicalPtIIDirectory = 
+		(new File(ptIIDirectory)).getCanonicalPath();
+	    String canonicalDefaultDirectory =
+		(new File(defaultDirectory)).getCanonicalPath();
+	    if (canonicalDefaultDirectory.startsWith(canonicalPtIIDirectory)) {
+		String packagePath =
+		    canonicalDefaultDirectory
+		    .substring(canonicalPtIIDirectory.length());
+		packageNameString = (packagePath
+				     .replace('/','.')).replace('\\','.');
+		if (packageNameString.indexOf('.') == 0 
+		    && packageNameString.length() >= 2) {
+		    // Strip off the leading . in the package.
+		    packageNameString = packageNameString.substring(1);
+		}
+	    }
+	} catch (Exception e) {
+	    // Do nothing, stick with the empty default.
+	}
+        packageName.setExpression(packageNameString);
         doc = new Documentation(packageName, "tooltip");
         doc.setValue("Package name for the generated classes.");
     }
