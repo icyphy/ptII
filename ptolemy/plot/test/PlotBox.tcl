@@ -173,8 +173,12 @@ test PlotBox-14.1 {write} {
 	    {java.io.PrintStream java.io.OutputStream} $stream]
     $plot write $printStream xxx
     $printStream flush
-    $stream toString
-} {<?xml version="1.0" standalone="no"?>
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+                [$stream toString] "\n" output
+
+    list $output
+} {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "xxx">
 <plot>
 <!-- Ptolemy plot, version 3.0, PlotML format. -->
@@ -206,4 +210,4 @@ test PlotBox-14.1 {write} {
 <yLog/>
 <noColor/>
 </plot>
-}
+}}
