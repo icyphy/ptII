@@ -1,0 +1,8 @@
+/* From http://www.inonit.com/cygwin/jni/helloWorld/c.html */
+#include <stdio.h>
+
+#include "HelloWorld.h"
+
+JNIEXPORT void JNICALL Java_example_jni_HelloWorld_writeHelloWorldToStdout(JNIEnv *env, jclass c) {
+    printf("Hello World!");
+}
