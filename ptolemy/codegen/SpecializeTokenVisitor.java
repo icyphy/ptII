@@ -132,19 +132,30 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-                System.err.println("ptolemy/codegen/SpecializeTokenVisitor: " 
-				   + "Warning: could not solve for specific"
-				   + " token type for declaration '"
+                System.err.println("Warning: SpecializeTokenVisitor" 
+				   + ".specializeTokens(): "
+				   + "could not solve for specific "
+                                   + "token type for declaration '"
 				   + typedDecl.getName()
 				   + "' in "
 				   + actorInfo.actor.getName()
-				   + ". term = " + value 
-				   + " which is unsupported.");
+				   + ".\n term = " + value 
+				   + " which is unsupported. \n" 
+				   + "Try setting the type with something like"
+				   + "\n'fileWriter.input.setTypeEquals"
+				   + "(BaseType.INT);'");
 
                 // Replace the declaration type with "Token" as an indication
                 // for later passes.
+                //declToTokenTypeMap.put(typedDecl,
+                //        PtolemyTypeIdentifier.TOKEN_TYPE.clone());
+
+		// FIXME: This is totally wrong
+                System.err.println("Warning: SpecializeTokenVisitor" 
+				   + ".specializeTokens(): defaulting to " 
+				   + "integer");
                 declToTokenTypeMap.put(typedDecl,
-                        PtolemyTypeIdentifier.TOKEN_TYPE.clone());
+                        PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone());
             } else {
                 TypeNameNode typeNode =
                     (TypeNameNode) value.getDefType().clone();
