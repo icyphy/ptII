@@ -1281,6 +1281,11 @@ public class DEDirector extends Director {
 
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
+        
+        if (_debugging) _debug("enqueue event: to", 
+        receiver.getContainer().getFullName() + " ("+token.toString()+") ",
+        "time = "+ getCurrentTime() + " microstep = "+ (_microstep + 1) + " depth = "
+        + depth);
         _eventQueue.put(new DEEvent(receiver, token,
                 getCurrentTime(), _microstep + 1, depth));
     }
@@ -1357,6 +1362,8 @@ public class DEDirector extends Director {
             while (ports.hasNext()) {
                 IOPort inputPort = (IOPort)ports.next();
 
+                // For each input port, if it is a delay port, record the ports 
+                // triggered by its delayed event.
                 Set delayPorts = null;
                 if (inputPort instanceof DEIOPort) {
                     DEIOPort dePort = (DEIOPort) inputPort;
@@ -1416,7 +1423,7 @@ public class DEDirector extends Director {
             }
         }
         // NOTE: The following may be a very costly test, which is why
-        // it it done at the end.  However, this means that we cannot
+        // it is done at the end.  However, this means that we cannot
         // report an actor in the directed cycle.  Probably DirectedGraph
         // should be modified to enable such reporting.
         if (!dag.isAcyclic()) {
