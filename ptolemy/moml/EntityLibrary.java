@@ -482,9 +482,7 @@ public class EntityLibrary
                 parser.setContext(this);
                 if (_configureSource != null && !_configureSource.equals("")) {
                     URL xmlFile = new URL(_base, _configureSource);
-                    InputStream stream = xmlFile.openStream();
-                    parser.parse(xmlFile, stream);
-                    stream.close();
+                    parser.parse(xmlFile, xmlFile);
                 }
                 if (_configureText != null && !_configureText.equals("")) {
                     // NOTE: Regrettably, the XML parser we are using cannot

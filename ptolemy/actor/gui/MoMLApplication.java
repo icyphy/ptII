@@ -567,7 +567,7 @@ public class MoMLApplication {
 
                         try {
                             NamedObj toplevel =
-                                _parser.parse(base, inURL.openStream());
+                                _parser.parse(base, inURL);
                             if (toplevel instanceof Configuration) {
                                 _config = (Configuration)toplevel;
                             }
@@ -713,8 +713,7 @@ public class MoMLApplication {
         _parser.reset();
 
         Configuration toplevel =
-            (Configuration) _parser.parse(specificationURL,
-                    specificationURL.openStream());
+            (Configuration) _parser.parse(specificationURL, specificationURL);
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it

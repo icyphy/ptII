@@ -237,8 +237,7 @@ public class PtExecuteApplication extends MoMLApplication
         }
         MoMLParser parser = new MoMLParser();
         _configuration =
-            (Configuration)parser.parse(_configurationURL,
-                    _configurationURL.openStream());
+            (Configuration)parser.parse(_configurationURL, _configurationURL);
         return _configuration;
     }
 

@@ -33,7 +33,6 @@ package ptolemy.moml;
 // Ptolemy imports.
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,6 +41,7 @@ import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -1081,6 +1081,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Parse the MoML file at the given URL, which may be a file
      *  on the local file system, using the specified base
      *  to expand any relative references within the MoML file.
+     *  If the <i>input</i> URL has already been parsed, then
+     *  return the model that previously parsed.  Note that this
+     *  means that an application that opens and then closes
+     *  a model and expects to re-parse the XML when re-opening
+     *  must call purgeModelRecord() when closing it.
      *  This method uses parse(URL, InputStream).
      *  @param base The base URL for relative references, or null if
      *   not known.
@@ -1088,12 +1093,35 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
+     *  @see #purgeModelRecord(URL)
      */
     public NamedObj parse(URL base, URL input)
             throws Exception {
         _xmlFile = input;
         try {
-            return parse(base, input.openStream());
+            if (_imports == null) {
+                _imports = new HashMap();
+            } else {
+                WeakReference reference 
+                        = (WeakReference)_imports.get(input);
+                NamedObj previous = null;
+                if (reference != null) {
+                    previous = (NamedObj)reference.get();
+                    if (previous == null) {
+                        _imports.remove(input);
+                    }
+                } 
+                if (previous != null) {
+                    // NOTE: In theory, we should not even have to
+                    // check whether the file has been updated, because
+                    // if changes were made to model since it was loaded,
+                    // they should have been propagated.
+                    return previous;
+                }
+            }
+            NamedObj result = parse(base, input.openStream());
+            _imports.put(input, new WeakReference(result));
+            return result;
         } finally {
             _xmlFile = null;
         }
@@ -1101,7 +1129,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Parse the given stream, using the specified url as the base
      *  to expand any external references within the MoML file.
-     *  This method uses parse(URL, Reader).
+     *  This method uses parse(URL, Reader).  Note that this
+     *  bypasses the mechanism of parse(URL, URL) that returns
+     *  a previously parsed model. This method will always re-parse
+     *  using data from the stream.
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param input The stream from which to read XML.
@@ -1117,6 +1148,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Parse the given stream, using the specified url as the base
      *  to expand any external references within the MoML file.
      *  The reader is wrapped in a BufferedReader before being used.
+     *  Note that this
+     *  bypasses the mechanism of parse(URL, URL) that returns
+     *  a previously parsed model. This method will always re-parse
+     *  using data from the stream.
      *  @param base The base URL for relative references, or null if
      *   not known.
      *  @param reader The reader from which to read XML.
@@ -1224,7 +1259,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return parse(base, new StringReader(text));
     }
 
-    /** Parse the given file, which contains MoML.
+    /** Parse the file with the given name, which contains MoML.
      *  If there are external references in the MoML, they are interpreted
      *  relative to the current working directory.
      *
@@ -1239,12 +1274,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  property, which is not generally available in applets.  Hence
      *  it is probably not a good idea to use this method in applet code,
      *  since it will probably fail outright.
+     * 
+     *  <p>If the file has already been parsed, then
+     *  return the model that previously parsed.  Note that this
+     *  means that an application that opens and then closes
+     *  a model and expects to re-parse the XML when re-opening
+     *  should call purgeModelRecord() when closing it.
      *
      *  @param filename The file name from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
      *  @exception Exception If the parser fails.
      *  @exception SecurityException If the user.dir system property is
      *  not available.
+     *  @see #purgeModelRecord(String)
      */
     public NamedObj parseFile(String filename) throws Exception {
         URL base = null;
@@ -1259,13 +1301,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         File file = new File(new File(cwd), filename);
-        FileReader input = new FileReader(file);
-        _xmlFile = file.toURL();
-        try {
-            return parse(base, input);
-        } finally {
-            _xmlFile = null;
-        }
+        return parse(base, file.toURL());
     }
 
     /** Handle a processing instruction.  Processing instructions
@@ -1287,6 +1323,48 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
+    /** Purge any record of a model opened from the specified
+     *  URL.
+     *  @param url The URL.
+     *  @see #parse(URL, URL)
+     */
+    public static void purgeModelRecord(URL url) {
+        if (_imports != null) {
+            _imports.remove(url);
+        }
+    }
+    
+    /** Purge any record of a model opened from the specified
+     *  file name.
+     *
+     *  <p>Note that this method attempts to read the user.dir system
+     *  property, which is not generally available in applets.  Hence
+     *  it is probably not a good idea to use this method in applet code,
+     *  since it will probably fail outright.
+     * 
+     *  @param filename The file name from which to read MoML.
+     *  @exception MalformedURLException If the file name cannot be converted to a URL.
+     *  @exception SecurityException If the user.dir system property is
+     *   not available.
+     *  @see #parse(URL, String)
+     */
+    public static void purgeModelRecord(String filename)
+            throws MalformedURLException {
+        URL base = null;
+        // Use the current working directory as a base.
+        String cwd = StringUtilities.getProperty("user.dir");
+        if (cwd != null) {
+            // We have to append a trailing / here for this to
+            // work under Solaris.
+            base = new URL("file", null, cwd + "/");
+        }
+
+        // Java's I/O is so lame that it can't find files in the current
+        // working directory...
+        File file = new File(new File(cwd), filename);
+        purgeModelRecord(file.toURL());
+    }
+    
     /** Reset the MoML parser, forgetting about any previously parsed
      *  models.
      */
@@ -1358,7 +1436,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         if (_imports != null && source != null) {
-            Object possibleCandidate = _imports.get(source);
+            WeakReference reference = (WeakReference)_imports.get(source);
+            Object possibleCandidate = null;
+            if (reference != null) {
+                possibleCandidate = reference.get();
+                if (possibleCandidate == null) {
+                    _imports.remove(source);
+                }
+            } 
             if (possibleCandidate instanceof ComponentEntity) {
                 ComponentEntity candidate = (ComponentEntity)possibleCandidate;
                 // Check that the candidate is a class.
@@ -3567,20 +3652,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throws Exception {
         URL previousXmlFile = parser._xmlFile;
         parser._xmlFile = fileNameToURL(file, base);
-        if (_imports != null) {
-            NamedObj previous = (NamedObj)_imports.get(parser._xmlFile);
-            if (previous != null) {
-                // NOTE: In theory, we should not even have to
-                // check whether the file has been updated, because
-                // if changes were made to model since it was loaded,
-                // they should have been propagated.
-                return previous;
-            }
-        }
-        InputStream input = parser._xmlFile.openStream();
         try {
-            NamedObj toplevel = parser.parse(parser._xmlFile, input);
-            input.close();
+            NamedObj toplevel 
+                    = parser.parse(parser._xmlFile, parser._xmlFile);
 
             // NOTE: This might be a relative file reference, which
             // won't be of much use if a MoML file is moved.
@@ -3599,14 +3673,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // equal() so that it returns true if two URLs refer
             // to the same file, regardless of whether they have
             // the same string representation.
-            _imports.put(parser._xmlFile, toplevel);
+            // NOTE: The value in the HashMap is a weak reference
+            // so that we don't keep all models ever created just
+            // because of this _imports field. If there are no
+            // references to the model other than the one in
+            // _imports, it can be garbage collected.
+            _imports.put(parser._xmlFile, new WeakReference(toplevel));
 
             return toplevel;
         } catch (CancelException ex) {
             // Parse operation cancelled.
             return null;
         } finally {
-            input.close();
             parser._xmlFile = previousXmlFile;
         }
     }
@@ -4958,8 +5036,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // of this class.
     private static List _filterList = null;
 
-    // List of top-level entities imported via import element
-    // and of MoML classes loaded in order to instantiate them.
+    // List of weak references to
+    // top-level entities imported via import element,
+    // of MoML classes loaded in order to instantiate them,
+    // and of models that have been parsed.
     private static Map _imports;
     
     // List of link or unlink requests.

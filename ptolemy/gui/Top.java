@@ -519,10 +519,12 @@ public abstract class Top extends JFrame {
      *  first call this parent class method, then clear the data,
      *  unless the return value is false.  A return value of false
      *  indicates that the user has canceled the action.
-     *  @return False if the user cancels the clear.
+     *  @return True if the current contents are either saved or discarded
+     *   with permission from the user.
      */
     protected boolean _clear() {
-        return _queryForSave();
+        int result = _queryForSave();
+        return (result == _SAVED || result == _DISCARDED);
     }
 
     /** Close the window.  Derived classes should override this to
@@ -538,7 +540,8 @@ public abstract class Top extends JFrame {
         // windowClosed events rather than overriding the
         // windowClosing behavior given here.
         if (isModified()) {
-            if (_queryForSave()) {
+            int result = _queryForSave();
+            if (result == _SAVED || result == _DISCARDED) {
                 dispose();
                 return true;
             }
@@ -556,7 +559,8 @@ public abstract class Top extends JFrame {
      */
     protected void _exit() {
         if (isModified()) {
-            if (_queryForSave()) {
+            int result = _queryForSave();
+            if (result == _SAVED || result == _DISCARDED) {
                 System.exit(0);
             }
         } else {
@@ -687,6 +691,45 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** Open a dialog to prompt the user to save the data.
+     *  Return false if the user clicks "cancel", and otherwise return true.
+     *  If the user clicks "Save", this also saves the data.
+     *  @return _SAVED if the file is saved, _DISCARDED if the modifications are
+     *   discarded, _CANCELED if the operation is canceled by the user, and
+     *   _FAILED if the user selects save and the save fails.
+     */
+    protected int _queryForSave() {
+        Object[] options = {"Save", "Discard changes", "Cancel"};
+
+
+        String query = "Save changes to "
+            + StringUtilities.split(_getName()) + "?";
+
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(
+                this,
+                query,
+                "Save Changes?",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (selected == 0) {
+            if (_save()) {
+                return _SAVED;
+            } else {
+                return _FAILED;
+            }
+        }
+        if (selected == 1) {
+            return _DISCARDED;
+        }
+        return _CANCELED;
+    }
+
     /** Read the specified URL.
      *  @param url The URL to read.
      *  @exception Exception If the URL cannot be read.
@@ -775,6 +818,18 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Indicator that a file is saved. */
+    static protected int _SAVED = 0;
+    
+    /** Indicator that a file is discarded. */
+    static protected int _DISCARDED = 1;
+
+    /** Indicator that a close operation is canceled. */
+    static protected int _CANCELED = 2;
+
+    /** Indicator that a file save failed. */
+    static protected int _FAILED = 3;
+         
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
 
@@ -826,7 +881,7 @@ public abstract class Top extends JFrame {
     
     // The input file.
     private File _file = null;
-
+    
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
 
@@ -862,35 +917,6 @@ public abstract class Top extends JFrame {
                 _deferredActions.clear();
             }
         }
-    }
-    
-    // Open a dialog to prompt the user to save the data.
-    // Return false if the user clicks "cancel", and otherwise return true.
-    private boolean _queryForSave() {
-        Object[] options = {"Save", "Discard changes", "Cancel"};
-
-
-        String query = "Save changes to "
-            + StringUtilities.split(_getName()) + "?";
-
-
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                this,
-                query,
-                "Save Changes?",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        if (selected == 0) {
-            return _save();
-        } else if (selected == 1) {
-            return true;
-        }
-        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

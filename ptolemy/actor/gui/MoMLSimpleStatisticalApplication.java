@@ -213,8 +213,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
 
                     // Assume this is a MoML file, and open it.
                     _parser.reset();
-                    _toplevel = (CompositeActor)_parser.parse(
-                            base, inURL.openStream());
+                    _toplevel = (CompositeActor)_parser.parse(base, inURL);
                 } else {
                     // Argument not recognized.
                     return false;

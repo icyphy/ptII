@@ -115,7 +115,7 @@ public class PtolemyApplication extends MoMLApplication {
         URL inURL = specToURL("ptolemy/configs/runWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inURL, inURL.openStream());
+        _parser.parse(inURL, inURL);
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
         URL idURL = specToURL("ptolemy/configs/intro.htm");
         doc.identifier.setExpression(idURL.toExternalForm());

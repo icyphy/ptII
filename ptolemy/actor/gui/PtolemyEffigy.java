@@ -338,8 +338,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 JNLPUtilities
                                 .jarURLEntryResource(input.toString());
                             if (anotherURL != null) {
-                                toplevel = parser.parse(base,
-                                        anotherURL.openStream());
+                                toplevel = parser.parse(base, anotherURL);
                             } else {
                                 throw io;
                             }

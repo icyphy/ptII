@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
@@ -51,6 +52,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -426,7 +428,32 @@ public class TableauFrame extends Top {
             }
         }
         // If we get here, there was no other tableau.
-        return super._close();
+        
+        // NOTE: Do not use the superclass method so we can
+        // check for children of the model.
+        // NOTE: We use dispose() here rather than just hiding the
+        // window.  This ensures that derived classes can react to
+        // windowClosed events rather than overriding the
+        // windowClosing behavior given here.
+        if (isModified()) {
+            int reply = _queryForSave();
+            if (reply == _DISCARDED || reply == _FAILED) {
+                // If the model has children, then
+                // issue a warning that those children will
+                // persist.  Give the user the chance to cancel.
+                if (!_checkForDerivedObjects()) {
+                    return false;
+                }
+
+                dispose();
+                return true;
+            }
+            return false;
+        } else {
+            // Window is not modified, so just dispose.
+            dispose();
+            return true;
+        }
     }
 
     /** Close all open tableaux, querying the user as necessary to save data,
@@ -661,6 +688,14 @@ public class TableauFrame extends Top {
                         if (selected == 1) {
                             return false;
                         }
+                        
+                        // If the model has children, then
+                        // issue a warning that those children will
+                        // persist.  Give the user the chance to cancel.
+                        if (!_checkForDerivedObjects()) {
+                            return false;
+                        }
+                        
                         // Mark unmodified so that we don't get another
                         // query when it is closed.
                         previousOpen.setModified(false);
@@ -746,6 +781,66 @@ public class TableauFrame extends Top {
      */
     protected JMenu _viewMenu;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If the model has children, then issue a warning that those
+     *  children will persist in modified form.  Give the user the
+     *  chance to cancel.
+     *  @return False if there are children and 
+     *   the user cancels. True otherwise.
+     */
+    private boolean _checkForDerivedObjects() {
+        Effigy effigy = getEffigy();
+        if (effigy instanceof PtolemyEffigy) {
+            NamedObj model = ((PtolemyEffigy)effigy).getModel();
+            if (model instanceof Instantiable) {
+                // NOTE: We are assuming that only the top-level
+                // can defer outside the model. This is currently
+                // true. Will it always be true?
+                List children = ((Instantiable)model).getChildren();
+                if (children != null && children.size() > 0) {
+                    StringBuffer confirm = new StringBuffer(
+                            "Warning: This model defines a class, "
+                            + "and there are open models with instances\n"
+                            + "or subclasses the modified version of "
+                            + "this model:\n");
+                    Iterator instances = children.iterator();
+                    int length = confirm.length();
+                    while (instances.hasNext()) {
+                        WeakReference reference = (WeakReference)instances.next();
+                        Instantiable instance = (Instantiable)reference.get();
+                        if (instance != null) {
+                            confirm.append(instance.getFullName());
+                            confirm.append(";");
+                            int newLength = confirm.length();
+                            if (newLength - length > 50) {
+                                confirm.append("\n");
+                                length = confirm.length();
+                            }
+                        }
+                    }
+                    confirm.append("\nContinue?");
+                    // Show a MODAL dialog
+                    int selected =
+                        JOptionPane.showOptionDialog(
+                            this,
+                            confirm,
+                            "Warning: Instances or Subclasses",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            null,
+                            null);
+                    if (selected == 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

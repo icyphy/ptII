@@ -29,6 +29,14 @@
 
 package ptolemy.actor.gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -39,12 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.Iterator;
-import java.util.List;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
@@ -289,7 +292,10 @@ public class Effigy extends CompositeEntity {
     /** Override the base class so that tableaux contained by this object
      *  are removed before this effigy is removed from the ModelDirectory.
      *  This causes the frames associated with those tableaux to be
-     *  closed.
+     *  closed.  Also, if the argument is null and there is a URI
+     *  associated with this model, then purge any record of the
+     *  model that the MoMLParser class is keeping so that future
+     *  efforts to open the model result in re-parsing.
      *  @param container The directory in which to list this effigy.
      *  @exception IllegalActionException If the proposed container is not
      *   an instance of ModelDirectory, or if the superclass throws it.
@@ -311,6 +317,16 @@ public class Effigy extends CompositeEntity {
             while (effigies.hasNext()) {
                 ComponentEntity effigy = (ComponentEntity)effigies.next();
                 effigy.setContainer(null);
+            }
+            if (uri != null) {
+                try {
+                    URL url = uri.getURL();
+                    MoMLParser.purgeModelRecord(url);
+                } catch (MalformedURLException e) {
+                    // This might occur as a result of failure
+                    // to read the URL in the first place, so we
+                    // have to do nothing.
+                }
             }
         }
         super.setContainer(container);
