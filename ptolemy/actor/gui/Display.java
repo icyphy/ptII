@@ -193,6 +193,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
     public void place(Container container) {
         _container = container;
         if (_container == null) {
+            System.out.println("Container is null");
             // place the text area in its own frame.
             // FIXME: This probably needs to be a PtolemyFrame, when one
             // exists, so that the close button is dealt with, etc.
@@ -258,9 +259,11 @@ public class Display extends Sink implements Placeable, SequenceActor {
     /** Override the base class to make sure the end of the text is visible.
      */
     public void wrapup() {
-        JScrollBar bar = _scrollPane.getVerticalScrollBar();
-        if (bar != null) {
-            bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
+        if ( _scrollPane != null ) {
+            JScrollBar bar = _scrollPane.getVerticalScrollBar();
+            if (bar != null) {
+                bar.setValue(bar.getMaximum() - bar.getVisibleAmount());
+            }
         }
     }
 
