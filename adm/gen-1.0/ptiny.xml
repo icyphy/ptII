@@ -173,14 +173,14 @@ Berkeley, CA 94706</property>
                         <property name="launcherUIDisplayTime">10</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
-                    <property name="title">Launching Vergil</property>
+                    <property name="title">Vergil Launcher</property>
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
                     <property array="True" length="6" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
-                        <arrayItem>./ptolemy/configs/configsPtiny.jar</arrayItem>
+                        <arrayItem>./ptolemy/actor/lib/javasound/javasound.jar</arrayItem>
                         <arrayItem>./lib/diva.jar</arrayItem>
                         <arrayItem/>
                     </property>
