@@ -679,3 +679,4 @@ public class Complex implements Cloneable, Serializable {
      */
     public static final Complex I = new Complex(0.0, 1.0);
 }
+
