@@ -95,14 +95,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class ODESolver extends NamedObj {
-    /** Construct a solver in the default workspace with an empty
-     *  string as name. The solver is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     */
-    public ODESolver() {
-        super();
-    }
-
     /** Construct a solver in the given workspace with a null string name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -112,21 +104,6 @@ public abstract class ODESolver extends NamedObj {
      */
     public ODESolver(Workspace workspace) {
         super(workspace);
-    }
-
-    /** Construct a solver in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The solver is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *
-     *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this solver.
-     *  @exception IllegalActionException If the name has a period.
-     */
-    public ODESolver(Workspace workspace, String name)
-            throws IllegalActionException {
-        super(workspace, name);
     }
 
     ///////////////////////////////////////////////////////////////////
