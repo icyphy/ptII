@@ -52,24 +52,24 @@ rate = --------------
         t(k) - t(k-1)
 </pre>
 where u(k) and t(k) are the current input and time, and y(k-1) and t(k-1)
-are the output and time at the previous step. The output is determined 
-by comparing rate to the <i>risingSlewRate</i> and 
+are the output and time at the previous step. The output is determined
+by comparing rate to the <i>risingSlewRate</i> and
 <i>fallingSlewRate</i> parameters.
 <ul>
-<li>If rate is greater than <i>risingSlewRate</i>, the output is 
+<li>If rate is greater than <i>risingSlewRate</i>, the output is
 <pre>
-y(k) = (t(k)-t(k-1))*risingSlewRate + y(k-1) 
-</pre> 
-<li>If rate is less than <i>fallingSlewRate</i>, the output is 
+y(k) = (t(k)-t(k-1))*risingSlewRate + y(k-1)
+</pre>
+<li>If rate is less than <i>fallingSlewRate</i>, the output is
 <pre>
-y(k) = (t(k)-t(k-1))*fallingSlewRate + y(k-1) 
-<li>Otherwise, just output the input. 
+y(k) = (t(k)-t(k-1))*fallingSlewRate + y(k-1)
+<li>Otherwise, just output the input.
 <P>
 This actor works as a (continuous) nonlinear function. It does not
 control integration step sizes. Notice that this actor does not try
 to find the time instant that the input rate reaches the rising slew rate
 or falling slew rate. As a consequence, this may cause some ODE solvers
-not converging under some circumstances. 
+not converging under some circumstances.
 
 FIXME: This actor should implement the CTStateful interface to support
 rollback.
@@ -94,13 +94,13 @@ public class CTRateLimiter extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        risingSlewRate = new Parameter(this, "risingSlewRate", 
+        risingSlewRate = new Parameter(this, "risingSlewRate",
                 new DoubleToken(1.0));
-        fallingSlewRate = new Parameter(this, "fallingSlewRate", 
+        fallingSlewRate = new Parameter(this, "fallingSlewRate",
                 new DoubleToken(-1.0));
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     /** The rising slew rate.
@@ -115,7 +115,7 @@ public class CTRateLimiter extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                        public methods                     ////
-    
+
     /** Compute the change rate of the input and compare it to
      *  the <i>risingSlewRate</i> and the <i>fallingSlewRate</i>.
      *  If the rate is outside the range defined by the parameters,
@@ -160,7 +160,7 @@ public class CTRateLimiter extends Transformer {
         _lastToken = _newToken;
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
     // Last time instant.
@@ -168,7 +168,7 @@ public class CTRateLimiter extends Transformer {
 
     // Last output value.
     private Token _lastToken;
-     
+
     // New value.
     private Token _newToken;
 }

@@ -69,7 +69,7 @@ through a multi-input port and a multi-output port. The widths of the
 ports must match the number of rows and columns in corresponding
 matrices, otherwise, an exception will be thrown.
 <P>
-This actor works like a higher-order function. It is opaque after 
+This actor works like a higher-order function. It is opaque after
 construction or the change of parameters. Upon preinitialization,
 the actor will create a subsystem using integrators, adders, and
 scales. After that, the actor becomes transparent, and the director
@@ -339,7 +339,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                                 "outputScale_" + l + "_" + i);
                         outputScales[l][i].factor.setToken(tokenLI);
                         outputScales[l][i].input.link(states[i]);
-                        connect(outputScales[l][i].output, 
+                        connect(outputScales[l][i].output,
                                 outputAdders[l].plus);
                     }
                 }
@@ -389,7 +389,7 @@ public class LinearStateSpace extends TypedCompositeActor {
     }
 
     /** Set the opaqueness back to true and call the wrapup() method
-     *  of the super class. 
+     *  of the super class.
      *  @exception IllegalActionException If there is no director.
      */
     public void wrapup() throws IllegalActionException {

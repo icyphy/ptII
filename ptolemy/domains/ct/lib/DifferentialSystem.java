@@ -60,7 +60,7 @@ vector, t is the time. Users must give the name of the variables
 by filling in parameters
 <P>
 The actor, upon creation, has no input and no output. Upon filling
-in the names in the <i>inputVariableNames</i> and 
+in the names in the <i>inputVariableNames</i> and
 <i>outputVariableNames</i> parameters, the ports will be created.
 The name of the state variables are manually added by filling in
 the <i>stateVariableNames</i> parameter.
@@ -144,7 +144,7 @@ public class DifferentialSystem extends TypedCompositeActor {
     /** If the argument is the <i>initialState</i>
      *  parameters, check that it is a row vector;
      *  Other sanity checks, like whether a differential equation matches
-     *  a state variable name, are done in preinitialize() and run time. 
+     *  a state variable name, are done in preinitialize() and run time.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
@@ -216,7 +216,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                         initial.getElementAsToken(0, i));
                 stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
-                
+
                 integrators[i].output.link(stateRelations[i]);
                 // One Expression per integrator.
                 equations[i] = new Expression(this, states[i] + "_dot");
@@ -246,14 +246,14 @@ public class DifferentialSystem extends TypedCompositeActor {
             Iterator outputPorts = outputPortList().iterator();
             while (outputPorts.hasNext()) {
                 outputs[outIndex] = ((NamedObj)outputPorts.next()).getName();
-                maps[outIndex] = new Expression(this, "output_" + 
+                maps[outIndex] = new Expression(this, "output_" +
                         outputs[outIndex]);
 
                 maps[outIndex].expression.setExpression(((StringToken)
                         ((Parameter)getAttribute(outputs[outIndex])).
                         getToken()).stringValue());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
-                connect(maps[outIndex].output, 
+                connect(maps[outIndex].output,
                         (TypedIOPort)getPort(outputs[outIndex]));
                 outIndex++;
             }
@@ -362,7 +362,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         }
 
         // Check output names.
-        Iterator outputPorts = outputPortList().iterator();   
+        Iterator outputPorts = outputPortList().iterator();
         // Note there could be no output. If there are outputs,
         // check if any of the output variable names is an empty string,
         // and also that there is an output port with the same name.

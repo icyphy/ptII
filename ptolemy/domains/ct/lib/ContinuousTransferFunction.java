@@ -105,7 +105,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         // Do not use TypedCompositeActor as the MoML name for this actor.
-        getMoMLInfo().className = 
+        getMoMLInfo().className =
             "ptolemy.domains.ct.lib.ContinuousTransferFunction";
 
         // icon
@@ -131,13 +131,13 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     /** Single output port.
      */
     public TypedIOPort output;
-    
-    /** The coefficients of the numerator, containing an array of 
+
+    /** The coefficients of the numerator, containing an array of
      *  DoubleTokens.
      *  The default value is {1.0}.
      */
     public Parameter numerator;
-    
+
     /** The coefficients of the denominator, containing an array
      *  of DoubleTokens.
      *  The array must have a length greater
@@ -150,12 +150,12 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     ////                      public methods                          ////
 
     /** If the argument is the <i>numerator</i> or the <i>denominator</i>
-     *  parameters, request for initialization from the director if 
+     *  parameters, request for initialization from the director if
      *  there is one. Also check that the <i>denominator</i> vector
      *  cannot start with 0.
-     *  Other sanity checks, like that the denominator must have a higher 
+     *  Other sanity checks, like that the denominator must have a higher
      *  order than that of the numerator, and that the first element of the
-     *  denominator should not be zero, are done in the preinitialize() 
+     *  denominator should not be zero, are done in the preinitialize()
      *  method.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the

@@ -101,7 +101,7 @@ public class ZeroCrossingDetector extends Transformer
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the attribute change failed.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException{
         if (attribute == errorTolerance) {
             double p = ((DoubleToken)errorTolerance.getToken()
@@ -217,7 +217,7 @@ public class ZeroCrossingDetector extends Transformer
     }
 
     /** Prepare for the next iteration, by making the current trigger
-     *  token to be the history trigger token. 
+     *  token to be the history trigger token.
      *  @return True always.
      */
     public boolean postfire() {

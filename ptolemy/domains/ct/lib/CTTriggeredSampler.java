@@ -1,4 +1,4 @@
-/* Generate discrete events by sampling a CT signal whenever there 
+/* Generate discrete events by sampling a CT signal whenever there
    is a trigger.
 
  Copyright (c) 1998-2001 The Regents of the University of California.

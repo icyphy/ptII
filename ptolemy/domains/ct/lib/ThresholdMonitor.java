@@ -42,13 +42,13 @@ import ptolemy.actor.lib.TimedActor;
 //// ThresholdMonitor
 /**
 Monitor integration steps so that a threshold is never crossed in one step.
-The threshold is defined as a <i>thresholdCenter</i> and a 
+The threshold is defined as a <i>thresholdCenter</i> and a
 <i>thresholdWidth</i>. The actor monitors the input
 value and controls the integration step size such that the input does
 not cross the threshold in one step. In stead, the input will be in the
 threshold at at least one time instance. When ever the input is in
 the threshold, it outputs a true token, otherwise, it output
-a false token.This actor refines step sizes by bisection. 
+a false token.This actor refines step sizes by bisection.
 
 @author  Jie Liu
 @version $Id$
@@ -98,7 +98,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      */
     public TypedIOPort input;
 
-    /** The output port, single port with type boolean. 
+    /** The output port, single port with type boolean.
      */
     public TypedIOPort output;
 
@@ -132,7 +132,7 @@ public class ThresholdMonitor extends TypedAtomicActor
         }
     }
 
-    /** Consume the current input. If the input is in the threshold, 
+    /** Consume the current input. If the input is in the threshold,
      *  then output true, otherwise output false.
      *  @exception IllegalActionException If there is no director.
      */

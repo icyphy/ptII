@@ -98,7 +98,7 @@ public class CTPeriodicSampler extends Transformer
      *  @exception IllegalActionException If the sampling period is
      *  less than or equal to 0.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException{
         if (attribute == samplePeriod) {
             double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();

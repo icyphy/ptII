@@ -81,7 +81,7 @@ public class ZeroOrderHold extends Transformer
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Clone the actor into the specified workspace. 
+    /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
