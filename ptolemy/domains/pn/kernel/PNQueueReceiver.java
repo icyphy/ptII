@@ -188,19 +188,46 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return true;
     }
 
-    /**
+    /** Return true if this receiver is connected to the inside of a 
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is connected
+     *  to the inside of a boundary port, then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  This method is not synchronized so the caller
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() {
 	return _boundaryDetector.isConnectedToBoundary();
     }
 
-    /**
+    /** Return true if this receiver is contained on the inside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the inside of a boundary port then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  This method is not synchronized so the caller should be.
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isInsideBoundary() {
 	return _boundaryDetector.isInsideBoundary();
     }
 
-    /**
+    /** Return true if this receiver is contained on the outside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the outside of a boundary port then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  This method is not synchronized so the caller should be.
+     *  @return True if this receiver is contained on the outside of
+     *   a boundary port; return false otherwise.
+     *  @see BoundaryDetector
      */
     public boolean isOutsideBoundary() {
 	return _boundaryDetector.isOutsideBoundary();
