@@ -429,7 +429,7 @@ public class Director extends NamedObj implements Executable {
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking preinitialize(): ",
-                ((NamedObj)actor).getFullName());
+                        ((NamedObj)actor).getFullName());
                 actor.preinitialize();
             }
         }
@@ -510,7 +510,7 @@ public class Director extends NamedObj implements Executable {
     public void setCurrentTime(double newTime) throws IllegalActionException {
         if (newTime < getCurrentTime()) {
             throw new IllegalActionException(this,
-            "Attempt to move current time backwards.");
+                    "Attempt to move current time backwards.");
         }
         _currentTime = newTime;
     }
