@@ -86,19 +86,20 @@ do
    shortfiles=" $shortfiles `basename $file`"
 done
 
+echo "   Printing using enscript . . ."
 enscript -Gp - $shortfiles > $reviewdir/javafiles.ps
 
-# Convert it to 2up
+echo "   Converting to 2up using psnup . . ."
 cd $reviewdir
 psnup -n 2 < javafiles.ps > javafiles2up.ps
 
-# Generate PDF of the 2up
+echo "   Generating PDF using distill . . ."
 distill javafiles2up.ps
 
 date=`date +"%h %e, %Y "`
 
 ####################################
-echo "Generate a html file with the appropriate links"
+echo "    Generating an html file with the appropriate links . . ."
 cat >$reviewfile <<EoF
 <!-- \$Id$
 
@@ -112,7 +113,6 @@ Links are relative, not absolute.
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
  <!-- Be sure to fix the date to the date of the review itself -->
 <title>$date: Review of $files<title>
-<title>Title</title>
 </head>
 <body>
  <!-- Replace all the italic text, including the <I></I> directives -->
@@ -202,6 +202,7 @@ Review ended: <I>time</I>
 </html>
 EOF
 
+
 # Do a little checking
 retval=0
 outputfiles="javafiles.ps javafiles2up.ps javafiles2up.pdf"
@@ -214,9 +215,22 @@ do
 done
 
 
+echo "Add the following to the top of the list of reviews in"
+echo "$reviewdir/index.htm"
+echo ""
+echo "<li><a href=\"$reviewname.htm\">$date: Review of `echo $files | sed 's/.java//g'`</a>"
+echo ""
+
+echo "The commands to run are:"
+echo "   cd $reviewtopdir/$packagename"
+echo "   cvs add $reviewname.htm $reviewname"
+echo "   cvs add -kb $reviewname/javafiles2up.pdf"
+echo "   cvs commit -m \"Added review material for $date\" $reviewname.htm $reviewname"
+
 # Fix the permissions
 chmod g+ws .
 chmod -R g+w . $reviewfile
 chgrp -R ptolemy . $reviewfile
 
+echo "Done."
 exit $retval
