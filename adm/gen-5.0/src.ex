@@ -61,6 +61,7 @@ ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/xslt
 ptolemy/apps
 ptolemy/automata
+ptolemy/backtrack
 ptolemy/build.xml
 ptolemy/codegen
 ptolemy/filter/*
