@@ -84,6 +84,18 @@ test MoMLWriter-1.1 {parse tolerated incorrect MoML} {
 </entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
+
+
     set toplevel [$parser parse $moml_1]
     $toplevel getFullName
 } {.top}
