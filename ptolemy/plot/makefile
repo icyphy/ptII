@@ -52,10 +52,13 @@ JSRCS1_0 = \
 	Message.java \
 	PlotBox.java \
 	Plot.java \
+	PlotApplet.java \
 	PlotDataException.java \
 	PlotDemo.java \
 	PlotFourierSeries.java \
 	PlotLive.java \
+	PlotLive.java \
+	PlotLiveApplet.java \
 	PlotLiveDemo.java \
 	PlotPoint.java \
 	PlayingWave.java
@@ -71,22 +74,8 @@ EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat testpxgraph index.html
 
 MISC_FILES = demo doc #test 
 
-JCLASS1_0 = \
-	CmdLineArgException.class \
-	Message.class \
-	PlotBox.class \
-	Plot.class \
-	PlotDataException.class \
-	PlotDemo.class \
-	PlotFourierSeries.class \
-	PlotLive.class \
-	PlotLiveDemo.class \
-	PlotPoint.class \
-	PlayingWave.class
-
-JCLASS1_1 = \
-	Message.class \
-	Pxgraph.class
+JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
+JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
