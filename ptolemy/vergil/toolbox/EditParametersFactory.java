@@ -30,15 +30,18 @@
 
 package ptolemy.vergil.toolbox;
 
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 
 import diva.gui.toolbox.JContextMenu;
 
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
@@ -47,22 +50,29 @@ import javax.swing.JMenuItem;
 //// EditParametersFactory
 /**
 A factory that adds an action to the given context menu that will configure
-parameters on the given object.
+parameters on the given object.  If that object contains an attribute that
+is an instance of EditorFactory, then that instance is used to create
+the dialog (or whatever) to configure the object.  Otherwise, an instance
+of EditParametersDialog is created.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see ptolemy.actor.gui.EditParametersDialog
 */
 public class EditParametersFactory implements MenuItemFactory {
 
-    /** Construct a factory with the default name, "Edit Parameters".
+    /** Construct a factory with the default command name, "Edit Parameters"
+     *  in the default workspace, with no container.
+     *  The command name will appear in the menus.
      */
     public EditParametersFactory() {
         this("Edit Parameters");
     }
 
-    /** Construct a factory with the specified name.  This name
-     *  will typically appear in a menu.
-     *  @param name The name of the factory.
+    /** Construct a factory with the specified command name in the
+     *  default workspace, with no container. The name
+     *  will appear in a menu.
+     *  @param name The command name.
      */
     public EditParametersFactory(String name) {
         _name = name;
@@ -72,8 +82,7 @@ public class EditParametersFactory implements MenuItemFactory {
     ////                     public methods                        ////
 
     /** Add an item to the given context menu that will configure the
-     *  parameters on the given target.
-     *  @param menu The context menu.
+     *  parameters on the given target.     *  @param menu The context menu.
      *  @param object The object whose parameters are being configured.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
@@ -97,13 +106,29 @@ public class EditParametersFactory implements MenuItemFactory {
                     parent = parent.getParent();
                 }
                 if (parent instanceof Frame) {
-                    new EditParametersDialog((Frame)parent, target);
+                    openDialog((Frame)parent, target);
                 } else {
-                    new EditParametersDialog(null, target);
+                    openDialog(null, target);
                 }
 	    }
 	};
 	return menu.add(action, _name);
+    }
+
+    /** Open an edit parameters dialog.  This is a modal dialog, so
+     *  this method returns only after the dialog has been dismissed.
+     *  @param parent A frame to serve as a parent for the dialog,
+     *   or null if there is none.
+     *  @param target The object whose parameters are to be edited.
+     */
+    public void openDialog(Frame parent, NamedObj target) {
+        List attributeList = target.attributeList(EditorFactory.class);
+        if (attributeList.size() > 0) {
+            EditorFactory factory = (EditorFactory)attributeList.get(0);
+            factory.createEditor(target, parent);
+        } else {
+            new EditParametersDialog(parent, target);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

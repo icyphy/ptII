@@ -91,7 +91,8 @@ public class RelationController extends ParameterizedNodeController {
 		Relation relation = (Relation) vertex.getContainer();
                 PtolemyGraphModel model =
                     (PtolemyGraphModel)getController().getGraphModel();
-                figure.setToolTipText(relation.getName(model.getToplevel()));
+                figure.setToolTipText(relation.getName(
+                        model.getPtolemyModel()));
 	    }
 	    return figure;
 	}

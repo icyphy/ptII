@@ -304,7 +304,7 @@ public class EditorGraphController extends ViewerGraphController {
 		(PtolemyGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
-	    final CompositeEntity toplevel = graphModel.getToplevel();
+	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 	    final String portName = toplevel.uniqueName("port");
 	    final String locationName = "location1";
 	    // Create the port.
@@ -388,7 +388,7 @@ public class EditorGraphController extends ViewerGraphController {
 		(PtolemyGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
-	    final CompositeEntity toplevel = graphModel.getToplevel();
+	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 
 	    final String relationName = toplevel.uniqueName("relation");
 	    final String vertexName = "vertex1";

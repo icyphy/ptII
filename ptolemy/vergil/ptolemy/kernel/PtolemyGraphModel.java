@@ -30,32 +30,47 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-// FIXME: Trim this list and replace with explict (per class) imports.
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.gui.MessageHandler;
-import ptolemy.moml.*;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.Token;
-import ptolemy.data.ObjectToken;
-import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
-import diva.graph.GraphException;
 import diva.graph.GraphUtilities;
-import diva.graph.modular.MutableEdgeModel;
-import diva.graph.toolbox.*;
-import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.CompositeModel;
-import diva.graph.modular.NodeModel;
-import diva.graph.modular.EdgeModel;
 import diva.graph.modular.CompositeNodeModel;
-import diva.util.*;
+import diva.graph.modular.EdgeModel;
+import diva.graph.modular.MutableEdgeModel;
+import diva.graph.modular.NodeModel;
+import diva.util.NullIterator;
 
-import java.util.*;
-import javax.swing.SwingUtilities;
+import ptolemy.actor.Director;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;import ptolemy.kernel.util.NamedObj;
+
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.Vertex;
+import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
+import ptolemy.vergil.ptolemy.PtolemyNodeModel;
+
+// NOTE: The inner classes here should be factored out as independent
+// classes, and the resulting NodeModel hierarchy should be carefully
+// thought out.  This work has been started, with the PtolemyNodeModel
+// base class and the AttributeNodeModel derived class.  The remaining
+// node models here and in the FSMGraphModel remain to be done.  EAL.
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyGraphModel
@@ -92,10 +107,10 @@ remain synchronized with the state of a mutating model.
 public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
     /** Construct a new graph model whose root is the given composite entity.
-     *  @param toplevel The top-level composite entity for the model.
+     *  @param composite The top-level composite entity for the model.
      */
-    public PtolemyGraphModel(CompositeEntity toplevel) {
-	super(toplevel);
+    public PtolemyGraphModel(CompositeEntity composite) {
+	super(composite);
 	_linkSet = new HashSet();
         _update();
     }
@@ -131,24 +146,22 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         }
     }
 
-    /** Return the model for the given composite object.  If the object is not
-     *  a composite, meaning that it does not contain other nodes,
-     *  then return null.
-     *  @param composite An object that is assumed to be a node object in
-     *   this graph model.
-     *  @return An instance of ToplevelModel if the object is the root
-     *   object of this graph model or an instance of IconModel if the
-     *   object is an icon.  Otherwise return null.
+    /** Return the model for the given composite object.
+     *  In this class, return an instance of CompositeEntityModel
+     *  if the object is the root object of this graph model, and return
+     *  an instance of IconModel if the object is a location contained
+     *  by an entity.  Otherwise return null.
+     *  @param composite A composite object.
+     *  @return A model of a composite node.
      */
     public CompositeModel getCompositeModel(Object composite) {
-	if(composite.equals(getRoot())) {
-	    return _toplevelModel;
-	} else if(composite instanceof Location &&
-		  ((Location)composite).getContainer() instanceof Entity) {
+        CompositeModel result = super.getCompositeModel(composite);
+        if (result == null
+                && composite instanceof Location
+                && ((Location)composite).getContainer() instanceof Entity) {
 	    return _iconModel;
-	} else {
-	    return null;
 	}
+        return result;
     }
 
     /** Return the model for the given edge object.  If the object is not
@@ -178,13 +191,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     }
 
     /** Return the node model for the given object.  If the object is not
-     *  a node, then return null.
+     *  a node, then return null.  The argument should be either an instance
+     *  of Port, Vertex, or Location.
      *  @param node An object which is assumed to be in this graph model.
-     *  @return An instance of IconModel if the object is an icon, an instance
-     *   of ExternalPortModel if the object is a port contained in the root of
-     *   this graph model, an instance of PortModel for all other ports
-     *   (which are presumably contained in Icons), and an instance of
-     *   VertexModel for vertexes.  Otherwise return null.
+     *  @return The node model for the specified node, or null if there
+     *   is none.
      */
     public NodeModel getNodeModel(Object node) {
 	if(node instanceof Port) {
@@ -192,23 +203,55 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	} else if(node instanceof Vertex) {
 	    return _vertexModel;
 	} else if(node instanceof Location) {
-	    Location location = (Location)node;
-	    if(location.getContainer() instanceof Port) {
+	    Object container = ((Location)node).getContainer();
+	    if(container instanceof Port) {
 		return _externalPortModel;
-	    } else if(location.getContainer() instanceof Entity) {
+	    } else if(container instanceof Entity) {
 		return _iconModel;
-	    } else if(location.getContainer() instanceof Attribute) {
-		return _attributeModel;
-	    } else
-		return null;
-	} else {
-	    return null;
-	}
+            }
+        }
+        return super.getNodeModel(node);
     }
 
-    public ToplevelModel getToplevelModel() {
-	return _toplevelModel;
+    /** Return the semantic object correspoding to the given node, edge,
+     *  or composite.  A "semantic object" is an object associated with
+     *  a node in the graph.  In this case, if the node is icon, the
+     *  semantic object is an entity.  If it is a vertex or a link, the
+     *  semantic object is a relation.  If it is a port, then the
+     *  semantic object is the port itself.
+     *  @param element A graph element.
+     *  @return The semantic object associated with this element, or null
+     *   if the object is not recognized.
+     */
+    public Object getSemanticObject(Object element) {
+	if(element instanceof Vertex) {
+	    return ((Vertex)element).getContainer();
+	} else if(element instanceof Link) {
+	    return ((Link)element).getRelation();
+	}
+        return super.getSemanticObject(element);
     }
+
+    /** Delete a node from its parent graph and notify
+     *  graph listeners with a NODE_REMOVED event.
+     *  @param eventSource The source of the event that will be dispatched,
+     *   e.g. the view that made this call.
+     *  @exception GraphException If the operation fails.
+     */
+    public void removeNode(Object eventSource, Object node) {
+	if(!(getNodeModel(node) instanceof PtolemyNodeModel)) return;
+	PtolemyNodeModel model = (PtolemyNodeModel)getNodeModel(node);
+
+        model.removeNode(eventSource, node);
+    }
+
+    // FIXME: The following methods are probably innappropriate.
+    // They make it impossible to have customized models for
+    // particular links or icons. getLinkModel() and
+    // getNodeModel() should be sufficient.
+    // Big changes needed, however to make this work.
+    // The huge inner classes below should be factored out as
+    // separate classes.  EAL
     public IconModel getIconModel() {
 	return _iconModel;
     }
@@ -221,68 +264,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     public VertexModel getVertexModel() {
 	return _vertexModel;
     }
-
-    /** Return the semantic object correspoding to the given node, edge,
-     *  or composite.  A "semantic object" is an object associated with
-     *  a node in the graph.  In this case, if the node is icon, the
-     *  semantic object is an entity.  If it is a vertex or a link, the
-     *  semantic object is a relation.  If it is a port, then the
-     *  semantic object is the port itself.
-     *  @param element A graph element.
-     *  @return The semantic object associated with this element, or null
-     *  if the object is not recognized.
-     */
-    public Object getSemanticObject(Object element) {
-	if(element instanceof Port) {
-	    return element;
-	} else if(element instanceof Vertex) {
-	    return ((Vertex)element).getContainer();
-	} else if(element instanceof Link) {
-	    return ((Link)element).getRelation();
-	} else if(element instanceof Location) {
-	    Location location = (Location)element;
-	    if(location.getContainer() instanceof Port) {
-		return location.getContainer();
-	    } else if(location.getContainer() instanceof Entity) {
-		return location.getContainer();
-	    } else if(location.getContainer() instanceof Attribute) {
-		return location.getContainer();
-	    } else
-		return null;
-	} else {
-	    return null;
-	}
-    }
-
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.
-     *
-     * @param eventSource The source of the event that will be dispatched, e.g.
-     *                    the view that made this call.
-     * @exception GraphException if the operation fails.
-     */
-    public void removeNode(Object eventSource, Object node) {
-	if(!(getNodeModel(node) instanceof RemoveableNodeModel)) return;
-	RemoveableNodeModel model = (RemoveableNodeModel)getNodeModel(node);
-
-        model.removeNode(eventSource, node);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The set of all links in the model.
-    private Set _linkSet;
-
-    // The models of the different types of nodes and edges.
-    private AttributeModel _attributeModel = new AttributeModel();
-    private ExternalPortModel _externalPortModel = new ExternalPortModel();
-    private IconModel _iconModel = new IconModel();
-    private LinkModel _linkModel = new LinkModel();
-    private PortModel _portModel = new PortModel();
-    private ToplevelModel _toplevelModel = new ToplevelModel();
-    private VertexModel _vertexModel = new VertexModel();
+    // End of FIXME.
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
@@ -323,7 +305,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     // will trigger the changerequest listener to
                     // redraw the graph again.
                     ChangeRequest request = new MoMLChangeRequest(
-                            container, getToplevel(),
+                            container, getPtolemyModel(),
                             "<deleteRelation name=\""
                             + relation.getName(container)
                             + "\"/>\n");
@@ -342,7 +324,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         }
 
         // Now create Links for links that may be new
-        Iterator relations = getToplevel().relationList().iterator();
+        Iterator relations = getPtolemyModel().relationList().iterator();
         while(relations.hasNext()) {
             _updateLinks((ComponentRelation)relations.next());
         }
@@ -387,8 +369,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	// If there are no links left to create, then just return.
 	if(unlinkedPortCount == 0) return;
 
-	Iterator vertexes =
-	    relation.attributeList(Vertex.class).iterator();
+	Iterator vertexes = relation.attributeList(Vertex.class).iterator();
 	// get the Root vertex.  This is where we will manufacture links.
 	Vertex rootVertex = null;
 	while(vertexes.hasNext()) {
@@ -476,84 +457,26 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
-    // Return the location contained in the given object, or
-    // a new location contained in the given object if there was no location.
-    private Location _getLocation(NamedObj object) {
-	List locations = object.attributeList(Location.class);
-	if(locations.size() > 0) {
-	    return (Location)locations.get(0);
-	} else {
-	    try {
-		Location location = new Location(object, "_location");
-		return location;
-	    }
-	    catch (Exception e) {
-		throw new InternalErrorException("Failed to create " +
-                        "location, even though one does not exist:" +
-                        e.getMessage());
-	    }
-	}
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    // The set of all links in the model.
+    private Set _linkSet;
+
+    // The models of the different types of nodes and edges.
+    private ExternalPortModel _externalPortModel = new ExternalPortModel();
+    private IconModel _iconModel = new IconModel();
+    private LinkModel _linkModel = new LinkModel();
+    private PortModel _portModel = new PortModel();
+    private VertexModel _vertexModel = new VertexModel();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The model for visible attributes
-     */
-    public class AttributeModel implements RemoveableNodeModel {
-
-	/**
-	 * Return the graph parent of the given node.
-	 * @param node The node, which is assumed to be an icon.
-	 * @return The container of the Icon's container, which should be
-	 * the root of the graph.
-	 */
-	public Object getParent(Object node) {
-            return ((Location)node).getContainer().getContainer();
-	}
-
-	/**
-	 * Return an iterator over the edges coming into the given node.
-	 * @param node The node, which is assumed to be an icon.
-	 * @return A NullIterator, since no edges are attached to icons.
-	 */
-	public Iterator inEdges(Object node) {
-	    return new NullIterator();
-	}
-
-	/**
-	 * Return an iterator over the edges coming out of the given node.
-	 * @param node The node, which is assumed to be an icon.
-	 * @return A NullIterator, since no edges are attached to icons.
-	 */
-	public Iterator outEdges(Object node) {
-	    return new NullIterator();
-	}
-
-	/** Remove the given node from the model.  The node is assumed
-	 *  to be an attribute.
-	 */
-	public void removeNode(final Object eventSource, final Object node) {
-            final Object prevParent = getParent(node);
-	    NamedObj attribute = (NamedObj)((Location)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(attribute);
-
-            String moml = "<deleteProperty name=\""
-		+ attribute.getName(container) + "\"/>\n";
-
-            // Note: The source is NOT the graph model.
-            ChangeRequest request =
-		new MoMLChangeRequest(this, container, moml);
-            container.requestChange(request);
-        }
-        }
-
     /** The model for ports that make external connections to this graph.
      *  These ports are always contained by the root of this graph model.
      */
-    public class ExternalPortModel implements RemoveableNodeModel {
+    public class ExternalPortModel extends PtolemyNodeModel {
         /**
          * Return the graph parent of the given node.
          * @param node The node, which is assumed to be a port contained in
@@ -653,7 +576,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
     /** The model for an icon that contains ports.
      */
-    public class IconModel implements CompositeNodeModel, RemoveableNodeModel {
+    public class IconModel extends PtolemyNodeModel 
+            implements CompositeNodeModel {
 	/**
 	 * Return the number of nodes contained in
 	 * this graph or composite node.
@@ -886,14 +810,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		   tail instanceof ComponentPort) {
 		    ComponentPort headPort = (ComponentPort)head;
 		    ComponentPort tailPort = (ComponentPort)tail;
+                    CompositeEntity ptolemyModel = getPtolemyModel();
 		    // Linking two ports with a new relation.
 		    String relationName =
-			getToplevel().uniqueName("relation");
+			ptolemyModel.uniqueName("relation");
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
-                    if(getToplevel() != container) {
+                    if(ptolemyModel != container) {
                         String contextString = "<entity name=\"" +
-                            getToplevel().getName(container) +
+                            ptolemyModel.getName(container) +
                             "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
@@ -902,35 +827,35 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    // factory method when this gets parsed
                     moml.append("<relation name=\"" + relationName + "\"/>\n");
 		    moml.append("<link port=\"" +
-                            headPort.getName(getToplevel()) +
+                            headPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    moml.append("<link port=\"" +
-                            tailPort.getName(getToplevel()) +
+                            tailPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 
 		    // Record moml so that we can blow away these
 		    // links in case we can't create them
                     failmoml.append("<unlink port=\"" +
-                            headPort.getName(getToplevel()) +
+                            headPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    failmoml.append("<unlink port=\"" +
-                            tailPort.getName(getToplevel()) +
+                            tailPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    failmoml.append("<deleteRelation name=\"" +
                             relationName + "\"/>\n");
                     // close the context
-                    if(getToplevel() != container) {
+                    if(ptolemyModel != container) {
                         moml.append("</entity>");
                         failmoml.append("</entity>");
                     }
 
                     // Ugh this is ugly.
-                    if(getToplevel() != container) {
-                        return getToplevel().getName(container) + "." + 
+                    if(ptolemyModel != container) {
+                        return ptolemyModel.getName(container) + "." + 
                             relationName;
                     } else {
                         return relationName;
@@ -983,7 +908,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    failmoml.append("<group>\n");
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
 	    String relationName = "";
 
@@ -1069,7 +994,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
 	    String relationName = "";
 
@@ -1194,7 +1119,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
     /** The model for ports that are contained in icons in this graph.
      */
-    public class PortModel implements RemoveableNodeModel {
+    public class PortModel extends PtolemyNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a port.
@@ -1294,116 +1219,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
-    /** A model for the toplevel composite of this graph model.
-     */
-    public class ToplevelModel implements CompositeModel {
-	/**
-	 * Return the number of nodes contained in
-	 * this graph or composite node.
-	 * @param composite The composite, which is assumed to be
-	 * the root composite entity.
-	 * @return The number of ports contained in the composite, plus the
-	 * number of entities contained in the composite, plus the number of
-	 * vertexes contained in relations contained in the composite.
-	 */
-	public int getNodeCount(Object composite) {
-	    return _nodeList(composite).size();
-	}
-
-	/**
-	 * Return an iterator over all the nodes contained in
-	 * the given composite.  This method ensures that all the entities
-	 * have an icon, and all the relations that don't connect exactly
-	 * two ports have a vertex.
-	 * @param composite The composite, which is assumed to be
-	 * the root composite entity.
-	 * @return An iterator containing ports, vertexes, and icons.
-	 */
-	public Iterator nodes(Object composite) {
-	    return _nodeList(composite).iterator();
-	}
-
-	/**
-	 * Return a list of all the nodes.
-	 */
-	protected List _nodeList(Object composite) {
-	    List nodes = new LinkedList();
-            CompositeEntity toplevel = getToplevel();
-	    // Add an icon for every entity.
-	    Iterator entities = toplevel.entityList().iterator();
-	    while(entities.hasNext()) {
-		ComponentEntity entity = (ComponentEntity)entities.next();
-		nodes.add(_getLocation(entity));
-            }
-
-            // Add a location for every external port.
-            Iterator ports = toplevel.portList().iterator();
-            while(ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
-                nodes.add(_getLocation(port));
-            }
-
-            // Add a vertex for every relation that has a vertex and
-            // doesn't connect exactly two ports.
-            Iterator relations = toplevel.relationList().iterator();
-            while(relations.hasNext()) {
-                ComponentRelation relation =
-                    (ComponentRelation)relations.next();
-                List vertexList = relation.attributeList(Vertex.class);
-
-                if(vertexList.size() != 0) {
-                    // Add in all the vertexes.
-                    Iterator vertexes = vertexList.iterator();
-                    while(vertexes.hasNext()) {
-                        Vertex v = (Vertex)vertexes.next();
-                        nodes.add(v);
-                    }
-                } else {
-                    // See if we need to create a vertex.
-                    // Count the linked ports.
-                    int count = relation.linkedPortList().size();
-                    if(count != 2) {
-                        // Then there must be a vertex, so create one.
-                        try {
-                            Vertex vertex = new Vertex(relation,
-                                    relation.uniqueName("vertex"));
-                            nodes.add(vertex);
-                        }
-                        catch (Exception e) {
-                            throw new InternalErrorException(
-                                    "Failed to create an icon! " +
-                                    e.getMessage());
-                        }
-                    }
-                }
-            }
-
-            // Add an icon for every director.
-            Iterator attributes = toplevel.attributeList().iterator();
-            while(attributes.hasNext()) {
-                Attribute attribute = (Attribute)attributes.next();
-
-                if (attribute instanceof Director) {
-                    nodes.add(_getLocation(attribute));
-                } else {
-                    // The icon is not a director, so only give a locaiton
-                    // if one exists already.
-                    List icons = attribute.attributeList(Location.class);
-                    if(icons.size() > 0) {
-                        nodes.add(icons.get(0));
-                    }
-                }
-            }
-
-            // Return the final result.
-            return nodes;
-        }
-    }
-
     /** The model for vertexes that are contained within the relations of the
      *  ptolemy model.
      */
-    public class VertexModel implements RemoveableNodeModel {
+    public class VertexModel extends PtolemyNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a Vertex.
@@ -1493,15 +1312,5 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                         container, moml.toString());
        	    container.requestChange(request);
 	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private inner classes              ////
-
-    /** Interface for node models representing nodes that can be removed. */
-    private interface RemoveableNodeModel extends NodeModel {
-        /** Remove the given edge from the model
-	 */
-	public void removeNode(Object eventSource, Object node);
     }
 }

@@ -30,47 +30,54 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.toolbox.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.moml.*;
-import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
-import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;
 import diva.graph.GraphUtilities;
-import diva.graph.toolbox.*;
-import diva.graph.modular.ModularGraphModel;
-import diva.graph.modular.CompositeModel;
-import diva.graph.modular.NodeModel;
 import diva.graph.modular.EdgeModel;
 import diva.graph.modular.MutableEdgeModel;
-import diva.graph.modular.CompositeNodeModel;
-import diva.util.*;
-import java.util.*;
-import javax.swing.SwingUtilities;
+import diva.graph.modular.NodeModel;
+import diva.util.NullIterator;
+
+import ptolemy.actor.Director;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
+import ptolemy.vergil.ptolemy.PtolemyNodeModel;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphModel
 /**
-a graph model for graphically manipulating ptolemy FSM models.
+A graph model for graphically manipulating ptolemy FSM models.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 public class FSMGraphModel extends AbstractPtolemyGraphModel {
-    // FIXME: support visible attributes.
+
     /** Construct a new graph model whose root is the given composite entity.
-     *  @param toplevel The top-level composite entity for the model.
+     *  @param composite The top-level composite entity for the model.
      */
-    public FSMGraphModel(CompositeEntity toplevel) {
-	super(toplevel);
+    public FSMGraphModel(CompositeEntity composite) {
+	super(composite);
 	_linkSet = new HashSet();
         _update();
     }
@@ -109,23 +116,6 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     }
 
     /**
-     * Return the model for the given composite object.  If the object is not
-     * a composite, meaning that it does not contain other nodes,
-     * then return null.
-     * @param composite An object which is assumed to be a node object in
-     * this graph model.
-     * @return An instance of ToplevelModel if the object is the root
-     * object of this graph model.  Otherwise return null.
-     */
-    public CompositeModel getCompositeModel(Object composite) {
-	if(composite.equals(getRoot())) {
-	    return _toplevelModel;
-	} else {
-	    return null;
-	}
-    }
-
-    /**
      * Return the model for the given edge object.  If the object is not
      * an edge, then return null.
      * @param edge An object which is assumed to be in this graph model.
@@ -140,37 +130,22 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
-    public PortModel getPortModel() {
-	return _portModel;
-    }
-
-    public StateModel getStateModel() {
-	return _stateModel;
-    }
-
-    public ArcModel getArcModel() {
-	return _arcModel;
-    }
-
-    /**
-     * Return the node model for the given object.  If the object is not
-     * a node, then return null.
-     * @param node An object which is assumed to be in this graph model.
-     * @return An instance of StateModel if the object is an icon.
-     * Otherwise return null.
+    /** Return the node model for the given object.  If the object is not
+     *  a node, then return null.
+     *  @param node An object which is assumed to be in this graph model.
+     *  @return The node model for the specified node, or null if there
+     *   is none.
      */
     public NodeModel getNodeModel(Object node) {
 	if(node instanceof Location) {
-            Location location = (Location)node;
-            if(location.getContainer() instanceof ComponentEntity)
+            Object container = ((Location)node).getContainer();
+            if(container instanceof ComponentEntity) {
                 return _stateModel;
-            else if(location.getContainer() instanceof ComponentPort)
+            } else if(container instanceof ComponentPort) {
                 return _portModel;
-            else
-                return null;
-	} else {
-	    return null;
+            }
 	}
+	return super.getNodeModel(node);
     }
 
     /** Return the semantic object correspoding to the given node, edge,
@@ -183,13 +158,10 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      *  if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
-	if(element instanceof Location) {
-	    return ((Location)element).getContainer();
-	} else if(element instanceof Arc) {
+	if(element instanceof Arc) {
 	    return ((Arc)element).getRelation();
-	} else {
-	    return null;
 	}
+        return super.getSemanticObject(element);
     }
 
     /**
@@ -201,10 +173,144 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      * @exception GraphException if the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
-	if(!(getNodeModel(node) instanceof RemoveableNodeModel)) return;
-	RemoveableNodeModel model = (RemoveableNodeModel)getNodeModel(node);
+	if(!(getNodeModel(node) instanceof PtolemyNodeModel)) return;
+	PtolemyNodeModel model = (PtolemyNodeModel)getNodeModel(node);
         model.removeNode(eventSource, node);
     }
+
+    // FIXME: The following methods are probably innappropriate.
+    // They make it impossible to have customized models for
+    // particular links or icons. getLinkModel() and
+    // getNodeModel() should be sufficient.
+    // Big changes needed, however to make this work.
+    // The huge inner classes below should be factored out as
+    // separate classes.  EAL
+    public PortModel getPortModel() {
+	return _portModel;
+    }
+    public StateModel getStateModel() {
+	return _stateModel;
+    }
+    public ArcModel getArcModel() {
+	return _arcModel;
+    }
+    // End of FIXME.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
+    /** Update the graph model.  This is called whenever a change request is
+     *  executed.  In this class the internal set of link objects is
+     *  verified to be correct.
+     */
+    protected boolean _update() {
+     	// Go through all the links that currently exist, and remove
+        // any that don't have both ends in the model.
+	Iterator links = _linkSet.iterator();
+	while(links.hasNext()) {
+ 	    Arc link = (Arc)links.next();
+            Relation relation = link.getRelation();
+            if(relation == null) continue;
+            boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
+                    getRoot(), this);
+            boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
+                    getRoot(), this);
+            // If the head or tail has been removed, then remove this link.
+            if(!(headOK && tailOK)) {
+                Object headObj = getSemanticObject(link.getHead());
+                Object tailObj = getSemanticObject(link.getTail());
+                link.setHead(null);
+                link.setTail(null);
+                links.remove();
+                NamedObj container =
+                    (NamedObj)_getChangeRequestParent(relation);
+                // remove the relation  This should trigger removing the
+                // other link. This will only happen when we've deleted
+                // the state at one end of the model.
+                // Note that the source is NOT the graphmodel, so this
+                // will trigger the changerequest listener to
+                // redraw the graph again.
+                ChangeRequest request = new MoMLChangeRequest(
+                        container, container,
+                        "<deleteRelation name=\""
+                        + relation.getName(container)
+                        + "\"/>\n");
+                container.requestChange(request);
+                return false;
+            }
+        }
+
+        // Now create Links for links that may be new
+        Iterator relations = getPtolemyModel().relationList().iterator();
+        while(relations.hasNext()) {
+            _updateLinks((ComponentRelation)relations.next());
+        }
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Check to make sure that there is an Arc object representing
+    // the given relation.
+    private void _updateLinks(ComponentRelation relation) {
+	Iterator links = _linkSet.iterator();
+	Arc foundLink = null;
+	while(links.hasNext()) {
+	    Arc link = (Arc)links.next();
+	    // only consider links that are associated with this relation.
+	    if(link.getRelation() == relation) {
+		foundLink = link;
+		break;
+	    }
+	}
+
+	// A link exists, so there is nothing to do.
+	if(foundLink != null) return;
+
+	List linkedPortList = relation.linkedPortList();
+	if(linkedPortList.size() != 2) {
+            // Do nothing...  somebody else should take care of removing this,
+            // because we have no way of representing it in this editor.
+            return;
+	}
+	Port port1 = (Port)linkedPortList.get(0);
+	Location location1 = _getLocation((NamedObj)port1.getContainer());
+	Port port2 = (Port)linkedPortList.get(1);
+	Location location2 = _getLocation((NamedObj)port2.getContainer());
+
+	Arc link;
+	try {
+	    link = new Arc();
+        }
+	catch (Exception e) {
+	    throw new InternalErrorException(
+                    "Failed to create " +
+                    "new link, even though one does not " +
+                    "already exist:" + e.getMessage());
+	}
+	link.setRelation(relation);
+	// We have to get the direction of the arc correct.
+	if(((State)port1.getContainer()).incomingPort.equals(port1)) {
+	    link.setHead(location1);
+	    link.setTail(location2);
+	} else {
+	    link.setHead(location2);
+	    link.setTail(location1);
+	}
+        _linkSet.add(link);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The set of all links in the model.
+    private Set _linkSet;
+
+    // The models of the different types of nodes and edges.
+    private ArcModel _arcModel = new ArcModel();
+    private PortModel _portModel = new PortModel();
+    private StateModel _stateModel = new StateModel();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -315,9 +421,9 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
 	/** Append moml to the given buffer that connects a link with the
 	 *  given head, tail, and relation.  Names in the returned moml will be
-         *  relative to the iven container.  This may require addinging an
+         *  relative to the given container.  This may require adding an
 	 *  anonymous relation to the ptolemy model.  If this is required,
-	 *  the name of the relation <b>relative to the toplevel object
+	 *  the name of the relation <b>relative to the composite object
          *  of this graph model</b> is returned.
 	 *  If no relation need be added, then
 	 *  null is returned.
@@ -338,17 +444,18 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    State headState = (State)head;
 		    State tailState = (State)tail;
 		    ComponentPort headPort =
-			(ComponentPort)headState.incomingPort;
+			   (ComponentPort)headState.incomingPort;
 		    ComponentPort tailPort =
-			(ComponentPort)tailState.outgoingPort;
+			   (ComponentPort)tailState.outgoingPort;
+                    CompositeEntity ptolemyModel = getPtolemyModel();
 		    // Linking two ports with a new relation.
 		    String relationName =
-			getToplevel().uniqueName("relation");
+			ptolemyModel.uniqueName("relation");
                     // If the context is not the entity that we're editing,
                     // then we need to set the context correctly.
-                    if(getToplevel() != container) {
+                    if(ptolemyModel != container) {
                         String contextString = "<entity name=\"" +
-                            getToplevel().getName(container) +
+                            ptolemyModel.getName(container) +
                             "\">\n";
                         moml.append(contextString);
                         failmoml.append(contextString);
@@ -357,28 +464,28 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		    // factory method when this gets parsed
 		    moml.append("<relation name=\"" + relationName + "\"/>\n");
 		    moml.append("<link port=\"" +
-                            headPort.getName(getToplevel()) +
+                            headPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    moml.append("<link port=\"" +
-                            tailPort.getName(getToplevel()) +
+                            tailPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    // Record moml so that we can blow away these
 		    // links in case we can't create them
 		    failmoml.append("<unlink port=\"" +
-                            headPort.getName(getToplevel()) +
+                            headPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    failmoml.append("<unlink port=\"" +
-                            tailPort.getName(getToplevel()) +
+                            tailPort.getName(ptolemyModel) +
                             "\" relation=\"" + relationName +
                             "\"/>\n");
 		    failmoml.append("<deleteRelation name=\"" +
                             relationName +
                             "\"/>\n");
                     // close the context
-                    if(getToplevel() != container) {
+                    if(ptolemyModel != container) {
                         moml.append("</entity>");
                         failmoml.append("</entity>");
                     }
@@ -415,7 +522,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
 	    String relationName = "";
 
@@ -445,7 +552,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     link.setHead(newArcHead);
                     if(relationNameToAdd != null) {
                         ComponentRelation relation =
-                        (ComponentRelation)getToplevel().getRelation(
+                        (ComponentRelation)getPtolemyModel().getRelation(
                                 relationNameToAdd);
                         link.setRelation(relation);
                     } else {
@@ -509,7 +616,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
             // Make the request in the context of the container.
             final CompositeEntity container =
-                (CompositeEntity)_getChangeRequestParent(getToplevel());
+                (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
 	    String relationName = "";
 
@@ -539,7 +646,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                     link.setTail(newArcTail);
                     if(relationNameToAdd != null) {
                         link.setRelation(
-                                getToplevel().getRelation(relationNameToAdd));
+                                getPtolemyModel().getRelation(relationNameToAdd));
                     } else {
                         link.setRelation(null);
                     }
@@ -582,7 +689,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
     /** The model for external ports.
      */
-    public class PortModel implements RemoveableNodeModel {
+    public class PortModel extends PtolemyNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon contained in
@@ -671,7 +778,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
     /** The model for an icon that represent states.
      */
-    public class StateModel implements RemoveableNodeModel {
+    public class StateModel extends PtolemyNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon contained in
@@ -787,191 +894,4 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
             container.requestChange(request);
 	}
     }
-
-    /** A model for the toplevel composite of this graph model.
-     */
-    public class ToplevelModel implements CompositeModel {
-	/**
-	 * Return the number of nodes contained in
-	 * this graph or composite node.
-	 * @param composite The composite, which is assumed to be
-	 * the root composite entity.
-	 * @return The number of entities contained in the composite.
-	 */
-	public int getNodeCount(Object composite) {
-	    CompositeEntity entity = (CompositeEntity)composite;
-	    int count = entity.entityList().size();
-            count += entity.portList().size();
-	    return count;
-	}
-
-	/**
-	 * Return an iterator over all the nodes contained in
-	 * the given composite.  This method ensures that all the entities
-	 * have an icon.
-	 * @param composite The composite, which is assumed to be
-	 * the root composite entity.
-	 * @return An iterator containing icons.
-	 */
-	public Iterator nodes(Object composite) {
-	    // FIXME visible attributes?
-	    Set nodes = new HashSet();
-	    CompositeEntity toplevel = (CompositeEntity)composite;
-	    Iterator entities = toplevel.entityList().iterator();
-	    while(entities.hasNext()) {
-		ComponentEntity entity = (ComponentEntity)entities.next();
-		nodes.add(_getLocation(entity));
-	    }
-            Iterator ports = toplevel.portList().iterator();
-            while(ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
-                nodes.add(_getLocation(port));
-            }
-
-	    return nodes.iterator();
-	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
-
-    /** Update the graph model.  This is called whenever a change request is
-     *  executed.  In this class the internal set of link objects is
-     *  verified to be correct.
-     */
-    protected boolean _update() {
-     	// Go through all the links that currently exist, and remove
-        // any that don't have both ends in the model.
-	Iterator links = _linkSet.iterator();
-	while(links.hasNext()) {
- 	    Arc link = (Arc)links.next();
-            Relation relation = link.getRelation();
-            if(relation == null) continue;
-            boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
-                    getRoot(), this);
-            boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
-                    getRoot(), this);
-            // If the head or tail has been removed, then remove this link.
-            if(!(headOK && tailOK)) {
-                Object headObj = getSemanticObject(link.getHead());
-                Object tailObj = getSemanticObject(link.getTail());
-                link.setHead(null);
-                link.setTail(null);
-                links.remove();
-                NamedObj container =
-                    (NamedObj)_getChangeRequestParent(relation);
-                // remove the relation  This should trigger removing the
-                // other link. This will only happen when we've deleted
-                // the state at one end of the model.
-                // Note that the source is NOT the graphmodel, so this
-                // will trigger the changerequest listener to
-                // redraw the graph again.
-                ChangeRequest request = new MoMLChangeRequest(
-                        container, container,
-                        "<deleteRelation name=\""
-                        + relation.getName(container)
-                        + "\"/>\n");
-                container.requestChange(request);
-                return false;
-            }
-        }
-
-        // Now create Links for links that may be new
-        Iterator relations = getToplevel().relationList().iterator();
-        while(relations.hasNext()) {
-            _updateLinks((ComponentRelation)relations.next());
-        }
-        return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Check to make sure that there is an Arc object representing
-    // the given relation.
-    private void _updateLinks(ComponentRelation relation) {
-	Iterator links = _linkSet.iterator();
-	Arc foundLink = null;
-	while(links.hasNext()) {
-	    Arc link = (Arc)links.next();
-	    // only consider links that are associated with this relation.
-	    if(link.getRelation() == relation) {
-		foundLink = link;
-		break;
-	    }
-	}
-
-	// A link exists, so there is nothing to do.
-	if(foundLink != null) return;
-
-	List linkedPortList = relation.linkedPortList();
-	if(linkedPortList.size() != 2) {
-            // Do nothing...  somebody else should take care of removing this,
-            // because we have no way of representing it in this editor.
-            return;
-	}
-	Port port1 = (Port)linkedPortList.get(0);
-	Location location1 = _getLocation((NamedObj)port1.getContainer());
-	Port port2 = (Port)linkedPortList.get(1);
-	Location location2 = _getLocation((NamedObj)port2.getContainer());
-
-	Arc link;
-	try {
-	    link = new Arc();
-        }
-	catch (Exception e) {
-	    throw new InternalErrorException(
-                    "Failed to create " +
-                    "new link, even though one does not " +
-                    "already exist:" + e.getMessage());
-	}
-	link.setRelation(relation);
-	// We have to get the direction of the arc correct.
-	if(((State)port1.getContainer()).incomingPort.equals(port1)) {
-	    link.setHead(location1);
-	    link.setTail(location2);
-	} else {
-	    link.setHead(location2);
-	    link.setTail(location1);
-	}
-        _linkSet.add(link);
-    }
-
-    // Return the location contained in the given object, or
-    // a new location contained in the given object if there was no location.
-    private Location _getLocation(NamedObj object) {
-	List locations = object.attributeList(Location.class);
-	if(locations.size() > 0) {
-	    return (Location)locations.get(0);
-	} else {
-	    try {
-		Location location = new Location(object, "_location");
-		return location;
-	    }
-	    catch (Exception e) {
-		throw new InternalErrorException("Failed to create " +
-                        "location, even though one does not exist:" +
-                        e.getMessage());
-	    }
-	}
-    }
-
-    private interface RemoveableNodeModel extends NodeModel {
-	/** Remove the given edge from the model
-	 */
-	public void removeNode(Object eventSource, Object node);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The set of all links in the model.
-    private Set _linkSet;
-
-    // The models of the different types of nodes and edges.
-    private ArcModel _arcModel = new ArcModel();
-    private ToplevelModel _toplevelModel = new ToplevelModel();
-    private PortModel _portModel = new PortModel();
-    private StateModel _stateModel = new StateModel();
 }
-

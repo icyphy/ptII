@@ -56,10 +56,13 @@ PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
 	AbstractPtolemyGraphModel.java \
+	AttributeNodeModel.java \
+	CompositeEntityModel.java \
 	EditorDropTarget.java \
 	GraphFrame.java \
 	LocatableNodeController.java \
-	LocatableNodeDragInteractor.java
+	LocatableNodeDragInteractor.java \
+	PtolemyNodeModel.java
 
 EXTRA_SRCS =	$(JSRCS)
 

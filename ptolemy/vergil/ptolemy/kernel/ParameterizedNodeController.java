@@ -81,7 +81,11 @@ public class ParameterizedNodeController extends PtolemyNodeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory.addMenuItemFactory(new EditParametersFactory("Configure"));
+
+        final EditParametersFactory editorFactory
+                = new EditParametersFactory("Configure");
+
+        _menuFactory.addMenuItemFactory(editorFactory);
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
@@ -93,6 +97,7 @@ public class ParameterizedNodeController extends PtolemyNodeController {
                 GraphModel graphModel = controller.getGraphModel();
                 NamedObj target =
                          (NamedObj)graphModel.getSemanticObject(object);
+
                 // Create a dialog for configuring the object.
                 Component pane = controller.getGraphPane().getCanvas();
                 while (pane.getParent() != null) {
@@ -102,9 +107,9 @@ public class ParameterizedNodeController extends PtolemyNodeController {
                     // The first argument below is the parent window
                     // (a Frame), which ensures that if this is iconified
                     // or sent to the background, it can be found again.
-                    new EditParametersDialog((Frame)pane, target);
+                    editorFactory.openDialog((Frame)pane, target);
                 } else {
-                    new EditParametersDialog(null, target);
+                    editorFactory.openDialog(null, target);
                 }
 	    }
 	};

@@ -31,17 +31,24 @@
 package ptolemy.vergil.ptolemy;
 
 import diva.graph.GraphEvent;
+import diva.graph.modular.CompositeModel;
 import diva.graph.modular.ModularGraphModel;
+import diva.graph.modular.NodeModel;
+
+import java.util.List;
 
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,7 +57,7 @@ import ptolemy.moml.MoMLChangeRequest;
 This base class provides some common services for visual notations for
 Ptolemy II models. It assumes that the semantic object of a particular
 graph object is fixed, and provides facilities for making changes to the
-model via a change request.
+model via a change request. It supports visible attributes.
 <p>
 This class uses a change listener to detect changes to the Ptolemy model
 that do not originate from this class.  These changes are propagated
@@ -65,12 +72,12 @@ remain synchronized with the state of a mutating model.
 public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 
     /** Create a graph model for the specified Ptolemy II model.
-     *  @param toplevel The Ptolemy II model.
+     *  @param composite The Ptolemy II model.
      */
-    public AbstractPtolemyGraphModel(CompositeEntity toplevel) {
-	super(toplevel);
-	_toplevel = toplevel;
-        toplevel.addChangeListener(new GraphChangeListener());
+    public AbstractPtolemyGraphModel(CompositeEntity composite) {
+	super(composite);
+	_composite = composite;
+        composite.addChangeListener(new GraphChangeListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,6 +91,37 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      *  @exception GraphException If the operation fails.
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
+
+    /** Return the model for the given composite object.
+     *  In this base class, return an instance of CompositeEntityModel
+     *  if the object is the root object of this graph model.
+     *  Otherwise return null.
+     *  @param composite A composite object.
+     *  @return An instance of CompositeEntityModel if the object is the root
+     *   object of this graph model.  Otherwise return null.
+     */
+    public CompositeModel getCompositeModel(Object composite) {
+	if(composite.equals(_composite)) {
+	    return _compositeModel;
+	} else {
+	    return null;
+	}
+    }
+
+    /** Return the node model for the given object.  If the object is an
+     *  attribute, then return an attribute model. Otherwise, return null.
+     *  @param node An object which is assumed to be in this graph model.
+     *  @return An instance of the inner class AttributeNodeModel if the object
+     *   is an instance of Location whose container is an instance
+     *   of Attribute, and otherwise, null.
+     */
+    public NodeModel getNodeModel(Object node) {
+	if(node instanceof Location
+                && ((Location)node).getContainer() instanceof Attribute) {
+            return _attributeModel;
+	}
+        return null;
+    }
 
     /** Return the property of the object associated with
      *  the given property name. In this implementation
@@ -112,11 +150,29 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	}
     }
 
-    /** Return the toplevel composite entity of this ptolemy model.
+    /** Return the Ptolemy II model associated with this graph model.
      *  @return The Ptolemy II model.
      */
-    public CompositeEntity getToplevel() {
-	return _toplevel;
+    public CompositeEntity getPtolemyModel() {
+	return _composite;
+    }
+
+    /** Return the semantic object correspoding to the given node, edge,
+     *  or composite.  A "semantic object" is an object associated with
+     *  a node in the graph.  In this base class, if the argument is an
+     *  instance of Port, then return the port.  If the argument is an
+     *  instance of Location, then return the container of the location. 
+     *  @param element A graph element.
+     *  @return The semantic object associated with this element, or null
+     *   if the object is not recognized.
+     */
+    public Object getSemanticObject(Object element) {
+	if(element instanceof Port) {
+	    return element;
+	} else if(element instanceof Location) {
+            return ((Location)element).getContainer();
+        }
+        return null;
     }
 
     /** Delete a node from its parent graph and notify
@@ -181,6 +237,28 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
         return container;
     }
 
+    /** Return the location attribute contained in the given object, or
+     *  a new location contained in the given object if there was no location.
+     *  @param object The object for which a location is needed.
+     *  @return The location of the object, or a new location if none.
+     */
+    protected Location _getLocation(NamedObj object) {
+	List locations = object.attributeList(Location.class);
+	if(locations.size() > 0) {
+	    return (Location)locations.get(0);
+	} else {
+	    try {
+		Location location = new Location(object, "_location");
+		return location;
+	    }
+	    catch (Exception e) {
+		throw new InternalErrorException("Failed to create " +
+                        "location, even though one does not exist:" +
+                        e.getMessage());
+	    }
+	}
+    }
+
     /** Update the graph model.  This is called whenever a change request is
      *  executed.  Subclasses will override this to update internal data
      *  structures that may be cached.
@@ -194,8 +272,14 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The node model for a visible attribute.
+    private AttributeNodeModel _attributeModel = new AttributeNodeModel();
+
     // The root of this graph model, as a CompositeEntity.
-    private CompositeEntity _toplevel;
+    private CompositeEntity _composite;
+
+    // The model for composite entities.
+    private CompositeEntityModel _compositeModel = new CompositeEntityModel();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

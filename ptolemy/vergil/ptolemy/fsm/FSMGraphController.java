@@ -277,7 +277,7 @@ public class FSMGraphController extends FSMViewerController {
 		(FSMGraphModel)getGraphModel();
 	    final double finalX = x;
 	    final double finalY = y;
-	    final CompositeEntity toplevel = graphModel.getToplevel();
+	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 
 	    final String stateName = toplevel.uniqueName("state");
 	    // Create the state.

@@ -31,15 +31,17 @@
 package ptolemy.vergil.toolbox;
 
 // Ptolemy imports.
-import ptolemy.actor.gui.EditorPaneFactory;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.CloseListener;
+import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.moml.MoMLChangeRequest;
 
 // Java imports.
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Window;
 import java.io.Reader;
@@ -70,7 +72,7 @@ annotations to diagrams.
 @version $Id$
 */
 
-public class AnnotationEditorFactory extends EditorPaneFactory {
+public class AnnotationEditorFactory extends EditorFactory {
 
     /** Construct a factory with the specified container and name.
      *  @param container The container.
@@ -88,6 +90,34 @@ public class AnnotationEditorFactory extends EditorPaneFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Create an editor for configuring the specified object.
+     */
+    public void createEditor(NamedObj object, Frame parent) {
+        ComponentDialog dialog = new ComponentDialog(
+                 parent, "Edit Annotation", createEditorPane());
+
+        String button = dialog.buttonPressed();
+        if(!button.equals("OK")) return;
+
+        String newText = _textArea.getText();
+        if(newText == null || newText.trim().equals("")) {
+            // NOTE: Should we delete the attribute... no visible text.
+            newText = "Double click to edit text.";
+        }
+        String moml = "<configure><svg><text x=\"20\" y=\"20\" "
+                + "style=\"font-size:"
+                + _fontProperties.stringValue("fontSize")
+                + "; font-family:"
+                + _fontProperties.stringValue("fontFamily")
+                + "; fill:"
+                + _fontProperties.stringValue("fontColor")
+                + "\">"
+                + newText
+                + "</text></svg></configure>";
+        _iconDescription.requestChange(new MoMLChangeRequest(
+                this, _iconDescription, moml));
+    }
 
     /** Return a new widget for configuring the container.  In this
      *  base class, this method defers to the static createEditorPane method.
@@ -174,6 +204,9 @@ public class AnnotationEditorFactory extends EditorPaneFactory {
     /** The container. */
     private NamedObj _container;
 
+    /** Query box for font properties. */
+    Query _fontProperties;
+
     /** Font characteristic. */
     private String _fontSize = "14";
     private String _fontFamily = "sanserif";
@@ -191,8 +224,7 @@ public class AnnotationEditorFactory extends EditorPaneFactory {
     /** A text widget for editing textual annotations (which are
      *  visible attributes).
      */
-    public class AnnotationTextEditor
-            extends JPanel implements CloseListener {
+    public class AnnotationTextEditor extends JPanel {
 
         /** Create an annotation text editor.
          */
@@ -204,6 +236,7 @@ public class AnnotationEditorFactory extends EditorPaneFactory {
             add(pane);
 
             // Add a query with font properties.
+            _fontProperties = new Query();
             String[] sizes = {"9", "10", "11", "12", "14", "18", "24", "32"};
             _fontProperties.addChoice("fontSize", "font size", sizes,
                     _fontSize, true);
@@ -233,40 +266,5 @@ public class AnnotationEditorFactory extends EditorPaneFactory {
 
             add(_fontProperties);
         }
-
-        //////////////////////////////////////////////////////////////
-        ////                    public methods                    ////
-
-        /** If the button pressed is OK, then apply the change.
-         *  @param window The window that closed.
-         *  @param button The name of the button that was used to
-         *   close the window.
-         */
-        public void windowClosed(Window window, String button) {
-            if(!button.equals("Commit")) return;
-            String newText = _textArea.getText();
-            if(newText == null || newText.trim().equals("")) {
-                // NOTE: Should we delete the attribute... no visible text.
-                newText = "Double click to edit text.";
-            }
-            String moml = "<configure><svg><text x=\"20\" y=\"20\" "
-                    + "style=\"font-size:"
-                    + _fontProperties.stringValue("fontSize")
-                    + "; font-family:"
-                    + _fontProperties.stringValue("fontFamily")
-                    + "; fill:"
-                    + _fontProperties.stringValue("fontColor")
-                    + "\">"
-                    + newText
-                    + "</text></svg></configure>";
-            _iconDescription.requestChange(new MoMLChangeRequest(
-                    this, _iconDescription, moml));
-        }
-
-        //////////////////////////////////////////////////////////////
-        ////                    private members                   ////
-
-        /** Query box for font properties. */
-        Query _fontProperties = new Query();
     }
 }
