@@ -68,7 +68,6 @@ public class ODStringDemo {
         ODDirector director = new ODDirector(workSpc, "director");
         topLevelActor.setManager( manager );
         topLevelActor.setDirector( director );
-        // System.out.println("\n\nTop level actor and manager have been initiated.\n");
         
         // Set up next level actors
         ODConsonants consonants = new ODConsonants( topLevelActor, "consonants" );
@@ -91,8 +90,20 @@ public class ODStringDemo {
         relation = (IORelation)topLevelActor.connect( output3, input, "rel3" );
         // System.out.println("Connections are complete.");
         
-        int width = input.getWidth();
-        System.out.println("Width of input port is " + width);
+        
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("\t");
+        
+        /*
+        System.out.println();
+        System.out.println();
+        System.out.println("\t");
+        */
+        
+        // int width = input.getWidth();
+        // System.out.println("Width of input port is " + width);
         
         // Start simulation
         manager.run();
