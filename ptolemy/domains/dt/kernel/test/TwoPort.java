@@ -47,22 +47,22 @@ public class TwoPort extends TypedAtomicActor {
 
         super(container, name);
 
-        input1 = (SDFIOPort) newPort("input1");
+        input1 = new SDFIOPort(this,"input1");
         input1.setInput(true);
         input1.setTokenConsumptionRate(1);
         input1.setTypeEquals(BaseType.DOUBLE);
 
-        input2 = (SDFIOPort) newPort("input2");
+        input2 = new SDFIOPort(this,"input2");
         input2.setInput(true);
         input2.setTokenConsumptionRate(1);
         input2.setTypeEquals(BaseType.DOUBLE);
 
-        output1 = (SDFIOPort) newPort("output1");
+        output1 = new SDFIOPort(this,"output1");
         output1.setOutput(true);
         output1.setTokenProductionRate(1);
         output1.setTypeEquals(BaseType.DOUBLE);
 
-        output2 = (SDFIOPort) newPort("output2");
+        output2 = new SDFIOPort(this,"output2");
         output2.setOutput(true);
         output2.setTokenProductionRate(1);
         output2.setTypeEquals(BaseType.DOUBLE);

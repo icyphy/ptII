@@ -45,7 +45,7 @@ public class OnePort extends TypedAtomicActor {
     public OnePort(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = (SDFIOPort) newPort("input");
+        input = new SDFIOPort(this,"input");
         input.setInput(true);
         input.setTokenConsumptionRate(1);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -53,7 +53,7 @@ public class OnePort extends TypedAtomicActor {
         _inrate = 1;
 
 
-        output = (SDFIOPort) newPort("output");
+        output = new SDFIOPort(this,"output");
         output.setOutput(true);
         output.setTokenProductionRate(1);
         output.setTypeSameAs(input);
