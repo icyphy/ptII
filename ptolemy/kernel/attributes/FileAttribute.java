@@ -33,9 +33,13 @@ package ptolemy.kernel.attributes;
 import ptolemy.kernel.util.*;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -54,12 +58,18 @@ then the classpath is used for identifying relative file names.
 The following special file names are understood:
 <ul>
 <li> System.in: Standard input.
+<li> System.out: Standard output.
 </ul>
 Note, however, that these file names cannot be converted to URLs
 using the asURL() method.
 <p>
 A file name can also contain the string "$PTII", which refers to
-the home directory of the Ptolemy II installation.
+the home directory of the Ptolemy II installation, or the string
+"$CWD", which refers the current working directory, or "$HOME",
+which refers to the user's home directory.  These values are
+obtained from the Java properties <i>ptolemy.ptII.dir</i>,
+<i>user.dir</i>, and <i>user.home</i>, respectively.  These
+properties are normally set when a Ptolemy II application starts.            
 <p>
 @author Edward A. Lee
 @version $Id$
@@ -82,14 +92,42 @@ public class FileAttribute extends StringAttribute {
     public FileAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        if (_stdIn == null) {
-            _stdIn = new BufferedReader(new InputStreamReader(System.in));
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the file as a File object.  This method first attempts
+     *  to directly use the file name to construct the File. If the
+     *  resulting File is not absolute, then it attempts to resolve it
+     *  relative to relative to the base, where the base is
+     *  the URI of the first container above this one
+     *  that has a URIAttribute.  If there is no such base URI,
+     *  then it simply returns the relative File object.
+     *  The file need not exist for this to succeed, so this method
+     *  can be used prior to calling openForWriting() to determine whether
+     *  the file exists (call the exists() method on the return value)
+     *  to query the user for overwrite.
+     *  @return A File, or null if no file name has been specified.
+     *  @exception IllegalActionException If the file cannot be read, or
+     *   if the file cannot be represented as a URL (e.g. System.in).
+     */
+    public File asFile() {
+        String name = _substituteSpecialStrings(getExpression());
+        if (name == null || name.trim().equals("")) {
+            return null;
+        }
+        File file = new File(name);
+        if (!file.isAbsolute()) {
+            // Try to resolve the URI.
+            URI modelURI = URIAttribute.getModelURI(this);
+            if (modelURI != null) {
+                URI newURI = modelURI.resolve(name);
+                file = new File(newURI);
+            }
+        }
+        return file;
+    }
 
     /** Return the file as a URL.  This method first attempts to directly
      *  use the file name to identify a readable file, and if it finds one,
@@ -103,7 +141,8 @@ public class FileAttribute extends StringAttribute {
      *   if the file cannot be represented as a URL (e.g. System.in).
      */
     public URL asURL() throws IllegalActionException {
-        String name = getExpression();
+        String name = _substituteSpecialStrings(getExpression());
+
         if (name == null || name.trim().equals("")) {
             return null;
         }
@@ -172,9 +211,10 @@ public class FileAttribute extends StringAttribute {
         return newObject;
     }
 
-    /** Close the file. If it has not been opened using openForReading(),
-     *  then do nothing.  Also, if the file is System.in, then do not
-     *  close it (it does not make sense to close standard input).
+    /** Close the file. If it has not been opened using openForReading()
+     *  or openForWriting(), then do nothing.  Also, if the file is
+     *  System.in or System.out, then do not close it (it does not make
+     *  sense to close these files).
      *  @exception IllegalActionException If the file or URL cannot be
      *   closed.
      */
@@ -184,8 +224,19 @@ public class FileAttribute extends StringAttribute {
                 try {
                     _reader.close();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(this, ex,
-                    "Cannot close previous file!");
+                    // This is typically caused by the stream being
+                    // already closed, so we ignore.
+                }
+            }
+        }
+        if (_writer != null) {
+            if (_writer != _stdOut) {
+                try {
+                    _writer.flush();
+                    _writer.close();
+                } catch (IOException ex) {
+                    // This is typically caused by the stream being
+                    // already closed, so we ignore.
                 }
             }
         }
@@ -212,15 +263,11 @@ public class FileAttribute extends StringAttribute {
      */
     public BufferedReader openForReading() throws IllegalActionException {
         if (getExpression().trim().equals("System.in")) {
-            _reader = new BufferedReader(
-                    new InputStreamReader(System.in));
+            if (_stdIn == null) {
+                _stdIn = new BufferedReader(new InputStreamReader(System.in));
+            }
+            _reader = _stdIn;
             return _reader;
-        }
-        // Check for special substrings.
-        if (getExpression().indexOf("$PTII") >= 0) {
-            setExpression(StringUtilities.substitute(getExpression(),
-                    "$PTII",
-                    System.getProperty("ptolemy.ptII.dir")));
         }
         // Not standard input. Try URL mechanism.
         URL url = asURL();
@@ -234,6 +281,39 @@ public class FileAttribute extends StringAttribute {
         }
     }
 
+    /** Open the file for writing.  If the file does not exist, then
+     *  create it.  If the file name is not absolute, the it is assumed
+     *  to be relative to the base directory returned by getBaseDirectory().
+     *  If permitted, this method will return a Writer that will simply
+     *  overwrite the contents of the file. It is up to the user of this
+     *  method to check whether this is OK.
+     *  @see #asFile()
+     *  @return A writer, or null if no file name has been specified.
+     *  @exception IllegalActionException If the file cannot be opened
+     *   or created.
+     */
+    public Writer openForWriting() throws IllegalActionException {
+        String name = getExpression();
+        if (name.trim().equals("System.out")) {
+            if (_stdOut == null) {
+                _stdOut = new PrintWriter(System.out);
+            }
+            _writer = _stdOut;
+            return _writer;
+        }
+        if (name == null || name.trim().equals("")) {
+            return null;
+        }
+        File file = asFile();
+        try {
+            _writer = new FileWriter(file);
+            return _writer;
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+            "Cannot open file for writing: " + name);
+        }
+    }
+
     /** Set the directory to use as the base for relative file or URL names.
      *  If this is not called, then the default is the directory
      *  containing the file returned by getModelURI() is returned.
@@ -241,6 +321,35 @@ public class FileAttribute extends StringAttribute {
      */
     public void setBaseDirectory(URI directory) {
         _baseDirectory = directory;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return a string that is the current value of this attribute
+     *  with the strings "$PTII", "$CWD" and "$HOME" replaced by their
+     *  respective values.
+     *  @param string The string in which to do the substitution.
+     *  @return A new string.
+     */
+    private static String _substituteSpecialStrings(String string) {
+        String result = string;
+        if (result.indexOf("$PTII") >= 0) {
+            result = StringUtilities.substitute(result,
+                    "$PTII",
+                    System.getProperty("ptolemy.ptII.dir"));
+        }
+        if (result.indexOf("$HOME") >= 0) {
+            result = StringUtilities.substitute(result,
+                    "$HOME",
+                    System.getProperty("user.home"));
+        }
+        if (result.indexOf("$CWD") >= 0) {
+            result = StringUtilities.substitute(result,
+                    "$CWD",
+                    System.getProperty("user.dir"));
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -252,6 +361,12 @@ public class FileAttribute extends StringAttribute {
     /** The current reader for the input file. */
     private BufferedReader _reader;
 
+    /** The current writer for the output file. */
+    private Writer _writer;
+
     /** Standard in as a reader. */
     private static BufferedReader _stdIn = null;
+
+    /** Standard out as a writer. */
+    private static PrintWriter _stdOut = null;
 }
