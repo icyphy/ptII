@@ -41,11 +41,6 @@ if {[string compare test [info procs autoShallowCG]] == 1} then {
     source sootShallowCodeGeneration.tcl
 } {}
 
-
-if {[info procs jdkClassPathSeparator] == "" } then { 
-    source [file join $PTII util testsuite jdktools.tcl]
-}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -63,14 +58,14 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 # First, do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
-    set result [sootShallowCodeGeneration \
+    set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    IIR.xml]]
     list {}
 } {{}}
 
 test Shallow-1.3 {Compile and run the DE Counter test} {
-    set result [sootShallowCodeGeneration \
+    set result [sootCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    Counter.xml]]
     list {}
