@@ -54,6 +54,18 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
         int kind1 = _typeID.kind(type1);
         int kind2 = _typeID.kind(type2);
 
+        if (_debug) {
+            System.out.println("ExtendedJavaTypePolicy."
+			       + "arithPromotType(): "
+			       + " kind1: " + kind1
+			       + " kind2: " + kind2
+			       );
+	}
+
+	// FIXME: These should be reordered to match the order 
+	// TYPE_KIND_FIX_POINT_MATRIX etc. are declared in
+	// ExtendedJavaTypeIdentifier.java
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX) ||
                 (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX)) {
             return TypeUtility.makeArrayType((TypeNode)
@@ -86,6 +98,16 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             return TypeUtility.makeArrayType(BoolTypeNode.instance, 2);
         }
 
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY) ||
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY)) {
+            return TypeUtility.makeArrayType(IntTypeNode.instance, 1);
+        }
+
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY) ||
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY)) {
+            return TypeUtility.makeArrayType(DoubleTypeNode.instance, 1);
+        }
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT) ||
                 (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT)) {
             return (TypeNode) ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone();
@@ -106,6 +128,17 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             return NullTypeNode.instance;
         }
 
+        if (_debug) {
+            System.out.println("ExtendedJavaTypePolicy."
+			       + "arithPromotType(): "
+			       + " calling super.arithPromoteType");
+	}
+
         return super.arithPromoteType(type1, type2);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private final static boolean _debug = true;
 }
