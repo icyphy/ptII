@@ -54,6 +54,7 @@ CLASSPATH = ../../../..
 JSRCS = \
 	PNAdder.java \
 	PNAlternate.java \
+	PNAudioPacker.java \
 	PNAudioSource.java \
 	PNCirConvFilter.java \
 	PNDAConverter.java \
