@@ -1,4 +1,4 @@
-/* An analysis for detecting objects that must be aliased to eachother.
+/* An analysis for detecting objects that must be aliased to each other.
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.

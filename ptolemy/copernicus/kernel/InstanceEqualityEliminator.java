@@ -45,10 +45,10 @@ A transformer that removes instance equality checks.
 It uses alias analysis to determine what locals can point to the same object,
 allowing static evaluation of simple conditions.
 Specifically, <i>ref1 == ref2</i> can be replaced with true if <i>ref1</i>
-and <i>ref2</i> are must-aliases of eachother, and false if <i>ref1</> and <i>ref2</i>
-are not maybe aliases of eachother.  Similarly, <i>ref1 != ref2</i> can be
+and <i>ref2</i> are must-aliases of each other, and false if <i>ref1</> and <i>ref2</i>
+are not maybe aliases of each other.  Similarly, <i>ref1 != ref2</i> can be
 replaced with true if <i>ref1</> and <i>ref2</i> are not maybe aliases of
-eachother and with false if they are must-aliases
+each other and with false if they are must-aliases
 <p>
 However, in general, making decisions base on must-aliases is much easier
 than making decisions on maybe aliases...  in particular, a conservative

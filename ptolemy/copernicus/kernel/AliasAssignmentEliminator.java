@@ -40,7 +40,7 @@ import java.util.*;
 /**
 A transformer that removes unnecessary reference assignments.
 Specifically, an assignment <i>a=b</i> can be removed if <i>a</i> and
-<i>b</i> are already must-aliases of eachother.
+<i>b</i> are already must-aliases of each other.
 */
 
 public class AliasAssignmentEliminator extends BodyTransformer
