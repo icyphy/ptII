@@ -106,6 +106,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public DDEReceiver() {
         super();
+	_boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct an empty receiver with the specified container.
@@ -113,6 +114,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public DDEReceiver(IOPort container) {
         super(container);
+	_boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct an empty queue with the specified IOPort container
@@ -122,6 +124,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public DDEReceiver(IOPort container, int priority) {
         super(container, priority);
+	_boundaryDetector = new BoundaryDetector(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -280,6 +283,24 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return hasToken();
     }
 
+    /**
+     */
+    public boolean isConnectedToBoundary() {
+	return _boundaryDetector.isConnectedToBoundary();
+    }
+
+    /**
+     */
+    public boolean isInsideBoundary() {
+	return _boundaryDetector.isInsideBoundary();
+    }
+
+    /**
+     */
+    public boolean isOutsideBoundary() {
+	return _boundaryDetector.isOutsideBoundary();
+    }
+
     /** Do a blocking write on the queue. Set the time stamp to be
      *  the current time of the sending actor. If this receiver is
      *  connected to a boundary port, then set the time stamp to
@@ -387,6 +408,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
     	_readPending = false;
     	_writePending = false;
 	_hasToken = false;
+	_boundaryDetector.reset();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -422,5 +444,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
     private boolean _writePending = false;
     private boolean _hideNullTokens = true;
     private boolean _hasToken = false;
+
+    private BoundaryDetector _boundaryDetector;
 
 }

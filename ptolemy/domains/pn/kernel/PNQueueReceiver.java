@@ -79,6 +79,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public PNQueueReceiver() {
         super();
+	_boundaryDetector = new BoundaryDetector(this);
     }
 
     /** Construct an empty receiver with the specified container.
@@ -86,6 +87,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public PNQueueReceiver(IOPort container) {
         super(container);
+	_boundaryDetector = new BoundaryDetector(this);
     }
 
 
@@ -151,17 +153,27 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return The oldest Token read from the queue
      */
     public Token get(Branch branch) {
-        if( isInsideBoundary() ) {
-            return insideBoundaryGet(branch);
-        } else if( isOutsideBoundary() ) {
-            return outsideBoundaryGet(branch);
-        }
-        return get();
+	if( isInsideBoundary() ) {
+	    if( isConnectedToBoundary() ) {
+		return consumerProducerGet(branch);
+	    }
+	    return producerGet(branch);
+	} else if( isOutsideBoundary() ) {
+	    if( isConnectedToBoundary() ) {
+		return consumerProducerGet(branch);
+	    }
+	    return producerGet(branch);
+	} else if( isConnectedToBoundary() ) {
+	    return consumerGet(branch);
+	}
+	return get();
+
     }
 
     /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
      *  @return true
+     *  FIXME
      */
     public boolean hasRoom() {
 	return true;
@@ -170,27 +182,70 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Return true since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
      *  @return true
+     *  FIXME
      */
     public boolean hasToken() {
 	return true;
     }
 
-    /** Remove and return the oldest token from the FIFO queue contained
-     *  in the receiver. Terminate the calling process by throwing a
-     *  TerminateProcessException if requested.
-     *  Otherwise, if the FIFO queue is empty, then suspend the calling
-     *  process and inform the director of the same.
-     *  If a new token becomes available to the FIFO queue, then resume the
-     *  suspended process.
-     *  If the queue was not empty, or on availability of a new token (calling
-     *  process was suspended), take the oldest token from the FIFO queue.
-     *  Check if any process is blocked on a write to this
-     *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same. 
-     *  Otherwise return.
+    /**
+     */
+    public boolean isConnectedToBoundary() {
+	return _boundaryDetector.isConnectedToBoundary();
+    }
+
+    /**
+     */
+    public boolean isInsideBoundary() {
+	return _boundaryDetector.isInsideBoundary();
+    }
+
+    /**
+     */
+    public boolean isOutsideBoundary() {
+	return _boundaryDetector.isOutsideBoundary();
+    }
+
+    /** Associated with Atomic Get/Composite Put
+     *  @param branch The invoking branch.
      *  @return The oldest Token read from the queue
      */
-    public Token insideBoundaryGet(Branch branch) {
+    public Token consumerGet(Branch branch) {
+	Workspace workspace = getContainer().workspace();
+	BasePNDirector director = ((BasePNDirector)
+                ((Actor)(getContainer().getContainer())).getDirector());
+        Token result = null;
+        synchronized (this) {
+            while (!_terminate && !super.hasToken()) {
+                director._actorReadBlocked(true);
+                _readpending = true;
+		// _otherBranch = branch;
+                while (_readpending && !_terminate) {
+                    workspace.wait(this);
+                }
+            }
+            if (_terminate) {
+                throw new TerminateProcessException("");
+            } else {
+                result = super.get();
+                //Check if pending write to the Queue;
+                if (_writepending) {
+		    _otherBranch.registerRcvrUnBlocked();
+		    _otherBranch = null;
+                    _writepending = false;
+		    // Wake up threads waiting on a write;
+                    notifyAll(); 
+                }
+            }
+            return result;
+        }
+    }
+    
+    /** Associated with Composite Get/Composite Put
+     *  @param branch The invoking branch.
+     *  @return The oldest Token read from the queue
+     */
+    public Token consumerProducerGet(Branch branch) {
 	Workspace workspace = getContainer().workspace();
 	BasePNDirector director = ((BasePNDirector)
                 ((Actor)(getContainer().getContainer())).getDirector());
@@ -198,7 +253,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
                 branch.registerRcvrBlocked();
-                // director._actorReadBlocked(true);
+		_otherBranch = branch;
                 _readpending = true;
                 while (_readpending && !_terminate) {
                     workspace.wait(this);
@@ -210,10 +265,45 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 result = super.get();
                 //Check if pending write to the Queue;
                 if (_writepending) {
-                    branch.registerRcvrUnBlocked();
-                    // director._informOfWriteUnblock(this);
+		    _otherBranch.registerRcvrUnBlocked();
+		    _otherBranch = null;
                     _writepending = false;
-                    notifyAll(); // Wake up threads waiting on a write;
+		    // Wake up threads waiting on a write;
+                    notifyAll(); 
+                }
+            }
+            return result;
+        }
+    }
+    
+    /** Associated with Composite Get/Atomic Put
+     *  @param branch The invoking branch.
+     *  @return The oldest Token read from the queue
+     */
+    public Token producerGet(Branch branch) {
+	Workspace workspace = getContainer().workspace();
+	BasePNDirector director = ((BasePNDirector)
+                ((Actor)(getContainer().getContainer())).getDirector());
+        Token result = null;
+        synchronized (this) {
+            while (!_terminate && !super.hasToken()) {
+                branch.registerRcvrBlocked();
+		_otherBranch = branch;
+                _readpending = true;
+                while (_readpending && !_terminate) {
+                    workspace.wait(this);
+                }
+            }
+            if (_terminate) {
+                throw new TerminateProcessException("");
+            } else {
+                result = super.get();
+                //Check if pending write to the Queue;
+                if (_writepending) {
+                    director._informOfWriteUnblock(this);
+                    _writepending = false;
+		    // Wake up threads waiting on a write;
+                    notifyAll(); 
                 }
             }
             return result;
@@ -227,7 +317,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  This method is not synchronized so the caller should be.
      * @return True if this receiver is connected to the inside of a
      *  boundary port; return false otherwise.
-     */
     public boolean isConnectedToBoundary() {
         if( _connectedBoundaryCacheIsOn ) {
             return _isConnectedBoundaryValue;
@@ -274,6 +363,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return _isConnectedBoundaryValue;
         }
     }
+     */
 
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -283,7 +373,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  should be.
      * @return True if this receiver is contained on the inside of
      *  a boundary port; return false otherwise.
-     */
     public boolean isInsideBoundary() {
         if( _insideBoundaryCacheIsOn ) {
             return _isInsideBoundaryValue;
@@ -321,6 +410,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return _isInsideBoundaryValue;
         }
     }
+     */
 
     /** Return true if this receiver is contained on the outside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -330,7 +420,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  should be.
      * @return True if this receiver is contained on the outside of
      *  a boundary port; return false otherwise.
-     */
     public boolean isOutsideBoundary() {
         if( _outsideBoundaryCacheIsOn ) {
             return _isInsideBoundaryValue;
@@ -368,6 +457,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             return _isOutsideBoundaryValue;
         }
     }
+     */
 
     /** Return a true or false to indicate whether there is a read pending
      *  on this receiver or not, respectively.
@@ -385,52 +475,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public synchronized boolean isWritePending() {
 	return _writepending;
-    }
-
-    /** Remove and return the oldest token from the FIFO queue contained
-     *  in the receiver. Terminate the calling process by throwing a
-     *  TerminateProcessException if requested.
-     *  Otherwise, if the FIFO queue is empty, then suspend the calling
-     *  process and inform the director of the same.
-     *  If a new token becomes available to the FIFO queue, then resume the
-     *  suspended process.
-     *  If the queue was not empty, or on availability of a new token (calling
-     *  process was suspended), take the oldest token from the FIFO queue.
-     *  Check if any process is blocked on a write to this
-     *  receiver. If a process is indeed blocked, then unblock the
-     *  process, and inform the director of the same. 
-     *  Otherwise return.
-     *  @return The oldest Token read from the queue
-     */
-    public Token outsideBoundaryGet(Branch branch) {
-	Workspace workspace = getContainer().workspace();
-	BasePNDirector director = ((BasePNDirector)
-                ((Actor)(getContainer().getContainer())).getDirector());
-        Token result = null;
-        synchronized (this) {
-            while (!_terminate && !super.hasToken()) {
-                branch.registerRcvrBlocked();
-                // director._actorReadBlocked(true);
-                _readpending = true;
-                while (_readpending && !_terminate) {
-                    workspace.wait(this);
-                }
-            }
-            if (_terminate) {
-                throw new TerminateProcessException("");
-            } else {
-                result = super.get();
-                //Check if pending write to the Queue;
-                if (_writepending) {
-                    branch.registerRcvrUnBlocked();
-                    // director._informOfWriteUnblock(this);
-                    _writepending = false;
-                    // Wake up threads waiting on a write;
-                    notifyAll(); 
-                }
-            }
-            return result;
-        }
     }
 
     /** Put a token on the queue contained in this receiver.
@@ -501,12 +545,15 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	_readpending = false;
 	_writepending = false;
 	_terminate = false;
+	_boundaryDetector.reset();
+	/*
     	_insideBoundaryCacheIsOn = false;
     	_isInsideBoundaryValue = false;
     	_outsideBoundaryCacheIsOn = false;
     	_isOutsideBoundaryValue = false;
     	_connectedBoundaryCacheIsOn = false;
     	_isConnectedBoundaryValue = false;
+	*/
     }
 
     /** Set a state flag indicating that there is a process blocked while
@@ -544,6 +591,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     private boolean _writepending = false;
     private boolean _terminate = false;
 
+    /*
     private boolean _insideBoundaryCacheIsOn = false;
     private boolean _isInsideBoundaryValue = false;
 
@@ -552,72 +600,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     private boolean _connectedBoundaryCacheIsOn = false;
     private boolean _isConnectedBoundaryValue = false;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                           inner class                     ////
-    
-    /*
-    private boolean superHasToken() {
-        return super.hasToken();
-    }
-    
-    private Token superGet() {
-        return super.get();
-    }
-    
-    private void informOfWriteUnblock() {
-	BasePNDirector director = ((BasePNDirector)((Actor)
-                (getContainer().getContainer())).getDirector());
-        director._informOfWriteUnblock(this);
-    }
-    
-    private class NonBoundaryAccessor {
-    
-        public Token get() {
-	    Workspace workspace = getContainer().workspace();
-	    BasePNDirector director = ((BasePNDirector)((Actor)
-                    (getContainer().getContainer())).getDirector());
-            Token result = null;
-            synchronized (this) {
-                while (!_terminate && !superHasToken()) {
-                    director._actorReadBlocked(true);
-                    _readpending = true;
-                    while (_readpending && !_terminate) {
-                        workspace.wait(this);
-                    }
-                }
-                if (_terminate) {
-                    throw new TerminateProcessException("");
-                } else {
-                    result = superGet();
-                    //Check if pending write to the Queue;
-                    if (_writepending) {
-                        informOfWriteUnblock();
-                        // director._informOfWriteUnblock(this);
-                        _writepending = false;
-                        // Wake up threads waiting for write;
-                        notifyAll(); 
-                    }
-                }
-                return result;
-            }
-            // return new Token();
-        }
-        
-        public void put(Token token) {
-        }
-        
-    }
-    
-    public class BoundaryAccessor {
-    
-    	public Token get() {
-            return new Token();
-        }
-        
-        public void put(Token token) {
-        }
-    }
     */
 
+    private Branch _otherBranch = null;
+    private BoundaryDetector _boundaryDetector;
 }
