@@ -417,67 +417,67 @@ public class TimedPNDirector extends BasePNDirector {
      *  @return true if a real deadlock is detected, false otherwise.
      *  @exception IllegalActionException Not thrown in this base class. This
      *  might be thrown by derived classes.
-    protected boolean _handleDeadlock()
-	    throws IllegalActionException {
-        //Return true if there are no time-blocked processes.
-	if (_writeBlockCount != 0) {
-            _incrementLowestWriteCapacityPort();
-	    return false;
-        } else if (_delayBlockCount == 0) {
-	    return true;
-	} else {
-	    //Advance time to next possible time.
-	    synchronized(this) {
-		try {
-		    //Take the first time-blocked process from the queue.
-		    _eventQueue.take();
-		    //Advance time to the resumption time of this process.
-		    setCurrentTime(((Double)(_eventQueue.getPreviousKey()))
-			    .doubleValue());
-		    _informOfDelayUnblock();
-		} catch (IllegalActionException e) {
-		    throw new InternalErrorException("Inconsistency"+
-			    " in number of actors blocked on delays count"+
-			    " and the entries in the CalendarQueue");}
+     protected boolean _handleDeadlock()
+     throws IllegalActionException {
+     //Return true if there are no time-blocked processes.
+     if (_writeBlockCount != 0) {
+     _incrementLowestWriteCapacityPort();
+     return false;
+     } else if (_delayBlockCount == 0) {
+     return true;
+     } else {
+     //Advance time to next possible time.
+     synchronized(this) {
+     try {
+     //Take the first time-blocked process from the queue.
+     _eventQueue.take();
+     //Advance time to the resumption time of this process.
+     setCurrentTime(((Double)(_eventQueue.getPreviousKey()))
+     .doubleValue());
+     _informOfDelayUnblock();
+     } catch (IllegalActionException e) {
+     throw new InternalErrorException("Inconsistency"+
+     " in number of actors blocked on delays count"+
+     " and the entries in the CalendarQueue");}
 
-		//Remove any other process waiting to be resumed at the new
-		//advanced time (the new currenttime).
-		boolean sametime = true;
-		while (sametime) {
-		    //If queue is not empty, then determine the resumption
-		    //time of the next process.
-		    if (!_eventQueue.isEmpty()) {
-			try {
-			    //Remove the first process from the queue.
-			    Actor actor = (Actor)_eventQueue.take();
-			    //Get the resumption time of the newly removed
-			    //process.
-			    double newtime = ((Double)(_eventQueue.
-				    getPreviousKey())).doubleValue();
-			    //If the resumption time of the newly removed
-			    //process is the same as the newly advanced time
-			    //then unblock it. Else put the newly removed
-			    //process back on the event queue.
-			    if (newtime == getCurrentTime()) {
-				_informOfDelayUnblock();
-			    } else {
-				_eventQueue.put (new Double(newtime), actor);
-				sametime = false;
-			    }
-			} catch (IllegalActionException e) {
-			    throw new InternalErrorException(e.toString());
-			}
-		    } else {
-			sametime = false;
-		    }
-		}
-		//Wake up all delayed actors
-		notifyAll();
-	    }
-	}
-        return false;
-    }
-     */
+     //Remove any other process waiting to be resumed at the new
+     //advanced time (the new currenttime).
+     boolean sametime = true;
+     while (sametime) {
+     //If queue is not empty, then determine the resumption
+     //time of the next process.
+     if (!_eventQueue.isEmpty()) {
+     try {
+     //Remove the first process from the queue.
+     Actor actor = (Actor)_eventQueue.take();
+     //Get the resumption time of the newly removed
+     //process.
+     double newtime = ((Double)(_eventQueue.
+     getPreviousKey())).doubleValue();
+     //If the resumption time of the newly removed
+     //process is the same as the newly advanced time
+     //then unblock it. Else put the newly removed
+     //process back on the event queue.
+     if (newtime == getCurrentTime()) {
+     _informOfDelayUnblock();
+     } else {
+     _eventQueue.put (new Double(newtime), actor);
+     sametime = false;
+     }
+     } catch (IllegalActionException e) {
+     throw new InternalErrorException(e.toString());
+     }
+     } else {
+     sametime = false;
+     }
+     }
+     //Wake up all delayed actors
+     notifyAll();
+     }
+     }
+     return false;
+     }
+    */
 
     /** Process the queued topology change requests. Registered topology
      *  listeners are informed of each change in a series of calls

@@ -101,7 +101,7 @@ public class NewFSMDirector extends Director {
         }
         State st = _controller.currentState();
         Transition tr =
-                _controller._chooseTransition(st.preemptiveTransitionList());
+            _controller._chooseTransition(st.preemptiveTransitionList());
         if (tr != null) {
             return;
         }
@@ -174,3 +174,4 @@ public class NewFSMDirector extends Director {
     // The FSMActor capturing mode control logic.
     private FSMActor _controller = null;
 
+    

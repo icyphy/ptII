@@ -191,11 +191,11 @@ public class PBODirector extends Director {
 	Actor actor = (Actor)_startQueue.take();
 	if(actor.prefire()) {
 	    _debug("Firing actor " + ((Entity) actor).getFullName() +
-		   " at " + firingTime);
+                    " at " + firingTime);
 	    actor.fire();
 	    // This is the time that the actor next wants to get fired.
 	    Double refireTime = new Double(desiredFiringTime +
-					   _getFiringPeriod(actor));
+                    _getFiringPeriod(actor));
 
 	    setCurrentTime(firingTime + _getDelay(actor));
 	    _debug("Postfiring actor at " + getCurrentTime());
@@ -258,7 +258,7 @@ public class PBODirector extends Director {
 	    // in the event queue, but it is always safe to return current
 	    // time, so just do that.
 	    _debug("PBODirector.getNextIterationTime: " +
-		   "case should never happen");
+                    "case should never happen");
 	    return getCurrentTime();
 	}
     }
@@ -289,7 +289,7 @@ public class PBODirector extends Director {
 	    }
 	} else {
 	    throw new IllegalActionException("Cannot fire this director " +
-					     "without a container");
+                    "without a container");
 	}
     }
 
@@ -406,13 +406,13 @@ public class PBODirector extends Director {
             throws IllegalActionException {
 	if(!(a instanceof Nameable))
 	    throw new IllegalActionException(
-		"Cannot get the firing period for an actor that is not " +
-		"an entity");
+                    "Cannot get the firing period for an actor that is not " +
+                    "an entity");
         Parameter param =
 	    (Parameter)((ComponentEntity)a).getAttribute("firingPeriod");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have a " +
-		"firingPeriod parameter");
+                    "firingPeriod parameter");
 	}
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
@@ -430,13 +430,13 @@ public class PBODirector extends Director {
             throws IllegalActionException {
 	if(!(a instanceof Nameable))
 	    throw new IllegalActionException(
-		"Cannot get the delay for an actor that is not " +
-		"an entity.");
+                    "Cannot get the delay for an actor that is not " +
+                    "an entity.");
         Parameter param =
 	    (Parameter)((ComponentEntity)a).getAttribute("delay");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have a " +
-		"delay parameter.");
+                    "delay parameter.");
 	}
 	return ((DoubleToken)param.getToken()).doubleValue();
     }

@@ -365,19 +365,19 @@ public class BasePNDirector extends ProcessDirector {
      *  true.
      *  @exception IllegalActionException Not thrown in this base class. This
      *  might be thrown by derived classes.
-    protected boolean _handleDeadlock() throws IllegalActionException {
-        if (_writeBlockCount == 0) {
-	    //There is a real deadlock. Hence return with a value true.
-	    return true;
-        } else {
-            //This is an artificial deadlock. Hence find the input port with
-	    //lowest capacity queue that is blocked on a write and increment
-	    //its capacity;
-            _incrementLowestWriteCapacityPort();
-	    return false;
-        }
-    }
-     */
+     protected boolean _handleDeadlock() throws IllegalActionException {
+     if (_writeBlockCount == 0) {
+     //There is a real deadlock. Hence return with a value true.
+     return true;
+     } else {
+     //This is an artificial deadlock. Hence find the input port with
+     //lowest capacity queue that is blocked on a write and increment
+     //its capacity;
+     _incrementLowestWriteCapacityPort();
+     return false;
+     }
+     }
+    */
 
     /** Double the capacity of one of the queues with the smallest
      *  capacity belonging to a receiver on which a process is blocked

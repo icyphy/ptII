@@ -66,7 +66,7 @@ public class PBOReceiver implements Receiver {
     public Token get() throws NoTokenException {
 	if(_token == null) {
 	    throw new NoTokenException(getContainer(),
-		"Attempt to get data from an empty PBOReceiver");
+                    "Attempt to get data from an empty PBOReceiver");
 	}
         return _token;
     }

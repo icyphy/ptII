@@ -140,9 +140,9 @@ public class HDFFSMTransition extends FSMTransition {
 
             _te.getToken();
 	    /*
-            if (((BooleanToken)_te.getToken()).booleanValue() == false) {
-                return false;
-            }
+              if (((BooleanToken)_te.getToken()).booleanValue() == false) {
+              return false;
+              }
 	    */
         }
         if (_tcSet) {
@@ -216,15 +216,15 @@ public class HDFFSMTransition extends FSMTransition {
 	//directorGuard = direct.guardVarArray[0];
 	Enumeration dirScopeVars = direct._getTransitionGuardVars();
 	/*
-	if (dirScopeVars != null) {
-            _te.addToScope(dirScopeVars);
-            _tc.addToScope(dirScopeVars);
-	    System.out.println("HDFFSMTransition: setupScope(): added guard vars to scope");
-        } else {
-	    //throw new IllegalActionException((HDFFSMController)getContainer(), this,
-	    //      "The guard variable is null");
-	    System.out.println("The guard variable list is null");
-	}
+          if (dirScopeVars != null) {
+          _te.addToScope(dirScopeVars);
+          _tc.addToScope(dirScopeVars);
+          System.out.println("HDFFSMTransition: setupScope(): added guard vars to scope");
+          } else {
+          //throw new IllegalActionException((HDFFSMController)getContainer(), this,
+          //      "The guard variable is null");
+          System.out.println("The guard variable list is null");
+          }
 	*/
 	if (dirScopeVars != null) {
 	    while (dirScopeVars.hasMoreElements()) {

@@ -254,7 +254,7 @@ public class Transition extends ComponentRelation {
         Port pt = (Port)ports.next();
         State s = (State)pt.getContainer();
         if ((pt == s.incomingPort && port == st.incomingPort) ||
-            (pt == s.outgoingPort && port == st.outgoingPort)) {
+                (pt == s.outgoingPort && port == st.outgoingPort)) {
             throw new IllegalActionException(this,
                     "Transition can only have one source/destination.");
         }

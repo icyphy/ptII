@@ -219,9 +219,9 @@ public class HDFFSMDirector extends FSMDirector {
 	    _controller.fire();
 	} else {
 	    throw new IllegalActionException(this,
-		     "HDFFSMDirector must have a contoller. "
-		     + "Use setController() to set the contoller"
-					     + " and try again.");
+                    "HDFFSMDirector must have a contoller. "
+                    + "Use setController() to set the contoller"
+                    + " and try again.");
 	}
     }
 
@@ -323,7 +323,7 @@ public class HDFFSMDirector extends FSMDirector {
             result = refine.prefire();
         } else {
 	    throw new IllegalActionException(this,
-		      "Current refinement is null in prefire().");
+                    "Current refinement is null in prefire().");
 	}
 
         return result;
@@ -384,7 +384,7 @@ public class HDFFSMDirector extends FSMDirector {
 		// recently read in tokens.
 		if (!_portNameToArrayFIFOQueue.containsKey(aPort.getFullName())) {
 		    _portNameToArrayFIFOQueue.put(aPort.getFullName(),
-						  guardTokenArray);
+                            guardTokenArray);
 		}
 
 		// Create guard variables for this port, for use
@@ -419,19 +419,19 @@ public class HDFFSMDirector extends FSMDirector {
 	if (_controller == null) {
 	    if (getContainer() == null) {
 		throw new IllegalActionException(this, ctrl,
-                    "HDFFSMDirector must have a container to set its "
-                    + "controller.");
+                        "HDFFSMDirector must have a container to set its "
+                        + "controller.");
 	    }
 	    if (getContainer() != ctrl.getContainer()) {
 		throw new IllegalActionException(this, ctrl,
-                    "HDFFSMDirector must have the same container as its "
-                    + "controller.");
+                        "HDFFSMDirector must have the same container as its "
+                        + "controller.");
 	    }
 	    _controller = ctrl;
 	} else {
 	    throw new IllegalActionException(this,
-		      "setController() was already called."
-		      + "HDFFSMDirector can only have one controller");
+                    "setController() was already called."
+                    + "HDFFSMDirector can only have one controller");
 	}
     }
 
@@ -502,10 +502,10 @@ public class HDFFSMDirector extends FSMDirector {
         boolean trans = false;
         Entity refine = (Entity)_controller.currentRefinement();
 	if (refine == null) {
-		    throw new IllegalActionException(this,
-			 "transferInputs: current refinement is null.");
+            throw new IllegalActionException(this,
+                    "transferInputs: current refinement is null.");
 	} else {
-	     //if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is not null, full name is: " + refine.getFullName());
+            //if (_debugging) _debug("HDFFSMDirector: transferInputs():Current refinement is not null, full name is: " + refine.getFullName());
 	}
 
         IOPort p;
@@ -544,10 +544,10 @@ public class HDFFSMDirector extends FSMDirector {
 
 		if (_controller == null) {
 		    throw new IllegalActionException(this,
-		      "_controller is null.");
+                            "_controller is null.");
 		} else if (refine == null) {
 		    throw new IllegalActionException(this,
-		      "Current refinement is null.");
+                            "Current refinement is null.");
 		} else {
 		    //for (Enumeration e = refine.getPorts() ; e.hasMoreElements() ;) {
 		    //System.out.println("HDFFSMDirector: transferInputs(): Next port contained by current refinement: " + e.nextElement());
@@ -589,7 +589,7 @@ public class HDFFSMDirector extends FSMDirector {
 
 	if (guardVarArray == null) {
 	    throw new InternalErrorException("Guard variable array is null " +
-					     "in transferInputs().");
+                    "in transferInputs().");
 	}
 
 	// Copy the newest token into the Variable array.
@@ -701,7 +701,7 @@ public class HDFFSMDirector extends FSMDirector {
 	if (guardVarArray == null) {
 	    // This should not happen.
 	    throw new InternalErrorException("Guard variable array is null " +
-					     "in transferOutputs().");
+                    "in transferOutputs().");
 
 	}
 
@@ -734,7 +734,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  @param port The port to create guard variables for.
      */
     private void _createGuardVariables(IOPort port)
-	throws IllegalActionException {
+            throws IllegalActionException {
 
 	int history = getGuardTokenHistory();
 	Variable[] guardVarArray = new Variable[history];
@@ -822,8 +822,8 @@ public class HDFFSMDirector extends FSMDirector {
 	    }
 	} else {
 	    throw new IllegalActionException(this,
-			"port parameter is not an inport or an " +
-					     "output port");
+                    "port parameter is not an inport or an " +
+                    "output port");
 	}
 
 

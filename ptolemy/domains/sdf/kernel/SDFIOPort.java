@@ -128,7 +128,7 @@ public final class SDFIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Clone the port into the specified workspace. This calls the
+    /** Clone the port into the specified workspace. This calls the
      *  base class and then creates new parameters.  The new
      *  port will have the same parameter values as the old.
      *  @param ws The workspace for the new object.
@@ -282,23 +282,23 @@ public final class SDFIOPort extends TypedIOPort {
 	    // check the types for all of the tokens in the array.
 	    Type _resolvedType = getType();
 	    int compare = TypeLattice.compare(firstToken.getType(),
-					      _resolvedType);
+                    _resolvedType);
 	    if (compare == CPO.HIGHER ||
                     compare == CPO.INCOMPARABLE) {
 		throw new IllegalArgumentException(
-		    "Run-time type checking for token 0 " +
-		    "failed. token: " + firstToken.getType().toString() +
-		    ", port: " + getFullName() + ", port type: " +
-		    getType().toString());
+                        "Run-time type checking for token 0 " +
+                        "failed. token: " + firstToken.getType().toString() +
+                        ", port: " + getFullName() + ", port type: " +
+                        getType().toString());
 	    }
 
 	    for(int i = 1; i < tokens.length; i++) {
 		if( !(tokens[i].getType().isEqualTo(firstToken.getType())))
 		    throw new IllegalArgumentException(
-			"Run-time type checking for token " + i +
-			"failed. token: " + tokens[i].getType().toString() +
-                        ", port: " + getFullName() + ", port type: " +
-                        getType().toString());
+                            "Run-time type checking for token " + i +
+                            "failed. token: " + tokens[i].getType().toString() +
+                            ", port: " + getFullName() + ", port type: " +
+                            getType().toString());
 	    }
 
             // Note that the getRemoteReceivers() method doesn't throw
@@ -310,31 +310,31 @@ public final class SDFIOPort extends TypedIOPort {
         }
 
 	// try {
-	    for (int j = 0; j < farRec[channelindex].length; j++) {
-		TypedIOPort port =
-		    (TypedIOPort)farRec[channelindex][j].getContainer();
+        for (int j = 0; j < farRec[channelindex].length; j++) {
+            TypedIOPort port =
+                (TypedIOPort)farRec[channelindex][j].getContainer();
 
-		Type farType = port.getType();
-		if((farRec[channelindex][j] instanceof SDFReceiver)&&
-		   (farType.isEqualTo(firstToken.getType()))) {
-		    ((SDFReceiver) farRec[channelindex][j]).putArray(tokens);
-		} else {
-		    // Object[] arg = new Object[1];
-		    // Method convert = _getConvertMethod(farType);
-		    // for (int i = 0; i < tokens.length; i++) {
-		    // 	arg[0] = tokens[i];
-		    //	ptolemy.data.Token newToken =
-		    //	    (ptolemy.data.Token)convert.invoke(null, arg);
-		    //	farRec[channelindex][j].put(newToken);
-		    // }
+            Type farType = port.getType();
+            if((farRec[channelindex][j] instanceof SDFReceiver)&&
+                    (farType.isEqualTo(firstToken.getType()))) {
+                ((SDFReceiver) farRec[channelindex][j]).putArray(tokens);
+            } else {
+                // Object[] arg = new Object[1];
+                // Method convert = _getConvertMethod(farType);
+                // for (int i = 0; i < tokens.length; i++) {
+                // 	arg[0] = tokens[i];
+                //	ptolemy.data.Token newToken =
+                //	    (ptolemy.data.Token)convert.invoke(null, arg);
+                //	farRec[channelindex][j].put(newToken);
+                // }
 
-		    for (int i = 0; i < tokens.length; i++) {
-		    	ptolemy.data.Token newToken =
-		    	    farType.convert(tokens[i]);
-		    	farRec[channelindex][j].put(newToken);
-		    }
-		}
-	    }
+                for (int i = 0; i < tokens.length; i++) {
+                    ptolemy.data.Token newToken =
+                        farType.convert(tokens[i]);
+                    farRec[channelindex][j].put(newToken);
+                }
+            }
+        }
         // } catch (IllegalAccessException iae) {
 	//     throw new InternalErrorException("TypedIOPort.send: " +
         //             "IllegalAccessException: " + iae.getMessage());
@@ -387,19 +387,19 @@ public final class SDFIOPort extends TypedIOPort {
 	}
     }
 
-   /** Set the number of tokens that are consumed
-    *  on the appropriate port of this Actor during each firing
-    *  by setting the value of the tokenConsumptionRate parameter.
-    *
-    *  @exception IllegalActionException If the rate is less than zero,
-    *  or the port is not an input port.
-    */
+    /** Set the number of tokens that are consumed
+     *  on the appropriate port of this Actor during each firing
+     *  by setting the value of the tokenConsumptionRate parameter.
+     *
+     *  @exception IllegalActionException If the rate is less than zero,
+     *  or the port is not an input port.
+     */
     public void setTokenConsumptionRate(int rate)
             throws IllegalActionException {
         if(rate < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
         if(!isInput()) throw new IllegalActionException(this, "Port " +
-	     "is not an input port.");
+                "is not an input port.");
 	tokenConsumptionRate.setToken(new IntToken(rate));
     }
 
@@ -464,11 +464,11 @@ public final class SDFIOPort extends TypedIOPort {
     private void _initialize() {
 	try {
 	    tokenConsumptionRate = new Parameter(this, "TokenConsumptionRate",
-						 new IntToken(0));
+                    new IntToken(0));
 	    tokenInitProduction = new Parameter(this, "TokenInitProduction",
-						new IntToken(0));
+                    new IntToken(0));
 	    tokenProductionRate = new Parameter(this, "TokenProductionRate",
-						new IntToken(0));
+                    new IntToken(0));
 	}
 	catch (Exception e) {
 	    // This should never happen.
