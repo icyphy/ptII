@@ -172,6 +172,161 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
     }
 
+    /** Send a token to all connected receivers.
+     *  Tokens are in general immutable, so each receiver is given a
+     *  reference to the same token and no clones are made.
+     *  The transfer is accomplished by calling getRemoteReceivers()
+     *  to determine the number of channels with valid receivers and
+     *  then calling send on the appropriate channels.
+     *  It would probably be faster to call put() directly on the receivers.
+     *  If there are no destination receivers, then nothing is sent.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param token The token to send
+     *  @exception IllegalActionException If the port is not an output.
+     *  @exception NoRoomException If a send to one of the channels throws
+     *     it.
+     */
+    public void broadcast(Token token)
+	    throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        try {
+            _workspace.getReadAccess();
+            int compare = TypeLattice.compare(token.getType(),
+                    _resolvedType);
+            if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                throw new IllegalArgumentException(
+                        "Run-time type checking failed. token type: "
+                        + token.getType().toString() + ", port: "
+                        + getFullName() + ", port type: "
+                        + getType().toString());
+            }
+            
+            farReceivers = getRemoteReceivers();
+            if (farReceivers == null) {
+                return;
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+        // NOTE: This does not call send() here, because send()
+        // repeats the above on each call.
+        try {
+            for (int i = 0; i < farReceivers.length; i++) {
+                if (farReceivers[i] == null) continue;
+
+                for (int j = 0; j < farReceivers[i].length; j++) {
+                    TypedIOPort port =
+                        (TypedIOPort)farReceivers[i][j].
+                        getContainer();
+                    Type farType = port.getType();
+                    
+                    if (farType.isEqualTo(token.getType())) {
+                        farReceivers[i][j].put(token);
+                    } else {
+                        Token newToken = farType.convert(token);
+                        farReceivers[i][j].put(newToken);
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
+    }   
+
+
+    /** Send the specified portion of a token array to all receivers connected
+     *  to this port. The first <i>vectorLength</i> tokens
+     *  of the token array are sent.
+     *  <p>
+     *  Tokens are in general immutable, so each receiver
+     *  is given a reference to the same token and no clones are made.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.  The transfer is accomplished
+     *  by calling the vectorized put() method of the remote receivers.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param tokenArray The token array to send
+     *  @param vectorLength The number of elements of of the token
+     *   array to send.
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void broadcast(Token[] tokenArray, int vectorLength)
+            throws IllegalActionException, NoRoomException {
+        Receiver[][] farReceivers;
+        Token token = null;
+        try {
+            _workspace.getReadAccess();
+            // Only do type checking on the 1st token for
+            // performance reasons.
+            token = tokenArray[0];
+            int compare = TypeLattice.compare(token.getType(),
+                    _resolvedType);
+            if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                throw new IllegalArgumentException(
+                        "Run-time type checking failed. token type: "
+                        + token.getType().toString() + ", port: "
+                        + getFullName() + ", port type: "
+                        + getType().toString());
+            }
+            farReceivers = getRemoteReceivers();
+            if (farReceivers == null) {
+                return;
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+        // NOTE: This does not call send() here, because send()
+        // repeats the above on each call.
+        try {
+            for (int i = 0; i < farReceivers.length; i++) {
+                if (farReceivers[i] == null) continue;
+                
+                for (int j = 0; j < farReceivers[i].length; j++) {
+                    TypedIOPort port =
+                        (TypedIOPort)farReceivers[i][j].getContainer();
+                    Type farType = port.getType();
+                    if (farType.isEqualTo(token.getType())) {
+                        // Good, no conversion necessary.
+                        farReceivers[i][j].putArray(tokenArray, vectorLength);
+                    } else {
+                        // Note: This is very bad for performance!
+                        // For better efficiency, make sure
+                        // all ports have the same type.
+                        for (int k = 0; k < vectorLength; k++) {
+                            farReceivers[i][j].put(
+                                    farType.convert(tokenArray[k]));
+                        }
+                    }
+                    farReceivers[i][j].putArray(tokenArray, vectorLength);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This may occur if the port is not an output port.
+            // Ignore...
+        }
+    }
+
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must
      *  do this yourself if you want it there).
