@@ -27,24 +27,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel;
 
-import java.util.Iterator;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.util.Time;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
