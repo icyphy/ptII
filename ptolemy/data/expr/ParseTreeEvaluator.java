@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,6 +75,54 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         return node.getToken();
     }
     
+    public static ptolemy.data.Token functionCall(String methodName, 
+            int argCount, Type[] argTypes, Object[] argValues) 
+            throws IllegalActionException {
+        CachedMethod method = CachedMethod.findMethod(methodName,
+                argTypes, CachedMethod.FUNCTION);
+        if(!method.isMissing()) {
+            ptolemy.data.Token result = method.invoke(argValues);
+            return result;
+        } else {
+            // If we reach this point it means the function was not found on
+            // the search path.
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < argCount; i++) {
+                if (i == 0) {
+                    buffer.append(argValues[i].toString());
+                } else {
+                    buffer.append(", " + argValues[i].toString());
+                }
+            }
+            throw new IllegalActionException("No matching function " + 
+                    methodName + "( " + buffer + " ).");
+        }
+    }
+
+   public static ptolemy.data.Token methodCall(String methodName, 
+           int argCount, Type[] argTypes, Object[] argValues) 
+           throws IllegalActionException {
+        CachedMethod method = CachedMethod.findMethod(methodName,
+                argTypes, CachedMethod.METHOD);
+        if(!method.isMissing()) {
+            ptolemy.data.Token result = method.invoke(argValues);
+            return result;
+        } else {
+            // If we reach this point it means the function was not found on
+            // the search path.
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < argCount; i++) {
+                if (i == 0) {
+                    buffer.append(argValues[i].toString());
+                } else {
+                    buffer.append(", " + argValues[i].toString());
+                }
+            }
+            throw new IllegalActionException("No matching function " + 
+                    methodName + "( " + buffer + " ).");
+        }
+    }
+
     public void visitArrayConstructNode(ASTPtArrayConstructNode node) 
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
@@ -170,15 +219,18 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                 _evaluateChild(node, 0);
                 ptolemy.data.Token token = 
                     node.jjtGetChild(0).getToken();
+                
                 if(token instanceof StringToken) {
                     // Note that we do not want to store a reference to
                     // the parser, because parsers take up alot of memory.
                     PtParser parser = new PtParser();
                     ASTPtRootNode tree = parser.generateParseTree(
                             ((StringToken)token).stringValue());
+
                     // Note that we evaluate the recursed parse tree
                     // in the same scope as this parse tree.
-                    node.setToken(evaluateParseTree(tree, _scope));
+                    tree.visit(this);
+                    node.setToken(tree.getToken());
                     // FIXME cache?
                     return;
                 }
@@ -278,67 +330,20 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         _evaluateAllChildren(node);
 
         // If not a special function, then reflect the name of the function.
-	Class[] argTypes = new Class[argCount];
+	Type[] argTypes = new Type[argCount];
 	Object[] argValues = new Object[argCount];
 
         // First try to find a signature using argument token values.
 	for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
-            argValues[i] = (ptolemy.data.Token)node.jjtGetChild(i).getToken();
-            argTypes[i] = argValues[i].getClass();
-        }
-        Object result = CachedMethod.findAndRunMethod(node.getFunctionName(),
-                argTypes, argValues, CachedMethod.FUNCTION);
-
-        // If no method, then try converting each argument to a native
-        // Java type.
-        if (result == null) {
-            for (int i = 0; i < argCount; i++) {
-                ptolemy.data.Token child = (ptolemy.data.Token)argValues[i];
-                if (debug) System.out.println("Arg " + i + ": " + child);
-                Object[] javaArg =
-                    ASTPtFunctionNode.convertTokenToJavaType(child);
-                argValues[i] = javaArg[0];
-                argTypes[i] = (Class)javaArg[1];
-            }
-            // Now have the arguments converted, look through all the
-            // classes registered with the parser for the appropriate
-            // function. 
-            result = CachedMethod.findAndRunMethod(node.getFunctionName(), 
-                    argTypes, argValues, CachedMethod.FUNCTION);
-        }
-        if (debug) System.out.println("function: " + node.getFunctionName());
-
-        // If we got a result, then try converting back to a token
-        // type, if necessary.
-        if (result != null) {
-            ptolemy.data.Token retval =
-                ASTPtFunctionNode.convertJavaTypeToToken(result);
-            if (retval == null) {
-                throw new IllegalActionException(
-                        "FunctionNode: result of function " + 
-                        node.getFunctionName() +
-                        " is " + result.getClass() + 
-                        " and is not supported by" +
-                        " FunctionNode. See the java class documentation.");
-            }
-            if (debug) System.out.println("result:  " + retval);
-            node.setToken(retval);
-            return;
+            ptolemy.data.Token token = node.jjtGetChild(i).getToken();
+            argValues[i] = token;
+            argTypes[i] = token.getType();
         }
 
-	// If we reach this point it means the function was not found on
-	// the search path.
-	StringBuffer buffer = new StringBuffer();
-	for (int i = 0; i < argCount; i++) {
-	    if (i == 0) {
-		buffer.append(argValues[i].toString());
-	    } else {
-		buffer.append(", " + argValues[i].toString());
-	    }
-	}
-	throw new IllegalActionException("No matching function " + 
-                node.getFunctionName()+ "( " + buffer + " ).");
+        ptolemy.data.Token result = functionCall(
+                node.getFunctionName(), argCount, argTypes, argValues);
+        node.setToken(result);
     }
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
@@ -368,17 +373,30 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         boolean value = ((BooleanToken)test).booleanValue();
 
-        ASTPtRootNode child;
-	// Choose the correct sub-expression to evaluate
+     	// Choose the correct sub-expression to evaluate,
+        // and type check the other.
+        if(_typeInference == null) {
+            _typeInference = new ParseTreeTypeInference();
+        }
+        
+        ASTPtRootNode tokenChild, typeChild;
         if (value) {
-	    child = (ASTPtRootNode)node.jjtGetChild(1);
+            tokenChild = (ASTPtRootNode)node.jjtGetChild(1);
+            typeChild = (ASTPtRootNode)node.jjtGetChild(2);
         } else {
-            child = (ASTPtRootNode)node.jjtGetChild(2);
+            tokenChild = (ASTPtRootNode)node.jjtGetChild(2);
+            typeChild = (ASTPtRootNode)node.jjtGetChild(1);
         }
 
-        // Evaluate the child.
-        child.visit(this);
-	node.setToken(child.getToken());
+        tokenChild.visit(this);
+        ptolemy.data.Token token = tokenChild.getToken();
+        Type type = _typeInference.inferTypes(typeChild, _scope);
+              
+        Type conversionType = (Type)TypeLattice.lattice().leastUpperBound(
+                type, token.getType());
+        
+        token = conversionType.convert(token);
+        node.setToken(token);
     }        
 
     public void visitLeafNode(ASTPtLeafNode node) 
@@ -515,136 +533,23 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         int argCount = node.jjtGetNumChildren();
         _evaluateAllChildren(node);
-        // The first child is the token on which to invoke the method.
-	Class[] argTypes = new Class[argCount];
+
+        // The first child is the object to invoke the method on.
+	Type[] argTypes = new Type[argCount];
 	Object[] argValues = new Object[argCount];
 
         // First try to find a signature using argument token values.
 	for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
-            argValues[i] = (ptolemy.data.Token)node.jjtGetChild(i).getToken();
-            argTypes[i] = argValues[i].getClass();
+            ptolemy.data.Token token = node.jjtGetChild(i).getToken();
+            argValues[i] = token;
+            argTypes[i] = token.getType();
         }
 
-        // First try to find a signature using argument token values.
-        // FIXME: Since most XXXToken methods take Tokens as argument
-        // types, "constructed" methods (where actual Array- or
-        // MatrixToken arguments are reduced to Scalars
-        // element-by-element) will often be first attemted here as
-        // "real" methods (due to polymporphicGetMethod() finding
-        // Token as a superclass of Array- and MatrixTokens) and will
-        // throw InvocationTargetExceptions. For "constructed" methods
-        // to have a chance, we catch and ignore
-        // IllegalActionExceptions here - see example in javadoc above
-        // (zk).
-        Object result = null;
-	StringBuffer errorMessage = null;    // cache exception messages
-        try {
-            result = CachedMethod.findAndRunMethod(node.getMethodName(),
-                    argTypes, argValues, CachedMethod.METHOD);
-        } catch (IllegalActionException ex) {
-            if (errorMessage == null) errorMessage = new StringBuffer();
-            errorMessage.append("Failed: " + ex.toString());
-        };
-
-        // If not found, then try converting ArrayTokens to a native
-        // Java type.
-        if (result == null) {
-            boolean anyArray = false;
-            for (int i = 0; i < argCount; i++) {
-                ptolemy.data.Token child = (ptolemy.data.Token)
-                    node.jjtGetChild(i).getToken();
-                if (child instanceof ArrayToken) {
-                    anyArray = true;
-                    argValues[i] = ((ArrayToken)child).arrayValue();
-                    argTypes[i] = argValues[i].getClass();
-                }
-            }
-            if (anyArray) {
-                try {
-                    result = CachedMethod.findAndRunMethod(
-                            node.getMethodName(), argTypes, argValues,
-                            CachedMethod.METHOD);
-                } catch (IllegalActionException ex) {
-                    if (errorMessage == null) 
-                        errorMessage = new StringBuffer();
-                    errorMessage.append("Failed: " + ex.toString());
-                }
-            }
-        }
-
-        // If not found, then try converting token arguments to 
-        // the corresponding native java types, but do not convert
-        // the first argument.
-        if (result == null) {
-            argValues[0] = (ptolemy.data.Token)node.jjtGetChild(0).getToken();
-            argTypes[0] = argValues[0].getClass();
-            for (int i = 1; i < argCount; i++) {
-                ptolemy.data.Token child = (ptolemy.data.Token)
-                    node.jjtGetChild(i).getToken();
-                Object[] javaArg =
-                    ASTPtFunctionNode.convertTokenToJavaType(child);
-                argValues[i] = javaArg[0];
-                argTypes[i] = (Class)javaArg[1];
-            }
-            try {
-                result = CachedMethod.findAndRunMethod(node.getMethodName(),
-                        argTypes, argValues, CachedMethod.METHOD);
-            } catch (IllegalActionException ex) {
-                if (errorMessage == null) errorMessage = new StringBuffer();
-                errorMessage.append("Failed: " + ex.toString());
-            }
-        }
-
-        // If result is still null and arg 0 is an ArrayToken, then try
-        // Token[] (give argument dimension reduction a chance with
-        // arguments already converted to java types).
-        if (result == null && argValues[0] instanceof ArrayToken) {
-            argValues[0] = ((ArrayToken)argValues[0]).arrayValue();
-            argTypes[0] = argValues[0].getClass();
-            result = CachedMethod.findAndRunMethod(node.getMethodName(),
-                    argTypes, argValues, CachedMethod.METHOD);
-        }
-
-        // If result is still null, then try converting
-        // arg 0 to its java type instead.
-        if (result == null) {
-            ptolemy.data.Token child = (ptolemy.data.Token)
-                node.jjtGetChild(0).getToken();
-            Object[] javaArg =
-                ASTPtFunctionNode.convertTokenToJavaType(child);
-            argValues[0] = javaArg[0];
-            argTypes[0] = (Class)javaArg[1];
-            result = CachedMethod.findAndRunMethod(node.getMethodName(),
-                    argTypes, argValues, CachedMethod.METHOD);
-        }
-
-        if (result != null) {
-            ptolemy.data.Token retval =
-                ASTPtFunctionNode.convertJavaTypeToToken(result);
-            if (retval == null) {
-                throw new IllegalActionException
-                    ("Result of method call is not of a supported type: "
-                            + result.getClass().toString() + 
-                            " - supported types "
-                            + "are: boolean, complex, fixpoint, double, int, "
-                            + "long, String, and ptolemy.data.Token.");
-            }
-            node.setToken(retval);
-            return;
-        }
-        // If we reach this point it means the function was not found on
-	// the search path.
-        if(errorMessage == null) errorMessage = new StringBuffer();
-	for (int i = 1; i < argCount; i++) {
-	    if (i == 1) {
-		errorMessage.append(argValues[i].toString());
-	    } else {
-		errorMessage.append(", " + argValues[i].toString());
-	    }
-	}
-	throw new IllegalActionException("No matching method " +
-                node.getMethodName() + "( " + errorMessage + " ).");
+        ptolemy.data.Token result = methodCall(
+                node.getMethodName(), argCount, argTypes, argValues);
+        
+        node.setToken(result);
     }
 
     public void visitPowerNode(ASTPtPowerNode node) 
@@ -1014,5 +919,16 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
     }
 
+    // Evaluate the given parse tree in the same scope that is
+    // currently being evaluated.
+    protected ptolemy.data.Token _evaluateParseTree(
+            ASTPtRootNode node) 
+            throws IllegalActionException {
+        // Evaluate the value of the root node.
+        node.visit(this);
+        return node.getToken();
+    }
+
     private ParserScope _scope;
+    private ParseTreeTypeInference _typeInference;
 }

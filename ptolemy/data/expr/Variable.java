@@ -1624,6 +1624,24 @@ public class Variable extends Attribute
             return null;
         }
 
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            ptolemy.data.Token token = get(name);
+            if(token == null) {
+                return null;
+            } else {
+                return token.getType();
+            }
+        }
+
         /** Return the list of variables within the scope.
          *  Note that this method is an extremely inefficient to refer
          *  to the scope of a variable because it constructs a list containing

@@ -267,7 +267,9 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The right shift.
      */
     public ScalarToken rightShift(int bits) {
-        return new UnsignedByteToken(_value >> bits);
+        // Note that this performs a logicalRightShift, since we are
+        // interpreting the byte to always be unsigned.
+        return new UnsignedByteToken(_value >>> bits);
     }
 
     /** Return the value of this token as a string that can be parsed

@@ -192,9 +192,6 @@ test PtParser-2.8 {Construct a Parser, try long format specifiers} {
 # 
 test PtParser-2.9 {Construct a Parser, try floating point format specifiers} {
     set p [java::new ptolemy.data.expr.PtParser]
-    set root [ $p {generateParseTree String} "18."]
-    set res1  [ $root evaluateParseTree ]
-
     set root [ $p {generateParseTree String} "1.8e1"]
     set res2  [ $root evaluateParseTree ]
  
@@ -207,8 +204,8 @@ test PtParser-2.9 {Construct a Parser, try floating point format specifiers} {
     set root [ $p {generateParseTree String} "18.0D"]
     set res5  [ $root evaluateParseTree ]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4  toString] [$res5 toString]
-} {18.0 18.0 18.0 18.0 18.0}
+    list [$res2 toString] [$res3 toString] [$res4  toString] [$res5 toString]
+} {18.0 18.0 18.0 18.0}
 
 ######################################################################
 ####
@@ -397,17 +394,17 @@ test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
 # 
 test PtParser-7.1 {Construct a Parser, try harder if then else} {
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "(false) ? (3/.5*4) : (\"hello\")"]
+    set root [ $p1 {generateParseTree String} "(false) ? (3/.5*4) : (pow(3.0,2.0))"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {{"hello"}}
+} {9.0}
 ######################################################################
 ####
 # 
 test PtParser-7.2 {Test complicated expression within boolean test condition} {
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (\"hello\")"]
+    set root [ $p1 {generateParseTree String} "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (pow(3.0,2.0))"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
@@ -417,21 +414,21 @@ test PtParser-7.2 {Test complicated expression within boolean test condition} {
 # 
 test PtParser-7.3 {Test nested if then elses} {
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (3/.5*4) : (\"hello\")"]
+    set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (3/.5*4) : (pow(3.0,2.0))"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {{"hello"}}
+} {9.0}
 ######################################################################
 ####
 # 
 test PtParser-7.4 {Test many levels of parenthesis nesting} {
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (((((3/.5*4))))) : ((((((\"hello\"))))))"]
+    set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (((((3/.5*4))))) : ((((((pow(3.0,2.0)))))))"]
     set res  [ $root evaluateParseTree ]
 
     list  [$res toString] 
-} {{"hello"}}
+} {9.0}
 ######################################################################
 ####
 # 
@@ -751,6 +748,25 @@ test PtParser-13.1 {Test array method calls.} {
     list $res1 
 } {2}
 
+# Test record construction, using regularly spaced vector as row.
+test PtParser-13.2 {Test record construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "{a=1,b=2.4}" ]
+    set res1 [java::cast ptolemy.data.RecordToken [ $root1 evaluateParseTree ]]
+    set v1 [$res1 get a]
+    set v2 [$res1 get b]
+
+    list [$v1 toString] [$v2 toString]
+} {1 2.4}
+
+# test PtParser-13.3 {Test record indexing.} {
+#     set p1 [java::new ptolemy.data.expr.PtParser]
+#     set root1 [ $p1 {generateParseTree String} "{a=1,b=2.4}(a)" ]
+#     set res1 [ $root1 evaluateParseTree ]
+
+#     list [$res1 toString]
+# } {1}
+
 ######################################################################
 ####
 # Test that constant expressions are evaluated only once.
@@ -805,4 +821,48 @@ test PtParser-15.0 {Test parsing to end of expression.} {
     list [lindex $lines 1] [lindex $lines 2]
 } {{Encountered "foo" at line 1, column 7.} {Was expecting one of:}}
 
+
+######################################################################
+####
+# 
+test PtParser-16.0 {Test method calls on arrays, matrices, etc.} {
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "{1,2,3}.add({3,4,5})"]
+    set res1  [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} "{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\")"]
+    set res2  [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} "create({1,2,3,4,5,6},2,3)"]
+    set res3 [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} "{1,1,1,1}.leftShift({1,2,3,4})"]
+    set res4 [ $evaluator evaluateParseTree $root]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
+} {{{4, 6, 8}} {{1, 3, 5}} {[1, 2, 3; 4, 5, 6]} {{2, 4, 8, 16}}}
+
+test PtParser-16.1 {Test method calls on arrays, matrices, etc.} {
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root [ $p1 {generateParseTree String} "repeat(3,{x=1}).add({{x=1},{x=2},{x=3}})"]
+    set res1  [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} "1.leftShift({1,2,3})"]
+    set res2  [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} "{{x=5},{x=1},{x=2},{x=3}}.get(\"x\")"]
+    set res3 [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} {[0,1,2;10,11,12].add(1)}]
+    set res4 [ $evaluator evaluateParseTree $root]
+
+    set root [ $p1 {generateParseTree String} "{\"one\",\"two\",\"three\"}.substring(0,3)"]
+    set res5 [ $evaluator evaluateParseTree $root]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString]
+} {{{{x=2}, {x=3}, {x=4}}} {{2, 4, 8}} {{5, 1, 2, 3}} {[1, 2, 3; 11, 12, 13]} {{"one", "two", "thr"}}}
 

@@ -130,7 +130,7 @@ test Variable-2.4 {Check updating of Variables that refer to others} {
     set value5 [[$p3 getToken] toString]
 
     list $name1 $value1 $name2 $value2 $name3 $value3 $name4 $value4 $name5 $value5 
-} {.E.P1 1.1 .E.P2 9.9 .E.P3 11.0 .E.P1 5.5 .E.P3 15.4}
+} {.E.P1 1.1 .E.P2 9.9 .E.P3 11.0 .E.P1 {"5.5"} .E.P3 {"5.59.9"}}
 
 test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     set e [java::new {ptolemy.kernel.Entity String} E]

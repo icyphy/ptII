@@ -58,10 +58,19 @@ public interface ParserScope {
      */
     public ptolemy.data.Token get(String name) throws IllegalActionException;
 
+    /** Look up and return the type of the value with the specified
+     *  name in the scope. Return null if the name is not defined in
+     *  this scope.
+     *  @return The token associated with the given name in the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
+     */
+    public ptolemy.data.type.Type getType(String name)
+            throws IllegalActionException;
+
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
      */
     public NamedList variableList();
-
 }
 

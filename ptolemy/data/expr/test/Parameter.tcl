@@ -174,7 +174,7 @@ test Parameter-4.0 {Check setting the contained Token from a String or another T
     set value2 [[$param1 getToken] toString]
 
     # Now set the Token contained from a String
-    $param1 setExpression "-((true) ? 5.5 : \"string\")" 
+    $param1 setExpression "-((true) ? 5.5 : 7)" 
     set value3 [[$param1 getToken] toString]
 
     # Now put a new token into the Param
@@ -213,7 +213,7 @@ test Parameter-5.0 {Check reseting the Parameter to its original String} {
     set value5 [[$param1 getToken] toString]
 
     list $name1 $value1 $value2 $value3 $value4 $value5 
-} {.parent.id1 9.9 7.7 9.9 5.5 9.9}
+} {.parent.id1 9.9 7.7 9.9 {"5.5"} 9.9}
 
 
 #################################
@@ -244,7 +244,7 @@ test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set value5 [[$param1 getToken] toString]
 
     list $name1 $value1 $value2 $value3 $value4 $value5 
-} {.parent.id1 9.9 7.7 9.9 5.5 9.9}
+} {.parent.id1 9.9 {"7.7"} 9.9 5.5 9.9}
 
 #################################
 ####

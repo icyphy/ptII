@@ -278,7 +278,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             _alreadyInitialized = true;
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("java.lang.Double");
+            registerFunctionClass("java.lang.Integer");
+            registerFunctionClass("java.lang.Long");
             registerFunctionClass("java.lang.String");
+            registerFunctionClass("ptolemy.data.MatrixToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
             registerFunctionClass("ptolemy.math.Complex");
@@ -1697,20 +1700,6 @@ String tidied, x;
     return retval;
   }
 
-  final private boolean jj_3_1() {
-    if (jj_scan_token(50)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_4() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   final private boolean jj_3_3() {
     if (jj_scan_token(51)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1723,6 +1712,20 @@ String tidied, x;
     if (jj_scan_token(ID)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(52)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_1() {
+    if (jj_scan_token(50)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_4() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }

@@ -33,6 +33,7 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
+import ptolemy.data.type.*;
 import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
@@ -175,213 +176,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
         visitor.visitFunctionNode(this);
-        /*=======
-	int args = jjtGetNumChildren();
-        boolean debug = false;
-	if (_isArrayRef) {
-            ptolemy.data.Token result = null;
-	    if (args == 2) {
-		// referencing an element in an array
-		if (!(_childTokens[0] instanceof ArrayToken)) {
-		    throw new IllegalActionException("Cannot use array "
-			    + "indexing on " + _referredVar().getFullName()
-			    + ": its value is not an ArrayToken.");
-		}
-		if (!(_childTokens[1] instanceof IntToken)) {
-		    throw new IllegalActionException("The array index to "
-                            + _referredVar().getFullName()
-			    + " is not an integer.");
-		}
-		int index = ((IntToken)_childTokens[1]).intValue();
-                try {
-		    result = ((ArrayToken)_childTokens[0]).getElement(index);
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    throw new IllegalActionException("The index to array "
-                            + _funcName + " is out of bounds: "
-                            + index + ".");
-                }
-                return result;
-	    } else if (args == 3) {
-		// referencing an element in a matrix
-		int row = 0;
-		int col = 0;
-		if (!(_childTokens[0] instanceof MatrixToken)) {
-		    throw new IllegalActionException("Cannot use matrix "
-		            + "indexing on " + _referredVar().getFullName()
-			    + ": its value is not an MatrixToken.");
-		}
-		if (!(_childTokens[1] instanceof IntToken)) {
-		    throw new IllegalActionException("The row index to "
-                            + _referredVar().getFullName()
-			    + " is not an integer.");
-		} else {
-		    row = ((IntToken)_childTokens[1]).intValue();
-		}
-		if (!(_childTokens[2] instanceof IntToken)) {
-		    throw new IllegalActionException("The column index to "
-                            + _referredVar().getFullName()
-			    + " is not an integer.");
-		} else {
-		    col = ((IntToken)_childTokens[2]).intValue();
-		}
-		MatrixToken tok = (MatrixToken)_childTokens[0];
-                try {
-		    result = ((MatrixToken)tok).getElementAsToken(row, col);
-                } catch (ArrayIndexOutOfBoundsException ex) {
-                    throw new IllegalActionException("The index to matrix "
-                            + _funcName + " is out of bounds: "
-                            + row + ", " + col + ".");
-                }
-                return result;
-	    } else {
-		throw new IllegalActionException("Wrong number of indices "
-			+ "when referencing " + _referredVar().getFullName());
-	    }
-	}
-	if (_funcName.compareTo("eval") == 0) {
-	    // Have a recursive call to the parser.
-	    String exp = "";
-	    if (_parser == null) {
-		throw new InvalidStateException("ASTPtFunctionNode: " +
-                        " recursive call to null parser.");
-	    }
-	    if (args == 1 && _childTokens[0] instanceof StringToken) {
-		exp = ((StringToken)_childTokens[0]).stringValue();
-		NamedList scope = _parser.getScope();
-		ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
-		return tree.evaluateParseTree();
-	    } else {
-		throw new IllegalActionException("The function \"eval\" is" +
-                        " reserved for reinvoking the parser, and takes" +
-                        " exactly one String argument.");
-	    }
-	}
-        if (_funcName.compareTo("matlab") == 0) {
-	    if (_childTokens[0] instanceof StringToken) {
-                // Invoke the matlab engine to evaluate this function
-                String exp = ((StringToken)_childTokens[0]).stringValue();
-                NamedList scope = _parser.getScope();
-                Engine matlabEngine = new Engine();
-                ptolemy.data.Token result = null;
-                long[] engine = matlabEngine.open();
-                try {
-                    synchronized (Engine.semaphore) {
-                        String addPathCommand = null;         // Assume none
-                        ptolemy.data.Token previousPath = null;
-                        Variable packageDirectories =
-                            (Variable)scope.get("packageDirectories");
-                        if (packageDirectories != null) {
-                            StringTokenizer dirs = new
-                                StringTokenizer
-                                ((String)((StringToken)packageDirectories
-                                          .getToken()).stringValue(),",");
-                            StringBuffer cellFormat = new StringBuffer(512);
-                            cellFormat.append("{");
-                            if (dirs.hasMoreTokens()) {
-                                cellFormat.append
-                                    ("'" + UtilityFunctions
-                                     .findFile(dirs.nextToken()) + "'");
-                            }
-                            while (dirs.hasMoreTokens()) {
-                                cellFormat.append
-                                    (",'" + UtilityFunctions
-                                     .findFile(dirs.nextToken()) + "'");
-                            }
-                            cellFormat.append("}");
-
-                            if (cellFormat.length() > 2) {
-                                addPathCommand = "addedPath_=" +
-                                    cellFormat.toString()
-                                    + ";addpath(addedPath_{:});";
-                                matlabEngine.evalString
-                                    (engine, "previousPath_=path");
-                                previousPath = matlabEngine.get
-                                    (engine, "previousPath_");
-                            }
-                        }
-                        matlabEngine.evalString
-                            (engine, "clear variables;clear globals");
-
-                        if (addPathCommand != null)
-                            matlabEngine.evalString(engine, addPathCommand);
-
-                        // Set scope variables
-                        Iterator variables = scope.elementList().iterator();
-                        while (variables.hasNext()) {
-                            Variable var = (Variable)variables.next();
-                            if (var != packageDirectories)
-                                matlabEngine.put
-                                    (engine, var.getName(), var.getToken());
-                        }
-                        matlabEngine.evalString(engine, "result__="+exp);
-                        result = matlabEngine.get(engine, "result__");
-                    }
-                }
-                finally {
-                    matlabEngine.close(engine);
-                }
-                return result;
-            } else {
-		throw new IllegalActionException("The function \"matlab\" is" +
-                        " reserved for invoking the matlab engine, and takes" +
-                        " a string matlab expression argument followed by" +
-                        " names of input variables used in the expression.");
-	    }
-        }
-	// Do not have a recursive invocation of the parser.
-
-	Class[] argTypes = new Class[args];
-	Object[] argValues = new Object[args];
-
-        // First try to find a signature using argument token values.
-	for (int i = 0; i < args; i++) {
-            argValues[i] = (ptolemy.data.Token)_childTokens[i];
-            argTypes[i] = argValues[i].getClass();
-        }
-        Object result = CachedMethod.findAndRunMethod
-            (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
-
-        if (result == null) {
-            for (int i = 0; i < args; i++) {
-                ptolemy.data.Token child = _childTokens[i];
-                if (debug) System.out.println("Arg "+i+": "+child);
-                Object[] javaArg = convertTokenToJavaType(child);
-                argValues[i] = javaArg[0];
-                argTypes[i] = (Class)javaArg[1];
-            }
-            // Now have the arguments converted, look through all the
-            // classes registered with the parser for the appropriate
-            // function.
-            result = CachedMethod.findAndRunMethod
-                (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
-        }
-        if (debug) System.out.println("function: "+_funcName);
-
-        if (result != null) {
-            ptolemy.data.Token retval = convertJavaTypeToToken(result);
-            if (retval == null) {
-                throw new IllegalActionException
-                    ("FunctionNode: result of function " + _funcName +
-                     " is "+result.getClass()+" and is not supported by"+
-                     " FunctionNode. See the java class documentation."
-                     );
-            }
-            if (debug) System.out.println("result:  "+retval);
-            return retval;
-        }
-	// If we reach this point it means the function was not found on
-	// the search path.
-	StringBuffer sb = new StringBuffer();
-	for (int i = 0; i < args; i++) {
-	    if (i == 0) {
-		sb.append(argValues[i].toString());
-	    } else {
-		sb.append(", " + argValues[i].toString());
-	    }
-	}
-	throw new IllegalActionException
-            ("No matching function " + _funcName + "( " + sb + " ).");
-          >>>>>>> 1.84*/
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -510,6 +304,120 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             retval[1] = retval[0].getClass();
         }
         return retval;
+    }
+
+    public static Class convertTokenTypeToJavaType(Type type)
+            throws ptolemy.kernel.util.IllegalActionException {
+        try {
+            if (type.equals(BaseType.DOUBLE)) {
+                return Double.TYPE;
+            } else if (type.equals(BaseType.INT)) {
+                return Integer.TYPE;
+            } else if (type.equals(BaseType.LONG)) {
+                return Long.TYPE;
+            } else if (type.equals(BaseType.STRING)) {
+                return java.lang.String.class;
+            } else if (type.equals(BaseType.BOOLEAN)) {
+                return Boolean.TYPE;
+            } else if (type.equals(BaseType.COMPLEX)) {
+                return ptolemy.math.Complex.class;
+            } else if (type.equals(BaseType.FIX)) {
+                return ptolemy.math.FixPoint.class;
+            } else if (type.equals(BaseType.BOOLEAN)) {
+                return Class.forName("[[Lptolemy.math.FixPoint;");
+            } else if (type.equals(BaseType.INT_MATRIX)) {
+                return Class.forName("[[I");
+            } else if (type.equals(BaseType.DOUBLE_MATRIX)) {
+                return Class.forName("[[D");
+            } else if (type.equals(BaseType.COMPLEX_MATRIX)) {
+                return Class.forName("[[Lptolemy.math.Complex;");
+            } else if (type.equals(BaseType.LONG_MATRIX)) {
+                return Class.forName("[[J");
+            } else if (type.equals(BaseType.BOOLEAN_MATRIX)) {
+                return Class.forName("[[Z");
+            } else if (type instanceof ArrayType) {
+                ArrayType arrayType = (ArrayType)type;
+                Type elementType = arrayType.getElementType();
+                if (elementType.equals(BaseType.DOUBLE)) {
+                    return Class.forName("[D");
+                } else if (elementType.equals(BaseType.INT)) {
+                    return Class.forName("[I");
+                } else if (elementType.equals(BaseType.LONG)) {
+                    return Class.forName("[[J");
+                } else if (elementType.equals(BaseType.BOOLEAN)) {
+                    return Class.forName("[[Z");
+                } else {
+                    return java.lang.reflect.Array.newInstance(
+                            convertTokenTypeToJavaType(
+                                    arrayType.getElementType()),
+                            0).getClass();
+                }
+            } else {
+                // Bailout.
+                return type.getTokenClass();
+            }
+        } catch(ClassNotFoundException ex) {
+            throw new IllegalActionException(null, ex, ex.getMessage());
+        }
+    }
+
+    // Convert a java class to a corresponding token class.
+    public static Type convertJavaTypeToTokenType(Class tokenClass)
+        throws ptolemy.kernel.util.IllegalActionException {
+        try {
+        if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
+            return BaseType.forClassName(tokenClass.getName());
+        } else if (Class.forName("[Lptolemy.data.Token;").isAssignableFrom(tokenClass)) {
+            return new ArrayType(BaseType.UNKNOWN);
+        } else if (tokenClass.equals(Double.class) ||
+                   tokenClass.equals(Double.TYPE)) {
+            return BaseType.DOUBLE;
+        } else if (tokenClass.equals(Integer.class) ||
+                   tokenClass.equals(Integer.TYPE)) {
+            return BaseType.INT;
+        } else if (tokenClass.equals(Long.class) ||
+                   tokenClass.equals(Long.TYPE)) {
+            return BaseType.LONG;
+        } else if (tokenClass.equals(String.class)) {
+            return BaseType.STRING;
+        } else if (tokenClass.equals(Boolean.class) ||
+                   tokenClass.equals(Boolean.TYPE)) {
+            return BaseType.BOOLEAN;
+        } else if (tokenClass.equals(Complex.class)) {
+            return BaseType.COMPLEX;
+        } else if (tokenClass.equals(FixPoint.class)) {
+            return BaseType.FIX;
+        } else if (tokenClass.equals(Class.forName("[[I"))) {
+            return BaseType.INT_MATRIX;
+        } else if (tokenClass.equals(Class.forName("[[D"))) {
+            return BaseType.DOUBLE_MATRIX;
+        } else if (tokenClass.equals(Class.forName("[[Lptolemy.math.Complex;"))) {
+            return BaseType.COMPLEX_MATRIX;
+        } else if (tokenClass.equals(Class.forName("[[J"))) {
+            return BaseType.LONG_MATRIX;
+        } else if (tokenClass.equals(Class.forName("[[Lptolemy.math.FixPoint;"))) {
+            return BaseType.FIX_MATRIX;
+        } else if (tokenClass.equals(Class.forName("[I"))) {
+            return new ArrayType(BaseType.INT);
+        } else if (tokenClass.equals(Class.forName("[D"))) {
+            return new ArrayType(BaseType.DOUBLE);
+        } else if (tokenClass.equals(Class.forName("[Lptolemy.math.Complex;"))) {
+            return new ArrayType(BaseType.COMPLEX);
+        } else if (tokenClass.equals(Class.forName("[J"))) {
+            return new ArrayType(BaseType.LONG);
+        } else if (tokenClass.equals(Class.forName("[Lptolemy.math.FixPoint;"))) {
+            return new ArrayType(BaseType.FIX);
+        } else if (tokenClass.equals(Class.forName("[Z"))) {
+            return new ArrayType(BaseType.BOOLEAN);
+        } else if (tokenClass.equals(Class.forName("[Ljava.lang.String;"))) {
+            return new ArrayType(BaseType.STRING);
+        } else {
+            throw new IllegalActionException("unrecognized type " 
+                    + tokenClass);
+        }
+        } catch(ClassNotFoundException ex) {
+            throw new IllegalActionException(null, ex, ex.getMessage());
+        }
     }
 
     // Convert a java object to its corresponding Token.

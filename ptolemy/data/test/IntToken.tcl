@@ -216,6 +216,23 @@ test IntToken-8.0 {Test subtract operator between ints.} {
 
 ######################################################################
 ####
+# Test subtract operator between ints and ints.
+test IntToken-8.1 {Test shift operator between ints.} {
+    set tok1 [java::new {ptolemy.data.IntToken int} 7]
+    set tok2 [java::new {ptolemy.data.IntToken int} -7]
+
+    set res1 [$tok1 leftShift 1]
+    set res2 [$tok2 leftShift 1]
+    set res3 [$tok1 rightShift 1]
+    set res4 [$tok2 rightShift 1]
+    set res5 [$tok1 logicalRightShift 1]
+    set res6 [$tok2 logicalRightShift 1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString]
+} {14 -14 3 -4 3 2147483644}
+
+######################################################################
+####
 # Do not really need this test, but leave in for now.
 test IntToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token1 [java::new ptolemy.data.StringToken "value is " ]

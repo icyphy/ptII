@@ -293,6 +293,7 @@ public class PtParser {
             registerFunctionClass("java.lang.Integer");
             registerFunctionClass("java.lang.Long");
             registerFunctionClass("java.lang.String");
+            registerFunctionClass("ptolemy.data.MatrixToken");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
             registerFunctionClass("ptolemy.math.Complex");
@@ -432,14 +433,14 @@ TOKEN : /* Numeric literals */
   < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 |
   < DOUBLE:
-        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
   >
 |
   < COMPLEX:
-        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["i","j"])?
+        (["0"-"9"])+ "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
       | "." (["0"-"9"])+ (<EXPONENT>)? (["i","j"])?
       | (["0"-"9"])+ <EXPONENT> (["i","j"])?
       | (["0"-"9"])+ (<EXPONENT>)? ["i","j"]

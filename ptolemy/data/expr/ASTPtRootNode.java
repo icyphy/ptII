@@ -117,8 +117,13 @@ public class ASTPtRootNode implements Node {
      */
     public ptolemy.data.Token evaluateParseTree()
             throws IllegalActionException {
-        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
-        return evaluator.evaluateParseTree(this);
+        try {
+            ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+            return evaluator.evaluateParseTree(this);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
     /** Return the evaluated token value of this node.  This value may be
@@ -127,6 +132,14 @@ public class ASTPtRootNode implements Node {
      */
     public ptolemy.data.Token getToken() {
         return _ptToken;
+    }
+
+    /** Return the type of this node.  This value may be set during
+     *  parsing, if this represents a constant value, or may be set
+     *  during parse tree evaluation.
+     */
+    public ptolemy.data.type.Type getType() {
+        return _ptType;
     }
 
     /** Return true if this node represents a constant value.  This will 
@@ -197,6 +210,14 @@ public class ASTPtRootNode implements Node {
         _ptToken = token;
     }
 
+    /** Set the value of this node.  This may be set during parsing,
+     *  if the node is a constant node, or during evaluation of the
+     *  expression.
+     */
+    public void setType(ptolemy.data.type.Type type) {
+        _ptType = type;
+    }
+
     /** You can override these two methods in subclasses of RootNode
      * to customize the way the node appears when the tree is dumped.
      * If your output uses more than one line you should override
@@ -227,6 +248,10 @@ public class ASTPtRootNode implements Node {
     /** Each node stores its type and state information in this variable.
      */
     protected ptolemy.data.Token _ptToken;
+    
+    /** The type of this node.
+     */
+    protected ptolemy.data.type.Type _ptType;
 
     /** Flags whether the parse tree under this root evaluates to a constant.
      */

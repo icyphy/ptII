@@ -450,11 +450,8 @@ private final int jjMoveNfa_0(int startState, int curPos)
                      jjCheckNAddTwoStates(64, 65);
                   break;
                case 65:
-                  if (curChar != 46)
-                     break;
-                  if (kind > 38)
-                     kind = 38;
-                  jjCheckNAddStates(47, 49);
+                  if (curChar == 46)
+                     jjCheckNAdd(66);
                   break;
                case 66:
                   if ((0x3ff000000000000L & l) == 0L)
@@ -506,11 +503,8 @@ private final int jjMoveNfa_0(int startState, int curPos)
                      jjCheckNAddTwoStates(78, 79);
                   break;
                case 79:
-                  if (curChar != 46)
-                     break;
-                  if (kind > 39)
-                     kind = 39;
-                  jjCheckNAddStates(53, 55);
+                  if (curChar == 46)
+                     jjCheckNAdd(80);
                   break;
                case 80:
                   if ((0x3ff000000000000L & l) == 0L)

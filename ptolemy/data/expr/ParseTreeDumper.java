@@ -137,6 +137,7 @@ public class ParseTreeDumper implements ParseTreeVisitor {
         } else {
             _stream.println(node.toString(_prefix) + "  _ptToken is null");
         }
+        _stream.println(" static type is " + node.getType());
         if (node.jjtGetNumChildren() > 0) {
             String oldPrefix = _prefix;
             _prefix = " " + oldPrefix;
