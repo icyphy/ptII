@@ -72,64 +72,86 @@ PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)@\1:@'`"
 # For Cygwin, this would be ;
 CLASSPATHSEPARATOR="@CLASSPATHSEPARATOR@"
 
+##################################################################
+# Below here, we set up for each of the optional packages.
+# In general, for each package Foo, we end up setting FOO_JARS
+# to the list of jars that are need.  FOO_JARS should start
+# with ${CLASSPATHSEPARATOR} if Foo is present.  If Foo
+# is not present, then FOO_JARS is set to the empty string.
+#
+# The basic idea here is that if a user does not have a bunch of
+# optional packages, then when they start up, they should not see
+# mention of these jar files.
+#
+# The downside of this is that users need to rerun configure if
+# they add an optional package.
+##################################################################
+
 #### Jini stuff.
-# Jini directory
-JINI_DIR="@JINI_DIR@"
-
-# Jini lib directory
-JINI_LIB_DIR="$JINI_DIR/lib"
-
-# Flags needed for Jini
-JINI_JFLAG=\""-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"\"
-# 4/03: Sun is not making Jini-1.0.1 available, so I removed it from ptII
-JINI_JFLAG=
-
-# Jini Jar files
-JINI_CORE_JAR="${JINI_LIB_DIR}/jini-core.jar"
-JINI_JSPACES_JAR="${JINI_LIB_DIR}/jini-jspaces.jar"
-JINI_MAHALO_JAR="${JINI_LIB_DIR}/mahalo-dl.jar"
-JINI_JARS="${JINI_JSPACES_JAR}${CLASSPATHSEPARATOR}${JINI_MAHALO_JAR}"
+# PTJSPACES_DIR is set to jspaces if configure found jini
+PTJSPACES_DIR=@PTJSPACES_DIR@
 JINI_JARS=""
+if [ "$PTJSPACES_DIR" = "jspaces" ]; then
+    # Jini directory
+    JINI_DIR="@JINI_DIR@"
+
+    # Jini lib directory
+    JINI_LIB_DIR="$JINI_DIR/lib"
+
+    # Flags needed for Jini
+    JINI_JFLAG=\""-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"\"
+    # 4/03: Sun is not making Jini-1.0.1 available, so I removed it from ptII
+    JINI_JFLAG=
+
+    # Jini Jar files
+    JINI_CORE_JAR="${JINI_LIB_DIR}/jini-core.jar"
+    JINI_JSPACES_JAR="${JINI_LIB_DIR}/jini-jspaces.jar"
+    JINI_MAHALO_JAR="${JINI_LIB_DIR}/mahalo-dl.jar"
+    JINI_JARS="${JINI_JSPACES_JAR}${CLASSPATHSEPARATOR}${JINI_MAHALO_JAR}"
+    JINI_JARS=
+fi
 
 
 #### Jacl stuff
 # Location of ptjacl.jar
-PTJACL_JAR="@PTJACL_JAR@"
+# PTJACL_DIR is set to ptjacl if configure found ptjacl
+PTJACL_DIR=@PTJACL_DIR@
+PTJACL_JARS=""
+if [ "$PTJACL_DIR" = "ptjacl" ]; then
 
-# Flag to pass to java.  Solaris JDK1.2 reference version needs -native
-PTJACL_JFLAG="@PTJACL_JFLAG@"
+    PTJACL_JARS="${CLASSPATHSEPARATOR}@PTJACL_JAR@"
+
+    # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
+    PTJACL_JFLAG="@PTJACL_JFLAG@"
+fi
 
 
 # Jar file for JHDL
 JHDL_JAR="@JHDL_JAR@"
 
-#### Cal 
-#
-# Directory that contains the Cal jar file ptCal.jar
-# used by bin/ptinvoke.in
-CAL_DIR="@CAL_DIR@"
 
+#### Cal 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
 PTCAL_DIR=@PTCAL_DIR@
-
-# If PTCAL_DIR is not empty, then set CAL_JARS to have the class path sep.
-CAL_JARS="" 
-if [ "$PTCAL_DIR" ]; then
+CAL_JARS=""
+if [ "$PTCAL_DIR" = "cal" ]; then
+    # Directory that contains the Cal jar file ptCal.jar
+    # used by bin/ptinvoke.in
+    CAL_DIR="@CAL_DIR@"
     CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CAL_DIR}/saxon7.jar"
 fi
 
 #### Serial port stuff
-# Directory that contains the Java Serial Comm API, see
-# http://java.sun.com/products/javacomm/
-COMMAPI_DIR="@COMMAPI_DIR@"
-
 # If Commapi is present, then set to yes, otherwise set to no
 COMMAPI_PRESENT="@COMMAPI_PRESENT@"
+COMMAPI_JARS=""
+#### Serial Port Communications API
+if [ "$COMMAPI_PRESENT" = "yes" ]; then
+    # Directory that contains the Java Serial Comm API, see
+    # http://java.sun.com/products/javacomm/
+    COMMAPI_DIR="@COMMAPI_DIR@"
 
-# The location of comm.jar
-COMMAPI_JAR=""
-if [ "$COMMAPI_PRESENT" ]; then
-    COMMAPI_JAR="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
+    COMMAPI_JARS="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
 
 
@@ -189,7 +211,15 @@ JODE_JFLAG=
 #### QuickTime ..  QuickTime for Java
 # The QuickTime jar file, usually found in somewhere like:
 # c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
-QTJAVA_ZIP="@QTJAVA_ZIP@"
+
+# PTQUICKTIME_DIR is set to quicktime by configure if QTJava.zip was found
+PTQUICKTIME_DIR=@PTQUICKTIME_DIR@
+QTJAVA_JARS=""
+if [ "$PTQUICKTIME_DIR" = "quicktime" ]; then
+    QTJAVA_ZIP="@QTJAVA_ZIP@"
+    QTJAVA_JARS="${CLASSPATHSEPARATOR}$QTJAVA_ZIP"
+fi
+
 
 #### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
 # The soot and jasmin jar files.
@@ -199,45 +229,83 @@ SOOT_JAR="@SOOT_CLASSES@"
 
 SOOT_JFLAG=
 
+
 #### GiottoSDK..  The embedded implementation of the Giotto language
 # The giotto jar files.
-GIOTTO_DIR="@GIOTTO_DIR@"
-GIOTTO_JAR="@GIOTTO_CLASSES@"
+GIOTTO_CLASSES="@GIOTTO_CLASSES@"
+GIOTTO_JARS=""
+if [ ! -f "$GIOTTO_CLASSES" ]; then
+    GIOTTO_JARS="${CLASSPATHSEPARATOR}$GIOTTOCLASSES"
+fi
 
-# PTCOPERNICUS_DIR is non empty if soot is present.
+
+#### Soot - used by the code generator
+# PTCOPERNICUS_DIR is set to copernicus if soot was found by configure
 PTCOPERNICUS_DIR=@PTCOPERNICUS_DIR@
-# SOOT_JARS has the classpath separator prepended.
 SOOT_JARS=""
-if [ "$PTCOPERNICUS_DIR" ]; then
+if [ "$PTCOPERNICUS_DIR" = "copernicus" ]; then
     SOOT_JARS="${CLASSPATHSEPARATOR}${SOOT_JAR}"
 fi
 
-# Jar file that contains Joystick interface,
-# see http://sourceforge.net/projects/javajoystick/
-JOYSTICK_JAR="@JOYSTICK_JAR@"
 
-# Jython is Python implemented in Java
-JYTHON_DIR="@JYTHON_DIR@"
-JYTHON_JAR="${JYTHON_DIR}/jython.jar"
+#### Joystick
+# PTJOYSTICK_DIR is set to joystick if configure found joystick
+PTJOYSTICK_DIR=@PTJOYSTICK_DIR@
+JOYSTICK_JARS=""
+if [ "$PTJOYSTICK_DIR" = "joystick" ]; then
+    # Jar file that contains Joystick interface,
+    # see http://sourceforge.net/projects/javajoystick/
+    JOYSTICK_JARS="$(CLASSPATHSEPARATOR)@JOYSTICK_JAR@"
+fi
 
-JXTA_DIR="${PTII}/vendors/sun/jxta"
 
-JXTA_JAR="${JXTA_DIR}/jxta.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/log4j.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/beepcore.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/jxtasecurity.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/cryptix-asn1.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/cryptix32.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/jxtaptls.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/minimalBC.jar"
+#### Jython is Python implemented in Java
+# PTJYTHON_DIR is set to jython if configure found jython
+PTJYTHON_DIR=@PTJYTHON_DIR@
+JYTHON_JARS=""
+if [ "$PTJYTHON_DIR" = "jython" ]; then
+    JYTHON_DIR="@JYTHON_DIR@"
+    # Jar file that contains Joystick interface,
+    # see http://sourceforge.net/projects/javajoystick/
+    JYTHON_JARS="$(CLASSPATHSEPARATOR)${JYTHON_DIR}/jython.jar"
+fi
 
-JXTA_JFLAG= 
 
-# X10 interface
-X10_DIR="@X10_DIR@"
-X10_JAR="@X10_CLASSES@"
+#### JXTA
+# PTJXTA_DIR is set to jxta if configure found jxta
+PTJXTA_DIR=@PTJXTA_DIR@
+JXTA_JARS=""
+if [ "$PTJXTA_DIR" = "jxta" ]; then 
+    JXTA_DIR="${PTII}/vendors/sun/jxta"
+
+    JXTA_JARS="${CLASSPATHSEPARATOR}${JXTA_DIR}/jxta.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/log4j.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/beepcore.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/jxtasecurity.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/cryptix-asn1.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/cryptix32.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/jxtaptls.jar${CLASSPATHSEPARATOR}${JXTA_DIR}/minimalBC.jar"
+
+    JXTA_JFLAG= 
+fi
+
+#### X10 is the interface library for power line communication, see
+# http://x10.homelinux.org/download.html
+# PTX10_DIR is set to x10 if configure found x10
+PTX10_DIR=@PTX10_DIR@
+X10_JARS=""
+if [ "$PTX10_DIR" = "x10" ]; then 
+    X10_DIR="@X10_DIR@"
+    X10_JARS="${CLASSPATHSEPARATOR}@X10_CLASSES@"
+fi
 
 #### Chic stuff
 # The Chic jar file.
-CHIC_DIR="@CHIC_DIR@"
-CHIC_JAR="${CHIC_DIR}/chic.jar"
+# PTCHIC_DIR is set to chic if configure found chic
+PTCHIC_DIR=@PTCHIC_DIR@
+CHIC_JARS=""
+if [ "$PTCHIC_DIR" = "chic" ]; then
+    CHIC_DIR="@CHIC_DIR@"
+    CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
+fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
-ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${CAL_JARS}${COMMAPI_JAR}${SOOT_JARS}${CLASSPATHSEPARATOR}${PTJACL_JAR}${CLASSPATHSEPARATOR}${JOYSTICK_JAR}${CLASSPATHSEPARATOR}${JYTHON_JAR}${CLASSPATHSEPARATOR}${JXTA_JAR}${CLASSPATHSEPARATOR}${GIOTTO_JAR}${CLASSPATHSEPARATOR}${QTJAVA_ZIP}${CLASSPATHSEPARATOR}${X10_JAR}${CLASSPATHSEPARATOR}${CHIC_JAR}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${CAL_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JAR}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${X10_JARS}${CHIC_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 #### Sandbox
@@ -313,7 +381,7 @@ case `basename "$0"` in
 	    invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
 	    javastartupclass=jode.decompiler.Main
 	    javasourcedir=
-	    jarfile="$ALL_JAR$CLASSPATHSEPARATOR$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	    jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
 	    javaflag="$JODE_JFLAG"
 	else
 	    echo "Jode was not found when $PTII/configure was run, "
@@ -373,7 +441,7 @@ case `basename "$0"` in
 	invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
 	javastartupclass=jode.decompiler.Main
 	javasourcedir=
-	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     jshrink)
@@ -387,14 +455,14 @@ case `basename "$0"` in
 	help="Jode obfuscator, useful for reducing class file size"
 	javastartupclass=jode.obfuscator.Main
 	javasourcedir=
-	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	jarfile="$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     mescal)
         help="Mescal UI"
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
-	jarfile="$ALL_JAR$CLASSPATHSEPARATOR$PTII/mescal/lib/jsat.jar$CLASSPATHSEPARATOR$PTII/mescal/lib/mescal_java_cup.jar"
+	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar"
 	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
 	;;	
     moml)
@@ -437,7 +505,7 @@ case `basename "$0"` in
 	passHelpArgument=no
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
-	jarfile="$PTJACL_JAR$CLASSPATHSEPARATOR$ALL_JAR$CLASSPATHSEPARATOR$SOOT_JAR"
+	jarfile="$PTJACL_JAR${CLASSPATHSEPARATOR}$ALL_JAR${CLASSPATHSEPARATOR}$SOOT_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptjaclapp)
@@ -762,9 +830,9 @@ fi
 # Add the user classpath (we prepend to be able to override classes,
 # but Berkeley prefers to append, so append)
 if [ "$CLASSPATH" != "" ]; then
-    CLASSPATH="$PTII_DIR$CLASSPATHSEPARATOR$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
+    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
 else
-    CLASSPATH="$PTII_DIR$CLASSPATHSEPARATOR$jarfile"
+    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
 fi
 
 
