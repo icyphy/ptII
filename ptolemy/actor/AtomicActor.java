@@ -178,19 +178,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
-    /** Return the IODependence if there is one. 
-     *  This method is read-synchronized on the workspace.
-     *  return The IODependence attribute.
-     */
-    public IODependence getIODependence() {
-        try {
-            _workspace.getReadAccess();
-            return _IODependence;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
     /** Return the Manager responsible for execution of this actor,
      *  if there is one. Otherwise, return null.
      *  @return The manager.
@@ -417,6 +404,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     }
 
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  In this base class, this method does nothing. Subclasses should
+     *  implement the details. @see ptolemy.domains.de.lib.TimedDelay.
+     */
+    public void removeDependencies() throws IllegalActionException {
+    }
+
     /** Override the base class to invalidate the schedule and
      *  resolved types of the director.
      *  @param container The proposed container.
@@ -537,18 +531,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
     }
 
-    // NOTE: There is nothing new to report in the _description() method,
-    // so we do not override it.
-
-    /** Set the local ioDependence attribute.
-     *  This should not be called be directly.  Instead, call setContainer()
-     *  on the ioDependence attribute.  
-     *  @param ioDependence The IO dependence information.
-     */
-    protected void _setIODependence(IODependence ioDependence){
-        _IODependence = ioDependence;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -562,8 +544,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
     private transient List _cachedInputPorts;
-    // the IODependence attribute for this composite actor.
-    private IODependence _IODependence;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
 }

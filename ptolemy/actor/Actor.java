@@ -62,12 +62,6 @@ public interface Actor extends Executable {
      */
     public Director getExecutiveDirector();
 
-    /** Return the IODependence attribute, if there is one, otherwise return 
-     *  null.
-     *  @return The IODependence attribute.
-     */
-    public IODependence getIODependence();
-    
     /** Return the Manager, if there is one. Otherwise, return null.
      *  @return The Manager.
      */
