@@ -207,7 +207,7 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /**  Add a MoMLFilter to the end of the list of MoMLFilters used
+    /**  Add a MoMLFilter to the end of the list of MoMLFilters used
      *  to translate names.
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
@@ -260,7 +260,7 @@ public class MoMLParser extends HandlerBase {
 		MoMLFilter filter = (MoMLFilter)filters.next();
 		filteredValue =
 		    filter.filterAttributeValue(_current, name,
-						 filteredValue);
+                            filteredValue);
 	    }
 
 	    // Sometimes the value we pass in is null, so we only
@@ -614,7 +614,7 @@ public class MoMLParser extends HandlerBase {
         // responsible for handling changes, unless there already is a
         // parser, in which case we just set the parser.
         ParserAttribute parserAttribute = (ParserAttribute)
-                _toplevel.getAttribute("_parser", ParserAttribute.class);
+            _toplevel.getAttribute("_parser", ParserAttribute.class);
         if (parserAttribute == null) {
             parserAttribute = new ParserAttribute(_toplevel, "_parser");
         }
@@ -935,7 +935,7 @@ public class MoMLParser extends HandlerBase {
                 String portName = (String)_attributes.get("name");
                 _checkForNull(portName,
                         "No name for element \"deletePort\"");
-                        // The entity attribute is optional
+                // The entity attribute is optional
                 String entityName = (String)_attributes.get("entity");
 
                 NamedObj deletedPort = _deletePort(portName, entityName);
@@ -1077,12 +1077,12 @@ public class MoMLParser extends HandlerBase {
                 String relationName = (String)_attributes.get("relation");
                 String insertAtSpec = (String)_attributes.get("insertAt");
                 String insertInsideAtSpec =
-                        (String)_attributes.get("insertInsideAt");
+                    (String)_attributes.get("insertInsideAt");
 
                 _checkClass(_current, CompositeEntity.class,
                         "Element \"link\" found inside an element that "
-                         + "is not a CompositeEntity. It is: "
-                         + _current);
+                        + "is not a CompositeEntity. It is: "
+                        + _current);
 
                 int countArgs = 0;
                 // Check that one of the required arguments is given
@@ -1098,7 +1098,7 @@ public class MoMLParser extends HandlerBase {
                 if (countArgs == 0) {
                     throw new XmlException(
                             "Element link requires at least one of "
-                             + "an insertAt, an insertInsideAt, or a relation.",
+                            + "an insertAt, an insertInsideAt, or a relation.",
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
@@ -1106,7 +1106,7 @@ public class MoMLParser extends HandlerBase {
                 if (insertAtSpec != null && insertInsideAtSpec != null) {
                     throw new XmlException(
                             "Element link requires at most one of "
-                             + "insertAt and insertInsideAt, not both.",
+                            + "insertAt and insertInsideAt, not both.",
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
@@ -1237,7 +1237,7 @@ public class MoMLParser extends HandlerBase {
                     _containers.push(_current);
                     _namespaces.push(_namespace);
                     _current =  (Attribute)
-                            _current.getAttribute(propertyName);
+                        _current.getAttribute(propertyName);
                     _namespace = DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("output") && isIOPort) {
                     if (value == null
@@ -1249,7 +1249,7 @@ public class MoMLParser extends HandlerBase {
                     _containers.push(_current);
                     _namespaces.push(_namespace);
                     _current =  (Attribute)
-                            _current.getAttribute(propertyName);
+                        _current.getAttribute(propertyName);
                     _namespace = DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("input") && isIOPort) {
                     if (value == null
@@ -1275,11 +1275,11 @@ public class MoMLParser extends HandlerBase {
 				Class.forName(className, true, _classLoader);
 			} catch (NoClassDefFoundError ex) {
 			    throw new XmlException("Failed to find class '"
-				   + className + "': "
-				   + KernelException.stackTraceToString(ex),
-                                   _currentExternalEntity(),
-                                   _parser.getLineNumber(),
-                                   _parser.getColumnNumber());
+                                    + className + "': "
+                                    + KernelException.stackTraceToString(ex),
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
 			}
                     }
 
@@ -1529,10 +1529,10 @@ public class MoMLParser extends HandlerBase {
                     // that it is a user cancellation with the special
                     // string pattern "*** Canceled." in the message.
                     throw new XmlException(
-                        "*** Canceled.",
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                            "*** Canceled.",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
                 }
             }
             // No handler.
@@ -1559,10 +1559,10 @@ public class MoMLParser extends HandlerBase {
                     // that it is a user cancellation with the special
                     // string pattern "*** Canceled." in the message.
                     throw new XmlException(
-                        "*** Canceled.",
-                        _currentExternalEntity(),
-                        _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                            "*** Canceled.",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
                 }
             }
             if (ex instanceof XmlException) {
@@ -1783,10 +1783,10 @@ public class MoMLParser extends HandlerBase {
             ComponentEntity newEntity = null;
             if (container == null) {
                 newEntity = (ComponentEntity)
-                        reference.clone(reference.workspace());
+                    reference.clone(reference.workspace());
             } else {
                 newEntity = (ComponentEntity)
-                        reference.clone(container.workspace());
+                    reference.clone(container.workspace());
             }
 
             // Set up the new object to defer its MoML definition
@@ -1934,12 +1934,12 @@ public class MoMLParser extends HandlerBase {
 	StringBuffer argumentBuffer = new StringBuffer();
 	for (int i = 0; i < arguments.length; i++) {
 	    argumentBuffer.append(arguments[i].getClass() + " = \""
-				  + arguments[i].toString() + "\" " );
+                    + arguments[i].toString() + "\" " );
 	}
 
         throw new XmlException("Cannot find a suitable constructor ("
-			       + arguments.length + " args) ( "
-			       + argumentBuffer + ") for'"
+                + arguments.length + " args) ( "
+                + argumentBuffer + ") for'"
                 + newClass.getName(),
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
@@ -2003,7 +2003,7 @@ public class MoMLParser extends HandlerBase {
         }
         if (toDelete == null) {
             throw new XmlException("No such port to delete: "
-                     + portName,
+                    + portName,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
@@ -2353,7 +2353,7 @@ public class MoMLParser extends HandlerBase {
         result = _current.getAttribute(name);
         if (result == null) {
             throw new XmlException("No such property: " + name
-                     + " in " + currentName,
+                    + " in " + currentName,
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
