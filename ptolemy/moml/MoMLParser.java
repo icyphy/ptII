@@ -676,7 +676,12 @@ public class MoMLParser extends HandlerBase {
      */
     public NamedObj parse(URL base, URL input)
             throws Exception {
-        return parse(base, input.openStream());
+        _xmlFile = input;
+        try {
+            return parse(base, input.openStream());
+        } finally {
+            _xmlFile = null;
+        }    
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -807,8 +812,14 @@ public class MoMLParser extends HandlerBase {
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
-        FileReader input = new FileReader(new File(new File(cwd), filename));
-        return parse(base, input);
+        File file = new File(new File(cwd), filename);
+        FileReader input = new FileReader(file);
+        _xmlFile = file.toURL();
+        try {
+            return parse(base, input);
+        } finally {
+            _xmlFile = null;
+        }
     }
 
     /** Handle a processing instruction.  Processing instructions
@@ -1082,6 +1093,18 @@ public class MoMLParser extends HandlerBase {
                     // this isn't quite right because the entity may have a
                     // composite name.
                     _toplevel = newEntity.toplevel();
+
+                    // As early as possible, set URL attribute.
+                    // This is needed in case any of the parameters
+                    // refer to files whose location is relative
+                    // to the URL location.
+                    if (_xmlFile != null) {
+                        // Add a URL attribute to the toplevel to
+                        // indicate where it was read from.
+                        URLAttribute attribute
+                                 = new URLAttribute(_toplevel, "_url");
+                        attribute.setURL(_xmlFile);
+                    }
                 }
                 newEntity.getMoMLInfo().elementName = "class";
 
@@ -1224,6 +1247,18 @@ public class MoMLParser extends HandlerBase {
                     // this isn't quite right because the entity may have a
                     // composite name.
                     _toplevel = newEntity.toplevel();
+
+                    // As early as possible, set URL attribute.
+                    // This is needed in case any of the parameters
+                    // refer to files whose location is relative
+                    // to the URL location.
+                    if (_xmlFile != null) {
+                        // Add a URL attribute to the toplevel to
+                        // indicate where it was read from.
+                        URLAttribute attribute
+                                 = new URLAttribute(_toplevel, "_url");
+                        attribute.setURL(_xmlFile);
+                    }
                 }
                 _current = newEntity;
                 _namespace = _DEFAULT_NAMESPACE;
@@ -2515,14 +2550,14 @@ public class MoMLParser extends HandlerBase {
         }
         // If we get here, then xmlFile cannot possibly be null.
         try {
-            NamedObj toplevel = parser.parse(xmlFile, input);
-            input.close();
-            // Add a URL attribute to the toplevel to indicate where it was
-            // read from.
-            URLAttribute attribute = new URLAttribute(toplevel, "_url");
-            attribute.setURL(xmlFile);
-
-            return toplevel;
+            _xmlFile = xmlFile;
+            try {
+                NamedObj toplevel = parser.parse(xmlFile, input);
+                input.close();
+                return toplevel;
+            } finally {
+                _xmlFile = null;
+            }
         } catch (CancelException ex) {
             // Parse operation cancelled.
             input.close();
@@ -2933,4 +2968,7 @@ public class MoMLParser extends HandlerBase {
 
     // The workspace for this model.
     private Workspace _workspace;
+
+    // The XML file being read, if any.
+    private URL _xmlFile = null;
 }
