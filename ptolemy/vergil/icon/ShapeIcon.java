@@ -162,8 +162,6 @@ public class ShapeIcon extends EditorIcon {
     /** Return whether the figure should be centered on its origin.
      *  @return False If the origin of the figure, as
      *   returned by getOrigin(), is the upper left corner.
-     *  @see #getOrigin()
-     *  @see #setCentered()
      */
     public boolean isCentered() {
         return _centered;
