@@ -168,7 +168,7 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _myplot.place( getContentPane() );
             _myplot.plot.setOpaque(false);
             _myplot.plot.setGrid(false);
-            _myplot.plot.setTitle("Fixed-point FIR Filter Transfer Function");
+            _myplot.plot.setTitle("Fixpoint FIR Filter Transfer Function");
             _myplot.plot.setXRange( -Math.PI/2, Math.PI/2 );
             _myplot.plot.setYRange( 1, -100);
             _myplot.plot.setYLabel("amplitude");
