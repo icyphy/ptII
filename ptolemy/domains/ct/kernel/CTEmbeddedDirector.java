@@ -255,6 +255,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             } else if (!_isOutputAccurate()) {
                 //if (_debugging) _debug(getFullName() +
                 //        " current step not successful because of OUTPUT.");
+                _stateAcceptable = true;
                 _outputAcceptable = false;
                 return false;
             } else {
