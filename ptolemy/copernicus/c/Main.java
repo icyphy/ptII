@@ -27,9 +27,9 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.c;
 
-
+import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -122,9 +122,11 @@ public class Main extends KernelMain {
 
 	Main main = new Main(args);
 
-	// Parse the model, initialize it and create instance classes
-	// for the actors.
-	main.initialize();
+	// Parse the model.
+	CompositeActor toplevel = main.readInModel(args[0]);
+
+	// Create instance classes for the actors.
+	main.initialize(toplevel);
 
 	// Add Transforms to the Scene.
 	main.addTransforms();

@@ -30,6 +30,7 @@
 
 package ptolemy.copernicus.jhdl;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.KernelMain;
@@ -107,9 +108,11 @@ public class Main extends KernelMain {
 	throws IllegalActionException, NameDuplicationException {
 	Main main = new Main(args);
 
-	// Parse the model, initialize it and create instance classes
-	// for the actors.
-	main.initialize();
+	// Parse the model.
+	CompositeActor toplevel = main.readInModel(args[0]);
+
+	// Create instance classes for the actors.
+	main.initialize(toplevel);
 
 	// Add Transforms to the Scene.
 	main.addTransforms();

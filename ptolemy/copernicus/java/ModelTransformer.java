@@ -196,24 +196,12 @@ public class ModelTransformer extends SceneTransformer {
                         port.getName(), body, local);
             }
 
-            // now Attributes.
-            Local settableLocal = Jimple.v().newLocal("settable",
-                    settableType);
-            body.getLocals().add(settableLocal);
-
-	    _createAndSetAttributesFromLocal(_model,
-					     modelClass, 
-					     attributeType, settableType,
-					     setExpressionMethod,
-					     body,
-					     settableLocal);
-
-            // Entities are similar to the first two.
+            // Then Entities
             Map entityLocalMap = new HashMap();
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-
+		System.out.println("ModelTransformer: entity: " + entity);
                 String className;
                 if(Options.getBoolean(options, "deep")) {
                     // If we are doing deep codegen, then use the actor
@@ -244,6 +232,19 @@ public class ModelTransformer extends SceneTransformer {
                             entity, thisLocal);
                 }
             }
+
+
+            // now Attributes.
+            Local settableLocal = Jimple.v().newLocal("settable",
+                    settableType);
+            body.getLocals().add(settableLocal);
+
+	    _createAndSetAttributesFromLocal(_model,
+					     modelClass, 
+					     attributeType, settableType,
+					     setExpressionMethod,
+					     body,
+					     settableLocal);
 
             // next relations.
             Map relationLocalMap = new HashMap();

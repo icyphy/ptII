@@ -120,66 +120,40 @@ public class KernelMain {
 
     /** Call soot.Main.main(), which does command line argument
      *  processing and then starts the transformation.  This method
-     *  should be called after calling initialize() and addTransforms()
+     *  should be called after calling initialize() and addTransforms().
      *
      *  @param args Soot command line arguments to be passed
-     *  to soot.Main.main().  this method changes the first element of the
-     *  args array to "java.lang.Object"and then call soot.Main.main(args).  */
+     *  to soot.Main.main().
+     */
     public void generateCode(String [] args) {
         // This is rather ugly.  The moml Class is not a Java class, so
         // soot won't recognize it.  However, if we give soot nothing, then
         // it won't run.  Note that later we will call setLibraryClass() on
         // this class so that we don't actually generate code for it.
         args[0] = "java.lang.Object";
-	//System.out.println("KernelMain._callSootMain(): " + args.length);
-        soot.Main.main(args);
+
+	// Rather than calling soot.Main.main() here directly, which
+	// spawns a separate thread, we run this in the same thread
+        //soot.Main.main(args);
+	soot.Main.setReservedNames();
+	soot.Main.setCmdLineArgs(args);
+	soot.Main main = new soot.Main();
+	soot.ConsoleCompilationListener consoleCompilationListener =
+	    new soot.ConsoleCompilationListener();
+	soot.Main.addCompilationListener(consoleCompilationListener);
+	// Thread thread = new Thread(main);
+	// thread.start();
+	main.run();
     }
 
-    /** Read in a MoML class, either as a top level model or
-     *  a file, initialize the model, then create instance classes for actors.
-     *  <p> The MoML class name is processed as follows:
-     *  <ol>
-     *  <li> The momlClassName argument is assumed to be a dot
-     *  separated top level model name such as
-     *  <code>ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom</code>
-     *  and inserted into a MoML fragment:
-     *  <p><code>
-     *  &lt;entity name="ToplevelModel" class=" + momlClassName + "/&gt;
-     *  </code>
-     *  and then passed to MoMLParser.parse().
-     *  <li>If the parse fails, then the name is tried as a
-     *  relative MoML file name and passed to MoMLParser.parseFile().
-     *  </ol>
-     *  @exception IllegalActionException If the model cannot be parsed.
+    /** Read in a MoML class, sanitize the top level name,
+     *  initialize the model.  Usually initialize() is called after
+     *  calling readInModel().
+     *  @param toplevel The model we are generating code for.
      */
-    public void initialize()
+    public void initialize(CompositeActor toplevel)
             throws IllegalActionException, NameDuplicationException {
-
-	// initialize() is a separate method so that we can read
-	// in the model and then get its name so that we can 
-	// determine the name of the class that will be generated.
-	
-        // Call the MOML parser on the test file to generate a Ptolemy II
-        // model.
-        MoMLParser parser = new MoMLParser();
-        try {
-	    // First, try it as a top level model
-	    String source = "<entity name=\"ToplevelModel\""
-	        + "class=\"" + _momlClassName + "\"/>\n";
-            _toplevel = (CompositeActor)parser.parse(source);
-
-        } catch (Exception exception) {
-	    try {
-		// Then try it as an xml file
-		_toplevel = (CompositeActor)parser.parseFile(_momlClassName);
-	    } catch (Exception exceptionTwo) {
-		throw new
-		    IllegalActionException("Failed to parse '"
-                            + _momlClassName
-                            + "': " + exceptionTwo);
-	    }
-        }
-
+	_toplevel = toplevel;
 	// If the name of the model is the empty string, change it to
 	// the basename of the file.
 	if (_toplevel.getName().length() == 0) {
@@ -191,14 +165,18 @@ public class KernelMain {
 	    _toplevel.setName(baseName);
 	}
 
-
 	// Make the name follow Java initializer naming conventions.
 	_toplevel.setName(sanitizeName(_toplevel.getName()));
 
+
         // Temporary hack because cloning doesn't properly clone
-        // type constraints.
+        // type constraints.  In some ways, it would make sense
+	// to do this in readInModel(), where we already have a MoMLParser
+	// object, but we want to be sure the type constraints are cloned
+	// if we are passed in a model directly without running readInModel().
         CompositeActor modelClass = null;
 	try {
+	    MoMLParser parser = new MoMLParser();
 	    modelClass = (CompositeActor)
                 parser._searchForClass(_momlClassName,
                         _toplevel.getMoMLInfo().source);
@@ -233,6 +211,31 @@ public class KernelMain {
         }
     }
 
+
+    /** Generate a .class file associated with the top level Ptolemy II
+     *  object and all of its descendants in a specific directory.
+     *  @param toplevel The root object of the topology to be saved.
+     *  @param directoryName The name of the directory to where the .class
+     *  file will be created.
+     *  @return The generated java code.
+     */
+    public static void generate(CompositeActor toplevel, String directoryName)
+	throws IllegalActionException, NameDuplicationException {
+	// FIXME: This name is awfully close to generateCode(), yet
+	// this method is a superset of the generateCode functionality.
+	String [] args = {
+	    toplevel.getName(),
+	    "-d", directoryName,
+	    "-p", "wjtp.at", "targetPackage:ptolemy.copernicus.java.test.cg",
+	    "-p" ,"wjtp.mt", "targetPackage:ptolemy.copernicus.java.test.cg"
+	};
+
+	KernelMain main = new KernelMain(args[0]);
+	main.initialize(toplevel);
+	main.addTransforms();
+	main.generateCode(args);
+    }
+
     /** Sample main() method that parses a MoML class, initializes
      *  the model and creates actor instances.  In this class,
      *  this method does not do much, it is only a sample.
@@ -259,7 +262,8 @@ public class KernelMain {
     public static void main(String[] args)
 	throws IllegalActionException, NameDuplicationException {
 	KernelMain kernelMain = new KernelMain(args[0]);
-	kernelMain.initialize();
+	CompositeActor toplevel = kernelMain.readInModel(args[0]);
+	kernelMain.initialize(toplevel);
 	kernelMain.addTransforms();
 	kernelMain.generateCode(args);
     }
@@ -295,6 +299,56 @@ public class KernelMain {
 	}
 	return new String(nameArray);
     }
+
+    /** Read in a MoML class, either as a top level model or
+     *  a file, initialize the model, then create instance classes for actors.
+     *  <p> The MoML class name is processed as follows:
+     *  <ol>
+     *  <li> The momlClassName argument is assumed to be a dot
+     *  separated top level model name such as
+     *  <code>ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom</code>
+     *  and inserted into a MoML fragment:
+     *  <p><code>
+     *  &lt;entity name="ToplevelModel" class=" + momlClassName + "/&gt;
+     *  </code>
+     *  and then passed to MoMLParser.parse().
+     *  <li>If the parse fails, then the name is tried as a
+     *  relative MoML file name and passed to MoMLParser.parseFile().
+     *  </ol>
+     *  @exception IllegalActionException If the model cannot be parsed.
+     */
+    public CompositeActor readInModel(String momlClassName)
+            throws IllegalActionException, NameDuplicationException {
+
+	// readInModel() is a separate method so that we can read
+	// in the model and then get its name so that we can 
+	// determine the name of the class that will be generated.
+	
+        // Call the MOML parser on the test file to generate a Ptolemy II
+        // model.
+	_momlClassName = momlClassName;
+        MoMLParser parser = new MoMLParser();
+	CompositeActor toplevel;
+        try {
+	    // First, try it as a top level model
+	    String source = "<entity name=\"ToplevelModel\""
+	        + "class=\"" + momlClassName + "\"/>\n";
+            toplevel = (CompositeActor)parser.parse(source);
+
+        } catch (Exception exception) {
+	    try {
+		// Then try it as an xml file
+		toplevel = (CompositeActor)parser.parseFile(momlClassName);
+	    } catch (Exception exceptionTwo) {
+		throw new
+		    IllegalActionException("Failed to parse '"
+                            + momlClassName
+                            + "': " + exceptionTwo);
+	    }
+        }
+	return toplevel;
+    }
+
 
     /** Return the model that we are generating code for.
      */

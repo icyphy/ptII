@@ -29,10 +29,12 @@
 
 package ptolemy.copernicus.java;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import soot.*;
 import soot.jimple.*;
@@ -73,6 +75,9 @@ public class Main extends KernelMain {
 	super(args[0]);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
@@ -102,9 +107,6 @@ public class Main extends KernelMain {
              DeadAssignmentEliminator.v()));*/
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Read in a MoML model, generate java files
      *  @exception IllegalActionException If the model cannot be parsed.
      *  @exception NameDuplicationException If the name of the
@@ -115,9 +117,11 @@ public class Main extends KernelMain {
 
 	Main main = new Main(args);
 
-	// Parse the model, initialize it and create instance classes
-	// for the actors.
-	main.initialize();
+	// Parse the model.
+	CompositeActor toplevel = main.readInModel(args[0]);
+
+	// Create instance classes for the actors.
+	main.initialize(toplevel);
 
 	// Add Transforms to the Scene.
 	main.addTransforms();
