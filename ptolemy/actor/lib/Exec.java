@@ -111,7 +111,7 @@ public class Exec extends TypedAtomicActor {
         environment = new Parameter(this, "environment");
         environment.setTypeEquals(new ArrayType(BaseType.STRING));
         // Array with a size of one empty element means use the
-        // default environment of the calling process. 
+        // default environment of the calling process.
         environment.setExpression("{\"\"}");
         // Hide the environment parameter.
         environment.setVisibility(Settable.EXPERT);
@@ -139,8 +139,8 @@ public class Exec extends TypedAtomicActor {
     /** The command to be executed.  The command is parsed by
      * {@link ptolemy.util.StringUtilities#tokenizeForExec(String)}
      * into tokens and then executed as a  separate process.
-     * The initial default is the string "echo 'Hello, world.'".   
-     */  
+     * The initial default is the string "echo 'Hello, world.'".
+     */
     public PortParameter command;
 
     /** The directory to execute the command in.  The initial default
@@ -198,8 +198,8 @@ public class Exec extends TypedAtomicActor {
 
             command.update();
 
-            if (_process == null 
-                || ((StringToken)command.getToken()).stringValue() 
+            if (_process == null
+                || ((StringToken)command.getToken()).stringValue()
                                                        != _oldCommandValue) {
                 // If the command changed, we restart
                 _terminateProcess();
@@ -209,7 +209,7 @@ public class Exec extends TypedAtomicActor {
             }
 
             // FIXME: What if there is no input?
-            if (input.numberOfSources() > 0 
+            if (input.numberOfSources() > 0
                     && input.hasToken(0)) {
                 // FIXME: Do we need to append a new line?
                 if ((line = ((StringToken)input.get(0)).stringValue())
@@ -217,7 +217,7 @@ public class Exec extends TypedAtomicActor {
                     if (_debugging) {
                         _debug("Exec: Input: '" + line + "'");
                     }
-                    if (_inputBufferedWriter != null) { 
+                    if (_inputBufferedWriter != null) {
                         _inputBufferedWriter.write(line);
                         try {
                             _inputBufferedWriter.flush();
@@ -281,9 +281,9 @@ public class Exec extends TypedAtomicActor {
      */
     public /*synchronized*/ void stop() {
         // This method is not synchronized because when the user
-        // hits the stop button, the fire() method is at 
+        // hits the stop button, the fire() method is at
         // blockingGetAndReset() and waiting for input.
-        // What we do is call notifyAll on the outputGobbler process. 
+        // What we do is call notifyAll on the outputGobbler process.
         super.stop();
         if (_outputGobbler != null) {
             _outputGobbler.notifyStringBuffer();
@@ -326,7 +326,7 @@ public class Exec extends TypedAtomicActor {
 
             String [] commandArray =
                 StringUtilities.tokenizeForExec(((StringToken)command.getToken()).stringValue());
-            
+
             File directoryAsFile = directory.asFile();
 
             if (_debugging) {
@@ -337,7 +337,7 @@ public class Exec extends TypedAtomicActor {
 
             Token [] environmentToken =
                 ((ArrayToken)environment.getToken()).arrayValue();
-            
+
             String [] environmentArray = null;
             if (environmentToken.length >= 1) {
                 environmentArray = new String[environmentToken.length];
@@ -365,7 +365,7 @@ public class Exec extends TypedAtomicActor {
                     }
                 }
             }
-             
+
 
             _process = runtime.exec(commandArray, environmentArray,
                     directoryAsFile);
@@ -380,7 +380,7 @@ public class Exec extends TypedAtomicActor {
 
             _errorGobbler.start();
             _outputGobbler.start();
-            
+
             OutputStreamWriter inputStreamWriter =
                 new OutputStreamWriter(_process.getOutputStream());
             _inputBufferedWriter =
@@ -460,12 +460,12 @@ public class Exec extends TypedAtomicActor {
         }
         /** Get the current value of the stringBuffer and empty
          *  the contents of the stringBuffer.
-         */   
+         */
         public String nonblockingGetAndReset() {
             return _lockingStringBuffer.nonblockingGetAndReset();
         }
 
-        /** Read lines from the inputStream and append them to the 
+        /** Read lines from the inputStream and append them to the
          *  stringBuffer.
          */
         public void run() {
@@ -582,9 +582,9 @@ public class Exec extends TypedAtomicActor {
                         _debug("Exec: _blockingGetAndReset: wait() loop " + _appendCalled );
                     }
                     wait();
-                } catch (InterruptedException ex) {                
+                } catch (InterruptedException ex) {
                     // FIXME: Pass in a Nameable for this exception
-                    throw new IllegalActionException(null, ex, 
+                    throw new IllegalActionException(null, ex,
                             "Thread interrupted waiting for exec() data.");
                 }
             }
@@ -598,9 +598,9 @@ public class Exec extends TypedAtomicActor {
                 }
                 try {
                     Thread.currentThread().sleep(100);
-                } catch (InterruptedException ex) {                
+                } catch (InterruptedException ex) {
                     // FIXME: Pass in a Nameable for this exception
-                    throw new IllegalActionException(null, ex, 
+                    throw new IllegalActionException(null, ex,
                             "Thread interrupted waiting 100 ms. "
                             + "for exec() data.");
                 }
