@@ -1,4 +1,4 @@
-/* Interface for embedded director for CT sub-systems.
+/* Interface for transparent directors for CT sub-systems.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -32,11 +32,16 @@ package ptolemy.domains.ct.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// CTTransparentDirector
 /**
-Interface for CT transparent directors. It defines methods to support the
-outside CTDirector. The methods are about step size control. After the internal
+Interface for CT transparent directors. Transparent directors in the CT 
+domain can transfer its internal step size control information to the
+executive director. It defines methods to support the step size control
+queries by the executive CTDirector, such that after the internal
 CT subsystem finishes one integration step, its step size control information
-should be accessible from the outside CT director.
+will be accessible by the outside CT director.
 <P>
+Implementations of this interface are typically contained by CTCompositeActors.
+
+@see CTCompositeActor
 @author  Jie Liu
 @version $Id$
 
@@ -53,12 +58,12 @@ public interface CTTransparentDirector {
      */
     public boolean isThisStepAccurate();
 
-    /** Return the predicted next step size if this step is successful.
+    /** Return the predicted next step size if this step is accurate.
      *  @return The predicted step size.
      */
     public double predictedStepSize();
 
-    /** Return the refined step size if this step is not successful.
+    /** Return the refined step size if this step is not accurate.
      *  @return The refined step size.
      */
     public double refinedStepSize();

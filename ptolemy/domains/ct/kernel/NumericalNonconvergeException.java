@@ -1,4 +1,4 @@
-/* Exception to indicate numerically not converge.
+/* Exception to indicate numerically nonconvergence.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -28,19 +28,21 @@
 */
 
 package ptolemy.domains.ct.kernel;
-import ptolemy.kernel.util.*;
+
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// NumericalNonconvergeException
+//// NumericalNonconvergenceException
 /**
-This exception is used to indicate a numerical calculation failure,
+This exception is used to indicate a numerical iteration not converging,
 typically in the process of finding the fixed point solution of an
 algebraic equation. This is a RuntimeException.
 @author  Jie Liu
 @version $Id$
 */
-public class NumericalNonconvergeException extends InvalidStateException{
+public class NumericalNonconvergeException extends InvalidStateException {
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
      */

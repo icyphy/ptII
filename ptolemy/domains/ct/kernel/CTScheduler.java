@@ -29,8 +29,14 @@
 */
 
 package ptolemy.domains.ct.kernel;
-//import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -45,11 +51,12 @@ import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Enumeration;
 
+//This need to use the Schdule class.
 
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
 /**
-Static Scheduler for the CT domain.
+Static scheduler for the CT domain.
 A CT (sub)system can be mathematically represented as:<Br>
 <pre>
 <pre>    dx/dt = f(x, u, t)<Br>
@@ -61,20 +68,20 @@ f() is the state transition map and g() is the output map.
 The system is built by actors. That is, all the functions, f() and g(),
 are built up by chains of actors.  For high order systems,
 x is a vector, which is built up by more than one integrators.
-In general, actors have the functionality of integration
+In general, actors that have the functionality of integration
 from their inputs to their outputs are called <I>dynamic actors</I>.
 Other actors are called <I>arithmetic actors</I>.
 <P>
 In order to interact with discrete domains, some actors in the
-CT domain are able to conver continuous waveforms to discrete events,
+CT domain are able to convert continuous waveforms to discrete events,
 and vice versa. An actor that has continuous input and discrete
 output is call an <I>event generator</I>; an actor that has
 discrete input and continuous output is called a
 <I>waveform generator</I>.
 <P>
 The interaction with some discrete domains requires that the
-CT simulation be able to remember its state and roll back
-to the remembered state when needed. This in turn require
+CT simulation be able to remember its state and roll-back
+to the remembered state when needed. This in turn requires
 that all actors which have internal states should be able
 to remember and restore their states. These actors are called
 <I>stateful actors</I>.
@@ -83,7 +90,7 @@ In the continuous time simulation, time progresses in a discrete way.
 The distance between consecutive simulation time points are called
 <I>integration step size</I> or step size, in short. Some actors
 require specific step sizes of the simulation. These actors are
-called <I>step size control actor</I>. Examples of step size
+called <I>step size control actors</I>. Examples of step size
 control actors include integrators, which control the
 accuracy and speed of numerical ODE solutions, and some event
 generators, which detect events.
@@ -92,9 +99,9 @@ To help the scheduling, a system topology is partitioned into
 several clusters:
 the <I>arithmetic actors</I>, the <I>dynamic actors</I>,
 the <I>step size control actors</I>, the <I>sink actors</I>,
-the <I>stateful actors</I>, the <I> event generator</I>,
+the <I>stateful actors</I>, the <I> event generators</I>,
 and the <I> waveform generators</I>.
-This scheduler use the clustered information and the system topology,
+This scheduler uses the clustered information and the system topology,
 to provide the firing sequences for evaluating f() and g().
 It also provides a firing order for all the dynamic actors.
 The firing sequence for evaluating f() is
@@ -106,7 +113,7 @@ and the firing sequence for dynamic actors is called the
 The state transition schedule is the actors in f() function sorted
 in the topological order, such that, after the integrators emit their
 state x, a chain of firings according to the schedule evaluates the
-f() function and returns a token corresponding to dx/dt to the
+f() function and returns tokens corresponding to dx/dt to the
 integrators.
 <P>
 The output schedule is the actors in g() function sorted in the topological
@@ -132,16 +139,10 @@ public class CTScheduler extends Scheduler{
      *  CTDirector, call setSchduler() on the CTDirector.
      */
     public CTScheduler() {
-        super();
-        try {
-            setName(_STATIC_NAME);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(
-                    "Internal error when setName to a CTScheduler");
-        }
+        this(null);
     }
 
-    /** Construct a CT topological sort scheduler in the given workspace
+    /** Construct a CT scheduler in the given workspace
      *  with the name "CTScheduler". There is no director
      *  containing this scheduler. To attach this schduler to a
      *  CTDirector, call setSchduler() on the CTDirector.
@@ -160,7 +161,7 @@ public class CTScheduler extends Scheduler{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Returns a list of arithmetic actors. This list is
+    /** Returns a list of arithmatic actors. This list is
      *  locally cached. If workspace version equals to the cached version,
      *  then it returns the cached list.
      *  Otherwise, it will reconstruct, cache and return the
@@ -189,7 +190,7 @@ public class CTScheduler extends Scheduler{
         return Collections.enumeration(arithmaticActorList());
     }
 
-    /** Clone the scheduler to the specified work space. ALl cached
+    /** Clone the scheduler to the specified work space. All cached
      *  schedules are lost.
      *  @param The new workspace.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -339,8 +340,8 @@ public class CTScheduler extends Scheduler{
      *  dynamic actors
      *  in the reverse topology order. This order can be used
      *  for both implicit methods and explicit methods. For implicit
-     *  method, the order is consistent with Gauss-Jacobi iteration.
-     *  For explicit method,
+     *  methods, the order is consistent with Gauss-Jacobi iteration.
+     *  For explicit methods,
      *  it guarantees that the input of the integrator is
      *  one step earlier than the output.
      *  This method read-synchronizes on the workspace.
@@ -367,8 +368,8 @@ public class CTScheduler extends Scheduler{
      *  The output schedule lists all the actors in the computational
      *  path from
      *  integrators (or dynamic actors) to sink actors (or composite
-     *  actor's output ports) in the topology order. The firing of
-     *  of the actors in this order corresponds to evaluate the output map
+     *  actor's output ports) in the topological order. The firing of
+     *  of the actors in this order corresponds to evaluating the output map
      *  of the system.
      *  The list is locally
      *  cached. If the workspace version equals to the cached version,
@@ -713,8 +714,8 @@ public class CTScheduler extends Scheduler{
     /** Return the predecessive actors of the given actor in the topology.
      *  If the argument is null, returns null.
      *  If the actor is a source, returns an empty list.
-     *  @param The specified actor. If the actor is null, returns null.
-     *  @return The list of predecessors, in their creation order.
+     *  @param The specified actor.
+     *  @return The list of predecessors, unordered.
      */
     protected List _predecessorList(Actor actor) {
         if(actor == null) {
@@ -944,17 +945,17 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _dynam;
     // A LinkedList of the sink actors.
     private transient LinkedList _sink;
-    // A LikedList of the arithmetic actors.
+    // A LinkedList of the arithmetic actors.
     private transient LinkedList _arith;
-    // A linkedLost of SSC actors in the state and transition schedule.
+    // A linkedList of SSC actors in the state and transition schedule.
     private transient LinkedList _statessc;
-    // A linkedLost of SSC actors in the state and transition schedule.
+    // A linkedList of SSC actors in the state and transition schedule.
     private transient LinkedList _outputssc;
-    // A linkedLost of event generators.
+    // A linkedList of event generators.
     private transient LinkedList _evgen;
-    // A linkedLost of waveform generators.
+    // A linkedList of waveform generators.
     private transient LinkedList _wavegen;
-    // A linkedLost of stateful actors.
+    // A linkedList of stateful actors.
     private transient LinkedList _stateful;
 
     // Version of the lists.

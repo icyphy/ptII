@@ -39,12 +39,16 @@ import ptolemy.actor.TypedCompositeActor;
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
 /**
-Composite actor in the CT domain. This class is derived from CompositeActor
+Composite actor in the CT domain. This class is derived from 
+TypedCompositeActor
 and implements the CTStepSizeControlActor interface. If the director of
 this composite actor is an instance of CTTransparentDirector, then the
 CTStepSizeControlActor calls will be delegated to its local director.
 Otherwise, it returns default values.
 <P>
+This composite actor should be used when a CT subsystem need to transfer
+its step size control information to the outer domain. Typical usage
+includes CT inside CT or CT inside FSM inside CT.
 
 @author  Jie Liu
 @version $Id$
@@ -57,8 +61,8 @@ public class CTCompositeActor extends TypedCompositeActor
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
-     *  You should set the director before attempting to execute it.
-     *  You should set the container before sending data to it.
+     *  The director should be set before attempting to execute it.
+     *  The container should be set before sending data to it.
      *  Increment the version number of the workspace.
      */
     public CTCompositeActor() {
@@ -70,8 +74,8 @@ public class CTCompositeActor extends TypedCompositeActor
      *  and an empty string as a name. You can then change the name with
      *  setName(). If the workspace argument is null, then use the default
      *  workspace.
-     *  You should set the director before attempting to execute it.
-     *  You should set the container before sending data to it.
+     *  The director should be set before attempting to execute it.
+     *  The container should be set before sending data to it.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
      */
@@ -88,7 +92,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *  This actor will have no
      *  local director initially, and its executive director will be simply
      *  the director of the container.
-     *  You should set the director before attempting to execute it.
+     *  The director should be set before attempting to execute it.
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -121,7 +125,8 @@ public class CTCompositeActor extends TypedCompositeActor
 
     /** This method is delegated to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
-     *  return java.long.Double.MAX_VALUE.
+     *  return java.lang.Double.MAX_VALUE.
+     *  @return The predicted step size.
      */
     public double predictedStepSize() {
         Director dir = getDirector();
@@ -134,6 +139,7 @@ public class CTCompositeActor extends TypedCompositeActor
     /** This method is delegated to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return the current step size of the executive director.
+     *  @return The refined step size.
      */
     public double refinedStepSize() {
         Director dir = getDirector();
