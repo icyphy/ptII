@@ -364,7 +364,7 @@ public class ComplexMatrixToken extends MatrixToken {
                 }
 
                 result = ComplexMatrixMath.multiply(
-                        tem._getInternalComplexMatrix(), _value);
+                        _value, tem._getInternalComplexMatrix());
             }
             return new ComplexMatrixToken(result, DO_NOT_COPY);
         }
@@ -396,6 +396,12 @@ public class ComplexMatrixToken extends MatrixToken {
         } else {
             // the specified token is not a scalar
             ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
+            if (tem.getColumnCount() != _rowCount) {
+                throw new IllegalActionException("Cannot multiply " +
+                        "matrix with " + tem.getColumnCount() +
+                        " columns by a matrix with " +
+                        _rowCount + " rows.");
+            }
             return new ComplexMatrixToken(ComplexMatrixMath.multiply(
                     tem._getInternalComplexMatrix(), _value), DO_NOT_COPY);
         }
