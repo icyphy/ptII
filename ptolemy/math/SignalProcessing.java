@@ -1373,11 +1373,14 @@ public class SignalProcessing {
      *  slowly for low excess bandwidth, this ideal is not
      *  closely approximated by short finite approximations of the pulse.
      *  <p>
-     *  This implementation is ported from the Ptolemy 0.x implementation
+     *  This implementation was ported from the Ptolemy 0.x implementation
      *  by Joe Buck, Brian Evans, and Edward A. Lee.
      *  Reference: E. A. Lee and D. G. Messerschmitt,
      *  <i>Digital Communication, Second Edition</i>,
      *  Kluwer Academic Publishers, Boston, 1994.
+     *
+     *  The implementation was then further optimized to cache computations
+     *  that are independent of time.
      */
     public static class SqrtRaisedCosineSampleGenerator
         implements SampleGenerator {
@@ -1401,17 +1404,19 @@ public class SignalProcessing {
 
             _fourExcess = 4.0 * _excess;
             _eightExcessPI = 8.0 * _excess * Math.PI;
-            _sixteenExcess = 16.0 * _excess;
+            _sixteenExcessSquared = _fourExcess * _fourExcess;
+            
+            double fourExcessOverPI = _fourExcess / Math.PI;
+            double oneOverSqrtFZC = 1.0 / _sqrtFZC;
 
-            _sampleAtZero = ((_fourExcess / Math.PI) + 1.0 - _excess) /
-                _sqrtFZC;
-            _fourExcessOverPISqrtFZC = _fourExcess / (Math.PI * _sqrtFZC);
+            _sampleAtZero = (fourExcessOverPI + 1.0 - _excess) * oneOverSqrtFZC;
+            _fourExcessOverPISqrtFZC = fourExcessOverPI * oneOverSqrtFZC;
+            
             _fzcSqrtFZCOverEightExcessPI =
                 firstZeroCrossing * _sqrtFZC / _eightExcessPI;
             _fzcOverFourExcess = firstZeroCrossing / _fourExcess;
 
-            _oneMinusFZCOverFourExcess = _oneMinus * firstZeroCrossing /
-                _fourExcess;
+            _oneMinusFZCOverFourExcess = _oneMinus * _fzcOverFourExcess;
         }
 
         /*  Return a sample of the raised cosine pulse, sampled at the
@@ -1430,32 +1435,32 @@ public class SignalProcessing {
                 return _sqrtFZC * Math.sin(Math.PI * x) / (Math.PI * time);
             }
 
-            double squareTime = time * time;
             double oneMinusTime = _oneMinus * time;
             double onePlusTime  = _onePlus * time;
             // Check to see whether we will get divide by zero.
 
-            double denominator = squareTime * _sixteenExcess - _squareFZC;
+            double denominator = time * time * _sixteenExcessSquared - _squareFZC;
 
             if (close(denominator, 0.0)) {
                 double oneOverTime = 1.0 / time;
+                double oneOverTimeSquared = oneOverTime * oneOverTime;
 
                 return _fzcSqrtFZCOverEightExcessPI * oneOverTime *
                     (_onePlus * Math.sin(onePlusTime) -
                             _oneMinusFZCOverFourExcess * oneOverTime *
                             Math.cos(oneMinusTime) +
-                            _fzcOverFourExcess * squareTime *
+                            _fzcOverFourExcess * oneOverTimeSquared *
                             Math.sin(oneMinusTime));
             }
             return _fourExcessOverPISqrtFZC *
                 (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
-                        (x * _fourExcess)) / (1.0 - _sixteenExcess * x * x);
+                        (x * _fourExcess)) / (1.0 - _sixteenExcessSquared * x * x);
         }
 
         private final double _oneOverFZC, _sqrtFZC, _squareFZC;
         private final double _onePlus, _oneMinus;
         private final double _excess, _fourExcess, _eightExcessPI;
-        private final double _sixteenExcess;
+        private final double _sixteenExcessSquared;
         private final double _sampleAtZero;
         private final double _fourExcessOverPISqrtFZC;
         private final double _fzcSqrtFZCOverEightExcessPI;
