@@ -71,6 +71,8 @@ JSRCS = \
 	DataComputingInit.java \
 	FIFOQueue.java \
 	FlowPort.java \
+	IOPort.java \
+	IORelation.java \
 	IntParam.java \
 	ObservableParameter.java \
 	Param.java \

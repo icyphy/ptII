@@ -68,8 +68,6 @@ JSRCS = \
 	IllegalActionException.java \
 	IntToken.java \
 	InvalidStateException.java \
-	IOPort.java \
-	IORelation.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \
