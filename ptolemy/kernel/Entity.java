@@ -70,7 +70,7 @@ public class Entity extends NamedObj {
 	 if( _portList == null ) { 
 	     return storedEntities.elements();
 	 }
-	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
+	 Enumeration thisEntitiesPorts = _portList.enumNamedObjs(); 
 
 	 while( thisEntitiesPorts.hasMoreElements() ) {
 	     Port thisPort = (Port)thisEntitiesPorts.nextElement();
@@ -103,7 +103,7 @@ public class Entity extends NamedObj {
 	 if( _portList == null ) { 
 	     return storedEntities.elements();
 	 }
-	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
+	 Enumeration thisEntitiesPorts = _portList.enumNamedObjs(); 
 
 	 boolean foundPort = false;
 	 while( thisEntitiesPorts.hasMoreElements() ) {
@@ -141,7 +141,7 @@ public class Entity extends NamedObj {
 	 if( _portList == null ) { 
 	     return storedRelations.elements();
 	 }
-	 Enumeration ports = _portList.enumPorts(); 
+	 Enumeration ports = _portList.enumNamedObjs(); 
 
 	 while( ports.hasMoreElements() ) {
 	     Port newPort = (Port)ports.nextElement(); 
@@ -163,7 +163,7 @@ public class Entity extends NamedObj {
 	 if( _portList == null ) { 
 	     return storedRelations.elements();
 	 }
-	 Enumeration ports = _portList.enumPorts(); 
+	 Enumeration ports = _portList.enumNamedObjs(); 
 
 	 boolean foundPort = false;
 	 while( ports.hasMoreElements() ) {
@@ -182,10 +182,10 @@ public class Entity extends NamedObj {
     }
 
 
-    /** Return this Entity's PortList. */	
-    public PortList getPortList() {
+    /** Return this Entity's Ports. */	
+    public NamedObjList getPorts() {
 	 if( _portList == null ) {
-	     _portList = new PortList();
+	     _portList = new NamedObjList();
 	 }
 	 return _portList;
     }
@@ -222,7 +222,7 @@ public class Entity extends NamedObj {
     ////                         private variables                        ////
 
     /* A list of Ports owned by this Entity. */
-    private PortList _portList;
+    private NamedObjList _portList;
 }
 
 
