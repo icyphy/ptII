@@ -391,6 +391,7 @@ public class PtolemyUtilities {
             units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                     Jimple.v().newStaticFieldRef(fixTypeField)),
                     insertPoint);
+	    return typeLocal;
         }
         throw new RuntimeException("Unidentified type class = " +
                 type.getClass().getName());
@@ -1135,7 +1136,7 @@ public class PtolemyUtilities {
 
         arrayTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
-        arrayTypeClass =
+        fixTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.FixType");
         recordTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.RecordType");
