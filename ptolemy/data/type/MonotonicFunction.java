@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Yellow (neuendor)
-@AcceptedRating Red (neuendor)
 */
 
 package ptolemy.data.type;
@@ -43,6 +40,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
    @author Steve Neuendorffer
    @version $Id$
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (neuendor)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public abstract class MonotonicFunction implements InequalityTerm {
 

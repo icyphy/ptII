@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@Pt.ProposedRating Red (liuxj)
-@Pt.AcceptedRating Red (liuxj)
 */
 
 package ptolemy.data.unit;
@@ -44,8 +41,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Red (liuxj)
+   @Pt.AcceptedRating Red (liuxj)
    @see ptolemy.data.unit.BaseUnit
 */
 public class UnitCategory extends Attribute {

@@ -23,10 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (cxh)
-
 */
 
 package ptolemy.data.type;
@@ -44,7 +40,10 @@ import ptolemy.kernel.util.InternalErrorException;
    A class representing the type of a FunctionToken.
 
    @author Steve Neuendorffer
-   $Id$
+   @version $Id$
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class FunctionType extends StructuredType {

@@ -23,10 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (cxh)
-
 */
 
 package ptolemy.data.type;
@@ -73,9 +69,11 @@ import ptolemy.kernel.util.InternalErrorException;
    constraint).
 
    @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
-   $Id$
+   @version: $Id$
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (neuendor)
+   @Pt.AcceptedRating Red (cxh)
 */
-
 public class RecordType extends StructuredType {
 
     /** Construct a new RecordType with the specified labels and types.

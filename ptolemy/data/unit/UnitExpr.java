@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 package ptolemy.data.unit;
 
@@ -39,8 +37,8 @@ import ptolemy.actor.IOPort;
     @author Rowland R Johnson
     @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+    @Pt.ProposedRating Red (rowland)
+    @Pt.AcceptedRating Red (rowland)
 */
 public class UnitExpr implements UnitPresentation {
 
@@ -51,8 +49,8 @@ public class UnitExpr implements UnitPresentation {
     }
 
     /** Construct a UnitTerm from an IOPort.
-     * The constructed UnitExpr will have one UnitTerm and it will be a variable
-     * with the name being that of the port.
+     * The constructed UnitExpr will have one UnitTerm and it will be
+     * a variable with the name being that of the port.
      * @param ioPort The IOPort.
      */
     public UnitExpr(IOPort ioPort) {

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 
 package ptolemy.data.unit;
@@ -39,18 +37,19 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
    An Abstract class that specifies all the necessary aspects of visitors to a
    UnitEquation.
-   <p>
-   The generic version of the method to visit a UnitEquation, UnitExpr, and
-   UnitTerm are specified here. To do a specific kind of visit create a class
-   that extends EquationVisitor that overrides some one or more of these methods.
-   These methods are specified as throwing an IllegalActionException to make it
-   possible for the overridden methods in a subclass to throw
-   IllegalActionException.
+
+   <p> The generic version of the method to visit a UnitEquation,
+   UnitExpr, and UnitTerm are specified here. To do a specific kind of
+   visit create a class that extends EquationVisitor that overrides
+   some one or more of these methods.  These methods are specified as
+   throwing an IllegalActionException to make it possible for the
+   overridden methods in a subclass to throw IllegalActionException.
+
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Red (rowland)
+   @Pt.AcceptedRating Red (rowland)
 */
 public abstract class EquationVisitor {
 

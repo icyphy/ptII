@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 package ptolemy.data.unit;
 
@@ -41,16 +39,18 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// UnitLibrary
 /** A Library containing definitions of commonly used units.
-    Currently, the Unit library is static in the sense that it is loaded when the
-    system starts and is hard-wired to a particular Unit System (the System
-    International Unit System). However, it should be easy to change the
-    architecture so that multiple Unit Systems can be accommodated, and loaded
-    on-the-fly.
+
+    Currently, the Unit library is static in the sense that it is
+    loaded when the system starts and is hard-wired to a particular
+    Unit System (the System International Unit System). However, it
+    should be easy to change the architecture so that multiple Unit
+    Systems can be accommodated, and loaded on-the-fly.
+
     @author Rowland R Johnson
     @version $Id$
     @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (cxh)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+    @Pt.ProposedRating Red (rowland)
+    @Pt.AcceptedRating Red (rowland)
 */
 public class UnitLibrary {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_3
 COPYRIGHTENDKEY
-@Pt.ProposedRating Red (rowland)
-@Pt.AcceptedRating Red (rowland)
 */
 package ptolemy.data.unit;
 import java.util.Iterator;
@@ -40,20 +38,23 @@ import ptolemy.kernel.util.IllegalActionException;
    Visit a UnitEquation and for each contained variable that represents a port
    substitute it with a variable that represents the port from
    the perspective of the model that contains the actor that contains the port.
-   For example, the variable representing the value of the plus port of an actor
-   named AddSubtract22 would originally have the variable label plus which would
-   be substituted with AddSubtract22.plus.
-   The reason for doing this is that a
-   ComponentEntity will have constraints on units specified as a set of
-   UnitEquations. Within each UnitEquation a variable of the form $PortName is
-   used to represent the Unit value at that port. Since a CompositeEntity will
-   have several ComponentEntities, each with a set of ports, it is possible that
-   port names will be duplicated.
+
+   For example, the variable representing the value of the plus port
+   of an actor named AddSubtract22 would originally have the variable
+   label plus which would be substituted with AddSubtract22.plus.
+
+   The reason for doing this is that a ComponentEntity will have
+   constraints on units specified as a set of UnitEquations. Within
+   each UnitEquation a variable of the form $PortName is used to
+   represent the Unit value at that port. Since a CompositeEntity will
+   have several ComponentEntities, each with a set of ports, it is
+   possible that port names will be duplicated.
+
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+   @Pt.ProposedRating Red (rowland)
+   @Pt.AcceptedRating Red (rowland)
 */
 
 public class ExpandPortNames extends EquationVisitor {
