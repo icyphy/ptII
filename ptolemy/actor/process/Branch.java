@@ -73,15 +73,17 @@ public class Branch {
     /** Construct a Branch object.
      * @deprecated Use this constructor for testing purposes only.
      */
-    public Branch(BranchController cntlr) throws 
+    public Branch() throws 
+    // public Branch(BranchController cntlr) throws 
     	    IllegalActionException {
-        _controller = cntlr;
+        // _controller = cntlr;
     }
  
     /** Construct a Branch object.
      */
-    public Branch(BoundaryReceiver prodRcvr, BoundaryReceiver consRcvr, 
-	    BranchController cntlr) throws IllegalActionException {
+    public Branch(BoundaryReceiver prodRcvr, BoundaryReceiver consRcvr ) {
+	    // BranchController cntlr) throws IllegalActionException {
+        /*
         _controller = cntlr;
         
         if( prodRcvr == null || consRcvr == null ) {
@@ -100,6 +102,7 @@ public class Branch {
 		    " Not consumer receiver");
         }
 	_consRcvr = consRcvr;
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,12 +111,12 @@ public class Branch {
     /** Begin an engagement with the controller of this Branch.
      *  This method should be called prior to attempts to 
      *  transfer a token between a pair of receivers.
-     */
     public void beginEngagement() {
 	if( !_currentlyEngaged ) {
 	    _currentlyEngaged = true;
 	}
     }
+     */
 
     /** Complete an engagement with the controller of this Branch.
      *  This method should be called at the completion of a token
@@ -126,7 +129,6 @@ public class Branch {
      *  is called successively without an intervening call to
      *  beginEngagement.
      * @see #beginEngagement
-     */
     public void completeEngagement() {
 	if( _currentlyEngaged ) {
 	    _completedEngagements++;
@@ -136,10 +138,10 @@ public class Branch {
 		    + "an engagement if not currently engaged.");
 	}
     }
+     */
 
     /** End the current iteration of this branch. Notify both the 
      *  producer and consumer receivers that the iteration is over.
-     */
     public synchronized void endIteration() {
 	_iterationIsOverCache = true;
         BoundaryReceiver rcvr = null;
@@ -153,26 +155,27 @@ public class Branch {
         }
         notifyAll();
     }
+     */
 
     /** Return the consumer receiver that this branch puts data into.
      *  A consumer receiver is defined as being a receiver whose  
      *  containing port is connected to a boundary port.
      * @return The consumer receiver that this branch puts data into.
      * @see ptolemy.actor.process.BoundaryDetector
-     */
     public BoundaryReceiver getConsReceiver() {
         return _consRcvr;
     }
+     */
 
     /** Return the producer receiver that this branch gets data from.
      *  A producer receiver is defined as being a receiver that is
      *  contained in a boundary port.
      * @return The producer receiver that this branch gets data from.
      * @see ptolemy.actor.process.BoundaryDetector
-     */
     public BoundaryReceiver getProdReceiver() {
         return _prodRcvr;
     }
+     */
 
     /** Boolean indicating if this branch is still alive. If it is false, it
      *  indicates another conditional branch was able to rendezvous before
@@ -194,6 +197,7 @@ public class Branch {
      *  branch controller.
      */
     public boolean isBranchPermitted() {
+        /*
         try {
             if( !_consRcvr.hasRoom() ) {
                 // FIXME: Throw TerminateBranchException???
@@ -204,9 +208,11 @@ public class Branch {
             // This should not be thrown but for 
             // now let's ignore.
         }
+
         if( _controller.isEngagementEnabled(this) ) {
             return true;
         }
+        */
     	return false;
     }
 
@@ -224,44 +230,47 @@ public class Branch {
     }
 
     /**
-     */
     public void newIteration() {
         _iterationIsOverCache = false;
     }
+     */
     
     /** Return the number of engagements that have been
      *  successfully completed by this branch.
      * @return The number of successful engagements completed
      *  by this branch.
-     */
     public int numberOfCompletedEngagements() {
         return _completedEngagements;
     }
+     */
     
     /** Register that the receiver controlled by this branch
      *  is blocked.
      */
     public void registerRcvrBlocked(ProcessReceiver rcvr) {
+        /*
     	if( !_rcvrBlocked ) {
     	    _rcvrBlocked = true;
             _controller._branchBlocked(rcvr);
         }
+        */
     }
 
     /** Register that the receiver controlled by this branch
      *  is no longer blocked.
      */
     public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
+        /*
     	if( _rcvrBlocked ) {
     	    _rcvrBlocked = false;
             _controller._branchUnBlocked(rcvr);
         }
+        */
     }
 
     /** Reset this branch so that it may begin a new iteration.
      *  End the current iteration and wake up the consumer and
      *  producer receivers. 
-     */
     public void reset() {
 	_active = true;
 	_rcvrBlocked = false;
@@ -269,12 +278,12 @@ public class Branch {
 	_currentlyEngaged = false;
 	endIteration();
     }
+     */
 
     /** Transfer a single token between the producer receiver and 
      *  the consumer receiver. If a TerminateBranchException is
      *  thrown, then reset this receiver and return. 
      *  FIXME: Can we optimize this?
-     */
     public void transferToken() {
         try {
             // _iterationIsOverCache = false;
@@ -289,6 +298,7 @@ public class Branch {
             return;
         }
     }
+     */
     
     //////////////////////////////////////////////////////////////////
     ////                       protected methods                  ////
@@ -311,9 +321,9 @@ public class Branch {
 
     // The controller of this thread is trying to perform a conditional
     // rendezvous for.
-    private BranchController _controller;
-    private BoundaryReceiver _prodRcvr;
-    private BoundaryReceiver _consRcvr;
+    // private BranchController _controller;
+    // private BoundaryReceiver _prodRcvr;
+    // private BoundaryReceiver _consRcvr;
     
     private boolean _rcvrBlocked = false;
     private int _completedEngagements = 0;

@@ -89,6 +89,7 @@ public class BranchController implements Runnable {
     */
     public BranchController(CompositeActor container) {
         _parentActor = container;
+        _parentName = ((Nameable)container).getName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -205,6 +206,7 @@ public class BranchController implements Runnable {
      *  this method does not allow the threads to terminate gracefully.
      */
     public synchronized void deactivateBranches() {
+        System.out.println(_parentName+": branch controller calling deactivate()");
 	setActive(false);
         Iterator branches = _branches.iterator();
         Branch branch = null;
@@ -222,6 +224,7 @@ public class BranchController implements Runnable {
             }
         }
 	notifyAll();
+        System.out.println(_parentName+": branch controller ending deactivate()");
     }
 
     /** Release the status of the calling branch as the first branch
@@ -437,9 +440,9 @@ public class BranchController implements Runnable {
      *  threads that are synchronized to this object.
      */
     public synchronized void restart() {
-	_iterationIsOverCache = true;
+	// _iterationIsOverCache = true;
 
-	_engagements.clear();
+	// _engagements.clear();
 	_branchesBlocked = 0;
 
 	Branch branch = null;
@@ -448,7 +451,7 @@ public class BranchController implements Runnable {
 	    branch = (Branch)branches.next();
 	    branch.reset();
 	}
-	_iterationIsOverCache = false;
+	// _iterationIsOverCache = false;
 
 	notifyAll();
     }
@@ -456,36 +459,67 @@ public class BranchController implements Runnable {
     /**
      */
     public void run() {
-	synchronized(this) {
-	    try {
-		activateBranches();
-		while( isActive() ) {
-		    while( !isIterationOver() ) {
-			wait();
-
-			if( isBlocked() && !isIterationOver() ) {
-			    while( isBlocked() && 
-				    !isIterationOver() ) {
-				_getDirector()._controllerBlocked(this);
-				wait();
-			    }
-			    _getDirector()._controllerUnBlocked(this);
-			}
-		    }
-
-		    if( isIterationOver() && isActive() ) {
-			while( isIterationOver() && isActive() ) {
-			    _getDirector()._controllerBlocked(this);
-			    wait();
-			}
-			_getDirector()._controllerUnBlocked(this);
-		    }
-		}
+    	synchronized(this) {
+            try {
+                activateBranches();
+                while( isActive() ) {
+                    while( !isBlocked() && isActive() ) {
+                        wait();
+                    }
+                    while( isBlocked() && isActive() ) {
+			_getDirector()._controllerBlocked(this);
+                        wait();
+                    }
+		    _getDirector()._controllerUnBlocked(this);
+                }
 	    } catch( InterruptedException e ) {
 		// Do something
-	    }
-	}
+            }
+        }
     }
+    
+    
+//     /**
+//      */
+//     public void run() {
+// 	synchronized(this) {
+// 	    try {
+// 		activateBranches();
+// 		while( isActive() ) {
+// 		    while( !isIterationOver() ) {
+//                         System.out.println("BranchCnlr calling first wait inside run()");
+// 			wait();
+
+// 			if( isBlocked() && !isIterationOver() ) {
+// 			    while( isBlocked() && 
+// 				    !isIterationOver() ) {
+// 				_getDirector()._controllerBlocked(this);
+//                                 System.out.println("BranchCnlr about to wait");
+// 				wait();
+//                                 System.out.println("BranchCnlr awakened");
+// 			    }
+//                             System.out.println("BranchCnlr about to call director "
+//                             + "_controllerUnBlocked.");
+// 			    _getDirector()._controllerUnBlocked(this);
+//                             System.out.println("BranchCnlr finished calling director " + "_controllerUnBlocked.");
+// 			}
+// 		    }
+
+// 		    if( isIterationOver() && isActive() ) {
+//                         System.out.println("BranchCnlr inside isIterationOver() and "
+//                         + "isActive() if-statement.");
+// 			while( isIterationOver() && isActive() ) {
+// 			    _getDirector()._controllerBlocked(this);
+// 			    wait();
+// 			}
+// 			_getDirector()._controllerUnBlocked(this);
+// 		    }
+// 		}
+// 	    } catch( InterruptedException e ) {
+// 		// Do something
+// 	    }
+// 	}
+//     }
 
     /**
      */
@@ -494,16 +528,16 @@ public class BranchController implements Runnable {
     }
 
     /**
-     */
     public void setMaximumEngagements(int maxEngagements) {
 	_maxEngagements = maxEngagements;
     }
+     */
 
     /**
-     */
     public void setMaximumEngagers(int maxEngagers) {
 	_maxEngagers = maxEngagers;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -590,13 +624,16 @@ public class BranchController implements Runnable {
 
     private LinkedList _branches = new LinkedList(); 
     private LinkedList _ports = new LinkedList();
-    private LinkedList _engagements = new LinkedList();
+    // private LinkedList _engagements = new LinkedList();
     private LinkedList _blockedReceivers = new LinkedList();
     
-    private int _maxEngagements = -1;
-    private int _maxEngagers = -1;
+    // private int _maxEngagements = -1;
+    // private int _maxEngagers = -1;
 
-    private boolean _iterationIsOverCache = true;
+    // private boolean _iterationIsOverCache = true;
     private boolean _isActive = false;
+    
+    
+    private String _parentName = null;
 
 }
