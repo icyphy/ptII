@@ -40,6 +40,13 @@ the installation page for information about the Ptolemy II test suite
 <h2>Limitations</h2>
 <menu>
 
+<li> The gzipped tar file that contains the Ptolemy II distribution
+ <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
+untar this file with a checksum error because the pathnames are longer
+than 100 characters.  If you do not have GNU tar, you can obtain
+source and selected binaries from <a
+href="ftp://ptolemy.eecs.berkeley.edu/pub/gnu"><CODE>ftp://ptolemy.eecs.berkeley.edu/pub/gnu</CODE></a>.
+
 <li> Ptolemy II version 0.3 does not include a GUI.
 
 <li> <a name="fsm">This</a> release does not include the source code
