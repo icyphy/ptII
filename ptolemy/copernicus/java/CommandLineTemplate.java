@@ -178,7 +178,11 @@ public class CommandLineTemplate {
 
                 // Print out the standard stats at the end
                 // so as not to break too many scripts
-                System.out.println(standardStats);
+                System.out.println(standardStats
+                        + " Stat: " + (totalMemory1 - freeMemory1)
+                        + "K StatRT: " + (freeMemory1 - freeMemory3)
+                        + "K DynRT: " + (freeMemory3 - freeMemory2)
+                        + "K");
             }
         }
     }
