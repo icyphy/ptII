@@ -108,7 +108,8 @@ test CompositeEntity-2.3 {test setName for NameDuplicationException} {
     set d [java::new ptolemy.kernel.ComponentEntity $a D]
     catch {$d setName B} msg
     list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: .A: already contains an entity with the name B.}}
+} {{ptolemy.kernel.util.NameDuplicationException: .A: already contains\
+an entity with the name B.}}
 
 ######################################################################
 ####
@@ -816,3 +817,13 @@ test CompositeEntity-12.2 {Test connect} {
     enumToNames [[$e0 getRelation R1] linkedPorts ]
 } {P1 P2}
 
+######################################################################
+####
+#
+test CompositeEntity-13.1 {test set name to itself} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    $b setName B
+    $b getFullName
+} {.A.B}
