@@ -94,15 +94,15 @@ public class CurrentTime extends TimedSource {
                     // Do not consume the token... It will be consumed
                     // in the superclass fire().
                     // trigger.get(i);
-                    output.send(0, new DoubleToken(currentTime));
                 }
             }
-        } else {
-            // Teigger port is not connected.
+        }
+        // Teigger port is not connected.
+        if (currentTime == Double.MAX_VALUE) {
             Director director = getDirector();
             currentTime = director.getCurrentTime();
-            output.send(0, new DoubleToken(currentTime));
         }
         super.fire();
+        output.send(0, new DoubleToken(currentTime));
     }
 }

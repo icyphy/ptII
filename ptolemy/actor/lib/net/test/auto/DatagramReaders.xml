@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DatagramReaders" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
@@ -28,7 +28,11 @@
     </property>
     <property name="partnersIPAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, -2, 1032, 744}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {7, -2, 1032, 753}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 317.5}">
     </property>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 380.0">
@@ -56,8 +60,6 @@
             </property>
             <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
             </property>
-            <property name="platformBufferLength" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
@@ -80,19 +82,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 405.0">
             </property>
-            <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="returnSocketNumber" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="119.1171875, 333.9375">
@@ -124,8 +113,6 @@
                 </property>
                 <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
                 </property>
-                <property name="platformBufferLength" class="ptolemy.data.expr.Parameter">
-                </property>
                 <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
@@ -148,19 +135,6 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 340.0">
                 </property>
-                <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="returnSocketNumber" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <entity name="DatagramWriter2" class="ptolemy.actor.lib.net.DatagramWriter">
                 <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
@@ -181,20 +155,6 @@
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 340.0">
                 </property>
-                <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="data" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                </port>
-                <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
             </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -208,24 +168,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 415.0">
             </property>
-            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="output"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </port>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1ub,0ub,1ub,0ub,1ub,0ub}">
@@ -236,13 +178,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 410.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -254,28 +189,10 @@
         <link port="Test.input" relation="relation2"/>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 265.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
         <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
@@ -296,24 +213,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 270.0">
         </property>
-        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
@@ -323,15 +224,8 @@
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 265.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 265.0}">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

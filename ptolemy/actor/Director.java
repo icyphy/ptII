@@ -377,13 +377,13 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the start time of the model. This base class returns 
-     *  Double.MAX_VALUE as the value of the start time. 
+     *  0.0 as the value of the start time. 
      *  Subclasses need to override this method to get a different 
      *  start time.
      *  @return The start time of the model.
      */
     public double getStartTime() {
-        return -1*Double.MAX_VALUE;
+        return 0.0;
     }
 
     /** Get the stop time of the model. This base class returns

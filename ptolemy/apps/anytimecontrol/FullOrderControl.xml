@@ -2729,8 +2729,6 @@
         <link port="Expression3.in" relation="relation5"/>
     </entity>
     <entity name="ref_Gc" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -2749,8 +2747,6 @@
         </port>
     </entity>
     <entity name="ref_Vc" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 10.0, 60.0, 155.0, 205.0}">

@@ -120,8 +120,6 @@
         </property>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -142,8 +140,6 @@
         </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 125.0">
         </property>

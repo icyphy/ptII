@@ -23,8 +23,6 @@
         </property>
     </property>
     <entity name="Clock1" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
@@ -86,8 +84,6 @@
         </port>
     </entity>
     <entity name="CurrentTime1" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="414.75, 56.64999999999999">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -99,8 +95,6 @@
         </port>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="621.75, 238.75">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -112,8 +106,6 @@
         </port>
     </entity>
     <entity name="CurrentTime3" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="629.75, 418.85">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -125,8 +117,6 @@
         </port>
     </entity>
     <entity name="CurrentTime4" class="ptolemy.actor.lib.CurrentTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="639.75, 548.95">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

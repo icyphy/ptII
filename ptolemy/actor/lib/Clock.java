@@ -344,8 +344,7 @@ public class Clock extends TimedSource {
         super.initialize();
         if (_debugging)_debug("Initializing " + getFullName() + ".");
 
-        double timeToStart = 
-            ((DoubleToken) startTime.getToken()).doubleValue();
+        double timeToStart = getDirector().getCurrentTime();
         _cycleStartTime = timeToStart;
         _startTime = timeToStart + _offsets[0];
         _currentValue = _getValue(0).zero();

@@ -193,8 +193,6 @@
             </port>
         </entity>
         <entity name="ref_Gc" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
@@ -213,8 +211,6 @@
             </port>
         </entity>
         <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 320.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -226,8 +222,6 @@
             </port>
         </entity>
         <entity name="ref_Vc" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 10.0, 60.0, 155.0, 205.0}">
@@ -7546,8 +7540,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="Expression3.in" relation="relation5"/>
         </entity>
         <entity name="ref_Vc" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 10.0, 60.0, 155.0, 205.0}">
@@ -7636,8 +7628,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="ref_Gc" class="ptolemy.actor.lib.Clock">
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">

@@ -37,8 +37,6 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[832, 607]">
     </property>
     <entity name="SQWV" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 2.0}">
