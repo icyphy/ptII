@@ -26,6 +26,7 @@
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
+Semantics of initialize(Actor) have changed.
 */
 
 package ptolemy.actor.process;
@@ -153,51 +154,39 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Invoke the initialize() methods of all the deeply contained
-     *  actors in the container (a composite actor) of this director.
-     *  These are expected to call initialize(Actor), which will result
-     *  in the creation of a new thread for each actor.
-     *  Also, set the current time to 0.0.  If the container is not
-     *  an instance of CompositeActor, then this method does nothing.
+    /** Initialize the model controlled by this director.  This
+     *  subclass overrides the base class to initialize the number of
+     *  running threads before creating individual threads for all the
+     *  actors.
      *
-     *  @exception IllegalActionException If the initialize() method
-     *   of one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If creating an actor thread
+     *  throws it.
      */
     public void initialize() throws IllegalActionException {
-	_notDone = true;
+ 	_notDone = true;
 	_activeActorCount = 0;
         _blockedActorCount = 0;
 	_actorThreadList = new LinkedList();
 	_newActorThreadList = new LinkedList();
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            // Creating threads for all actors;
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
-            while ( actors.hasNext() ) {
-                Actor actor = (Actor)actors.next();
-                actor.initialize();
-            }
-        }
-        // NOTE: Used to do this with a method call, but
-        // then it fails with an exception on the second run.
-        _currentTime = 0.0;
+        super.initialize();
     }
 
-    /** Perform domain-specific initialization on the specified actor, if any.
-     *  In this base class, initialize a ProcessThread for each actor.
-     *  This is called by the initialize() method of the actor, and may be
-     *  called after the initialization phase of an execution.  In particular,
-     *  in the event of mutations during an execution that introduce new
-     *  actors, this method will be called as part of initializing the
-     *  new actors.
-     *  @exception IllegalActionException If the actor is not acceptable
-     *   to the domain.  Not thrown in this base class.
+    /** Initialize the given actor.  This class overrides the base
+     *  class to reset the flags for all of the receivers, and to
+     *  create a new ProcessThread for each actor being controlled.
+     *  This class does *NOT* directly call the initialize method of the 
+     *  actor. That method is instead called by the actor's thread itself.
+     *  This allows actors in process domains to create tokens during
+     *  initialization, since sending data in a process-based domain
+     *  requires threads for each actor.
+     *  @exception IllegalActionException If the actor is not
+     *  acceptable to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
         if(_debugging) {
             _debug("initializing " + ((NamedObj)actor).getName());
         }
+             
         // Reset the receivers.
         Iterator ports = actor.inputPortList().iterator();
         while ( ports.hasNext() ) {
@@ -214,6 +203,7 @@ public class ProcessDirector extends Director {
         ProcessThread processThread = _getProcessThread(actor, this);
         _actorThreadList.addFirst(processThread);
         _newActorThreadList.addFirst(processThread);
+
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -477,7 +467,7 @@ public class ProcessDirector extends Director {
      *  reasons.
      */
     protected synchronized void _decreaseActiveCount() {
-	_activeActorCount--;
+ 	_activeActorCount--;
 	notifyAll();
     }
 
@@ -486,14 +476,14 @@ public class ProcessDirector extends Director {
      *
      *  @return The number of active actors.
      */
-    protected synchronized long _getActiveActorsCount() {
+    protected final synchronized long _getActiveActorsCount() {
 	return _activeActorCount;
     }
 
     /** Return the number of actors that are currently blocked.
      *  @return Return the number of actors that are currently blocked.
      */
-    protected synchronized int _getBlockedActorsCount() {
+    protected final synchronized int _getBlockedActorsCount() {
 	return _blockedActorCount;
     }
 

@@ -247,8 +247,6 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   of one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
-
         CompositeActor container = ((CompositeActor)getContainer());
         if (container != null) {
             CompositeActor containersContainer =
@@ -278,6 +276,10 @@ public class CompositeProcessDirector extends ProcessDirector {
         _inputControllerIsBlocked = _inputBranchController.isBlocked();
         _outputControllerIsBlocked = _outputBranchController.isBlocked();
 
+        // Make sure we initialize the actors AFTER creating the
+        // branch controllers, otherwise initial values will break the
+        // model.
+        super.initialize();
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -468,8 +470,9 @@ public class CompositeProcessDirector extends ProcessDirector {
     protected synchronized boolean _areActorsDeadlocked() {
         if ( _getBlockedActorsCount() >= _getActiveActorsCount() ) {
             return true;
+        } else {
+            return false;
         }
-	return false;
     }
 
     /** Return true if one or more contained actors are externally

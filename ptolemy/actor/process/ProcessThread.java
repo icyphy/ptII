@@ -119,6 +119,9 @@ public class ProcessThread extends PtolemyThread {
 	Workspace workspace = _director.workspace();
 	boolean iterate = true;
 	try {
+            // Initialize the actor.
+            _actor.initialize();
+
 	    while (iterate) {
                 // If a stop has been requested, then
                 if(_threadStopRequested) {
@@ -131,14 +134,14 @@ public class ProcessThread extends PtolemyThread {
                         }
                     }
                 }
-                iterate = false;
+           
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if ( ((Entity)_actor).getContainer() != null ) {
                     if (_actor.prefire()){
-			_actor.fire();
-			iterate =  _actor.postfire();
-		    }
+                        _actor.fire();
+			iterate = _actor.postfire();
+                    }
 		}
             }
         } catch (TerminateProcessException t) {
