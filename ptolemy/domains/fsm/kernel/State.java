@@ -170,7 +170,7 @@ public class State extends ComponentEntity {
             workspace().getReadAccess();
             StringToken tok = (StringToken)refinementName.getToken();
             if (tok != null) {
-                String refName = tok.toString();
+                String refName = tok.stringValue();
                 FSMActor cont = (FSMActor)getContainer();
                 TypedCompositeActor contContainer =
                         (TypedCompositeActor)cont.getContainer();

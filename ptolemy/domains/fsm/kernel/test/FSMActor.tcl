@@ -112,7 +112,7 @@ test FSMActor-3.3 {test newReceiver} {
     set tok [java::new ptolemy.data.StringToken foo]
     $r put $tok
     set received [$r get]
-    $received toString
+    $received stringValue
 } {foo}
 
 ######################################################################
@@ -259,7 +259,7 @@ test FSMActor-6.1 {test action methods} {
 
     list $re0 $re1 $re2 $re3 $re4 $re5 $re6 $re7 $re8 [listToStrings $ls0] \
             [listToStrings $ls1]
-} {..fsm.s0 false 1 true 0 true 6 ..fsm.s1 ..fsm.s0 {_ _ 7} {_ _ 7}}
+} {..fsm.s0 false 1 true 0 true 6 ..fsm.s1 ..fsm.s0 {{"_"} {"_"} 7} {{"_"} {"_"} 7}}
 
 ######################################################################
 ####

@@ -145,11 +145,11 @@ public class Transition extends ComponentRelation {
         }
         if (attribute == guardExpression) {
             StringToken tok = (StringToken)guardExpression.getToken();
-            _guard.setExpression(tok.toString());
+            _guard.setExpression(tok.stringValue());
         }
         if (attribute == triggerExpression) {
             StringToken tok = (StringToken)triggerExpression.getToken();
-            _trigger.setExpression(tok.toString());
+            _trigger.setExpression(tok.stringValue());
         }
     }
 

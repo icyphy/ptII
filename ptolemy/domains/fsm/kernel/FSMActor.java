@@ -279,10 +279,10 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         try {
             workspace().getReadAccess();
             StringToken tok = (StringToken)initialStateName.getToken();
-            State st = (State)getEntity(tok.toString());
+            State st = (State)getEntity(tok.stringValue());
             if (st == null) {
                 throw new IllegalActionException(this, "Cannot find "
-                        + "initial state with name \"" + tok.toString()
+                        + "initial state with name \"" + tok.stringValue()
                         + "\".");
             }
             _initialState = st;

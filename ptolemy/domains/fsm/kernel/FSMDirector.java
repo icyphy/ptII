@@ -254,7 +254,7 @@ public class FSMDirector extends Director {
                 throw new IllegalActionException(this, "No name for mode "
                         + "controller is set.");
             }
-            String ctrlName = tok.toString();
+            String ctrlName = tok.stringValue();
             CompositeActor cont = (CompositeActor)getContainer();
             Entity entity = cont.getEntity(ctrlName);
             if (entity == null) {

@@ -123,7 +123,7 @@ public class SetVariable extends Action implements CommitAction {
         }
         if (attribute == expression) {
             StringToken tok = (StringToken)expression.getToken();
-            _evaluationVariable().setExpression(tok.toString());
+            _evaluationVariable().setExpression(tok.stringValue());
         }
     }
 
@@ -173,14 +173,14 @@ public class SetVariable extends Action implements CommitAction {
             workspace().getReadAccess();
             FSMActor fsm = (FSMActor)getContainer().getContainer();
             StringToken tok = (StringToken)variableName.getToken();
-            Attribute var = fsm.getAttribute(tok.toString());
+            Attribute var = fsm.getAttribute(tok.stringValue());
             if (var == null) {
                 throw new IllegalActionException(fsm, this, "Cannot find "
-                        + "variable with name: " + tok.toString());
+                        + "variable with name: " + tok.stringValue());
             }
             if (!(var instanceof Variable)) {
                 throw new IllegalActionException(fsm, this, "The attribute "
-                        + "with name \"" + tok.toString() + "\" is not an "
+                        + "with name \"" + tok.stringValue() + "\" is not an "
                         + "instance of Variable.");
             }
             _variable = (Variable)var;

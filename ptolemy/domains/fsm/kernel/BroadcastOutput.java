@@ -123,7 +123,7 @@ public class BroadcastOutput extends Action implements ChoiceAction {
         }
         if (attribute == expression) {
             StringToken tok = (StringToken)expression.getToken();
-            _evaluationVariable().setExpression(tok.toString());
+            _evaluationVariable().setExpression(tok.stringValue());
         }
     }
 
@@ -178,10 +178,10 @@ public class BroadcastOutput extends Action implements ChoiceAction {
             workspace().getReadAccess();
             FSMActor fsm = (FSMActor)getContainer().getContainer();
             StringToken tok = (StringToken)portName.getToken();
-            IOPort port = (IOPort)fsm.getPort(tok.toString());
+            IOPort port = (IOPort)fsm.getPort(tok.stringValue());
             if (port == null) {
                 throw new IllegalActionException(fsm, this, "Cannot find "
-                        + "port with name: " + tok.toString());
+                        + "port with name: " + tok.stringValue());
             }
             if (!port.isOutput()) {
                 throw new IllegalActionException(fsm, this, "The specified "
