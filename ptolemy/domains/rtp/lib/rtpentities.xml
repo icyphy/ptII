@@ -1,11 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity SYSTEM "../../../moml/moml.dtd">
 
-<class name="rtp" extends="ptolemy.actor.TypedCompositeActor">
-<doc>RTP actors</doc>
+<entity name="real time processes" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>RTPactors</doc>
 
-<entity name="PeriodicTrigger" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
+	<entity name="PeriodicTrigger"
+	        class="ptolemy.domains.rtp.lib.PeriodicTrigger">
+      </group>
+    ?>
+  </configure>
 </entity>
-
-</class>
 
