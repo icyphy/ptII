@@ -313,7 +313,7 @@ public class JNIUtilities {
 
 
         //Cr‰ation du fichier Java
-        File javaFile = _exportJavaInterfaceFile(actor, destinationDirectory);
+        _exportJavaInterfaceFile(actor, destinationDirectory);
 
         // FIXME: if we are running under Vergil, we should use
         // the graphical exec code in Copernicus so that the user
@@ -382,7 +382,6 @@ public class JNIUtilities {
         String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = getNativeLibrary(actor);
 
-        String interNativeLibrary = _getInterNativeLibrary(actor);
         String interNativeFunction = _getInterNativeFunction(actor);
 
         String returnType = "";
@@ -405,12 +404,6 @@ public class JNIUtilities {
             returnJNIType = argument.getJNIType();
         }
 
-        String returnJType2;
-        if (returnType.equals("void")) {
-            returnJType2 = "";
-        } else {
-            returnJType2 = returnType + " ";
-        }
         results.append("#include \"jni.h\" \n"
                 // le fichier entete de la librairie existante
                 // Don't use io stream it results in compile time errors under
@@ -852,32 +845,20 @@ public class JNIUtilities {
             throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
-
-
-        String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = getNativeLibrary(actor);
 
         String interNativeLibrary = _getInterNativeLibrary(actor);
         String interNativeFunction = _getInterNativeFunction(actor);
 
         String returnJType = "";
-        String returnName = "";
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             if (!(argument == null) && argument.isReturn()) {
                 returnJType = argument.getJType();
-                returnName = argument.getName();
                 break;
             }
-        }
-
-        String returnJType2 = "";
-        if (returnJType.equals("void")) {
-            returnJType2 = "";
-        } else {
-            returnJType2 = returnJType;
         }
 
         results.append("package jni."
@@ -1524,6 +1505,4 @@ public class JNIUtilities {
     private static String _indent2 = StringUtilities.getIndentPrefix(2);
     // String to use to indent 3 level
     private static String _indent3 = StringUtilities.getIndentPrefix(3);
-    // String to use to indent 4 level
-    private static String _indent4 = StringUtilities.getIndentPrefix(4);
 }
