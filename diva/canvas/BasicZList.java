@@ -201,7 +201,7 @@ public class BasicZList implements ZList {
 
     /** The abstract class of Geometric sets on a zlist. Note
      * that if a figure covered by a geometric set is decorated,
-     * the set wlil contain the decorator, not the figure directly.
+     * the set will contain the decorator, not the figure directly.
      */
     private abstract class GSet implements GeometricSet {
         private Rectangle2D _region;
