@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-FIXME: Need to review instantiate().
-FIXME: Need to review _getDeferralDepth().
 */
 
 package ptolemy.kernel;
@@ -92,12 +90,28 @@ import ptolemy.kernel.util.Workspace;
    a port of the appropriate subclass, and the protected method _addPort()
    to throw an exception if its argument is a port that is not of the
    appropriate subclass.
+   <p>
+   Since contained entities implement the {@link Instantiable} interface,
+   some may be class definitions.  If an entity is a class definition,
+   then it is not included in the lists returned by
+   {@link #entityList()}, {@link #entityList(Class)},
+   {@link #deepEntityList()}, and {@link #allAtomicEntityList()}.
+   Correspondingly, if it is not a class definition, then it is not
+   included in the list returned by {@link #classDefinitionList()}.
+   Contained class defintions are nonetheless required to have names
+   distinct from contained entities that are not class definitions,
+   and the method {@link #getEntity(String)} will return either
+   a class definition or an entity that is not a class definition,
+   as long as the name matches.  Note that contained entities that
+   are class definitions cannot be connected to other entities.
+   Moreover, they cannot be deleted as long as there are either
+   subclasses or instances present.
 
    @author John S. Davis II, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (bart)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 public class CompositeEntity extends ComponentEntity {
 
@@ -145,10 +159,10 @@ public class CompositeEntity extends ComponentEntity {
     ////                         public methods                    ////
 
     /** Return a list that consists of all the atomic entities in a model.
-     *  This method differs from CompositeEntity.deepEntityList() in that
+     *  This method differs from {@link #deepEntityList()} in that
      *  this method looks inside opaque entities, whereas deepEntityList()
-     *  does not.
-     *
+     *  does not. The returned list does not include any entities that
+     *  are class definitions.
      *  @return a List of all atomic entities in the model.
      */
     public List allAtomicEntityList() {
@@ -200,7 +214,7 @@ public class CompositeEntity extends ComponentEntity {
      *  that it is not affected by any subsequent additions or removals
      *  of class definitions.
      *  This method is read-synchronized on the workspace.
-     *  @return A new list of ComponentEntity objects.
+     *  @return A list of ComponentEntity objects.
      *  @see #entityList()
      */
     public List classDefinitionList() {
@@ -505,7 +519,8 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Enumerate the opaque entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
-     *  are no such contained entities.
+     *  are no such contained entities. The enumeration does not include
+     *  any entities that are class definitions.
      *  This method is read-synchronized on the workspace.
      *  @deprecated Use deepEntityList() instead.
      *  @return An enumeration of opaque ComponentEntity objects.
@@ -521,7 +536,7 @@ public class CompositeEntity extends ComponentEntity {
      *  that it is not affected by any subsequent additions or removals
      *  of entities.
      *  This method is read-synchronized on the workspace.
-     *  @return A new list of ComponentEntity objects.
+     *  @return A list of ComponentEntity objects.
      *  @see #classDefinitionList()
      */
     public List entityList() {
@@ -551,7 +566,7 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Return a list of the component entities contained by this object that
-     *  are instances of the specified class.  If there are no such
+     *  are instances of the specified Java class.  If there are no such
      *  instances, then return an empty list. The returned list does not
      *  include class definitions.
      *  This method is read-synchronized on the workspace.

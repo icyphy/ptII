@@ -255,7 +255,11 @@ public class Entity extends InstantiableNamedObj {
     /** Return an iterator over contained objects. In this class, this
      *  is simply an iterator over attributes and ports.  In derived
      *  classes, the iterator will also traverse classes, entities,
-     *  and relations.
+     *  and relations. The caller of this method should have read
+     *  access on the workspace and hold it for the duration of the
+     *  use of the iterator. Moreover, it should not modify the port
+     *  or attribute list while using the iterator or it will get a
+     *  ConcurrentModificationException.
      *  @return An iterator over instances of NamedObj contained by this
      *   object.
      */
@@ -615,6 +619,11 @@ public class Entity extends InstantiableNamedObj {
      *  (all instances of NamedObj). In this class, the contained
      *  objects are attributes first, then ports. In derived classes,
      *  they include relations, and entities as well.
+     *  The user of this class should have read
+     *  access on the workspace and hold it for the duration of the
+     *  use of the iterator. Moreover, it should not modify the port
+     *  or attribute list while using the iterator or it will get a
+     *  ConcurrentModificationException.
      */
     protected class ContainedObjectsIterator
         extends NamedObj.ContainedObjectsIterator {
