@@ -9,7 +9,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="64.0, 28.0">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 40.0">
         </property>
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000">
@@ -37,7 +37,7 @@ signal frequency. The sample rate is assumed to be 8kHz.</text>
         </property>
     </property>
     <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 145.0">
+        <property name="_location" class="ptolemy.moml.Location" value="135.0, 130.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -98,7 +98,7 @@ Try changing the parameters in the run window.</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noiseStandardDeviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="63.0, 383.0">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 370.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -147,7 +147,7 @@ Try changing the parameters in the run window.</text>
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="68.0, 312.0">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 305.0">
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
@@ -189,7 +189,7 @@ Try changing the parameters in the run window.</text>
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="66.0, 240.0">
+        <property name="_location" class="ptolemy.moml.Location" value="55.0, 240.0">
         </property>
     </entity>
     <entity name="Frequency Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -203,14 +203,13 @@ Try changing the parameters in the run window.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="515.5, 305.5">
+        <property name="_location" class="ptolemy.moml.Location" value="465.0, 305.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Spectrum</title>
@@ -220,8 +219,7 @@ Try changing the parameters in the run window.</text>
 <yRange min="-50.0" max="10.0"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -249,7 +247,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="390.0, 304.5">
+        <property name="_location" class="ptolemy.moml.Location" value="380.0, 305.0">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -263,14 +261,13 @@ centered at zero frequency.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="426.5, 244.5">
+        <property name="_location" class="ptolemy.moml.Location" value="400.0, 240.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Time-Domain Plot</title>
@@ -280,8 +277,7 @@ centered at zero frequency.</text>
 <yRange min="-1.154037151526568" max="1.1568297032397656"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
         </property>
@@ -291,7 +287,7 @@ centered at zero frequency.</text>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="221.5, 304.5">
+        <property name="_location" class="ptolemy.moml.Location" value="220.0, 305.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -309,7 +305,7 @@ centered at zero frequency.</text>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="321.0, 311.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="325.0, 305.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

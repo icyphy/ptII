@@ -97,8 +97,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="25.66936147010122"/>
-<yRange min="9.027550412032514E-8" max="10.0"/>
+<xRange min="0.0" max="3.9607897673874106"/>
+<yRange min="9.767841445975874E-6" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -405,17 +405,17 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="40.5, 149.0">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 145.0">
                 </property>
             </port>
             <port name="bump" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="34.0, 94.0">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 90.0">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="40.0, 39.0">
+                <property name="_location" class="ptolemy.moml.Location" value="35.0, 40.0">
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -526,9 +526,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="1.1525740281667E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="8.9613969736306E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.6662751804233">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="11.4550678007206">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">

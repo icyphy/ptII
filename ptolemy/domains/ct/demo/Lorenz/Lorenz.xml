@@ -83,7 +83,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="440.0, 220.0">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 185.0">
         </property>
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
@@ -98,7 +98,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="430.0, 240.0">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
         </property>
     </property>
     <property name="b" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -113,7 +113,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="465.0, 260.0">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 215.0">
         </property>
     </property>
     <property name="requireVersion" class="ptolemy.kernel.util.RequireVersion" value="2.0">
@@ -128,7 +128,7 @@ model is known as a Lorenz attractor.</text>
       </svg>
     </configure>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="390.0, 285.0">
+        <property name="_location" class="ptolemy.moml.Location" value="355.0, 230.0">
         </property>
     </property>
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
@@ -196,8 +196,7 @@ model is known as a Lorenz attractor.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Strange Attractor</title>
@@ -207,8 +206,7 @@ model is known as a Lorenz attractor.</text>
 <yRange min="-22.046363884800513" max="23.73924082335812"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Expression 1" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
         </property>
