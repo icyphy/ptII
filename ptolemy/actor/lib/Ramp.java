@@ -113,7 +113,7 @@ public class Ramp extends SequenceSource {
             _stateToken = init.getToken();
         } else if (attribute == init) {
             _stateToken = init.getToken();
-        }
+        } else super.attributeChanged(attribute);
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -176,7 +176,6 @@ public class Ramp extends SequenceSource {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
-	super.iterate(count);
 	// Check whether we need to reallocate the output token array.
 	if (count > _resultArray.length) {
 	    _resultArray = new Token[count];
