@@ -404,7 +404,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // Roundup the current time to the outside time
                 if (_debugging) _debug("Outside time is the current time.",
                         " So we check whether there are outputs.");
-                _currentTime = _outsideTime;
+                setCurrentTime(_outsideTime);
                 // Process local discrete events and emit outputs
                 // if there are any. If there are any outputs emitted,
                 // request for a zero delay refire and return false.
@@ -504,7 +504,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             if (_debugging) _debug("Catch up one step: current time is"
                     + getCurrentTime());
         }
-        _currentTime = outsideTime;
+        setCurrentTime(outsideTime);
         if (_debugging)
             _debug(getFullName() + " Catch up time" + getCurrentTime());
     }
@@ -626,7 +626,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     ((Nameable)actor).getName());
             actor.goToMarkedState();
         }
-        _currentTime = _knownGoodTime;
+        // the overridden setCurrentTime method defined in CTDirector
+        // is used.
+        setCurrentTime(_knownGoodTime);
     }
 
     /** True argument sets the phase to be an event phase.

@@ -202,7 +202,8 @@ public class CSPDirector extends CompositeProcessDirector {
         }
     }
 
-    /** Set the current model time. It is intended for use when composing
+    /** Set a new value to the current model time, when no delayed 
+     *  processes exist. It is intended for use when composing
      *  CSP with other timed domains.
      *  <P>
      *  This method should only be called when no processes are delayed,
@@ -334,11 +335,12 @@ public class CSPDirector extends CompositeProcessDirector {
      *  end of executing the model.
      *  @return False if real deadlock occurred, true otherwise.
      */
-    protected synchronized boolean _resolveInternalDeadlock() {
+    protected synchronized boolean _resolveInternalDeadlock() 
+        throws IllegalActionException {
         if (_actorsDelayed > 0) {
             // Time deadlock.
             double nextTime = _getNextTime();
-            _currentTime = nextTime;
+            setCurrentTime(nextTime);
 
             // Now go through list of delayed actors
             // and wake up those at this time
