@@ -41,7 +41,7 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
-import ptolemy.data.XmlToken;
+import ptolemy.data.XMLToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
@@ -197,7 +197,7 @@ public class Constants {
         _table.put("long", new LongToken(0));
         _table.put("matrix", new ConcreteMatrixToken());
         _table.put("object", new ObjectToken());
-		_table.put("xmltoken", new XmlToken());
+		_table.put("xmltoken", new XMLToken());
         _table.put("scalar", new ConcreteScalarToken());
         _table.put("string", new StringToken(""));
         _table.put("unknown", new UnknownToken());
