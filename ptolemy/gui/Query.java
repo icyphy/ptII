@@ -753,8 +753,8 @@ public class Query extends JPanel {
      *  @since Ptolemy 2.1   
      */
     public 
-    String previousStringValue(String name) throws NoSuchElementException {
-        String result = (String)_previous.get(name);
+    String previousCachedStringValue(String name) throws NoSuchElementException {
+        String result = (String)_previousCached.get(name);
         if (result == null) {
             throw new NoSuchElementException("No item named \""
                     + name + " \" in the query box.");
@@ -835,6 +835,8 @@ public class Query extends JPanel {
         // value.  Thus, any future change from this value will trigger
         // notification.
         _previous.put(name, value);
+        // Record the value in a cache that we can access from the listeners.
+        _previousCached.put(name, value);
     }
 
     /** Set the value in the entry with the given name and notify listeners.
@@ -1133,7 +1135,11 @@ public class Query extends JPanel {
 
         _entries.put(name, entry);
         _labels.put(name, label);
+
         _previous.put(name, getStringValue(name));
+        // Record the value in a cache that we can access from the listeners.
+        _previousCached.put(name, getStringValue(name));
+
 
         Dimension preferredSize = _entryPanel.getPreferredSize();
         // Add some slop to the width to take in to account
@@ -1163,11 +1169,12 @@ public class Query extends JPanel {
      *  @see #previousStringValue(String)
      *  @since Ptolemy 2.1   
      */
-    protected void _updatePrevious(String name, String value ) {
-       if ( name != null && value != null ) {
-          _previous.put(name, value);
-       }
-    }
+//     protected void _updatePrevious(String name, String value ) {
+//        if (name != null && value != null) {
+//            _previous.put(name, value);
+//            _previousCache.put(name, value);
+//        }
+//     }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1217,6 +1224,7 @@ public class Query extends JPanel {
                     (QueryListener)(listeners.nextElement());
                 queryListener.changed(name);
             }
+            _previousCached.put(name, newValue);
         }
     }
 
@@ -1257,7 +1265,19 @@ public class Query extends JPanel {
     private Insets _noPadding = new Insets(0, 0, 0, 0);
 
     // The hashtable of previous values, indexed by entry name.
+    // _previous is used to avoid duplicate notifications of
+    // the same data values.
+    // _previous is updated in _notifyListeners() right before
+    // we notify the listeners.  Thus, _previous cannot
+    // be used by the listeners to see what the previous value was.
     private Map _previous = new HashMap();
+
+    // The hashtable of previous values, indexed by entry name.
+    // _previousCached is not updated _notifyListeners() until
+    // after all the listeners have been notified.  
+    // _previousCached can be accessed by calling 
+    // previousCachedStringValue().  
+    private Map _previousCached = new HashMap();
 
     // The sum of the height of the widgets added using _addPair
     // If you adjust this, try the GR/Pendulum demo, which has
