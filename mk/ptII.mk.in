@@ -176,6 +176,9 @@ JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-j
 # see http://sourceforge.net/projects/javajoystick/
 JOYSTICK_JAR =	@JOYSTICK_JAR@
 
+# Jython home directory that contains jython.jar, see http://www.jython.org
+JYTHON_DIR =    @JYTHON_DIR@
+
 # JXTA home directory that contains jxta.jar, see http://www.jxta.org
 JXTA_DIR =	@JXTA_DIR@
 
