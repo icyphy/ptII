@@ -1,4 +1,4 @@
-<!-- $Id -->
+<!-- $Id$ -->
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -250,10 +250,10 @@ line, press C-x SPACE.  In the *gud-...* buffer, a breakpoint command is
 automatically entered for you  (this is GUD at work).
 
  <p>Now run the model... When the breakpoint is hit the source file
-(Manager.java) will be positioned at the breakpoint with a "=>" at the
+(Manager.java) will be positioned at the breakpoint with a "=&gt;" at the
 beginning of the line where the stop occurred.  Now you can use C-c C-n
 (for "next" or "step-over") or C-c C-s (for "step" or "step-into") and a
-bunch of other short-cuts (like call stack browsing up/down)...  An the "=>"
+bunch of other short-cuts (like call stack browsing up/down)...  An the "=&gt;"
 follows your steps and brings up source files as needed (GUD again...:).
 
  <p>Most of the standard
@@ -361,12 +361,12 @@ then viewed the value of the <code>i</code> variable:
 <pre>
   [7] java.lang.Thread.run (Thread.java:536)
 Thread-5[1] next
-> 
+&gt; 
 Step completed: "thread=Thread-5", ptolemy.actor.lib.Ramp.iterate(), line=186 bci=17
-186    	for (int i = 0; i < count; i++) {
+186    	for (int i = 0; i &lt; count; i++) {
 
 Thread-5[1] next
-> 
+&gt; 
 Step completed: "thread=Thread-5", ptolemy.actor.lib.Ramp.iterate(), line=187 bci=22
 187    	    _resultArray[i] = _stateToken;
 
