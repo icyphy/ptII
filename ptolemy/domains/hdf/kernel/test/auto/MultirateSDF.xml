@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="nonHomogeneousSDF" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+<entity name="MultirateSDF" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 755}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 90, 764, 454}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 336]">
     </property>
     <property name="length1" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -22,7 +22,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 90.0]">
         </property>
     </property>
     <property name="length2" class="ptolemy.data.expr.Parameter" value="5">
@@ -39,7 +39,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 120.0]">
         </property>
     </property>
     <property name="threshold" class="ptolemy.data.expr.Parameter" value="2">
@@ -56,7 +56,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 90.0]">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -66,12 +66,12 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 75.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 318.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 168.0}">
     </property>
     <entity name="modeCtrl" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
@@ -86,7 +86,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 200.0]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -129,7 +129,7 @@ to another. Then delete this annotation.</text>
             </property>
             <property name="tokenHistorySize" class="ptolemy.data.expr.Parameter" value="100">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -141,7 +141,7 @@ to another. Then delete this annotation.</text>
             <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 185.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 180.0]">
                 </property>
             </port>
             <entity name="first" class="ptolemy.domains.fsm.kernel.State">
@@ -376,7 +376,7 @@ to another. Then delete this annotation.</text>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 200.0]">
         </property>
     </entity>
     <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -390,7 +390,7 @@ to another. Then delete this annotation.</text>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -400,11 +400,11 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 200.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="165.0, 145.0">
+        <vertex name="vertex1" value="[255.0, 200.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

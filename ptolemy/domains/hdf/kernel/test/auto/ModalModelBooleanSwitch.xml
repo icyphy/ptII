@@ -2,26 +2,40 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BooleanSwitchWithModel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[589, 516]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -2, 1032, 772}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 12, 804, 634}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 331.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.5, 258.0}">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests HDFFSMDirector in DDF domain.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 450.0]">
         </property>
     </property>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 290.0]">
+        <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 225.0]">
         </property>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
@@ -33,7 +47,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 280.0]">
         </property>
     </entity>
     <entity name="1:Pulse" class="ptolemy.actor.lib.Pulse">
@@ -45,7 +59,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 140.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -53,7 +67,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 200.0]">
         </property>
     </entity>
     <entity name="1:Test" class="ptolemy.actor.lib.Test">
@@ -61,19 +75,15 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 275.0]">
         </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
-        </property>
-        <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 370.0]">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -409,7 +419,7 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 345.0]">
         </property>
     </entity>
     <entity name="1:Test2" class="ptolemy.actor.lib.Test">
@@ -417,7 +427,7 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 405.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -425,18 +435,16 @@ to another. Then delete this annotation.</text>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[310.0, 345.0]">
+        <vertex name="vertex1" value="[215.0, 280.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[330.0, 290.0]">
+        <vertex name="vertex1" value="[235.0, 225.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[450.0, 460.0]">
-        </vertex>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="BooleanSwitch.input" relation="relation6"/>
     <link port="BooleanSwitch.control" relation="relation"/>
@@ -449,7 +457,7 @@ to another. Then delete this annotation.</text>
     <link port="ModalModel.input" relation="relation6"/>
     <link port="ModalModel.control" relation="relation"/>
     <link port="ModalModel.true" relation="relation3"/>
-    <link port="ModalModel.false" relation="relation8"/>
+    <link port="ModalModel.false" relation="relation5"/>
     <link port="Test2.input" relation="relation3"/>
-    <link port="1:Test2.input" relation="relation8"/>
+    <link port="1:Test2.input" relation="relation5"/>
 </entity>
