@@ -138,7 +138,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (_debugging) _debug(getName(), " find FSMActor " + _ctrl.getName());
         Transition tr =
             _ctrl._chooseTransition(_st.preemptiveTransitionList());
-        _ctrl._executeTransition(tr);
         if (tr != null) {
 
             Actor[] actors = tr.destinationState().getRefinement();
@@ -174,7 +173,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl._setInputsFromRefinement();
 
         tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
-        _ctrl._executeTransition(tr);
 
         // execute the refinements of the enabled transition
         if(tr != null) {
@@ -307,7 +305,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }
-        _ctrl._executeTransition(tr);
         return super.postfire();
     }
 

@@ -215,7 +215,6 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
-        ctrl._executeTransition(tr);
 
         if (tr != null) {
             Actor[] actors = tr.destinationState().getRefinement();
@@ -261,7 +260,6 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         ctrl._setInputsFromRefinement();
 
         tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
-        ctrl._executeTransition(tr);
 
         if (tr != null) {
             actors = tr.getRefinement();

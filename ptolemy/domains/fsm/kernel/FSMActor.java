@@ -681,42 +681,51 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If there is more than one
      *   transition enabled.
      */
-    protected Transition _chooseTransition(List transitionList)
-            throws IllegalActionException {
+    protected Transition _checkTransition(List transitionList)
+        throws IllegalActionException {
         Transition result = null;
         Iterator transitionRelations = transitionList.iterator();
         while (transitionRelations.hasNext() && !_stopRequested) {
-            Transition transition = (Transition)transitionRelations.next();
+            Transition transition = (Transition) transitionRelations.next();
             if (!transition.isEnabled()) {
                 continue;
             }
             if (result != null) {
                 throw new IllegalActionException(currentState(),
-                        "Multiple enabled transitions: "
-                        + result.getName() + " and "
-                        + transition.getName() + ".");
-            } else {
+                                                 "Multiple enabled transitions: "
+                                                 + result.getName() + " and "
+                                                 + transition.getName() + ".");
+            }
+            else {
                 result = transition;
             }
         }
-        _lastChosenTransition = result;
         return result;
     }
 
-    /** Execute the choice actions contained by the transition.
-     *  @param transition An enabled transition.
-     *  @exception IllegalActionException If thrown by any choice
-     *  action contained by the enabled transition.
+    /** Return the enabled transition among the given list of transitions.
+     *  Execute the choice actions contained by the transition.
+     *  Throw an exception if there is more than one transition enabled.
+     *  @param transitionList A list of transitions.
+     *  @return An enabled transition, or null if none is enabled.
+     *  @exception IllegalActionException If there is more than one
+     *   transition enabled.
      */
-    protected void _executeTransition(Transition transition) throws IllegalActionException {
-        if (transition != null) {
-            if (_debugging) _debug("Enabled transition: "+ transition.getFullName());
-            Iterator actions = transition.choiceActionList().iterator();
+    protected Transition _chooseTransition(List transitionList)
+        throws IllegalActionException {
+        Transition result = _checkTransition(transitionList);
+
+        if (result != null) {
+            if (_debugging) _debug("Enabled transition: "+ result.getFullName());
+            Iterator actions = result.choiceActionList().iterator();
             while (actions.hasNext()) {
                 Action action = (Action)actions.next();
                 action.execute();
             }
         }
+
+        _lastChosenTransition = result;
+        return result;
     }
 
     /** Execute all commit actions contained by the transition chosen
