@@ -40,8 +40,8 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// RealToComplex
-/** This actor takes in a real part and an imaginary part
-    and output a complex token.
+/** This actor takes in a double token for real part and another
+    double token for imaginary part and output a complex token.
 
 @author Michael Leung
 @version $Id$
@@ -67,7 +67,6 @@ public class RealToComplex extends TypedAtomicActor {
         imagInput = new TypedIOPort(this, "imagInput", true, false);
         imagInput.setTypeEquals(DoubleToken.class);
 
-
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(ComplexToken.class);
 
@@ -76,11 +75,12 @@ public class RealToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
+    /** The real part. This has type DoubleToken. */
     public TypedIOPort realInput;
+    /** The imaginary part. This has type DoubleToken. */
     public TypedIOPort imagInput;
 
-    /** The output ports. */
+    /** The output ports. This has type ComplexToken. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -106,34 +106,25 @@ public class RealToComplex extends TypedAtomicActor {
         }
     }
 
-    /** initialization
-     */
-
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    
-    }  
-
-    /** Consume the inputs and produce the outputs of the RealToComplex actor.
+    /** Consume one token from each input port and output a new complex token
+     *  with real and imaginary parts given by the input tokens.
      *
-     *  Construct an Complex variable by using the constructor for Complex.
-     *  Complex comp = new Complex(realPart, imagPart);  
-     *
-     *  @exception IllegalActionException Not Thrown.
+     *  @exception IllegalActionException will be thrown if attempt to
+     *  fire this actor when there is no director.
      */
     public void fire() throws IllegalActionException {
 
-        DoubleToken real = (DoubleToken) (realInput.get(0)); 
-        DoubleToken imag = (DoubleToken) (imagInput.get(0)); 
- 
+        DoubleToken real = (DoubleToken) (realInput.get(0));
+        DoubleToken imag = (DoubleToken) (imagInput.get(0));
+
         double realPart = real.doubleValue();
         double imagPart = imag.doubleValue();
 
-        Complex comp = new Complex(realPart, imagPart);  
-        ComplexToken token = new ComplexToken (comp);
-       
+        Complex complexNumber = new Complex(realPart, imagPart);
+        ComplexToken token = new ComplexToken (complexNumber);
+
         output.broadcast(token);
-       
+
     }
 }
 
