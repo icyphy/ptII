@@ -134,9 +134,10 @@ OPTIONAL_FILES =	\
 # http://developer.java.sun.com/developer/bugParade/bugs/4507380.html
 # So, we expand the ptolemy.copernicus.java package
 COPERNICUSPACKAGES = \
+			ptolemy.copernicus.applet \
 			ptolemy.copernicus.kernel \
-			ptolemy.copernicus.c \
-			ptolemy/copernicus/java/*.java
+			ptolemy/copernicus/java/*.java \
+			ptolemy.copernicus.shallow
 
 PTINYPACKAGES = \
 			ptolemy.actor.lib \
