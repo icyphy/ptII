@@ -35,7 +35,7 @@ ME =		ptolemy/domains/de/demo
 ROOT =		../../../..
 
 DIRS =		ABRO Adder Hierarchy Inspection \
-	Interrupt Queue SigmaDelta 
+	Interrupt Queue
 
 CLASSPATH =	$(ROOT)
 
