@@ -31,8 +31,7 @@ package ptolemy.domains.gr.lib;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 import java.util.Iterator;
 
 import javax.swing.JFrame;
@@ -91,13 +90,29 @@ public class ViewScreen2D extends GRActor2D
         sceneGraphIn.setTypeEquals(Scene2DToken.TYPE);
         sceneGraphIn.setMultiport(true);
 
-        horizontalResolution = new Parameter(this,
-                "horizontalResolution", new IntToken(400));
-        horizontalResolution.setTypeEquals(BaseType.INT);
+        horizontalPixels = new Parameter(this,
+                "horizontalPixels", new IntToken(400));
+        horizontalPixels.setTypeEquals(BaseType.INT);
 
-        verticalResolution = new Parameter(this,
-                "verticalResolution", new IntToken(400));
-        verticalResolution.setTypeEquals(BaseType.INT);
+        verticalPixels = new Parameter(this,
+                "verticalPixels", new IntToken(400));
+        verticalPixels.setTypeEquals(BaseType.INT);
+
+        upperLeftX = new Parameter(this,
+                "upperLeftX", new IntToken(0));
+        upperLeftX.setTypeEquals(BaseType.INT);
+
+        upperLeftY = new Parameter(this,
+                "upperLeftY", new IntToken(400));
+        upperLeftY.setTypeEquals(BaseType.INT);
+        
+        lowerRightX = new Parameter(this,
+                "lowerRightX", new IntToken(400));
+        lowerRightX.setTypeEquals(BaseType.INT);
+  
+        lowerRightY= new Parameter(this,
+                "lowerRightY", new IntToken(0));
+        lowerRightY.setTypeEquals(BaseType.INT);
 
         rotatable = new Parameter(this,
                 "rotatable", new BooleanToken(true));
@@ -106,6 +121,9 @@ public class ViewScreen2D extends GRActor2D
         scalable = new Parameter(this,
                 "scalable", new BooleanToken(false));
         scalable.setTypeEquals(BaseType.BOOLEAN);
+
+        showAxes = new Parameter(this,"showAxes", new BooleanToken(false));
+        showAxes.setTypeEquals(BaseType.BOOLEAN);
 
         translatable = new Parameter(this,
                 "translatable", new BooleanToken(false));
@@ -135,8 +153,8 @@ public class ViewScreen2D extends GRActor2D
      *  This parameter should contain a IntToken.
      *  The default value of this parameter is the IntToken 400.
      */
-    public Parameter horizontalResolution;
-
+    public Parameter horizontalPixels;
+    
     /** Boolean variable that determines if the user is allowed to
      *  rotate the scene.
      *  This parameter should contain a BooleanToken.
@@ -147,12 +165,18 @@ public class ViewScreen2D extends GRActor2D
     /** Boolean variable that determines if the user is allowed to
      *   scale the scene.
      *  This parameter should contain a BooleanToken.
-     *  The default value of this parameter is BooleanToken false.Th
+     *  The default value of this parameter is BooleanToken false.
      */
     public Parameter scalable;
 
+    /** Boolean variable that determines if the axes crosshairs are shown
+     *  This parameter should contain a BooleanToken.
+     *  The default value of this parameter is BooleanToken true.
+     */
+    public Parameter showAxes;
+
     /** Boolean variable that determines if the user is allowed to
-     *   translate the scene.
+     *  translate the scene.
      *  This parameter should contain a BooleanToken.
      *  The default value of this parameter is BooleanToken false.
      */
@@ -162,7 +186,27 @@ public class ViewScreen2D extends GRActor2D
      *  This parameter should contain a IntToken.
      *  The default value of this parameter is IntToken 400.
      */
-    public Parameter verticalResolution;
+    public Parameter verticalPixels;
+
+    /** The x coordinate of the canvas point visible in the upper left
+     * corner of the display screen.
+     */  
+    public Parameter upperLeftX;
+    
+    /** The y coordinate of the canvas point visible in the upper left
+     * corner of the display screen.
+     */  
+    public Parameter upperLeftY;
+
+    /** The x coordinate of the canvas point visible in the lower right
+     * corner of the display screen.
+     */  
+    public Parameter lowerRightX;
+    
+    /** The y coordinate of the canvas point visible in the lower right
+     * corner of the display screen.
+     */  
+    public Parameter lowerRightY;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -269,7 +313,11 @@ public class ViewScreen2D extends GRActor2D
             _frame.dispose();
             _frame = null;
         }
-        _createViewScreen2D();
+        try {
+            _createViewScreen2D();
+        } catch (IllegalActionException ex) {
+            // Ignore;
+        }
     }
     
     
@@ -308,14 +356,14 @@ public class ViewScreen2D extends GRActor2D
      * a container, then use the container.  Otherwise, create a new
      * frame and use that.
      */
-    protected void _createViewScreen2D() {
+    protected void _createViewScreen2D() throws IllegalActionException {
         // Default size.
         int horizontalDimension = 400;
         int verticalDimension = 400;
 
         try {
-            horizontalDimension = _getHorizontalResolution();
-            verticalDimension = _getVerticalResolution();
+            horizontalDimension = _getHorizontalPixels();
+            verticalDimension = _getVerticalPixels();
         } catch (Exception e) {
             // FIXME handle this
         }
@@ -354,12 +402,36 @@ public class ViewScreen2D extends GRActor2D
             _frame.pack();
         }
         
-        _origin = new Point2D.Double(_container.getWidth()/2, _container.getHeight()/2);
-        pane.translate(_origin.x, _origin.y);       
+        double upperLeftXValue = ((IntToken)upperLeftX.getToken()).doubleValue();
+        double upperLeftYValue = ((IntToken)upperLeftY.getToken()).doubleValue();
+        double lowerRightXValue = ((IntToken)lowerRightX.getToken()).doubleValue();
+        double lowerRightYValue = ((IntToken)lowerRightY.getToken()).doubleValue();
+        java.awt.geom.Rectangle2D visibleRect =  
+            new java.awt.geom.Rectangle2D.Double(
+                    upperLeftXValue, 
+                    upperLeftYValue, 
+                    lowerRightXValue - upperLeftXValue,
+                    lowerRightYValue - upperLeftYValue);
+        if(visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
+            throw new IllegalActionException(this, "The width and height " +
+                    "of the visible rectangle cannot be zero.");
+        }
+
+        AffineTransform transform = CanvasUtilities.computeTransform(
+                visibleRect, _canvas.getBounds());
+        System.out.println("transform = " + transform);
+
+        //       _origin = new Point2D.Double(
+        //                 _container.getWidth()/2, _container.getHeight()/2);
+        //         pane.translate(_origin.x, _origin.y);       
+
+        pane.setTransform(transform);
         pane.setAntialiasing(true);
         
-        _crosshairX = new BasicFigure(new Line2D.Double(0,2,0,-2));
-        _crosshairY = new BasicFigure(new Line2D.Double(2,0,-2,0));
+        _crosshairX = new BasicFigure(
+                new java.awt.geom.Line2D.Double(0,2,0,-2));
+        _crosshairY = new BasicFigure(
+                new java.awt.geom.Line2D.Double(2,0,-2,0));
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
         
@@ -371,7 +443,9 @@ public class ViewScreen2D extends GRActor2D
         pane.setOverlayLayer(_overlayLayer);
         pane.setForegroundEventLayer(_eventLayer);
         
-        _frame.addKeyListener(_eventHandler);
+        if(_frame != null) {
+            _frame.addKeyListener(_eventHandler);
+        }
     }
 
     /** Set up the scene graph connections of this actor.  
@@ -390,12 +464,12 @@ public class ViewScreen2D extends GRActor2D
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
-    protected int _getHorizontalResolution() throws IllegalActionException {
-        return ((IntToken) horizontalResolution.getToken()).intValue();
+    protected int _getHorizontalPixels() throws IllegalActionException {
+        return ((IntToken) horizontalPixels.getToken()).intValue();
     }
     
-    protected int _getVerticalResolution() throws IllegalActionException {
-        return ((IntToken) verticalResolution.getToken()).intValue();
+    protected int _getVerticalPixels() throws IllegalActionException {
+        return ((IntToken) verticalPixels.getToken()).intValue();
     }
 
     protected boolean _isRotatable() throws IllegalActionException  {

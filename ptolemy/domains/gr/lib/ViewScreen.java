@@ -134,7 +134,7 @@ public class ViewScreen extends GRActor3D
         backgroundColor = new Parameter(this, "backgroundColor",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
         backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
-
+        
         _lastTransform = new Transform3D();
     }
 

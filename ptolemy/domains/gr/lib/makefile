@@ -41,7 +41,7 @@ DIRS =	$(PTQUICKTIME_DIR)
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)c:/j2sdk1.4.1_02/jre/lib/ext/QTJava.zip
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
