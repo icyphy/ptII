@@ -39,14 +39,8 @@ import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.copernicus.c.Main;
-// JDK1.2.2 barfs with:
-// Ambiguous class: ptolemy.copernicus.java.Main and ptolemy.copernicus.c.Main
-// if we have:
-// import ptolemy.copernicus.java.Main;
-// Something similar happens with:
-// import ptolemy.copernicus.jhdl.Main;
-import ptolemy.copernicus.java.*;
-import ptolemy.copernicus.jhdl.*;
+import ptolemy.copernicus.java.Main;
+import ptolemy.copernicus.jhdl.Main;
 import ptolemy.data.BooleanToken;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
@@ -554,7 +548,7 @@ public class GeneratorTableau extends Tableau {
 //  	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
 //    	} catch (IOException io) {
 //    	    InternalErrorException internalError =
-//    		new InternalErrorException("Failed to get canonical pathe '"
+//    		new InternalErrorException("Failed to get canonical path '"
 //    					   + temporaryMoMLFile + ": " + io);
 //    	    internalError.fillInStackTrace();
 //    	    throw internalError;
