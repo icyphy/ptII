@@ -11,6 +11,8 @@
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -18,8 +20,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 147.1328125">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={230, 230, 819, 563}}">
+    </property>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../../doc/img/PtolemyII.jpg&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;../../../../../../doc/img/PtolemyII.jpg&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="148.078125, 222.203125">
         </property>
@@ -32,6 +36,10 @@
         </port>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={450, 264, 380, 495}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[372, 447]">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="379.0, 219.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
