@@ -282,9 +282,6 @@ compat4:
 			$@/sdftest1.xml; \
 		cp $(OLDTREE4)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
 			$@/vqtest1.xml; \
-		rm $@/test4.xml; \
-		cp $(OLDTREE4)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
-			$@/sdftest1.xml; \
 		cp $(OLDTREE4)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
 			$@/vqtest1.xml; \
 		echo "Removing tests that failed in earlier releases"; \
