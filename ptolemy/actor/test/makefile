@@ -60,6 +60,7 @@ JSIMPLE_TESTS = \
 	IOPort.tcl \
 	IORelation.tcl \
 	TypedIOPort.tcl \
+	TypedIORelation.tcl \
 	TypeEvent.tcl
 
 # Graphical Java tests that use Tcl.
