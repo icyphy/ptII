@@ -108,6 +108,7 @@ public class SDFApplet extends PtolemyApplet {
             _director.setScheduleValid(false);
         } catch (Exception ex) {
             report("Failed to setup director and scheduler:\n", ex);
+            _setupOK = false;
         }
     }
 

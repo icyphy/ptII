@@ -109,6 +109,7 @@ public class PNApplet extends PtolemyApplet {
 
         } catch (Exception ex) {
             report("Setup failed:", ex);
+            _setupOK = false;
         }
     }
 
