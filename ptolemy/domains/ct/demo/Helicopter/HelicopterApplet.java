@@ -50,7 +50,7 @@ import ptolemy.data.expr.Parameter;
 //import collections.LinkedList;
 import java.util.Enumeration;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 ////  HelicopterApplet
 /**
 An applet that models a 2-D helicopter control system.
@@ -59,13 +59,12 @@ An applet that models a 2-D helicopter control system.
 @version $Id$
 */
 public class HelicopterApplet extends CTApplet {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
-
-/** Initialize the applet.
- */
-public void init() {
+    /** Initialize the applet.
+     */
+    public void init() {
 
     super.init();
     Panel controlpanel = new Panel();
