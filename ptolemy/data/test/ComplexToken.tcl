@@ -278,7 +278,7 @@ test ComplexToken-6.0 {Test modulo} {
     catch {res [$p1 modulo $p1]} msg
 
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: modulo method not supported on ptolemy.data.ComplexToken objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: Modulo operation not supported: ptolemy.data.ComplexToken modulo ptolemy.data.ComplexToken.}}
 
 ######################################################################
 ####
