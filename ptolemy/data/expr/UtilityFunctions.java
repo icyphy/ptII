@@ -845,6 +845,19 @@ public class UtilityFunctions {
         }
         return arrayToken;
     }
+    
+    /** Return the (exact) return type of the repeat function above.
+     *  This function always returns an ArrayType whose element type
+     *  is the second argument.
+     *  @param type1 The type of the first argument to the
+     *  corresponding function.
+     *  @param type2 The type of the second argument to the
+     *  corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type repeatReturnType(Type type1, Type type2) {
+        return new ArrayType(type2);
+    }
 
     /** Set a variable with the specified name to have the specified value.
      *  This is done in the global namespace of the expression evaluator,
@@ -881,6 +894,21 @@ public class UtilityFunctions {
         return result;
     }
 
+    /** Return the (exact) return type of the sum function above.
+     *  If the argument is an array type, then return its element type,
+     *  otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type sumReturnType(Type type) {
+        if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+            return arrayType.getElementType();
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
+
     /** Return the approximate number of bytes used by current objects
      *  and available for future object allocation.
      *  @return The total number of bytes used by the JVM.
@@ -904,6 +932,7 @@ public class UtilityFunctions {
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         return evaluator.traceParseTreeEvaluation(parseTree, null).toString();
     }
+    
     /** Return true if the first argument is close in value to the second,
      *  where "close" means that it is within the distance given by the
      *  third argument. Exactly what this means depends on the data type.
