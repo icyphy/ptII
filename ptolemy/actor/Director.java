@@ -87,7 +87,7 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** This should invoke the fire methods of the actors according to a 
-     *  schedule. This can be called more than once in the same iteration
+     *  schedule. This can be called more than once in the same iteration.
      * @exception IllegalActionException would be required by subclasses
      */	
     public void fire() throws IllegalActionException {
