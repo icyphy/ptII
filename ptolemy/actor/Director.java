@@ -35,6 +35,8 @@ package ptolemy.actor;
 
 import java.util.Iterator;
 
+import ptolemy.actor.util.Time;
+import ptolemy.actor.util.TimeConstants;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -46,7 +48,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Director
@@ -297,7 +298,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public void fireAt(Actor actor, double time)
+    public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
 
         // do nothing in this base class.
@@ -347,7 +348,7 @@ public class Director extends Attribute implements Executable {
      *
      *  @return The current time.
      */
-    public double getCurrentTime() {
+    public Time getCurrentTime() {
         return _currentTime;
     }
 
@@ -365,80 +366,100 @@ public class Director extends Attribute implements Executable {
      *  of the test suite.
      *  @return The time of the next iteration.
      */
-    public double getNextIterationTime() {
+    public Time getNextIterationTime() {
         return _currentTime;
     }
 
     /** Get the time resolution of the model. Be default, the value of
-     *  the time resolution is 1.0e-10. 
+     *  the time resolution is 1.0e-10. If this director is not at the
+     *  top level, ask the upper level director for time resolution.
      *  @return The time resolution of the model.
      */
-    public double getTimeResolution() {
+    public final double getTimeResolution() {
         // FIXME: should the different hierarchy levels have the same
         // time resolution parameter, or that of the top level? 
+        // NOTE: The current design enforces that there is only one
+        // time resolution (that of the top level director).
+        // Also, the time resolution can not be changed during the 
+        // model executions. 
+        if (_isEmbedded()) {
+            NamedObj container = getContainer();
+            if (container instanceof CompositeActor) {
+                return ((CompositeActor)container).getExecutiveDirector()
+                    .getTimeResolution();
+            }
+        }
         return _timeResolution;
     }
 
     /** Get the start time of the model. This base class returns 
-     *  0.0 as the value of the start time. 
+     *  a Time object with 0.0 as the value of the start time. 
      *  Subclasses need to override this method to get a different 
      *  start time. 
      *  For example, CT director and DE director use the value of 
      *  the startTime parameter to specify the real start time. 
      *  @return The start time of the model.
      */
-    public double getStartTime() {
+    public Time getStartTime() {
         // FIXME: Which one to choose? 0.0, or -1* Double.MAX_VALUE? 
-        return 0.0;
+        return new Time(this);
     }
 
     /** Get the stop time of the model. This base class returns
-     *  Double.MAX_VALUE as the value of the stop time. 
+     *  a new Time object with Double.MAX_VALUE as the value of the 
+     *  stop time. 
      *  Subclasses need to override this method to get a different 
      *  stop time.
      *  For example, CT director and DE director use the value of 
      *  the stopTime parameter to specify the real stop time. 
      *  @return The stop time of the model.
      */
-    public double getStopTime() {
-        return Double.MAX_VALUE;
+    public Time getStopTime() {
+        return new Time(this, Double.MAX_VALUE);
     }
 
     /** Initialize the model controlled by this director.  Set the
-     *  current time to 0.0 or the time of the executive director, and
-     *  then invoke the initialize() method of this director on each
-     *  actor that is controlled by this director.  If the container
-     *  is not an instance of CompositeActor, do nothing.  This method
-     *  should typically be invoked once per execution, after the
+     *  current time to the start time or the current time of the 
+     *  executive director, and then invoke the initialize() method 
+     *  of this director on each actor that is controlled by this director.  
+     *  If the container is not an instance of CompositeActor, do nothing.  
+     *  
+     *  This method should typically be invoked once per execution, after the
      *  preinitialization phase, but before any iteration.  It may be
      *  invoked in the middle of an execution, if reinitialization is
      *  desired.  Since type resolution has been completed and the
      *  current time is set, the initialize() method of a contained
      *  actor may produce output or schedule events.  If stop() is
      *  called during this methods execution, then stop initializing
-     *  actors immediately.  This method is
-     *  <i>not</i> synchronized on the workspace, so the caller should
-     *  be.
+     *  actors immediately.  
+     * 
+     *  This method is <i>not</i> synchronized on the workspace, 
+     *  so the caller should be.
      *
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        // Initialize the time constants that will be used in this director.
+        // NOTE: Ideally, only timed directors need to do this.
+        timeConstants = new TimeConstants(this);
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Nameable containersContainer = container.getContainer();
+            // Initialize the current time.
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
-                double currentTime = ((CompositeActor)containersContainer)
+                Time currentTime = ((CompositeActor)containersContainer)
                     .getDirector().getCurrentTime();
                 _currentTime = currentTime;
             } else {
-                // The container is the top level.
+                // The container is at the top level.
                 // There is no reason to set the current time to 0.0.
                 // Instead, it has to be set to start time of a model. 
-                // FIXME: to simplify the initilize method of DE director
+                // FIXME: simplify the initilize method of DE director
                 _currentTime = getStartTime();
             }
+            // Initialize the contained actors.
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
             while (actors.hasNext() && !_stopRequested) {
@@ -641,8 +662,8 @@ public class Director extends Attribute implements Executable {
             Director executiveDirector =
                 ((Actor)container).getExecutiveDirector();
             if (executiveDirector != null) {
-                double outTime = executiveDirector.getCurrentTime();
-                if (getCurrentTime() < outTime) {
+                Time outTime = executiveDirector.getCurrentTime();
+                if (_currentTime.compareTo(outTime) < 0) {
                     setCurrentTime(outTime);
                 }
             }
@@ -667,11 +688,21 @@ public class Director extends Attribute implements Executable {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
+        if (_debugging && _verbose) _debug("Preinitializing ...");
+        // preinitialize protected variables. 
+        // FIXME: a duplicate operation also appears in the initialize method.
+        _currentTime = getStartTime();
+        _stopRequested = false;
+        _timeResolution = 1.0e-10;
+                
+        // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
+        
+        // preinitialize all the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
@@ -683,9 +714,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
-        _stopRequested = false;
-        // initialize the starting time of model
-        _currentTime = Double.NEGATIVE_INFINITY;
+        
         if (_debugging) _debug("Finished preinitialize().");
     }
 
@@ -791,33 +820,42 @@ public class Director extends Attribute implements Executable {
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime) throws IllegalActionException {
-        newTime = Utilities.round(newTime, getTimeResolution());
-        double currentTime = getCurrentTime();
-        if (newTime < currentTime) {
+    public void setCurrentTime(Time newTime) throws IllegalActionException {
+        int comparisonResult = _currentTime.compareTo(newTime);
+        if (comparisonResult > 0) {
             throw new IllegalActionException(this, "Attempt to move current "
                     + "time backwards. (newTime = " + newTime
                     + ") < (getCurrentTime() = " + getCurrentTime() + ")");
-        } else if (newTime > currentTime) {
-            _currentTime = newTime;
+        } else if (comparisonResult < 0) {
             if (_debugging) {
                 _debug("==== Set current time to: " + newTime);
             }
+            _currentTime = newTime;
         } else {
-            // the new time is the current time, do nothing.
+            // the new time is equal to the current time, do nothing.
         }
     }
 
-    /** Set the time resolution of the model. Be default, the value of
-     *  the time resolution is 1.0e-10. Derived classes can override
-     *  the value.
-     *
+    /** Set the time resolution of the model. The default value of
+     *  the time resolution is 1.0e-10. The time resolution can only
+     *  be changed when the model finishes executions. This method is
+     *  final and it can not be overridden.  
+     *  If there is no container, or the container is not an 
+     *  instance of CompositeActor, or if it has no manager, do nothing.
      *  @param timeResolution The new time resolution.
      */
-    public void setTimeResolution(double timeResolution) {
-        _timeResolution = timeResolution;
-        if (_debugging) {
-            _debug("--- Set the time resolution to: " + timeResolution);
+    public final void setTimeResolution(double timeResolution) {
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Manager manager = ((CompositeActor)container).getManager();
+            if (manager != null && manager.getState() == Manager.ITERATING) {
+                throw new InternalErrorException("Can not change the " +
+                    "time resolution parameter when model is running.");
+            }
+            _timeResolution = timeResolution;
+            if (_debugging) {
+                _debug("--- Set the time resolution to: " + timeResolution);
+            }
         }
     }
 
@@ -959,6 +997,13 @@ public class Director extends Attribute implements Executable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+    
+    /** The constant time objects associated with this director.
+     */
+    public TimeConstants timeConstants;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a description of the object.  The level of detail depends
@@ -1043,7 +1088,7 @@ public class Director extends Attribute implements Executable {
     ////                         protected variables               ////
 
     /** The current time of the model. */
-    protected double _currentTime = 0.0;
+    protected Time _currentTime;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
@@ -1060,6 +1105,9 @@ public class Director extends Attribute implements Executable {
                 "</svg>\n");
     }
 
-    /** The time resolution of the model. */
-    private double _timeResolution = 1.0e-10;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The time resolution of the model, by default, the value is 1e-10. */
+    private double _timeResolution = 1e-10;
 }
