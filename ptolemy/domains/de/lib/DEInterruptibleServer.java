@@ -152,7 +152,7 @@ public class DEInterruptibleServer extends DEActor {
 
                 // due to these interrupts, it might become busy.
                 // If that's the case then add the time wrt to the _busyUntil
-                // value. Othewise add it wrt to the current time.
+                // value. Otherwise add it wrt to the current time.
                 if (_busyUntil > currentTime) {
                     _busyUntil += interruptServiceTime;
                 } else {   
