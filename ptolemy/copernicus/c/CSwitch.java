@@ -164,7 +164,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseNullConstant(NullConstant v) {
-        defaultCase(v);
+        _push("NULL");
     }
 
     public void caseStringConstant(StringConstant v) {
@@ -345,7 +345,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 StringBuffer baseCode = _pop();
                 _push(CNames.classStructureNameOf(methodClass) + ".methods." +
                         CNames.methodNameOf(method) + "(" + baseCode
-                        + ", " + _generateArguments(v, 1) + ")");
+                        + _generateArguments(v, 1) + ")");
             }
         }
     }
