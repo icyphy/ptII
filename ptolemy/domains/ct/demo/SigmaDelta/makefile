@@ -51,18 +51,18 @@ JSRCS = \
 	SigmaDelta.java
 
 OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	SigmaDelta.xml \
+
+EXTRA_SRCS = \
+	$(TCL_SRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 	SDCTPlot.gif \
 	SDDEPlot.gif \
 	SigmaDelta.gif \
 	SigmaDelta.htm \
-	SigmaDelta.xml \
-	SigmaDelta2.gif
-
-EXTRA_SRCS = \
-	$(TCL_SRCS) \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
 	SigmaDelta.vsd \
+	SigmaDelta2.gif \
 	SigmaDelta2.vsd
 
 # Sources that may or may not be present, but if they are present, we don't

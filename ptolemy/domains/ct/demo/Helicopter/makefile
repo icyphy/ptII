@@ -56,9 +56,13 @@ JSRCS = \
 	HoverLinearizer.java \
 	XZHigherDerivatives.java
 
-EXTRA_SRCS =	$(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Helicopter.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 	Helicopter.htm \
-	Helicopter.xml \
 	modes.gif \
 	toplevel.gif
 

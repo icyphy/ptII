@@ -47,12 +47,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	StickyMasses.java
 
-EXTRA_SRCS = \
+OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	StickyMasses.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 	Controller.gif \
 	Separate.gif \
 	StickyMasses.htm \
-	StickyMasses.xml \
 	StickyMassesVergil.htm \
 	Together.gif \
 	SMdiagram.gif \

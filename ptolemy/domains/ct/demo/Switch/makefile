@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II Continuous Time Switch demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Thermostat
+ME =		ptolemy/domains/ct/demo/Switch 
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,21 +41,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Thermostat
+PTPACKAGE = 	Switch
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	Thermostat.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Thermostat.xml
+	Switch.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Thermostat.gif \
-	Thermostat.htm \
-	Thermostat.vsd
+	Switch.htm \
+	SwitchVergil.htm \
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -65,7 +64,8 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'SwitchApplet$$ParameterListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -77,14 +77,14 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
-demo_applet: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer Thermostat.htm
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Switch.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Thermostat.xml
+	"$(PTII)/bin/ptolemy" Switch.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Thermostat.xml
+	"$(PTII)/bin/vergil" Switch.xml
 
 depend:
 	@echo "no dependencies in this directory"

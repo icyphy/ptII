@@ -32,8 +32,8 @@
 ME =		ptolemy/domains/ct/demo
 
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
-DIRS = Helicopter Lorenz SigmaDelta SquareWave StickyMasses \
-	Thermostat Corba $(PTJSPACES_DIR)
+DIRS = 		BouncingBall Helicopter Lorenz SigmaDelta SquareWave \
+		StickyMasses Switch Thermostat Corba $(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,12 +44,26 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS =
+# Used to build jar files
+PTPACKAGE = 	demo
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	BouncingBall/BouncingBall.jar \
+	Corba/Corba.jar \
+	Helicopter/Helicopter.jar \
+	Lorenz/Lorenz.jar \
+	SigmaDelta/SigmaDelta.jar \
+	SquareWave/SquareWave.jar \
+	StickyMasses/StickyMasses.jar \
+	Switch/Switch.jar \
+	Thermostat/Thermostat.jar
 
-JSRCS =
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =	index.htm $(JSRCS)
+EXTRA_SRCS = index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
