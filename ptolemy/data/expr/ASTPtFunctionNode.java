@@ -151,7 +151,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 foundMethod = true;
             } catch (Exception  ex) {
                 // FIXME: a lot of exceptions get caught here, perhaps
-                // want to specify each of them seperately?
+                // want to specify each of them separately?
                 //System.out.println("Method " + funcName + " not found in " +
                   //  nextClass.getName());
             }

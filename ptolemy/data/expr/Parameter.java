@@ -632,7 +632,7 @@ public class Parameter extends Attribute implements ParameterListener {
     *  with other Parameters. If this is not done a phantom web
     *  of dependencies may exist which could lead to false
     *  dependency loops being detected. Normally this method is
-    *  called with the roor node of the parse tree and recursively
+    *  called with the root node of the parse tree and recursively
     *  calls itself to visit the whole tree.
     *  @param node The node in the tree below which all dependencies
     *   are cleared.
