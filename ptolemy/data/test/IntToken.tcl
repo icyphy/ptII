@@ -1,8 +1,8 @@
-# Tests for the StringToken class
+# Tests for the IntToken class
 #
 # @Author: Mudit Goel
 #
-# @Version: @(#)StringToken.tcl	1.2 01/07/98
+# @Version $Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -50,20 +50,20 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test StringToken-1.1 {Get information about the class} {
+test IntToken-1.1 {Get information about the class} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.StringToken]
+    set n [java::new pt.kernel.IntToken]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.StringToken
+  class:         pt.kernel.IntToken
   fields:        
   methods:       clone {equals java.lang.Object} {fromString java.lang.S
-    tring} getClass getValue hashCode notify notifyAll {set
-    Value java.lang.Object} toString wait {wait long} {wait
-     long int}
+    tring} getClass getValue getvalue hashCode notify notif
+    yAll {setValue java.lang.Object} toString wait {wait lo
+    ng} {wait long int}
     
-  constructors:  pt.kernel.StringToken {pt.kernel.StringToken java.lang.
-    String}
+  constructors:  pt.kernel.IntToken {pt.kernel.IntToken int} {pt.kernel.
+    IntToken java.lang.String}
     
   properties:    class value
     
@@ -74,44 +74,43 @@ test StringToken-1.1 {Get information about the class} {
 ######################################################################
 ####
 # 
-test StringToken-2.1 {Create an empty instance} {
-    set p [java::new pt.kernel.StringToken]
+test IntToken-2.1 {Create an empty instance} {
+    set p [java::new pt.kernel.IntToken]
     $p toString
-} {}
+} {0}
 
 ######################################################################
 ####
 # 
-test StringToken-2.2 {Create an empty instance and query its value} {
-    set p [java::new pt.kernel.StringToken]
+test IntToken-2.2 {Create an empty instance and query its value} {
+    set p [java::new pt.kernel.IntToken]
     $p getValue
-} {}
+} {0}
 
 ######################################################################
 ####
 # 
-test StringToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new pt.kernel.StringToken]
-    $p fromString foo
+test IntToken-3.1 {Create an empty instance and attempt to init from string} {
+    set p [java::new pt.kernel.IntToken]
+    $p fromString 12
     $p toString
-} {foo}
+} {12}
 
 ######################################################################
 ####
 # 
-test StringToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.kernel.StringToken]
+test IntToken-4.1 {Create an empty instance and clone} {
+    set p [java::new pt.kernel.IntToken]
     set q [$p clone]
     $q getValue
-} {}
+} {0}
 
 ######################################################################
 ####
 # 
-test StringToken-4.2 {Create a non empty instance and clone} {
-    set n [java::new {java.lang.String String} foo]
-    set p [java::new pt.kernel.StringToken $n]
+test IntToken-4.2 {Create a non empty instance and clone} {
+    set p [java::new {pt.kernel.IntToken int} 10]
     set q [$p clone]
     list [$p toString] [$q toString]
-} {foo foo}
+} {10 10}
 
