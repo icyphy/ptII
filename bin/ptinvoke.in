@@ -297,7 +297,7 @@ else
 fi
 
 # If JAVAHOME has spaces in it, we need to jump through hoops
-str="\"$JAVAHOME/bin/java\" $javaflag $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" $javastartupclass ${1+"$@"}"
+str="\"$JAVAHOME/bin/java\" $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" $javastartupclass ${1+"$@"}"
 
 echo $str
 eval exec $str
