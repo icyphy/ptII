@@ -67,7 +67,7 @@ director or executive director).
 A director implements the action methods (initialize(), prefire(), fire(),
 postfire(), and wrapup()).  In this base class, default implementations
 are provided that may or may not be useful in specific domains.   In general,
-these methods will perform domain-dependant actions, and then call the
+these methods will perform domain-dependent actions, and then call the
 respective methods in all contained actors.
 <p>
 A director also provides services for cleanly handling mutations of the

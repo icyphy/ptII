@@ -1198,7 +1198,7 @@ public class IOPort extends ComponentPort {
      *  and the format is like the Receivers array, an array of groups, with
      *  each group receiving from a channel.
      *  Each group is a list of receiver descriptions (it may also be empty).
-     *  If the detail argument sets the bit defined by the constact
+     *  If the detail argument sets the bit defined by the constant
      *  REMOTERECEIVERS, then also append to the description a field containing
      *  the remote receivers connected to this port.
      *

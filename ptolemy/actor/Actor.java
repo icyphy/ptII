@@ -49,7 +49,7 @@ public interface Actor extends Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create any neccessary receivers. This method should iterate
+    /** Create any necessary receivers. This method should iterate
      *  over the input ports of the actor and call createReceivers()
      *  on each one.
      *  @exception IllegalActionException If the receivers could not

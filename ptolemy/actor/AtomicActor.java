@@ -325,7 +325,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Do nothing.  Derived classes override this method to define
-     *  operations to be performed excatly once at the end of a complete
+     *  operations to be performed exactly once at the end of a complete
      *  execution of an application.  It typically closes
      *  files, displays final results, etc.
      *

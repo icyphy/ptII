@@ -452,7 +452,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  Kill the main simulation thread and call terminate on the toplevel
      *  container.   This should cause any actors to free up any resources
      *  they have allocated and Directors should kill any threads they have
-     *  created.   However, a consistant state is not guaranteed.   The
+     *  created.   However, a consistent state is not guaranteed.   The
      *  topology should probably be recreated before attempting any
      *  further operations.   This is not synchronized because we want it to
      *  happen as soon as possible, no matter what.

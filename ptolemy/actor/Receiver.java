@@ -83,7 +83,7 @@ public interface Receiver {
     public boolean hasRoom() throws IllegalActionException;
 
     /** Return true if the receiver contains a token that can be obtained
-     *  by calilng the get() method.
+     *  by calling the get() method.
      *  Returning true in this method should also guarantee that calling
      *  the get() method will not result in an exception.
      *
