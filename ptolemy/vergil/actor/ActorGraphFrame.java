@@ -36,6 +36,8 @@ import diva.graph.GraphPane;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -147,6 +149,25 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             _debugMenu.add(debugMenuItems[i]);
         }
         _menubar.add(_debugMenu);
+    }
+
+    /** If the ptolemy model associated with this frame is a top-level
+     *  composite actor, use its manager to stop it.
+     *  Remove the listeners that this frame registered with the ptolemy
+     *  model. Also remove the listeners our graph model has created.
+     *  @return True if the close completes, and false otherwise.
+     */
+    protected boolean _close() {
+        CompositeEntity ptModel = getModel();
+        if (ptModel instanceof CompositeActor &&
+                ptModel.getContainer() == null) {
+            CompositeActor ptActorModel = (CompositeActor)ptModel;
+            Manager manager = ptActorModel.getManager();
+            if (manager != null) {
+                manager.stop();
+            }
+        }
+        return super._close();
     }
 
     /** Create a new graph pane. Note that this method is called in
