@@ -1,10 +1,5 @@
 /* A library for mathematical operations on matrices of doubles.
 
-Some algorithms are from
-
- [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-    Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
-
 This file was automatically generated with a preprocessor, so that
 similar matrix operations are supported on ints, longs, floats, and doubles.
 
@@ -45,11 +40,14 @@ package ptolemy.math;
 /**
 This class provides a library for mathematical operations on
 matrices of doubles.
-
-Rows and column numbers of matrices are specified with zero-based indices.
-
 All calls expect matrix arguments to be non-null. In addition, all
 rows of the matrix are expected to have the same number of columns.
+<p>
+Some algorithms are from:
+<p>
+ [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+    Signal Processing," Prentice Hall, Englewood Cliffs, NJ, 1991.
+
 @author Jeff Tsay
 @version $Id$
 */
@@ -244,6 +242,8 @@ public class DoubleMatrixMath {
                 // calculate the determinate by the product of the pivots
                 det *= a[pivot][pivot];
             }
+
+            // if almost singular matrix, give up now
 
             // If almost singular matrix, give up now.
             if (Math.abs(det) <= Complex.epsilon) {
