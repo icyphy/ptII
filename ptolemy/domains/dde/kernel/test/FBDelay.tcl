@@ -294,10 +294,8 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
 
-    #set tok1 [java::new ptolemy.data.Token]
-
     $fBack1 setDelay 4.0
-    $fBack2 setDelay 4.0
+    $fBack2 setDelay 0.2
 
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
