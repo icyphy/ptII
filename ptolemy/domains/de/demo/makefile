@@ -188,6 +188,9 @@ CLOCK_CLASSFILES = \
 	ptolemy/plot/PlotBox.class \
 	ptolemy/plot/PlotPoint.class \
 
+# 'make clean' removes everything in KRUFT
+KRUFT = clockapplet.jar
+
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
 clockapplet.jar: $(JSRCS) $(JCLASS)
@@ -200,6 +203,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
-
-
-
