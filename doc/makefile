@@ -176,14 +176,17 @@ DIVAPACKAGES = \
 	diva.canvas.interactor \
 	diva.canvas.test \
 	diva.canvas.toolbox \
+	diva.canvas.tutorial \
 	diva.graph \
 	diva.graph.basic \
 	diva.graph.layout \
 	diva.graph.modular \
 	diva.graph.test \
 	diva.graph.toolbox \
+	diva.graph.tutorial \
 	diva.gui \
 	diva.gui.toolbox \
+	diva.gui.tutorial \
 	diva.resource \
 	diva.util \
 	diva.util.java2d \
