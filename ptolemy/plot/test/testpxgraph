@@ -17,6 +17,26 @@ cat > $tmpfile <<EOF
 3 -0.2
 EOF
 
+tmpfile2=/tmp/testpxgraph2.$$
+# Note that we don't have a DataSets starting the file, and
+# that we use tabs, spaces and commas to separate the values
+cat > $tmpfile2 <<EOF
+0 1
+1 2
+2 2.5
+3 1
+EOF
+
+# Test out two file invocations
+$pxgraph -test $tmpfile $tmpfile2
+$pxgraph -test -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
+$pxgraph -test -0 "first data set" $tmpfile $tmpfile2
+$pxgraph -test -1 "second data set" $tmpfile $tmpfile2
+$pxgraph -test -2 "second data set" $tmpfile $tmpfile2
+$pxgraph -test -0 "zero" -binary bin.plt
+
+$pxgraph -test -bar -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
+
 # Test out Flags in order
 $pxgraph -test $tmpfile
 $pxgraph -test -bar $tmpfile
@@ -55,7 +75,7 @@ $pxgraph -test -tf 9x15 $tmpfile
 $pxgraph -test -x Years -y "$ Profit" $tmpfile
 $pxgraph -test -zg Yellow $tmpfile
 $pxgraph -test -zw 5 $tmpfile
-rm -f $tmpfile
+rm -f $tmpfile $tmpfile2
 
 # Test out stdin
 $pxgraph -test < demo/data.plt
