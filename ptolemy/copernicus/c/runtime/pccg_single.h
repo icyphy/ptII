@@ -1,7 +1,7 @@
 /*******************************************************************
 Header file for SingleClass Mode.
 
-Copyright (c) 2002 The University of Maryland.
+Copyright (c) 2001 The University of Maryland.
 
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ Header file for SingleClass Mode.
 */
 
 #define PCCG_ARRAY_ACCESS(base, element_type, index) \
-        (((element_type*)((base)->array_data))[(index)])
+        (((element_type)((base)[(index)])))
 
 /* Given a pointer to an array instance structure, return the
  * length of the associated array.
@@ -58,19 +58,23 @@ Header file for SingleClass Mode.
  * fields that occurs at the beginning of class instance (object) descriptors.
  *
  */
+/*
 typedef struct
 {
     int dummy; // To suppress warnings.
 
 } PCCG_ARRAY_CLASS;
-
+*/
+/*
 typedef struct
 {
     PCCG_ARRAY_CLASS *class;
     int array_length;
     void *array_data;
 } PCCG_ARRAY_INSTANCE;
+*/
 
+typedef float PCCG_ARRAY_INSTANCE;
 
 //FIXME: Make this a structure typedef.
 typedef char  PCCG_ARRAY_char_elem;
@@ -81,7 +85,7 @@ typedef double PCCG_ARRAY_double_elem;
 
 typedef PCCG_ARRAY_INSTANCE *PCCG_ARRAY_INSTANCE_PTR;
 
-extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
+//extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 
 /* Allocate storage for an array. FIXME: complete this function.
    and its code. It should use varargs. */

@@ -37,6 +37,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 jmp_buf env;
 int epc;
 char *exception_type;
+int exception_id;
 
 /**
  *  PCCG implementation of the instanceof operator.
