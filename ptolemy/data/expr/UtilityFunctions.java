@@ -36,6 +36,7 @@ import ptolemy.data.Token;
 import ptolemy.data.StringToken;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.*;
 
 import java.io.BufferedReader;
@@ -280,7 +281,17 @@ public class UtilityFunctions {
         for(int i = 0; i < length; i++) {
             result[i] = element;
         }
-        return new ArrayToken(result);
+
+	ArrayToken arrayToken;
+	try {
+	    arrayToken = new ArrayToken(result);
+	} catch (IllegalActionException illegalAction) {
+	    // This should not happen since the elements of the array always
+	    // have the same type.
+	    throw new InternalErrorException("UtilityFunctions.repeat: "
+	        + "Cannot construct ArrayToken. " + illegalAction.getMessage());
+        }
+        return arrayToken;
     }
 
     /** Return the approximate number of bytes used by current objects

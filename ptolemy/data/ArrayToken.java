@@ -50,10 +50,10 @@ public class ArrayToken extends Token {
      *  tokens in the array must have the same type, otherwise an
      *  exception will be thrown.
      *  @param value An array of tokens.
-     *  @exception IllegalArgumentException If the tokens in the array
+     *  @exception IllegalActionException If the tokens in the array
      *   do not have the same type.
      */
-    public ArrayToken(Token[] value) {
+    public ArrayToken(Token[] value) throws IllegalActionException {
 	_elementType = value[0].getType();
 	int length = value.length;
 	_value = new Token[length];
@@ -61,7 +61,7 @@ public class ArrayToken extends Token {
 	    if (_elementType.equals(value[i].getType())) {
 	    	_value[i] = value[i];
 	    } else {
-		throw new IllegalArgumentException("ArrayToken: " +
+		throw new IllegalActionException("ArrayToken: " +
                         "Elements of the array do not have the same type:"
 			+ "value[0]=" + value[0].toString()
 			+ " value[" + i + "]=" + value[i]);

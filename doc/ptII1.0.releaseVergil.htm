@@ -26,6 +26,11 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 an expression-dependent fashion. It works correctly for double-valued
 expressions of double-valued inputs.
 
+<li> The Ptolemy parameter parser uses comma "," to separate elements
+in an array.  This causes problems when Ptolemy is run on
+European machines that use a comma "1,0" instead of a period "1.0"
+in floating point numbers.
+
 <li> The readFile() parameter function does not work with applets.
 
 </menu>

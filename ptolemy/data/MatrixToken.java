@@ -32,6 +32,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
@@ -174,7 +175,17 @@ public abstract class MatrixToken extends Token {
                 output[n++] = getElementAsToken(i, j);
             }
         }
-        return new ArrayToken(output);
+
+	ArrayToken result;
+	try {
+	    result = new ArrayToken(output);
+	} catch (IllegalActionException illegalAction) {
+	    // Cannot happen, since the elements of MatrixToken always
+	    // have the same type.
+	    throw new InternalErrorException("MatrixToken.toArray: Cannot "
+	        + "construct ArrayToken. " + illegalAction.getMessage());
+	}
+        return result;
     }
     
     /** Return the value of this token as a string that can be parsed

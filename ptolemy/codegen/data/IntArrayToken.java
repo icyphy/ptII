@@ -31,6 +31,7 @@
 
 package ptolemy.codegen.data;
 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 
@@ -50,10 +51,10 @@ public class IntArrayToken extends ArrayToken {
      *  tokens in the array must have the same type, otherwise an
      *  exception will be thrown.
      *  @param value An array of tokens.
-     *  @exception IllegalArgumentException If the tokens in the array
+     *  @exception IllegalActionException If the tokens in the array
      *   do not have the same type.
      */
-    public IntArrayToken(Token[] value) {
+    public IntArrayToken(Token[] value) throws IllegalActionException {
 	super(value);
     }
 

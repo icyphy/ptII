@@ -31,6 +31,8 @@
 
 package ptolemy.codegen.data;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -52,18 +54,18 @@ public class DoubleArrayToken extends ArrayToken {
      *  tokens in the array must have the same type, otherwise an
      *  exception will be thrown.
      *  @param value An array of tokens.
-     *  @exception IllegalArgumentException If the tokens in the array
+     *  @exception IllegalActionException If the tokens in the array
      *   do not have the same type.
      */
-    public DoubleArrayToken(Token[] value) {
+    public DoubleArrayToken(Token[] value) throws IllegalActionException {
 	super(value);
     }
 
-    public DoubleArrayToken(DoubleToken[] value) {
+    public DoubleArrayToken(DoubleToken[] value) throws IllegalActionException {
 	super(value);
     }
 
-    public DoubleArrayToken(double[] value) {
+    public DoubleArrayToken(double[] value) throws IllegalActionException {
 	// SpecializedTokenVisitor._visitCastNode() needs this constructor
 	super(new DoubleToken[]{new DoubleToken(value[0])});
 
