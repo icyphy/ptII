@@ -108,7 +108,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
            while (unsatisfiedItr.hasNext()) {
                ApplicationUtility.warn(unsatisfiedItr.next().toString());
            } 
-           ApplicationUtility.warn("end of unsatisfied inequalities:");
+           ApplicationUtility.warn("end of unsatisfied inequalities");
         }
         
         HashMap declToTokenTypeMap = new HashMap();
@@ -118,7 +118,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         while (termItr.hasNext()) {
            InequalityTerm term = (InequalityTerm) termItr.next();
            
-           ApplicationUtility.trace(term.toString());
+           System.out.println(term.toString());
            
            ClassDecl value = (ClassDecl) term.getValue();
            
@@ -150,10 +150,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    public Object visitArrayInitTypeNode(ArrayInitTypeNode node, LinkedList args) {
-        return null;
-    }
-
     /** Return the inequality solver and the decl to inequality term map
      *  in an array of length 2.
      */
@@ -164,7 +160,32 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {   
-        return _visitUserTypeDeclNode(node);
+        // visit the fields first to initialize the decl -> inequality term map
+        
+        List memberList = node.getMembers();
+        
+        Iterator memberItr = memberList.iterator();
+        
+        while (memberItr.hasNext()) {
+            TreeNode member = (TreeNode) memberItr.next();
+            
+            if (member.classID() == FIELDDECLNODE_ID) {
+               visitFieldDeclNode((FieldDeclNode) member, null);               
+            }        
+        }
+
+        // visit the rest of the members 
+        
+        memberItr = memberList.iterator();
+        
+        while (memberItr.hasNext()) {
+            TreeNode member = (TreeNode) memberItr.next();
+            
+            if (member.classID() != FIELDDECLNODE_ID) {
+               member.accept(this, null);               
+            }        
+        }
+        return null;
     }
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
@@ -194,7 +215,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        return _visitUserTypeDeclNode(node);
+        // do not look into interfaces
+        return null;
     }
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
@@ -233,125 +255,136 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return _visitVariableNode(node);
     }
 
-    public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitOuterSuperAccessNode(OuterSuperAccessNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
-        InequalityTerm retval = (InequalityTerm) _visitExprNode(node);
+           
+        TypeNode returnType = _typeVisitor.type(node);   
+        InequalityTerm retval = 
+         (InequalityTerm) _makeConstantTerm(returnType, null);
+                         
         List argTerms = TNLManip.traverseList(this, node, null, node.getArgs());
-        
+                
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
         
         ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
-        
+                
         // if this is a static method call, we can't do any more.
         if (accessedObj == null) {
-           return node;
+           return null;
         }
-        
-        int numArgs = argTerms.size();
+ 
+        Object accessedObjTermObj = accessedObj.accept(this, null);
+                        
+        int accessedObjKind = _typeID.kind(_typeVisitor.type(accessedObj));        
 
         MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);
         
         String methodName = methodDecl.getName();
-        
-        int accessedObjKind = _typeID.kind(_typeVisitor.type(accessedObj));
-                
+                                                               
         if (_typeID.isSupportedTokenKind(accessedObjKind)) {
-           if (numArgs == 1) {
-              if (methodName.equals("add") || methodName.equals("addReverse") ||
-                  methodName.equals("subtract") || methodName.equals("subtractReverse") ||
-                  methodName.equals("multiply") || methodName.equals("multiplyReverse") || 
-                  methodName.equals("divide") || methodName.equals("divideReverse") ||
-                  methodName.equals("modulo") || methodName.equals("moduloReverse")) {
-                 // constrain the return value to be >= both the accessedObject and
-                 // the first argument
-              
-                 // make sure we constrain a node that appears in the original parse tree
-                 // so that we can run this visitor on it
-                 if (fieldAccessNode.classID() == OBJECTFIELDACCESSNODE_ID) {
-                    Object accessedObjTermObj = accessedObj.accept(this, null);
-                 
-                    if (accessedObjTermObj instanceof InequalityTerm) {
-                      _solver.addInequality(new Inequality(
-                       (InequalityTerm) accessedObjTermObj, retval));                 
-                    }                 
-                 }
-                
-                 Object firstArgTermObj = argTerms.get(0);
-                 if (firstArgTermObj instanceof InequalityTerm) {
-                    InequalityTerm firstArgTerm = (InequalityTerm) firstArgTermObj;              
-                    _solver.addInequality(new Inequality(firstArgTerm, retval));
-                 }
-                 
-              } else if (methodName.equals("convert")) {
-                 // constrain the return value to be the >= than the accessedObject 
-                 // also constain the first argument to be <= the accessedObject              
 
-                 // make sure we constrain a node that appears in the original parse tree
-                 // so that we can run this visitor on it
-                 if (fieldAccessNode.classID() == OBJECTFIELDACCESSNODE_ID) {
-                    Object accessedObjTermObj = accessedObj.accept(this, null);
-                 
-                    if (accessedObjTermObj instanceof InequalityTerm) {
-                       InequalityTerm accessedObjTerm = (InequalityTerm) accessedObjTermObj;
-                       _solver.addInequality(new Inequality(accessedObjTerm, retval));                 
+           // if the return type is not a subclass of Token, we can't do any more        
+           if (retval == null) {
+              return null;
+           } 
 
-                       Object firstArgTermObj = argTerms.get(0);
-                       if (firstArgTermObj instanceof InequalityTerm) {
-                          InequalityTerm firstArgTerm = (InequalityTerm) firstArgTermObj;              
-                         _solver.addInequality(new Inequality(firstArgTerm, accessedObjTerm));
-                       }                                              
-                    }                 
-                 }                 
-              }
-           } // numArgs == 1
+           InequalityTerm accessedObjTerm = (InequalityTerm) accessedObjTermObj;                            
+           
+           boolean variableAccessedTerm = (accessedObjTerm instanceof VariableTerm);     
+           
+           if (variableAccessedTerm) {
+              retval = _makeVariableTerm(returnType, null);
+           }
+        
+           int numArgs = argTerms.size();        
+           
+           switch (numArgs) {
+           
+             case 0:
+             if (methodName.equals("one") || methodName.equals("zero")) {
+                retval = accessedObjTerm;             
+             }
+             break;
+                         
+             case 1:                              
+             {         
+               InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);                 
+
+               if (!variableAccessedTerm &&
+                   (firstArgTerm instanceof VariableTerm)) {
+                  retval = _makeVariableTerm(returnType, null);
+               }
+                                                     
+               if (methodName.equals("add") || methodName.equals("addReverse") ||
+                   methodName.equals("subtract") || methodName.equals("subtractReverse") ||
+                   methodName.equals("multiply") || methodName.equals("multiplyReverse") || 
+                   methodName.equals("divide") || methodName.equals("divideReverse") ||
+                   methodName.equals("modulo") || methodName.equals("moduloReverse")) {
+                  // constrain the return value to be >= both the accessedObject and
+                  // the first argument
+                                                                                                                                                     
+                  _solver.addInequality(new Inequality(accessedObjTerm, retval));                                  
+                  _solver.addInequality(new Inequality(firstArgTerm, retval));
+                  
+               } else if (methodName.equals("convert")) {
+                  // constrain the return value to be equal the accessedObject 
+                  // also constain the first argument to be <= the accessedObject              
+                  
+                  retval = accessedObjTerm;
+                                         
+                  _solver.addInequality(new Inequality(firstArgTerm, 
+                   accessedObjTerm));
+               }
+             } // numArgs == 1
+             break;
+          }
                                  
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {                      
-          // use the resolved type of ports to do type inference
+           // use the resolved type of ports to do type inference
           
-          if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
-             TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-             String varName = typedDecl.getName();
+           TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+           String varName = typedDecl.getName();
                 
-             TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);                 
-             TypeNameNode portTypeNode = 
-              _typeID.typeNodeForTokenType(port.getType()); 
-                
-             if (methodName.equals("get")) {                                                   
-                return _makeConstantTerm(portTypeNode, null);
-             } else if (methodName.equals("send")) {
-                // second argument is a token, constrain it
-                Object termObj = argTerms.get(1);
-                if (termObj instanceof InequalityTerm) {
-                   _solver.addInequality(new Inequality((InequalityTerm) termObj,
-                   _makeConstantTerm(portTypeNode, null)));
-                   return null; // return type is null
-                }                
-               // support getArray ...                                                                
-             }                        
-          }                                                   
+           TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName); 
+          
+           if (port == null) {
+              ApplicationUtility.warn("method called on port that is not " +
+               "a field of the actor");
+              return null; 
+           }                  
+                    
+           TypeNameNode portTypeNode = 
+            _typeID.typeNodeForTokenType(port.getType()); 
+                 
+           if (methodName.equals("get")) {                                                   
+              return _makeConstantTerm(portTypeNode, null);
+           } else if (methodName.equals("send")) {
+              // second argument is a token, constrain it
+              InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(1);
+              _solver.addInequality(new Inequality(firstArgTerm,
+               _makeConstantTerm(portTypeNode, null)));
+              return null; // return type is null             
+           } // support getArray ...                                                                  
+                                
         } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-          // use the tokens returned by parameters to do type inference
+           // use the tokens returned by parameters to do type inference
           
-          if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
-             if (methodName.equals("getToken")){
-                TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-                String varName = typedDecl.getName();
+           if (methodName.equals("getToken")){
+              TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+              String varName = typedDecl.getName();
                 
-                Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
-                  
-                TypeNameNode tokenTypeNode = 
-                 _typeID.typeNodeForTokenType(token.getType());
+              Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
+             
+              if (token == null) {
+                 ApplicationUtility.warn("getToken() called on parameter that is not " +
+                  "a field of the actor");
+                 return null; 
+              }                  
+             
+              TypeNameNode tokenTypeNode = 
+               _typeID.typeNodeForTokenType(token.getType());
                                  
-                return _makeConstantTerm(tokenTypeNode, null); 
-             }
-          }
+              return _makeConstantTerm(tokenTypeNode, null); 
+           }
         }
         
         return retval;
@@ -361,93 +394,20 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return _visitExprNode(node);
     }
 
-    public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitAllocateArrayNode(AllocateArrayNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitPostIncrNode(PostIncrNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitPostDecrNode(PostDecrNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitUnaryPlusNode(UnaryPlusNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitUnaryMinusNode(UnaryMinusNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitPreIncrNode(PreIncrNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitPreDecrNode(PreDecrNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitComplementNode(ComplementNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitNotNode(NotNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
     public Object visitCastNode(CastNode node, LinkedList args) {
         // assume that all casts succeed
                 
         InequalityTerm term = (InequalityTerm) node.getExpr().accept(this, null);
         
-        InequalityTerm retval = _makeVariableTerm(node.getDtype(), null);
+        //InequalityTerm retval = _makeVariableTerm(node.getDtype(), null);
+        //InequalityTerm retval = _makeConstantTerm(node.getDtype(), null);
         
         if (term != null) {
-           _solver.addInequality(new Inequality(term, retval));                           
+           _solver.addInequality(new Inequality(term, 
+            _makeConstantTerm(node.getDtype(), null)));                           
         }        
-        return retval;           
-    }
-
-    public Object visitInstanceOfNode(InstanceOfNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitEQNode(EQNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitNENode(NENode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitBitAndNode(BitAndNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitBitOrNode(BitOrNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitBitXorNode(BitXorNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitCandNode(CandNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitCorNode(CorNode node, LinkedList args) {
-        return _visitExprNode(node);
-    }
-
-    public Object visitIfExprNode(IfExprNode node, LinkedList args) {
-        return _visitExprNode(node);
+        
+        return term;           
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
@@ -461,38 +421,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return leftTerm;    
     }
 
-    protected InequalityTerm _visitUserTypeDeclNode(UserTypeDeclNode node) {
-        // visit the fields first to initialize the decl -> inequality term map
-        
-        List memberList = node.getMembers();
-        
-        Iterator memberItr = memberList.iterator();
-        
-        while (memberItr.hasNext()) {
-            TreeNode member = (TreeNode) memberItr.next();
-            
-            if (member.classID() == FIELDDECLNODE_ID) {
-               visitFieldDeclNode((FieldDeclNode) member, null);               
-            }        
-        }
-
-        // visit the rest of the members 
-        
-        memberItr = memberList.iterator();
-        
-        while (memberItr.hasNext()) {
-            TreeNode member = (TreeNode) memberItr.next();
-            
-            if (member.classID() != FIELDDECLNODE_ID) {
-               member.accept(this, null);               
-            }        
-        }
-        return null;
-    }    
-
     protected InequalityTerm _visitExprNode(ExprNode node) {
         _defaultVisit(node, null);
-        return _makeVariableTerm(_typeVisitor.type(node), null);
+        //return _makeVariableTerm(_typeVisitor.type(node), null);
+        return _makeConstantTerm(_typeVisitor.type(node), null);
     }
     
     protected InequalityTerm _visitVariableNode(NamedNode node) {
@@ -518,9 +450,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
            // constrain the type (it must be added the inequalities)          
            _solver.addInequality(new Inequality(term, _makeConstantTerm(type, null)));
                       
-            if (initExprTerm != null) {
-               _solver.addInequality(new Inequality(initExprTerm, term));
-            }                            
+           if (initExprTerm != null) {
+              _solver.addInequality(new Inequality(initExprTerm, term));
+           }                            
         }                                                 
         return null;
     }
@@ -534,13 +466,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         if (!_typeID.isSupportedTokenKind(kind)) {
            return null;
         } 
-        /*
-        if (_typeID.isConcreteTokenType(kind)) {
-           // concrete token
-           return new ConstantTerm((TypeNameNode) type, decl);                            
-        } 
-        // abstract token
-        */
         
         return new VariableTerm((ClassDecl) JavaDecl.getDecl((NamedNode) type), decl);       
     }
@@ -634,7 +559,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         // Variable terms are settable
         public boolean isSettable() { return true; }
 
-        public boolean isValueAcceptable() { return true; }        
+        public boolean isValueAcceptable() { 
+            /*
+            if ((_classDecl == PtolemyTypeIdentifier.TOKEN_DECL) ||
+                (_classDecl == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL) ||
+                (_classDecl == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL)) {                
+               return false;
+            } */
+            return true;
+        }
         
         public void setValue(Object e) {
             if (!_fixed) {

@@ -32,6 +32,7 @@ package ptolemy.codegen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -173,6 +174,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         _invalidateSources(listArray[1]);
     }
     
+    protected static void _invalidateSources(List classNameList) {
+        Iterator classNameItr = classNameList.iterator();
+        while (classNameItr.hasNext()) {
+           String filename = "c:\\users\\ctsay\\ptII\\codegen\\" +  
+            (String) classNameItr.next() + ".java";
+                
+           StaticResolution.invalidateCompileUnit(filename, 2);
+        }    
+    }     
+    
     protected static void _makePortNameToPortMap(ActorCodeGeneratorInfo actorInfo) {
 
         Iterator portItr = actorInfo.actor.portList().iterator();
@@ -226,6 +237,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  The list should start from the argument class and go to 
      *  superclasses, until the super class is TypedAtomicActor or
      *  SDFAtomicActor. The CompileUnitNodes are cloned from those
+     
+     // fix this comment, list is reversed
+     
      *  returned by StaticResolution so that they may be modified.
      */     
     protected List[] _makeUnitList(String fileName, String className) {
@@ -241,6 +255,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         ApplicationUtility.trace("_makeUnitList() : className = " + className);
                         
+                        
         do {
         
            ClassDecl superDecl = (ClassDecl)
@@ -252,6 +267,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               ApplicationUtility.trace("_makeUnitList() : super class = " + superDecl +
                " stopping.");
                               
+              Collections.reverse(retval);
+              Collections.reverse(classNameList);                
               return new List[] { retval, classNameList };
                             
            } else {
@@ -261,6 +278,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               if (_typeID.isSupportedActorKind(superKind)) {
                  ApplicationUtility.trace("_makeUnitList() : super class = " + superDecl +
                   " stopping.");
+
+                 Collections.reverse(retval);
+                 Collections.reverse(classNameList);                
                                                 
                  return new List[] { retval, classNameList };                
               }
@@ -350,17 +370,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);                
     }
-    
-    protected static void _invalidateSources(List classNameList) {
-        Iterator classNameItr = classNameList.iterator();
-        while (classNameItr.hasNext()) {
-           String filename = "c:\\users\\ctsay\\ptII\\codegen\\" +  
-            (String) classNameItr.next() + ".java";
-                
-           StaticResolution.invalidateCompileUnit(filename, 2);
-        }    
-    } 
-        
+            
     protected PtolemyTypeIdentifier _typeID;   
         
     /** A JavaVisitor that finds the declaration of the superclass of a

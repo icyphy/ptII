@@ -1357,4 +1357,4 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
      */      
     protected boolean _isBaseClass = false;                                 
 }
- 
+ *
