@@ -86,6 +86,7 @@ public class HTVQApplet extends SDFApplet {
             JPanel prnPanel = new JPanel();
             // So the background shows through.
             prnPanel.setOpaque(false);
+            prnPanel.setLayout(new BorderLayout());
             prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
             displayPanel.add(prnPanel, BorderLayout.EAST);
 
@@ -138,7 +139,6 @@ public class HTVQApplet extends SDFApplet {
             prn.place(textPanel);
             prn.textArea.setColumns(10);
             prn.textArea.setRows(7);
-            // prnPanel.validate();
 
 	    TypedIORelation r;
             r = (TypedIORelation) _toplevel.connect(

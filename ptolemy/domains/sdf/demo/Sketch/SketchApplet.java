@@ -30,8 +30,6 @@
 
 package ptolemy.domains.sdf.demo.Sketch;
 
-import java.applet.Applet;
-import java.awt.*;
 import java.awt.event.*;
 
 import ptolemy.kernel.*;
@@ -97,7 +95,7 @@ public class SketchApplet extends SDFApplet implements EditListener {
             // Specify that the plotter should put its display at dataset 1.
             // (If you give it additional inputs, it will use dataset 2,
             // 3, etc., in order).  This must be called before you call
-            // setPanel() on plotter, or the plotter will clear the wrong
+            // place() on plotter, or the plotter will clear the wrong
             // dataset.
             plotter.startingDataset.setExpression("1");
 
@@ -114,9 +112,10 @@ public class SketchApplet extends SDFApplet implements EditListener {
             plot.setYRange(-1, 1);
             plot.setXRange(0, iterations);
             plot.setButtons(true);
-            add(plot);
-            plotter.setPanel(plot);
-            source.setPanel(plot);
+            plot.setBackground(_getBackground());
+            getContentPane().add(plot);
+            plotter.place(plot);
+            source.place(plot);
             plot.addEditListener(this);
 
             _toplevel.connect(ramp.output, sine.input);

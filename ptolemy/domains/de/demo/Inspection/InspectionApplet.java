@@ -30,8 +30,6 @@
 
 package ptolemy.domains.de.demo.Inspection;
 
-import java.applet.Applet;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
 
@@ -139,11 +137,11 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _query.addCheckBox("regular", "Regular bus arrivals", false);
             _query.addDisplay("average",
                 "Average waiting time of passengers", "");
-            add(_query);
+            getContentPane().add(_query);
             _query.addQueryListener(this);
 
             // The 2 argument requests a go and stop button.
-            add(_createRunControls(2));
+            getContentPane().add(_createRunControls(2));
 
             if (_regular) {
                 // Create regular bus source.

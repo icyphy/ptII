@@ -40,6 +40,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 /** Display the values of the tokens arriving on the input channels
  *  in a text area on the screen.
@@ -141,11 +142,12 @@ public class Print extends TypedAtomicActor implements Placeable {
             // exists, so that the close button is dealt with, etc.
             JFrame frame = new JFrame(getFullName());
             textArea = new JTextArea();
-            frame.getContentPane().add(textArea);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            frame.getContentPane().add(scrollPane);
         } else {
             textArea = new JTextArea();
-            textArea.setBorder(BorderFactory.createLineBorder(Color.black));
-            _container.add(textArea);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            _container.add(scrollPane);
         }
     }
 
