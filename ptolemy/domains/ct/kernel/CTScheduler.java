@@ -83,7 +83,7 @@ will be thrown.
 
 @author Jie Liu
 @version $Id$
-@see ptolemy.actor.util.Scheduler
+@see ptolemy.actor.sched.Scheduler
 */
 
 public class CTScheduler extends Scheduler{

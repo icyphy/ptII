@@ -60,7 +60,7 @@ or invalidate the schedule when needed.
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.Director
-@see ptolemy.actor.util.Scheduler
+@see Scheduler
 */
 public class StaticSchedulingDirector extends Director {
     /** Construct a director in the default workspace with an empty string
