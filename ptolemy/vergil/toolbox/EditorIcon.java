@@ -59,7 +59,7 @@ public class EditorIcon extends Icon {
      * By default, the icon contains no graphic
      * representations.
      */
-    public EditorIcon (NamedObj container)
+    public EditorIcon(NamedObj container)
         throws IllegalActionException, NameDuplicationException {
         this(container, "_icon");
     }
@@ -69,7 +69,7 @@ public class EditorIcon extends Icon {
      * By default, the icon contains no graphic
      * representations.
      */
-    public EditorIcon (NamedObj container, String name)
+    public EditorIcon(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
