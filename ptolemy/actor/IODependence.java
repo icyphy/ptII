@@ -1,4 +1,4 @@
-/* An IODependence contains the input/output dependence information 
+/* An IODependence contains the input/output dependence information
 of an actor.
 
  Copyright (c) 1997-2003 The Regents of the University of California.
@@ -46,25 +46,25 @@ import java.util.LinkedList;
 and outputs. It is an attribute associated with an actor. For atomic actors,
 this attribute is constructed inside the constructor. For composite actors,
 this attribute is constructed in the preinitialize method of the composite
-actors, after their directors finish preinitialization. The process is in a 
+actors, after their directors finish preinitialization. The process is in a
 bottom-up way because the upper level IO dependence information is built on
 those of the lower level.
 <p>
-It contains a list of elements of <i>IOInformation</i>, each corresponds to 
+It contains a list of elements of <i>IOInformation</i>, each corresponds to
 one input port. To access the IOInformation, use <i>getInputPort(IOPort)</i>
 method which does name mapping search. To add one IOInformation of an input
 port, use <i>addInputPort(IOPort)</i>. This method returns an IOInformation
 object.
 <p>
-Each input port has an IOInformation, which is an inner class providing 
-access to the relation between the input port and all the output ports. 
-Output ports are divided into three groups: (a)those immidiately dependent 
-on the input, (b)those not immediately dependent on the input, and (c)those 
+Each input port has an IOInformation, which is an inner class providing
+access to the relation between the input port and all the output ports.
+Output ports are divided into three groups: (a)those immidiately dependent
+on the input, (b)those not immediately dependent on the input, and (c)those
 not dependent on the input. The outputs in group (a) can be accessed with
 <i>getDelayToPorts()</i>method, and the outputs in group (b) can be accessed
 with <i>getDirectFeedthroughPort</i> method. The outputs in group (c) are
-discarded. 
- 
+discarded.
+
 
 @author Haiyang Zheng
 @version $Id$
@@ -72,9 +72,9 @@ discarded.
 */
 public class IODependence extends Attribute {
 
-    /** Construct an IODependence in the default workspace with an 
-     *  empty string as its name. The director is added to the list 
-     *  of objects in the workspace. Increment the version number 
+    /** Construct an IODependence in the default workspace with an
+     *  empty string as its name. The director is added to the list
+     *  of objects in the workspace. Increment the version number
      *  of the workspace.
      */
     public IODependence() {
@@ -90,7 +90,7 @@ public class IODependence extends Attribute {
         super(workspace);
     }
 
-    /** Construct an IODependence in the given container with the 
+    /** Construct an IODependence in the given container with the
      *  given name. The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
@@ -112,36 +112,36 @@ public class IODependence extends Attribute {
     ////                         public methods                    ////
 
     /** Add an input port into the input ports list of an actor.
-     *  
+     *
      *  @param inputPort An input port of an actor.
      *  @return an IOInformation object associated with the input port.
      *  @exception IllegalActionException If the port is not an input port
      *  or the same port already exists.
      */
-    public IOInformation addInputPort (IOPort inputPort) 
+    public IOInformation addInputPort (IOPort inputPort)
             throws IllegalActionException {
         if (inputPort.isInput() && !_inputPorts.contains(inputPort)) {
-            IOInformation _inputInfo = 
+            IOInformation _inputInfo =
                 new IOInformation(inputPort.getName());
             _inputPorts.add(_inputInfo);
             return _inputInfo;
         }
         else {
-            throw new IllegalActionException (this, inputPort, 
+            throw new IllegalActionException (this, inputPort,
                 "is not an inputPort or has been added.");
         }
     }
 
-    /** Clear the input ports list. This method is called in the 
-     *  preinitialize method only by composite actors when the topology 
+    /** Clear the input ports list. This method is called in the
+     *  preinitialize method only by composite actors when the topology
      *  of the embedded entities change.
      */
     public void clear() {
         _inputPorts.clear();
     }
-    
+
     /** Return the IOInformation associated with the given input port.
-     *  
+     *
      *  @param inputPort An input port of an actor.
      *  @return an IOInformation object associated with the input port, or null
      *  if the input port is not added into the input ports list.
@@ -149,7 +149,7 @@ public class IODependence extends Attribute {
     public IOInformation getInputPort (IOPort inputPort) {
         Iterator _inputPortsIterator = _inputPorts.listIterator();
         while (_inputPortsIterator.hasNext()) {
-            IOInformation input = 
+            IOInformation input =
             (IOInformation) _inputPortsIterator.next();
             if (inputPort.getName().equals(input.getName())) {
                 return input;
@@ -157,64 +157,64 @@ public class IODependence extends Attribute {
         }
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                    ////
-    
+
     // The input ports list.
-    private LinkedList _inputPorts = new LinkedList(); 
+    private LinkedList _inputPorts = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    /** An IOInformation is associated with an input port of an actor. 
+    /** An IOInformation is associated with an input port of an actor.
      *  It provides the dependence information between the input port and
      *  all the outputs of the actor.
      */
     public class IOInformation {
-        
+
         /** Constructor for the class.
-         * 
+         *
          * @param name The name for the IOInformation, usually the input
          *  port name.
          */
         public IOInformation (String name) {
             _inputPortName = name;
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-        /** Add an output port into the delayed ports list. 
+        /** Add an output port into the delayed ports list.
          *  @param ioPort The output port to be added.
          */
         public void addToDelayToPorts (IOPort ioPort) {
             _delayToPorts.add(ioPort);
         }
 
-        /** Add an output port into the direct feedthrough ports list. 
+        /** Add an output port into the direct feedthrough ports list.
          *  @param ioPort The output port to be added.
          */
         public void addToDirectFeedthroughPorts (IOPort ioPort) {
             _directFeedThroughPorts.add(ioPort);
         }
 
-        /** Return the name of the IOInformation object. 
+        /** Return the name of the IOInformation object.
          *  @return The name of the IOInformation object.
          */
         public String getName() {
-            return _inputPortName;       
+            return _inputPortName;
         }
-        
-        /** Get all the output ports of the delayed ports list. 
+
+        /** Get all the output ports of the delayed ports list.
          *  @return The list of delayed ports list.
          */
         public LinkedList getDelayToPorts () {
             return _delayToPorts;
         }
-        
-        /** Get all the output ports of the direct feedthrough 
-         *  ports list. 
+
+        /** Get all the output ports of the direct feedthrough
+         *  ports list.
          *  @return The list of direct feedthrough ports list.
          */
         public LinkedList getDirectFeedthroughPorts () {
