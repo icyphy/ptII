@@ -98,6 +98,7 @@ public class ProcessDirector extends Director {
     public ProcessDirector(CompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
+        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -359,22 +360,6 @@ public class ProcessDirector extends Director {
     public void createBranchController(Iterator ports) 
     	    throws IllegalActionException {
             
-        /*
-        if( !ports.hasNext() ) {
-            return;
-        }
-        
-        // Instantiate a BranchController
-        Nameable cont = getContainer();
-        if( !(cont instanceof MultiBranchActor) ) {
-            throw new IllegalActionException(this, "Must be " +
-                    "contained by a MultiBranchActor.");
-        }
-        MultiBranchActor mCont = (MultiBranchActor)cont;
-        // BranchController cntlr = new BranchController(mCont);
-        */
-        
-        
         // Create Branches in the BranchController
         IOPort port = null;
         while( ports.hasNext() ) {
@@ -455,6 +440,8 @@ public class ProcessDirector extends Director {
      *  this director.
      */
     public void wrapup() throws IllegalActionException {
+        if( _debugging ) _debug(_name+": calling wrapup()");
+        
         // Kill all branch controllers
         if( _inputBranchController != null ) {
             _inputBranchController.deactivateBranches();
@@ -462,6 +449,8 @@ public class ProcessDirector extends Director {
         if( _outputBranchController != null ) {
             _outputBranchController.deactivateBranches();
         }
+        
+        if( _debugging ) _debug(_name+": finished deactivating branches");
         
 	// Wake up threads if they are stopped.
         ProcessThread thread = null;
@@ -682,26 +671,6 @@ public class ProcessDirector extends Director {
     }
 
     /** 
-    protected synchronized void _controllerStopped(BranchController cntlr) {
-        if( cntlr.isStopped() ) {
-            notifyAll();
-        }
-    }
-     */
-
-    /** 
-    protected synchronized boolean _isInputControllerStopped() {
-        return _inputBranchController.isStopped(); 
-    }
-     */
-
-    /** 
-    protected synchronized boolean _isOutputControllerStopped() {
-        return _outputBranchController.isStopped(); 
-    }
-     */
-
-    /** 
      */
     protected synchronized void _controllerBlocked(BranchController cntlr) {
         if( cntlr.isBlocked() ) {
@@ -721,6 +690,39 @@ public class ProcessDirector extends Director {
      */
     protected synchronized boolean _isInputControllerBlocked() {
         return _inputBranchController.isBlocked(); 
+    }
+        
+    /** 
+     */
+    protected synchronized void registerBlockedBranchReceivers() {
+        if( _inputBranchController.isBlocked() ) {
+            Iterator branches = 
+                    _inputBranchController.getEngagedBranchList().iterator();
+            Branch branch = null;
+            ProcessReceiver rcvr = null;
+            LinkedList blockedRcvrs = new LinkedList();
+            while ( branches.hasNext() ) {
+                branch = (Branch) branches.next();
+                rcvr = branch.getProdReceiver();
+                if( !rcvr.isReadBlocked() ) {
+                    // Throw Exception???
+                } else {
+                    blockedRcvrs.add(rcvr);
+                }
+            }
+            
+            if( blockedRcvrs.size() > 0 ) { 
+                Director dir = ((Actor)getContainer()).getDirector();
+                if( dir instanceof ProcessDirector ) {
+                    ProcessDirector pDir = (ProcessDirector)dir;
+                    pDir._actorBlocked(blockedRcvrs);
+                } else {
+                    // FIXME: Do something; Set _notDone = false???
+                }
+                
+                
+            }
+        }
     }
 
     /** 
@@ -756,5 +758,8 @@ public class ProcessDirector extends Director {
     private LinkedList _branchControllers = new LinkedList();
     private BranchController _inputBranchController;
     private BranchController _outputBranchController;
+    
+    
+    private String _name = null;
     
 }
