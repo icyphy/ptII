@@ -283,7 +283,7 @@ proc htmlByDir {htmldirlist} {
     global filesSeen
 
     if {[llength $htmldirlist] == 0 } {
-	errror "html2ps: internal error, htmlByDir was passed an empty list"
+	error "html2ps: internal error, htmlByDir was passed an empty list"
     }
 
     foreach htmldir $htmldirlist {
