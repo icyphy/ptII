@@ -78,7 +78,6 @@ PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 # include in the tar file.
 PTII_TOPDIR=	.cshrc \
 		bin \
-		collections \
 		com/JLex \
 		com/makefile \
 		com/microstar \
@@ -255,7 +254,7 @@ ptbuild:
 	@echo "#"
 	@echo `date`
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g" -k sources install; cd collections; $(MAKE) docs) > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests: 
