@@ -820,7 +820,7 @@ public class CTScheduler extends Scheduler {
      *  @param container The container for the parameter.
      *  @param name The name for the parameter.
      *  @param value The value for the parameter.
-     *  @throws IllegalActionException If the parameter cannot
+     *  @exception IllegalActionException If the parameter cannot
      *   contain the specified value.
      */
     private static void _setOrCreate(

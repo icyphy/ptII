@@ -119,7 +119,7 @@ public class PlotTableau extends Tableau {
 
     /** Set the top-level window associated with this tableau.
      *  @param frame The top-level window associated with the tableau.
-     *  @throws IllegalActionException If the frame is not an instance
+     *  @exception IllegalActionException If the frame is not an instance
      *   of PlotTableauFrame.
      */
     public void setFrame(JFrame frame) throws IllegalActionException {

@@ -368,7 +368,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  one transition is enabled. Get the schedule of the current
      *  refinement and propagate its port rates to the outside.
      *  @return True if the super class method returns true.
-     *  @throws IllegalActionException If a refinement throws it,
+     *  @exception IllegalActionException If a refinement throws it,
      *  if there is no controller, or if an inconsistency in port
      *  rates is detected between refinement actors.
      */

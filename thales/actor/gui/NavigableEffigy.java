@@ -81,8 +81,8 @@ public class NavigableEffigy extends PtolemyEffigy {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public NavigableEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

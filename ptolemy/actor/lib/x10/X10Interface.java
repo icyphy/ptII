@@ -262,7 +262,7 @@ public class X10Interface extends TypedAtomicActor {
     /** Return an x10 interface for sending and receiving x10 commands.
      *  @param portName The name of the serial port for the controller.
      *  @param controller The type of controller.
-     *  @throws IOException If the serial port cannot be opened.
+     *  @exception IOException If the serial port cannot be opened.
      */
     private static Controller _openInterface(
             String portName,

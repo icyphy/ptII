@@ -221,11 +221,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  computing a new schedule.
      *  @param externalRates A map from external port to the rate of that
      *  port.
-     *  @throws NotSchedulableException If an external port is both
+     *  @exception NotSchedulableException If an external port is both
      *  an input and an output, or neither an input or an output, or
      *  connected on the inside to ports that have different
      *  tokenInitProduction.
-     *  @throws IllegalActionException If any called method throws it.
+     *  @exception IllegalActionException If any called method throws it.
      */
     public void setContainerRates(Map externalRates)
             throws NotSchedulableException, IllegalActionException  {

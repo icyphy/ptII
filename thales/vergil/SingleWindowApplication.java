@@ -53,7 +53,7 @@ public class SingleWindowApplication extends VergilApplication {
 
     /**
      * @param args
-     * @throws Exception
+     * @exception Exception
      */
     public SingleWindowApplication(String[] args) throws Exception {
         super(args);

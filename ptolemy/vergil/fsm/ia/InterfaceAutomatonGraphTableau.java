@@ -60,9 +60,9 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      *  and name, with no default library.
      *  @param container The container.
      *  @param name The name.
-     *  @throws IllegalActionException If the model associated with
+     *  @exception IllegalActionException If the model associated with
      *   the container effigy is not an FSMActor.
-     *  @throws NameDuplicationException If the container already
+     *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
     public InterfaceAutomatonGraphTableau(PtolemyEffigy container,
@@ -76,9 +76,9 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
      *  @param container The container.
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
-     *  @throws IllegalActionException If the model associated with
+     *  @exception IllegalActionException If the model associated with
      *   the container effigy is not an FSMActor.
-     *  @throws NameDuplicationException If the container already
+     *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
     public InterfaceAutomatonGraphTableau(PtolemyEffigy container,

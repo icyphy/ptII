@@ -366,7 +366,7 @@ public class PlotterBase extends TypedAtomicActor
 
     /** If the <i>fillOnWrapup</i> parameter is true, rescale the
      *  plot so that all the data is visible.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void wrapup() throws IllegalActionException {
         if (((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {

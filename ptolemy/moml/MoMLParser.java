@@ -2959,7 +2959,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @param entityName
      * @param source
      * @return
-     * @throws Exception
+     * @exception Exception
      */
     private NamedObj _createEntity(
             String className, String entityName, String source)
@@ -3322,7 +3322,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param entityName The relative or absolute name of the
      *   entity to delete.
      *  @return The deleted object.
-     *  @throws Exception If there is no such entity or if the entity
+     *  @exception Exception If there is no such entity or if the entity
      *   is defined in the class definition.
      */
     private NamedObj _deleteEntity(String entityName) throws Exception {
@@ -3398,7 +3398,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param entityName Optional name of the entity that contains
      *   the port (or null to use the current context).
      *  @return The deleted object.
-     *  @throws Exception If there is no such port or if the port
+     *  @exception Exception If there is no such port or if the port
      *   is defined in the class definition.
      */
     private Port _deletePort(String portName, String entityName)
@@ -3501,7 +3501,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param attributeName The relative or absolute name of the
      *   attribute to delete.
      *  @return The deleted object.
-     *  @throws Exception If there is no such attribute or if the attribute
+     *  @exception Exception If there is no such attribute or if the attribute
      *   is defined in the class definition.
      */
     private Attribute _deleteProperty(String attributeName) throws Exception {
@@ -3564,7 +3564,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param relationName The relative or absolute name of the
      *   relation to delete.
      *  @return The deleted object.
-     *  @throws Exception If there is no such relation or if the relation
+     *  @exception Exception If there is no such relation or if the relation
      *   is defined in the class definition.
      */
     private Relation _deleteRelation(String relationName) throws Exception {
@@ -3741,7 +3741,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param portspec The relative port name.
      *  @param context The context in which to look for the port.
      *  @return The port.
-     *  @throws XmlException If no such port is found.
+     *  @exception XmlException If no such port is found.
      */
     private ComponentPort _getPort(String portspec, CompositeEntity context)
             throws XmlException {
@@ -3895,7 +3895,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param className The class name field, if present.
      *  @param propertyName The property name field.
      *  @param value The value, if present.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     private void _handlePropertyElement(
             String className,
@@ -4400,7 +4400,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param fileName The file name.
      *  @param context The context into which to load the file.
      *  @return True if a file was found.
-     *  @throws Exception If the file exists but cannot be read
+     *  @exception Exception If the file exists but cannot be read
      *   for some reason.
      */
     private boolean _loadFileInContext(String fileName, NamedObj context)
@@ -4446,7 +4446,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param className The class name.
      *  @param context The context into which to load the file.
      *  @return True if a file was found.
-     *  @throws Exception If the file exists but cannot be read
+     *  @exception Exception If the file exists but cannot be read
      *   for some reason.
      */
     private boolean _loadIconForClass(String className, NamedObj context)
@@ -4519,8 +4519,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param relationName The relation name.
      *  @param insertAtSpec The place to insert.
      *  @param insertInsideAtSpec The place to insert inside.
-     *  @throws XmlException
-     *  @throws IllegalActionException
+     *  @exception XmlException
+     *  @exception IllegalActionException
      */
     private void _processLink(
             String portName,
@@ -4702,8 +4702,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param relationName The relation name.
      *  @param indexSpec The index of the channel.
      *  @param insideIndexSpec The index of the inside channel.
-     *  @throws XmlException If something goes wrong.
-     *  @throws IllegalActionException If the link is part of a class definition.
+     *  @exception XmlException If something goes wrong.
+     *  @exception IllegalActionException If the link is part of a class definition.
      */
     private void _processUnlink(
             String portName,
@@ -4916,7 +4916,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  will be thrown.
      *  @param name The name of the attribute, relative or absolute.
      *  @return The attribute.
-     *  @throws XmlException If the attribute is not found.
+     *  @exception XmlException If the attribute is not found.
      */
     private Attribute _searchForAttribute(String name)
             throws XmlException {
@@ -4951,7 +4951,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param name The name of the class.
      *  @param source The source for the class.
      *  @return A class, if it exists.
-     *  @throws Exception If a source is specified and it cannot
+     *  @exception Exception If a source is specified and it cannot
      *   be opened.
      */
     private ComponentEntity _searchForClassInContext(
@@ -5000,7 +5000,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param name The name of the entity.
      *  @param context The context in which to search.
      *  @return An entity with the specified name, or null if none is found.
-     *  @throws XmlException If the name refers to an entity in an
+     *  @exception XmlException If the name refers to an entity in an
      *   innappropriate context or if the context is not an instance
      *   of CompositeEntity.
      */
@@ -5104,7 +5104,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  will be thrown.
      *  @param name The name of the port.
      *  @return The port.
-     *  @throws XmlException If the port is not found.
+     *  @exception XmlException If the port is not found.
      */
     private Port _searchForPort(String name)
             throws XmlException {
@@ -5141,7 +5141,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  will be thrown.
      *  @param name The name of the relation.
      *  @return The relation.
-     *  @throws XmlException If the relation is not found.
+     *  @exception XmlException If the relation is not found.
      */
     private ComponentRelation _searchForRelation(String name)
             throws XmlException {

@@ -117,7 +117,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *  @param destination The destination port.
      *  @param properties The range of transmission.
      *  @return True if the destination is in range of the source.
-     *  @throws IllegalActionException If it cannot be determined
+     *  @exception IllegalActionException If it cannot be determined
      *   whether the destination is in range (not thrown in this base
      *   class).
      */
