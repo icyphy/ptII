@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Wed Oct  4 08:45:00 2000 by cxh]-
+# -[Thu Nov 20 10:29:36 2003 by cxh]-
 # Generate a quick summary of the code coverage
 summaryfile=/users/ptdesign/public_html/java/js/coverage.html
 summaryfile=/home/www/cvswww/ptolemy/nightly/coverage.html
@@ -23,9 +23,9 @@ awk '	$0 ~ /<th colspan=10>Package/ { split($4,p,"\"")
 			}
 	$0 ~ /<TR><th align="center">TOTAL/   { 
 		split($0,f,">")
-		split(f[5],method,"<")
-		split(f[7],constructor,"<")
-		split(f[9],basicblock,"<")
+		split(f[7],method,"<")
+		split(f[9],constructor,"<")
+		split(f[11],basicblock,"<")
 		split(method[1],m2,"=")
 		printf("%-30s %7s= %4s %11s    %11s\n", package, m2[1], m2[2], constructor[1], basicblock[1])
 			
