@@ -104,6 +104,8 @@ Figure	UML file		Page within that file
 11.4	data.type.vsd		token
 11.5	actor.vsd		typed
 
+13.12	uml/vergil.vsd		frames and tableaux
+
 14.15   ct.vsd			ct.packages
 14.16	ct.vsd			kernel.util
 14.19	ct.vsd			solver
