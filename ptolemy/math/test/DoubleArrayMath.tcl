@@ -436,3 +436,9 @@ test DoubleArrayMath-14.3.2 {sum} {
     list $r
 } 5096.49
 
+####################################################################
+test DoubleArrayMath-14.4 {within with array of epsilons (true)} {
+    set ar [java::new {double[]} 5 [list 233 30 4826.3 3834.2 68.7]]
+    set br [java::call ptolemy.math.DoubleArrayMath {within double[] double[] double[]} $a1 $a3 $ar]
+    list $br
+} {1}
