@@ -469,48 +469,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _parameterEvents;
     }
 
-    /** Create and initialize all the parameters. All parameters take
-     *  their default values.
-     */
-    private void _initParameters() {
-        try {
-            _startTime = 0.0;
-            _stopTime = 1.0;
-            _initStepSize = 0.1;
-            _minStepSize = 1e-5;
-            _maxIterations = 20;
-            _lteTolerance = 1e-4;
-            _valueResolution = 1e-6;
-            _timeResolution = 1e-10;
-
-
-            _paramStartTime = new CTParameter(
-                this, "StartTime", new DoubleToken(_startTime));
-            _paramStopTime = new CTParameter(
-                this, "StopTime", new DoubleToken(_stopTime));
-            _paramInitStepSize = new CTParameter(
-                this, "InitialStepSize", new DoubleToken(_initStepSize));
-            _paramMinStepSize = new CTParameter(
-                this, "MinimumStepSize", new DoubleToken(_minStepSize));
-            _paramMaxIterations = new CTParameter(
-                this, "MaximumIterationsPerStep", 
-                new IntToken(_maxIterations));
-            _paramLTETolerance =  new CTParameter(
-                this, "LocalTrancationErrorTolerance",
-                new DoubleToken(_lteTolerance));
-            _paramValueResolution =  new CTParameter(
-                this, "ConvergeValueResolution", 
-                new DoubleToken(_valueResolution));
-            _paramTimeResolution= new CTParameter(
-                this, "TimeResolution", new DoubleToken(_timeResolution));
-
-        } catch (IllegalActionException e) {
-            //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,"Parameter name duplication.");
-        }
-    }
 
     /** Instantiate ODESolver from its classname. Given the solver's full 
      *  class name, this method will try to inistantiate it by looking
@@ -561,6 +519,52 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+    /** Create and initialize all the parameters. All parameters take
+     *  their default values.
+     */
+    private void _initParameters() {
+        try {
+            _startTime = 0.0;
+            _stopTime = 1.0;
+            _initStepSize = 0.1;
+            _minStepSize = 1e-5;
+            _maxIterations = 20;
+            _lteTolerance = 1e-4;
+            _valueResolution = 1e-6;
+            _timeResolution = 1e-10;
+
+
+            _paramStartTime = new CTParameter(
+                this, "StartTime", new DoubleToken(_startTime));
+            _paramStopTime = new CTParameter(
+                this, "StopTime", new DoubleToken(_stopTime));
+            _paramInitStepSize = new CTParameter(
+                this, "InitialStepSize", new DoubleToken(_initStepSize));
+            _paramMinStepSize = new CTParameter(
+                this, "MinimumStepSize", new DoubleToken(_minStepSize));
+            _paramMaxIterations = new CTParameter(
+                this, "MaximumIterationsPerStep", 
+                new IntToken(_maxIterations));
+            _paramLTETolerance =  new CTParameter(
+                this, "LocalTrancationErrorTolerance",
+                new DoubleToken(_lteTolerance));
+            _paramValueResolution =  new CTParameter(
+                this, "ConvergeValueResolution", 
+                new DoubleToken(_valueResolution));
+            _paramTimeResolution= new CTParameter(
+                this, "TimeResolution", new DoubleToken(_timeResolution));
+
+        } catch (IllegalActionException e) {
+            //Should never happens. The parameters are always compatible.
+            throw new InternalErrorException("Parameter creation error.");
+        } catch (NameDuplicationException ex) {
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
     // current ODE solver.
@@ -597,5 +601,4 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     //A table for wave form break points.
     private TotallyOrderedSet _breakPoints;
-
 }

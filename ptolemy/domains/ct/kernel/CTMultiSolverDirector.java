@@ -382,8 +382,10 @@ public class CTMultiSolverDirector extends CTDirector {
      *  set as a breakpoint in the breakpoint table.
      *  It invoke the initialize() method for all the Actors in the
      *  system. The ODE solver are instanciated, and the current solver
-     *  is set to be the breakpoint solver. _initialize the simulation.
-     *  This is the real intialize method. This method does not 
+     *  is set to be the breakpoint solver. The breakpoint table is cleared,
+     *  and the start time is set to be the first breakpoint. 
+     *  Invalidate the schedule.
+     *  This method does not 
      *  check the container and the scheduler, so the 
      *  caller should check.
      *  @exception IllegalActionException If thrown by director actors.

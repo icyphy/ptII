@@ -101,183 +101,35 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     ////                         public methods                    ////
 
     /** Return the end time of this director's firing.
+     *  
      *  @return The fire end time.
      */
     public final double getFireEndTime() {
         return _fireEndTime;
     }
 
-    /** Initialize the director parameters (including time) and intialize 
-     *  all the actors in the container. This
-     *  is called exactly once at the start of the entire execution.
-     *  If this is the top-level director, 
-     *  It sets the current time to the start time of the and the current step
-     *  size to the initial step size.
-     *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver are instanciated, and the current solver
-     *  is set to be the breakpoint solver.
-     *
-     *  @exception IllegalActionException If there's no scheduler or
-     *       thrown by a contained actor.
+    /** Return the minimum of all the refined step size returned
+     *  from event detectors.
+     *  @return the minimum refined step size.
      */
-    public void initialize() throws IllegalActionException {
-        if (VERBOSE||DEBUG) {
-            System.out.println("MixedSignalDirector initialize.");
-        }
-        CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            if(DEBUG) {
-                System.out.println("Director has no container.");
-            }
-            throw new IllegalActionException(this, "Has no container.");
-        }
-        _first = true;
-        if(!_isTopLevel()) {
-            // clear the parameters and make sure the outside parameters
-            // override the local parameter (start time).
-            updateParameters();
-
-            // this is an embedded director.
-            // synchronize the start time and request a fire at the start time.
-            Director exe = ca.getExecutiveDirector();
-            double tnow = exe.getCurrentTime();
-            setStartTime(tnow);
-            exe.fireAt(ca, tnow);
-        }
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
-        _initialize();
+    public double getRefineStepSize() {
+        return _refineStepSize;
     }
 
-    /** Perform mutation and process pause/stop request.
-     *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
-     *  returns true) then pause the thread.
-     *  The pause can be wake up by notify(), at that time if the
-     *  CTSubSystem is not paused (isPaused() returns false) then
-     *  resume the simulation. So the simulation can only be
-     *  paused at the prefire stage.
-     *  If stop is requested return false, otherwise return true.
-     *  Transfer time from the outer domain, if there is any. If this
-     *  is the toplevel domain, if the currenttime + currentstepsize
-     *  is greater than the stop time, set the currentStepSize to be
-     *  stopTime-currentTime.
-     *
-     *  @return true If stop is not requested
-     *  @exception IllegalActionException If the pause is interrupted or it
-     *       is thrown by a contained actor.
-     *  @exception NameDuplicationException If thrown by a contained actor.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (VERBOSE) {
-            System.out.println("Director prefire.");
-        }
-        if(DEBUG) {
-            NSTEP++;
-        }
-        if(!scheduleValid()) {
-            // mutation occured, redo the schedule;
-            CTScheduler scheduler = (CTScheduler)getScheduler();
-            if (scheduler == null) {
-                throw new IllegalActionException (this,
-                "does not have a Scheuler.");
-            }
-            scheduler.schedule();
-            setScheduleValid(true);
-        }
-        updateParameters();
-        if(!_isTopLevel()) {
-            // synchronize time.
-            CompositeActor ca = (CompositeActor) getContainer();
-            // ca should have beed checked in isTopLevel()
-            Director exe = ca.getExecutiveDirector();
-            _outsideTime = exe.getCurrentTime();
-            if(DEBUG) {
-                System.out.println("Outside Time =" + _outsideTime);
-            }
-            double timeAcc = getTimeResolution();
-            double nextIterTime = exe.getNextIterationTime();
-            double runlength = nextIterTime - _outsideTime;
-            if((runlength != 0.0)&& (runlength < timeAcc)) {
-                exe.fireAt(ca, nextIterTime);
-                if(DEBUG) {
-                    System.out.println("Next iteration is too near" +
-                        " (but not sync). Request a refire at:"+nextIterTime);
-                }
-                return false;
-            }
-            if(Math.abs (_outsideTime -getCurrentTime()) < timeAcc) {
-                if(DEBUG) {
-                    System.out.println("Round up current time " +
-                        getCurrentTime() + " to outside time " +_outsideTime);
-                }
-                setCurrentTime(_outsideTime);
-            }
-
-            // check for roll back.
-            if (_outsideTime < getCurrentTime()) {
-                if(DEBUG) {
-                    System.out.println(getName() + " rollback from: " +
-                        getCurrentTime() + " to: " +_knownGoodTime +
-                        "due to outside time " +_outsideTime );
-                }
-                if(STAT) {
-                    NROLL ++;
-                }
-                rollback();
-            }
-
-            runlength = Math.min(runlength, _runAheadLength);
-            setFireEndTime(_outsideTime + runlength);
-            fireAt(null,_outsideTime);
-            fireAt(null,getFireEndTime());
-            if(DEBUG) {
-                System.out.println("Fire end time="+getFireEndTime());
-            }
-        }
-        return true;
-    }
-
-    /** Rollback the system to a knowGood state.
-     */
-    public void rollback() throws IllegalActionException{
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.memarisActors();
-        while(memactors.hasMoreElements()) {
-            CTMemarisActor mem =(CTMemarisActor)memactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Restore State..."+
-                    ((Nameable)mem).getName());
-            }
-            mem.restoreStates();
-        }
-        setCurrentTime(_knownGoodTime);
-    }
-
-    /** save the know good state.
-     */
-    public void saveStates() {
-        CTScheduler scheduler = (CTScheduler) getScheduler();
-        Enumeration memactors = scheduler.memarisActors();
-        while(memactors.hasMoreElements()) {
-            CTMemarisActor mem =(CTMemarisActor)memactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Save State..."+
-                    ((Nameable)mem).getName());
-            }
-            mem.saveStates();
-        }
-        _knownGoodTime = getCurrentTime();
-    }
-
-    /**  Fire the system until the next break point. If this is the
-     *   top level, then first just one successful iteration.
-     *
-     *  @exception IllegalActionException If thrown by the ODE solver.
+    /** Execute the directed (sub)system to the fire end time.
+     *  If this is a top-level director, the fire end time if the 
+     *  current time at the begining of the fire() method plus the 
+     *  the step size of one successful step. 
+     *  Otherwise, it executes until the one of the following conditions
+     *  is satisfied. 1) The fire end time commputed in the prefire()
+     *  method is reached. 2) An event is generated.
+     *  It saves the state of the system at the current time of the executive
+     *  director as the "known good" state. And run further ahead of time.
+     *  The "known good" state is used for roll back.
+     *  @exception IllegalActionException If thrown by the ODE solver,
+     *       or the prefire(), fire(), or postfire() methods of an actor.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: what should these do?
-        // prepare some variables.
         CompositeActor ca = (CompositeActor) getContainer();
         double timeAcc = getTimeResolution();
         boolean knownGood = false;
@@ -300,7 +152,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         while(!endOfFire) {
             if(!_isTopLevel()) {
                 if(knownGood) {
-                    saveStates();
+                    _saveStates();
                     knownGood = false;
                 }
             }
@@ -373,8 +225,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             if(ready) {
                 while(true) {
                     getCurrentODESolver().proceedOneStep();
-                    detectEvent();
-                    if(hasMissedEvent()) {
+                    _detectEvent();
+                    if(_hasMissedEvent()) {
                         setCurrentTime(getCurrentTime()-getCurrentStepSize());
                         setCurrentStepSize(getRefineStepSize());
                     } else {
@@ -408,15 +260,80 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
     }
 
-    /** Test if the current time is the stop time.
-     *  If so, return false ( for stop further simulaiton).
-     *  @return false If the simulation time expires.
-     *  @exception IllegalActionException If there is no ODE solver, or
-     *        thrown by the solver.
+    /** Initialize the director parameters (including time) and intialize 
+     *  all the actors in the container. This
+     *  is called exactly once at the start of the entire execution.
+     *  It checks if it has a container and an CTSchedueler. 
+     *  It invoke the initialize() method for all the Actors in the
+     *  system. The ODE solver are instanciated, and the current solver
+     *  is set to be the breakpoint solver.The breakpoint table is cleared,
+     *  and the start time is set to be the first breakpoint. 
+     *  Invalidate the schedule.
+     *  If this is the top-level director, 
+     *  It sets the current time to the start time of the and the current step
+     *  size to the initial step size.
+     *  Otherwise the start time is the current time of the outside
+     *  domain. And it will request a refire at the current time from
+     *  the executive director.
+     *
+     *  @exception IllegalActionException If this director has no contaienr or
+     *       no scheduler, or thrown by a contained actor.
+     */
+    public void initialize() throws IllegalActionException {
+        if (VERBOSE||DEBUG) {
+            System.out.println("MixedSignalDirector initialize.");
+        }
+        CompositeActor ca = (CompositeActor) getContainer();
+        if (ca == null) {
+            if(DEBUG) {
+                System.out.println("Director has no container.");
+            }
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        CTScheduler sch = (CTScheduler)getScheduler();
+        if (sch == null) {
+            if(DEBUG) {
+                System.out.println("Director does not have a scheduler.");
+            }
+            throw new IllegalActionException( this,
+            "does not have a scheduler.");
+        }
+        _first = true;
+        if(!_isTopLevel()) {
+            // clear the parameters and make sure the outside domain
+            // parameters
+            // overwrite the local parameter (e.g.start time).
+            updateParameters();
+
+            // this is an embedded director.
+            // synchronize the start time and request a fire at the start time.
+            Director exe = ca.getExecutiveDirector();
+            double tnow = exe.getCurrentTime();
+            setStartTime(tnow);
+            exe.fireAt(ca, tnow);
+        }
+        if (VERBOSE) {
+            System.out.println("Director.super initialize.");
+        }
+        // update parameter is called in _initialize. But if this is 
+        // not a top-level director, the parameter should already be
+        // processed by the code above. So the updateParameters in
+        // _initialize() will do nothing.
+        _initialize();
+    }
+
+    /** If this is a top-level director, returns true if the current time
+     *  is less than the stop time, otherwise, return true always.
+     *  If this is a top-level director, and the current time is greater
+     *  than the stop time, an InvalidStateException is thrown. 
+     *  @return True if this is not a top-level director, or the simulation
+     *     is not finished.
+     *  @exception IllegalActionException Never thrown.
      */
     public boolean postfire() throws IllegalActionException {
         if(_isTopLevel()) {
-            if(Math.abs(getCurrentTime()-getStopTime()) < getTimeResolution()) {
+            if(Math.abs(getCurrentTime()-getStopTime()) 
+                    < getTimeResolution()) {
                 updateStates(); // call postfire on all actors
                 return false;
             }
@@ -432,10 +349,116 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         return true;
     }
 
+    /** Returns true always, indicating that the (sub)system is always ready
+     *  for one iteration. The schedule is recomputed if there are mutations
+     *  occured after last iteration. Note that mutations can only 
+     *  occur between iterations in the CT domain.
+     *  The parameters are updated.
+     *  <P>
+     *  If this is not a top-level director, some additional work is done
+     *  to synchronize time with the executive director. In particular,
+     *  it will compare its local time, say t, with the current time 
+     *  of the executive director, say t0.
+     *  If t==t0, does nothing. If t > t0, then rollback to the "know good"
+     *  state. If t < t0, then throw an exception because the CT subsystem
+     *  should always run ahead of time.
+     *  <P> 
+     *  The fire end time is computed. If this is a 
+     *  top-level director, the fire end time is the (local) current
+     *  time plus the (local) current step size.
+     *  If this director is not a top-level director, the time is 
+     *  resolved from the current time of the outside domains, say t1,
+     *  the next iteration time of the outside domain, say t2, 
+     *  the MaxRunAheadLength parameter of this director, say t3.
+     *  The fire end time is set 
+     *  to be <code>t1 + min(t2, t3)</code>. The fire end time may be
+     *  further refined by the fire() method due to event detection.
+     *  In particular, when the first event is detected, say at t4,
+     *  then the fire end time is set to t4.
+     *  @return true Always
+     *  @exception IllegalActionException If the local time is
+     *       less than the current time of the executive director,
+     *       or thrown by a directed actor.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (VERBOSE) {
+            System.out.println("Director prefire.");
+        }
+        if(DEBUG) {
+            NSTEP++;
+        }
+        if(!scheduleValid()) {
+            // mutation occured, redo the schedule;
+            CTScheduler scheduler = (CTScheduler)getScheduler();
+            if (scheduler == null) {
+                throw new IllegalActionException (this,
+                "does not have a Scheuler.");
+            }
+            scheduler.schedule();
+            setScheduleValid(true);
+        }
+        updateParameters();
+        if(!_isTopLevel()) {
+            // synchronize time.
+            CompositeActor ca = (CompositeActor) getContainer();
+            // ca should have beed checked in isTopLevel()
+            Director exe = ca.getExecutiveDirector();
+            _outsideTime = exe.getCurrentTime();
+            if(DEBUG) {
+                System.out.println("Outside Time =" + _outsideTime);
+            }
+            double timeAcc = getTimeResolution();
+            double nextIterTime = exe.getNextIterationTime();
+            double runlength = nextIterTime - _outsideTime;
+            if((runlength != 0.0)&& (runlength < timeAcc)) {
+                exe.fireAt(ca, nextIterTime);
+                if(DEBUG) {
+                    System.out.println("Next iteration is too near" +
+                        " (but not sync). Request a refire at:"+nextIterTime);
+                }
+                return false;
+            }
+            if(Math.abs (_outsideTime -getCurrentTime()) < timeAcc) {
+                if(DEBUG) {
+                    System.out.println("Round up current time " +
+                        getCurrentTime() + " to outside time " +_outsideTime);
+                }
+                setCurrentTime(_outsideTime);
+            }
 
-    /** Set the stop time for this iteration.
-     *  For internal director, this will result in that the local director
+            // check for roll back.
+            if (_outsideTime < getCurrentTime()) {
+                if(DEBUG) {
+                    System.out.println(getName() + " rollback from: " +
+                        getCurrentTime() + " to: " +_knownGoodTime +
+                        "due to outside time " +_outsideTime );
+                }
+                if(STAT) {
+                    NROLL ++;
+                }
+                _rollback();
+            }
+            if (_outsideTime > getCurrentTime()) {
+                throw new IllegalActionException(this, exe,
+                        " time collapse.");
+            } 
+            runlength = Math.min(runlength, _runAheadLength);
+            setFireEndTime(_outsideTime + runlength);
+            fireAt(null,_outsideTime);
+            fireAt(null,getFireEndTime());
+            if(DEBUG) {
+                System.out.println("Fire end time="+getFireEndTime());
+            }
+        }
+        return true;
+    }
+
+    /** Set the stop time for this iteration. 
+     *  For a director that is not at the top-level, set the fire end time
+     *  to be the current time  will result 
+     *  in that the local director
      *  release the control to the executive director.
+     *  @param The fire end time.
      */
     public void setFireEndTime(double time ) {
         if(time < getCurrentTime()) {
@@ -446,16 +469,40 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         _fireEndTime = time;
     }
 
-    /** detect event. fire all the actors along the event detector path.
+    /** Update the given parameter. If the parameter is RunAheadLength
+     *  update it. Otherwise pass it to the super class.
+     *  @param param The parameter to be updated.
+     *  @exception IllegalActionException If thrown by the super class.
      */
-    public void detectEvent() throws IllegalActionException{
+    public void updateParameters(Parameter param)
+            throws IllegalActionException {
+        if(param == _paramRunAheadLength) {
+            if(VERBOSE) {
+                System.out.println("run ahead time updating.");
+            }
+            _runAheadLength =
+            ((DoubleToken)param.getToken()).doubleValue();
+        } else {
+            super.updateParameter(param);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Detect events. Fire all the actors according to the event generating 
+     *  schedule. 
+     *  @exception IllegalActionException If thrown by an actor being fired.
+     */
+    protected void _detectEvent() throws IllegalActionException{
         if(VERBOSE) {
             System.out.println( "Detecting event...");
         }
         CTScheduler scheduler = (CTScheduler) getScheduler();
         Enumeration integrators = scheduler.dynamicActorSchedule();
         while(integrators.hasMoreElements()) {
-            CTDynamicActor integrator=(CTDynamicActor)integrators.nextElement();
+            CTDynamicActor integrator=
+                (CTDynamicActor)integrators.nextElement();
             if(VERBOSE) {
                 System.out.println("Excite State..."+
                     ((Nameable)integrator).getName());
@@ -476,15 +523,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     /** Return true if any of the event detectors has a missed event in
      *  the last step.
+     *  @return True if any of the event detectors has a missed event in
+     *  the last step.
      */
-    public boolean hasMissedEvent() {
-
+    protected boolean _hasMissedEvent() {
         boolean result = false;
         _refineStepSize = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler) getScheduler();
         Enumeration edators = scheduler.eventGenerateActors();
         while(edators.hasMoreElements()) {
-            CTEventGenerateActor ed=(CTEventGenerateActor)edators.nextElement();
+            CTEventGenerateActor ed=
+                (CTEventGenerateActor)edators.nextElement();
             if(DEBUG) {
                 System.out.println("Ask for missed event from..."+
                     ((Nameable)ed).getName());
@@ -495,38 +544,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             }
             if(answer == true) {
                 result = true;
-                _suggestRefineStepSize(ed.refineStepSize());
+               _refineStepSize = Math.min(_refineStepSize, 
+                       ed.refineStepSize()); 
             }
         }
         return result;
     }
-
-    /** Return the minimum of all the suggested refined step size
-     *  from event detectors.
-     */
-    public double getRefineStepSize() {
-        return _refineStepSize;
-    }
-
-    /** Update the given parameter. If the parameter is RunAheadLength
-     *  update it. Otherwise pass it to the super class.
-     */
-    public void updateParameters(Parameter param)
-            throws IllegalActionException {
-        if(param == _paramRunAheadLength) {
-            if(VERBOSE) {
-                System.out.println("run ahead time updating.");
-            }
-            _runAheadLength =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else {
-            super.updateParameter(param);
-        }
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
 
     /**Return true if this is a toplevel director. A syntax suger.
      */
@@ -550,7 +573,52 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
     }
 
-    /** Initialize parameters.
+    /** Rollback the system to a knowGood state. All the actors with
+     *  states are called to restore their saved states. The 
+     *  current time of the director is set to the time of the "known
+     *  good" state.
+     *  @exception IllegalActionException If thrown by the restoreStates()
+     *       method of an actor.
+     */
+    protected void _rollback() throws IllegalActionException{
+        CTScheduler scheduler = (CTScheduler) getScheduler();
+        Enumeration memactors = scheduler.memarisActors();
+        while(memactors.hasMoreElements()) {
+            CTMemarisActor mem =(CTMemarisActor)memactors.nextElement();
+            if(VERBOSE) {
+                System.out.println("Restore State..."+
+                    ((Nameable)mem).getName());
+            }
+            mem.restoreStates();
+        }
+        setCurrentTime(_knownGoodTime);
+    }
+
+    /** Save the current state as the known good state. Call the
+     *  saveStates() method on all CTMemarisActors. Save the current time
+     *  as the "known good" time.
+     */
+    protected void _saveStates() {
+        CTScheduler scheduler = (CTScheduler) getScheduler();
+        Enumeration memactors = scheduler.memarisActors();
+        while(memactors.hasMoreElements()) {
+            CTMemarisActor mem =(CTMemarisActor)memactors.nextElement();
+            if(VERBOSE) {
+                System.out.println("Save State..."+
+                    ((Nameable)mem).getName());
+            }
+            mem.saveStates();
+        }
+        _knownGoodTime = getCurrentTime();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Initialize parameters in addition to the parameters inherited
+     *  from CTMultiSolverDirector. In this class the additional 
+     *  paarameter is the maximum run ahead time length 
+     *  (<code>MaxRunAheadLength</code>). The default value is 1.0.
      */
     private void _initParameters() {
         try {
@@ -561,14 +629,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,"Parameter name duplication.");
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
         }
-    }
-
-    /** suggest a refined step size for event detection.
-     */
-    protected void _suggestRefineStepSize(double refine) {
-        _refineStepSize = Math.min(_refineStepSize, refine);
     }
 
     ///////////////////////////////////////////////////////////////////
