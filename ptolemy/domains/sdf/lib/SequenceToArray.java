@@ -34,6 +34,7 @@ import ptolemy.actor.Director;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -88,7 +89,7 @@ public class SequenceToArray extends SDFTransformer {
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // Set parameters.
-        arrayLength = new Parameter(this, "arrayLength");
+        arrayLength = new PortParameter(this, "arrayLength");
         arrayLength.setExpression("1");
 
         // Set the icon.
@@ -104,7 +105,7 @@ public class SequenceToArray extends SDFTransformer {
     /** The size of the output array.  This is an integer that defaults
      *  to 1.
      */
-    public Parameter arrayLength;
+    public PortParameter arrayLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -138,6 +139,7 @@ public class SequenceToArray extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        arrayLength.update();
         int length = ((IntToken)arrayLength.getToken()).intValue();
         Token[] valueArray = input.get(0, length);
 
