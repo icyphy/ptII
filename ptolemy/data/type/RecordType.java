@@ -116,8 +116,6 @@ public class RecordType extends StructuredType {
     /** Convert the argument token into a RecordToken having this type,
      *  if losslessly conversion can be done.  The argument must be an
      *  RecordToken, and its type must be a subtype of this record type.
-     *  If this type is a variable, convert the the argument into a
-     *  substitution instance of this variable.
      *  @param token A token.
      *  @return An RecordToken.
      *  @exception IllegalActionException If lossless conversion
@@ -131,15 +129,21 @@ public class RecordType extends StructuredType {
         }
 
         RecordToken argRecTok = (RecordToken)token;
-        Object[] labelsObj = _fields.keySet().toArray();
+	// the converted token has the same set of labels as the argument.
+	// That is, fields not in this type are not cut off.
+	Object[] labelsObj = argRecTok.labelSet().toArray();
         String[] labels = new String[labelsObj.length];
         Token[] values = new Token[labelsObj.length];
         for (int i=0; i<labelsObj.length; i++) {
             labels[i] = (String)labelsObj[i];
             Token orgToken = argRecTok.get(labels[i]);
-            Type type = this.get(labels[i]);
-            values[i] = type.convert(orgToken);
-        }
+	    Type toType = this.get(labels[i]);
+	    if (toType != null) {
+	        values[i] = toType.convert(orgToken);
+	    } else {
+	        values[i] = orgToken;
+	    }
+	}
 
         return new RecordToken(labels, values);
     }
