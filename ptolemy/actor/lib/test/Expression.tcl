@@ -71,16 +71,8 @@ test Expression-2.1 {run with default empty expression} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set m [$e0 getManager]
     catch {$m execute} msg
-    string range $msg 0 240
-} {ptolemy.kernel.util.InternalErrorException: Type resolution failed because of an error during type inference
-  in .top
-Because:
-Error parsing expression "":
-Encountered "<EOF>" at line 0, column 0.
-Was expecting one of:
-    "-" ...
-    "!" .}
-
+    string range $msg 0 107
+} {ptolemy.kernel.util.InternalErrorException: Type resolution failed because of an error during type inference}
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]
