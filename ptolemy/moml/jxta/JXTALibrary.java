@@ -718,11 +718,12 @@ public class JXTALibrary extends EntityLibrary
     }
 
     private void _saveClass(Class cls, byte[] buf) throws IOException {
-        String clsName = cls.getName();
+    String clsName = cls.getName();
 	char fileSeparator = System.getProperty("file.separator").charAt(0);
-        String pathName = clsName.replace('.', fileSeparator);
+    String pathName = clsName.replace('.', fileSeparator);
 	String pathDir = pathName.substring(0, pathName.lastIndexOf(fileSeparator));
-	String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
+	//String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
+    String rootPath = System.getProperty("user.dir");
 	File destDir = new File(rootPath + fileSeparator + pathDir);
 	if (!destDir.exists()) {
             destDir.mkdirs();

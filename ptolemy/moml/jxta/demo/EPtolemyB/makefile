@@ -34,7 +34,7 @@ ME =		ptolemy/moml/jxta/demo/EPtolemyB
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR).
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
