@@ -83,5 +83,13 @@ demo_ptolemy:
 demo_vergil:
 	"$(PTII)/bin/vergil" Simple.xml
 
+GIOTTO_DIR=c:/Program Files/Giotto/giotto1.0.1
+gdk:
+	"$(JAVA)" -classpath "$(GIOTTO_DIR)" -jar "$(GIOTTO_DIR)/gdk.jar" simple.giotto
+
+compile_simple:
+	(cd "$(GIOTTO_DIR)/giotto/functionality/code/simple"; "$(JAVAC)" -classpath "$(GIOTTO_DIR)/gdk.jar" *.java)
+	#(cd simple; "$(JAVAC)" -classpath "$(GIOTTO_DIR)/gdk.jar" *.java)
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
