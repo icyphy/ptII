@@ -691,7 +691,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
         //  System.out.println("creating  buffer reference for " + port + " type = " + type);
-        BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+        RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portbuffer_" + port.getName() + "_" +
@@ -781,7 +781,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
-        BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+        RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portinsidebuffer_" + port.getName() + "_" +
