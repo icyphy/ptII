@@ -120,7 +120,7 @@ public class IconFigure extends AbstractFigure {
     /** Add the given terminal, on the given side and with the given
      * offset, to the icon. A BoundsSite will be created and the
      * terminal attached to it. See the BoundsSite class for a
-     * decsription if the <i>side</i> and <i>offset</i> arguments.
+     * description if the <i>side</i> and <i>offset</i> arguments.
      */
     public void addTerminal (Terminal t, int side, double offset) {
         BoundsSite site = new BoundsSite(this, _sites.size(), side, offset);
