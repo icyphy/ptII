@@ -113,9 +113,10 @@ public class AudioReader extends URLReader {
     public AudioReader(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	sourceURL.setExpression("\"file://\" "
-                + "+ property(\"ptolemy.ptII.dir\") "
-                + "+ \"/ptolemy/actor/lib/javasound/"
+        // The property() method is defined in
+        // ptolemy.data.expr.UtilityFunctions.java
+	sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
+                + "+ \"ptolemy/actor/lib/javasound/"
                 + "test/voice.wav\"");
     }
 
