@@ -163,7 +163,7 @@ all: sources ptplot jclass
 	ln -s ptplot pxgraph
 	rm -f histogram
 	ln -s ptplot histogram
-install: all $(PTCLASSZIP) jars \
+install: all jars \
 		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
 		bin_install_dir
 	-chmod a+x ptplot
