@@ -45,16 +45,6 @@ set PI [java::field java.lang.Math PI]
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-proc javaPrintArray {javaArrayObj} {
-    set result {}
-    for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
-	lappend result [[$javaArrayObj get $i] toString]
-    }
-    return $result
-}
-
-
-
 
 # Complex numbers to be used
 set c1 [java::new ptolemy.math.Complex 1 2]
@@ -75,39 +65,40 @@ set ca1 [java::new {ptolemy.math.Complex[]} 4 [list $c1 $c2 $c3 $c4]]
 ####################################################################
 test ArrayMath-1.1 {add} {
     set ca2 [java::call ptolemy.math.ArrayMath add $ca0 $c1]
-    javaPrintArray $ca2
+    # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
+    jdkPrintArray $ca2
 } {}
 
 ####################################################################
 test ArrayMath-1.2 {add} {
     set ca2 [java::call ptolemy.math.ArrayMath add $ca1 $c5]
-    javaPrintArray $ca2
+    jdkPrintArray $ca2
 } {{0.75 + 2.4i} {2.75 - 3.6i} {-5.15 - 5.6i} {-7.25 + 8.4i}}
 
 ####################################################################
 test ArrayMath-3.1 {conjugate} {
     set ca2 [java::call ptolemy.math.ArrayMath conjugate $ca0]
-    javaPrintArray $ca2
+    jdkPrintArray $ca2
 } {}
 
 ####################################################################
 test ArrayMath-3.2 {conjugate} {
     set ca2 [java::call ptolemy.math.ArrayMath conjugate $ca1]
-    epsilonDiff [javaPrintArray $ca2] {{1.0 - 2.0i} {3.0 + 4.0i} {-4.9 + 6.0i} {-7.0 - 8.0i}}
+    epsilonDiff [jdkPrintArray $ca2] {{1.0 - 2.0i} {3.0 + 4.0i} {-4.9 + 6.0i} {-7.0 - 8.0i}}
 } {}
 
 ####################################################################
 test ArrayMath-5.1 {convolve Complex} {
     set ca2 [java::call ptolemy.math.ArrayMath \
 	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca0 $ca0]
-    javaPrintArray $ca2
+    jdkPrintArray $ca2
 } {}
 
 ####################################################################
 test ArrayMath-5.2 {convolve Complex} {
     set ca2 [java::call ptolemy.math.ArrayMath \
 	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca1 $ca1]
-    epsilonDiff [javaPrintArray $ca2] \
+    epsilonDiff [jdkPrintArray $ca2] \
 	    {{-3.0 + 4.0i} {22.0 + 4.0i} {7.2 - 55.6i} {-123.4 - 8.8} \
 	    {10.01 + 162.8i} {164.6 + 5.6i} {-15.0 - 112.0i}}
 } {}
@@ -195,14 +186,14 @@ test ArrayMath-7.6 {limit: Infinity top} {
 ####################################################################
 test ArrayMath-9.0 {polynomial: null array} {
     set ca2 [java::call ptolemy.math.ArrayMath polynomial $ca0]
-    javaPrintArray $ca2
+    jdkPrintArray $ca2
 } {{1.0 + 0.0i}}
 
 ####################################################################
 test ArrayMath-9.1 {polynomial } {
     # FIXME: we need some better input data here
     set ca2 [java::call ptolemy.math.ArrayMath polynomial $ca1]
-    epsilonDiff [javaPrintArray $ca2] \
+    epsilonDiff [jdkPrintArray $ca2] \
 	    {{1.0 + 0.0i} {7.9 + 0.0i} {49.7 + 36.6i} \
 	    {-199.9 + 155.2i} {899.7 + 195.4i}}
 
@@ -211,7 +202,7 @@ test ArrayMath-9.1 {polynomial } {
 ####################################################################
 test ArrayMath-9.1 {polynomial: array of length 1 } {
     set ca3 [java::new {ptolemy.math.Complex[]} 1 [list $c1]]
-    epsilonDiff [javaPrintArray $ca3] {{1.0 + 2.0i}}
+    epsilonDiff [jdkPrintArray $ca3] {{1.0 + 2.0i}}
 } {}
 
 ####################################################################
@@ -230,13 +221,13 @@ test ArrayMath-11.2 {product} {
 ####################################################################
 test ArrayMath-12.1 {subtract} {
     set ca2 [java::call ptolemy.math.ArrayMath subtract $ca0 $c1]
-    javaPrintArray $ca2
+    jdkPrintArray $ca2
 } {}
 
 ####################################################################
 test ArrayMath-12.2 {subtract} {
     set ca2 [java::call ptolemy.math.ArrayMath subtract $ca1 $c5]
-    javaPrintArray $ca2
+    jdkPrintArray $ca2
 } {{1.25 + 1.6i} {3.25 - 4.4i} {-4.65 - 6.4i} {-6.75 + 7.6i}}
 
 ####################################################################
