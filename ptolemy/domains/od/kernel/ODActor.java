@@ -94,7 +94,7 @@ tokens are placed in and taken out of the receivers of an actor, the list
 of RcvrTimeTriples is updated.
 
 @author John S. Davis II
-@version @(#)ODActor.java	1.18	11/19/98
+@version $Id$
 */
 public class ODActor extends AtomicActor {
 
