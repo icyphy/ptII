@@ -46,7 +46,7 @@ thing.
 <!ELEMENT entity (entitytype, parameter*, port*)>
 <!ATTLIST entity
 name ID #REQUIRED
-iconlibrary CDATA #REQUIRED>
+icon CDATA "default">
 
 <!-- entitytype elements will be parsed into class EntityType -->   
 <!ELEMENT entitytype EMPTY>
