@@ -1,8 +1,8 @@
-# DE example using TclBlend
+# SDF example using TclBlend
 #
-# @Author: Lukito Muliadi
+# @Author: Stephen Neuendorffer
 #
-# @Version: @(#)RampSystem.tcl	1.10  09/21/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -31,7 +31,7 @@
 #######################################################################
 
 #######################################################################
-#  DEClock->DERamp->DEPlot
+#  Ramp->Delay->Print
 #
 
 # Create the top level Composite Actor
@@ -72,8 +72,8 @@ set rampOut [$rampOutEnum nextElement]
 set r1 [$sys connect $rampOut $delayIn R1]
 set r2 [$sys connect $delayOut $printIn R2]
 
-set debug ptolemy.debug.Debug
-set debugger [java::new ptolemy.debug.DebugListener]
+set debug ptolemy.domains.sdf.kernel.Debug
+set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 java::call $debug register $debugger
 
 # Run it
