@@ -1380,13 +1380,21 @@ public class MoMLParser extends HandlerBase {
 
                 // For undo purposes need to know if the entity existed
                 // already
-                ComponentEntity previous = _searchForEntity(entityName);
-                boolean existedAlready = false;
-                if (previous != null) {
-                    existedAlready = true;
+                Entity entity = _searchForEntity(entityName);
+                boolean existedAlready = (entity != null);
+                if (!existedAlready) {
+                    NamedObj candidate = _createEntity(className, entityName, source);
+                    if (candidate instanceof Entity) {
+                        entity = (Entity)candidate;
+                    } else {
+                        throw new IllegalActionException(_current,
+                        "Attempt to create a class named "
+                        + entityName
+                        + " from a class that "
+                        + "is not a subclass of Entity: "
+                        + className);
+                    }
                 }
-                NamedObj newEntity = _createEntity(
-                        className, entityName, source);
                 // NOTE: The entity may be at the top level.
                 if (_linkRequests != null) {
                     _linkRequestStack.push(_linkRequests);
@@ -1398,7 +1406,7 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: Used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
                     // composite name.
-                    _toplevel = newEntity.toplevel();
+                    _toplevel = entity.toplevel();
                     
                     // Ensure that if any change requests occur as a
                     // consequence of adding items to this top level,
@@ -1418,30 +1426,32 @@ public class MoMLParser extends HandlerBase {
                         attribute.setURL(_xmlFile);
                     }
                 }
+                boolean converted = false;
                 if (!existedAlready) {
-                    ((Prototype)newEntity).setClassDefinition(true);
+                    entity.setClassDefinition(true);
                     // Adjust the classname and superclass of the object.
-                    NamedObj.MoMLInfo info = newEntity.getMoMLInfo();
-                    info.className = newEntity.getFullName();
+                    NamedObj.MoMLInfo info = entity.getMoMLInfo();
+                    info.className = entity.getFullName();
                     info.superclass = className;
                 } else {
                     // If the object is not already a class, then convert
                     // it to one.
-                    if (!previous.isClassDefinition()) {
-                        previous.setClassDefinition(true);
-                        NamedObj.MoMLInfo info = previous.getMoMLInfo();
+                    if (!entity.isClassDefinition()) {
+                        entity.setClassDefinition(true);
+                        NamedObj.MoMLInfo info = entity.getMoMLInfo();
                         info.superclass = info.className;
-                        info.className = previous.getFullName();
+                        info.className = entity.getFullName();
+                        converted = true;
                     }
                 }
                 
-                _current = newEntity;
+                _current = entity;
                 _namespace = _DEFAULT_NAMESPACE;
 
                 if (undoEnabled && _undoContext.isUndoable()) {
                     // Handle the undo aspect.
                     if (existedAlready) {
-                        if (previous.isClassDefinition()) {
+                        if (!converted) {
                             _undoContext.appendUndoMoML("<class name=\"" + entityName +
                                     "\" >\n");
                             // Need to continue undoing and use an end tag
@@ -1644,13 +1654,33 @@ public class MoMLParser extends HandlerBase {
                 String source = (String)_attributes.get("source");
                 // For undo purposes need to know if the entity existed
                 // already
-                ComponentEntity previous = _searchForEntity(entityName);
-                boolean existedAlready = false;
-                if (previous != null) {
-                    existedAlready = true;
+                Entity entity = _searchForEntity(entityName);
+                boolean existedAlready = (entity != null);
+                boolean converted = false;
+                if (existedAlready) {
+                    // Check whether it was previously a class, in which case
+                    // it is being converted to an entity.
+                    if (entity.isClassDefinition()) {
+                        entity.setClassDefinition(false);
+                        NamedObj.MoMLInfo info = entity.getMoMLInfo();
+                        Class entityClass = entity.getClass();
+                        info.superclass = entityClass.getSuperclass().getName();
+                        info.className = entityClass.getName();
+                        converted = true;
+                    }
+                } else {
+                    NamedObj candidate = _createEntity(className, entityName, source);
+                    if (candidate instanceof Entity) {
+                        entity = (Entity)candidate;
+                    } else {
+                        throw new IllegalActionException(_current,
+                        "Attempt to create an entity named "
+                        + entityName
+                        + " from a class that "
+                        + "is not a subclass of Entity: "
+                        + className);
+                    }
                 }
-                NamedObj newEntity = _createEntity(
-                        className, entityName, source);
                 // NOTE: The entity may be at the top level.
                 if (_linkRequests != null) {
                     _linkRequestStack.push(_linkRequests);
@@ -1663,7 +1693,7 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: We used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
                     // composite name.
-                    _toplevel = newEntity.toplevel();
+                    _toplevel = entity.toplevel();
                     
                     // Ensure that if any change requests occur as a
                     // consequence of adding items to this top level,
@@ -1683,16 +1713,24 @@ public class MoMLParser extends HandlerBase {
                         attribute.setURL(_xmlFile);
                     }
                 }
-                _current = newEntity;
+                _current = entity;
                 _namespace = _DEFAULT_NAMESPACE;
 
                 if (undoEnabled && _undoContext.isUndoable()) {
                     // Handle the undo aspect.
                     if (existedAlready) {
-                        _undoContext.appendUndoMoML("<entity name=\"" + entityName +
-                                "\" >\n");
-                        // Need to continue undoing and use an end tag
-                        _undoContext.appendClosingUndoMoML("</entity>\n");
+                        if (!converted) {
+                            _undoContext.appendUndoMoML("<entity name=\"" + entityName +
+                                    "\" >\n");
+                            // Need to continue undoing and use an end tag
+                            _undoContext.appendClosingUndoMoML("</entity>\n");
+                        } else {
+                            // Converted from a class to an entity, so reverse this.
+                            _undoContext.appendUndoMoML("<class name=\"" + entityName +
+                                    "\" >\n");
+                            // Need to continue undoing and use an end tag
+                            _undoContext.appendClosingUndoMoML("</class>\n");
+                        }
                         _undoContext.setChildrenUndoable(true);
                     } else {
                         _undoContext.appendUndoMoML("<deleteEntity name=\"" + entityName +
@@ -2057,7 +2095,7 @@ public class MoMLParser extends HandlerBase {
                                 if (deferrer != null) {
                                     // Got a live one.
                                     // Need to determine whether the name is
-                                    // absoluate or relative.
+                                    // absolute or relative.
                                     String replacementName = newName;
                                     if (deferrer.isClassDefinition()) {
                                         if (deferrer.getMoMLInfo().superclass.startsWith(".")) {

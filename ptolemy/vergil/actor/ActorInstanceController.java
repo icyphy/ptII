@@ -138,9 +138,9 @@ public class ActorInstanceController extends ActorController {
     ////                         inner classes                     ////
 
     /////////////////////////////////////////////////////////////////////
-    //// CreateInstanceAction
+    //// ConvertToClassAction
 
-    // An action to instantiate a class.
+    // An action to convert an instance to a class.
     private class ConvertToClassAction extends FigureAction {
 
         public ConvertToClassAction(String commandName) {
@@ -158,19 +158,18 @@ public class ActorInstanceController extends ActorController {
             
             NamedObj object = getTarget();            
             NamedObj container = (NamedObj)object.getContainer();
-            StringBuffer moml = new StringBuffer();
             // Assumes MoML parser will convert to class.
             // NOTE: This cast should be safe because this controller is
             // used for actors.
-            if (!((Prototype)object).isClassDefinition()) {
-                moml.append("<class name=\""
-                        + object.getName()
-                        + "\"/>");
-            } else {
+            if (((Prototype)object).isClassDefinition()) {
                 // Object is already a class. Do nothing.
+                return;
             }
-           MoMLChangeRequest request = new MoMLChangeRequest(
-                    this, container, moml.toString());
+            String moml = "<class name=\""
+                    + object.getName()
+                    + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    this, container, moml);
             container.requestChange(request);
         }
     }

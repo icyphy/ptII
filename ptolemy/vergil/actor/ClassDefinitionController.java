@@ -34,6 +34,9 @@ import java.awt.Color;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.KeyStroke;
 
@@ -43,6 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -99,6 +103,9 @@ public class ClassDefinitionController extends ActorController {
 
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_createSubclassAction));                
+
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_convertToInstanceAction));
         }
 
         // Set up a listener to lay out the ports when graph changes.
@@ -155,6 +162,11 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The action that handles converting a class to an instance.
+     */
+    protected ConvertToInstanceAction _convertToInstanceAction
+            = new ConvertToInstanceAction("Convert to Instance");
+    
     /** The action that handles creating an instance from a class.
      */
     protected CreateInstanceAction _createInstanceAction
@@ -218,6 +230,70 @@ public class ClassDefinitionController extends ActorController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /////////////////////////////////////////////////////////////////////
+    //// ConvertToInstanceAction
+
+    // An action to convert a class to an instance.
+    private class ConvertToInstanceAction extends FigureAction {
+
+        public ConvertToInstanceAction(String commandName) {
+            super(commandName);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            // If access is not full, do nothing.
+            if (_access != FULL) {
+                return;
+            }
+
+            // Determine which entity was selected for the create instance action.
+            super.actionPerformed(e);
+            
+            // NOTE: This cast should be safe because this controller is
+            // used for actors.
+            Prototype object = (Prototype)getTarget();            
+            NamedObj container = (NamedObj)object.getContainer();
+            // Assumes MoML parser will convert to instance.
+            if (!object.isClassDefinition()) {
+                // Object is already an instance. Do nothing.
+                return;
+            }
+            // If the class has objects that defer to it, then
+            // refuse to convert.
+            boolean hasDeferrals = false;
+            List deferred = object.getDeferredFrom();
+            StringBuffer names = new StringBuffer();
+            if (deferred != null) {
+                // List contains weak references, so it's not
+                // sufficient to just check the length.
+                Iterator deferrers = deferred.iterator();
+                while (deferrers.hasNext()) {
+                    WeakReference deferrer = (WeakReference)deferrers.next();
+                    NamedObj deferrerObject = (NamedObj)deferrer.get();
+                    if (deferrerObject != null) {
+                        hasDeferrals = true;
+                        if (names.length() > 0) {
+                            names.append(", ");
+                        }
+                        names.append(deferrerObject.getFullName());
+                    }
+                }
+            }
+            if (hasDeferrals) {
+                MessageHandler.error("Cannot convert to instance because " +
+                        "there are instances and/or subclasses:\n" +
+                        names.toString());
+                return;
+            }
+            String moml = "<entity name=\""
+                    + object.getName()
+                    + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    this, container, moml);
+            container.requestChange(request);
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////
     //// CreateInstanceAction
