@@ -50,6 +50,7 @@ JSRCS = \
 EXTRA_SRCS = \
 	$(JSRCS) \
 	StickyMasses.htm \
+	StickyMasses.xml \
 	SMdiagram.gif \
 	SMphysics.gif \
 	SMresult.gif
