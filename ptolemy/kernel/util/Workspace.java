@@ -58,7 +58,7 @@ public class Workspace implements Nameable, Serializable {
     /** Create a workspace with the specified name.  This name will form the
      *  prefix of the full name of all contained objects.
      *  @exception IllegalActionException Argument is null.
-     *  @param name
+     *  @param name Name of the workspace to be created.
      */	
     public Workspace(String name)
             throws IllegalActionException {
