@@ -24,20 +24,33 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.util.*;
-import ptolemy.data.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.Receiver;
+import ptolemy.data.Token;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.graph.*;
+import ptolemy.graph.DirectedAcyclicGraph;
 
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -48,7 +61,7 @@ import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEDirector
-//
+
 /** This director implements the discrete-event model of computation (MoC).
  *  It should be used as the local director of a CompositeActor that is
  *  to be executed according to this MoC. This director maintain a notion
@@ -64,14 +77,18 @@ import java.util.Iterator;
  *  <p>
  *  Sorting in the CalendarQueue class is done according to the order
  *  defined by the DEEvent class, which implements the java.lang.Comparable
- *  interface. A DE event has a time stamp (double), a microstep (integer)
- *  and a depth (integer). The time stamp
- *  indicates the time when the event occurs, the microstep indicates the
- *  phase of execution at a fixed time, and the depth
- *  indicates the relative priority of events with the same time stamp
- *  (simultaneous events).  The depth is determined by topologically
+ *  interface. A DE event has a time stamp, a microstep, and a depth. 
+ *  The time stamp indicates the time when the event occurs.
+ *  The microstep represents the phase of execution
+ *  when processing simultaneous events in directed loops, or when an
+ *  actor schedules itself for firing later at the current time
+ *  (using fireAt()).
+ *  The depth is the index of the destination actor in a topological
+ *  sort.  A larger value of depth represents a lower priority when
+ *  processing events.  The depth is determined by topologically
  *  sorting the actors according to data dependencies over which there
- *  is no time delay.
+ *  is no time delay. Note that the zero-delay data dependencies are
+ *  determined on a per port basis. 
  *  <p>
  *  Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
  *  should be used whenever an actor introduces time delays between the
@@ -79,13 +96,7 @@ import java.util.Iterator;
  *  assumes, for the purpose of calculating priorities, that the delay
  *  across the actor is zero. On the other hand, when DEIOPort is used,
  *  the delay across the actor can be declared to be non-zero by calling
- *  the delayTo() method.
- *  <p>
- *  Input ports in a DE model contain instances of DEReceiver.
- *  When a token is put into a DEReceiver, that receiver enqueues the
- *  event by calling the _enqueueEvent() method of this director.
- *  This director sorts all such events in a global event queue
- *  (a priority queue).
+ *  the delayTo() method on output ports.
  *  <p>
  *  Directed loops with no delay actors are not permitted; they would make it
  *  impossible to assign priorities.  Such a loop can be broken by inserting
@@ -93,27 +104,44 @@ import java.util.Iterator;
  *  truly required, then simply set the <i>delay</i> parameter of that
  *  actor to zero.
  *  <p>
+ *  Input ports in a DE model contain instances of DEReceiver.
+ *  When a token is put into a DEReceiver, that receiver enqueues the
+ *  event to the director  by calling the _enqueueEvent() method of 
+ *  this director.
+ *  This director sorts all such events in a global event queue
+ *  (a priority queue).
+ *  <p>
+ *  An iteration, in the DE domain, is defined as processing all 
+ *  the events whose time stamp equals to the current time of the director.
  *  At the beginning of the fire() method, this director dequeues
  *  a subset of the oldest events (the ones with smallest time
  *  stamp, microstep, and depth) from the global event queue,
  *  and puts those events into
- *  their corresponding receivers. The actor(s) to which these
+ *  their destination receivers. The actor(s) to which these
  *  events are destined are the ones to be fired.  The depth of
  *  an event is the depth of the actor to which it is destined.
  *  The depth of an actor is its position in a topological sort of the graph.
  *  The microstep is usually zero, but is incremented when a pure event
- *  is queued with time stamp equal to the current time.
+ *  is queued with time stamp equal to the current time. 
  *  <p>
  *  The actor that is fired must consume tokens from
  *  its input port(s), and will usually produce new events on its output
  *  port(s). These new events will be enqueued in the global event queue
  *  until their time stamps equal the current time.  It is important that
- *  the actor actually consume tokens from its inputs, because it will
+ *  the actor actually consume tokens from its inputs, even if the tokens are
+ *  solely used to trigger reactions. This is how polymorphic actors are 
+ *  used in the DE domain. The actor will
  *  be fired repeatedly until there are no more tokens in its input
  *  ports with the current time stamp.  Alternatively, if the actor
  *  returns false in prefire(), then it will not be invoked again
  *  in the same iteration even if there are events in its receivers.
  *  <p>
+ *  The stop time of the execution can be set using the 
+ *  <i>stopTime</i> parameter, or by directly calling
+ *  setStopTime().  If the stop time is not explicitly set, then it
+ *  defaults to Double.MAX_VALUE, resulting in a model that stops
+ *  only when the model time reaches that (rather large) number.
+ *  <P>
  *  Execution of a DE model ends when the time stamp of the oldest events
  *  exceeds a preset stop time. This stopping condition is checked inside
  *  the prefire() method of this director. By default, execution also ends
@@ -121,14 +149,13 @@ import java.util.Iterator;
  *  behaviour is for the director to wait on an empty queue until another
  *  thread makes new events available.  For example, a DE actor may produce
  *  events when a user hits a button on the screen. To prevent ending the
- *  execution when there are no more events, call
- *  stopWhenQueueIsEmpty() with argument <code>false</code>.
+ *  execution when there are no more events, set the 
+ *  <i>stopWhenQueueIsEmpty</i> parameter to <code>false</code>.
  *  <p>
- *  The DE director has a parameter, "stopTime".  The stop
- *  time can be set using that parameter, or by directly calling
- *  setStopTime().  If the stop time is not explicitly set, then it
- *  defaults to Double.MAX_VALUE, resulting in a model that stops
- *  only when the model time reaches that (rather large) number.
+ *  Parameters, <i>isCQAdaptive</i>, <i>minBinCount</i>, and 
+ *  <i>binCountFactor</i>, are
+ *  used to configure the calendar queue. Changes to these parameters
+ *  are ignored when the model is running. 
  *  <p>
  *  If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
  *  then the director not process events until the real time elapsed
@@ -164,6 +191,7 @@ public class DEDirector extends Director {
      */
     public DEDirector() {
 	this(null);
+        _initParameters();
     }
 
     /**  Construct a director in the  workspace with an empty name.
@@ -177,7 +205,7 @@ public class DEDirector extends Director {
     }
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
+     *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
@@ -199,48 +227,70 @@ public class DEDirector extends Director {
     ////                         parameters                        ////
 
     /** The stop time of the model.  This parameter must contain a
-     *  DoubleToken.  Its value defaults to Double.MAX_VALUE.
+     *  DoubleToken.  The value defaults to Double.MAX_VALUE.
      */
     public Parameter stopTime;
 
-    /** Stop when queue is empty.  If this parameter is true, the
-     *  execution of the model will be stop when the queue is empty.
-     *  Its value defaults to true.
+    /** Specify whether the execution stops when the queue is empty.  
+     *  This parameter must contain a
+     *  BooleanToken. If this parameter is true, the
+     *  execution of the model will be stopped when the queue is empty.
+     *  The value defaults to true.
      */
     public Parameter stopWhenQueueIsEmpty;
 
-    /** If this parameter is true, then do not process events until the
+    /** Specify whether the execution should synchronize to the 
+     *  real time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, then do not process events until the
      *  elapsed real time matches the time stamp of the events.
-     *  Its value defaults to false.
+     *  The value defaults to false.
      */
     public Parameter synchronizeToRealTime;
 
-    /** Whether the calender queue adjust its bin number at run time.
-     *  If this parameter is true, the calender queue will adapt
+    /** Specify whether the calendar queue adjusts its bin number 
+     *  at run time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, the calendar queue will adapt
      *  its bin number with respect to the distribution of events.
-     *  This parameter is unable to be changed after the model runs.
-     *  Bu default, it is true.
+     *  Changes to this parameter are ignored when the model is running.
+     *  The value defaults to true.
      */
     public Parameter isCQAdaptive;
 
-    /** The minimum (initial) number of bins in the calender queue.
-     *  This parameter is unable to be changed after the model
-     *  runs.
-     *  The default value is 2.
+    /** The minimum (initial) number of bins in the calendar queue.
+     *  This parameter must contain an IntToken.
+     *  Changes to this parameter are ignored when the model is running.
+     *  The value defaults to 2.
      */
     public Parameter minBinCount;
 
-    /** The factor when adjusting the bin number. This parameter
-     *  has type integer.  This parameter is unable to be
-     *  changed after the model runs.  The default value is 2.
+    /** The factor when adjusting the bin number.  
+     *  This parameter must contain an IntToken.
+     *  Changes to this parameter are ignored when the model is running.
+     *  The value defaults to 2.
      */
     public Parameter binCountFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append the specified listener to the current set of debug listeners. 
+     *  If a calendar queue has been created,
+     *  register the listener to the calendar queue, too. 
+     *  If the listener is already in the set, 
+     *  @param listener The listener to add to the list of listeners
+     *   to which debug messages are sent.
+     */
+    public void addDebugListener(DebugListener listener) {
+        if (_eventQueue != null) {
+            _eventQueue.addDebugListener(listener);
+        }
+        super.addDebugListener(listener);
+    }
+
     /** Update the director parameters when the attributes are changed.
-     *  Only the stopWhenQueueIsEmpty parameter is effective at run time.
+     *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and 
+     *  <i>binCountFactor</i> parameters will only be effective on 
+     *  the next time the model is executed.
      *  @param attr The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.
@@ -284,34 +334,6 @@ public class DEDirector extends Director {
         return newobj;
     }
 
-    /** Disable the specified actor.  All events destined to this actor
-     *  will be ignored.
-     *  @param actor The actor to disable.
-     */
-    public void disableActor(Actor actor) {
-        if(_debugging) _debug("Actor ", ((Nameable)actor).getName(), "dead.");
-        if (_deadActors == null) {
-            _deadActors = new HashSet();
-        }
-        _deadActors.add(actor);
-    }
-
-    /** Return the event queue.
-     *  @return The event queue.
-     */
-    public DEEventQueue getEventQueue() {
-        return _eventQueue;
-    }
-
-    /** Return the real start time. Actors may use this time to set up
-     *  local time bombs.
-     *  @return The real start time in terms of milliseconds counting 
-     *       from 1/1/1970 
-     */
-    public long getRealStartTime() {
-        return _realStartTime;
-    }
-
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
      *  If <i>synchronizeToRealTime</i> is true, then before firing,
@@ -319,10 +341,10 @@ public class DEDirector extends Director {
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
      *  until either it has no more input tokens at the current time, or
      *  its prefire() method returns false. If there are no events in the
-     *  event queue, then the behavior depends on whether
-     *  stopWhenQueueIsEmpty() has been called.  If it has, and was given
-     *  the argument false, then this thread will stall until inputs
-     *  become available on the input queue.  Otherwise, time will advance
+     *  event queue, then the behavior depends on the 
+     *  <i>stopWhenQueueIsEmpty</i> parameter.  If it is false, 
+     *  then this thread will stall until events
+     *  become available on the event queue.  Otherwise, time will advance
      *  to the stop time and the execution will halt.
      *
      *  @exception IllegalActionException If the firing actor throws it.
@@ -352,16 +374,18 @@ public class DEDirector extends Director {
             }
             // Repeatedly fire the actor until there are no more input
             // tokens available, or until prefire() return false.
-            boolean refire = false;
+            boolean refire;
             do {
+                refire = false;
                 if (_debugging) {
-                    _debug("Iterating actor", ((Entity)actorToFire).getName(),
+                    _debug("Iterating actor", 
+                            ((Nameable)actorToFire).getName(),
                             "at time ", Double.toString(getCurrentTime()));
                 }
                 if (((Nameable)actorToFire).getContainer() == null) {
                     if (_debugging) _debug(
                             "Actor has no container. Disabling actor.");
-                    disableActor(actorToFire);
+                    _disableActor(actorToFire);
                     break;
                 }
                 if (!actorToFire.prefire()) {
@@ -371,13 +395,14 @@ public class DEDirector extends Director {
                 actorToFire.fire();
                 if (!actorToFire.postfire()) {
                     if (_debugging) _debug("Postfire returned false:",
-                            ((Entity)actorToFire).getName());
+                            ((Nameable)actorToFire).getName());
                     // Actor requests that it not be fired again.
-                    disableActor(actorToFire);
+                    _disableActor(actorToFire);
+                    //break;
                 }
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
-                refire = false;
+                
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort)inputPorts.next();
@@ -395,8 +420,9 @@ public class DEDirector extends Director {
             try {
                 DEEvent next = _eventQueue.get();
                 // If the next event is in the future, proceed to postfire().
-                if (next.timeStamp() > getCurrentTime()) break;
-                else if (next.timeStamp() < getCurrentTime()) {
+                if (next.timeStamp() > getCurrentTime()) {
+                    break;
+                } else if (next.timeStamp() < getCurrentTime()) {
                     throw new InternalErrorException(
                             "fire(): the next event has smaller time stamp" +
                             " than the current time!");
@@ -426,12 +452,40 @@ public class DEDirector extends Director {
         _enqueueEvent(actor, time);
     }
 
+    /** Return the event queue.
+     *  @return The event queue.
+     */
+    public DEEventQueue getEventQueue() {
+        return _eventQueue;
+    }
+
     /** Return the time stamp of the next event in the queue with time stamp
      *  strictly greater than the current time.  If there is nothing on
-     *  the event queue, then return the stop time.
+     *  the event queue, then return the stop time. The next iteration time,
+     *  for example, is used to estimate the run-ahead time, when a continuous
+     *  time composite actor is embedded in the DE domain. 
      *  @return The next larger time on the event queue.
      */
     public double getNextIterationTime() {
+        // It seems like the current design of the DECQEventQueue, and
+        // the use the calendar queue in general, cannot support this
+        // method very efficiently. To get the next iteration time, the
+        // director has to dequeue all events at the current time, find
+        // the first event in the next iteration,
+        // and put all event just been dequeued back to queue. 
+        // <P>
+        // An alternative design is to have a hierarchical queue. The
+        // top level of the queue sorts entries (a groups of DEEvents) 
+        // only by their time stamp.
+        // Each entry at this level is another priority queue, which
+        // sort (simultaneous) events further according to their microsteps 
+        // and depth. Then the next iteration time is simply the time stamp
+        // of the next entry in the top queue.
+        // However, since this method is called only when CT is side DE.
+        // It is unclear how the change may effect normal DE execution.
+        // So we will keep the current design unless there's prove that
+        // the new design can improve (or at least does not ruin) the 
+        // performance under regular uses.
         try {
             DEEvent next = _eventQueue.get();
             double nextTime = next.timeStamp();
@@ -440,7 +494,7 @@ public class DEDirector extends Director {
             // Save items to reinsert into queue.
             LinkedList eventsToPutBack = new LinkedList();
             while (nextTime <= getCurrentTime()) {
-                if(_debugging) _debug("temporarily remove event.");
+                if(_debugging) _debug("Temporarily remove event.");
                 eventsToPutBack.add(_eventQueue.take());
                 next = _eventQueue.get();
                 nextTime = next.timeStamp();
@@ -448,7 +502,7 @@ public class DEDirector extends Director {
             // Put back events that need to be put back.
             Iterator events = eventsToPutBack.iterator();
             while (events.hasNext()) {
-                if(_debugging) _debug("put dequeue current event back.");
+                if(_debugging) _debug("Put dequeued current event back.");
                 _eventQueue.put((DEEvent)events.next());
             }
             return nextTime;
@@ -457,6 +511,17 @@ public class DEDirector extends Director {
             //System.out.println(e.getMessage());
             return getStopTime();
         }
+    }
+
+    /** Return the system time at which the model begins executing.
+     *  That is, the system time (in milliseconds) when the initialize()
+     *  method of the director is called.
+     *  The time is in the form of milliseconds counting 
+     *  from 1/1/1970 (UTC).
+     *  @return The real start time of the model.
+     */
+    public long getRealStartTimeMillis() {
+        return _realStartTime;
     }
 
     /** Return the time of the earliest event seen in the model.
@@ -480,6 +545,21 @@ public class DEDirector extends Director {
         }
     }
 
+    
+    /** FIXEM: setStopTime.
+     *  @return The stop time of the execution.
+     
+    public void setStopTime(double time) {
+        try {
+            stopTime.setToken(new DoubleToken(time));
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(
+                    "Cannot read stopTime parameter:\n" +
+                    e.getMessage());
+        }
+        }
+    */
+    
     /** Invoke the initialize() method of each deeply contained actor,
      *  and then check the event queue for any events. If there are any,
      *  and the director is embedded in an opaque composite actor, then
@@ -487,7 +567,10 @@ public class DEDirector extends Director {
      *  This method should be invoked once per execution, after the
      *  initialization phase, but before any iteration.  Since type
      *  resolution has been completed, the initialize() method of a contained
-     *  actor may produce output or schedule events.
+     *  actor may produce output or schedule events. 
+     *  The real start time of the model is recorded when this method
+     *  is called.
+     *  
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -495,12 +578,12 @@ public class DEDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        _realStartTime = System.currentTimeMillis();
         super.initialize();
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
-        _realStartTime = System.currentTimeMillis();
         //if (_debugging) _debug(getContainer().description());
     }
 
@@ -520,9 +603,15 @@ public class DEDirector extends Director {
 	return new DEReceiver();
     }
 
-    /** Return false when the base class method return false, else request
-     *  firing from outer domain (if embedded) then return true.
-     *  @exception IllegalActionException If super.postfire() throws it.
+    /** Return false if there is no more actor to fire. Otherwise, if 
+     *  the director is an embedded director and the queue is not empty,
+     *  then requests the executive director to refire the container of
+     *  this director at the time of the next event in the event queue
+     *  of this director.
+     *  Note that when the
+     *  <i>stopWhenQueuIsEmpty</i> parameter is false, and the queue is
+     *  empty, the stall happens in the fire() method.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean postfire() throws IllegalActionException {
 
@@ -545,8 +634,9 @@ public class DEDirector extends Director {
      *  a time delay.
      *  <p>
      *  This method should be invoked once per execution, before any
-     *  iteration. Actors may produce output data in their preinitialize()
-     *  methods, or more commonly, they may schedule pure events.
+     *  iteration. Actors cannot produce output data in their preinitialize()
+     *  methods. If initial events are needed, e.g. pure events for source
+     *  actor, the actors should do so in their initialize() methods.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -568,14 +658,13 @@ public class DEDirector extends Director {
                 _eventQueue.addDebugListener(listener);
             }
         }
-        _deadActors = null;
+        _disabledActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
         _microstep = 0;
 
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
-
 
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
@@ -591,23 +680,6 @@ public class DEDirector extends Director {
             _eventQueue.removeDebugListener(listener);
         }
         super.removeDebugListener(listener);
-    }
-
-    /** Set the stop time for the execution.
-     *  @param stopTime The new stop time.
-     */
-    public void setStopTime(double time) {
-        try {
-            if (stopTime == null) {
-                stopTime = new Parameter(this, "stopTime");
-                stopTime.setTypeEquals(BaseType.DOUBLE);
-            }
-            stopTime.setToken(new DoubleToken(time));
-        } catch (KernelException e) {
-            throw new InternalErrorException(
-                    "Cannot set stopTime parameter:\n" +
-                    e.getMessage());
-        }
     }
 
     /** Request that execution of the current iteration stop.
@@ -635,10 +707,10 @@ public class DEDirector extends Director {
      *  be typically used when events are generated at a user interface.
      *  @param flag False to prevent the director from halting when there are
      *   no more events.
-     */
+     *
     public void stopWhenQueueIsEmpty(boolean flag) {
         _stopWhenQueueIsEmpty = flag;
-    }
+        }*/
 
     /** Advance current time to the current time of the executive director,
      *  and then call the superclass method.  The port argument must
@@ -673,6 +745,21 @@ public class DEDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Disable the specified actor.  All events destined to this actor
+     *  will be ignored. If the argument is null, then do nothing.
+     *  @param actor The actor to disable.
+     */
+    protected void _disableActor(Actor actor) {
+        if (actor != null) {
+            if(_debugging) _debug("Actor ", ((Nameable)actor).getName(), 
+                    " is disabled.");
+            if (_disabledActors == null) {
+                _disabledActors = new HashSet();
+            }
+            _disabledActors.add(actor);
+        }
+    }
+
     /** Put a pure event into the event queue with the specified time stamp.
      *  A "pure event" is one with no token, used to request
      *  a firing of the specified actor.
@@ -699,7 +786,7 @@ public class DEDirector extends Director {
             if (time == getCurrentTime()) {
                 microstep = _microstep + 1;
             } else if ( time < getCurrentTime()) {
-                throw new IllegalActionException((Entity)actor,
+                throw new IllegalActionException((Nameable)actor,
                         "Attempt to queue an event in the past.");
             }
         }
@@ -871,10 +958,10 @@ public class DEDirector extends Director {
                 currentEvent = nextEvent;
                 actorToFire = currentEvent.actor();
 
-                if (_deadActors != null && _deadActors.contains(actorToFire)) {
+                if (_disabledActors != null && _disabledActors.contains(actorToFire)) {
                     // This actor has requested that it not be fired again.
                     if (_debugging) _debug("Skipping actor: ",
-                            ((Entity)actorToFire).getFullName());
+                            ((Nameable)actorToFire).getFullName());
                     actorToFire = null;
                     continue;
                 }
@@ -1208,7 +1295,7 @@ public class DEDirector extends Director {
     // The set of actors that have returned false in their postfire() methods.
     // Events destined for these actors are discarded and the actors are
     // never fired.
-    private Set _deadActors;
+    private Set _disabledActors;
 
     // Indicator of whether the topological sort giving ports their
     // priorities is valid.
