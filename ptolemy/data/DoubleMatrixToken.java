@@ -359,8 +359,9 @@ public class DoubleMatrixToken extends MatrixToken {
 	    	if (tem.getRowCount() != _columnCount) {
 
                     throw new IllegalActionException("Cannot multiply " +
-                     "matrix with " + _columnCount + " columns by a matrix with " +
-                     tem.getRowCount() + " rows.");
+                            "matrix with " + _columnCount + 
+                            " columns by a matrix with " +
+                            tem.getRowCount() + " rows.");
 	    	}
 
                 result = MatrixMath.multiply(tem.doubleMatrix(), _value);
