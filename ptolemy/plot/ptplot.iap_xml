@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 5 Standard, Build 1534
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Wed Jun 19 17:41:05 PDT 2002 -->
-<InstallAnywhere_Deployment_Project increments="5784">
+     DATE:   Sun Jun 23 11:58:07 PDT 2002 -->
+<InstallAnywhere_Deployment_Project increments="5649">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="5" minor="-1" revision="-1"/>
@@ -10,9 +10,9 @@
 		<scriptID>12,42,11,90,80,53,48,51,52,53,75,65,78,50,89,74</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,50,48,48,48,44,32,53,46,48,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,51,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-32,-125,-6,17,64,80,112,114,103,83,98,113,97,113,49,51,67,58,65,70,68,86,69,64,69,66,69,48,63,87,5,2,5,8,71,122,14,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-32,-109,84,-127,96,80,112,114,103,83,98,113,97,113,49,51,67,58,65,70,68,86,69,64,69,66,69,48,63,87,5,2,11,7,70,126,14,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="319">
+	<installationObjects uniqueObjects="313">
 		<object class="com.zerog.ia.installer.Installer" objectID="92a08b599096">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="92a0b1b990aa">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="9e6bca1390a6">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="b1ceedaa9747">
 									<property name="propertyValue">
 										<string><![CDATA[ptolemy.plot.plotml.EditablePlotMLApplication]]></string>
 									</property>
@@ -244,7 +244,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[compat.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>12542</long>
+								<long>12546</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -272,7 +272,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[plotapplication.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>178963</long>
+								<long>179894</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -293,7 +293,7 @@ and any path to a file to read from that file]]></string>
 										<object refID="92a029979096"/>
 									</property>
 									<property name="win32MagicFolder">
-										<object refID="92a029979096"/>
+										<object class="com.zerog.ia.installer.util.magicfolders.SystemDriveRootMF" factoryID="157" objectID="a4346c439098"/>
 									</property>
 									<property name="solarisMagicFolderPath">
 										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
@@ -305,7 +305,7 @@ and any path to a file to read from that file]]></string>
 										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
 									</property>
 									<property name="win32MagicFolderPath">
-										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+										<string><![CDATA[Ptplot5_2]]></string>
 									</property>
 								</object>
 							</property>
@@ -624,7 +624,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[ptinvoke.in]]></string>
 											</property>
 											<property name="fileSize">
-												<long>15677</long>
+												<long>15681</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -840,32 +840,6 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<visualChildren>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="985441f691e2">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[DtdDemo.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[DtdDemo.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>5479</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
 																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="985441f791e2">
 																	<property name="unixPermissions">
 																		<string><![CDATA[664]]></string>
@@ -887,32 +861,6 @@ and any path to a file to read from that file]]></string>
 																	</property>
 																	<property name="fileSize">
 																		<long>9375</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9854420091e2">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[EventDemo.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[EventDemo.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>3319</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -970,32 +918,6 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																</object>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9854420191e3">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[ReaderDemo.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[ReaderDemo.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>1146</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
 																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9854420a91e3">
 																	<property name="unixPermissions">
 																		<string><![CDATA[664]]></string>
@@ -1017,32 +939,6 @@ and any path to a file to read from that file]]></string>
 																	</property>
 																	<property name="fileSize">
 																		<long>1319</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9854420b91e3">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[StreamDemo.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[StreamDemo.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>1222</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -1074,32 +970,6 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																</object>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9847840d9138">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[TimerDemo.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[TimerDemo.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>1151</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
 																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9847840c9139">
 																	<property name="unixPermissions">
 																		<string><![CDATA[664]]></string>
@@ -1126,32 +996,6 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																</object>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9847840d9139">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[XmlApp.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[XmlApp.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>4044</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
 																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9847840c913a">
 																	<property name="unixPermissions">
 																		<string><![CDATA[664]]></string>
@@ -1173,32 +1017,6 @@ and any path to a file to read from that file]]></string>
 																	</property>
 																	<property name="fileSize">
 																		<long>7489</long>
-																	</property>
-																	<property name="macBinary">
-																		<boolean>false</boolean>
-																	</property>
-																</object>
-																<object class="com.zerog.ia.installer.actions.InstallFile" objectID="9847840d913a">
-																	<property name="unixPermissions">
-																		<string><![CDATA[664]]></string>
-																	</property>
-																	<property name="sourceName">
-																		<string><![CDATA[XmlApplet.class]]></string>
-																	</property>
-																	<property name="overrideUnixPermissions">
-																		<boolean>false</boolean>
-																	</property>
-																	<property name="sourcePath">
-																		<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\com\microstar\xml\demo\]]></string>
-																	</property>
-																	<property name="shouldUninstall">
-																		<boolean>true</boolean>
-																	</property>
-																	<property name="destinationName">
-																		<string><![CDATA[XmlApplet.class]]></string>
-																	</property>
-																	<property name="fileSize">
-																		<long>5667</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -1278,7 +1096,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[makefile]]></string>
 															</property>
 															<property name="fileSize">
-																<long>2331</long>
+																<long>2369</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -1304,7 +1122,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[README.txt]]></string>
 															</property>
 															<property name="fileSize">
-																<long>18122</long>
+																<long>17730</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -1330,7 +1148,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[XmlException.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>7984</long>
+																<long>7988</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -1382,7 +1200,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[XmlParser.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>117889</long>
+																<long>117463</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -1650,7 +1468,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[allclasses-frame.html]]></string>
 													</property>
 													<property name="fileSize">
-														<long>4748</long>
+														<long>4664</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -1780,7 +1598,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[package-frame.html]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>1422</long>
+																				<long>1356</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -1806,7 +1624,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[package-summary.html]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>5722</long>
+																				<long>5539</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -1832,7 +1650,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[package-tree.html]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>5350</long>
+																				<long>5135</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -1884,7 +1702,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[XmlHandler.html]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>26435</long>
+																				<long>26368</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -1910,7 +1728,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[XmlParser.html]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>65621</long>
+																				<long>65625</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -1942,7 +1760,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[deprecated-list.html]]></string>
 													</property>
 													<property name="fileSize">
-														<long>9332</long>
+														<long>8190</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -1994,7 +1812,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[index-all.html]]></string>
 													</property>
 													<property name="fileSize">
-														<long>189270</long>
+														<long>180151</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2098,7 +1916,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[overview-tree.html]]></string>
 													</property>
 													<property name="fileSize">
-														<long>12201</long>
+														<long>12004</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2806,7 +2624,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[FileChooserQuery.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4260</long>
+																<long>4253</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -2832,7 +2650,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[makefile]]></string>
 															</property>
 															<property name="fileSize">
-																<long>2531</long>
+																<long>2437</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -2858,7 +2676,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[QueryApplet.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4050</long>
+																<long>4053</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -2884,7 +2702,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[QueryApplet.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4205</long>
+																<long>4198</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -2910,7 +2728,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[ShowRawDocumentApplet.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4287</long>
+																<long>4291</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -2990,7 +2808,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[GUIStringUtilities.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>7654</long>
+														<long>7658</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3016,7 +2834,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[JTextAreaExec.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>16654</long>
+														<long>16658</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3042,7 +2860,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[makefile]]></string>
 													</property>
 													<property name="fileSize">
-														<long>3480</long>
+														<long>3484</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3094,7 +2912,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[Query.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>57310</long>
+														<long>50793</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3172,7 +2990,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[SwingWorker.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>6000</long>
+														<long>6004</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3198,7 +3016,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[Top.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>30697</long>
+														<long>30694</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -3357,7 +3175,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[PxgraphApplication.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>13450</long>
+																<long>13448</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -3957,7 +3775,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[makefile]]></string>
 															</property>
 															<property name="fileSize">
-																<long>2729</long>
+																<long>2733</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4269,7 +4087,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[Sinusoids.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4853</long>
+																<long>4854</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4400,6 +4218,32 @@ and any path to a file to read from that file]]></string>
 															</property>
 															<property name="fileSize">
 																<long>6149</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+														</object>
+														<object class="com.zerog.ia.installer.actions.InstallFile" objectID="a1d4e06093d5">
+															<property name="unixPermissions">
+																<string><![CDATA[664]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[MarksSimple.htm]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\ptolemy\plot\demo\]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[MarksSimple.htm]]></string>
+															</property>
+															<property name="fileSize">
+																<long>1605</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4897,7 +4741,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[ptplotfaq.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>22253</long>
+																<long>22203</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4923,7 +4767,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[thirdparty.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4592</long>
+																<long>4528</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -5211,7 +5055,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[makefile]]></string>
 													</property>
 													<property name="fileSize">
-														<long>20352</long>
+														<long>20433</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5237,7 +5081,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[plot.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>128871</long>
+														<long>129806</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5446,7 +5290,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PlotFrame.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>22644</long>
+														<long>23864</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5890,7 +5734,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[plotmlapplet.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>132149</long>
+														<long>133080</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5942,7 +5786,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[ptplot.iap_xml]]></string>
 													</property>
 													<property name="fileSize">
-														<long>343332</long>
+														<long>343335</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6046,7 +5890,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[pxgraphapplet.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>83195</long>
+														<long>83199</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6312,7 +6156,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="9e6bcd3690f5">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="b1ceef77979d">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.compat.PxgraphApplication]]></string>
 													</property>
@@ -6517,7 +6361,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="9e6bcd5e90fc">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="b1ceef9597a4">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.plotml.HistogramMLApplication]]></string>
 													</property>
@@ -6734,7 +6578,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[Installation and Use of $PRODUCT_NAME$ Requires Acceptance of the Following License Agreement:]]></string>
 							</property>
 							<property name="resourcePath">
-								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\tmp\ptplot5.2\]]></string>
+								<string><![CDATA[D:\tmp\ptII2.0.1\ptolemy\plot\adm\]]></string>
 							</property>
 							<property name="resourceName">
 								<string><![CDATA[copyright.txt]]></string>
@@ -6793,7 +6637,9 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<boolean>false</boolean>
 							</property>
 							<property name="additionalText">
-								<string><![CDATA[]]></string>
+								<string><![CDATA[It is best if the pathname to the installation directory does not include any spaces.
+If the pathname does include spaces, then under Java 1.4.0, certain applets that read
+data files from the local disk may fail.]]></string>
 							</property>
 							<property name="canManuallyEnterPath">
 								<boolean>true</boolean>
@@ -6803,16 +6649,6 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 							</property>
 							<property name="labelIndex">
 								<int>3</int>
-							</property>
-						</object>
-					</method>
-					<method name="addElement">
-						<object class="com.zerog.ia.installer.actions.EditVariableTable" objectID="986b8657926f">
-							<property name="name">
-								<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
-							</property>
-							<property name="value">
-								<string><![CDATA[Ptolemy$/$Ptplot 5.2]]></string>
 							</property>
 						</object>
 					</method>
@@ -6996,7 +6832,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 						<object refID="92a08bbd9097"/>
 					</property>
 					<property name="win32MagicFolder">
-						<object class="com.zerog.ia.installer.util.magicfolders.ProgramsMenuMF" factoryID="2" objectID="92a08bbe9097"/>
+						<object class="com.zerog.ia.installer.util.magicfolders.CommonProgramsMenuMF" factoryID="23" objectID="a4346c4d909a"/>
 					</property>
 					<property name="solarisMagicFolderPath">
 						<string><![CDATA[]]></string>
@@ -7008,7 +6844,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 						<string><![CDATA[]]></string>
 					</property>
 					<property name="win32MagicFolderPath">
-						<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+						<string><![CDATA[Ptplot 5.2]]></string>
 					</property>
 				</object>
 			</property>
@@ -7028,7 +6864,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Wed Jun 19 17:41:05 PDT 2002]]></string>
+						<string><![CDATA[Sun Jun 23 11:58:04 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -7060,7 +6896,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Wed Jun 19 17:41:05 PDT 2002]]></string>
+						<string><![CDATA[Sun Jun 23 11:56:06 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -7331,7 +7167,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 								<string><![CDATA[Application]]></string>
 							</property>
 							<property name="description">
-								<string><![CDATA[This installs the application feature.]]></string>
+								<string><![CDATA[This installs  jar files and executables.]]></string>
 							</property>
 							<property name="shortName">
 								<string><![CDATA[]]></string>
@@ -7771,6 +7607,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 												<string><![CDATA[]]></string>
 											</property>
 										</object>
+										<object refID="92a1d618910c"/>
 										<object refID="92a1d6429117"/>
 										<object refID="92a1d60e9107"/>
 										<object refID="92a1d5f19102"/>
@@ -7823,7 +7660,6 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 										<object refID="92a1d60f9108"/>
 										<object refID="92a1d60e9109"/>
 										<object refID="92a1d619910b"/>
-										<object refID="92a1d618910c"/>
 										<object refID="92a1d619910c"/>
 										<object refID="92a1d618910d"/>
 										<object refID="92a1d619910d"/>
@@ -7868,6 +7704,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 										<object refID="9847837f9107"/>
 										<object refID="92a1d6ce914a"/>
 										<object refID="97c0bcf59186"/>
+										<object refID="a1d4e06093d5"/>
 										<object refID="97c0bcf59185"/>
 										<object refID="92a1d6429117"/>
 										<object refID="92a1d60f9109"/>
@@ -7999,20 +7836,13 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 										<object refID="982a1f4895e4"/>
 										<object refID="92a1d58d90e7"/>
 										<object refID="92a1d5a090ea"/>
-										<object refID="985441f691e2"/>
 										<object refID="985441f791e2"/>
-										<object refID="9854420091e2"/>
 										<object refID="9854420191e2"/>
 										<object refID="9854420091e3"/>
-										<object refID="9854420191e3"/>
 										<object refID="9854420a91e3"/>
-										<object refID="9854420b91e3"/>
 										<object refID="9847840c9138"/>
-										<object refID="9847840d9138"/>
 										<object refID="9847840c9139"/>
-										<object refID="9847840d9139"/>
 										<object refID="9847840c913a"/>
-										<object refID="9847840d913a"/>
 										<object refID="9847840c913b"/>
 										<object refID="92a1d6cd914a"/>
 										<object refID="92a1d6af913e"/>
@@ -8026,12 +7856,12 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 										<object refID="92a1d6c39146"/>
 										<object refID="92a1d6c39147"/>
 										<object refID="92a1d6c39148"/>
+										<object refID="92a1d5fa9103"/>
+										<object refID="92a1d6a6913c"/>
 										<object refID="92a1d4b190b2"/>
 										<object refID="92a1d4b090b2"/>
 										<object refID="92a1d4b090b1"/>
 										<object refID="92a1d4b090b0"/>
-										<object refID="92a1d5fa9103"/>
-										<object refID="92a1d6a6913c"/>
 										<object refID="92a1d6d8914d"/>
 										<object refID="92a1d5f19102"/>
 										<object refID="92a1d5a190e9"/>
