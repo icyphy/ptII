@@ -84,7 +84,8 @@ public class DEMessageSource extends DEActor {
         //System.out.println("DEChannel "+getFullName()+" initializing at time "+
         //        getCurrentTime());
 
-        fireAfterDelay(((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
+        fireAt(getCurrentTime() + 
+                ((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
     }
 
     /** If this is the first fire, output the request token. Otherwise, if current
@@ -109,7 +110,7 @@ public class DEMessageSource extends DEActor {
             } else {
                 // compute a random delay between zero and MaxDelay.
                 double delay = maxDelay*Math.random();
-	        fireAfterDelay(delay);
+	        fireAt(getCurrentTime() + delay);
                 _nextMsgTime = getCurrentTime() + delay;
             }
 

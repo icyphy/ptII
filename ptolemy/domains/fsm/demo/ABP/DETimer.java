@@ -77,7 +77,7 @@ public class DETimer extends DEActor {
             double delay = ((DoubleToken)set.get(0)).doubleValue();
             if (delay > 0.0) {
                 _expireTime = getCurrentTime() + delay;
-                fireAfterDelay(delay);
+                fireAt(getCurrentTime() + delay);
             } else {
                 // disable timer
                 _expireTime = -1.0;

@@ -94,7 +94,7 @@ public class DEChannel extends DEActor {
                     double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue();
                     double delay = minDelay + (maxDelay - minDelay)*Math.random();
                     _nextOutTime = getCurrentTime() + delay;
-                    fireAfterDelay(delay);
+                    fireAt(getCurrentTime() + delay);
                 }
             }
 
@@ -119,7 +119,7 @@ public class DEChannel extends DEActor {
 );
                 double delay = minDelay + (maxDelay - minDelay)*Math.random();
                 _nextOutTime = getCurrentTime() + delay;
-                fireAfterDelay(delay);
+                fireAt(getCurrentTime() + delay);
             }
         }
 
