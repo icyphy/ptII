@@ -29,7 +29,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.io.ByteArrayInputStream;
@@ -47,7 +47,7 @@ import javax.crypto.spec.IvParameterSpec;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -100,10 +100,10 @@ public class SymmetricEncryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyOut = new SDFIOPort(this, "keyOut", false, true);
+        keyOut = new TypedIOPort(this, "keyOut", false, true);
         keyOut.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        parameters = new SDFIOPort(this, "parameters", false, true);
+        parameters = new TypedIOPort(this, "parameters", false, true);
         parameters.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
@@ -114,10 +114,10 @@ public class SymmetricEncryption extends CipherActor {
     /** This port outputs the key to be used by the SymmetricDecryption actor
      *  as an unsigned byte array.
      */
-    public SDFIOPort keyOut;
+    public TypedIOPort keyOut;
 
     // FIXME: what does this parameter do?
-    public SDFIOPort parameters;
+    public TypedIOPort parameters;
 
 
 
@@ -207,8 +207,6 @@ public class SymmetricEncryption extends CipherActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        keyOut.setTokenInitProduction(1);
-        parameters.setTokenInitProduction(1);
         getDirector().invalidateResolvedTypes();
     }
 

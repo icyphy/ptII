@@ -28,7 +28,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.security.NoSuchAlgorithmException;

@@ -29,7 +29,7 @@ to be sent to the signature verifier.
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.io.ByteArrayOutputStream;
@@ -42,7 +42,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -94,10 +94,10 @@ public class SignatureSigner extends SignatureActor {
         keyAlgorithm.setTypeEquals(BaseType.STRING);
         keyAlgorithm.setExpression("");
 
-        keyOut = new SDFIOPort(this, "keyOut", false, true);
+        keyOut = new TypedIOPort(this, "keyOut", false, true);
         keyOut.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        data = new SDFIOPort(this, "data", false, true);
+        data = new TypedIOPort(this, "data", false, true);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
@@ -108,12 +108,12 @@ public class SignatureSigner extends SignatureActor {
     /** This port outputs the key to be used by the
      *  AsymmetricEncryption actor as an unsigned byte array.
      */
-    public SDFIOPort keyOut;
+    public TypedIOPort keyOut;
 
     /** This port sends out the original data to be verified with the
      *  encrypted digest
      */
-    public SDFIOPort data;
+    public TypedIOPort data;
 
     /** The algorithm to be used to generate the key pair.  For
      *  example, using RSAwithMD5 as the signature algorithm, RSA

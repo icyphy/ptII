@@ -28,7 +28,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.security.Provider;
@@ -39,7 +39,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -89,7 +89,7 @@ public class ServiceInformation extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        output = new SDFIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
 
         service = new StringAttribute(this, "service");
@@ -116,7 +116,7 @@ public class ServiceInformation extends TypedAtomicActor {
 
     /** Multi-port channel that sends the requested information as Strings.
      */
-    public SDFIOPort output;
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

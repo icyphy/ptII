@@ -29,7 +29,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.io.ByteArrayOutputStream;
@@ -44,7 +44,7 @@ import javax.crypto.IllegalBlockSizeException;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -93,7 +93,7 @@ public class AsymmetricEncryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyIn = new SDFIOPort(this, "keyIn", true, false);
+        keyIn = new TypedIOPort(this, "keyIn", true, false);
         keyIn.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
@@ -104,7 +104,7 @@ public class AsymmetricEncryption extends CipherActor {
      *  AsymmetricDecryption actor in the form of an unsigned byte array.
      *  This key is used to encrypt data from the <i>input</i> port.
      */
-    public SDFIOPort keyIn;
+    public TypedIOPort keyIn;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

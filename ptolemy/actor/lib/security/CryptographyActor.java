@@ -28,7 +28,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +53,7 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -101,10 +101,10 @@ public class CryptographyActor extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        output = new SDFIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         algorithm = new Parameter(this, "algorithm");
@@ -143,12 +143,12 @@ public class CryptographyActor extends TypedAtomicActor {
 
     /** This port takes in an UnsignedByteArray and processes the data.
      */
-    public SDFIOPort input;
+    public TypedIOPort input;
 
     /** This port sends out the processed data received from <i>input</i> in
      *  the form of an UnsignedByteArray.
      */
-    public SDFIOPort output;
+    public TypedIOPort output;
 
 
     ///////////////////////////////////////////////////////////////////

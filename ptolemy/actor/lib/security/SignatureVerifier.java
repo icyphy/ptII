@@ -29,7 +29,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.io.ByteArrayOutputStream;
@@ -40,7 +40,7 @@ import java.security.SignatureException;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -88,10 +88,10 @@ public class SignatureVerifier extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyIn = new SDFIOPort(this, "keyIn", true, false);
+        keyIn = new TypedIOPort(this, "keyIn", true, false);
         keyIn.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        data = new SDFIOPort(this, "data", true, false);
+        data = new TypedIOPort(this, "data", true, false);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
@@ -102,10 +102,10 @@ public class SignatureVerifier extends SignatureActor {
      *  AsymmetricDecryption actor in the form of an unsigned byte array.
      *  This key is used to encrypt data from the <i>input</i> port.
      */
-    public SDFIOPort keyIn;
+    public TypedIOPort keyIn;
 
     // FIXME: what is this port?
-    public SDFIOPort data;
+    public TypedIOPort data;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -29,7 +29,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.io.ByteArrayOutputStream;
@@ -49,7 +49,7 @@ import javax.crypto.spec.IvParameterSpec;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -100,10 +100,10 @@ public class SymmetricDecryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyIn = new SDFIOPort(this, "keyIn", true, false);
+        keyIn = new TypedIOPort(this, "keyIn", true, false);
         keyIn.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        parameters = new SDFIOPort(this, "parameters", true, false);
+        parameters = new TypedIOPort(this, "parameters", true, false);
         parameters.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
@@ -114,12 +114,12 @@ public class SymmetricDecryption extends CipherActor {
      *  as an unsigned byte array.  This key is used to decrypt data from the
      *  <i>input</i> port.
      */
-    public SDFIOPort keyIn;
+    public TypedIOPort keyIn;
 
     /** This port receives any parameters that may have generated during
      *  encryption if parameters were generated during encryption.
      */
-    public SDFIOPort parameters;
+    public TypedIOPort parameters;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

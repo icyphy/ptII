@@ -28,7 +28,7 @@
 @AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
-package ptolemy.domains.actor.lib.security;
+package ptolemy.actor.lib.security;
 
 
 import java.io.ByteArrayOutputStream;
@@ -59,7 +59,7 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -119,13 +119,13 @@ public class Decryption extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input = new SDFIOPort(this, "input", true, false);
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        output = new SDFIOPort(this, "output", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        keyOut = new SDFIOPort(this, "keyOut", false, true);
+        keyOut = new TypedIOPort(this, "keyOut", false, true);
         keyOut.setTypeEquals(BaseType.OBJECT);
 
         algorithm = new Parameter(this, "algorithm");
@@ -191,18 +191,18 @@ public class Decryption extends TypedAtomicActor {
     /** This port takes in as an UnsignedByteArray and decrypts the
      *  data based on the algorithm.
      */
-    public SDFIOPort input;
+    public TypedIOPort input;
 
     /** This port sends out the decrypted data received from
      *  <i>input</i> in the form of a UnsignedByteArray.
      */
-    public SDFIOPort output;
+    public TypedIOPort output;
 
     /** This port outputs the key to be used by the encryption actor.
      *  If set to asymmetric encryption the generated public key is
      *  sent out.  Otherwise the generated secret key is sent out.
      */
-    public SDFIOPort keyOut;
+    public TypedIOPort keyOut;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -292,7 +292,6 @@ public class Decryption extends TypedAtomicActor {
         _algorithm = ((StringToken)algorithm.getToken()).stringValue();
         byte[] keyBytes = _createKeys();
         //_keyOutput = _unsignedByteArrayToArrayToken(keyBytes);
-        keyOut.setTokenInitProduction(1);
         getDirector().invalidateResolvedTypes();
     }
 
