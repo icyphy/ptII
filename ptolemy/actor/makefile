@@ -79,10 +79,14 @@ JSRCS = \
 	NoRoomException.java \
 	NotSchedulableException.java \
 	NoTokenException.java \
+	ProcessDirector.java \
+	ProcessReceiver.java \
+	ProcessThread.java \
 	QueueReceiver.java \
 	Receiver.java \
 	Scheduler.java \
 	StaticSchedulingDirector.java \
+	TerminateProcessException.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
