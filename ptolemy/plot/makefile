@@ -111,6 +111,7 @@ EXTRA_SRCS = $(JSRCS) \
 	$(ISJAVA_SRC) \
 	copyright.txt \
 	index.htm \
+	ptplot.jnlp.in \
 	ptplot_ismp.xml
 
 # Non-source files such as README files and subdirectories
@@ -123,6 +124,7 @@ OPTIONAL_FILES = \
 	adm \
 	histogram \
 	manifest.tmp \
+	$(RENDERJAR) \
 	$(PTCLASSALLJAR) \
 	'EditablePlot$$EditMouseListener.class' \
 	'EditablePlot$$ModifyListener.class' \
@@ -130,6 +132,7 @@ OPTIONAL_FILES = \
 	'Histogram$$1.class' \
 	'Histogram$$2.class' \
 	'Histogram$$3.class' \
+	'PlotApplication$$2.class' \
 	'Plot$$1.class' \
 	'Plot$$2.class' \
 	'Plot$$3.class' \
