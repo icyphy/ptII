@@ -81,7 +81,7 @@ OPTIONAL_JSRCS = \
 	JJTPtParserState.java \
 	ParseException.java \
 	Node.java \
-	PTParser.java \
+	PtParser.java \
 	PtParserConstants.java \
 	PtParserTokenManager.java \
 	PtParserTreeConstants.java \
