@@ -453,6 +453,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                             null,
                             target.getClass().getClassLoader());
                     _configuration.openModel(null, sourceURL, info.source);
+                    return;
                 }
                 // Target does not defer and does not have a defined "source".
                 // Assume its base class is a Java class and open the source
