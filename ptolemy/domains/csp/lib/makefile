@@ -55,8 +55,7 @@ JSRCS = \
 	CSPMultiSink.java \
 	CSPMultiSource.java \
 	CSPSink.java \
-	CSPSource.java \
-	CSPRandMultiSink.java
+	CSPSource.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
