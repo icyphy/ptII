@@ -150,33 +150,26 @@ public class Relation extends NamedObj {
 
         /** @param exceptPort Do not return this port in the enumeration. */
         public PortEnumeration(Port exceptPort) {
-            _XRefEnum = _portList.elements();
-            _exceptPort = exceptPort;
-            _skip = true;
+            if(exceptPort != null) {	    // Remove exceptPort.
+                CrossRefList censored = new CrossRefList(this);
+                censored.duplicate(_portList);
+                censored.dissociate(exceptPort);
+                _XRefEnum = censored.elements();
+            } else {
+                _XRefEnum = _portList.elements();
+            }
         }
-        
+      
         /** Check if there are remaining elements to enumerate. */
         public boolean hasMoreElements() {
             return _XRefEnum.hasMoreElements();
         }
-
+      
         /** Return the next element in the enumeration. */
         public Object nextElement() {
-            if (!_skip) return (Port)_XRefEnum.nextElement();
-            else {
-                Port nextPort = (Port)_XRefEnum.nextElement();
-                // do not wish to skip any port in the enumeration
-                if (_exceptPort == null) return nextPort; 
-                //  skip the desired Port in the enumeration
-                if (nextPort == _exceptPort) {
-                    nextPort = (Port)_XRefEnum.nextElement();
-                }
-                return nextPort;
-            }
+            return (Port)_XRefEnum.nextElement();
         }
-
+      
         private Enumeration _XRefEnum;
-        private Port _exceptPort;
-        private boolean _skip = false;
     }
 }
