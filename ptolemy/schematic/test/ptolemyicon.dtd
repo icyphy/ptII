@@ -40,6 +40,7 @@ thing.
 @see PTMLParser
 
 @author Steve Neuendorffer, John Reekie
+@version $Id$
 -->
 
 <!-- icon elements will be parsed into class Icon -->

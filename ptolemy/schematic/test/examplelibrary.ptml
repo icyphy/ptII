@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE iconlibrary SYSTEM "ptolemyicon.dtd">
+<!DOCTYPE iconlibrary PUBLIC "ptolemyicon.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
 
 <iconlibrary name="SDF" version="1.0">
 <header>
