@@ -63,7 +63,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ctentities.xml \
-	eventgenerators.xml
+	eventgenerators.xml \
+	wavegenerators.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
