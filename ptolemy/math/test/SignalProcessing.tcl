@@ -55,13 +55,13 @@ proc javaPrintArray {javaArrayObj} {
 
 ####################################################################
 test SignalProcessing-1.1 {close} {
-    set EPSILON [java::field ptolemy.math.SignalProcessing EPSILON]
+    set epsilon [java::field ptolemy.math.SignalProcessing epsilon]
     set testpairslist [list \
 	    [list 1 1] \
-	    [list -1 [expr {-1 + $EPSILON/2}]] \
-	    [list -1 [expr {-1 - $EPSILON/2}]] \
-	    [list [expr {-1 + $EPSILON/2}] -1] \
-	    [list [expr {-1 - $EPSILON/2}] -1] \
+	    [list -1 [expr {-1 + $epsilon/2}]] \
+	    [list -1 [expr {-1 - $epsilon/2}]] \
+	    [list [expr {-1 + $epsilon/2}] -1] \
+	    [list [expr {-1 - $epsilon/2}] -1] \
 	    [list 1 2] \
 	    [list -1 2] \
 	    [list 1 -2] \
@@ -96,8 +96,8 @@ test SignalProcessing-1.1 {close} {
 	    lappend results $callresults
 	}
     }
-    return $results
-} {1 1 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1}
+    list $results
+} {{1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1}}
 
 ####################################################################
 test SignalProcessing-2.1 {fft} {
