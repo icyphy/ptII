@@ -38,8 +38,11 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Director;
+import ptolemy.gui.CancelException;
+import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
 
 // Java imports
 import javax.swing.JOptionPane;
@@ -60,35 +63,20 @@ import javax.swing.JMenuItem;
 ModelFrame is a top-level window containing a Ptolemy II model.
 If contains a ModelPane, but adds a menu bar and a status bar for
 message reporting.
-<p>
-An application that uses this class should set up the handling of
-window-closing events.  Presumably, the application will exit when
-all windows have been closed. This is done with code something like:
-<pre>
-    modelFrameInstance.addWindowListener(new WindowAdapter() {
-        public void windowClosing(WindowEvent e) {
-            // Handle the event
-        }
-    });
-</pre>
 
 @author Edward A. Lee
 @version $Id$
 */
-public class ModelFrame extends Top implements ExecutionListener {
+public class ModelFrame extends PtolemyTop implements ExecutionListener {
 
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
-     *  A controlling application must be specified; this class
-     *  delegates opening of new models to that application.
      *  @param model The model to put in this frame, or null if none.
-     *  @param application The controlling application.
      */
-    public ModelFrame(CompositeActor model, PtolemyApplication application) {
+    public ModelFrame(CompositeActor model) {
         super();
         _model = model;
-        _application = application;
 
         // Create first with no model to avoid duplicating work when
         // we next call setModel().
@@ -182,7 +170,6 @@ public class ModelFrame extends Top implements ExecutionListener {
         _model = model;
         if (model != null) {
             _pane.setModel(model);
-            setTitle(model.getName());
             Manager manager = model.getManager();
             if (manager != null) {
                 manager.addExecutionListener(this);
@@ -236,17 +223,6 @@ public class ModelFrame extends Top implements ExecutionListener {
                 "About " + getTitle(), JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /** Read the specified URL.
-     *  @param url The URL to read.
-     *  @exception IOException If the URL cannot be read.
-     */
-    protected void _read(URL url) throws IOException {
-        // NOTE: Used to use for the first argument the following, but
-        // it seems to not work for relative file references:
-        // new URL("file", null, _directory.getAbsolutePath()
-        _application._read(url, url.openStream());
-    }
-
     /** Print the contents.
      */
     protected void _print() {
@@ -273,10 +249,6 @@ public class ModelFrame extends Top implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The controlling application. This class delegates opening new models
-    // to that application.
-    private PtolemyApplication _application;
-
     // The model that this window controls, if any.
     private CompositeActor _model;
 
@@ -295,29 +267,41 @@ public class ModelFrame extends Top implements ExecutionListener {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            final TopDebugListener listener = new TopDebugListener();
-            if (actionCommand.equals("Listen to Manager")) {
-                final Manager manager = _model.getManager();
-                if (manager != null) {
-                    manager.addDebugListener(listener);
-                    // Listen for window closing events to unregister.
-                    listener.addWindowListener(new WindowAdapter() {
-                        public void windowClosing(WindowEvent e) {
-                            manager.removeDebugListener(listener);
-                        }
-                    });
+            try {
+                DebugWindowAttribute attr = new DebugWindowAttribute(
+                        _model, _model.uniqueName("_debug"));
+                final TopDebugListener listener =
+                        (TopDebugListener)attr.getFrame();
+                // Give the new window the same key as this one.
+                listener.setKey(getKey());
+                if (actionCommand.equals("Listen to Manager")) {
+                    final Manager manager = _model.getManager();
+                    if (manager != null) {
+                        manager.addDebugListener(listener);
+                        // Listen for window closing events to unregister.
+                        listener.addWindowListener(new WindowAdapter() {
+                            public void windowClosing(WindowEvent e) {
+                                manager.removeDebugListener(listener);
+                            }
+                        });
+                    }
+                } else if (actionCommand.equals("Listen to Director")) {
+                    final Director director = _model.getDirector();
+                    if (director != null) {
+                        director.addDebugListener(listener);
+                        // Listen for window closing events to unregister.
+                        listener.addWindowListener(new WindowAdapter() {
+                            public void windowClosing(WindowEvent e) {
+                                director.removeDebugListener(listener);
+                            }
+                        });
+                    }
                 }
-            } else if (actionCommand.equals("Listen to Director")) {
-                final Director director = _model.getDirector();
-                if (director != null) {
-                    director.addDebugListener(listener);
-                    // Listen for window closing events to unregister.
-                    listener.addWindowListener(new WindowAdapter() {
-                        public void windowClosing(WindowEvent e) {
-                            director.removeDebugListener(listener);
-                        }
-                    });
-                }
+            } catch (KernelException ex) {
+                try {
+                    MessageHandler.warning("Failed to create debug listener: "
+                    + ex);
+                } catch (CancelException exception) {}
             }
         }
     }

@@ -41,16 +41,6 @@ import ptolemy.kernel.util.DebugListener;
 //// TopDebugListener
 /**
 A debug listener that displays messages in a top-level window.
-Users of this class should listen for window closing to unregister
-the class as a listener.  This can be done using code like this:
-<pre>
-        // Listen for window closing events to unregister as a listener.
-        topDebugListenerInstance.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                listenee.removeDebugListener(topDebugListenerInstance);
-            }
-        });
-</pre>
 
 @author  Edward A. Lee
 @version $Id$

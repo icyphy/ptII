@@ -29,10 +29,19 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.gui.CancelException;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// RunWindowAttribute
@@ -69,12 +78,61 @@ public class RunWindowAttribute extends WindowAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a run window for the specified actor.  If there is already
-     *  such a window, then pop it to the foreground and return it.
+    /** Create a run window for the specified actor and an attribute to
+     *  represent that window.  If there is already such a window,
+     *  then pop it to the foreground and return its attribute.
      *  Otherwise, create a new instance of ModelFrame.  If the model
-     *  does not have a manager, then create one for it.
+     *  does not have a manager, then create one for it.  If for some
+     *  reason the attribute cannot be created, then issue a warning and
+     *  return null.
      *  @param model The model to create a run window for.
+     *  @param panel A display panel to put into the run window, or null if
+     *   none.
      */
-    public static void openWindow(CompositeActor model) {
+    public static RunWindowAttribute openWindow(
+            CompositeActor model, JPanel panel) {
+        // Check to see whether a window already exists.
+        List attributes = model.attributeList(RunWindowAttribute.class);
+        if (attributes.size() > 0) {
+            return (RunWindowAttribute)(attributes.iterator().next());
+        }
+        // No pre-existing window, so create one.
+        ModelFrame frame = new ModelFrame(model);
+        frame.setBackground(BACKGROUND_COLOR);
+        try {
+            RunWindowAttribute attr = new RunWindowAttribute(
+                    model, model.uniqueName("run window "));
+
+            attr.setFrame(frame);
+
+            if (panel != null) {
+                frame.modelPane().setDisplayPane(panel);
+                
+                // Calculate the size.
+                Dimension frameSize = frame.getPreferredSize();
+                
+                // Swing classes produce a preferred size that is too small...
+                frameSize.height += 30;
+                frameSize.width += 30;
+                frame.setSize(frameSize);
+            }
+            attr.centerOnScreen();
+        
+            // Make visible.
+            frame.setVisible(true);
+
+            return attr;
+        } catch (KernelException ex) {
+            try {
+                MessageHandler.warning("Failed to create run window: " + ex);
+            } catch (CancelException exception) {}
+        }
+        return null;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Default background color is a light grey.
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

@@ -31,11 +31,8 @@
 package ptolemy.actor.gui;
 
 // Java imports
+// FIXME: Trim this.
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,10 +65,14 @@ import com.microstar.xml.XmlException;
 An application that contains models and frames for interacting
 with them. Any number of models can be simultaneously running under
 the same application.  Each one is assigned an instance of ModelFrame,
-a class with which this class works very closely.
+a class with which this class works very closely.  The instance of
+ModelFrame is constructed using the openWindow() method of the
+RunWindowAttribute class.
 
 @author Edward A. Lee
 @version $Id$
+@see ModelFrame
+@see RunWindowAttribute
 */
 public class PtolemyApplication extends MoMLApplication {
 
@@ -109,47 +110,35 @@ public class PtolemyApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a model to the application and create a frame for interacting
-     *  with it.  If the model has no manager, then create one.
-     *  If a frame already exists for the model, then return the existing one.
-     *  The caller is responsible for calling setVisible(true)
-     *  on the returned frame to make the frame appear on the screen.
-     *  Note that this method does not automatically include the placeable
-     *  objects of the model in the interactive frame.  If the caller
-     *  wishes to include placeable objects, then the caller must take
-     *  care of calling place() for each.
-     *  @param model The model to add.
-     *  @return The frame that was created.
+    /** Note that the model associated with the specified manager has
+     *  finished running, for the benefit of the waitForFinish() method.
+     *  This overrides the base class to not report the error,
+     *  since the instance of ModelFrame associated with the
+     *  model will report the finishing.
+     *  This method is called by the specified manager.
+     *  @param manager The manager calling this method.
+     *  @param ex The exception being reported.
      */
-    public ModelFrame createFrame(final CompositeActor model) {
-        add(model);
-        // The add() method registers this as an execution listener.
-        // Reverse this, since we assume the frame will handle reporting.
-        Manager manager = model.getManager();
-        if (manager != null) {
-            manager.removeExecutionListener(this);
+    public void executionError(Manager manager, Exception ex) {
+        _runningCount--;
+        if (_runningCount == 0) {
+            notifyAll();
         }
-        // Unless there is already a frame for this model, make one.
-        ModelFrame frame = (ModelFrame)_frames.get(model);
-        if (frame == null) {
-            frame = new ModelFrame(model, this);
-            frame.setBackground(BACKGROUND_COLOR);
-            _frames.put(model, frame);
-            // Set up a listener for window closing events.
-            frame.addWindowListener(new WindowAdapter() {
-                // This is invoked if the window is closed
-                // via the window manager.
-                public void windowClosing(WindowEvent e) {
-                    remove(model);
-                }
-                // This is invoked if the window is closed via dispose()
-                // (which is via the close menu command).
-                public void windowClosed(WindowEvent e) {
-                    remove(model);
-                }
-            });
+    }
+
+    /** Note that the model associated with the specified manager has
+     *  finished running, for the benefit of the waitForFinish() method.
+     *  This overrides the base class to not report the finishing,
+     *  since the instance of ModelFrame associated with the
+     *  model will report the finishing.
+     *  This is method is called by the specified manager.
+     *  @param manager The manager calling this method.
+     */
+    public synchronized void executionFinished(Manager manager) {
+        _runningCount--;
+        if (_runningCount == 0) {
+            notifyAll();
         }
-        return frame;
     }
 
     /** Create a new application with the specified command-line arguments.
@@ -175,8 +164,13 @@ public class PtolemyApplication extends MoMLApplication {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    /** Do nothing, since it is assumed that the ModelFrame associated
+     *  with the specified manager will report state changes.
+     *  This is method is called by the specified manager.
+     *  @param manager The manager calling this method.
+     */
+    public void managerStateChanged(Manager manager) {
+    }
 
     /** Read the specified stream, which is expected to be a MoML file.
      *  This overrides the base class to provide a container into which
@@ -186,36 +180,26 @@ public class PtolemyApplication extends MoMLApplication {
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
      *  @param in The input stream.
+     *  @param key The key to use to uniquely identify the model.
      *  @exception IOException If the stream cannot be read.
      */
-    protected void _read(URL base, InputStream in) throws IOException {
+    public void read(URL base, URL in, Object key)
+            throws IOException {
+
+        // FIXME: Need to examine the extension and open
+        // an appropriate, registered instance of Top.  E.g., we can
+        // open a text file.
+
+        // If a frame has already been opened with the specified key,
+        // then simply make that frame visible.
+        NamedObj model;
         JPanel displayPanel = new JPanel();
-        displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
+        displayPanel.setLayout(
+                new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
         displayPanel.setBackground(BACKGROUND_COLOR);
         MoMLParser parser = new MoMLParser(new Workspace(), displayPanel);
         try {
-            NamedObj toplevel = parser.parse(base, in);
-            if (toplevel instanceof TypedCompositeActor) {
-                CompositeActor castTopLevel = (CompositeActor)toplevel;
-                ModelFrame frame = createFrame(castTopLevel);
-                frame.modelPane().setDisplayPane(displayPanel);
-
-                // Calculate the size.
-                Dimension frameSize = frame.getPreferredSize();
-                // Swing classes produce a preferred size that is too small...
-                frameSize.height += 30;
-                frameSize.width += 30;
-                frame.setSize(frameSize);
-
-                // Center on screen.
-                Dimension screenSize
-                    = Toolkit.getDefaultToolkit().getScreenSize();
-                int x = (screenSize.width - frameSize.width) / 2;
-                int y = (screenSize.height - frameSize.height) / 2;
-                frame.setLocation(x, y);
-
-                frame.setVisible(true);
-            }
+            model = parser.parse(base, in.openStream());
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
                 XmlException xmlEx = (XmlException)ex;
@@ -225,6 +209,20 @@ public class PtolemyApplication extends MoMLApplication {
                         + xmlEx.getSystemId(), ex);
             } else {
                 report("Failed to read file:\n", ex);
+            }
+            return;
+        }
+        // Create a run control window for it if it is of the right type.
+        if (model instanceof TypedCompositeActor) {
+            CompositeActor castTopLevel = (CompositeActor)model;
+            add(key, castTopLevel);
+            RunWindowAttribute attr = RunWindowAttribute.openWindow(
+                    castTopLevel, displayPanel);
+            if (attr != null) {
+                attr.getFrame().setKey(key);
+                // Make this a master, meaning that when it is closed, all
+                // other windows owned by the model will also close.
+                attr.setMaster(true);
             }
         }
     }

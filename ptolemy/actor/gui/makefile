@@ -53,17 +53,22 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CompositeActorApplication.java \
 	Configurer.java \
+	DebugWindowAttribute.java \
 	Documentation.java \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
+	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
+	ModelReader.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
 	Placeable.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
 	PtolemyQuery.java \
+	PtolemyTop.java \
+	RunWindowAttribute.java \
 	TopDebugListener.java \
 	WindowAttribute.java
 

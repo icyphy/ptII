@@ -56,11 +56,18 @@ import com.microstar.xml.XmlException;
 This application creates a Ptolemy II model given a MoML file name on the
 command line, and then executes that model.  The specified file should
 define a model derived from CompositeActor.
+<p>
+NOTE: This application does not exit when the specified models finish
+executing.  This is because if it did, then the any displays created
+by the models would disappear immediately.  However, it would be better
+if the application were to exit when all displays have been closed.
+This currently does not happen.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class MoMLApplication extends CompositeActorApplication {
+public class MoMLApplication extends CompositeActorApplication
+        implements ModelReader {
 
     /** Parse the command-line arguments, creating models as specified.
      *  Then execute each model.
@@ -70,6 +77,7 @@ public class MoMLApplication extends CompositeActorApplication {
     public MoMLApplication(String args[]) throws Exception {
         super(args);
         _commandTemplate = "ptolemy [ options ] [file ...]";
+        ModelDirectory.setModelReader(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,6 +104,35 @@ public class MoMLApplication extends CompositeActorApplication {
         }
     }
 
+    /** Read the specified stream, which is expected to be a MoML file.
+     *  @param base The base for relative file references, or null if
+     *   there are no relative file references.
+     *  @param in The input stream.
+     *  @param key The key to use to uniquely identify the model.
+     *  @exception IOException If the stream cannot be read.
+     */
+    public void read(URL base, URL in, Object key)
+            throws IOException {
+        MoMLParser parser = new MoMLParser();
+        try {
+            NamedObj toplevel = parser.parse(base, in.openStream());
+            if (toplevel instanceof CompositeActor) {
+                CompositeActor castTopLevel = (CompositeActor)toplevel;
+                add(key, castTopLevel);
+            }
+        } catch (Exception ex) {
+            if (ex instanceof XmlException) {
+                XmlException xmlEx = (XmlException)ex;
+                // FIXME: The file reported below is wrong... Why?
+                report("MoML exception on line " + xmlEx.getLine()
+                        + ", column " + xmlEx.getColumn() + ", in entity:\n"
+                        + xmlEx.getSystemId(), ex);
+            } else {
+                report("Failed to read file:\n", ex);
+            }
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -109,21 +146,27 @@ public class MoMLApplication extends CompositeActorApplication {
         } else if (!arg.startsWith("-")) {
             // Assume the argument is a file name.
             // Attempt to read it.
-            InputStream instream;
+            URL inurl;
             URL base;
+            // Default key is the argument itself.
+            String key = arg;
             try {
                 // First argument is null because we are only
                 // processing absolute URLs this way.  Relative
                 // URLs are opened as ordinary files.
-                URL inurl = new URL(null, arg);
+                inurl = new URL(null, arg);
+
+                // If URL was successfully constructed, use its external
+                // form as the key.
+                key = inurl.toExternalForm();
+
                 // Strangely, the XmlParser does not want as base the
                 // directory containing the file, but rather the file itself.
                 base = inurl;
-                instream = inurl.openStream();
             } catch (MalformedURLException ex) {
                 try {
                     File file = new File(arg);
-                    instream = new FileInputStream(file);
+                    inurl = file.toURL();
 
                     // Strangely, the XmlParser does not want as base the
                     // directory containing the file, but rather the
@@ -131,49 +174,36 @@ public class MoMLApplication extends CompositeActorApplication {
                     File directory = new File(file.getAbsolutePath());
                     // base = new URL("file", null, directory);
                     base = file.toURL();
-                } catch (FileNotFoundException ex2) {
+
+                    // If the file was successfully constructed, use its
+                    // URL as the key.
+                    key = base.toExternalForm();
+
+                } catch (MalformedURLException ex2) {
                     // Try one last thing, using the classpath.
-                    URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
-                        getClassLoader().getResource(arg);
+                    inurl = Class.forName("ptolemy.kernel.util.NamedObj").
+                            getClassLoader().getResource(arg);
                     if (inurl == null) {
                         throw new IOException("File not found: " + arg);
                     }
-                    instream = inurl.openStream();
+                    // If URL was successfully constructed, use its external
+                    // form as the key.
+                    key = inurl.toExternalForm();
+
                     base = inurl;
                 }
             }
-            _read(base, instream);
+            // If there already is an instance of this file,
+            // then augment the key until it is unique.
+            int copy = 2;
+            while (ModelDirectory.get(key) != null) {
+                key = key + " copy " + copy++;
+            }
+            read(base, inurl, key);
         } else {
             // Argument not recognized.
             return false;
         }
         return true;
-    }
-
-    /** Read the specified stream, which is expected to be a MoML file.
-     *  @param base The base for relative file references, or null if
-     *   there are no relative file references.
-     *  @param in The input stream.
-     *  @exception IOException If the stream cannot be read.
-     */
-    protected void _read(URL base, InputStream in) throws IOException {
-        MoMLParser parser = new MoMLParser();
-        try {
-            NamedObj toplevel = parser.parse(base, in);
-            if (toplevel instanceof TypedCompositeActor) {
-                CompositeActor castTopLevel = (CompositeActor)toplevel;
-                add(castTopLevel);
-            }
-        } catch (Exception ex) {
-            if (ex instanceof XmlException) {
-                XmlException xmlEx = (XmlException)ex;
-                // FIXME: The file reported below is wrong... Why?
-                report("MoML exception on line " + xmlEx.getLine()
-                        + ", column " + xmlEx.getColumn() + ", in entity:\n"
-                        + xmlEx.getSystemId(), ex);
-            } else {
-                report("Failed to read file:\n", ex);
-            }
-        }
     }
 }

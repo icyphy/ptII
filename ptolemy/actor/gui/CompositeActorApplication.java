@@ -88,12 +88,13 @@ public class CompositeActorApplication implements ExecutionListener {
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
-    public CompositeActorApplication(String args[], boolean start) throws Exception {
+    public CompositeActorApplication(String args[], boolean start)
+            throws Exception {
         if (args != null) {
             _parseArgs(args);
             
             if (start) {
-               Iterator models = _models.iterator();
+               Iterator models = ModelDirectory.models().iterator();
                while(models.hasNext()) {
                     CompositeActor model = (CompositeActor)models.next();
                     startRun(model);
@@ -105,12 +106,19 @@ public class CompositeActorApplication implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a model to the application.  If the model has no manager,
+    /** Add a model to the global model directory.
+     *  If the model has no manager,
      *  then create one.  Then register this object as an execution listener.
+     *  The key is used to uniquely identify the model.  In this base class,
+     *  the fully qualified classname is used.  In derived classes, a
+     *  canonical URL or file name might be used.
+     *  @param key The key to uniquely identify the model.
      *  @param model The model to add.
      */
-    public void add(CompositeActor model) {
-        _models.add(model);
+    public void add(Object key, CompositeActor model) {
+        // List in the directory by classname, since we don't have
+        // a file name or URL.
+        ModelDirectory.put(key, model);
         Manager manager = model.getManager();
         if (manager == null) {
             try {
@@ -132,6 +140,10 @@ public class CompositeActorApplication implements ExecutionListener {
      */
     public void executionError(Manager manager, Exception ex) {
         report(ex);
+        _runningCount--;
+        if (_runningCount == 0) {
+            notifyAll();
+        }
     }
 
     /** Report that execution of the model has finished by printing a
@@ -182,13 +194,6 @@ public class CompositeActorApplication implements ExecutionListener {
         }
     }
 
-    /** Return an unmodifiable list of the models in this application.
-     *  @return A list of CompositeActor objects.
-     */
-    public List models() {
-        return Collections.unmodifiableList(_models);
-    }
-
     /** Remove a model from this application.  If the model has a manager,
      *  then deregister as an execution listener.  If there are no more
      *  models, then exit the application.  If the model is not associated
@@ -196,12 +201,12 @@ public class CompositeActorApplication implements ExecutionListener {
      *  @param model The model to remove.
      */
     public void remove(CompositeActor model) {
-        _models.remove(model);
+        ModelDirectory.remove(model.getClass().getName());
         Manager manager = model.getManager();
         if (manager != null) {
             manager.removeExecutionListener(this);
         }
-        if (_models.size() == 0) {
+        if (ModelDirectory.keySet().size() == 0) {
             System.exit(0);
         }
     }
@@ -319,7 +324,15 @@ public class CompositeActorApplication implements ExecutionListener {
                 CompositeActor newModel
                     = (CompositeActor)constructor.newInstance(args);
 
-                add(newModel);
+                // Use the fully qualified classname as a key.
+                String key = newModel.getClass().getName();
+                // If there already is an instance of this class,
+                // then augment the key until it is unique.
+                int copy = 2;
+                while (ModelDirectory.get(key) != null) {
+                    key = key + " copy " + copy++;
+                }
+                add(key, newModel);
             } else {
                 // Argument not recognized.
                 return false;
@@ -359,7 +372,7 @@ public class CompositeActorApplication implements ExecutionListener {
             String value = (String)values.next();
 
             boolean match = false;
-            Iterator models = _models.iterator();
+            Iterator models = ModelDirectory.models().iterator();
             while(models.hasNext()) {
                 CompositeActor model = (CompositeActor)models.next();
                 Attribute attribute = model.getAttribute(name);
@@ -426,8 +439,8 @@ public class CompositeActorApplication implements ExecutionListener {
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";
 
-    /** The list of models controlled by this application. */
-    protected List _models = new LinkedList();
+    /** The count of currently executing runs. */
+    protected int _runningCount = 0;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
@@ -447,7 +460,4 @@ public class CompositeActorApplication implements ExecutionListener {
     // The previous state of the manager, to avoid reporting it if it hasn't
     // changed.
     private Manager.State _previousState;
-
-    // The count of currently executing runs.
-    private int _runningCount = 0;
 }
