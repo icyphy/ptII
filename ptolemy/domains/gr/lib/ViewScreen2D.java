@@ -24,32 +24,29 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
+@ProposedRating Yellow (ismael@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
-import javax.swing.event.MouseInputAdapter;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.apps.superb.actor.lib.FigureInteractor;
 import ptolemy.apps.superb.actor.lib.ViewScreen2DListener;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor2D;
-import ptolemy.domains.gr.kernel.GRUtilities2D;
 import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
@@ -61,7 +58,6 @@ import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
 import diva.canvas.OverlayLayer;
 import diva.canvas.event.EventLayer;
-import diva.canvas.interactor.DragInteractor;
 import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
@@ -118,25 +114,25 @@ public class ViewScreen2D extends GRActor2D
                 "translatable", new BooleanToken(false));
         translatable.setTypeEquals(BaseType.BOOLEAN);
 
-        backgroundColor = new Parameter(this, "backgroundColor",
-                new DoubleMatrixToken(new double[][] {{ 1.0, 1.0, 1.0}} ));
-        backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        backgroundColor = new ColorAttribute(this, "backgroundColor");
+        backgroundColor.setExpression("{1.0,1.0,1.0,1.0}");
         
-        _originRelocation = false;
+        _originRelocatable = false;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     Ports and Parameters                  ////
 
+    /** The red, green, blue, and alpha components of the background color
+     *  of the viewscreen.  This parameter must contain an array of double
+     *  values.  The default value is {1.0,1.0,1.0,1.0}, corresponding to
+     *  opaque white.
+     */
+    public ColorAttribute backgroundColor;
+    
     /** The input scene graph.
      */
     public TypedIOPort sceneGraphIn;
-
-    /** The background color, given as a 3-element array representing
-     *  RGB color components.
-     */
-    public Parameter backgroundColor;
 
     /** The horizontal resolution of the display screen.
      *  This parameter should contain a IntToken.
@@ -145,7 +141,7 @@ public class ViewScreen2D extends GRActor2D
     public Parameter horizontalResolution;
 
     /** Boolean variable that determines if the user is allowed to
-     *   rotate the scene.
+     *  rotate the scene.
      *  This parameter should contain a BooleanToken.
      *  The default value of this parameter is BooleanToken true.
      */
@@ -175,7 +171,7 @@ public class ViewScreen2D extends GRActor2D
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire this actor. 
+    /** Repaint the canvas.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -184,7 +180,7 @@ public class ViewScreen2D extends GRActor2D
         // calls on figures are happening outside of the swing thread.
         
         
-        //_canvas.repaint();
+        _canvas.repaint();
     }
 
     /** Return the Diva canvas used by this view screen.
@@ -192,6 +188,37 @@ public class ViewScreen2D extends GRActor2D
     public JCanvas getCanvas() {
         return _canvas;
     }
+    
+    /** Return the horizontal component of the crosshair which marks the origin.
+     * @return The horizontal component of the crosshair which marks the origin.
+     */
+    public BasicFigure getCrosshairX(){
+        return _crosshairX;
+    }
+    
+    
+    /** Return the vertical component of the crosshair which marks the origin.
+     * @return The vertical component of the crosshair which marks the origin.
+     */
+    public BasicFigure getCrosshairY(){
+        return _crosshairY;
+    }
+    
+    
+    /** Return the location of the origin of the viewscreen.
+     * @return The origin of the viewscreen.
+     */
+    public Point2D.Double getOrigin(){
+        return _origin;
+    }
+    
+    /** Return the figure currently selected in the viewscreen.
+     * @return The figure currently selected in the viewscreen.
+     */
+    public Figure getSelectedFigure(){
+        return _selectedFigure;
+    }
+
 
     /** Initialize the execution.  Create the ViewScreen2D frame if 
      *  it hasn't been set using the place() method.
@@ -209,12 +236,8 @@ public class ViewScreen2D extends GRActor2D
         if (_frame != null) {
             _frame.setVisible(true);
         }
-                
-        // FIXME: default = ??  
-        DoubleMatrixToken colorVector =
-            (DoubleMatrixToken) backgroundColor.getToken();
-        Color backgroundColor =  GRUtilities2D.makeColor(colorVector);
-        _canvas.setBackground(backgroundColor);
+
+        _canvas.setBackground(backgroundColor.asColor());
 
         if (_isRotatable()) {
             // FIXME: handle rotation
@@ -227,6 +250,14 @@ public class ViewScreen2D extends GRActor2D
         if (_isTranslatable()) {
             // FIXME: handle translation
         }
+    }
+    
+    /** Return true if the origin is relocatable or false if it is not.
+     * @return Whether or not the origin can be relocated.
+     */
+    public boolean isOriginRelocatable()
+    {
+        return _originRelocatable;
     }
 
     /** Set the container that this actor should display data in.  If
@@ -248,24 +279,67 @@ public class ViewScreen2D extends GRActor2D
         }
         _createViewScreen2D();
     }
+    
+    
+    /** Iterate through all of the figures on the viewscreen to deselect any figures
+     *  which were selected before the user clicked a blank area of the viewscreen.
+     * @param hit The location on the viewscreen a mouse click was performed.
+     */
+    public void setFigureStatus(Point2D hit)
+    {
+        Iterator figureIterator = _layer.figures();
+        while(figureIterator.hasNext())
+        {
+            Figure figure = (Figure)figureIterator.next();
+            if(!figure.contains(hit)){
+                ((FigureInteractor)figure.getInteractor()).setSelected(false);
+            }
+            
+        }
+    }
+    
+    
+    /** Specify whether or not the origin can be relocated.
+     * @param enable True if the origin can be relocated, false otherwise.
+     */
+    public void setOriginRelocatable(boolean enable)
+    {
+        _originRelocatable = enable;
+    }
+    
+    
+    /** Update the state of this object to reflect which figure is currently selected
+     *  in the viewscreen.
+     * @param figure The figure currently selected.
+     */
+    public void setSelectedFigure(Figure figure)
+    {
+        _selectedFigure = figure;
+        System.out.println("setSelectedFigure Called");
+    }
 
-    /** Wrapup an execution
+    /** Wrap up an execution
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _isSceneGraphInitialized = false;
     }
+    
+
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-   /** Add the node argument as a child to the encapsulated Java3D node
-     *  in this actor. Derived GR Actors should override this method
+   /**  Add a figure to the figure layer and set its interactor.
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
-        _layer.add(figure);
+        //if(figure.getInteractor() instanceof FigureInteractor){
+            ((FigureInteractor)(figure.getInteractor())).setViewScreen(this);
+            _layer.add(figure);
+        //}
     }
 
     /** Create the view screen component.  If place() was called with
@@ -324,23 +398,21 @@ public class ViewScreen2D extends GRActor2D
         
         _crosshairX = new BasicFigure(new Line2D.Double(0,2,0,-2));
         _crosshairY = new BasicFigure(new Line2D.Double(2,0,-2,0));
-        
-        _eventHandler = new ViewScreen2DListener(
-            _crosshairX.getBounds(), _crosshairY.getBounds(), _origin, _canvas, this);
-        _eventLayer  = new EventLayer();
-        _eventLayer.addLayerListener(_eventHandler);
-        _eventLayer.addLayerMotionListener(_eventHandler);
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
+        
+        _eventHandler = new ViewScreen2DListener(this);
+        _eventLayer  = new EventLayer();
+        _eventLayer.addLayerListener(_eventHandler);
+        _eventLayer.addLayerMotionListener(_eventHandler);      
+
         pane.setOverlayLayer(_overlayLayer);
         pane.setForegroundEventLayer(_eventLayer);
-        _frame.addKeyListener(_eventHandler);
-        Graphics2D graphics = (Graphics2D)_container.getGraphics();
-        graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+        
         _frame.addKeyListener(_eventHandler);
     }
 
-    /** Setup the scene graph connections of this actor.  
+    /** Set up the scene graph connections of this actor.  
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
@@ -351,6 +423,7 @@ public class ViewScreen2D extends GRActor2D
             _addChild(figure);
         }
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -374,42 +447,45 @@ public class ViewScreen2D extends GRActor2D
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
     
-    public void enableOriginRelocation(boolean enable)
-    {
-        _originRelocation = enable;
-    }
-    
-    public boolean getOriginRelocation()
-    {
-        return _originRelocation;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
     
     // The diva canvas component.
     private JCanvas _canvas;
+    
     // The container set in the place() method, or the content pane of the
     // created frame if place was not called.
     private Container _container;
-    // The frame containing our canvas, if we created it.
-    private JFrame _frame;
-    // The Figure layer we are using.
-    private FigureLayer _layer;
     
-    private OverlayLayer _overlayLayer;
-    
-    private EventLayer _eventLayer; 
-    
-    private Point2D.Double _origin;
-    
-    private DragInteractor dragInteractor;
-    
-    private MouseInputAdapter mouseAdapter;
-    
+    //The horizontal portion of the origin marker.
     private BasicFigure _crosshairX;
     
+    //The vertical portion of the origin marker.
     private BasicFigure _crosshairY;
     
+    //A listener to handle mouse events and keystrokes within the viewscreen.
     private ViewScreen2DListener _eventHandler;
     
-    boolean _originRelocation;
-}
+    //A layer for handling events on the viewscreen.
+    private EventLayer _eventLayer; 
+    
+    // The frame containing our canvas, if we created it.
+    private JFrame _frame;
+    
+    // The Figure layer containing the figures being displayed.
+    private FigureLayer _layer;
+    
+    //The location of the origin on the viewscreen.  By default is value is the
+    //center of the viewscreen.
+    private Point2D.Double _origin;
+    
+    //Whether or not the origin can be relocated.
+    private boolean _originRelocatable;
 
+    //An overlay layer to display objects (such as the origin marker) which are
+    //to be displayed on top of all other figures.
+    private OverlayLayer _overlayLayer;
+    
+    //The figure, if any, currently selected in the viewscreen.
+    private Figure _selectedFigure;
+}
