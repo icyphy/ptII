@@ -175,7 +175,8 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/domains/pn/demo/demo.jar \
         ptolemy/domains/pn/doc/doc.jar \
-	ptolemy/moml/demo/demo.jar
+	ptolemy/moml/demo/demo.jar \
+	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
 PTINY_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinyApplication.jar
@@ -659,6 +660,14 @@ $(UNJAR_DIST_DIR):
 			doc/codeDoc*) \
 			   echo "  Copying to doc"; \
 			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
+			ptolemy/hsif/hsif.jar) \
+			   echo "  Copying jar to ptolemy/hsif"; \
+			   cp $$x $(UNJAR_DIST_DIR)/ptolemy \
+			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
+			ptolemy/hsif/demo/demo.jar) \
+			   echo "  Copying jar to ptolemy/hsif/demo"; \
+			   cp $$x $(UNJAR_DIST_DIR)/ptolemy \
+			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 			ptolemy/ptsupport.jar) \
 			   echo "  Copying to ptolemy"; \
 			   cp $$x $(UNJAR_DIST_DIR)/ptolemy;; \
