@@ -141,7 +141,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
         sureRange.setToken("100.0");
         sureRange.setTypeEquals(BaseType.DOUBLE);
         
-        output.outsideTransmitProperties.setExpression("{range=sureRange}");        
+        output.outsideTransmitProperties.setExpression("{range=Infinity}");        
  
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);

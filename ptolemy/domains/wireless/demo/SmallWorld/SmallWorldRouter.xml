@@ -2506,8 +2506,8 @@ the message. Modify the "exponent" parameter to see different behavior. </text><
 <title>HistogramPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="3.5"/>
-<yRange min="0.0" max="8.0"/>
+<xRange min="2.0" max="4.5"/>
+<yRange min="0.0" max="3.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="1.0" offset="0.0"/>
 </plot>?>
@@ -2563,9 +2563,9 @@ the message. Modify the "exponent" parameter to see different behavior. </text><
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 175.0">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 870, 588}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 792, 522}}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 470]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 404]">
         </property>
         <property name="nodeColor" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 0.0, 1.0}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2604,7 +2604,7 @@ transmited by 1 hop.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 270.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 300.0">
             </property>
         </property>
         <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -2642,7 +2642,7 @@ transmited by 1 hop.</text></svg></configure>
             </property>
             <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 165.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 145.0">
             </property>
         </port>
         <entity name="Disassembler" class="ptolemy.actor.lib.RecordDisassembler">
@@ -2676,7 +2676,7 @@ transmited by 1 hop.</text></svg></configure>
             </port>
         </entity>
         <entity name="BooleanSwitch3" class="ptolemy.actor.lib.BooleanSwitch">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 110.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 110.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2700,7 +2700,7 @@ transmited by 1 hop.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 330.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 390.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -2716,7 +2716,7 @@ transmited by 1 hop.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 270.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 285.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2736,7 +2736,7 @@ transmited by 1 hop.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 330.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 390.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2747,7 +2747,7 @@ transmited by 1 hop.</text></svg></configure>
             </port>
         </entity>
         <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 330.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 390.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -2762,7 +2762,7 @@ transmited by 1 hop.</text></svg></configure>
             </property>
             <property name="value" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 330.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 390.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2771,7 +2771,7 @@ transmited by 1 hop.</text></svg></configure>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 225.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 205.0">
             </property>
             <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
                 <property name="input"/>
@@ -2790,7 +2790,7 @@ transmited by 1 hop.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 280.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 310.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2809,46 +2809,7 @@ transmited by 1 hop.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 200.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-                </property>
-            </port>
-            <port name="routeTo" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-                </property>
-            </port>
-            <port name="destination" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-                </property>
-                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-                </property>
-            </port>
-        </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={495, 398, 290, 227}}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 250.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 230.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 150.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2881,11 +2842,11 @@ transmited by 1 hop.</text></svg></configure>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="510.0, 225.0">
+            <vertex name="vertex1" value="435.0, 205.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="605.0, 255.0">
+            <vertex name="vertex1" value="540.0, 245.0">
             </vertex>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -2893,14 +2854,12 @@ transmited by 1 hop.</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="110.0, 190.0">
+            <vertex name="vertex1" value="115.0, 140.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="95.0, 210.0">
+            <vertex name="vertex1" value="100.0, 160.0">
             </vertex>
-        </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -2930,10 +2889,6 @@ transmited by 1 hop.</text></svg></configure>
         <link port="Expression.output" relation="relation12"/>
         <link port="Expression.routeTo" relation="relation15"/>
         <link port="Expression.destination" relation="relation3"/>
-        <link port="Display.input" relation="relation11"/>
-        <link port="RecordAssembler.output" relation="relation11"/>
-        <link port="RecordAssembler.routeTo" relation="relation15"/>
-        <link port="RecordAssembler.destination" relation="relation3"/>
     </entity>
     <entity name="Initiator" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -2992,13 +2947,13 @@ transmited by 1 hop.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 55.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[381.7509064590594, 368.6549142085967]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[271.9510444589743, 406.6783083233428]">
         </property>
         <port name="out" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="Channel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=2*sureRange/5}">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=0.45*sureRange}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -3205,7 +3160,7 @@ transmited by 1 hop.</text></svg></configure>
             </property>
             <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="3.0">
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2.5">
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 335.0">
@@ -3223,7 +3178,7 @@ transmited by 1 hop.</text></svg></configure>
             </property>
             <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="3.0">
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2.5">
             </property>
             <doc>Create a sequence of uniformly distributed random numbers</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 405.0">
