@@ -37,6 +37,7 @@ import ptolemy.data.*;
 import ptolemy.graph.*;
 import collections.LinkedList;
 import java.util.Enumeration;
+import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEDirector
@@ -58,7 +59,7 @@ public abstract class DEDirector extends Director {
      *  default workspace.
      */
     public DEDirector() {
-	super();
+	this(null, null);
     }
 
     /** Construct a director with the specified name in the default
@@ -68,7 +69,7 @@ public abstract class DEDirector extends Director {
      *  @param name The name of this director.
      */
     public DEDirector(String name) {
-	super(name);
+	this(null, name);
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -82,6 +83,22 @@ public abstract class DEDirector extends Director {
      */
     public DEDirector(Workspace workspace, String name) {
 	super(workspace, name);
+        try {
+            _stopTime = new Parameter(this, 
+                    "stop time", 
+                    new DoubleToken(0.0));
+        } catch (IllegalActionException e) {
+            // shouldn't happen, because we know the Parameter class is an
+            // acceptable type for this director.
+            e.printStackTrace();
+            throw new InternalErrorException("IllegalActionException: " + 
+                    e.getMessage());
+        } catch (NameDuplicationException e) {
+            // The name is guaranteed to be unique here..
+            e.printStackTrace();
+            throw new InternalErrorException("NameDuplicationException: " +
+                    e.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,7 +190,10 @@ public abstract class DEDirector extends Director {
      *  @return The stop time of the simulation.
      */
     public double getStopTime() {
-	return _stopTime;
+        // since _stopTime field is set in the constructor, it is guarantee
+        // to be non-null.
+        DoubleToken token = (DoubleToken)_stopTime.getToken();
+        return token.doubleValue();
     }
 
     /** Return true if this director is embedded inside an opaque composite
@@ -210,7 +230,9 @@ public abstract class DEDirector extends Director {
      *  @param stopTime The new stop time.
      */
     public void setStopTime(double stopTime) {
-	this._stopTime = stopTime;
+        // since the _stopTime is field is set in the constructor,
+        // it's guarantee to be non-null here.
+        _stopTime.setToken(new DoubleToken(stopTime));
     }
 
     /** Decide whether the simulation should be stopped when there's no more
@@ -320,8 +342,6 @@ public abstract class DEDirector extends Director {
     ////                         protected variables               ////
 
 
-    // Defines the stopping condition
-    protected double _stopTime = 0.0;
 
     // The time of the earliest event seen in the current simulation.
     protected double _startTime = Double.MAX_VALUE;
@@ -344,7 +364,9 @@ public abstract class DEDirector extends Director {
     // it.
     protected boolean _stopWhenQueueIsEmpty = true;
 
-    //
+    // Indicate whether the actors (not the director) is initialized.
     protected boolean _isInitialized = false;
 
+    // The stop time parameter.
+    private Parameter _stopTime;
 }

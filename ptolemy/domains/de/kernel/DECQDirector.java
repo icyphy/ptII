@@ -482,7 +482,7 @@ public class DECQDirector extends DEDirector {
                 } catch (IllegalAccessException ex) {
                     // Queue is empty.
                     // The next iteration time will be equal to stop time.
-                    _nextIterationTime = _stopTime;
+                    _nextIterationTime = getStopTime();
                     break;
                 }
             } else {
@@ -534,7 +534,7 @@ public class DECQDirector extends DEDirector {
                     _startTimeInitialized = true;
                 }
 
-                if (_currentTime > _stopTime && !isEmbedded()) {
+                if (_currentTime > getStopTime() && !isEmbedded()) {
                     // The stopping condition is met.
                     // Note that, if this director is embedded then
                     // he doesn't determine the stopping condition, rather
