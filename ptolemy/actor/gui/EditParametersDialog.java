@@ -147,7 +147,7 @@ public class EditParametersDialog extends ComponentDialog
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
-        if (change.getOriginator() != this) return;
+        if (change.getSource() != this) return;
 
         // Open a new dialog.
         EditParametersDialog dialog = new EditParametersDialog(_owner, _target);
@@ -161,7 +161,7 @@ public class EditParametersDialog extends ComponentDialog
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if (change.getOriginator() != this) return;
+        if (change.getSource() != this) return;
 
         _target.removeChangeListener(this);
 
