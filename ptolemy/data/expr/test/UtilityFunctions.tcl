@@ -128,18 +128,18 @@ test UtilityFunctions-2.0 {Check readFile method} {
     $matrix toString
 } {[0.0, 3.0; 2.0, 0.0]}
 
-# FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
-# FIXME: starts at [0,0]. How to handle this?
 test UtilityFunctions-3.0 {Check readFile method} {
+    # FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
+    # FIXME: starts at [0,0]. How to handle this?
     set parser [java::new ptolemy.data.expr.PtParser]   
     set tree [$parser generateParseTree "readMatrix('matrix.mat')"]
     set matrix [$tree evaluateParseTree]
     $matrix toString
 } {[0.0, 0.0, 0.0; 0.0, 0.0, 4.0; 0.0, 2.0, 0.0]}
 
-# FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
-# FIXME: starts at [0,0]. How to handle this?
 test UtilityFunctions-3.1 {Check readFile method} {
+    # FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
+    # FIXME: starts at [0,0]. How to handle this?
     set parser [java::new ptolemy.data.expr.PtParser]   
     set tree [$parser generateParseTree "readMatrix('matrix.mat')"]
     set tree [$parser generateParseTree "readMatrix('matrix1.mat')"]
