@@ -74,7 +74,7 @@ public class StickyBallApplet extends CTApplet {
             // the top level CT director
             CTMultiSolverDirector topdir = new CTMultiSolverDirector(
                     _toplevel, "CTTopLevelDirector");
-         
+            topdir.addDebugListener(new StreamListener());
             // two const sources
             // FIXME: to be replaced by impulse sources
             Const source1 = new Const(_toplevel, "Const1");
@@ -147,7 +147,7 @@ public class StickyBallApplet extends CTApplet {
             //        + "two separate balls.");
             CTCompositeActor ctInc = new CTCompositeActor(hs, "Separate");
 
-            CTZeroOrderHold ctIncH1 = new CTZeroOrderHold(ctInc, "Hold1");
+            //CTZeroOrderHold ctIncH1 = new CTZeroOrderHold(ctInc, "Hold1");
             CTIntegrator ctIncV1 = new CTIntegrator(ctInc, "V1");
             ctIncV1.InitialState.setToken(new DoubleToken(0.0));
             CTIntegrator ctIncP1 = new CTIntegrator(ctInc, "P1");
@@ -156,6 +156,7 @@ public class StickyBallApplet extends CTApplet {
             TypedIOPort ctIncE1In = (TypedIOPort)ctIncE1.newPort("In");
             ctIncE1In.setInput(true);
             ctIncE1In.setTypeEquals(DoubleToken.class);
+            ctIncE1.output.setTypeEquals(DoubleToken.class);
             TypedIOPort ctIncE1P1 = (TypedIOPort)ctIncE1.newPort("P1");
             ctIncE1P1.setInput(true);
             ctIncE1P1.setTypeEquals(DoubleToken.class);
@@ -163,7 +164,7 @@ public class StickyBallApplet extends CTApplet {
             // (K1*Y1 + In - K1*P1)/M1
             ctIncE1.expression.setExpression("1.0*1.0 + In - 1.0*P1");
 
-            CTZeroOrderHold ctIncH2 = new CTZeroOrderHold(ctInc, "Hold2");
+            //CTZeroOrderHold ctIncH2 = new CTZeroOrderHold(ctInc, "Hold2");
             CTIntegrator ctIncV2 = new CTIntegrator(ctInc, "V2");
             ctIncV2.InitialState.setToken(new DoubleToken(0.0));
             CTIntegrator ctIncP2 = new CTIntegrator(ctInc, "P2");
@@ -172,6 +173,7 @@ public class StickyBallApplet extends CTApplet {
             TypedIOPort ctIncE2In = (TypedIOPort)ctIncE2.newPort("In");
             ctIncE2In.setInput(true);
             ctIncE2In.setTypeEquals(DoubleToken.class);
+            ctIncE2.output.setTypeEquals(DoubleToken.class);
             TypedIOPort ctIncE2P2 = (TypedIOPort)ctIncE2.newPort("P2");
             ctIncE2P2.setInput(true);
             ctIncE2P2.setTypeEquals(DoubleToken.class);
@@ -214,16 +216,18 @@ public class StickyBallApplet extends CTApplet {
             ctIncOV2.setTypeEquals(DoubleToken.class);
 
             // connect ctInc
-            ctInc.connect(ctIncF1, ctIncH1.input);
-            ctInc.connect(ctIncH1.output, ctIncE1In);
+            //ctInc.connect(ctIncF1, ctIncH1.input);
+            //ctInc.connect(ctIncH1.output, ctIncE1In);
+            ctInc.connect(ctIncF1, ctIncE1In);
             ctInc.connect(ctIncE1.output, ctIncV1.input);
             Relation ctIncRB0 = ctInc.connect(ctIncV1.output, ctIncP1.input);
             ctIncOV1.link(ctIncRB0);
             Relation ctIncRB1 = ctInc.connect(ctIncP1.output, ctIncE1P1);
             ctIncOP1.link(ctIncRB1);
             
-            ctInc.connect(ctIncF2, ctIncH2.input);
-            ctInc.connect(ctIncH2.output, ctIncE2In);
+            //ctInc.connect(ctIncF2, ctIncH2.input);
+            //ctInc.connect(ctIncH2.output, ctIncE2In);
+            ctInc.connect(ctIncF2, ctIncE2In);
             ctInc.connect(ctIncE2.output, ctIncV2.input);
             Relation ctIncRB3 = ctInc.connect(ctIncV2.output, ctIncP2.input);
             ctIncOV2.link(ctIncRB3);
@@ -232,12 +236,14 @@ public class StickyBallApplet extends CTApplet {
 
             ctIncE3.plus.link(ctIncRB1);
             ctIncE3.minus.link(ctIncRB2);
-            ctInc.connect(ctIncD.input, ctIncE3.output);
+            Relation ctIncTr = ctInc.connect(
+                    ctIncD.trigger, ctIncE3.output);
+            ctIncD.input.link(ctIncTr);
             ctInc.connect(ctIncD.output, ctIncTouched);
 
             CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
                     ctInc, "CTIncDir");
-
+            ctIncDir.addDebugListener(new StreamListener());
             //System.out.println("Building the dynamics of two balls "
             //        + "sticking together.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Together");
@@ -252,6 +258,7 @@ public class StickyBallApplet extends CTApplet {
             TypedIOPort ctDecE1P1 = (TypedIOPort)ctDecE1.newPort("P1");
             ctDecE1P1.setInput(true);
             ctDecE1P1.setTypeEquals(DoubleToken.class);
+            ctDecE1.output.setTypeEquals(DoubleToken.class);
             // The expression is:
             // (K1*Y1 + K2*Y2 - K1*P1 - K2*P1)/(M1+M2)
             ctDecE1.expression.setExpression("(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0");
@@ -306,6 +313,13 @@ public class StickyBallApplet extends CTApplet {
             hs.connect(hsin2, ctIncF2);
             Relation hsR1 = hs.connect(ctIncOP1, ctDecOP1);
             Relation hsR2 = hs.connect(ctIncOP2, ctDecOP2);
+            TypedIORelation hsV1 = new TypedIORelation(hs, "HSV1");
+            TypedIORelation hsV2 = new TypedIORelation(hs, "HSV2");
+            TypedIORelation hsTch = new TypedIORelation(hs, "HSTouched");
+            ctIncTouched.link(hsTch);
+            ctIncOV1.link(hsV1);
+            ctIncOV2.link(hsV2);
+            ctDecOV1.link(hsV1);
             hsout1.link(hsR1);
             hsout2.link(hsR2);
 
@@ -317,7 +331,8 @@ public class StickyBallApplet extends CTApplet {
 
             //System.out.println("Set parameters.");
             // try to run the system
-            topdir.setStopTime(100.0);
+            topdir.StartTime.setToken(new DoubleToken(-100.0));
+            topdir.StopTime.setToken(new DoubleToken(100.0));
            
             // CT embedded director 1 parameters
             ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
