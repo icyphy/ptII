@@ -39,6 +39,8 @@ import java.net.URL;
 /**
 A representative of an expression shell.
 
+@see ShellTextArea
+@see ExpressionShellTableau
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 3.0

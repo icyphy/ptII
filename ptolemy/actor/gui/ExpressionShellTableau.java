@@ -50,6 +50,8 @@ A tableau that provides an interactive shell for evaluating expressions.
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
 @since Ptolemy II 3.0
+@see ShellTextArea
+@see ExpressionShellEffigy
 */
 public class ExpressionShellTableau extends Tableau
     implements ShellInterpreter {
@@ -126,8 +128,15 @@ public class ExpressionShellTableau extends Tableau
         
         // If a target was specified, instantiate a new token.
         if(targetName != null) {
-            Parameter parameter = new Parameter(model, targetName);
-            parameter.setToken(result);
+            Attribute attribute = model.getAttribute(targetName);
+            if (attribute != null && !(attribute instanceof Parameter)) {
+               attribute.setContainer(null);
+               attribute = null;
+            }
+            if (attribute == null) {
+                attribute = new Parameter(model, targetName);
+            }
+            ((Parameter)attribute).setToken(result);
         }
 
         if (result == null) {
