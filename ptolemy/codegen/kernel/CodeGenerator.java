@@ -30,6 +30,7 @@ package ptolemy.codegen.kernel;
 
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -303,6 +304,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     protected ComponentCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
+        
+        if(_helperStore.containsKey(component))
+            return (ComponentCodeGenerator)_helperStore.get(component);   
            
         String packageName = generatorPackage.stringValue();
         
@@ -350,7 +354,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ComponentCodeGenerator castHelperObject 
                 = (ComponentCodeGenerator)helperObject;
         
+        _helperStore.put(component, helperObject);
+        
         return castHelperObject;
     }   
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+     
+    private HashMap _helperStore = new HashMap();
     
 }
