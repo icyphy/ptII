@@ -71,7 +71,7 @@ appropriate container and name, then call setExpression() to set its value.
 FIXME:  synchronization issues
 
 @author Neil Smyth
-@version @(#)Parameter.java	1.23 09/24/98
+@version $Id$
 @see ptolemy.kernel.util.Attribute
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
