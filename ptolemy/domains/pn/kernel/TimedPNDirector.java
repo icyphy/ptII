@@ -254,7 +254,7 @@ public class TimedPNDirector extends BasePNDirector {
                 _processTopologyRequests();
                 // FIXME: Should type resolution be done here?
             } catch (TopologyChangeFailedException e) {
-                throw new IllegalActionException("Name duplication error: " +
+                throw new IllegalActionException("TopologyChangeFailed: " +
                         e.getMessage());
             }
 	} else {
@@ -481,8 +481,6 @@ public class TimedPNDirector extends BasePNDirector {
 	    threadlist.insertFirst(pnt);
 	    _addNewThread(pnt);
 	}
-	//Resume the paused actors
-	//resume();
 	synchronized (this) {
 	    _timedMutations = false;
 	    _mutationBlockCount = 0;
@@ -491,7 +489,7 @@ public class TimedPNDirector extends BasePNDirector {
 	Enumeration threads = threadlist.elements();
 	//Starting threads;
 	while (threads.hasMoreElements()) {
-	    ptolemy.actor.process.ProcessThread pnt = (ptolemy.actor.process.ProcessThread)threads.nextElement();
+	    ProcessThread pnt = (ProcessThread)threads.nextElement();
 	    pnt.start();
 	}
     }
@@ -504,7 +502,7 @@ public class TimedPNDirector extends BasePNDirector {
     protected double _currenttime = 0;
 
     private boolean _timedMutations = false;
-    private int _delayBlockCount = 0;
+    protected int _delayBlockCount = 0;
 }
 
 
