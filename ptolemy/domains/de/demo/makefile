@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		Inspection ModalModel TimingParadox SmartSender
+DIRS =		HierarchicalModel Inspection ModalModel TimingParadox SmartSender
 
 CLASSPATH =	$(ROOT)
 
