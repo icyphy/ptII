@@ -323,11 +323,11 @@ For more help, choose Help from the upper menu bar.</text>
 <!-- Modal Director -->
 <xsl:template name="ModalDirector">
 
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+        <property  value="ptolemy.domains.fsm.kernel.HSDirector" class="ptolemy.kernel.util.StringAttribute" name="directorClass" >
+            <property class="ptolemy.actor.gui.style.ChoiceStyle" name="style">
+                <property value="ptolemy.domains.fsm.kernel.HSDirector" class="ptolemy.kernel.util.StringAttribute" name="style0">
                 </property>
-                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                <property value="ptolemy.domains.fsm.kernel.FSMDirector" class="ptolemy.kernel.util.StringAttribute" name="style1">
                 </property>
             </property>
         </property>
