@@ -611,8 +611,10 @@ public class FixPoint implements Cloneable, Serializable {
     /** Static reference to the BigDecimal representation of one. */
     private static BigDecimal _one  = new BigDecimal("1");
 
-    /** The size of the pre-computed _twoRaisedTo powers of two array **/
-    private static final int TWORAISEDTOSIZE = 128;
+    /** The size of the pre-computed _twoRaisedTo powers of two array.
+    *   65 entries are used to cache all powers of 2 from 0 to 64. 
+    **/
+    private static final int TWORAISEDTOSIZE = 64+1;
 
     /** Calculate the table containing 2^x, with 0 < x < TWORAISEDTOSIZE.
      *   Purpose is to speed up calculations involving calculating
@@ -635,7 +637,7 @@ public class FixPoint implements Cloneable, Serializable {
     static {
 	BigDecimal two = _two;
 	BigDecimal powerOf2  = _one;
-	for (int i = 0; i <= _twoRaisedTo.length; i++) {
+	for (int i = 0; i < _twoRaisedTo.length; i++) {
 	    _twoRaisedTo[i] = powerOf2;
 	    powerOf2 = powerOf2.multiply(two);
 	}
