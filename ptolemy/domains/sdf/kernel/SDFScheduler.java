@@ -794,7 +794,7 @@ public class SDFScheduler extends Scheduler {
 		ComponentEntity currentActor
 		    = (ComponentEntity) readyToScheduleActorList.at(0);
 		// remove it from the list of actors we are waiting to fire
-		readyToScheduleActorList.removeAt(0);
+		readyToScheduleActorList.exclude(currentActor);
 
 		_debug("\nScheduling Actor " + currentActor.getName());
 		_simulateInputConsumption(currentActor, waitingTokens);
