@@ -287,9 +287,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if(_debugging) _debug(getFullName() + " initialize.");
         super.initialize();
         if(!_isTopLevel()) {
-            TypedCompositeActor ca = (TypedCompositeActor)getContainer();
-            Director exe = ca.getExecutiveDirector();
-            exe.fireAt(ca, getCurrentTime());
+            TypedCompositeActor container
+                = (TypedCompositeActor)getContainer();
+            Director exe = container.getExecutiveDirector();
+            exe.fireAt(container, getCurrentTime());
         }
     }
 
@@ -349,17 +350,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // ca should have beed checked in _isTopLevel()
             Director exe = container.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
-            double timeAcc = getTimeResolution();
-            double nextIterTime = exe.getNextIterationTime();
-            double aheadLength = nextIterTime - _outsideTime;
+            double timeResolution = getTimeResolution();
+            double nextIterationTime = exe.getNextIterationTime();
+            double aheadLength = nextIterationTime - _outsideTime;
             if(_debugging) _debug(getName(), "Outside Time = " + _outsideTime,
-                    "NextIterationTime = " + nextIterTime,
+                    "NextIterationTime = " + nextIterationTime,
                     "Inferred run length = " + aheadLength);
             if(aheadLength < 0 ) {
                 throw new InvalidStateException(this, "Outside domain"
                         + " time going backward."
                         + " Current time = " + _outsideTime
-                        + ", but the next iteration time = " + nextIterTime);
+                        + ", but the next iteration time = "
+                        + nextIterationTime);
             }
             if (aheadLength == 0 ) {
                 // This only happens when the current time of the outside
@@ -370,18 +372,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             if(_debugging) _debug( "Current Time " + getCurrentTime()
                     + "Outside domain current time " + _outsideTime
-                    + " next iteration time " + nextIterTime
+                    + " next iteration time " + nextIterationTime
                     + "run length "+ aheadLength);
 
             // Synchronization, handle round up error.
-            if(aheadLength < timeAcc) {
-                exe.fireAt(container, nextIterTime);
+            if(aheadLength < timeResolution) {
+                exe.fireAt(container, nextIterationTime);
                 if(_debugging) _debug("Next iteration is too close" +
                         " (but not sync). Request a refire at: " 
-                        + nextIterTime);
+                        + nextIterationTime);
                 return false;
             }
-            if(Math.abs(_outsideTime - getCurrentTime()) < timeAcc) {
+            if(Math.abs(_outsideTime - getCurrentTime()) < timeResolution) {
                 if(_debugging) _debug("Round up current time " +
                         getCurrentTime() + " to outside time " +_outsideTime);
                 setCurrentTime(_outsideTime);
@@ -405,7 +407,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 _catchUp();
             }
             if(aheadLength < _runAheadLength) {
-                _setIterationEndTime(nextIterTime);
+                _setIterationEndTime(nextIterationTime);
             } else {
                 _setIterationEndTime(_outsideTime + _runAheadLength );
             }
@@ -427,7 +429,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if ther are data transferred.
+     *  @return True if there are data transferred.
      */
     public boolean transferInputs(IOPort port)
             throws IllegalActionException {
@@ -524,14 +526,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     table.removeFirst();
                 } else if(Math.abs(breakpoint - now) < getTimeResolution() &&
                         breakpoint < getIterationEndTime()){
-                    // break point now! stoped by event
+                    // break point now! stopped by event
                     return true;
                 } else {
                     break;
                 }
             }
         }
-        // unpredictable breakpoints. Detecte current events.
+        // unpredictable breakpoints. Detect current events.
         CTScheduler scheduler = (CTScheduler)getScheduler();
         Iterator generators = scheduler.eventGeneratorList().iterator();
         while(generators.hasNext()) {
@@ -543,7 +545,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return false;
     }
 
-    /**Return true if this is a top-level director. This is a syntatic sugar.
+    /**Return true if this is a top-level director. This is a syntactic sugar.
      * @return True if this director is at the top-level.
      */
     protected final boolean _isTopLevel() {
