@@ -14,19 +14,7 @@ Contents
 </menu>
 
 <h2><a name="profiling">Profiling</a></h2>
-In JDK1.1, <CODE>java -prof</CODE> creates a <CODE>java.prof</CODE>
-file that contains columns for:
-	<menu>
-	<li> # of calls
-	<li> method called
-	<li> called by
-	<li> time spent
-	</menu>
-To sort by time, use the following:
-<pre>
-sort -r +82 &lt; java.prof &gt; java.sort
-</pre>
- <p>In JDK1.2, try
+ <p>In JDK1.3, try
 <pre>
 java -Xrunhprof:help
 </pre>
