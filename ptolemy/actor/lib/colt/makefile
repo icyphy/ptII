@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Java Advanced Imaging
+# Makefile for Ptolemy II Colt actors
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2002-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/colt
 
-DIRS = 		demo #test
+DIRS = 		demo test
 
 # Root of the Java directory
 ROOT =		../../../..
