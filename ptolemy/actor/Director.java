@@ -362,14 +362,20 @@ public class Director extends NamedObj implements Executable {
         _queuedTopologyRequests.insertLast(request);
     }
 
-    /** Schedule to be refired after a specified delay with respect to the
-     *  current time.
-     *  @exception IllegalActionException FIXME
+    /** Schedule a firing of the given actor at the given time.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
      */
-    // FIXME: complete this.
-    public void fireAfterDelay(Actor actor, double delay)
+    public void fireAt(Actor actor, double time) 
             throws IllegalActionException {
-        // do nothing.
+        
+        // do nothing in this base class.
+        // Note that, alternatively, this method could have been abstract.
+        // But we didn't do that, because otherwise we wouldn't be able
+        // to run TclBlend testscript on this class.
+                
     }
 
     /** Remove a topology listener from this director.
