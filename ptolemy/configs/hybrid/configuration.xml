@@ -3,6 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
+  <doc>Configuration for Hybrid Systems</doc>
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.kernel.attributes.FileAttribute"
