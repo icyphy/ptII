@@ -49,8 +49,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
     public VideoPlayer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    
-        input = new TypedIOPort(this, "input", true, false);
+
         input.setTypeEquals(BaseType.OBJECT);
     }
 
