@@ -151,7 +151,7 @@ public class Thermostat extends TypedCompositeActor{
         //hsdir.addDebugListener(dbl);
 
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
-        ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
+        //ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
         Integrator ctIncI = new Integrator(ctInc, "Integrator");
         //ctIncI.addDebugListener(dbl);
         ZeroCrossingDetector ctIncD =
@@ -179,8 +179,10 @@ public class Thermostat extends TypedCompositeActor{
         ctIncTr.setOutput(true);
         ctIncTr.setTypeEquals(BaseType.DOUBLE);
         // connect ctInc
-        ctInc.connect(ctIncIn, ctIncH.input);
-        ctInc.connect(ctIncH.output, ctIncI.input);
+        //ctInc.connect(ctIncIn, ctIncH.input);
+        //ctInc.connect(ctIncH.output, ctIncI.input);
+        
+        ctInc.connect(ctIncIn, ctIncI.input);
         Relation ctIncR2 = ctInc.newRelation("R2");
         ctIncGF.output.link(ctIncR2);
         ctIncD.trigger.link(ctIncR2);
@@ -200,7 +202,7 @@ public class Thermostat extends TypedCompositeActor{
 
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
         //ctDec.addDebugListener(dbl);
-        ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");
+        //ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");
         Integrator ctDecI = new Integrator(ctDec, "Integrator");
         Scale ctGain = new Scale(ctDec, "Gain");
         ZeroCrossingDetector ctDecD =
@@ -227,8 +229,9 @@ public class Thermostat extends TypedCompositeActor{
         ctDecTr.setOutput(true);
         ctDecTr.setTypeEquals(BaseType.DOUBLE);
         // connect ctDec
-        ctDec.connect(ctDecIn, ctDecH.input);
-        ctDec.connect(ctDecH.output, ctGain.input);
+        //ctDec.connect(ctDecIn, ctDecH.input);
+        //ctDec.connect(ctDecH.output, ctGain.input);
+        ctDec.connect(ctDecIn, ctGain.input);
         ctDec.connect(ctGain.output, ctDecI.input);
         Relation ctDecR2 = ctDec.newRelation("R2");
         ctDecGF.output.link(ctDecR2);
