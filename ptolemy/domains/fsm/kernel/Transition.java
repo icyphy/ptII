@@ -51,9 +51,10 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.ParseTreeEvaluatorForGuardExpression;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.fsm.lib.RelationList;
+import ptolemy.domains.fsm.lib.ParseTreeEvaluatorForGuardExpression;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 
@@ -193,13 +194,13 @@ public class Transition extends ComponentRelation {
         _guard.setLazy(true);
         _guard.setTypeEquals(BaseType.BOOLEAN);
 
-        _guard2 = new Variable(this, "_guard2");
-        // Make the variable lazy since it will often have
-        // an expression that cannot be evaluated.
-        _guard2.setLazy(true);
-        _guard2.setTypeEquals(BaseType.DOUBLE);
-        _guard2.setParseTreeEvaluator( (ParseTreeEvaluator)new
-            ParseTreeEvaluatorForGuardExpression());
+        // Construct a relation list for the transition.
+        _relationList = new RelationList(this, "relationList");
+        // Associate the relation list with the
+        // ParseTreeEvaluatorForGuardExpression
+        _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
+        // Register the guard expression with the above parse tree evaluator
+        _guard.setParseTreeEvaluator( (ParseTreeEvaluator) _parseTreeEvaluator);
 
         _trigger = new Variable(this, "_trigger");
         // Make the variable lazy since it will often have
@@ -294,7 +295,6 @@ public class Transition extends ComponentRelation {
         if (attribute == guardExpression) {
             String expr = guardExpression.getExpression();
             _guard.setExpression(expr);
-            _guard2.setExpression(expr);
         }
         if (attribute == triggerExpression) {
             String expr = triggerExpression.getExpression();
@@ -339,7 +339,6 @@ public class Transition extends ComponentRelation {
         newObject.refinementName =
             (StringAttribute)newObject.getAttribute("refinementName");
         newObject._guard = (Variable)newObject.getAttribute("_guard");
-        newObject._guard2 = (Variable)newObject.getAttribute("_guard2");
 
         newObject._trigger = (Variable)newObject.getAttribute("_trigger");
         newObject._actionListsVersion = -1;
@@ -476,21 +475,36 @@ public class Transition extends ComponentRelation {
      *  to a boolean value.
      *  @return The trigger expression.
      */
+    public RelationList getRelationList() {
+        return _relationList;
+    }
+
+    /** Return the trigger expression. The trigger expression should evaluate
+     *  to a boolean value.
+     *  @return The trigger expression.
+     */
     public String getTriggerExpression() {
         return _trigger.getExpression();
     }
 
-    /** Return true if the transition is enabled, that is the guard is true.
-     *  @return True if the transition is enabled.
+    /** Return true if the transition is enabled, that is the guard is true, or
+     *  some event has been detected.
+     *  @return True if the transition is enabled and some event is detected.
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
         try {
+            if (!_relationList.isEmpty()) {
+                _parseTreeEvaluator.setEvaluationPhase(false);
+            }
             Token token = _guard.getToken();
             if (token == null) {
                 return false;
             }
-            return ((BooleanToken)token).booleanValue();
+            //FIXME: deal with continuous varialbes and discrete variables.
+            boolean result = ((BooleanToken)token).booleanValue()
+                || _relationList.hasEvent();
+            return result;
         } catch (UnknownResultException ex) {
             return false;
         }
@@ -689,10 +703,6 @@ public class Transition extends ComponentRelation {
         return;
     }
 
-    // Variable for evaluating guard in a different way such
-    // that the transition happen exactly when enabled.
-    protected Variable _guard2 = null;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -777,5 +787,10 @@ public class Transition extends ComponentRelation {
 
     // Version of the cached reference to the refinement.
     private long _refinementVersion = -1;
+
+    // List of the relation expressions of a gurad expression
+    private RelationList _relationList;
+
+    private ParseTreeEvaluatorForGuardExpression _parseTreeEvaluator;
 
 }

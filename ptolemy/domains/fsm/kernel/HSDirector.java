@@ -38,6 +38,7 @@ import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.domains.fsm.lib.RelationList;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
@@ -185,7 +186,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     if (_stopRequested) break;
                     if (transitionActors[i].prefire()) {
                         if(_debugging) {
-                            _debug(getFullName(), " fire transition refinement",
+                            _debug(getFullName(),
+                                   " fire transition refinement",
                                   ((ptolemy.kernel.util.NamedObj)transitionActors[i]).getName());
                         }
                         transitionActors[i].fire();
@@ -229,13 +231,12 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return execDir.getNextIterationTime();
     }
 
-    /** Return true if the current integration step is accurate with
-     *  the respect of all the enabled refinements, which are refinements
-     *  that returned true in their prefire() methods in this iteration.
-     *  Also return true if there
-     *  are no refinements. If a refinement is not a
-     *  CTStepSizeControlActor, we assume the refinement thinks this
-     *  step to be accurate.
+    /** Return true if there are no refinements, or if the current
+     *  integration step is accurate with the respect of all the enabled
+     *  refinements, which are refinements that returned true in their
+     *  prefire() methods in this iteration, or if a refinement is not a
+     *  CTStepSizeControlActor; and if the current time is exactly the same
+     *  time the transition is enabled.
      *  @return True if the current step is accurate.
      */
     public boolean isThisStepAccurate() {
@@ -251,49 +252,52 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
         }
-        // check if the transition is accurate
-        // FIXME: only handle the non-preemptive transitions
 
-        // FIXME: There is a fatal error about this transition enforced
-        // step size control. I have to comment it out before the solution
-        // is found.
-        /*
+        // check if the transition is enabled at the current time
+        // FIXME: only handle the non-preemptive transitions
+        // Preemptive transitions need no step size refinement.
         try {
-            Transition tr = _ctrl._checkTransition(_st.
-                nonpreemptiveTransitionList());
+            Transition tr = _ctrl._checkTransition(_st.nonpreemptiveTransitionList());
+
+            // If there is no transition enabled, the last step size is accurate for
+            // transitions. The status of the relations of the guard expressions are
+            // committed into all the associated relation lists.
             if (tr == null) {
                 _lastTransitionAccurate = true;
+                Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
+                while (iterator.hasNext()) {
+                    ((Transition) iterator.next()).getRelationList().commitRelationValues();
+                }
                 return result;
             }
             else {
-                Variable guard = tr._guard2;
-                _distanceToBoundary = ( (DoubleToken) guard.getToken()).
-                    doubleValue();
-                System.out.println("the distance to guard "+ guard.getExpression() + " is " +  _distanceToBoundary);
-
-                // the returned value as -1.0 indicating this transition is
-                // always enabled, return true. The HSDirector is responsible
-                // to refire itself at the current time.
-
-                if (_distanceToBoundary == -1.0) {
-                    //System.out.println("==>the guard " + guard.getExpression() + " is true.");
-                    return true;
-                }
+                // There is one transition enabled. We check the maximum difference
+                // of all relations that change their status with the current step size.
+                RelationList relationList = tr.getRelationList();
+                _distanceToBoundary = relationList.maximumDifference();
 
                 _transitionAccurate = (_distanceToBoundary < dir.getErrorTolerance());
 
+                //System.out.println("==> the guard " + tr.getGuardExpression() +
+                //                   " has difference " + _distanceToBoundary);
+
                 if (_transitionAccurate) {
                     _lastTransitionAccurate = true;
+                } else {
+                    // Retrive the former distance of the relation which has the
+                    // biggest difference with the current step size.
+                    // The former distance will be used to refine the step size.
+                    _lastDistanceToBoundary = relationList.getFormerMaximumDistance();
                 }
                 return result && _transitionAccurate;
             }
         } catch (Exception e) {
             //FIXME: handle the exception
-            System.out.println("FIXME:: " + e.getMessage());
+            System.out.println(
+                "FIXME:: HSDirector.isThisStepAccurate() throws exception "
+                + e.getMessage());
             return result;
         }
-        */
-       return result;
     }
 
     /** Return a CTReceiver.
@@ -316,6 +320,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  transition are executed. Execute the commit actions contained
      *  by the last chosen transition of the mode controller and set
      *  its current state to the destination state of the transition.
+     *  Clear the relation list associated with the enabled transition
+     *  and request to be fired again at the current time.
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
      *  @exception IllegalActionException If thrown by any action, or
@@ -337,9 +343,20 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _ctrl._setInputsFromRefinement();
         }
         // FIXME: why do we need to execute the update actions again in postfire?
+        // From Xiaojun: we need to make sure the actions associated with the
+        // enabled transition get executed.
         Transition tr =
             _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
+        // If there is one transition enabled, the HSDirector requests fire again
+        // at the same time to see whether the next state has some outgoing
+        // transition enabled.
         if (tr != null) {
+            Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
+            // It is important to clear the history information of the relation list
+            // since after this breakpoint, no history information is valid.
+            while (iterator.hasNext()) {
+                ((Transition) iterator.next()).getRelationList().clearRelationList();
+            }
             CompositeActor container = (CompositeActor)getContainer();
             dir.fireAt(container, getCurrentTime());
         }
@@ -380,12 +397,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     /** Return the step size refined by all the enabled refinements,
      *  which are refinements that returned true
-     *  in their prefire() methods in this iteration.
-     *  If there are no refinements, then return the current step size
-     *  of the executive director.
-     *  If a refinement is not a CTStepSizeControlActor, then
-     *  its refined step size is the current step size of the
-     *  executive director..
+     *  in their prefire() methods in this iteration, or the enabled
+     *  transition which requires the current time be the same with
+     *  the time it is enabled.
+     *  If there are no refinements, or no refinement is a
+     *  CTStepSizeControlActor, then the refined step size is the smaller
+     *  value between current step size of the executive director and
+     *  refined step size from enabled transition.
      *  @return The refined step size.
      */
     public double refinedStepSize() {
@@ -402,9 +420,29 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        // FIXME: There is a fatal error in this transition enforced
-        // step size control. I comment it out before I find the solution.
-        /*
+        if (_transitionAccurate) {
+            return result;
+        } else {
+            double refinedStepSize = result;
+            double errorTolerance = dir.getErrorTolerance();
+            double currentStepSize = dir.getCurrentStepSize();
+
+            // Linear interpolation to refine the step size.
+            // Note the step size is refined such that the distanceToBoundary
+            // is half of errorTolerance.
+            refinedStepSize = currentStepSize * (_lastDistanceToBoundary + errorTolerance/2)
+                / (_lastDistanceToBoundary + _distanceToBoundary);
+
+            if (refinedStepSize > result) {
+                return result;
+            } else {
+                return refinedStepSize;
+            }
+        }
+
+        // FIXME: Linear interpolation is great but may be optimized with some
+        // tricks from following commented code. That is why I haven't deleted it.
+/*
         if (_transitionAccurate) {
             return result;
         } else {
@@ -476,8 +514,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 return possibleStepSize;
             }
         }
-        */
-        return result;
+*/
     }
 
     ///////////////////////////////////////////////////////////////////
