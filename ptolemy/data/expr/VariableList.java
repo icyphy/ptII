@@ -275,7 +275,7 @@ public class VariableList extends Attribute {
     /** If the argument is false, the variables in this list will not 
      *  notify their dependents of changes in value.
      *  @param change If false, the variables in this list will not 
-     *   propogate changes in value.
+     *   propagate changes in value.
      */  
     public void setReportChange(boolean change) {
         _reportChange = change;
