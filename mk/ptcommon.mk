@@ -338,7 +338,7 @@ PTJAR_TMPDIR =  ptjar_tmpdir
 # have OTHER_FILES_TO_BE_JARED set, so we need to copy
 # rather than refer to $(ME)/$(OTHER_FILES_TO_BE_JARED)
 jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR) \
-		$(OTHER_FILES_TO_BE_JARED)
+		$(OTHER_FILES_TO_BE_JARED) $(OTHER_JARS)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
