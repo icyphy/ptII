@@ -115,9 +115,11 @@ public class FileReader extends Source {
         // get the file name from there.
         if (fileOrURLPort.getWidth() > 0) {
             if (fileOrURLPort.hasToken(0)) {
-                String name = ((StringToken)fileOrURLPort.get(0)).stringValue();
-                // Using setExpression() rather than setToken() allows the string
-                // to refer to variables defined in the scope of this actor.
+                String name =
+                    ((StringToken)fileOrURLPort.get(0)).stringValue();
+                // Using setExpression() rather than setToken() allows
+                // the string to refer to variables defined in the
+                // scope of this actor.
                 fileOrURL.setExpression(name);
             }
         }
