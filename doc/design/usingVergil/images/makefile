@@ -113,6 +113,7 @@ OTHER_FILES_TO_BE_JARED = \
 	usingVergil67.gif \
 	usingVergil68.gif \
 	usingVergil69.gif \
+	usingVergil7.gif \
 	usingVergil70.gif \
 	usingVergil71.gif \
 	usingVergil72.gif \
