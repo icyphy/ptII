@@ -162,6 +162,14 @@ public class UnitUtilities {
         }
     }
 
+    /** Return a copy of the category list.
+     *  @return a copy of the category list
+     */
+   public static ArrayList categoryList() {
+       // The port configuration window uses this.
+       return new ArrayList(_categoryList);
+   }
+
     /** Return a copy of the given units array. If the given array is
      *  unitless, then return null.
      *  @return An int array that is a copy of the unit category
