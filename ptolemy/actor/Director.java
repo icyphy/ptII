@@ -1261,6 +1261,7 @@ public class Director extends Attribute implements Executable {
             // create parameters
             timePrecisionInDigits = new Parameter(this, 
                 "timePrecisionInDigits", new IntToken(10));
+            timePrecisionInDigits.setVisibility(Settable.NONE);
         } catch (Exception e) {
             // This is the only place to create 
             // the timePrecisionInDigits parameter, no exception should ever
