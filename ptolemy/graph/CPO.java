@@ -80,7 +80,7 @@ public interface CPO
      *  @return an array of Objects representing the elements in the
      *   down-set of the specified element.
      *  @exception IllegalArgumentException If the specified Object is not
-     *   an element in this CPO.
+     *   an element in this CPO, or the resulting set is infinite.
      */
     public Object[] downSet(Object e);
 
@@ -179,7 +179,7 @@ public interface CPO
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.
      *  @exception IllegalArgumentException If the specified Object is not
-     *   an element of this CPO.
+     *   an element of this CPO, or the resulting set is infinite.
      */
     public Object[] upSet(Object e);
 
