@@ -239,10 +239,11 @@ public class CNames {
         return "superclass";
     }
 
-    /** Determine the C name associated with a Soot type. For RefType types,
-     *  the C name returned is the name of the instance-specific data structure.
-     *  To obtain the name of the class-specific data strucuture associated with
-     *  a RefType, see {@link #instanceNameOf(SootClass)}.
+    /** Determine the C name associated with a Soot type. For RefType
+     *  types, the C name returned is the name of the
+     *  instance-specific data structure.  To obtain the name of the
+     *  class-specific data structure associated with a RefType, see
+     *  {@link #instanceNameOf(SootClass)}.
      *  @param type The type.
      *  @return The C name.
      */
