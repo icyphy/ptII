@@ -401,6 +401,7 @@ import ptolemy.plot.PlotBox;
 public class PxgraphParser {
 
     /** Construct a parser to configure the specified plot.
+     *  @param plot The Plot object that is configured.
      */
     public PxgraphParser(Plot plot) {
         _plot = plot;
@@ -967,7 +968,7 @@ public class PxgraphParser {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    // The current dataset, used for handling multiple files
+    /** The current dataset, used for handling multiple files. */
     protected int _currentdataset = -1;
 
     /** The plot object to which to apply commands. */

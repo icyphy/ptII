@@ -87,7 +87,8 @@ public class PxgraphApplication extends PlotApplication {
     }
 
     /** Construct a plot with the specified command-line arguments
-     *  and instance of plot.
+     *  and instance of Plot.
+     *  @param plot The instance of Plot.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
@@ -99,6 +100,8 @@ public class PxgraphApplication extends PlotApplication {
     ////                         public methods                    ////
 
     /** Create a new plot window and map it to the screen.
+     *  @param args The command line arguments.  To see what command
+     *  line arguments are available, run with "-help" as the first element.
      */
     public static void main(String args[]) {
         try {
@@ -141,6 +144,7 @@ public class PxgraphApplication extends PlotApplication {
     /** Parse those command-line arguments that are relevant to the
      *  application only, and refer other arguments to the PxgraphParser
      *  helper class.
+     *  @param args  The command line arguments to parse.
      *  @return The number of arguments read.
      *  @exception CmdLineArgException If a command line argument cannot
      *   be parsed.
