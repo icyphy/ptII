@@ -1025,9 +1025,8 @@ public class FSMActor extends CompositeEntity
             List[] tokenListArray = (LinkedList[])_hdfArrays.get(port);
       
             // Update the value variable if there is/are token(s) in
-            // the channel.  FIXME: What if there are not enough
-            // tokens?  In HDF(SDF) this shouldn't happen.
-            int flag = 0;
+            // the channel.  FIXME: What if there are not enough tokens?
+            // In HDF(SDF) this shouldn't happen.
             while (port.hasToken(channel)) {
                 Token token = port.get(channel);
                 if (_debugging) {
