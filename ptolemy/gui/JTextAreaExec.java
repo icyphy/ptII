@@ -29,6 +29,8 @@
 
 package ptolemy.gui;
 
+import ptolemy.util.StringUtilities;
+
 //import util.testsuite.PrintThreads;
 import java.awt.*;
 import java.awt.event.*;

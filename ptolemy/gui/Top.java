@@ -29,6 +29,8 @@
 
 package ptolemy.gui;
 
+import ptolemy.util.StringUtilities;
+
 // Java imports
 import javax.swing.AbstractAction;
 import javax.swing.Action;

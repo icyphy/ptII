@@ -52,7 +52,6 @@ JSRCS = \
 	CancelException.java \
 	CloseListener.java \
 	ComponentDialog.java \
-	GUIStringUtilities.java \
 	GraphicalMessageHandler.java \
 	JTextAreaExec.java \
 	MessageHandler.java \
