@@ -121,7 +121,7 @@ are considered to be one. A breakpoint can be inserted into the table by
 calling the fireAt() method. In this class, if the fireAt() method is
 called with a specified time in the future, then <i>two</i> firings
 are scheduled, one at the specified time, and one at the specified
-time minus the <i>timeResolution</i>.  The reason for this is that
+time minus the <i>minStepSize</i>.  The reason for this is that
 many actors use fireAt() to produce a discontinuity on their outputs.
 The earlier firing ensures that this appears as a discontinuity on
 the output.  How breakpoints are actually handled
@@ -355,10 +355,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  If the specified time is the current time (within the
      *  <i>timeResolution</i> of this director), then the actor will
      *  be fired as part of the current execution phase.  If the
-     *  specified time is in the future, then this
+     *  specified time is in the future, and the specified actor is
+     *  not null and not a discrete actor, then this
      *  director will fire the actor <i>twice</i> in response.  First,
      *  it will fire the actor at the registered time point minus the
-     *  time resolution, and then it will fire the actor again at
+     *  minimum step size, and then it will fire the actor again at
      *  exactly at each registered time point.  This ensures that if
      *  the actor outputs a discontinuity at the resitered time point,
      *  then the output will indeed appear as a discontinuity.
@@ -378,6 +379,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
         double resolution = getTimeResolution();
+        // Although this is the same as the time resolution, we use
+        // a separate variable to make it easy to change.
+        double minStep = resolution;
         double currentTime = getCurrentTime();
         if (time < currentTime - resolution) {
             throw new IllegalActionException((Nameable)actor,
@@ -408,7 +412,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 }
                 _debug(name
                     + " requests refire at future time. Firing will occur at "
-                    + (currentTime - resolution)
+                    + (currentTime - minStep)
                     + " and "
                     + currentTime);
             }
@@ -417,8 +421,18 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                         new FuzzyDoubleComparator(resolution));
             }
             if (actor != null 
-                    && time - resolution > currentTime - resolution) {
-                _breakPoints.insert(new Double(time - resolution));
+                    && time - minStep > currentTime - resolution) {
+                // NOTE: The extra firings introduced here will cause all
+                // actors to be fired at the specified times, except discrete
+                // actors whose firing times don't match. This is not
+                // generally a problem, except for actors whose inputs are
+                // supplied by said discrete actors.  Those inputs will have
+                // no tokens (hasToken() returns false).  If the actor
+                // properly returns false to prefire(), then it will not
+                // be fired.  Some actors, however, such as Display, will
+                // fire anyway. Another example is Test.  Such actors become
+                // more difficult to use in CT.
+                _breakPoints.insert(new Double(time - minStep));
             }
             _breakPoints.insert(new Double(time));
         }
