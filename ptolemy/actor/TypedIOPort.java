@@ -76,13 +76,14 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 
     /** Construct a TypedIOPort with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
-     *  must implement the Actor interface, or an exception will be thrown.
+     *  must implement the TypedActor interface, or an exception will be
+     *  thrown.
      *
      *  @param container The container actor.
      *  @param name The name of the port.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
-     *   Actor interface.
+     *   TypedActor interface.
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
