@@ -1080,6 +1080,7 @@ public class LiveSound {
                 int result = _captureBytes[0];
                 int j = 1;
                 // Shift and add in low order bits.
+                // Note that it is ok to fall through the cases here (I think).
                 switch(bytesPerSample) {
                 case 4:
                     result <<= 8;
