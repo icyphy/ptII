@@ -2874,7 +2874,8 @@ test MoMLParser-18.1 {parse testdir.moml and get the filename of the inner part 
     set toplevel [$parser parseFile "testdir.moml"]
     set compositeEntity [java::cast ptolemy.kernel.CompositeEntity $toplevel]
     set testdir2 [$compositeEntity getEntity testdir2]
-    set uriAttribute [$testdir2 getAttribute _uri]
+    set deferredTo [$testdir2 getDeferTo]
+    set uriAttribute [$deferredTo getAttribute _uri]
     # This will crap out if testdir/testdir2 does not have a _uri attribute
     set uri [[java::cast ptolemy.kernel.attributes.URIAttribute $uriAttribute] getURI]
     set uriString [$uri -noconvert toString] 
