@@ -1,4 +1,4 @@
-/* Marker interface for directors that operate on time-based signals.
+/* Interface for directors that operate on time-based signals.
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
