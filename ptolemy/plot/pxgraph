@@ -60,17 +60,20 @@ JAVADEFAULT=/opt/jdk1.1.5
 if [ -z "$PTOLEMY" ]; then 
     if [ "$TYCHO" -a -f "$TYCHO/../bin/ptarch" ]; then
 	PTOLEMY="$TYCHO/.."
+	export PTOLEMY
     elif [ -d "$PTDEFAULT" ]; then
 	PTOLEMY="$PTDEFAULT"
+	export PTOLEMY
     fi
-    export PTOLEMY
 fi
 
 if [ -z "$TYCHO" ]; then
     if [ "$PTOLEMY" -a -f "$PTOLEMY/tycho/bin/ptarch" ]; then
 	TYCHO="$PTOLEMY/tycho"
+	export TYCHO
     elif [ -d "$TYDEFAULT" ]; then
 	TYCHO="$TYDEFAULT"
+	export TYCHO
     fi
     export TYCHO
 fi
@@ -85,6 +88,14 @@ if [  "`uname`" =  "CYGWIN32/NT"  ]; then
     windows=yes
 fi	
 
+case "${OSTYPE-no}" in
+    [Ll]inux)
+    if [ "${JAVA_HOME-no}" != "no" ]; then
+	JAVAHOME="$JAVA_HOME"
+	export JAVAHOME
+    fi;; 
+esac
+
 if [ -z "$JAVAHOME" ]; then
     if [ -d "$JAVADEFAULT" ]; then
 	JAVAHOME="$JAVADEFAULT"
@@ -95,7 +106,8 @@ if [ -z "$JAVAHOME" ]; then
 	else    
 	    searchfile=javac
 	fi    
-	for i in `echo $PATH | sed -e 's/:/ /g'`
+	oldifs="$IFS"; IFS=":"
+	for i in $PATH
 	do
 	    if [ -x "$i/$searchfile" -a ! -d "$i/$searchfile" ]; then
 		JAVAHOME=`dirname $i`
@@ -103,6 +115,7 @@ if [ -z "$JAVAHOME" ]; then
 		break
 	    fi
 	done	
+	IFS="$oldifs"
     fi
     if [ -z "$JAVAHOME" ]; then
 	echo "$0: Could not find $searchfile in your \$PATH"
