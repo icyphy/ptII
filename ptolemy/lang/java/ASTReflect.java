@@ -66,6 +66,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,8 +80,16 @@ These methods operate on Java code that has been compiled and is
 available at runtime for inspection by using the Java reflection
 capability.
 
+In the Ptolemy II code generator, three modes of loading AST classes
+supported. In "full" mode, the entire AST is loaded; in "deep" mode, 
+method and constructor bodies are excluded; and in "shallow" mode,
+field, method, and constructor declarations (members) are excluded 
+entirely. The ASTReflect class supports shallow and deep loading,
+and demand-driven conversion from shallowly-loaded ASTs to deeply-loaded
+ones.
+
 @version $Id$
-@author Christopher Hylands
+@author Christopher Hylands and Shuvra S. Bhattacharyya 
  */
 public final class ASTReflect {
 
@@ -89,19 +99,51 @@ public final class ASTReflect {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Use reflection to set the members subtree of the AST asslociated with
+     *  a class declaration. This ensures so-called "deep loading" of a class's AST. 
+     *  @param myClass The class whose members we are adding by reflection.
+     */
+    public static void ASTAugmentWithMembers(ClassDeclNode classDeclNode) {
+        Class myClass = ASTReflect.lookupClass(
+                ASTReflect.getFullyQualifiedName(classDeclNode));
+    
+        if (StaticResolution.traceLoading)
+            System.out.println("Starting shallow-->deep conversion on " + 
+                    myClass.getName()); 
+    
+        LinkedList memberList = new LinkedList();
+
+        // Get the AST for all the constructors.
+        memberList.addAll(constructorsASTList(myClass));
+    
+        // Get the AST for all the methods.
+        memberList.addAll(methodsASTList(myClass));
+    
+        // Get the AST for all the fields.
+        memberList.addAll(fieldsASTList(myClass));
+
+        // Get the AST for all the inner classes or inner interfaces
+        memberList.addAll(innerClassesOrInterfacesASTList(myClass));    
+
+        // Fill in the members list of the given class declaration
+        classDeclNode.setMembers(memberList);
+    }
+ 
     /** Use reflection to generate the ClassDeclNode of a class.
      *  @param myClass The class to be analyzed.
      *  @return The ClassDeclNode of that class.
      */
     public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 
-    System.out.println("Starting deep loading of " + myClass.getName()); 
+    if (StaticResolution.traceLoading)
+        System.out.println("Starting deep loading of " + myClass.getName()); 
 
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 	NameNode className = (NameNode) _makeNameNode(myClass.getName());
 	List interfaceList = _typeNodeList(myClass.getInterfaces());
 
+    // FIXME: just use ASTAugmentWithMembers once that code stabilizes.
 	LinkedList memberList = new LinkedList();
 
 	// Get the AST for all the constructors.
@@ -172,7 +214,6 @@ public final class ASTReflect {
                         /*imports*/ new LinkedList(),
                         TNLManip.addFirst(interfaceDeclNode));
 	} else {
-        // FIXME: A terrible hack just to try out demand-driven deep-loading of ASTs
         ClassDeclNode classDeclNode = null;
         if (StaticResolution.shallowLoading && StaticResolution.enableShallowLoading)
 	        classDeclNode = ASTShallowClassDeclNode(myClass);
@@ -194,9 +235,9 @@ public final class ASTReflect {
      *  @return The "shallow" ClassDeclNode of that class.
      */
     public static ClassDeclNode ASTShallowClassDeclNode(Class myClass) {
-    if (StaticResolution.traceLoading) {
+    if (StaticResolution.traceLoading) 
          System.out.println("Starting shallow loading of " + myClass.getName()); 
-    }
+    
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 	NameNode className = (NameNode) _makeNameNode(myClass.getName());
@@ -244,21 +285,50 @@ public final class ASTReflect {
 	    List throwsList =
                 _typeNodeList(constructors[i].getExceptionTypes());
 
-            // Note that because we are using reflection, we don't get
-            // the bodies of the constructors.
+        // Note that because we are using reflection, we don't get
+        // the bodies of the constructors. Instead, we attach a null
+        // object as the body. Note that this is not symmetric with how
+        // we handle omitted bodies when constructing method declaration ASTs
+        // via reflection. This is because of a corresponding asymmetry in
+        // how the ConstructorDeclNode constructor is defined (it requires
+        // a BlockNode as the body). However, a block node with an empty
+        // statement list is not equivalent to a block node that is omitted,
+        // so we use a null object as the body here. FIXME: elminate this
+        // asymmetry in the constructor definition (with respect to the
+        // constructor for MethodDeclNode).
 	    ConstructorDeclNode constructorDeclNode =
 		new ConstructorDeclNode(modifiers,
                         constructorName,
                         paramList,
                         throwsList,
-                        /* body */
-                        new BlockNode(new LinkedList()),
+                        null  /* body */,
                         /* constructor call */
                         new SuperConstructorCallNode(new LinkedList())
 					);
 	    constructorList.add(constructorDeclNode);
 	}
 	return constructorList;
+    }
+
+    /** Given an AST node for a class or interface declaration, convert the loaded
+     *  AST to its deep version if necessary (i.e., if it is loaded
+     *  in shallow mode), and perform all necessary resolution 
+     *  and scope building passes so that we can proceed with name/field resolution
+     *  using the deeply-loaded AST. If the AST is already fully loaded, do
+     *  nothing. 
+     *  @param declarationNode The AST node for the given class or interface declaration.
+     *  @exception A RunTimeException is thrown if the declaration is null, or
+     *  if it does not correspond to a class or interface declaration.
+     */
+    public static void ensureDeepLoading(TreeNode declarationNode) {
+        // FIXME: extend to include interfaces
+        if (!(declarationNode instanceof ClassDeclNode)) {
+            throw new RuntimeException("Invalid source node for class declaration ("
+                    + ((declarationNode == null) ? "null"  
+                    : declarationNode.getClass().getName()) + ")"); 
+        }
+        ClassDeclNode classDeclNode = (ClassDeclNode)(declarationNode);
+        if (ASTReflect.isShallow(classDeclNode)) _loadDeeply(classDeclNode);
     }
 
     /** Return a list of fields where each element contains
@@ -370,19 +440,154 @@ public final class ASTReflect {
     }
 
 
-    /** Return 'true' if and only if the given user type declaration has been
-     *  loaded in its full ("deep") form. If this method returns false, it means
-     *  that the declaration is null or it has only been loaded in "shallow mode" 
-     *  (most subrees are missing).
-     *  FIXME: experimental (Shuvra).
-     *  @param userTypeDeclNode The user type declaration.
-     *  @return 'true' if and only the declaration has been loaded in full form.
+    /** Return the associated fully qualified class name given a class declaration
+     *  node.
+     *  @param loadedClass The class declaration node.
+     *  @return The fully qualified name of the class being declared.
      */
-    public static boolean isDeep(UserTypeDeclNode userTypeDeclNode) {
-        if (userTypeDeclNode == null) return false;
-        else return (userTypeDeclNode.getMembers() != null);
+    public static String getFullyQualifiedName(UserTypeDeclNode loadedClass) {
+        TreeNode parent = loadedClass.getParent();
+        if (!(parent instanceof CompileUnitNode))  {
+	        throw new RuntimeException("ASTReflect.getFullyQualifiedName(): "
+                    + "Could not find the compilation unit (CompileUnitNode) "
+                    + "associated with class '" + loadedClass.getName().getIdent()
+                    + ". \nA dump of the offending AST subtree follows.\n"
+                    + loadedClass.toString());
+        }
+        return ASTReflect.getFullyQualifiedName((CompileUnitNode)parent);
+    }
+
+    /** Return a string that indicates what loading mode was used to 
+     *  load a given class or interface. The returned string is 
+     *  either 'shallow', 'deep', or 'full'.
+     *  @param loadedClass The class or interface whose loading mode is to be returned.
+     *  @return A string that represents the loading mode of the given class or
+     *  interface.
+     *  @exception A run-time exception is thrown if the loading mode cannot
+     *  be determined.
+     */
+    public static String getLoadingMode(UserTypeDeclNode loadedClass) {
+        if (isShallow(loadedClass)) return "shallow";
+        else if (isDeep(loadedClass)) return "deep";
+        else if (isFull(loadedClass)) return "full";
+        else throw new RuntimeException("ASTReflect.getLoadingMode(): "
+            + "Class '" + getFullyQualifiedName(loadedClass) 
+            + "' has unknown loading status."
+            + "\nA dump of the offending AST subtree follows.\n"
+            + loadedClass.toString());
+    }
+
+    /** Return a diagnostic message that indicates the set of compile units
+     *  that have been loaded and undergone package resolution. The listing
+     *  of compile unit nodes is grouped by loading mode --- full, deep, or shallow.
+     *  @param verbose Include diagnostic information, including dumps of
+     *  of all ASTs.
+     */
+    public static String getLoadingStatus(boolean verbose) {
+        LinkedList shallowASTs = new LinkedList();
+        LinkedList deepASTs = new LinkedList();
+        LinkedList fullASTs = new LinkedList();
+        Collection compilationUnitList = StaticResolution.allPass0ResolvedMap.values();
+        Iterator compilationUnits = compilationUnitList.iterator();
+        while (compilationUnits.hasNext()) {
+            UserTypeDeclNode declaration 
+                    = NodeUtil.getDefinedType((CompileUnitNode)(compilationUnits.next()));
+            String name = getFullyQualifiedName(declaration);
+            if (declaration instanceof InterfaceDeclNode) name += " (interface)";
+            if (verbose) name += declaration.toString();
+            if (isShallow(declaration)) shallowASTs.add(name);
+            else if (isDeep(declaration)) deepASTs.add(name);
+            else if (isFull(declaration)) fullASTs.add(name);
+	        else throw new RuntimeException("ASTReflect.getLoadingStatus(): "
+                    + "Class '" + name + "' has unknown loading status."
+                    + "\nA dump of the offending AST subtree follows.\n"
+                    + declaration.toString());
+        }
+        StringBuffer status = new StringBuffer();
+        status.append(shallowASTs.size() + deepASTs.size() + fullASTs.size() 
+                + " loaded ASTs: " + shallowASTs.size() + " shallow, " 
+                + deepASTs.size() + " deep, " + fullASTs.size() + " full.\n");
+        Iterator names;
+        if (shallowASTs.size() > 0) {
+            status.append("Shallowly loaded classes:\n");
+            names = shallowASTs.iterator();
+            while (names.hasNext()) status.append(names.next() + "\n"); 
+            status.append("\n");
+        }
+        if (deepASTs.size() > 0) {
+            status.append("Deeply loaded classes:\n");
+            names = deepASTs.iterator();
+            while (names.hasNext()) status.append(names.next() + "\n"); 
+            status.append("\n");
+        }
+        if (fullASTs.size() > 0) {
+            status.append("Fully loaded classes:\n");
+            names = fullASTs.iterator();
+            while (names.hasNext()) status.append(names.next() + "\n"); 
+            status.append("\n");
+        }
+
+        return status.toString();
+    }
+
+    /** Return 'true' if and only if the given user type declaration has been
+     *  loaded in deep form. If this method returns false, it means that 
+     *  the declaration is null, or it has been loaded fully or shallowly.
+     *  @param userTypeDeclNode The user type declaration.
+     *  @return 'true' if and only the declaration has been loaded deeply.
+     */
+    public static boolean isDeep(UserTypeDeclNode node) {
+        if (node == null) return false;
+        else return (!(isShallow(node) || isFull(node)));
     }
     
+    /** Return 'true' if and only if the given user type declaration has been
+     *  loaded in shallow form.  If this method returns false, it means that 
+     *  the declaration is null, or it has been loaded fully or deeply.
+     *  @param userTypeDeclNode The user type declaration.
+     *  @return 'true' if and only the declaration has been loaded shallowly.
+     */
+    public static boolean isShallow(UserTypeDeclNode node) {
+        if (node == null) return false;
+        else if (node.getMembers() == null) return true;
+        else return false;
+    }
+
+    /** Return 'true' if and only if the given user type declaration has been
+     *  loaded in full form. If this method returns false, it means that 
+     *  the declaration is null, or it has been deeply or shallowly loaded, or
+     *  the declaration effectively contains no methods or constructors (i.e.,
+     *  there is nothing in the declaration that would make a difference
+     *  between full and deep loading). In other words, the method returns
+     *  'true' if and only if it finds at least one method or constructor 
+     *  that has a non-empty body.
+     *  @param userTypeDeclNode The user type declaration.
+     *  @return 'true' if and only the declaration has been loaded fully.
+     */
+    public static boolean isFull(UserTypeDeclNode node) {
+        if (node == null) return false;
+        else {
+            List memberList = node.getMembers();
+            if (node.getMembers() == null) return false;
+            else {
+                Iterator members = memberList.iterator();
+			    while (members.hasNext()) {
+                    TreeNode member = (TreeNode) (members.next());
+                    TreeNode body = null;
+                    if (member instanceof ConstructorDeclNode) {
+                        body = ((ConstructorDeclNode)member).getBody();
+                    }
+                    else if (member instanceof MethodDeclNode) {
+                        body = ((MethodDeclNode)member).getBody();
+                    }
+                    if ((body != null) && !(body instanceof AbsentTreeNode))
+                        return true;
+                }
+            }
+            return false;
+        }
+    }
+
     /** Given a class name, try to find a class that corresponds with it
      *  by first looking in the set of currently loaded packages and then
      *  by searching the directories in SearchPath.NAMED_PATH.
@@ -485,7 +690,7 @@ public final class ASTReflect {
                         methodName,
                         paramList,
                         throwsList,
-                        AbsentTreeNode.instance /*body*/,
+                        AbsentTreeNode.instance /* body */,
                         returnType);
 
 	    methodList.add(methodDeclNode);
@@ -510,44 +715,44 @@ public final class ASTReflect {
             return Class.forName(new String(pathName));
         } catch (Exception e) {}
 
-	Class myClass = null;
+	    Class myClass = null;
 
-	// Try to find a class by starting with the file name
-	// and then adding directories as we go along
+	    // Try to find a class by starting with the file name
+	    // and then adding directories as we go along
 
-	StringBuffer classname = null;
-	if(pathName.lastIndexOf('.') != -1) {
-	    // Strip out anything after the last '.', such as .java
-	    classname =
-		new StringBuffer(StringManip.baseFilename(
-                        StringManip.partBeforeLast(pathName, '.')));
-	} else {
-	    classname = new StringBuffer(StringManip.baseFilename(pathName));
-	}
-
-	// restOfPath contains the directories that we add one by one.
-	String restOfPath = pathName;
-
-	while (true) {
-	    try {
-		myClass = Class.forName(new String(classname));
-	    } catch (Exception e) {}
-
-	    if (myClass != null) {
-		// We found our class!
-		return myClass;
+	    StringBuffer classname = null;
+	    if(pathName.lastIndexOf('.') != -1) {
+	        // Strip out anything after the last '.', such as .java
+	        classname =
+		    new StringBuffer(StringManip.baseFilename(
+                            StringManip.partBeforeLast(pathName, '.')));
+	    } else {
+	        classname = new StringBuffer(StringManip.baseFilename(pathName));
 	    }
 
-	    if (restOfPath.lastIndexOf(File.separatorChar) == -1) {
-		// We are out of directories to try.
-		return null;
+	    // restOfPath contains the directories that we add one by one.
+	    String restOfPath = pathName;
+
+	    while (true) {
+	        try {
+		        myClass = Class.forName(new String(classname));
+	        } catch (Exception e) {}
+    
+	        if (myClass != null) {
+		        // We found our class!
+		        return myClass;
+	        }
+
+	        if (restOfPath.lastIndexOf(File.separatorChar) == -1) {
+		        // We are out of directories to try.
+		        return null;
+	        }
+	        // First time through, we pull off the file name, after that
+	        // we pull off directories.
+	        restOfPath = StringManip.partBeforeLast(restOfPath,
+                        File.separatorChar);
+	        classname.insert(0, StringManip.baseFilename(restOfPath) + ".");
 	    }
-	    // First time through, we pull off the file name, after that
-	    // we pull off directories.
-	    restOfPath = StringManip.partBeforeLast(restOfPath,
-                    File.separatorChar);
-	    classname.insert(0, StringManip.baseFilename(restOfPath) + ".");
-	}
 
     }
 
@@ -601,6 +806,64 @@ public final class ASTReflect {
 
 	}
 	return defType;
+    }
+
+    /** Given an AST that has been loaded in shallow mode, convert the loaded
+     *  AST to its deep version, and perform all necessary resolution 
+     *  and scope building passes so that we can proceed with name/field resolution
+     *  using the deeply-loaded AST.
+     */
+    private static void _loadDeeply(ClassDeclNode classDeclNode) {
+        if (StaticResolution.traceLoading) 
+            System.out.println("ASTReflect._loadDeeply called on "
+                    + classDeclNode.getName().getIdent());
+
+        ASTAugmentWithMembers(classDeclNode);
+        if (StaticResolution.traceLoading) 
+            System.out.println("The deeply loaded AST follows\n."
+                    + classDeclNode.toString()); 
+        JavaDecl declaration = JavaDecl.getDecl((TreeNode)classDeclNode);
+        if (!(declaration instanceof ClassDecl)) {
+	        throw new RuntimeException("_loadDeeply: "
+                    + "Could not find the class declaration (ClassDecl) "
+                    + "associated with class '" + classDeclNode.getName().getIdent()
+                    + ". The declaration's class is: " + ((declaration == null) ? "null"  
+                    : declaration.getClass().getName()) 
+                    + ".\nA dump of the offending AST subtree follows.\n"
+                    + classDeclNode.toString());
+        }
+        ClassDecl classDecl = (ClassDecl)declaration;
+
+        if (StaticResolution.debugLoading)
+            System.out.println("Scope before static resolution:\n" + 
+                    classDecl.getScope().toString()); 
+
+        // Perform static resolution on the deeply loaded AST
+        TreeNode parent = classDeclNode.getParent();
+        if (!(parent instanceof CompileUnitNode))  {
+	        throw new RuntimeException("_loadDeeply: "
+                    + "Could not find the compilation unit (CompileUnitNode) "
+                    + "associated with class '" + classDeclNode.getName().getIdent()
+                    + ". The parent class is: " + ((parent == null) ? "null"  
+                    : parent.getClass().getName()) 
+                    + ".\nA dump of the offending AST subtree follows.\n"
+                    + classDeclNode.toString());
+        }
+        if (StaticResolution.traceLoading)
+            System.out.println("_loadDeeply: building scopes");
+        classDecl.invalidateScope();
+        parent.accept(new PackageResolutionVisitor(), null);
+        // parent.accept(new ResolveTypesVisitor(), null);
+        parent.accept(new ResolveClassVisitor(), null);
+        parent.accept(new ResolveInheritanceVisitor(StaticResolution._defaultTypePolicy),
+                null);
+
+        if (StaticResolution.traceLoading) 
+            System.out.println("_loadDeeply: finished building scopes");
+        if (StaticResolution.debugLoading)
+            System.out.println("Scope after static resolution:\n" + 
+                    classDecl.getScope().toString()); 
+       
     }
 
     // Create a TreeNode that contains the qualifiedName split
