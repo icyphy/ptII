@@ -173,19 +173,22 @@ public class GiottoScheduler extends Scheduler {
 	    (CompositeActor) (director.getContainer());
 
         List actorList = compositeActor.deepEntityList();
+	//List actorList = compositeActor.entityList();
+
 	int actorCount = actorList.size();
 
 	//System.out.println("There are totally " + actorCount + " actors!");
 
 	int[] frequencyArray = new int[actorCount];
 	int[] intervalArray = new int[actorCount];
+	int[] iterateArray = new int[actorCount];
 
 	int i = 0;
 	ListIterator actorListIterator = actorList.listIterator();
 
 	while (actorListIterator.hasNext()) {
 	    Actor actor = (Actor) actorListIterator.next();
-	    frequencyArray[i] = getFrequency(actor);
+	    iterateArray[i] = frequencyArray[i] = getFrequency(actor);
 	    i++;
 	}
 
@@ -195,7 +198,7 @@ public class GiottoScheduler extends Scheduler {
 
 	for (i = 0; i < actorCount; i++) {
 	  intervalArray[i] = _lcm / frequencyArray[i];
-     	//  System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
+     	  //System.out.println("The " + i + " actor has frequency " + frequencyArray[i] + " ----> " + intervalArray[i]);
 	}
 
 	// Compute schedule
@@ -203,7 +206,6 @@ public class GiottoScheduler extends Scheduler {
 
 
 	Schedule schedule = new Schedule();
-	_count =0;
 
 	for (  _giottoSchedulerTime = 0; _giottoSchedulerTime < _lcm; ) {
 	    Schedule fireAtSameTimeSchedule = new Schedule();
@@ -213,20 +215,20 @@ public class GiottoScheduler extends Scheduler {
 
 		if ( ((_giottoSchedulerTime % intervalArray[i]) == 0)
 		     &&
-		     (_count < frequencyArray[i])
+		     (iterateArray[i] > 0)
 		   )
 		{
 		    Firing firing = new Firing();
 		    firing.setActor(actor);
 		    fireAtSameTimeSchedule.add(firing);
-		    //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
+
 		}
 	    }
 
 	    _giottoSchedulerTime += _gcd;
-	    _count++;
 	    // there may be several null schedule in schedule...
 	    // and the time step is period / _lcm
+	    //System.out.println("the size of fireAtSameTimeSchedule is " + fireAtSameTimeSchedule.size());
 	    schedule.add(fireAtSameTimeSchedule);
 	}
 	//System.out.println("the size of schedule is " + schedule.size());
@@ -236,8 +238,7 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // not guarranteed to be correct. we have to check the algorithm...
-    // and if they are correct, they should go the ptolemy.math package...
+    // if they are correct, they should go the ptolemy.math package...
     private int gcd(int[] array) {
    		int count = array.length;
 		int HighestNumber = array[0];
@@ -310,7 +311,6 @@ public class GiottoScheduler extends Scheduler {
 
     private int _lcm = 1;
     private int _gcd = 1;
-    private int _count = 0;
     private int _giottoSchedulerTime = 0;
 
     ///////////////////////////////////////////////////////////////////

@@ -71,6 +71,7 @@ import java.util.Iterator;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoDirector
@@ -1069,20 +1070,23 @@ public class GiottoDirector extends StaticSchedulingDirector {
     public void fire() throws IllegalActionException {
 	_postFireReturns = true;
 
+
 	TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
 	if (container != null) {
+
 	    /* change Enumeration into Schedule */
 
 	    _periodValue = ((DoubleToken)period.getToken()).doubleValue();
-   	    _minTimeStep = ((GiottoScheduler) getScheduler()).getMinTimeStep(_periodValue);
-	    System.out.println(_periodValue + " + " + _minTimeStep);
+
 
 	    if (_schedule.size() == 0) {
 	        _schedule = getScheduler().getSchedule();
 	    }
-
 	    //System.out.println("In Fire() method: The size of _schedule is " + _schedule.size());
+
+   	    _minTimeStep = ((GiottoScheduler) getScheduler()).getMinTimeStep(_periodValue);
+	    //System.out.println(_periodValue + " + " + _minTimeStep);
 
 	    if (_debugging)
 		_debug("Giotto director firing!");
@@ -1096,6 +1100,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		Schedule oneTimeSchdule = (Schedule) _schedule.remove(0);
 		_postFireReturns = _fire(oneTimeSchdule);
 	    }
+
+	    if (_debugging)
+		_debug("GiottoDirector firing finished! ==========");
+
 	} else
 	    throw new IllegalActionException(this, "Has no container!");
     }
@@ -1231,6 +1239,65 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    filename = new Parameter(this, "filename");
 	    filename.setTypeEquals(BaseType.STRING);
 	    filename.setExpression("\"ptolemy.giotto\"");
+
+	 // if the director directs several sdf actors and those actors
+	 // have loop connections, we have to initialize the inputs of sdf actors.
+
+	    CompositeActor compositeActor =
+		(CompositeActor) (getContainer());
+
+	    List actorList = compositeActor.deepEntityList();
+
+	    ListIterator actors = actorList.listIterator();
+
+	    while (actors.hasNext()) {
+
+	        Actor actor = (Actor) actors.next();
+
+		List outputPortList = actor.outputPortList();
+
+		Enumeration outputPorts =
+		    Collections.enumeration(outputPortList);
+
+		while (outputPorts.hasMoreElements()) {
+		    IOPort port = (IOPort) outputPorts.nextElement();
+
+		    Receiver[][] insideReceivers = port.deepGetReceivers();
+		    for (int i = 0; i < port.getWidth(); i++) {
+		        try {
+			    Token t = new Token();
+			    if (port.hasToken(i)) {
+			        t = port.get(i);
+			    } else {
+			        Parameter defaultValuePara = (Parameter) ((NamedObj) port).getAttribute("defaultValue");
+				t = (Token) defaultValuePara.getToken();
+			    }
+
+			    if (insideReceivers != null &&
+				insideReceivers[i] != null) {
+				if(_debugging) _debug(getName(),
+						      "transferring input from " + port.getName());
+				for (int j = 0; j < insideReceivers[i].length; j++) {
+				    insideReceivers[i][j].put(t);
+				    ((GiottoReceiver)insideReceivers[i][j]).update();
+				}
+			    }
+
+			} catch (NoTokenException ex) {
+				// this shouldn't happen.
+				throw new InternalErrorException(
+								 "Director.transferInputs: Internal error: " +
+								 ex.getMessage());
+			}
+
+		    }
+		}
+
+
+	    }
+
+
+
 	} catch (KernelException ex) {
 	    throw new InternalErrorException(
 					     "Cannot initialize director: " + ex.getMessage());
@@ -1277,20 +1344,57 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    actor.fire();
 		}
 
-		/*
-		if (_debugging)
-		    _debug("Postfiring " +
-			   ((NamedObj)actor).getFullName());
-
-		if (!actor.postfire())
-		    postfire = false;
-		*/
 
 	    }
+	}
+
+	// Update time for every minimize time step
+	double currentTime;
+
+	currentTime = getCurrentTime();
+//        System.out.println("What is currentTime " + currentTime + " ************ " + _minTimeStep);
+
+	setCurrentTime(currentTime + _minTimeStep);
+
+	if (_synchronizeToRealTime) {
+	    long elapsedTime = System.currentTimeMillis()
+		- _realStartTime;
+
+	    //System.out.println("Firing at the realtime: " + _realStartTime);
+	    //System.out.println("Now the realtime:       " + System.currentTimeMillis());
+
+	    double elapsedTimeInSeconds =
+		((double) elapsedTime) / 1000.0;
+
+	    if (currentTime > elapsedTimeInSeconds) {
+		long timeToWait = (long) ((currentTime -
+					   elapsedTimeInSeconds) * 1000.0);
+
+		if (timeToWait > 0) {
+		    if (_debugging) {
+			_debug("Waiting for real time to pass: " +
+			       timeToWait);
+		    }
+
+		    // FIXME: Do I need to synchronize on anything?
+		    Scheduler scheduler = getScheduler();
+
+		    synchronized(scheduler) {
+			try {
+			    scheduler.wait(timeToWait);
+			} catch (InterruptedException ex) {
+			    // Continue executing.
+			}
+		    }
+		}
+	    }
+	}
 
 
-	    // update output ports of the next firing actors...
-	    //System.out.println("Before update, the size of _schedule is " + _schedule.size());
+	// update output ports of the next firing actors...
+	//System.out.println("Before update, the size of _schedule is " + _schedule.size());
+
+	if (schedule != null) {
 	    if (_schedule.size() == 0) {
 	        _schedule = getScheduler().getSchedule();
 	    }
@@ -1337,44 +1441,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    }
 	}
 
-	// Update time for every minimize time step
-	double currentTime;
-
-	currentTime = getCurrentTime();
-
-
-	setCurrentTime(currentTime + _minTimeStep);
-
-	if (_synchronizeToRealTime) {
-	    long elapsedTime = System.currentTimeMillis()
-		- _realStartTime;
-
-	    double elapsedTimeInSeconds =
-		((double) elapsedTime) / 1000.0;
-
-	    if (currentTime > elapsedTimeInSeconds) {
-		long timeToWait = (long) ((currentTime -
-					   elapsedTimeInSeconds) * 1000.0);
-
-		if (timeToWait > 0) {
-		    if (_debugging) {
-			_debug("Waiting for real time to pass: " +
-			       timeToWait);
-		    }
-
-		    // FIXME: Do I need to synchronize on anything?
-		    Scheduler scheduler = getScheduler();
-
-		    synchronized(scheduler) {
-			try {
-			    scheduler.wait(timeToWait);
-			} catch (InterruptedException ex) {
-			    // Continue executing.
-			}
-		    }
-		}
-	    }
-	}
 
 
 	return postfire;
@@ -1390,7 +1456,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     // Specify whether the director should wait for elapsed real time to
     // catch up with model time.
-    private boolean _synchronizeToRealTime = false;
+    private boolean _synchronizeToRealTime = true;
 
     // The real time at which the last unit has been invoked.
     private long _realStartTime = 0;
