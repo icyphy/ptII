@@ -633,6 +633,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     // Execute a command.
     private void _exec(String command) throws IllegalActionException {
+        // FIXME: Exec, KeyStoreActor, JTextAreaExec have duplicate code
         String outputString = "";
         String errorString = "";
         try {
