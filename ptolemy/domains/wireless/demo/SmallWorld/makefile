@@ -49,7 +49,11 @@ JSRCS = \
 	SmallWorldRouter.java
 
 OTHER_FILES_TO_BE_JARED = \
-	SmallWorld.xml
+	RelayNode.xml \
+	SmallWorld.xml \
+	SmallWorldRouter.xml \
+	SmallWorldRouter_loss.xml
+
 
 EXTRA_SRCS = \
 	$(JSRCS) \
