@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.basic;
@@ -83,7 +83,7 @@ public class IconController extends ParameterizedNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Draw the node at its location. This overrides the base class
      *  to highlight the node if it is defined by the class, and hence
      *  cannot be deleted.
@@ -113,6 +113,12 @@ public class IconController extends ParameterizedNodeController {
 
     /** An icon renderer. */
     public class IconRenderer implements NodeRenderer {
+        /**  Render a visual representation of the given node. If the
+         * StringAttribute _color of the node is set then use that color to
+         * highlight the node. If the StringAttribute _explanation of the node
+         * is set then use it to set the tooltip.
+         * @see diva.graph.NodeRenderer#render(java.lang.Object)
+         */
         public Figure render(Object n) {
             Locatable location = (Locatable) n;
             final NamedObj object = (NamedObj) location.getContainer();
@@ -209,9 +215,9 @@ public class IconController extends ParameterizedNodeController {
             // FIXME: This text should not be hardwired here, but rather
             // should be provided by a method of the enclosing class.
             result.setToolTipText(object.getClass().getName());
-            
-            // FIXME: The following appear to be undocumented features
-            // that don't actually work... What's up?
+
+            // If the object is a ComponentEntity then check to see if it has
+            // attributes that specify its color or an explanation.
             if (object instanceof ComponentEntity) {
                 ComponentEntity ce = (ComponentEntity) object;
                 StringAttribute _colorAttr =
@@ -221,17 +227,17 @@ public class IconController extends ParameterizedNodeController {
                     AnimationRenderer _animationRenderer =
                         new AnimationRenderer(SVGUtilities.getColor(_color));
                     _animationRenderer.renderSelected(result);
-                    StringAttribute _descAttr =
-                        (StringAttribute) (ce.getAttribute("_description"));
-                    if (_descAttr != null) {
-                        result.setToolTipText(_descAttr.getExpression());
+                    StringAttribute _explAttr =
+                        (StringAttribute) (ce.getAttribute("_explanation"));
+                    if (_explAttr != null) {
+                        result.setToolTipText(_explAttr.getExpression());
                     }
                 }
             }
             return result;
         }
     }
-    
+
     // Map used to keep track of icons that have been created
     // but not yet assigned to a container.
     private static Map _iconsPendingContainer = new HashMap();

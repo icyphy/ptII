@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.actor;
@@ -109,7 +109,7 @@ public class IOPortController extends AttributeController {
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new ListenToPortAction()));
+            new MenuActionFactory(new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -122,18 +122,25 @@ public class IOPortController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-/**
- * Render the ports of components as triangles. Multiports are rendered hollow,
- * while single ports are rendered filled.
- */
+    /**
+     * Render the ports of components as triangles. Multiports are rendered
+     * hollow, while single ports are rendered filled.
+     */
     public class EntityPortRenderer implements NodeRenderer {
 
+        /**  Render a visual representation of the given node. If the
+        * StringAttribute _color of the node is set then use that color to
+        * render the node. If the StringAttribute _explanation of the node is
+        * set then use it to set the tooltip.
+        * @see diva.graph.NodeRenderer#render(java.lang.Object)
+        */
         public Figure render(Object n) {
             final Port port = (Port) n;
 
             // If the port has an attribute called "_hide", then
             // do not render it.
-            if (port.getAttribute("_hide") != null) return null;
+            if (port.getAttribute("_hide") != null)
+                return null;
 
             boolean isInput = false;
             boolean isOutput = false;
@@ -191,28 +198,29 @@ public class IOPortController extends AttributeController {
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
                 lineWidth = (float) 0.0;
-            } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
+            } else if (
+                port instanceof IOPort && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
             }
 
-            StringAttribute _colorAttr = (StringAttribute) (port
-                    .getAttribute("_color"));
+            StringAttribute _colorAttr =
+                (StringAttribute) (port.getAttribute("_color"));
             if (_colorAttr != null) {
                 String _color = _colorAttr.getExpression();
                 fill = SVGUtilities.getColor(_color);
             }
 
-            ActorGraphModel model = (ActorGraphModel) getController()
-                    .getGraphModel();
+            ActorGraphModel model =
+                (ActorGraphModel) getController().getGraphModel();
 
             // Wrap the figure in a TerminalFigure to set the direction that
             // connectors exit the port. Note that this direction is the
             // same direction that is used to layout the port in the
             // Entity Controller.
-            StringAttribute cardinal = (StringAttribute) port
-                    .getAttribute("_cardinal");
+            StringAttribute cardinal =
+                (StringAttribute) port.getAttribute("_cardinal");
 
             int direction;
             double rotation;
@@ -257,31 +265,33 @@ public class IOPortController extends AttributeController {
             } else if (cardinal.getExpression().equalsIgnoreCase("WEST")) {
                 direction = SwingUtilities.WEST;
                 rotation = 0;
-            } else {// this shouldn't happen either
+            } else { // this shouldn't happen either
                 direction = SwingUtilities.SOUTH;
                 rotation = -90;
             }
 
             // Transform the port shape so it is facing the right way.
-            AffineTransform transform = AffineTransform.getRotateInstance(Math
-                    .toRadians(rotation));
+            AffineTransform transform =
+                AffineTransform.getRotateInstance(Math.toRadians(rotation));
             shape = ShapeUtilities.transformModify(shape, transform);
 
             Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
 
-                // Override this because we want to show the type.
-                // It doesn't work to set it once because the type
-                // has not been resolved, and anyway, it may
-                // change.
-                public String getToolTipText() {
+                    // Override this because we want to show the type.
+        // It doesn't work to set it once because the type
+        // has not been resolved, and anyway, it may
+        // change.
+    public String getToolTipText() {
                     String tipText = port.getName();
-                    StringAttribute _descAttr = (StringAttribute) (port
-                            .getAttribute("_description"));
-                    if (_descAttr != null) {
-                        tipText = _descAttr.getExpression();
+                    StringAttribute _explAttr =
+                        (StringAttribute) (port.getAttribute("_explanation"));
+                    if (_explAttr != null) {
+                        tipText = _explAttr.getExpression();
                     } else if (port instanceof Typeable) {
                         try {
-                            tipText = tipText + ", type:"
+                            tipText =
+                                tipText
+                                    + ", type:"
                                     + ((Typeable) port).getType();
                         } catch (IllegalActionException ex) {
                         }
@@ -310,7 +320,7 @@ public class IOPortController extends AttributeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot listen to port without a configuration.");
+                    "Cannot listen to port without a configuration.");
                 return;
             }
 
@@ -320,29 +330,30 @@ public class IOPortController extends AttributeController {
             NamedObj object = getTarget();
             try {
                 BasicGraphController controller =
-                    (BasicGraphController)getController();
+                    (BasicGraphController) getController();
                 BasicGraphFrame frame = controller.getFrame();
                 Tableau tableau = frame.getTableau();
 
                 // effigy is of the whole model.
-                Effigy effigy = (Effigy)tableau.getContainer();
+                Effigy effigy = (Effigy) tableau.getContainer();
 
                 // We want to open a new window that behaves as a
                 // child of the model window.  So, we create a new text
                 // effigy inside this one.  Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy,
+                Effigy textEffigy =
+                    new TextEffigy(
+                        effigy,
                         effigy.uniqueName("debugListener" + object.getName()));
 
                 DebugListenerTableau debugTableau =
-                    new DebugListenerTableau(textEffigy,
-                            textEffigy.uniqueName("debugListener"
-                                    + object.getName()));
+                    new DebugListenerTableau(
+                        textEffigy,
+                        textEffigy.uniqueName(
+                            "debugListener" + object.getName()));
                 debugTableau.setDebuggable(object);
-            }
-            catch (KernelException ex) {
-                MessageHandler.error(
-                        "Failed to create debug listener.", ex);
+            } catch (KernelException ex) {
+                MessageHandler.error("Failed to create debug listener.", ex);
             }
         }
     }

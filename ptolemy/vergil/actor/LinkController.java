@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.actor;
@@ -108,12 +108,12 @@ public class LinkController extends BasicEdgeController {
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
         _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(_configureAction));
+            new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
-        ActionInteractor doubleClickInteractor
-            = new ActionInteractor(_configureAction);
+        ActionInteractor doubleClickInteractor =
+            new ActionInteractor(_configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -138,8 +138,8 @@ public class LinkController extends BasicEdgeController {
     protected Configuration _configuration;
 
     /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction
-            = new ConfigureAction("Configure");
+    protected static ConfigureAction _configureAction =
+        new ConfigureAction("Configure");
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;
@@ -153,27 +153,31 @@ public class LinkController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-            if (object instanceof Port) return super.acceptHead(c, f);
-            if (object instanceof Vertex) return super.acceptHead(c, f);
-            if (object instanceof Locatable &&
-                    ((Locatable)object).getContainer() instanceof Port)
+            if (object instanceof Port)
+                return super.acceptHead(c, f);
+            if (object instanceof Vertex)
+                return super.acceptHead(c, f);
+            if (object instanceof Locatable
+                && ((Locatable) object).getContainer() instanceof Port)
                 return super.acceptHead(c, f);
             return false;
         }
 
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
-            if (object instanceof Port) return super.acceptTail(c, f);
-            if (object instanceof Vertex) return super.acceptTail(c, f);
-            if (object instanceof Locatable &&
-                    ((Locatable)object).getContainer() instanceof Port)
+            if (object instanceof Port)
+                return super.acceptTail(c, f);
+            if (object instanceof Vertex)
+                return super.acceptTail(c, f);
+            if (object instanceof Locatable
+                && ((Locatable) object).getContainer() instanceof Port)
                 return super.acceptHead(c, f);
             return false;
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof Terminal) {
-                Site site = ((Terminal)f).getConnectSite();
+                Site site = ((Terminal) f).getConnectSite();
                 return site;
             } else {
                 return super.getHeadSite(f, x, y);
@@ -184,33 +188,37 @@ public class LinkController extends BasicEdgeController {
 
     public static class LinkRenderer implements EdgeRenderer {
         /**
-         * Render a visual representation of the given edge.
+         * Render a visual representation of the given edge. If the
+         * StringAttribute _color of the edgs is set then use that color to
+         * highlight the node. If the StringAttribute _explanation of the edge
+         * is set then use it to set the tooltip.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ManhattanConnector c = new ManhattanConnector(tailSite, headSite);
-            Link link = (Link)edge;
+            Link link = (Link) edge;
             if (link.getHead() != null && link.getTail() != null) {
-                c.setLineWidth((float)2.0);
+                c.setLineWidth((float) 2.0);
             }
             c.setUserObject(edge);
             // The default bend radius of 50 is too large...
             // parallel curves look bad.
             c.setBendRadius(20);
-            
+
             Relation relation = link.getRelation();
             if (relation != null) {
                 c.setToolTipText(relation.getName());
                 if (relation instanceof TypedIORelation) {
-                    StringAttribute _colorAttr = (StringAttribute) (relation
-                            .getAttribute("_color"));
+                    StringAttribute _colorAttr =
+                        (StringAttribute) (relation.getAttribute("_color"));
                     if (_colorAttr != null) {
                         String _color = _colorAttr.getExpression();
                         c.setStrokePaint(SVGUtilities.getColor(_color));
                     }
-                    StringAttribute _descAttr = (StringAttribute) (relation
-                            .getAttribute("_description"));
-                    if (_descAttr != null) {
-                        c.setToolTipText(_descAttr.getExpression());
+                    StringAttribute _explAttr =
+                        (StringAttribute) (relation
+                            .getAttribute("_explanation"));
+                    if (_explAttr != null) {
+                        c.setToolTipText(_explAttr.getExpression());
                     }
                 }
             }
@@ -233,25 +241,25 @@ public class LinkController extends BasicEdgeController {
             ActorGraphModel model =
                 (ActorGraphModel) getController().getGraphModel();
             switch (evt.getEnd()) {
-            case ConnectorEvent.HEAD_END:
-                model.getLinkModel().setHead(edge, node);
-                break;
-            case ConnectorEvent.TAIL_END:
-                model.getLinkModel().setTail(edge, node);
-                break;
-            default:
-                throw new IllegalStateException(
-                        "Cannot handle both ends of an edge being dragged.");
+                case ConnectorEvent.HEAD_END :
+                    model.getLinkModel().setHead(edge, node);
+                    break;
+                case ConnectorEvent.TAIL_END :
+                    model.getLinkModel().setTail(edge, node);
+                    break;
+                default :
+                    throw new IllegalStateException(
+                          "Cannot handle both ends of an edge being dragged.");
             }
-            
+
             // Set the width correctly, so we know whether or not it
             // is connected.  Note that this happens *after* the model
             // is modified.
-            Link link = (Link)edge;
+            Link link = (Link) edge;
             if (link.getHead() != null && link.getTail() != null) {
-                ((ManhattanConnector)c).setLineWidth((float)2.0);
+                ((ManhattanConnector) c).setLineWidth((float) 2.0);
             } else {
-                ((ManhattanConnector)c).setLineWidth((float)1.0);
+                ((ManhattanConnector) c).setLineWidth((float) 1.0);
             }
         }
     }
