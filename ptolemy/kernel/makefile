@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: @(#)makefile	1.14 04/08/97
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -44,13 +44,19 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
+	DataType.java \
 	Entity.java \
+	GenericPort.java \
 	IntParam.java \
+	MultiPort.java \
 	NamedObj.java \
 	Node.java \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
+	Particle.java \
+	Port.java \
+	Relation.java \
 	StatusArray.java
 
 EXTRA_SRCS =	$(JSRCS)
