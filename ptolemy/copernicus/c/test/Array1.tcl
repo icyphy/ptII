@@ -50,7 +50,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test printInt-1.1 {Generate all required files for printInt.java} {
+test Array-1.1 {Generate all required files for Array1.java} {
 
     set outputDir testOutput/Array1.out
     set className Array1
