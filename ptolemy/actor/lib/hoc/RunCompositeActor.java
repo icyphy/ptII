@@ -30,27 +30,16 @@ COPYRIGHTENDKEY
 package ptolemy.actor.lib.hoc;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -119,7 +108,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)
 */
-public class RunCompositeActor extends TypedCompositeActor {
+public class RunCompositeActor extends LifeCycleManager {
 
     /** Construct an actor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
@@ -194,80 +183,7 @@ public class RunCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Execute requested changes. In this class,
-     *  do not delegate the change request to the container, but
-     *  execute the request immediately.  Listeners will be notified
-     *  of success or failure.
-     *  @see #addChangeListener(ChangeListener)
-     *  @see #requestChange(ChangeRequest)
-     *  @see #setDeferringChangeRequests(boolean)
-     */
-    public void executeChangeRequests() {
-        synchronized(_changeLock) {
-            if (_changeRequests != null && _changeRequests.size() > 0) {
-                // Copy the change requests lists because it may
-                // be modified during execution.
-                LinkedList copy = new LinkedList(_changeRequests);
-
-                // Remove the changes to be executed.
-                // We remove them even if there is a failure because
-                // otherwise we could get stuck making changes that
-                // will continue to fail.
-                _changeRequests.clear();
-
-                Iterator requests = copy.iterator();
-                boolean previousDeferStatus = isDeferringChangeRequests();
-                try {
-                    // Get write access once on the outside, to make
-                    // getting write access on each individual
-                    // modification faster.
-                    _workspace.getWriteAccess();
-
-                    // Defer change requests so that if changes are
-                    // requested during execution, they get queued.
-                    setDeferringChangeRequests(true);
-                    while (requests.hasNext()) {
-                        ChangeRequest change = (ChangeRequest)requests.next();
-                        change.setListeners(_changeListeners);
-                        if (_debugging) {
-                            _debug("-- Executing change request "
-                                    + "with description: "
-                                    + change.getDescription());
-                        }
-                        // The change listeners should be those of this
-                        // actor and any container that it has!
-                        // FIXME: This is expensive... Better solution?
-                        // We previously tried issuing a dummy change
-                        // request to the container, but this caused big
-                        // problems... (weird null-pointer expections
-                        // deep in diva when making connections).
-                        // Is it sufficient to just go to the top level?
-                        List changeListeners = new LinkedList();
-                        NamedObj container = getContainer();
-                        while (container != null) {
-                            List list = container.getChangeListeners();
-                            if (list != null) {
-                                changeListeners.addAll(list);
-                            }
-                            container = container.getContainer();
-                        }
-                        change.setListeners(changeListeners);
-
-                        change.execute();
-                    }
-                } finally {
-                    _workspace.doneWriting();
-                    setDeferringChangeRequests(previousDeferStatus);
-                }
-
-                // Change requests may have been queued during the execute.
-                // Execute those by a recursive call.
-                executeChangeRequests();
-            }
-        }
-    }
-
+    
     /** Run a complete execution of the contained model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
      *  invocations of super.prefire(), super.fire(), and super.postfire(),
@@ -285,40 +201,12 @@ public class RunCompositeActor extends TypedCompositeActor {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("---- Firing RunCompositeActor, which will execute a subsystem.");
+            _debug("---- calling fire(), which will execute a subsystem.");
         }
-        if (_isSubclassOfRunCompositeActor) {
-            super.fire();
-            return;
-        }
-        try {
-            // Make sure that change requests are not executed when requested,
-            // but rather only executed when executeChangeRequests() is called.
-            setDeferringChangeRequests(true);
-            
-            _readInputs();
-            if (_stopRequested) return;
-
-            _executeInsideModel();
-            
-        } finally {
-            try {
-                executeChangeRequests();
-                wrapup();
-            } finally {
-                // Indicate that it is now safe to execute
-                // change requests when they are requested.
-                setDeferringChangeRequests(false);
-            }
-            if (!_stopRequested) {
-                _writeOutputs();
-            }
-            if (_debugging) {
-                _debug("---- Firing of RunCompositeActor is complete.");
-            }
-        }
+        // FIXME: Return result should be used to set what postfire() returns?
+        _executeInsideModel();
     }
-
+    
     /** Initialize this actor, which in this case, does nothing.
      *  The initialization of the submodel is accomplished in fire().
      *  The subclass of this can set the <i>_isSubclassOfRunCompositeActor<i> to
@@ -328,20 +216,8 @@ public class RunCompositeActor extends TypedCompositeActor {
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called initialize()");
+            _debug("Called initialize(), which does nothing.");
         }
-        //Call the initialize method of the superclass.
-        if (_isSubclassOfRunCompositeActor) {
-            super.initialize();
-        }
-    }
-
-    /** Return true, since this actor is always opaque.
-     *  This method is <i>not</i> synchronized on the workspace,
-     *  so the caller should be.
-     */
-    public boolean isOpaque() {
-        return true;
     }
 
     /** Return true, indicating that execution can continue.
@@ -351,9 +227,8 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  but declared so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
-        //Call the initialize method of the superclass.
-        if (_isSubclassOfRunCompositeActor) {
-            return super.postfire();
+        if (_debugging) {
+            _debug("Called postfire(), which returns true.");
         }
         return true;
     }
@@ -363,6 +238,9 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  but declared so the subclasses can throw it.
      */
     public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called prefire(), which returns true.");
+        }
         return true;
     }
     
@@ -420,189 +298,13 @@ public class RunCompositeActor extends TypedCompositeActor {
         }
     }
     
-    /** Request that given change be executed.   In this class,
-     *  do not delegate the change request to the container, but
-     *  execute the request immediately or record it, depending on
-     *  whether setDeferringChangeRequests() has been called. If
-     *  setDeferChangeRequests() has been called with a true argument,
-     *  then simply queue the request until either setDeferChangeRequests()
-     *  is called with a false argument or executeChangeRequests() is called.
-     *  If this object is already in the middle of executing a change
-     *  request, then that execution is finished before this one is performed.
-     *  Change listeners will be notified of success (or failure) of the
-     *  request when it is executed.
-     *  @param change The requested change.
-     *  @see #executeChangeRequests()
-     *  @see #setDeferringChangeRequests(boolean)
-     */
-    public void requestChange(ChangeRequest change) {
-        // Have to ensure that the _deferChangeRequests status and
-        // the collection of change listeners doesn't change during
-        // this execution.  But we don't want to hold a lock on the
-        // this NamedObj during execution of the change because this
-        // could lead to deadlock.  So we synchronize to _changeLock.
-        synchronized(_changeLock) {
-            // Queue the request.
-            // Create the list of requests if it doesn't already exist
-            if (_changeRequests == null) {
-                _changeRequests = new LinkedList();
-            }
-            _changeRequests.add(change);
-            if (!isDeferringChangeRequests()) {
-                executeChangeRequests();
-            }
-        }
-    }
-
     /** Override the base class to do nothing.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but declared so the subclasses can throw it.
      */
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called wrapup()");
-        }
-        //Call the method of the superclass.
-        if (_isSubclassOfRunCompositeActor) {
-            super.wrapup();
+            _debug("Called wrapup(), which does nothing.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
-
-    /** Run a complete execution of the contained model.  A complete
-     *  execution consists of invocation of super.initialize(), repeated
-     *  invocations of super.prefire(), super.fire(), and super.postfire(),
-     *  followed by super.wrapup().  The invocations of prefire(), fire(),
-     *  and postfire() are repeated until either the model indicates it
-     *  is not ready to execute (prefire() returns false), or it requests
-     *  a stop (postfire() returns false or stop() is called).
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's action methods throw it.
-     */
-    protected void _executeInsideModel() throws IllegalActionException {
-        // FIXME: Reset time to zero. How?
-        // NOTE: Use the superclass initialize() because this method overrides
-        // initialize() and does not initialize the model.
-        super.initialize();
-
-
-        // Call iterate() until finish() is called or postfire()
-        // returns false.
-        _debug("-- RunCompositeActor beginning to iterate.");
-
-        // FIXME: This result is not used... Should it be to determine postfire() result?
-        _lastIterateResult = COMPLETED;
-        while (!_stopRequested) {
-            executeChangeRequests();
-            if (super.prefire()) {
-                super.fire();
-                if (!super.postfire()) {
-                    _lastIterateResult = STOP_ITERATING;
-                    break;
-                }
-            } else {
-                _lastIterateResult = NOT_READY;
-                break;
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
-
-    /** This flag is used to indicate whether to call corresponding
-     *  method of the superclass. This is
-     *  provided so that subclasses have a mechanism for doing
-     *  this, since Java doesn't supported super.super.initialize(), etc.
-     */
-    // FIXME: This variable is misnamed.
-    protected boolean _isSubclassOfRunCompositeActor = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        private methods                    ////
-
-    /** Iterate over input ports and read any available values into
-     *  the referenced model parameters.
-     *  @exception IllegalActionException If reading the ports or
-     *   setting the parameters causes it.
-     */
-    private void _readInputs() throws IllegalActionException {
-        // NOTE: This is an essentially exact copy of the code in ModelReference,
-        // but this class and that one can't easily share a common base class.
-        if (_debugging) {
-            _debug("** Reading inputs (if any).");
-        }
-        Iterator ports = inputPortList().iterator();
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            if (port instanceof ParameterPort) {
-                PortParameter parameter = ((ParameterPort)port).getParameter();
-                if (_debugging) {
-                    _debug("** Updating PortParameter: " + port.getName());
-                }
-                parameter.update();
-                continue;
-            }
-            if (port.getWidth() > 0 && port.hasToken(0)) {
-                Token token = port.get(0);
-                Attribute attribute = getAttribute(port.getName());
-                // Use the token directly rather than a string if possible.
-                if (attribute instanceof Variable) {
-                    if (_debugging) {
-                        _debug("** Transferring input to parameter: " + port.getName());
-                    }
-                    ((Variable) attribute).setToken(token);
-                } else if (attribute instanceof Settable) {
-                    if (_debugging) {
-                        _debug("** Transferring input as string to parameter: " + port.getName());
-                    }
-                    ((Settable) attribute).setExpression(token.toString());
-                }
-            }
-        }
-    }
-
-    /** Iterate over output ports and read any available values from
-     *  the referenced model parameters and produce them on the outputs.
-     *  @exception IllegalActionException If reading the parameters or
-     *   writing to the ports causes it.
-     */
-    private void _writeOutputs() throws IllegalActionException {
-        // NOTE: This is an essentially exact copy of the code in ModelReference,
-        // but this class and that one can't easily share a common base class.
-        if (_debugging) {
-            _debug("** Writing outputs (if any).");
-        }
-        Iterator ports = outputPortList().iterator();
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            // Only write if the port has a connected channel.
-            if (port.getWidth() > 0) {
-                Attribute attribute = getAttribute(port.getName());
-                // Use the token directly rather than a string if possible.
-                if (attribute instanceof Variable) {
-                    if (_debugging) {
-                        _debug("** Transferring parameter to output: " + port.getName());
-                    }
-                    port.send(0, ((Variable) attribute).getToken());
-                } else if (attribute instanceof Settable) {
-                    if (_debugging) {
-                        _debug("** Transferring parameter as string to output: " + port.getName());
-                    }
-                    port.send(
-                            0,
-                            new StringToken(
-                                    ((Settable) attribute).getExpression()));
-                }
-            }
-        }
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
-
-    /** Indicator of what the last call to iterate() returned. */
-    private int _lastIterateResult = NOT_READY;
 }

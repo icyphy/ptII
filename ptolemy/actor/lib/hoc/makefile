@@ -54,6 +54,7 @@ JSRCS = \
 	AbstractCase.java \
 	Case.java \
 	IterateOverArray.java \
+	LifeCycleManager.java \
 	MobileFunction.java \
 	MobileModel.java \
 	ModelReference.java \
