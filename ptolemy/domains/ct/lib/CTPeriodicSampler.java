@@ -184,13 +184,15 @@ public class CTPeriodicSampler extends Transformer
      *  @return True.
      */
     public boolean postfire() throws IllegalActionException {
-        _hasCurrentEvent = false;
         CTDirector director = (CTDirector)getDirector();
-        if (director.isDiscretePhase()) {
+        if (director.isDiscretePhase() && _hasCurrentEvent) {
             // register for the next event.
             _nextSamplingTime += _samplePeriod;
+            if (_debugging) _debug(getFullName(), "request fire at" 
+                + _nextSamplingTime);
             getDirector().fireAt(this, _nextSamplingTime);
         }
+        _hasCurrentEvent = false;
         return true;
     }
 
