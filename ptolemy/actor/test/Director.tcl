@@ -267,7 +267,7 @@ test Director-8.3 {Test type resolution} {
     set rt1 [[$p1 getResolvedType] getName]
     set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
-} {ptolemy.data.IntToken ptolemy.data.StringToken}
+} {ptolemy.data.IntToken ptolemy.data.Token}
 
 ######################################################################
 ####
@@ -327,8 +327,8 @@ test Director-8.4 {Test type resolution} {
     set rt4 [[$p4 getResolvedType] getName]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
-} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.StringToken\
-ptolemy.data.DoubleToken ptolemy.data.StringToken ptolemy.data.DoubleToken}
+} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.Token\
+ptolemy.data.DoubleToken ptolemy.data.Token ptolemy.data.DoubleToken}
 
 ######################################################################
 ####
