@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/voice.wav&quot;">
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="false">
         </property>
