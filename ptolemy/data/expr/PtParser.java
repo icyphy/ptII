@@ -113,13 +113,12 @@ please consult the Ptolemy II design document (or contact nsmyth@eecs)
 */
 public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParserConstants {/*@bgen(jjtree)*/
   protected JJTPtParserState jjtree = new JJTPtParserState();
-
     boolean debug = false;
 
-    public PtParser(ParameterListener parameter) {
+    public PtParser(Variable owner) {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
         _initialize();
-        _listener = parameter;
+        _owner = owner;
     }
 
     public PtParser() {
@@ -204,7 +203,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     /** Add a constant to the list of constants that the parser recognizes.
      *  It is a static method. It stores the constant in a Hashtable, with 
      *  the corresponding entry for each name being a ptolemy.data.Token 
-     *  of the appropraite type. The value for the constant can be given
+     *  of the appropriate type. The value for the constant can be given
      *  in a ptolemy.data.Token or in one of the data wrapper classes 
      *  in java.lang.
      *  @param name The string name that the parser will recognize.
@@ -308,7 +307,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  this Parameter is registered as a listener of that parameter. 
      *  If null, then no dependency is registered.
      */
-    private ParameterListener _listener;
+    private Variable _owner;
 
     /** Stores the parameters to which the input expression can reference
      */
@@ -1160,19 +1159,19 @@ String tidied, x;
             jj_consume_token(ID);
        jjtree.closeNodeScope(jjtn007, true);
        jjtc007 = false;
-        Parameter referredParam = null;
+        Variable referredVar = null;
         if (_scope != null) {
-           referredParam = (Parameter)_scope.get(token.image);
+           referredVar = (Variable)_scope.get(token.image);
         }
-        if (referredParam != null) {
+        if (referredVar != null) {
            // The Parameter is stored in the node so that the tree 
            // does not have to be reparsed whenever the Token in 
            // the Parameter changes.
-           jjtn007._param   = referredParam;
+           jjtn007._var   = referredVar;
            // Register the calling parameter as a ParameterListener 
            // of this Parameter this ID references.
-           if (_listener != null) {
-                referredParam.addParameterListener(_listener);
+           if (_owner != null) {
+                referredVar._addValueDependent(_owner);
             }
         } else if (_constantsRecognized.containsKey(token.image)) {
             // constant is registered with the parser.

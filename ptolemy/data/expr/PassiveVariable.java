@@ -1,4 +1,4 @@
-/* A PassiveVariable is a Variable that does not interact with listeners.
+/* A PassiveVariable is a Variable that does not propogate its changes.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -32,19 +32,14 @@
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import collections.LinkedList;
-import java.util.Enumeration;
+import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// PassiveVariable
 /**
-A PassiveVariable is a variable that does ignores changes in parameters
-and variables that its expression depends on.  That is, its expression
-is not automatically re-evaluated when these variables change value.
-You should use this class when you wish
-to exercise explicit control over when its expression is evaluated.
+A PassiveVariable is a Variable that does not propogate its changes.
+You should use this class when you wish to exercise explicit control 
+over the order of evaluation of a set of variables.
 
 @author Xiaojun Liu, Edward A. Lee
 @version $Id$
@@ -113,14 +108,13 @@ public class PassiveVariable extends Variable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
 
-    /** Do nothing.  This class does not re-evaluate its expression when
-     *  notified of changes in variables it depends on.
-     *  @param event The ParameterEvent containing the information
-     *   about why the referenced parameter/variable changed.
+    /** Do nothing. This variable dose not notify its value dependents
+     *  when it changes value.
      */
-    final public void parameterChanged(ParameterEvent event) {
+    protected void _notifyValueDependents() {
         // Do nothing.
     }
+
 }
