@@ -50,8 +50,12 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	BroadcastOutput.tcl \
 	FSMActor.tcl \
 	FSMDirector.tcl \
+	ProduceOutput.tcl \
+	SetVariable.tcl \
+	State.tcl \
 	Transition.tcl
 
 # Graphical Java tests that use Tcl.
