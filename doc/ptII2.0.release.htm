@@ -1,32 +1,43 @@
 <!-- $Id$ -->
 <html>
 <head>
-<title>Ptolemy II 2.0devel Release Notes</title>
+<title>Ptolemy II 2.0beta Release Notes</title>
 </head>
 <body bgcolor="#faf0e6">
-<h1>Ptolemy II 2.0devel Release Notes</h1>
-Ptolemy II 2.0devel is a release of the Ptolemy II Java classes.
-<!-- and the Ptolemy II design document>
+<h1>Ptolemy II 2.0beta Release Notes</h1>
+Ptolemy II 2.0beta is a release of the Ptolemy II 
+java classes and the Ptolemy II design document
 
- <p>Ptolemy II 2.0devel includes Vergil, a graphical user interface for
+ <p>Ptolemy II 2.0beta includes Vergil, a graphical user interface for
 developing models.
 
  <p>The design document describes the Ptolemy II design and the implementation
 of the Java classes.  The design document is not included
-with Ptolemy II 2.0devel, but will be shipped with the Ptolemy II 2.0
+with Ptolemy II 2.0beta, but will be shipped with the Ptolemy II 2.0
 production release.   In the interim, please see the "Using Vergil"
 chapter (<a href="design/usingVergil.pdf">PDF</a> - 
 <a href="design/usingVergil/index.htm">HTML</a>)
 
 <h2>Major Features that are new in Ptolemy 2.0 </h2>
 <menu>
-<li> Code Generation
-<li> SR Domain
+<li> Modal Models
+
+<li> <a href="codegen.htm">Code Generation</a>
+This release includes a limited prototype of our code generation facility
+that will generate .class files for non-hierarchical SDF models
+
 </menu>
 
 <h2>Other Features in Ptolemy II</h2>
 
 <ul>
+<li> SR Domain
+
+ <!-- petrinet ?-->
+
+<li> Units
+<li> FIXME: Zoltan's changes to data.expr
+
 <li> The actor classes are more robust and have been reviewed.
 
 <li> <a href="codeDoc/ptolemy/actor/gui/package-summary.html">User interface utilities for applets and applications</a>
@@ -55,6 +66,10 @@ chapter (<a href="design/usingVergil.pdf">PDF</a> -
 
 <li> <a href="docbody.htm" target="body">On-line documentation (in HTML);</a>
 <li> <a href="../ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.htm" target="main">Audio signal processing capabilities;</a></br>
+
+<li> <a href="webStartHelp.htm">Java Web Start</a> support
+<li> Vergil can be run in a sandbox that provides a safer environment
+for unknown code, try running <CODE>$PTII/bin/vergil -sandbox yourmodel.xml</CODE>
 </ul>
 
 <h2>Complete List of Domains in Ptolemy II</h2>
@@ -78,10 +93,14 @@ b	 finite state machines,
 	periodic time-driven (experimental),
 <li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
 	3-D graphics (experimental),
+ <!-- petrinet ??-->
 <li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
-	process networks, and
+	process networks,
 <li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
-	synchronous dataflow.
+	synchronous dataflow, and
+<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
+	synchronous/reactive (experimental).
+
 </ul>
 
 <h2>Platforms</h2>
@@ -90,22 +109,164 @@ The core of Ptolemy II 2.0 is 100% Java, so it should work on any
 platform that has JDK1.3
 
  <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4beta2
+and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
+only works under JDK1.3.0 or 1.3.1 because of limitations in soot.
 
-Ptolemy II 2.0 will not compile under JDK1.2.2
- <p>Ptolemy II 1.0.1 will compile under JDK1.2.2.
-<p> Ptolemy II 1.0.1 will not compile under JDK1.1.x.
-
-<p>See the <a href="install.htm#Jacl">Jacl</a> section of
-the installation page for information about the Ptolemy II test suite
+Ptolemy II 2.0 will not compile under JDK1.2.2.
 
 <p>Ptolemy II is available in two versions
    <menu>
    <li> Ptiny - which can be used to build models in 
    CT, DE, FSM, PN and SDF using built-in actors.
    <li> Full - which includes other domains and 
-   support for developing custom actors.
+   support for devloping custom actors.
    </menu>
+
+<h2>Changes from 1.0.1</h2>
+<menu>
+
+
+<li> data: Units
+<li> data.expr: New ByteToken type
+
+<li> ptolemy/graph rework Shuvra S. Bhattacharyya (University of Maryland at College Park)
+
+</menu>
+
+<h2>Backward compatibility issues</h2>
+Models developed under Ptolemy II 1.0.1 should run under Ptolemy II 2.0.
+
+ <p>The MoMLParser includes a backward compatibility filter that looks
+for actors that have changed while parsing a model.  The backward
+compatibility filter will make what ever change is necessary, and
+the user will eventually be prompted to save the model.
+
+ <p>Below are the backward compatibility issues
+that are handled automatically.
+
+<menu>
+
+<li> actor.lib.conversions.ComplexToCartesian,
+actor.lib.conversions.CartesianToComplex: 
+port <I>real</I>  is now called <CODE>x</CODE>
+port <I>imag</I>  is now called <CODE>y</CODE>
+ <br>The backward compatibility filter should make this change automatically
+
+<li> actor.lib.Sleep: 
+<I>delay</I> parameter is now called <I>sleepTime</I>
+ <br>The backward compatibility filter should make this change automatically
+
+<li> actor.lib.javasound.AudioReader:
+<I>sourceURL</I> is now a parameter
+ <br>The backward compatibility filter should make this change automatically
+
+<li> sdf.lib.vq.ImagePartition, sdf.lib.vq.ImageUnpartition, 
+sdf.lib.vq.HTVQEncode, sdf.lib.vq.VQDecode: 
+<I>input</I> and <I>output</I> are not of type ptolemy.actor.TypedIOPort
+</menu>
+
+Below are the changes that are not handled automatically
+<menu>
+<li> DDE: RcvrComparator renamed to ReceiverComparator
+
+<li> actor.lib.Reader is now actor.lib.DoubleReader
+ <br> The Reader class was
+included in the Ptolemy II 1.0.1 download, but was not part of the 
+default configuration.
+</menu>
+
+If you have developed your own actors under Ptolemy II 1.0.1 by
+writing your own Java files, you should recompile all your java code with
+the new release.  In theory, copying the .class files should work, but
+recompiling is safer.
+
+<h3>New Actors</h3>
+
+<menu>
+
+<li> actor.lib:
+<pre>
+Accumulator
+BooleanMultiplexor
+BooleanSelect
+BooleanSwitch
+ClassWrapper
+Counter
+Differential
+DoubleReader (Was Reader)
+Limiter
+LinearDifferenceEquationSystem
+LookupTable
+NonStrictTest
+URLDirectoryReader
+URLReader
+VectorAssembler
+VectorDisassembler
+WallClockTime
+</pre>
+
+<li> actor.lib.comm:
+<pre>
+SerialComm
+</pre>
+
+<li> actor.lib.conversions:
+<pre>
+BooleanToAnything
+Converter
+InUnitsOf.java
+IntArrayToString
+LongToDouble
+StringToIntArray
+</pre>
+
+<li> actor.lib.gui:
+<pre>
+SliderSource
+RealTimePlotter
+MatrixVisualizer
+</pre>
+
+<li> actor.lib.logic:
+<pre>
+IsPresent
+</pre>
+
+<li> actor.lib.net:
+<pre>
+DatagramReader
+DatagramWriter
+</pre>
+
+<li> ct.lib:
+<pre>
+LevelCrossingDetector
+FirstOrderHold
+EventSource
+</pre>
+
+<li> de.lib:
+<pre>
+SamplerWithDefault
+QueueWithNextOut
+Queue
+Previous
+PreemptableTask
+Inhibit
+EventFilter
+EventButton
+</pre>
+
+<li> sdf.lib:
+<pre>
+SDFConverter
+MatrixToDouble
+DoubleToMatrix
+</pre>
+
+</menu>
+
+
 
 <!--vergilDocs-->
 <h2>Limitations</h2>
@@ -130,6 +291,7 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 <h3>Limitations in the Actor Libraries</h3>
 <menu>
 <li>The actor library is far from complete.
+
 <li>The Expression actor does not properly propagate type constraints in
 an expression-dependent fashion. It works correctly for double-valued
 expressions of double-valued inputs.
@@ -152,13 +314,6 @@ will only work under Windows.
 
 <h3>Limitations in the FSM Domain</h3>
 
-The FSM domain is still fairly preliminary, and is likely to change
-rapidly in future releases.  At this time, it is difficult to build
-nontrivial FSM models using Vergil.  Hierarchical models are particularly
-difficult to build, and will be handled quite differently in the next
-version.  We cannot assure that FSM models that are constructed with
-this release will work with future releases.
-
 <h3>Limitations in the GR Domain</h3>
 Some of the demos do not work.
 
@@ -170,16 +325,6 @@ would otherwise.  (i.e. they are non-deterministic in when they execute)
 However, for timed PN models, there is actually some expressiveness
 lost, since timed PN models can locally execute mutations deterministically.
 
-
-<h3>Limitations in the SDF Domain</h3>
-There are currently two bugs in the SDF Domain.  Both are bugs in the scheduler that can be fairly easily avoided.
-<menu>
-<li> Opaque tunneling entities result in a NullPointerException.  An Opaque tunneling entity is one that does not have any entities.  It only contains relations between external ports.
-<br> <b>Workaround:</b> Do not use a director for tunneling entities.
-
-<li> The SDF scheduler reports that actors are disconnected, when they are connected through external ports.
-<br> <b>Workaround:</b> Connect the actors in another way.  This is usually possible when the connection is through an output port (since sources have trigger inputs that are usually disconnected in SDF), but somewhat more difficult when the connection is only through an input port.
-</menu>
 
 <h3>Limitations in the User Interface</h3>
 Version 2.0 of Ptolemy II includes the Vergil, a graphical user
@@ -201,12 +346,20 @@ Show Name, the name appears twice.
 <li>Cannot have more than one vertex in a connection.
 <li>No mechanism to set the width of a relation.
 <li>The integrated web browser is not a full-featured browser.
-<li>No snap-to-grid.
 <li>Icon editor not yet integrated.
 <li>Debugger not yet integrated.
-<li>FSM editor is not yet useful.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class loading.
+</menu>
+
+<h3>Code Generation Limitations</h3>
+<menu>
+<li> This release includes a limited prototype of our code generation facility
+that will generate .class files for non-hierarchical SDF models
+
+<li> The code generator uses Soot, which requires JDK1.3.x.
+Soot will not work with JDK1.4
+
 </menu>
 
 <h3>Missing Domains</h3>
