@@ -1,6 +1,6 @@
 /* A library supporting the capturing of audio.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,54 +39,54 @@ import javax.sound.sampled.*;
 //////////////////////////////////////////////////////////////////////////
 //// SoundCapture
 /**
-<h2>Overview</h2>
-A library supporting the capture of audio. This class supports the
-real-time capture of audio from the audio input port (mic or line-in)
-as well as the capture of audio from a sound file. Single channel
-(mono) and multichannel audio (stereo) are supported. This class,
-along with SoundPlayback, intends to provide an easy to use interface
-to Java Sound, Java's audio API.
-<p>
-Depending on available audio
-system resorces, it may be possible to run an instance of this
-class and an instance of SoundPlayback concurrently. This allows
-for the concurrent capture, processing, and playback of audio data.
-<p>
-<h2>Usage</h2>
-Two constructors are provided. One constructor creates a sound capture
-object that captures from the line-in or microphone port. If this
-constructor is used, there will be a small
-delay between the time that the audio enters the microphone or
-line-in and the time that the corresponding audio samples are
-available via <i>getSamples</i>.
-This latency can be adjusted by setting the <i>bufferSize</i>
-constructor parameter. Another constructor creates a sound capture
-object that captures audio from a sound file.
-<p>
-After calling the appropriate constructor, <i>startCapture()</i>
-must be called to initialize the audio system for capture.
-The <i>getSamples()</i> method should then be repeatedly
-invoked to obtain audio data in the form of a multidimensional
-array of audio sample values. For the case where
-audio is captured from the mic or line-ine, it is important to
-invoke <i>getSamples()</i> often enough to prevent overflow of
-the internal audio buffer. The size of the internal buffer is
-set in the contructor.
-Finally, after no more audio data is desired, <i>stopCapture()</i>
-should be called to free up audio system resources.
-<p>
-<i>Security issues</i>Applications have no restrictions on the
-capturing or playback of audio. Applets, however, may only capture
-audio from a file specified as a URL on the same machine as the
-one the applet was loaded from. Applet code is not allowed to
-read or write native files. The .java.policy file must be
-modified to grant applets more privliiges.
-<p>
-Note: Requires Java 2 v1.3.0 RC1 or later.
+   <h2>Overview</h2>
+   A library supporting the capture of audio. This class supports the
+   real-time capture of audio from the audio input port (mic or line-in)
+   as well as the capture of audio from a sound file. Single channel
+   (mono) and multichannel audio (stereo) are supported. This class,
+   along with SoundPlayback, intends to provide an easy to use interface
+   to Java Sound, Java's audio API.
+   <p>
+   Depending on available audio
+   system resorces, it may be possible to run an instance of this
+   class and an instance of SoundPlayback concurrently. This allows
+   for the concurrent capture, processing, and playback of audio data.
+   <p>
+   <h2>Usage</h2>
+   Two constructors are provided. One constructor creates a sound capture
+   object that captures from the line-in or microphone port. If this
+   constructor is used, there will be a small
+   delay between the time that the audio enters the microphone or
+   line-in and the time that the corresponding audio samples are
+   available via <i>getSamples</i>.
+   This latency can be adjusted by setting the <i>bufferSize</i>
+   constructor parameter. Another constructor creates a sound capture
+   object that captures audio from a sound file.
+   <p>
+   After calling the appropriate constructor, <i>startCapture()</i>
+   must be called to initialize the audio system for capture.
+   The <i>getSamples()</i> method should then be repeatedly
+   invoked to obtain audio data in the form of a multidimensional
+   array of audio sample values. For the case where
+   audio is captured from the mic or line-ine, it is important to
+   invoke <i>getSamples()</i> often enough to prevent overflow of
+   the internal audio buffer. The size of the internal buffer is
+   set in the contructor.
+   Finally, after no more audio data is desired, <i>stopCapture()</i>
+   should be called to free up audio system resources.
+   <p>
+   <i>Security issues</i>Applications have no restrictions on the
+   capturing or playback of audio. Applets, however, may only capture
+   audio from a file specified as a URL on the same machine as the
+   one the applet was loaded from. Applet code is not allowed to
+   read or write native files. The .java.policy file must be
+   modified to grant applets more privliiges.
+   <p>
+   Note: Requires Java 2 v1.3.0 RC1 or later.
 
-@author Brian K. Vogel
-@version $Id$
-@see ptolemy.media.javasound.SoundPlayback
+   @author Brian K. Vogel
+   @version $Id$
+   @see ptolemy.media.javasound.SoundPlayback
 */
 
 public class SoundCapture {
@@ -115,8 +115,8 @@ public class SoundCapture {
      *   might be 1/2 to 1/16th of <i>bufferSize</i>.
      */
     public SoundCapture(float sampleRate, int sampleSizeInBits,
-			int channels, int bufferSize,
-			int getSamplesSize) {
+            int channels, int bufferSize,
+            int getSamplesSize) {
 	System.out.println("SoundCapture: constructor 1: invoked");
 	// Set mode to real-time.
 	this._isRealTime = true;
@@ -127,15 +127,15 @@ public class SoundCapture {
 	this._productionRate = getSamplesSize;
 
 	System.out.println("SoundCapture: constructor 1: sampleSizeInBits = "
-			   + sampleSizeInBits);
+                + sampleSizeInBits);
 	System.out.println("SoundCapture: constructor 1: sampleRate = "
-			   + sampleRate);
+                + sampleRate);
 	System.out.println("SoundCapture: constructor 1: channels = "
-			   + channels);
+                + channels);
 	System.out.println("SoundCapture: constructor 1: bufferSize = "
-			   + bufferSize);
+                + bufferSize);
 	System.out.println("SoundCapture: constructor 1: getSamplesSize = "
-			   + getSamplesSize);
+                + getSamplesSize);
 
     }
 
@@ -152,7 +152,7 @@ public class SoundCapture {
      *   returned by <i>getSamples()</i>.
      */
     public SoundCapture(boolean isURL, String fileName,
-			int getSamplesSize) {
+            int getSamplesSize) {
 	System.out.println("SoundCapture: constructor 2: invoked");
 	// Set mode to "capture from file" (not real-time).
 	this._isRealTime = false;
@@ -230,7 +230,7 @@ public class SoundCapture {
 	    if (_isRealTime == true) {
 		// Real-time capture.
 		numBytesRead = _targetLine.read(_data, 0,
-				    _productionRate*_frameSizeInBytes);
+                        _productionRate*_frameSizeInBytes);
 
 	    } else {
 		// Capture audio from file.
@@ -241,8 +241,8 @@ public class SoundCapture {
 		// Convert byte array to double array.
 		_audioInDoubleArray =
 		    _byteArrayToDoubleArray(_data,
-					    _bytesPerSample,
-					    _channels);
+                            _bytesPerSample,
+                            _channels);
 		//System.out.println("SoundCapture: getSamples(): returning some data");
 		return _audioInDoubleArray;
             } else if (numBytesRead != _data.length) {
@@ -318,7 +318,7 @@ public class SoundCapture {
         if (!AudioSystem.isLineSupported(targetInfo)) {
 	    // FIXME: throw exception here.
             System.out.println("Line matching " + targetInfo +
-			       " not supported.");
+                    " not supported.");
             return;
         }
 
@@ -349,7 +349,7 @@ public class SoundCapture {
 	if (!AudioSystem.isLineSupported(sourceInfo)) {
 	    //FIXME: handle this correctly.
 	    System.err.println("Line matching " + sourceInfo +
-			       " not supported.");
+                    " not supported.");
 	    return;
 	}
 
@@ -383,7 +383,7 @@ public class SoundCapture {
 			    AudioSystem.getAudioInputStream(soundURL);
 		    } catch (UnsupportedAudioFileException e) {
 			System.out.println("UnsupportedAudioFileException "
-					   + e);
+                                + e);
 		    } catch (IOException e) {
 			System.out.println("IOException " + e);
 		    }
@@ -401,7 +401,7 @@ public class SoundCapture {
 			    AudioSystem.getAudioInputStream(soundFile);
 		    } catch (UnsupportedAudioFileException e) {
 			System.out.println("UnsupportedAudioFileException "
-					   + e);
+                                + e);
 		    } catch (IOException e) {
 			System.out.println("IOException " + e);
 		    }
@@ -418,19 +418,19 @@ public class SoundCapture {
 	    // representation of samples.
 	    float sampleRate = origFormat.getSampleRate();
 	    System.out.println("AudioSource: sampling rate = " +
-			       sampleRate);
+                    sampleRate);
 
 	    _sampleSizeInBits = origFormat.getSampleSizeInBits();
 	    _bytesPerSample = _sampleSizeInBits/8;
 	    System.out.println("AudioSource: sample size in bits = " +
-			       _sampleSizeInBits);
+                    _sampleSizeInBits);
 
 	    _channels = origFormat.getChannels();
 	    boolean signed = true;
 	    boolean bigEndian = true;
 	    AudioFormat format = new AudioFormat(sampleRate,
-						 _sampleSizeInBits, _channels,
-						 signed, bigEndian);
+                    _sampleSizeInBits, _channels,
+                    signed, bigEndian);
 	    System.out.println("Converted format: " + format.toString());
 
 	    _properFormatAudioInputStream =
@@ -463,8 +463,8 @@ public class SoundCapture {
      * array containing samples for channel m.
      */
     private double[][] _byteArrayToDoubleArray(byte[] byteArray,
-					       int bytesPerSample,
-					       int channels) {
+            int bytesPerSample,
+            int channels) {
 	int lengthInSamples = byteArray.length / (bytesPerSample*channels);
 	double[][] doubleArray = new double[channels][lengthInSamples];
 	//double maxSampleReciprical = 1/(Math.pow(2, 8 * bytesPerSample - 1));
@@ -497,7 +497,7 @@ public class SoundCapture {
 		for (int i = 0; i < bytesPerSample; i += 1) {
 		    // Assume we are dealing with big endian.
 		    b[i] = byteArray[currSamp*bytesPerSample*channels +
-				    bytesPerSample*currChannel + i];
+                            bytesPerSample*currChannel + i];
 		}
 		long result = (b[0] >> 7) ;
 		for (int i = 0; i < bytesPerSample; i += 1)

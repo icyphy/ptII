@@ -1,7 +1,7 @@
 /* A library supporting the playback of audio data and the the
    writing of audio data to a sound file.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,48 +39,48 @@ import javax.sound.sampled.*;
 /////////////////////////////////////////////////////////////
 //// SoundPlayback
 /**
-<h2>Overview</h2>
-A library supporting the real-time playback of audio and the writing
-of audio data to a sound file. Single channel
-(mono) and multichannel audio (stereo) are supported. This class,
-along with SoundCapture, intends to provide an easy to use interface
-to Java Sound, Java's audio API.
-<p>
-Depending on available
-system resorces, it may be possible to run an instance of this
-class and an instance of SoundCapture concurrently. This allows
-for the concurrent capture, processing, and playback of audio data.
-<p>
-<h2>Usage</h2>
-Two constructors are provided. One constructor creates a sound playback
-object that sends audio data to the speaker. If this constructor is
-used, there will be a small
-delay between the time that the audio data is delivered to this
-object and the time that the corresponding audio is actually
-heard. This latency can be adjusted by setting the <i>bufferSize</i>
-constructor parameter.  Another constructor
-creates a sound playback object that sends audio data to a sound
-file.
-<p>
-After calling the appropriate constructor, <i>startPlayback()</i>
-must be called to initialize the audio system.
-The <i>putSamples()</i> method should then be repeatedly
-called to deliver the audio data to the audio output device
-(speaker or file).
-Finally, after no more audio playback is desired, <i>stopPlayback()</i>
-should be called to free up audio system resources.
-<p>
-<i>Security issues</i>: Applications have no restrictions on the
-capturing or playback of audio. Applets, however, may only capture
-audio from a file specified as a URL on the same machine as the
-one the applet was loaded from. Applet code is not allowed to
-read or write native files. The .java.policy file must be
-modified to grant applets more privliiges.
-<p>
-Note: Requires Java 2 v1.3.0 RC1 or later.
-@author Brian K. Vogel
-@version $Id$
-@see ptolemy.media.javasound.SoundCapture
+   <h2>Overview</h2>
+   A library supporting the real-time playback of audio and the writing
+   of audio data to a sound file. Single channel
+   (mono) and multichannel audio (stereo) are supported. This class,
+   along with SoundCapture, intends to provide an easy to use interface
+   to Java Sound, Java's audio API.
+   <p>
+   Depending on available
+   system resorces, it may be possible to run an instance of this
+   class and an instance of SoundCapture concurrently. This allows
+   for the concurrent capture, processing, and playback of audio data.
+   <p>
+   <h2>Usage</h2>
+   Two constructors are provided. One constructor creates a sound playback
+   object that sends audio data to the speaker. If this constructor is
+   used, there will be a small
+   delay between the time that the audio data is delivered to this
+   object and the time that the corresponding audio is actually
+   heard. This latency can be adjusted by setting the <i>bufferSize</i>
+   constructor parameter.  Another constructor
+   creates a sound playback object that sends audio data to a sound
+   file.
+   <p>
+   After calling the appropriate constructor, <i>startPlayback()</i>
+   must be called to initialize the audio system.
+   The <i>putSamples()</i> method should then be repeatedly
+   called to deliver the audio data to the audio output device
+   (speaker or file).
+   Finally, after no more audio playback is desired, <i>stopPlayback()</i>
+   should be called to free up audio system resources.
+   <p>
+   <i>Security issues</i>: Applications have no restrictions on the
+   capturing or playback of audio. Applets, however, may only capture
+   audio from a file specified as a URL on the same machine as the
+   one the applet was loaded from. Applet code is not allowed to
+   read or write native files. The .java.policy file must be
+   modified to grant applets more privliiges.
+   <p>
+   Note: Requires Java 2 v1.3.0 RC1 or later.
+   @author Brian K. Vogel
+   @version $Id$
+   @see ptolemy.media.javasound.SoundCapture
 */
 
 public class SoundPlayback {
@@ -110,8 +110,8 @@ public class SoundPlayback {
      *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
     public SoundPlayback(float sampleRate, int sampleSizeInBits,
-			int channels, int bufferSize,
-			int putSamplesSize) {
+            int channels, int bufferSize,
+            int putSamplesSize) {
 	System.out.println("SoundPlayback: constructor 1: invoked");
 	// Set mode to real-time.
 	this._playbackMode = "speaker";
@@ -122,15 +122,15 @@ public class SoundPlayback {
 	this._putSamplesSize = putSamplesSize;
 
 	System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-			   + sampleSizeInBits);
+                + sampleSizeInBits);
 	System.out.println("SoundPlayback: constructor 1: sampleRate = "
-			   + sampleRate);
+                + sampleRate);
 	System.out.println("SoundPlayback: constructor 1: channels = "
-			   + channels);
+                + channels);
 	System.out.println("SoundPlayback: constructor 1: bufferSize = "
-			   + bufferSize);
+                + bufferSize);
 	System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-			   + putSamplesSize);
+                + putSamplesSize);
     }
 
     /** Construct a sound playback object. This constructor creates an
@@ -141,7 +141,7 @@ public class SoundPlayback {
      *  close and save the sound file, call method <i>stopPlayback</i>.
      *  @param fileName The file name to create. If the file already
      *  exists, overwrite it. Valid sound file formats are WAVE (.wav),
-     *  AIFF (.aif, .
+     *  AIFF (.aif, .aiff), AU (.au). The file format to write is
      *  determined automatically from the file extension.
      *  @param sampleRate Sample rate in Hz. Must be in the range: 8000
      *  to 48000.
@@ -168,15 +168,15 @@ public class SoundPlayback {
 	this._productionRate = putSamplesSize;
 
 	System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-			   + sampleSizeInBits);
+                + sampleSizeInBits);
 	System.out.println("SoundPlayback: constructor 1: sampleRate = "
-			   + sampleRate);
+                + sampleRate);
 	System.out.println("SoundPlayback: constructor 1: channels = "
-			   + channels);
+                + channels);
 	System.out.println("SoundPlayback: constructor 1: bufferSize = "
-			   + bufferSize);
+                + bufferSize);
 	System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-			   + putSamplesSize);
+                + putSamplesSize);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -270,8 +270,8 @@ public class SoundPlayback {
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
-					    _bytesPerSample,
-					    _channels);
+                    _bytesPerSample,
+                    _channels);
 
 	    // Note: _data is a byte array containing data to
 	    // be written to the output device.
@@ -285,8 +285,8 @@ public class SoundPlayback {
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
-					    _bytesPerSample,
-					    _channels);
+                    _bytesPerSample,
+                    _channels);
 	    // Add new audio data to the file buffer array.
 	    for (int i = 0; i < _data.length; i++) {
 		_toFileBuffer.add(new Byte(_data[i]));
@@ -295,8 +295,8 @@ public class SoundPlayback {
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
-					    _bytesPerSample,
-					    _channels);
+                    _bytesPerSample,
+                    _channels);
             
 	    // Now write the array to output device.
 	    _sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
@@ -329,11 +329,11 @@ public class SoundPlayback {
                 "sample size in bits = " + _sampleSizeInBits);
 
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
-					 format,
-					 AudioSystem.NOT_SPECIFIED);
+                format,
+                AudioSystem.NOT_SPECIFIED);
 
 	System.out.println("SoundPLayback: Dataline.Info : " +
-			   sourceInfo.toString());
+                sourceInfo.toString());
 
         // get and open the source data line for playback.
 	try {
@@ -344,8 +344,8 @@ public class SoundPlayback {
 	    // the internal audio buffer.
 	    _sourceLine.open(format, _bufferSize*_frameSizeInBytes);
 	    System.out.println("SoundPlayback: internal audio buffer size = " +
-			       _sourceLine.getBufferSize()/_frameSizeInBytes +
-			       " samples.");
+                    _sourceLine.getBufferSize()/_frameSizeInBytes +
+                    " samples.");
 
 	} catch (LineUnavailableException ex) {
             System.err.println("LineUnavailableException " + ex);
@@ -369,7 +369,7 @@ public class SoundPlayback {
 	// Each element is a byte of audio data.
 	_toFileBuffer = new ArrayList();
 
-	 boolean signed = true;
+        boolean signed = true;
         boolean bigEndian = true;
 
         _playToFileFormat = new AudioFormat((float)_sampleRate,
@@ -393,8 +393,8 @@ public class SoundPlayback {
 
 	AudioInputStream audioInputStream =
 	    new AudioInputStream(byteInputArrayStream,
-				 _playToFileFormat,
-				 audioBytes.length /  _frameSizeInBytes);
+                    _playToFileFormat,
+                    audioBytes.length /  _frameSizeInBytes);
 
 	File outFile = new File(_fileName);
 
@@ -415,30 +415,30 @@ public class SoundPlayback {
 	    if (fileExtension.equalsIgnoreCase("au")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
-				  AudioFileFormat.Type.AU, outFile);
+                        AudioFileFormat.Type.AU, outFile);
 	    } else if (fileExtension.equalsIgnoreCase("aiff")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
-				  AudioFileFormat.Type.AIFF, outFile);
+                        AudioFileFormat.Type.AIFF, outFile);
 	    } else if (fileExtension.equalsIgnoreCase("wave")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
-				  AudioFileFormat.Type.WAVE, outFile);
+                        AudioFileFormat.Type.WAVE, outFile);
 	    } else if (fileExtension.equalsIgnoreCase("wav")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
-				  AudioFileFormat.Type.WAVE, outFile);
+                        AudioFileFormat.Type.WAVE, outFile);
 	    } else if (fileExtension.equalsIgnoreCase("aifc")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
-				  AudioFileFormat.Type.AIFC, outFile);
+                        AudioFileFormat.Type.AIFC, outFile);
 	    } else {
 		System.err.println("Error saving file: Unknown file format: "
-				   + fileExtension);
+                        + fileExtension);
 	    }
 	} catch (IOException e) {
-	  System.err.println("SoundPlayback: error saving" +
-          " file: " + e);
+            System.err.println("SoundPlayback: error saving" +
+                    " file: " + e);
 	}
     }
 
@@ -493,8 +493,8 @@ public class SoundPlayback {
 		// Copy the byte representation of current sample to
 		// the linear signed pcm big endian formated byte array.
 		for (int i = 0; i < bytesPerSample; i += 1) {
-                        byteArray[currSamp*bytesPerSample*channels + 
-                                bytesPerSample*currChannel + i] = b[i];
+                    byteArray[currSamp*bytesPerSample*channels + 
+                            bytesPerSample*currChannel + i] = b[i];
 		}
 	    }
 	}
