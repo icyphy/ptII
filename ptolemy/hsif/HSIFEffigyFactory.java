@@ -45,6 +45,8 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.XSLTUtilities;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -123,31 +125,90 @@ public class HSIFEffigyFactory extends EffigyFactory {
             try {
                 _inCreateEffigy = true;
 
+		// We need to operate on urls here in case we
+		// are operating under Web Start and the model
+		// is a JAR URL that starts with jar:file:
 
 		// Generate a MoML file with a name 'xxx_moml.xml'
-		String inputFileName = input.getFile();
+		String inputFileName = input.toString();
+		// The directory and base name
+		String inputDirectoryBaseName = inputFileName;
+
 		int index = inputFileName.lastIndexOf(".");
-                String temporaryOutputFileName;
-		if (index < 0) {
-		    temporaryOutputFileName = inputFileName + "_moml.xml";
-		} else {
+		if (index >= 0) {
+		    inputDirectoryBaseName = inputFileName.substring(0, index);
+		}
+                String temporaryOutputFileName =
+		    inputDirectoryBaseName + "_moml.xml";
+
+		
+		// Try to open the output file before we go through
+		// the trouble of ding the conversion.
+		FileWriter outputFileWriter = null;
+		try {
+		    outputFileWriter = new FileWriter(temporaryOutputFileName);
+		} catch (IOException ex) {
+		    // Try to open up a temporary file.
+		    // If we are running under Web Start, then
+		    // temporaryOutputFileName is likely a jar url, and
+		    // it cannot be written to
+		    String baseName = inputDirectoryBaseName;
+		    // Under Windows, the separator will always be a /
+		    // because we converted a URL to a string.
+		    index = inputDirectoryBaseName.lastIndexOf("/");
+		    if (index > 0) {
+			baseName = inputDirectoryBaseName
+			    .substring(index,
+				       inputDirectoryBaseName.length());
+		    }
+
+		    File temporaryOutputFile;
 		    try {
-			temporaryOutputFileName =
-			    inputFileName.substring(0, index)
-			    + "_moml.xml";
-		    } catch (IndexOutOfBoundsException ex) {
-			temporaryOutputFileName = inputFileName + "_moml.xml";
+			temporaryOutputFile =
+			    File.createTempFile(baseName, ".xml");
+		    } catch (IOException ex2) {
+			// JDK1.4.1_01 is so lame that it might not report
+			// what the problem was, instead it reports:
+			// "The filename, directory name, or volume label
+			// syntax is incorrect"
+			// FIXME: IOException does not take a cause argument?
+			throw new Exception("Could not create a temporary "
+					    + "file based on '" + baseName 
+					    + "'", ex2);
+		    }
+
+		    // Save the new name of the file so we can
+		    // tell the user about it and open the resulting model.
+		    temporaryOutputFileName =
+			temporaryOutputFile.toString();
+		    try {
+			outputFileWriter = new FileWriter(temporaryOutputFile);
+		    } catch (IOException ex3) {
+			// FIXME: IOException does not take a cause argument?
+			throw new Exception("Could not open '"
+					    + temporaryOutputFile
+					    + "', also tried '"
+					    + temporaryOutputFileName
+					    + "' where the exception was:",
+					    ex);
 		    }
 		}
-		System.out.print("Converting HSIFToMoML...");
-		HSIFUtilities.HSIFToMoML(inputFileName,
-					 temporaryOutputFileName);
+
+		System.out.print("Converting HSIFToMoML ('"
+				 + inputFileName + "' to '" 
+				 + temporaryOutputFileName + "'");
+
+		// Read in from the URL so that Web Start works.
+		HSIFUtilities.HSIFToMoML(input.toString(),
+					 outputFileWriter);
+		outputFileWriter.close();
 		System.out.println(" Done");
 
 		URL temporaryOutputURL =
 		    MoMLApplication.specToURL(temporaryOutputFileName);
     
-
+		// Note that createEffigy might end up substituting %20
+		// for spaces.
 		Effigy effigy = ((EffigyFactory)getContainer())
 		    .createEffigy(container,
 				  temporaryOutputURL, temporaryOutputURL);
