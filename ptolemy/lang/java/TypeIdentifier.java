@@ -121,7 +121,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         if (classDecl != null) {
             if (classDecl.category == CG_INTERFACE) {
                 return TYPE_KIND_INTERFACE;
-
+            }
         }
         return TYPE_KIND_CLASS;
     }
