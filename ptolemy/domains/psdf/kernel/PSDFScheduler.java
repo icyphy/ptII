@@ -1,4 +1,4 @@
-/* A Scheduler for the SDF domain
+/* A Scheduler for the PSDF domain
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -67,8 +67,8 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
 
+// FIXME: fixup import lists.
 import synthesis.dif.psdf.*;
-// import ptolemy.graph.sched.*;
 import ptolemy.graph.*;
 
 ///////////////////////////////////////////////////////////
@@ -186,10 +186,22 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         SymbolicScheduleElement result = 
                  _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
                  scheduler);
+
+        // Extract the schedule.
+        Schedule scheduleResult = null;
+        if (result instanceof SymbolicSchedule) {
+            scheduleResult = ((SymbolicSchedule)result).schedule();
+        } else {
+            // FIXME: handle this case (single-node graph?).
+        }
+
         _debugMessage("Completed PSDFScheduler._getSchedule().\n The "
-                + "schedule follows.\n" + result.toString() + "\n");
+                + "schedule follows.\n" + scheduleResult.toString() + "\n");
+
+         // FIXME: The schedule being returned cannot be executed.
+         return scheduleResult;
         // Just return an empty schedule for now
-        return new Schedule();
+        // return new Schedule();
     }
 
     // Print a debugging message if the debugging flag is turned on.
@@ -417,7 +429,8 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
     /** A schedule whose iteration count is given by an expression.
      */
     private class SymbolicSchedule extends SymbolicScheduleElement {
-        /** Construct a schedule with the given actor and the given expression.
+        /** Construct a symbolic schedule with the given schedule 
+         *  and the given expression.
          *  The given schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
          *  @param schedule The schedule.
@@ -427,6 +440,13 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 throws IllegalActionException {
             _scheduleElement = schedule;
             setIterationCount(expression);
+        }
+
+        /** Return the schedule associated with this symbolic schedule.
+         *  @return The schedule.
+         */
+        public Schedule schedule() {
+            return (Schedule)_scheduleElement;
         }
 
         /** Return a string representation of this symbolic schedule.
