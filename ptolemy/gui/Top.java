@@ -434,7 +434,14 @@ public abstract class Top extends JFrame {
                 File file = fileDialog.getSelectedFile().getCanonicalFile();
                 _read(file.toURL());
             } catch (Exception ex) {
-                report("Error reading input", ex);
+                // NOTE: The XML parser can only throw an XmlException.
+                // It signals that it is a user cancellation with the special
+                // string pattern "*** Canceled." in the message.
+                if (!ex.getMessage().startsWith("*** Canceled.")) {
+                    // No need to report a CancelException, since it results
+                    // from the user clicking a "Cancel" button.
+                    report("Error reading input", ex);
+                }
             }
         }
     }
