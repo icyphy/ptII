@@ -1328,7 +1328,7 @@ void element()       :
 			]
 
 			[
-				"(" [ funcIf() ( "," funcIf() )* ] ")"
+				"(" [ expression() ( "," expression() )* ] ")"
 				{
 					hasCall = true;
 				}
@@ -1674,11 +1674,9 @@ String tidied, x;
    }
 /*@egen*/   
 
-  |   LOOKAHEAD("(" <FUNCTION> "(")
-      "(" functionDefinition() ")"
+  |   LOOKAHEAD("(")
+      "(" expression() ")"
 
-  |   "(" funcIf() ")"
- 
   |   LOOKAHEAD( "[" )
       matrixConstruct()
 
@@ -1755,7 +1753,7 @@ void function()                 :
         try {
 /*@egen*/    
 	identifier()
-    "(" [ funcIf() ( "," funcIf() )* ] ")"/*@bgen(jjtree)*/
+    "(" [ expression() ( "," expression() )* ] ")"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

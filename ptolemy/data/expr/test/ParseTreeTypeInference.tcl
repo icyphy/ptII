@@ -715,4 +715,8 @@ test ParseTreeTypeInference-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + 3"] [theTest "function (y:int) function(x) x + y + 3"] [theTest "function (y) function(x:int) x + y + 3"] [theTest "function (y:double) function(x:long) x + y + 3"] 
 } {{(general) -> (general) -> general} {(int) -> (general) -> general} {(general) -> (int) -> general} {(double) -> (long) -> scalar}}
 
+test ParseTreeTypeInference-17.3 {Test nested function definitions.} {
+    list [theTest "cast(function(x:int) double, function(x) x + 3.0)"] 
+} {{(int) -> double}}
+
 

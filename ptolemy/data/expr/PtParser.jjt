@@ -806,7 +806,7 @@ void element() #void :
 			]
 
 			[
-				"(" [ funcIf() ( "," funcIf() )* ] ")"
+				"(" [ expression() ( "," expression() )* ] ")"
 				{
 					hasCall = true;
 				}
@@ -1017,11 +1017,9 @@ String tidied, x;
       }
    ) #PtLeafNode   
 
-  |   LOOKAHEAD("(" <FUNCTION> "(")
-      "(" functionDefinition() ")"
+  |   LOOKAHEAD("(")
+      "(" expression() ")"
 
-  |   "(" funcIf() ")"
- 
   |   LOOKAHEAD( "[" )
       matrixConstruct()
 
@@ -1066,7 +1064,7 @@ void function() #PtFunctionNode :
 {}
 {    
 	identifier()
-    "(" [ funcIf() ( "," funcIf() )* ] ")"
+    "(" [ expression() ( "," expression() )* ] ")"
 }
 
 void assignmentIdentifier() #PtLeafNode :
