@@ -1,4 +1,4 @@
-/* A Parameter is an Attribute that is also a container for a token.
+/* A Parameter is an Attribute that contains a token.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -33,40 +33,47 @@ package ptolemy.data.expr;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
-import ptolemy.data.TokenPublisher;
 import ptolemy.data.TypeCPO;
+import collections.LinkedList;
 import java.util.*;
 import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
 /**
- * A Parameter is an Attribute that is also a container for a token. 
- * The type of a Parameter is set by the first non-null Token placed in it. 
- * The type can be changed later via a method call. However the 
- * new type for the parameter must be able to contain the previous token.
- * A parameter can be given a Token or a String as its value. 
- * If a String is given, it uses PtParser to obtain the Token
- * resulting from parsing and evaluating the expression. 
- * If another Object (e.g. Parameter) wants to Observe this Parameter, it must 
- * register its interest with the TokenPublisher associated with the 
- * contained Token.
- * At any stage a new Token or String can be given to the Parameter. The type
- * of the new/resulting Token is checked to see if it can be converted to 
- * the type of the Parameter in a lossless manner.
- * If you want to create a parameter from a string, it is necessary 
- * to create the parameter with the appropriate container and name, 
- * then call setTokenFromExpr() to set its value.
- * 
- * FIXME:  synchronization issues
- * 
- * @author Neil Smyth
- * @version $Id$
- * @see ptolemy.kernel.util.Attribute
- * @see ptolemy.data.expr.PtParser 
- * @see ptolemy.data.Token 
+A Parameter is an Attribute that contains a token.
+<p>
+A parameter can be given a Token or an expression as its value. If it is 
+given an expression, then the token contained by this parameter needs 
+to be resolved via a call to evaluate(). If the expression string is null,
+or if the token placed in it is null, then the token contained will be null.
+If the parameter is set from an expression, PtParser is used to generate 
+a parse tree from the expression which can then be evaluated to a token.
+<p>
+The type of a Parameter is set by the first non-null Token placed in it. 
+The type can be changed later via a method call. However the 
+new type for the parameter must be able to contain the previous token.
+At any stage a new Token or expression can be given to the Parameter. The type
+of the new/resulting Token is checked to see if it can be converted to 
+the type of the Parameter in a lossless manner. If it cannot an exception 
+is thrown.
+<p>
+If another Object (e.g. Parameter) wants to Observe this Parameter, it must 
+register its interest with the TokenPublisher associated with the 
+contained Token.
+<p>
+To create a parameter from an expression, create the parameter with the 
+appropriate container and name, then call setExpression() to set its value.
+
+FIXME:  synchronization issues
+
+@author Neil Smyth
+@version $Id$
+@see ptolemy.kernel.util.Attribute
+@see ptolemy.data.expr.PtParser 
+@see ptolemy.data.Token 
 */
-public class Parameter extends ptolemy.kernel.util.Attribute implements Observer {
+public class Parameter extends Attribute implements ParameterListner {
 
     /** Construct a parameter in the default workspace with an empty string
      *  as its name.
@@ -129,16 +136,7 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        if (token != null) {
-            try {
-                _origToken = (ptolemy.data.Token)token.clone();
-                _noTokenYet = false;
-                _paramType = token.getClass();
-            } catch (CloneNotSupportedException c) {
-                _origToken = token;
-            }
-        }
-        _token = token;
+        setToken(token);
     }
      
     ///////////////////////////////////////////////////////////////////
@@ -157,29 +155,31 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
      *  @return An identical Parameter.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Parameter result = (Parameter)super.clone(ws);
+        Parameter newobj = (Parameter)super.clone(ws);
         if (_token != null) {
-            result._token = (ptolemy.data.Token)_token.clone();
+            newobj._token = (ptolemy.data.Token)_token.clone();
         }
         if (_origToken != null) {
-            result._origToken = (ptolemy.data.Token)_origToken.clone();
+            newobj._origToken = (ptolemy.data.Token)_origToken.clone();
         }
         if (_paramType != null) {
             try {
-                result._paramType = (Class)_paramType.newInstance().getClass();
+                newobj._paramType = (Class)_paramType.newInstance().getClass();
             } catch (Exception ex) {
                 // do nothing as must be able to get a new instance
             }
         }
-        result._currentValue = _currentValue;
-        result._dependencyLoop = false;
-        result._initialValue = _initialValue;
-        result._lastVersion = 0;
-        result._noTokenYet = _noTokenYet;      
-        result._parser = null;
-        result._parseTreeRoot = null;
-        result._scope = null;
-        return result;
+        newobj._currentExpression = _currentExpression;
+        newobj._dependencyLoop = false;
+        newobj._initialExpression = _initialExpression;
+        newobj._listners = null;
+        newobj._needsEvaluation = true;
+        newobj._noTokenYet = _noTokenYet;      
+        newobj._parser = null;
+        newobj._parseTree = null;
+        newobj._scope = null;
+        newobj._scopeVersion = -1;
+        return newobj;
     }
 
     /** Return a description of the object.
@@ -195,48 +195,95 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
      *  Parameter can depend on. The scope is limited to the parameters in the 
      *  same NamedObj and those one level up in the hierarchy.
      *  It catches any exceptions thrown by NamedList as 1) the parameter must 
-     *  have a container with a NamedList of Parameters, and 2) if there is
+     *  have a container with a NamedList of Attributes, and 2) if there is
      *  a clash in the names of the two scopeing levels, the parameter from 
      *  the top level is considered not to be visible in the scope of this 
-     *  Parameter
+     *  Parameter. A parameter also cannot reference itself.
      *  @return The parameters on which this parameter can depend.
      */
     public NamedList getScope() {
-        if ( (_scope != null) && (_lastVersion == workspace().getVersion()) ) {
+        if (_scopeVersion == workspace().getVersion()) {
             return _scope;
         } else {
             _scope = new NamedList();       
-            NamedObj paramContainer = (NamedObj)getContainer();
-            if (paramContainer !=null) {
-                NamedObj paramContainerContainer =
-                    ((NamedObj)paramContainer.getContainer());
-                Enumeration level = paramContainer.getAttributes();       
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                NamedObj containerContainer =
+                    ((NamedObj)container.getContainer());
+                Enumeration level1 = container.getAttributes();       
                 Parameter p;
-                while (level.hasMoreElements() ) {
-                    // now  copy the namedlist, omitting the current Parameter
-                    if ( (p=(Parameter)level.nextElement()) != this ) {
+                while (level1.hasMoreElements() ) {
+                    // Now copy the namedlist, omitting the current Parameter.
+                    if ( (p = (Parameter)level1.nextElement()) != this ) {
                         try {
-                            _scope.append(p);
-                        } catch (Exception ex) {
+                            if ((p instanceof Parameter) && (p != this) ){
+                                _scope.append(p);
+                            }
+                        } catch (IllegalActionException ex) {
                             // since we're basically copying a namedlist,  
-                            // these exceptions cannot occur
+                            // this exceptions should not occur
+                            throw new InternalErrorException(ex.getMessage());
+                        } catch (NameDuplicationException ex) {
+                            // since we're basically copying a namedlist,  
+                            // this exceptions should not occur
                         }
                     }
                 }
-                if (paramContainerContainer != null) {
-                    level = paramContainerContainer.getAttributes();
-                    while (level.hasMoreElements() ) {
-                        p=(Parameter)level.nextElement();
+                if (containerContainer != null) {
+                    Enumeration level2 = containerContainer.getAttributes();
+                    while (level2.hasMoreElements() ) {
+                        p = (Parameter)level2.nextElement();
                         try {
-                            _scope.append(p);
-                        } catch (Exception ex) {
-                            // name clash between the two levels of scope
+                            if (p instanceof Parameter) {
+                                _scope.append(p);
+                            }
+                        } catch (IllegalActionException ex) {
+                            // since we're basically copying a namedlist,  
+                            // this exceptions should not occur
+                            throw new InternalErrorException(ex.getMessage());
+                        } catch (NameDuplicationException ex) {
+                            // Name clash between the two levels of scope.
+                            // The top level is hidden.
                         }
                     }
                 }
             }
-            _lastVersion = workspace().getVersion();
+            _scopeVersion = workspace().getVersion();
             return _scope;
+        }
+    }
+
+    /** Evaluate the current expression to a Token. If this parameter 
+     *  was last set directly with a Token do nothing. This method is also 
+     *  called after a Parameter is cloned.
+     *  @excpetion IllegalArgumentException If the token resulting
+     *   from evaluating the xpression  cannot be stored in this parameter.
+     */
+    public void evaluate() throws IllegalArgumentException {
+        if (_needsEvaluation) {
+            _needsEvaluation = false;
+            if (_parser == null) {
+                _parser = new PtParser(this);
+            }
+            try {
+                workspace().getReadAccess(); {
+                    _parseTree = _parser.generateParseTree(
+                            _currentExpression, getScope());
+                    _token = _parseTree.evaluateParseTree();
+                }
+                if (_noTokenYet) {
+                    // This is the first token stored in this parameter.
+                    _initialExpression = _currentExpression;
+                    _noTokenYet = false;
+                    setType(_token.getClass());
+                    // don't need to check type as first token in
+                } else {
+                    _checkType(_token);
+                }
+                _notifyListners();
+            } finally {
+                workspace().doneReading();
+            }
         }
     }
         
@@ -244,104 +291,120 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
      *  @return The token contained by this parameter.
      */
     public ptolemy.data.Token getToken() {
+        try {
+            if (_needsEvaluation) {
+                evaluate();
+            }
+        } catch (IllegalArgumentException ex) {
+            _token = null;
+        }
         return _token;
     }
    
 
+    /** This method is called by a Parameter this Parameter is
+     *  observing. 
+     *  @param o the Observable object that called this method.
+     *  @param t not used.
+     *  @exception IllegalArgumentException If type of the 
+     *   resulting Token is not allowed in this Parameter.
+     */
+    public void reEvaluate() throws IllegalArgumentException {
+        if (_currentExpression == null) {
+            return;
+        }
+        if (_dependencyLoop) {
+            String str = "Found dependency loop in " + getFullName();
+            str += ": " + _currentExpression;
+            throw new IllegalArgumentException(str);
+        }
+        _dependencyLoop = true;
+        // if an expression was placed in this parameter but has not 
+        // yet been evaluated, do it now
+        if (_needsEvaluation ) {
+            evaluate();
+        } else if ( _parseTree != null) {
+            _token = _parseTree.evaluateParseTree();
+            _checkType(_token.getClass());
+            _notifyListners();
+        } else {
+            // ERROR: should not get here. What exception should be thrown?
+        }
+        _dependencyLoop = false;
+    }
+    
+    /** Register an interest with this Parameter.
+     *  @param newListner The ParamListner that is will be notified whenever 
+     *   the token stored in this Parameter changes.
+     */
+     public void registerListner(ParameterListner newListner) {
+         if (_listners == null) {
+             _listners = new LinkedList();
+         }
+         _listners.insertLast(newListner);
+     }
+
     /** Reset the current value of this parameter to the first seen 
-     *  token or string. If the Parameter was initially given a 
-     *  Token, set the current Token to that Token. Else, parse the
-     *  String given in the constructor.
-     *  @exception IllegalArgumentException Thrown if the Parameter 
-     *  was created from an expression, and reevaluating that expression
-     *  now yields a Token incompatible with the type of this Parameter.
+     *  token or expression. If the Parameter was initially given a 
+     *  Token, set the current Token to that Token. Otherwise evaluate 
+     *  the original expression given to the Parameter. 
+     *  @exception IllegalArgumentException If the Parameter cannot 
+     *   contain the original token (the parameters type must have been 
+     *   changed since then) or the token resulting from reevaluating 
+     *   the original expression.
      */	
    
     public void reset() throws IllegalArgumentException {
         if (_noTokenYet) return;
         if (_origToken != null) {
-            _token = _origToken;
-            _currentValue = null;
-            _parseTreeRoot = null;
-        } else  { //must have an _initialValue
-            ptolemy.data.Token oldToken = _token;
-            if (_parser == null) {
-                _parser = new PtParser(this);
-            }
-            _currentValue = _initialValue;
-            _parseTreeRoot = _parser.generateParseTree(_initialValue, getScope());
-            _token = _parseTreeRoot.evaluateParseTree();
-            _checkType(_token);
-            TokenPublisher publisher = oldToken.getPublisher();
-            if ( publisher != null ) {
-                _token.setPublisher(publisher);
-            }
+            setToken(_origToken);
+        } else  { 
+            //must have an _initialExpression
+            setExpression(_initialExpression);
+            evaluate();
         }
-        _token.notifySubscribers();
+    }
+
+    /** Set the expression in this parameter. 
+     *  If the string is null, the token contained by this parameter 
+     *  is set to null. If it is not null, the expression is stored 
+     *  to be evaluated at a later stage. To evaluate the expression 
+     *  now, invoke the method evaluate on this parameter.
+     *  @param str The expression for this parameter.
+     */
+    public void setExpression(String str) {
+        try {
+            if (str == null) {
+                setToken(null);
+                return;
+            }
+        } catch (IllegalArgumentException ex) {
+            // cannot happen.
+        }
+        _currentExpression = str;
+        _needsEvaluation = true;        
     }
 
     /** Put a new Token in this Parameter. This is the way to give the 
      *  give the Parameter a new simple value.
      *  @param token The new Token to be stored in this Parameter.
-     * FIXME: synchronization needs to be looked at.
+     *  @exception IllegalArgumentException If the token cannot be placed 
+     *   in this parameter.
      */
-    public void setToken(ptolemy.data.Token token) {
-        if (_noTokenYet && (token !=null)) {
-            _origToken = token;
+    public void setToken(ptolemy.data.Token token) 
+          throws IllegalArgumentException {
+        _token = token;      
+        _parseTree = null;
+        _currentExpression = null;
+        _needsEvaluation = false;
+        if ( (_token != null) && (_noTokenYet) ) {
+            _origToken = _token;
             _noTokenYet = false;
-            _paramType = token.getClass();
-        }
-        _parseTreeRoot = null;
-        _currentValue = null;
-        ptolemy.data.Token oldToken = _token;
-        _token = token;
-        _checkType(_token);
-        // Now transfer the TokenPublisher between the old & new tokens
-        TokenPublisher publisher = oldToken.getPublisher();
-        if ( publisher != null ) {
-            _token.setPublisher(publisher);
-        }
-        _token.notifySubscribers();
-    }
-
-    /** Set the parameter by parsing and evaluating the given String argument.
-     * The string must be non-null. If the parameter has not been given 
-     * a string or a Token yet, the string argument is used to set the 
-     * initial state(value and type) of the parameter.
-     * @param str The string to be evaluated to set the value of the parameter.
-     * @exception IllegalActionException If the str parameter is null.
-     */
-    public void setTokenFromExpr(String str) throws IllegalActionException {
-        if (str == null) {
-            String tmp = "Cannot set the value of a parameter from a null ";
-            throw new IllegalArgumentException(tmp + "string");
-        }
-        if (_parser == null) {
-            _parser = new PtParser(this);
-        }
-        _currentValue = str;
-        ptolemy.data.Token prevToken = _token;
-        synchronized(workspace()) {
-            _parseTreeRoot = _parser.generateParseTree(str, getScope());
-            _token = _parseTreeRoot.evaluateParseTree();
-            //_parseTreeRoot.displayParseTree(" ");
-        }
-        if (_noTokenYet) {
-            _initialValue = str;
-            _noTokenYet = false;
-            _paramType = _token.getClass();
-            // don't need to check type as first token in
+            setType(_token.getClass());
         } else {
             _checkType(_token);
-        }
-        // Now transfer the TokenPublisher between the old & new tokens
-        if (prevToken != null ){
-            TokenPublisher publisher = prevToken.getPublisher();
-            if ( publisher != null ) {
-                _token.setPublisher(publisher);
-            }
-        }
-        _token.notifySubscribers();
+        }        
+        _notifyListners();
     }
     
     /** Set the types of Tokens that this parameter can contain.
@@ -356,6 +419,9 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
     public void setType(Class newType) throws IllegalArgumentException {
         Class oldType = _paramType;
         _paramType = newType;
+        if (oldType == null) {
+            return;
+        }
         try {
             _checkType(_token.getClass());
         } catch (IllegalArgumentException ex) {
@@ -377,58 +443,22 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
         return s;
     }
 
-    /** Normally this method is called by an object this Parameter is
-     *  observing. It is also called to re-establish dependencies 
-     *  between parameters after a NamedObj has been cloned.
-     *  @param o the Observable object that called this method.
-     *  @param t not used.
-     *  @exception IllegalArgumentException Thrown if type of the 
-     *   resulting Token is not allowed in this Parameter.
-     */
-    public void update(Observable o, Object t) throws IllegalArgumentException {
-        if (_dependencyLoop) {
-            String str = "Found dependency loop in " + getFullName();
-            str += ": " + _currentValue;
-            throw new IllegalArgumentException(str);
-        }
-        _dependencyLoop = true;
-        try {
-            if ( _parseTreeRoot != null) {
-                ptolemy.data.Token oldToken = _token;
-                _token = _parseTreeRoot.evaluateParseTree();
-                _checkType(_token.getClass());
-                TokenPublisher publisher = oldToken.getPublisher();
-                if ( publisher != null ) {
-                    _token.setPublisher(publisher);
-                }
-                _token.notifySubscribers();
-                // _parseTreeRoot.displayParseTree(" ");
-            } else if (_currentValue != null) { 
-                // this method must be being invoked following a clone
-                _parser = new PtParser(this);
-                _parseTreeRoot = _parser.generateParseTree(_currentValue);
-            }
-        } catch (IllegalArgumentException ex) {
-            _dependencyLoop = false;
-            throw ex;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    
-    /** Checks to see if the new token type is compatible with the initial 
+    ////                         private methods                   ////
+
+    /* Checks to see if the new token type is compatible with the initial 
      *  Token type stored. If the new Token cannot be converted in a lossless 
      *  manner to the original type, an exception is thrown.
      *  @param tryType The class of the token that is trying to be placed 
      *   in the Parameter.
      *  @exception IllegalArgumentException thrown if incompatible types
      */
-    protected void _checkType(Class tryType) 
+    private void _checkType(Class tryType) 
             throws IllegalArgumentException {
         int typeInfo = TypeCPO.compare(_paramType, tryType);
-        if (typeInfo == CPO.HIGHER) return;
-        if (typeInfo == CPO.SAME) return;
+        if ( (typeInfo == CPO.HIGHER) || (typeInfo == CPO.SAME) ) {
+            return;
+        }
         // Incompatible type!
         String str = "Cannot store a Token of type ";
         str += tryType.getName() + " in a Parameter restricted to ";
@@ -436,26 +466,35 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
         throw new IllegalArgumentException(str);
     }
 
-    /** Checks to see if the new token type is compatible with the initial 
+    /* Checks to see if the new token type is compatible with the initial 
      *  Token type stored. If the new Token cannot be converted in a lossless 
      *  manner to the original type, an exception is thrown.
      *  @param tok The token that is trying to be placed in the Parameter.
      *  @exception IllegalArgumentException thrown if incompatible types
      */
-    protected void _checkType(ptolemy.data.Token tok) 
+    private void _checkType(ptolemy.data.Token tok) 
             throws IllegalArgumentException {
         if (tok == null) return; 
         else {
             _checkType(tok.getClass());
         }
     }
+      
+    /* Notify any ParameterListners that have registered an 
+    *  interest/dependency in this parameter.
+    */
+    private void _notifyListners() {
+        if (_listners == null) {
+            // No listners to notify.
+            return;
+        }
+        Enumeration list = _listners.elements();
+        while (list.hasMoreElements()) {
+            ((ParameterListner)list.nextElement()).reEvaluate();
+        }
+    }
 
-       
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -463,18 +502,22 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
 
     // Stores the string used to set this expression. It is null if 
     // the parameter was set using a token.
-    private String _currentValue;
+    private String _currentExpression;
 
-    // used to check for dependency loops amongst parameters.
+    // Used to check for dependency loops amongst parameters.
     private boolean _dependencyLoop = false;
 
     // Stores the string used to initialize the parameter. It is null if 
     // the first token placed in the parameter was not parsed from a string.
-    private String _initialValue;
+    private String _initialExpression;
 
-    // Used to test if the version of the workspace has changed since the 
-    // last time getScope() was called
-    private long _lastVersion = 0;
+    // Each Parameter stores a linkedlist of the ParameterListners it 
+    // needs to notify whenever it changes.
+    private LinkedList _listners;
+
+    // Indicates if the parameter was last set with an expression and that 
+    // the expression has not yet been evaluated.
+    private boolean _needsEvaluation = false;
 
     // Tests if the parameter has not yet contained a Token.
     private boolean _noTokenYet = true;
@@ -491,10 +534,12 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
 
     // If the parameter was last set from an expression, this stores 
     // the parse tree for that expression.
-    private ASTPtRootNode _parseTreeRoot;
+    private ASTPtRootNode _parseTree;
 
     // The parameters this parameter may reference in an expression.
+    // It is cached.
     private NamedList _scope;
+    private long _scopeVersion = -1;
 
     // The token contained by this parameter.
     private ptolemy.data.Token _token;   
