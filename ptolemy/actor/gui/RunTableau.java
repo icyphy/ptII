@@ -39,7 +39,6 @@ import javax.swing.JMenuItem;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -174,7 +173,7 @@ public class RunTableau extends Tableau {
             public void actionPerformed(ActionEvent e) {
                 JMenuItem target = (JMenuItem)e.getSource();
                 String actionCommand = target.getActionCommand();
-                CompositeEntity model = getModel();
+                NamedObj model = getModel();
                 if (model instanceof CompositeActor) {
                     try {
                         Debuggable debug;

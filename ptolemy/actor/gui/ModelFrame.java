@@ -38,6 +38,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Documentation;
 
 import java.awt.BorderLayout;
@@ -221,7 +222,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         boolean result = super._close();
         // FIXME: Shouldn't the following only be done if the
         // above returns true.
-        CompositeEntity model = getModel();
+        NamedObj model = getModel();
         if (model instanceof CompositeActor) {
             Manager manager = ((CompositeActor)model).getManager();
             if (manager != null) {
@@ -244,7 +245,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      */
     protected void _help() {
         String message = "Ptolemy II model.";
-        CompositeEntity model = getModel();
+        NamedObj model = getModel();
         if (model != null) {
             String tip = Documentation.consolidate(model);
             if (tip != null) {

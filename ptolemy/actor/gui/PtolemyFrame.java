@@ -60,9 +60,9 @@ line like:
 <pre>
     getContentPane().add(component, BorderLayout.CENTER);
 </pre>
-This extends the base class by associating with it a Ptolemy II model,
-and specifying a model error handler for that model that handles model
-errors by throwing an exception.
+This extends the base class by associating with it a Ptolemy II model
+or object and specifying a model error handler for that model
+that handles model errors by throwing an exception.
 <p>
 If the model contains an instance of FileAttribute named "_help", then
 the file or URL specified by that attribute will be opened when "Help"
@@ -81,19 +81,19 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @see Tableau#show()
      *  @param model The model to put in this frame, or null if none.
      */
-    public PtolemyFrame(CompositeEntity model) {
+    public PtolemyFrame(NamedObj model) {
         this(model, null);
     }
 
-    /** Construct a frame associated with the specified Ptolemy II model.
-     *  After constructing this, it is necessary
+    /** Construct a frame associated with the specified Ptolemy II model
+     *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
      *  @see Tableau#show()
-     *  @param model The model to put in this frame, or null if none.
+     *  @param model The model or object to put in this frame, or null if none.
      *  @param tableau The tableau responsible for this frame, or null if none.
      */
-    public PtolemyFrame(CompositeEntity model, Tableau tableau) {
+    public PtolemyFrame(NamedObj model, Tableau tableau) {
         super(tableau);
 
         // Create a file filter that accepts .xml and .moml files.
@@ -121,10 +121,12 @@ public abstract class PtolemyFrame extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the associated model.
-     *  @return The associated model.
+    /** Get the associated model or Ptolemy II object.
+     *  This can be a CompositeEntity or an EditorIcon, and possibly
+     *  other Ptolemy II objects.
+     *  @return The associated model or object.
      */
-    public CompositeEntity getModel() {
+    public NamedObj getModel() {
         return _model;
     }
 
@@ -133,7 +135,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  and associates an undo stack with the model.
      *  @param model The associated model.
      */
-    public void setModel(CompositeEntity model) {
+    public void setModel(NamedObj model) {
         _model = model;
         _model.setModelErrorHandler(new BasicModelErrorHandler());
         List attrList = _model.attributeList(UndoStackAttribute.class);
@@ -323,5 +325,5 @@ public abstract class PtolemyFrame extends TableauFrame {
     ////                         private variables                 ////
 
     // The model that this window controls, if any.
-    private CompositeEntity _model;
+    private NamedObj _model;
 }
