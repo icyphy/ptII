@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-1998 The Regents of the University of California.
+# @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,25 +29,25 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+ME =		ptolemy/kernel/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-CLASSPATH = ../../..
 
 TCL_SRCS = \
 	ExampleSystem.tcl \
 	testDefs.tcl
 
 JSRCS = \
-	TestCompositeEntity.java
+	ExampleSystem.java \
+	TestCompositeEntity.java \
+	TestSerializable.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -82,6 +82,13 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+	# Ideally, we would use Tcl to create a test for serialization, but
+	# Tcl Blend 1.1 with JDK1.1.6 gets StackOverflowErrors when
+	# we call writeObject() on the ExampleSystem object.  JDK1.2
+	# does not have this problem.
+	CLASSPATH=$(CLASSPATH) \
+		$(JAVA) ptolemy.kernel.test.TestSerializable write
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kernel.test.TestSerializable
 
 test_java: jclass
 
