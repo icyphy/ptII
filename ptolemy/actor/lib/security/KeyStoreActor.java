@@ -89,9 +89,9 @@ be created with the type from the <i>keyStoreType</i> parameter.
 a keystore type of "JCEKS", so if this actor is being used with
 a SecretKey actor, then the type should be set to "JCEKS".
 
-<p>Derived classes should add input or output ports as necesary.
+<p>Derived classes should add input or output ports as necessary.
 Derived classes should call _loadKeyStore() so that _keyStore is properly
-initialized. 
+initialized before accessing _keyStore themselves.
 
 <p>For more information about keystores, see
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
@@ -174,7 +174,7 @@ public class KeyStoreActor extends TypedAtomicActor {
      */
     public FileParameter fileOrURL;
 
-    /** The type of the key store.  See
+    /** The type of the keystore.  See
      *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppA" target="_top">  Java Cryptography Architecture API Specification &amp; Reference</a>
      *  for information about keystore types.
      *  The initial value is the string returned by
@@ -238,30 +238,26 @@ public class KeyStoreActor extends TypedAtomicActor {
     /**
      */
     public void fire() throws IllegalActionException {
+        super.fire(); // Print debugging messages etc.
         keyPassword.update();
         _keyPassword = ((StringToken)keyPassword.getToken()).stringValue();
+        if (keyPassword.getExpression() != _keyPassword) {
+            // keyPassword changed, so reload the keyStore
+            _loadKeyStoreNeeded = true;
+        }
+        // Set the persistent value to the current value.
         keyPassword.setExpression(_keyPassword);
 
         storePassword.update();
         _storePassword = ((StringToken)storePassword.getToken()).stringValue();
+        if (storePassword.getExpression() != _storePassword) {
+            _loadKeyStoreNeeded = true;
+        }
+        // Set the persistent value to the current value.
         storePassword.setExpression(_storePassword);
 
-        // _loadKeystore() reads _keyPassword and _storePassword;
+        // _loadKeystore() reads _keyPassword and _storePassword.
         _loadKeyStore();
-        super.fire();
-            
-    }
-
-    /** Read in or initialize the keyStore.
-     *
-     * @exception IllegalActionException If there is a problem with
-     *  the keyStore.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        // We do this in initialize so that derived classes can
-        // access _keyStore.
-        //_loadKeyStore();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -295,6 +291,12 @@ public class KeyStoreActor extends TypedAtomicActor {
      *  throws an exception.
      */
     protected void _initializeKeyStore() throws IllegalActionException {
+
+        // One would think that we could call _initializeKeyStore() in
+        // initialize(), but we need to be able to read the
+        // PortParameters, so we call this method from fire() and
+        // other places.
+
         if (_initializeKeyStoreNeeded) {
             try {
                 // FIXME: do we try to write the old _keyStore?
@@ -325,7 +327,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
             // FIXME: this will not work if the input is stdin.
             // FileParameter needs to have a way of getting the
-            // unbuffered stream
+            // unbuffered stream.
             InputStream keyStoreInputStream = null;
             try {
                 keyStoreInputStream = fileOrURL.asURL().openStream();
@@ -373,12 +375,11 @@ public class KeyStoreActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected members                   ////
+    ////                         protected members                 ////
 
     /** Set to true if fileOrURL has changed and the keyStore needs to be
      * read in again and the aliases updated. */
     protected boolean _loadKeyStoreNeeded = true;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
