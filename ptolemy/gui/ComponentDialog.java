@@ -30,6 +30,7 @@
 package ptolemy.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -128,10 +129,10 @@ public class ComponentDialog extends JDialog {
         super(owner, title, true);
 
         // Create a panel that contains the optional message
-        // and the specified component, separated by a spacing strut.
+        // and the specified component, separated by a spacing rigid area.
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         if (message != null) {
             _messageArea = new JTextArea(message);
             _messageArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -142,21 +143,29 @@ public class ComponentDialog extends JDialog {
             // Left Justify.
             _messageArea.setAlignmentX(0.0f);
             panel.add(_messageArea);
-
-            Component strut = Box.createVerticalStrut(10);
-            panel.add(strut);
+            panel.add(Box.createRigidArea(new Dimension(0,10)));
         }
-
         panel.add(component);
         contents = component;
 
-        Object[] array = {panel};
-
         if (buttons != null) {
             _buttons = buttons;
+        } else {
+            _buttons = _defaultButtons;
         }
 
-        _optionPane = new JOptionPane(array,
+        // FIXME: There is a bug in Java somewhere such that the panel
+        // is sometimes created too large, apparently ignoring the size
+        // of its contents.  Try changing one of the array parameters
+        // of the Clock actor, deleting the final "]".  The resulting
+        // dialog is too large.  The following line displays the size
+        // of the "panel" object by putting a border around it.
+        // How to fix this (other than by not using Java)?
+        //
+        // panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+        //     javax.swing.BorderFactory.createLineBorder(java.awt.Color.red),
+        //     panel.getBorder()));
+        _optionPane = new JOptionPane(panel,
                 JOptionPane.QUESTION_MESSAGE,
                 JOptionPane.YES_NO_OPTION,
                 null,
@@ -215,7 +224,7 @@ public class ComponentDialog extends JDialog {
                     // window closing.
                     _handleClosing();
 
-                    // Java's lame AWT yeilds random results if we do this.
+                    // Java's AWT yeilds random results if we do this.
                     // And anyway, it doesn't work.  Components still don't
                     // have their ComponentListener methods called to indicate
                     // that they have become invisible.
@@ -286,13 +295,19 @@ public class ComponentDialog extends JDialog {
     public Component contents;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     // The label of the button pushed to dismiss the dialog.
-    private String _buttonPressed = "";
+    protected String _buttonPressed = "";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Button labels.
-    private String[] _buttons = {"OK", "Cancel"};
+    private static String[] _buttons;
+
+    // Default button labels.
+    private static String[] _defaultButtons = {"OK", "Cancel"};
 
     // Indicator that we have notified of window closing.
     private boolean _doneHandleClosing = false;

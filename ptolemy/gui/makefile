@@ -49,12 +49,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	BasicJApplet.java \
+	CancelException.java \
 	CloseListener.java \
 	ComponentDialog.java \
 	DocumentationViewer.java \
+	MessageHandler.java \
 	Query.java \
 	QueryListener.java \
-	StatusBar.java
+	StatusBar.java \
+	TextEditor.java \
+	Top.java
 
 EXTRA_SRCS =	$(JSRCS)
 
