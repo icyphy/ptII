@@ -630,6 +630,55 @@ fi
 
 
 #--------------------------------------------------------------------
+#	"JXTA technology is a set of open protocols that allow any
+#	connected device on the network ranging from cell phones and wireless
+#	PDAs to PCs and servers to communicate and collaborate in a P2P
+#	manner."
+#
+#	See http://www.jxta.org
+#       See if there was a command-line option for where JXTA is
+#       If not, look for $PTII/vendors/sun/jxta/jxta.jar
+#--------------------------------------------------------------------
+
+# We only need to look for commapi if $PTII/ptolemy/actor/lib/jxta is present
+JXTA_USER_DIR="$PTII/ptolemy/actor/lib/jxta"
+# PTJXTA_DIR is set to jxta and used in
+# $PTII/actor/lib/makefile if jxta was found
+PTJXTA_DIR=
+
+# Directory that contains the jxta jar files
+JXTA_DIR='${PTII}/vendors/sun/jxta'
+
+if test ! -d "$JXTA_USER_DIR"; then
+    AC_MSG_RESULT([$JXTA_USER_DIR is not present,
+	so we need not find JXTA])
+else
+    AC_MSG_CHECKING([for jxta directory that contains jxta.jar])
+    AC_ARG_WITH(jxta_dir, [  --with-jxta=DIR       use jxta.jar from DIR,
+                          defaults to \$PTII/vendors/sun/jxta],
+	JXTA_DIR=$withval,
+	JXTA_DIR=$PTII/vendors/sun/jxta)
+
+    if test -f "$JXTA_DIR/jxta.jar"; then
+	AC_MSG_RESULT([$JXTA_DIR])
+	# Set to jxta and used in
+	# $PTII/ptolemy/actor/lib/makefile if jxta was found
+	PTJXTA_DIR=jxta
+    fi	
+
+    if test "$PTJXTA_DIR" = ""; then
+        AC_MSG_WARN(['Failed to find PTII/vendors/sun/jxta/jxta.jar
+    perhaps JXTA is not installed?
+    You need not download JXTA unless you plan on using the peer to peer
+    actors in ptolemy/actor/lib/jxta
+    The JXTA SDK can be downloaded from http://www.jxta.org'])
+	# Note that we don't substitute in the ${PTII} here
+	JXTA_DIR='${PTII}/vendors/sun/jxta'
+    fi
+fi
+
+
+#--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
 #	For more information, see http://lejos.sourceforge.net
 #	See if there was a command-line option for commapi is
@@ -1442,6 +1491,9 @@ AC_SUBST(JVERSION)
 # jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
 AC_SUBST(JODE_CLASSES)
 
+# JXTA home directory that contains jxta.jar, see http://www.jxta.org
+AC_SUBST(JXTA_DIR)
+
 # kvm/tools/classes.jar file used by the PalmOS KVM
 AC_SUBST(KVM_CLASSES)
 
@@ -1506,6 +1558,10 @@ AC_SUBST(PTJMF_DIR)
 # Set to jspaces and used in
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 AC_SUBST(PTJSPACES_DIR)
+
+# Set to jxta ans used in
+# $PTII/actor/lib/makefile if jxta.jar was found
+AC_SUBST(PTJXTA_DIR)
 
 # Set to kvm and used in
 # $PTII/ptolemy/apps/makefile if kvm was found
