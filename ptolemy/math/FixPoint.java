@@ -36,9 +36,6 @@ import java.math.BigInteger;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
-import ptolemy.math.Precision;
-
-
 //////////////////////////////////////////////////////////////////////////
 //// FixPoint
 /**
