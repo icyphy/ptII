@@ -271,6 +271,22 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     }
 
+    /** Return true if this director requires write access
+     *  on the workspace during execution. Most director functions
+     *  during execution do not need write access on the workpace.
+     *  A director will generally only need write access on the workspace if
+     *  it performs mutations locally, instead of queueing them with the
+     *  manager.
+     *  <p>
+     *  In this class, return true, indicating that SDF does not perform local
+     *  mutations.
+     *
+     *  @return false
+     */
+    protected boolean _writeAccessRequired() {
+        return false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

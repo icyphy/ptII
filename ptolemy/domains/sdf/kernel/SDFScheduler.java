@@ -763,10 +763,8 @@ public class SDFScheduler extends Scheduler {
 		}
 	    }
 
-	    schedulableEntities = actorList.elements();
 	    // simulate the creation of initialization tokens (delays).
-	    // Fill readyToScheduleActorList with all the actors that have
-	    // no unfulfilled input ports, and are thus ready to fire.
+	    schedulableEntities = actorList.elements();
 	    while(schedulableEntities.hasMoreElements()) {
 		Actor a = (Actor)schedulableEntities.nextElement();
 
@@ -774,6 +772,8 @@ public class SDFScheduler extends Scheduler {
 		while(aoutputports.hasMoreElements()) {
 		    IOPort aOutputPort = (IOPort) aoutputports.nextElement();
 		    int count = _getTokenInitProduction(aOutputPort);
+                    _debug("Simulating " + count + " tokens created on " + 
+                            aOutputPort);
 		    if(count > 0) {
 			_simulateTokensCreated(aOutputPort,
 					       count,
@@ -782,6 +782,13 @@ public class SDFScheduler extends Scheduler {
 					       waitingTokens);
 		    }
 		}
+            }
+
+	    // Fill readyToScheduleActorList with all the actors that have
+	    // no unfulfilled input ports, and are thus ready to fire.
+	    schedulableEntities = actorList.elements();
+	    while(schedulableEntities.hasMoreElements()) {
+		Actor a = (Actor)schedulableEntities.nextElement();
 
 		int inputCount = _countUnfulfilledInputs(a, actorList,
                         waitingTokens);
@@ -789,7 +796,7 @@ public class SDFScheduler extends Scheduler {
 		    readyToScheduleActorList.insertFirst((ComponentEntity) a);
 
 		_debug("Actor " + ((ComponentEntity) a).getName() +
-                        " has " + (new Integer(inputCount)).toString() +
+                        " has " + inputCount +
                         " unfulfilledInputs.");
 
 	    }

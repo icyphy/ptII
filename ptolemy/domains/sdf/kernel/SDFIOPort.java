@@ -41,7 +41,6 @@ import ptolemy.graph.*;
 
 import java.lang.reflect.*;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
