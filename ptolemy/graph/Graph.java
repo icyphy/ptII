@@ -1396,9 +1396,9 @@ public class Graph implements Cloneable {
      *  @return True if the node weight has changed.
      *  @exception IllegalStateException if the weight of the given node
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
-     *  @see #validateNodeWeight(Node, Object).
      */
     public boolean validateNodeWeight(Node node) {
+        // FIXME:  @see #validateNodeWeight(Node, Object).
         boolean weightValueHasChanged = false;
         if (!validNodeWeight(node.getWeight())) {
             throw new IllegalStateException("Invalid weight associated with a "
@@ -1427,6 +1427,10 @@ public class Graph implements Cloneable {
             _registerChange();
         }
         return weightValueHasChanged;
+    }
+
+    public void validateNodeWeight(Node node, Object oldWeight) {
+    // FIXME: need to implement this
     }
      
 
