@@ -141,6 +141,7 @@ clean:
 	@echo "# Now cleaning old tar files"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTIIDIST) src installshield/*
 
@@ -153,6 +154,7 @@ $(PTIIDIST):
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	mkdir $@
 	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
@@ -193,6 +195,7 @@ $(PTII_FULL): $(PTIIDIST)
 	@echo "# Now creating PTII_FULL: $@"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(PTIIDIST); chmod -R a+rX .)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
@@ -234,6 +237,7 @@ $(PTII_SRC): $(PTII_FULL)
 	@echo "# Now creating PTII_SRC: $@"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	rm -rf src/ptII$(VERSION)
 	-mkdir src
 	(cd src; \
@@ -290,6 +294,7 @@ ptclean:
 	@echo "# Now running make clean in ~ptII "
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(PTIIHOME); \
 		$(MAKE) clean)
 	# Don't remove codeDoc directories in the reviews directory
@@ -302,6 +307,7 @@ ptbuild:
 	@echo "# Now Rebuilding in ~ptII without -depend"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
 	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -deprecation -source 1.4" JDOCFLAGS="-author -version -J-Xmx132m" -k sources fast install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
@@ -328,6 +334,7 @@ ChangeLog:
 	@echo "# Now generating ChangeLog file in $(PTIIHOME)"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(PTIIHOME); rm -f ChangeLog; \
 		 $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
@@ -339,6 +346,7 @@ jnlp:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(PTIIHOME);	PTII=$(PTIIHOME) \
 		$(MAKE) -k jnlp_clean jnlp_all PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree)
 
@@ -351,6 +359,7 @@ nonjsall:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	@echo "# Run make in the non javascope core directories"
 	@echo "# that need to be built before we build the other non javascope"
 	@-if [ "x$(NONJSALLCOREDIRS)" != "x" ]; then \
@@ -427,6 +436,7 @@ remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 	@echo "# Now building on $(REMOTE1HOST) for code coverage"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	ssh $(REMOTE1HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote1nuke remote1ptiidist remote1configure \
 		remote1distclean \
@@ -465,6 +475,7 @@ $(REMOTE1PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1HOME); $(TAR) -zxf $(PTII_FULL))
 
 remote1configure:
@@ -472,6 +483,7 @@ remote1configure:
 	@echo "# Now configuring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST);	rm -f config.cache; PTII=$(REMOTE1PTIIDIST) ./configure)
 
 # Clean the remote1 tree
@@ -482,6 +494,7 @@ remote1distclean:
 	@echo "# Now running make clean in $(REMOTE1PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST); \
 		$(MAKE) clean; \
 		find . -name codeDoc -exec rm -rf {} \;)
@@ -491,6 +504,7 @@ remote1distjavadocs:
 	@echo "# Now generating javadocs in $(PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE1PTIIDIST); $(OTHERMAKE) -k javadocs)
 
 # JSALLDIRS contains the directory that has the java files, not the test dir.
@@ -631,6 +645,7 @@ NONJSALLDIRS = \
 #http://www.gigascale.org/pubs/gsrc-downloads/JavaScope/docs/pdf/UGApxTools.pdf
 remote1distjsall: remote1distjsall_1 remote1distjsall_2 remote1distjsall_3
 
+
 remote1distjsall_1:
 	@echo "#"
 	@echo "# Now running make jsall in $(REMOTE1PTIIDIST)"
@@ -641,7 +656,7 @@ remote1distjsall_1:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo "$@ `date`"
-
+	@echo "`uptime`"
 	@echo "Removing $(JSDATABASE) in prep for $$x "
 	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
 	-rm -rf $(JSDATABASE)
@@ -696,6 +711,7 @@ remote1distjsrestore:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	@if [ "x$(JSALLDIRS)" != "x" ]; then \
 		set $(JSALLDIRS); \
 		for x do \
@@ -720,6 +736,7 @@ remote1doc:
 	@echo "# the website link checker will find files in doc/codeDoc"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) JDOCFLAGS="-author -version -J-Xmx132m -breakiterator")
 
 # Remove the JavaScope instrumentation
@@ -729,6 +746,7 @@ remote1build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST);	\
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k sources install)
 
@@ -741,6 +759,7 @@ remote1distnonjsall:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	@echo "# Run make in the non javascope core directories"
 	@echo "# that need to be built before we build the other non javascope"
 	@-if [ "x$(NONJSALLCOREDIRS)" != "x" ]; then \
@@ -773,6 +792,7 @@ remote1ChangeLog:
 	@echo "# Now generating ChangeLog file in $(REMOTE1PTIIDIST)"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
@@ -784,6 +804,7 @@ remote1jnlp:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) \
 		$(MAKE) -k jnlp_clean jnlp_all PTII_LOCALURL=http://www.gigascale.org/ptolemy/src/ptII)
 
@@ -811,6 +832,7 @@ remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
 	@echo "# Now building on $(REMOTE2HOST) with JDK1.4 "
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	ssh $(REMOTE2HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote2nuke remote2ptiidist remote2distclean \
 		remote2distjdk1.4 remote2distjdk1.4test remote2done \
@@ -828,6 +850,7 @@ $(REMOTE2PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE2HOME); $(TAR) -zxf $(PTII_FULL))
 
 
@@ -837,6 +860,7 @@ remote2distclean:
 	@echo "# Now running make clean in $(REMOTE2PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE2PTIIDIST); \
 		$(OTHERMAKE) clean; \
 		find . -name codeDoc -exec rm -rf {} \;)
@@ -848,11 +872,13 @@ remote2distjdk1.4:
 	@echo "# Now building with JDK1.4"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH ./configure; \
 	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k)
 	@echo "$@ `date`"
+	@echo "`uptime`"
 
 # Test with JDK1.4
 REMOTE2PTJACL_JAR	= $(REMOTE2PTIIDIST)/ptjacl.jar
@@ -861,6 +887,7 @@ $(REMOTE2PTJACL_JAR):
 	@echo "# Creating $@"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE2PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
 		cd tcl;	\
 		PTII=$(REMOTE2PTIIDIST) \
@@ -868,12 +895,14 @@ $(REMOTE2PTJACL_JAR):
 		$(MAKE) -k sources all install)
 	ls -l $@
 	@echo "$@ `date`"
+	@echo "`uptime`"
 
 remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 	@echo "#"
 	@echo "# Now testing with JDK1.4 on carson, a two processor machine"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE2PTIIDIST); \
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
@@ -881,6 +910,7 @@ remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 			tests)
 	@echo "$@ `date`"
+	@echo "`uptime`"
 
 
 #####################################################################
@@ -905,6 +935,7 @@ remote3cvs:  $(GENLOGDIR)
 	@echo "# Now building on $(REMOTE3HOST) by doing a cvs checkout "
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make remote3nuke >& $(REMOTE3LOG)"
 	# ssh-ing and then using cvs to ssh results in
 	# (cd /vol/gauss/gauss2/ptII; cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout ptII; cvs update -P -d)
@@ -928,6 +959,7 @@ $(REMOTE3PTIIDIST):
 	@echo "# Now doing a cvs checkout on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE3HOME); cvs -d $(CVS_REPOSITORY) checkout ptII)
 
 
@@ -937,6 +969,7 @@ remote3distclean:
 	@echo "# Now running make clean in $(REMOTE3PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE3PTIIDIST); \
 		$(OTHERMAKE) clean; \
 		find . -name codeDoc -exec rm -rf {} \;)
@@ -948,9 +981,11 @@ remote3distbuild:
 	@echo "# Now building in $(REMOTE3PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); rm -f config.status config.cache; \
 		PTII=$(REMOTE3PTIIDIST) ./configure; $(MAKE) -k)
 	@echo "$@ `date`"
+	@echo "`uptime`"
 
 # Build Jacl
 REMOTE3PTJACL_JAR	= $(REMOTE3PTIIDIST)/ptjacl.jar
@@ -959,10 +994,12 @@ $(REMOTE3PTJACL_JAR):
 	@echo "# Creating $@"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
 		cd tcl; $(MAKE) install)
 	ls -l $@
 	@echo "$@ `date`"
+	@echo "`uptime`"
 
 # Test
 remote3disttest: $(REMOTE3PTJACL_JAR)
@@ -970,11 +1007,13 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "# Now testing in $(REMOTE3PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); \
 		$(OTHERMAKE) \
 			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 		tests)
 	@echo "$@ `date`"
+	@echo "`uptime`"
 
 
 #####################################################################
@@ -1032,9 +1071,8 @@ remotealldone:
 			]; then \
 		date; \
 		echo "Remote processes finished"; \
-		cat $(REMOTE2LOG) $(REMOTE4LOG) $(REMOTE5LOG) \
-			$(REMOTE6LOG) \
-			>> $(PTIINIGHTLY_TXT); \
+		ls -l $(REMOTE2LOG) $(REMOTE4LOG) $(REMOTE5LOG) \
+			$(REMOTE6LOG); \
 		/bin/sh $(PTIIADM)/bin/ptIInightly-mail cxh ; \
 		/bin/sh $(PTIIADM)/bin/ptIIcodegen-mail $(EMAILTO) ; \
 	else \
@@ -1064,6 +1102,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	@echo "# Now building on $(REMOTE4HOST) from dist tar file"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
@@ -1083,6 +1122,7 @@ $(REMOTE4PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL))
 	@echo "Creating  vendors/jode"
 	(cd $(PTIIHOME); $(TAR) -cf - vendors/jode) | \
@@ -1093,6 +1133,7 @@ remote4configure:
 	@echo "# Now configuring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST);	rm -f config.cache; PTII=$(REMOTE4PTIIDIST) ./configure)
 
 # Clean the remote4 tree
@@ -1101,6 +1142,7 @@ remote4distclean:
 	@echo "# Now running make clean in $(REMOTE4PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST); \
 		$(MAKE) clean; \
 		find . -name codeDoc -exec rm -rf {} \;)
@@ -1110,6 +1152,7 @@ remote4distjavadocs:
 	@echo "# Now generating javadocs in $(PTIIDIST) on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	-(cd $(REMOTE4PTIIDIST); $(OTHERMAKE) -k javadocs)
 
 remote4build:
@@ -1118,8 +1161,11 @@ remote4build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast)
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast install)
-
 
 # Run the deep tests, this is likely to take 6 hours.
 remote4javatest:
@@ -1128,6 +1174,7 @@ remote4javatest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
 		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
 		JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=43200 \
@@ -1154,6 +1201,7 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 	@echo "# Now building on $(REMOTE5HOST) from dist tar file"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote5nuke remote5ptiidist remote5configure \
 		remote5build \
@@ -1173,6 +1221,7 @@ $(REMOTE5PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE5HOME); $(TAR) -zxf $(PTII_SRC))
 
 remote5configure:
@@ -1180,6 +1229,7 @@ remote5configure:
 	@echo "# Now configuring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE5PTIIDIST);	rm -f config.cache; PTII=$(REMOTE5PTIIDIST) ./configure)
 
 
@@ -1189,6 +1239,7 @@ remote5build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE5PTIIDIST);	PTII=$(REMOTE5PTIIDIST) $(MAKE) fast install)
 
 
@@ -1199,6 +1250,7 @@ remote5shallowtest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; \
 		PTII=$(REMOTE5PTIIDIST) \
 		$(MAKE) \
@@ -1230,6 +1282,7 @@ remote6: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#  from the /test/auto/*.xml tests"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	ssh $(REMOTE6HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote6nuke remote6ptiidist remote6configure \
 		remote6build \
@@ -1253,6 +1306,7 @@ remote6ptiidist: $(REMOTE6PTIIDIST)
 #	@echo "# Now untaring on `hostname`"
 #	@echo "#"
 #	@echo "$@ `date`"
+#	@echo "`uptime`"
 #	(cd $(REMOTE6HOME); $(TAR) -zxf $(PTII_SRC))
 
 remote6configure:
@@ -1260,6 +1314,7 @@ remote6configure:
 	@echo "# Now configuring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE6PTIIDIST);	rm -f config.cache; PTII=$(REMOTE6PTIIDIST) ./configure)
 
 
@@ -1269,6 +1324,7 @@ remote6build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(REMOTE6PTIIDIST);	PTII=$(REMOTE6PTIIDIST) $(MAKE) sources fast all install)
 
 # Run JavaScope Code Coverage tool in the distribution tree
@@ -1285,7 +1341,7 @@ remote6buildjsall:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo "$@ `date`"
-
+	@echo "`uptime`"
 	@echo "Removing $(JSDATABASE) in prep for $$x "
 	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
 	-rm -rf $(JSDATABASE)
