@@ -34,7 +34,9 @@ ME =		.
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
 # Go into com before compiling ptolemy so we get JLex
-DIRS = util com ptolemy bin doc
+# PTJNI_DIR is set to jni by configure in $PTII/mk/ptII.mk
+#   if gcc or cc was found.
+DIRS = util com ptolemy $(PTJNI_DIR) bin doc
 
 # Root of Ptolemy II directory
 ROOT =		.
