@@ -50,6 +50,7 @@ JSRCS = \
 	CorbaActor.java \
 	CorbaActorHelper.java \
 	CorbaActorHolder.java \
+	CorbaActorOperations.java \
 	CorbaIllegalActionException.java \
 	CorbaIllegalActionExceptionHelper.java \
 	CorbaIllegalActionExceptionHolder.java \

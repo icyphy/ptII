@@ -170,26 +170,30 @@ public class CorbaActorClient extends TypedAtomicActor {
         super.initialize();
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(
-                (ORBInitProperties.getToken()).toString());
+                ((StringToken)ORBInitProperties.getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
         while (st.hasMoreTokens()) {
             args[i] = st.nextToken();
-            _debug(getName(), " ORB init property ", args[i]);
+            _debug("ORB initial argument: " + args[i]);
             i++;
         }
         try {
             try {
                 // start the ORB
                 ORB orb = ORB.init(args, null);
-                _debug(getName(), "ORB initialized");
+                _debug(getName(), " ORB initialized");
                 //get the root naming context
                 org.omg.CORBA.Object objRef = orb.resolve_initial_references(
                         "NameService");
                 NamingContext ncRef = NamingContextHelper.narrow(objRef);
+                if (ncRef != null) {
+                    _debug(getName(), "found name service.");
+                }
                 //resolve the remote actor reference in Naming
                 NameComponent namecomp = new NameComponent(
-                        (remoteActorName.getToken()).toString(), "");
+                        ((StringToken)remoteActorName.getToken()).
+                        stringValue(), "");
                 _debug(getName(), " looking for name: ",
                         (remoteActorName.getToken()).toString());
                 NameComponent path[] = {namecomp};
@@ -197,8 +201,11 @@ public class CorbaActorClient extends TypedAtomicActor {
                 _remoteActor =
                     ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                             ncRef.resolve(path));
+                if(_remoteActor == null) {
+                    throw new IllegalActionException(this, 
+                            " can not find the remote actor.");
+                }
             } catch (UserException ex) {
-                _debug(getName(), " initialize ORB failed.");
                 throw new IllegalActionException(this,
                         " initialize ORB failed." + ex.getMessage());
             }
@@ -206,7 +213,8 @@ public class CorbaActorClient extends TypedAtomicActor {
             Iterator attributes = attributeList().iterator();
             while (attributes.hasNext()) {
                 Attribute att = (Attribute)attributes.next();
-                if((att != ORBInitProperties) && (att != remoteActorName)) {
+                if((att != ORBInitProperties) && (att != remoteActorName) &&
+                   (att instanceof Parameter)) {
                     _debug(getName(),
                             " check remote parameter: ", att.getName());
                     if (!_remoteActor.hasParameter(att.getName())) {
@@ -222,6 +230,10 @@ public class CorbaActorClient extends TypedAtomicActor {
                 _debug(getName(), " check remote port: ", p.getName());
                 if (!_remoteActor.hasPort(p.getName(),
                         p.isInput(), p.isOutput(), p.isMultiport())) {
+                    _debug(
+                            "Port: " + p.getName() +
+                            " not found on the remote side" +
+                            " or has wrong type.");
                     throw new IllegalActionException(this,
                             "Port: " + p.getName() +
                             " not found on the remote side" +
@@ -231,6 +243,9 @@ public class CorbaActorClient extends TypedAtomicActor {
                     _remoteActor.setPortWidth(p.getName(),
                             (short)p.getWidth());
                 } catch (UserException ex) {
+                    _debug(
+                            "Port: " + p.getName() +
+                            " does not support width");
                     throw new IllegalActionException(this,
                             "Port: " + p.getName() +
                             " does not support width " + p.getWidth());
@@ -238,10 +253,11 @@ public class CorbaActorClient extends TypedAtomicActor {
 
             }
         } catch (SystemException ex) {
-            _debug(getName(), " CORBA init failed ", ex.getMessage());
+            _debug(getName(), " CORBA set up failed " + ex.getMessage());
             throw new IllegalActionException(this,
                     "CORBA set up faliar"+ex.getMessage());
         }
+        _debug("Finished initializing " + getName());
     }
 
     /** Transfer the input tokens to the remote actor, fire the remote

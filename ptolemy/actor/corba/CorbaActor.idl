@@ -27,8 +27,6 @@
 @AcceptedRating Red (moderator@eecs.berkeley.edu)
 */
 
-#pragma javaPackage "ptolemy.actor.corba"
-
 module util {
 	/* Exception for generic illegal actions on the server side.
 	 */
