@@ -410,6 +410,29 @@ test NamedObj-11.5 {Test removal of deferral} {
     listToFullNames [$a deferredMoMLDefinitionFrom]
 } {}
 
+test NamedObj-11.6 {Test exportMoML Writer} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "AA"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "AA1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "AA2"]
+    jdkCapture {
+	set writer [java::new java.io.OutputStreamWriter \
+		[java::field System out]]
+	$a exportMoML $writer
+	$writer flush
+    } stdoutResults
+    list $stdoutResults
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<model name="AA" class="ptolemy.kernel.util.NamedObj">
+    <property name="AA1" class="ptolemy.kernel.util.Attribute">
+        <property name="AA2" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </property>
+</model>
+}}
+
 
 ######################################################################
 ####
