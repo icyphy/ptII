@@ -157,7 +157,7 @@ public class PlotApplet extends Applet implements Runnable {
     /** Create a new Plot object to operate on.  Derived classes can
      * redefine this method to create multiple Plot objects.
      */
-    protected void newPlot() {
+    public void newPlot() {
         _myPlot = new Plot();
     }
         
