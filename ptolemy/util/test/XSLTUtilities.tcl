@@ -74,8 +74,8 @@ test XSLTUtilities-1.1 {Call main} {
 </Scripts>
 
 <Markers>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
+<Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
 </Markers>
 </WMBasicEdit>
 }}
@@ -156,8 +156,8 @@ test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
 </Scripts>
 
 <Markers>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
+<Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
 </Markers>
 </WMBasicEdit>
 }}
@@ -191,8 +191,8 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
 </Scripts>
 
 <Markers>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
+<Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
 </Markers>
 </WMBasicEdit>
 }}
@@ -223,19 +223,19 @@ test XSLTUtilities-3.4 {Call transform(String, String, String)} {
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
  <Attributes>
- <WMENC_STRING Name="Title"/>
- </Attributes>
+<WMENC_STRING Name="Title"/>
+</Attributes>
 
  <RemoveAllMarkers/>
  <RemoveAllScripts/>
  <Scripts>
- <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
- <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
- </Scripts>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Scripts>
 
-
- <Markers>
- <Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
- <Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
- </Markers>
-</WMBasicEdit>}}
+<Markers>
+<Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
+<Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
+</Markers>
+</WMBasicEdit>
+}}
