@@ -320,8 +320,14 @@ public class AudioSource extends SDFAtomicActor {
     // channels => exception thrown. Set channels param automatically.
     public boolean postfire() throws IllegalActionException {
 	//System.out.println("AudioSource: postfire(): invoked");
-	// Read in audio data.
-	_audioInDoubleArray = _soundCapture.getSamples();
+	try {
+	    // Read in audio data.
+	    _audioInDoubleArray = _soundCapture.getSamples();
+	} catch (Exception ex) {
+	    throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	}
 	//System.out.println("AudioSource: postfire(): after getSamples");
 	// Check that the read was successful
 
@@ -395,8 +401,14 @@ public class AudioSource extends SDFAtomicActor {
             _soundCapture = new SoundCapture(true,
                     theURL,
                     _productionRate);
-            // Start capturing audio.
-            _soundCapture.startCapture();
+	    try {
+		// Start capturing audio.
+		_soundCapture.startCapture();
+	    } catch (IOException ex) {
+		throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	    }
 
             // Read the number of audio channels and set
             // parameter accordingly.
@@ -411,8 +423,14 @@ public class AudioSource extends SDFAtomicActor {
             _soundCapture = new SoundCapture(false,
                     theFileName,
                     _productionRate);
-            // Start capturing audio.
-            _soundCapture.startCapture();
+            try {
+		// Start capturing audio.
+		_soundCapture.startCapture();
+	    } catch (IOException ex) {
+		throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	    }
 
             // Read the number of audio channels and set
             // parameter accordingly.
@@ -436,8 +454,14 @@ public class AudioSource extends SDFAtomicActor {
                     channelsInt,
                     bufferSizeInt,
                     getSamplesSizeInt);
-            // Start capturing audio.
-            _soundCapture.startCapture();
+            try {
+		// Start capturing audio.
+		_soundCapture.startCapture();
+	    } catch (IOException ex) {
+		throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	    }
         } else {
             throw new IllegalActionException("Parameter " +
                     source.getFullName() +
@@ -457,7 +481,13 @@ public class AudioSource extends SDFAtomicActor {
 	//System.out.println("AudioSource: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundCapture != null) {
-	    _soundCapture.stopCapture();
+	    try {
+		_soundCapture.stopCapture();
+	    } catch (IOException ex) {
+		throw new IllegalActionException(
+		    "Cannot capture audio:\n" +
+		    ex.getMessage());
+	    }
 	}
 
     }
