@@ -252,9 +252,12 @@ public class DatagramReader extends TypedAtomicActor {
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(4004));
 
-        bufferLength = new Parameter(this, "bufferLength");
-        bufferLength.setTypeEquals(BaseType.INT);
-        bufferLength.setToken(new IntToken(440));
+        actorBufferLength = new Parameter(this, "actorBufferLength");
+        actorBufferLength.setTypeEquals(BaseType.INT);
+        actorBufferLength.setToken(new IntToken(440));
+
+        platformBufferLength = new Parameter(this, "platformBufferLength");
+        platformBufferLength.setTypeEquals(BaseType.INT);
 
         overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
         overwrite.setTypeEquals(BaseType.BOOLEAN);
@@ -329,7 +332,7 @@ public class DatagramReader extends TypedAtomicActor {
     /** Encoding to expect of received datagrams.  This is a
      *  string-valued attribute that defaults to "for_Ptolemy_parser".
      *  This is a ChoiceStyle (i.e. drop-menu-select) parameter.
-     *  @see ptolemy.actor.gui.ChoiceStyle
+     *  @see ptolemy.actor.gui.style.ChoiceStyle
      *  The three options currently implemented are: "for_Ptolemy_parser",
      *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
      *  The first option allows reconstruction of any data type upon
@@ -406,7 +409,11 @@ public class DatagramReader extends TypedAtomicActor {
      *  receiving a datagram.  This length does not include the bytes
      *  needed for storing the datagram's return address and other
      *  housekeeping information.  This buffer need only be big enough
-     *  to hold the payload or net contents of the datagram.  There is
+     *  to hold the payload or net contents of the datagram.
+     */
+    public Parameter actorBufferLength;
+
+    /** Length (in bytes) ... There is
      *  also a buffer somewhere in the Java Virtual Machine or in the
      *  underlying firmware or platform.  The size of this buffer is
      *  not controlled by this actor, but it could be.  Its length is
@@ -415,7 +422,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  Caution - The set*() is only a suggestion.  Must call get*()
      *  to see what you actually got.
      */
-    public Parameter bufferLength;
+    public Parameter platformBufferLength;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -437,7 +444,8 @@ public class DatagramReader extends TypedAtomicActor {
         // Don't track _evalVar because it gets called every time
         // a datagram is parsed with the Ptolemy parser.
         if (attribute != _evalVar) {
-            if (_debugging) _debug("AtCh"
+            //if (_debugging) _debug("AtCh"
+            System.out.println("AtCh"
                     + attribute.toString().substring(28));
         }
 
@@ -619,7 +627,7 @@ public class DatagramReader extends TypedAtomicActor {
                }
            } // Sync(this)
 
-        // In the case of <i>bufferLength</i>, simply cache the parameter.
+        // In the case of <i>actorBufferLength</i>, simply cache the parameter.
         // The thread used this value to set the size of a buffer prior 
         // to the socket.receive() call.  The thread only resizes a buffer 
         // when it is about to call receive on it and this parameter has 
@@ -627,11 +635,36 @@ public class DatagramReader extends TypedAtomicActor {
         // Synchronization ensures that the thread's test for a change in
         // this value and its use of the value access the same thing.
 
-        } else if (attribute == bufferLength) {
+        } else if (attribute == actorBufferLength) {
             synchronized(_syncBufferLength) {
-                _bufferLength = ((IntToken)
-                       (bufferLength.getToken())).intValue();
+                _actorBufferLength = ((IntToken)
+                       (actorBufferLength.getToken())).intValue();
             }
+
+
+        } else if (attribute == platformBufferLength && _socket != null) {
+	    if (platformBufferLength.getToken() != null) {
+		int requestedValue = ((IntToken)
+		        platformBufferLength.getToken()).intValue();
+		int existingValue = 0; // Initialization required by compiler.
+		try {
+		    System.out.println("About to get...");
+		    existingValue = _socket.getReceiveBufferSize();
+		    System.out.println("Completed get...");
+		} catch (SocketException sex) {
+		    System.out.println("sex1" + sex.toString());
+		}
+		if (requestedValue != existingValue) {
+		    try {
+			System.out.println("About to set...");
+			_socket.setReceiveBufferSize(requestedValue);
+			System.out.println("Completed set...");
+		    } catch (SocketException sex) {
+			System.out.println("sex2" + sex.toString());
+		    }
+		}
+	    }
+
 
         } else {
             super.attributeChanged(attribute);
@@ -639,7 +672,8 @@ public class DatagramReader extends TypedAtomicActor {
 
         if (attribute != _evalVar) {
             if (_debugging) _debug(this + "attributeChanged() done");
-            if (_debugging) _debug("---"
+            //if (_debugging) _debug("---"
+            System.out.println("---"
                     + attribute.toString().substring(28));
         }
 
@@ -904,6 +938,25 @@ public class DatagramReader extends TypedAtomicActor {
                     " Failed to create a new socket: " + ex);
         }
 
+
+	try {
+	    int socketSize = _socket.getReceiveBufferSize();
+	    System.out.println("Pre-existing setting(platform)=" + socketSize);
+
+	    if (platformBufferLength.getToken() != null) {
+		_socket.setReceiveBufferSize(((IntToken)
+                        platformBufferLength.getToken()).intValue());
+	    }
+            platformBufferLength.setToken(new IntToken(
+                    _socket.getReceiveBufferSize()));
+
+	    System.out.println("New setting (platform)="
+                    + _socket.getReceiveBufferSize());
+	} catch (SocketException sex) {
+	    System.out.println("sex3" + sex.toString());
+	    //throw new IllegalActionException(this,sex.toString());
+	}
+
         // Allocate & start a thread to read from the socket.
         _listenerThread = new ListenerThread();
         _listenerThread.start();
@@ -1048,7 +1101,7 @@ public class DatagramReader extends TypedAtomicActor {
     private Object _syncSocket = new Object();
 
     // Cached copies of parameters:
-    private int _bufferLength;
+    private int _actorBufferLength;
     private boolean _overwrite;
     private boolean _blockAwaitingDatagram;
     private Token _defaultOutputToken;
@@ -1119,10 +1172,11 @@ public class DatagramReader extends TypedAtomicActor {
                 // Allocate or resize the packet buffers.
                 synchronized(_syncBufferLength) {
                     if (_receivePacket == null ||
-                            _receiveAllocated != _bufferLength) {
+                            _receiveAllocated != _actorBufferLength) {
                         _receivePacket = new DatagramPacket(
-                                new byte[_bufferLength], 0, _bufferLength);
-                        _receiveAllocated = _bufferLength;
+                                new byte[_actorBufferLength], 0, 
+                                _actorBufferLength);
+                        _receiveAllocated = _actorBufferLength;
                     }
                 }
                 if (_broadcastPacket == null) {
@@ -1133,8 +1187,9 @@ public class DatagramReader extends TypedAtomicActor {
                     // FIXME Maybe it is not necessary at all!
                     synchronized(_syncBufferLength) {
                         _broadcastPacket = new DatagramPacket(
-                                new byte[_bufferLength], 0, _bufferLength);
-                        _broadcastAllocated = _bufferLength;
+                                new byte[_actorBufferLength], 0,
+                                _actorBufferLength);
+                        _broadcastAllocated = _actorBufferLength;
                     }
                 }
 
@@ -1146,7 +1201,7 @@ public class DatagramReader extends TypedAtomicActor {
                     // Fluff the buffer back up to its allocated size.
                     // Otherwise, it forgets how big it is and can
                     // receive a datagram no bigger than the last one.
-                    _receivePacket.setLength(_bufferLength);
+                    _receivePacket.setLength(_actorBufferLength);
                     try {
                         // NOTE: The following call may block.
                         _socket.receive(_receivePacket);
