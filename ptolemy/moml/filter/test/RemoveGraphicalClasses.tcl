@@ -265,4 +265,59 @@ test RemoveGraphicalClasses-1.3 {Try a configuration has a class that we are goi
     set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
-} {}
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+    <entity name="sources" class="ptolemy.moml.EntityLibrary">
+        <configure>
+            <group>
+                <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+                </property>
+            </group>
+        </configure>
+    </entity>
+</entity>
+}}
+
+######################################################################
+####
+#
+set hideMoml  "$header 
+<entity name=\"sources\" class=\"ptolemy.moml.EntityLibrary\">
+  <configure>
+    <?moml
+      <group>
+<doc>default entity library</doc>
+
+<entity name=\"SketchedSource\" class=\"ptolemy.actor.lib.gui.SketchedSource\">
+<doc>bar</doc>
+</entity>
+          </group>
+        ?>
+      </configure>
+</entity>
+"
+
+test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are going to remove but is <entity name= class=\> instead of <entity name= class=>...</entity>} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    removeGraphicalClasses $parser
+    #set toplevel [$parser parse $hideMoml]
+    #set toplevel [$parser parseFile "../../../../ptolemy/actor/lib/sources.xml"]
+    set toplevel [$parser parseFile "configuration.xml"]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="sources" class="ptolemy.moml.EntityLibrary">
+    <configure>
+        <group>
+            <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <doc>default entity library</doc>
+        </group>
+    </configure>
+</entity>
+}}
