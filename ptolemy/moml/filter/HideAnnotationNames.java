@@ -28,9 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.moml.filter;
 
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
@@ -51,7 +51,7 @@ public class HideAnnotationNames implements MoMLFilter {
     /** If the attributeName is "name" and attributeValue ends
      *        with "annotation", then
      *  <pre>
-     *   <property name="_hideName" class="ptolemy.data.expr.Parameter">
+     *   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
      *   </property>
      *  <pre>
      *  is added if it is not yet present.
@@ -126,7 +126,7 @@ public class HideAnnotationNames implements MoMLFilter {
             _currentlyProcessingAnnotation = false;
             _currentAnnotationFullName = null;
             try {
-                new Parameter(container, "_hideName");
+                new SingletonAttribute(container, "_hideName");
             	MoMLParser.setModified(true);
             } catch (NameDuplicationException ex) {        	
                 // Ignore, the container already has a _hideName.
