@@ -57,13 +57,13 @@ public abstract class Token {
      *  argument Token added to the value of this Token.
      *  It should be overridden in derived
      *  classes to provide type specific actions for add.
-     *  @param leftArg The token whose value we add to the value of
+     *  @param rightArg The token whose value we add to the value of
      *   this token.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token add(Token leftArg) throws IllegalActionException {
+    public Token add(Token rightArg) throws IllegalActionException {
         String str = "Add method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
@@ -73,13 +73,13 @@ public abstract class Token {
      *  Token added to the value of the argument Token.
      *  It should be overridden in derived classes
      *  to provide type specific actions for add.
-     *  @param rightArg The token containing the value to which we add the
+     *  @param leftArg The token containing the value to which we add the
      *   value of this token to get the value of the new token.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token addR(Token rightArg) throws IllegalActionException {
+    public Token addR(Token leftArg) throws IllegalActionException {
         String str = "Addr method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
