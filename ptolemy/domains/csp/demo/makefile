@@ -31,6 +31,8 @@
 
 ME =		ptolemy/domains/csp/demo
 
+DIRS =		DiningPhilosophers
+
 # Root of the Java directory
 ROOT =		../../../..
 
@@ -40,18 +42,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	BasicDemo.java \
-	BusContentionDemo.java \
-	BusContentionGraphic.java \
-	Coordinate.java \
-	DiningApplet.java \
-	DiningPhilosophers.java \
-	Eratosthenes.java \
-	MM1.java \
-	PausingMM1.java \
-	PhilosopherListener.java \
-	TablePanel.java
+JSRCS =
 
 EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS)
 
@@ -59,25 +50,18 @@ EXTRA_SRCS =	index.html $(TCL_SRCS) $(JSRCS)
 # want make checkjunk to barf on them.
 MISC_FILES =
 
-PTAUXJAR = diningapplet.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	diningapplet.jar
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass diningapplet.jar
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
-
 install: all
-
-demo:
-	CLASSPATH=$(CLASSPATH) appletviewer index.html
 
 bus:	
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
@@ -85,19 +69,8 @@ bus:
 busGraphic:	
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionGraphic
 
-
-
-
 # 'make clean' removes everything in KRUFT
 KRUFT = diningapplet.jar
-
-# Jar file for the Dining Philosophers applet
-diningapplet.jar: $(JSRCS) $(JCLASS) makefile
-	(cd $(ROOT); \
-		$(JAR) cf \
-		$(ME)/$@ \
-		$(ME)/*.class)
-
 
 depend:
 	@echo "no dependencies in this directory"

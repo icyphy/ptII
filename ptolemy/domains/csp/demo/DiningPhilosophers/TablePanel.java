@@ -36,11 +36,10 @@
  * @version $Id$
  */
 
-package ptolemy.domains.csp.demo;
+package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import java.awt.*;
 import java.util.Random;
-import ptolemy.domains.csp.demo.Coordinate;
 import ptolemy.domains.csp.lib.CSPPhilosopher;
 
 class TablePanel extends Panel {

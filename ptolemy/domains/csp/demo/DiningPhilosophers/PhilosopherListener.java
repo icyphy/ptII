@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.csp.demo;
+package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 /** Listener for Philosopher events.
  @author Neil Smyth

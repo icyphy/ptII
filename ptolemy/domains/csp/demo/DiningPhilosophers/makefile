@@ -71,7 +71,7 @@ all: jclass diningapplet.jar
 install: all
 
 demo:
-	CLASSPATH=$(CLASSPATH) appletviewer index.html
+	CLASSPATH=$(CLASSPATH) appletviewer DiningPhilosophers.html
 
 
 # 'make clean' removes everything in KRUFT

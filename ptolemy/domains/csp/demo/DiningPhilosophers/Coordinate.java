@@ -34,7 +34,7 @@
  * @author John Hall
  * @version $Id$
  */
-package ptolemy.domains.csp.demo;
+package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 public class Coordinate {
     /** The X coordinate. */
