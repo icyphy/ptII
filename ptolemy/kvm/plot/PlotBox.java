@@ -243,7 +243,7 @@ public class PlotBox extends Panel {
             _xticks = new Vector();
             _xticklabels = new Vector();
         }
-        _xticks.addElement(new Double(position));
+        _xticks.addElement(new PtDouble(position));
         _xticklabels.addElement(label);
     }
 
@@ -260,7 +260,7 @@ public class PlotBox extends Panel {
             _yticks = new Vector();
             _yticklabels = new Vector();
         }
-        _yticks.addElement(new Double(position));
+        _yticks.addElement(new PtDouble(position));
         _yticklabels.addElement(label);
     }
 
@@ -372,22 +372,6 @@ public class PlotBox extends Panel {
             }
         }
         return null;
-    }
-
-    /** Get the file specification that was given by setDataurl.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
-     */
-    public String getDataurl() {
-        return _filespec;
-    }
-
-    /** Get the document base that was set by setDocumentBase.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
-     */
-    public URL getDocumentBase() {
-        return _documentBase;
     }
 
     /** Return whether the grid is drawn.
@@ -558,9 +542,9 @@ public class PlotBox extends Panel {
     public void init() {
         setButtons(true);
 
-        if (_filespec != null) {
-            parseFile(_filespec, _documentBase);
-        }
+        //if (_filespec != null) {
+        //    parseFile(_filespec);
+        //}
     }
 
     /** Paint the component contents, which in this base class is
@@ -572,92 +556,6 @@ public class PlotBox extends Panel {
         _drawPlot(graphics, true);
         // Acquire the focus so that key bindings work.
         requestFocus();
-    }
-
-    /** Syntactic sugar for parseFile(filespec, documentBase).
-     *  This method is deprecated.  Use read() to read the old file
-     *  format, or use one of the classes in the plotml package to
-     *  read the XML-based file format.
-     *  @deprecated
-     */
-    public void parseFile(String filespec) {
-        parseFile(filespec, (URL)null);
-    }
-
-    /** Open up the input file, which could be stdin, a URL, or a file.
-     *  @deprecated This method is deprecated.  Use read() instead.
-     */
-    public void parseFile(String filespec, URL documentBase) {
-        DataInputStream in = null;
-        if (filespec == null || filespec.length() == 0) {
-            // Open up stdin
-            in = new DataInputStream(System.in);
-        } else {
-            try {
-                URL url = null;
-                if (documentBase == null && _documentBase != null) {
-                    documentBase = _documentBase;
-                }
-                if (documentBase == null) {
-                    url = new URL(filespec);
-                } else {
-                    try {
-                        url = new URL(documentBase, filespec);
-                    } catch (NullPointerException e) {
-                        // If we got a NullPointerException, then perhaps we
-                        // are calling this as an application, not as an applet
-                        url = new URL(filespec);
-                    }
-                }
-                in = new DataInputStream (url.openStream());
-            } catch (MalformedURLException e) {
-                try {
-                    // Just try to open it as a file.
-                    in = new DataInputStream(new FileInputStream(filespec));
-                } catch (FileNotFoundException me) {
-                    _errorMsg = new String [2];
-                    _errorMsg[0] = "File not found: " + filespec;
-                    _errorMsg[1] = me.getMessage();
-                    return;
-                } catch (SecurityException me) {
-                    _errorMsg = new String [2];
-                    _errorMsg[0] = "Security Exception: " + filespec;
-                    _errorMsg[1] = me.getMessage();
-                    return;
-                }
-            } catch (IOException ioe) {
-                _errorMsg = new String [3];
-                _errorMsg[0] = "Failure opening URL: ";
-                _errorMsg[1] = " " + filespec;
-                _errorMsg[2] = ioe.getMessage();
-                return;
-            }
-        }
-
-        // At this point, we've opened the data source, now read it in
-        try {
-            BufferedReader din = new BufferedReader(
-                    new InputStreamReader(in));
-            String line = din.readLine();
-            while (line != null) {
-                _parseLine(line);
-                line = din.readLine();
-            }
-        } catch (MalformedURLException e) {
-            _errorMsg = new String [2];
-            _errorMsg[0] = "Malformed URL: " + filespec;
-            _errorMsg[1] = e.getMessage();
-            return;
-        } catch (IOException e) {
-            _errorMsg = new String [2];
-            _errorMsg[0] = "Failure reading data: " + filespec;
-            _errorMsg[1] = e.getMessage();
-            _errorMsg[1] = e.getMessage();
-        } finally {
-            try {
-                in.close();
-            } catch (IOException me) {}
-        }
     }
 
     /** Read commands and/or plot data from an input stream in the old
@@ -691,6 +589,8 @@ public class PlotBox extends Panel {
      *  @exception IOException If the stream cannot be read.
      */
     public void read(InputStream in) throws IOException {
+        // KVM_FIXME: no BufferedRead 
+        /*
         try {
             // NOTE: I tried to use exclusively the jdk 1.1 Reader classes,
             // but they provide no support like DataInputStream, nor
@@ -715,6 +615,7 @@ public class PlotBox extends Panel {
             _errorMsg[1] = e.getMessage();
             throw e;
         }
+            */
     }
 
     /** Read a single line command provided as a string.
@@ -789,14 +690,6 @@ public class PlotBox extends Panel {
      */
     public void setDataurl(String filespec) {
         _filespec = filespec;
-    }
-
-    /** Set the document base to used when init() is called to read a URL.
-     *  This method is deprecated.  Use read() instead.
-     *  @deprecated
-     */
-    public void setDocumentBase(URL documentBase) {
-        _documentBase = documentBase;
     }
 
     /** Set the foreground color.
@@ -928,80 +821,6 @@ public class PlotBox extends Panel {
         _setYRange(min, max);
     }
 
-    /** Write the current data and plot configuration to the
-     *  specified stream in PlotML syntax.  PlotML is an XML
-     *  extension for plot data.  The written information is
-     *  standalone, in that it includes the DTD (document type
-     *  definition).  This makes is somewhat verbose.  To get
-     *  smaller files, use the two argument version of write().
-     *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override _write()
-     *  rather than this method.
-     *  @param out An output stream.
-     */
-    public void write(OutputStream out) {
-        write(out, null);
-    }
-
-    /** Write the current data and plot configuration to the
-     *  specified stream in PlotML syntax.  PlotML is an XML
-     *  dialect for plot data. The URL (relative or absolute) for the DTD is
-     *  given as the second argument.  If that argument is null,
-     *  then the PlotML PUBLIC DTD is referenced, resulting in a file
-     *  that can be read by a PlotML parser without any external file
-     *  references, as long as that parser has local access to the DTD.
-     *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override _write()
-     *  rather than this method.
-     *  @param out An output stream.
-     *  @param dtd The reference (URL) for the DTD, or null to use the
-     *   PUBLIC DTD.
-     */
-    public void write(OutputStream out, String dtd) {
-        // Auto-flush is disabled.
-        PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
-                false);
-        if (dtd == null) {
-            output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            output.println(
-                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
-            output.println(
-                "    \"http://ptolemy.eecs.berkeley.edu/archive/plotml.dtd\">");
-        } else {
-            output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
-            output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
-        }
-        output.println("<plot>");
-        output.println("<!-- Ptolemy plot, version 3.1, PlotML format. -->");
-        _write(output);
-        output.println("</plot>");
-        output.flush();
-        // Avoid closing standard out.
-        if(out != System.out) {
-            output.close();
-        }
-    }
-
-    /** Write the current data and plot configuration to the
-     *  specified stream in the old PtPlot syntax.
-     *  The output is buffered, and is flushed and
-     *  closed before exiting.  Derived classes should override
-     *  _writeOldSyntax() rather than this method.
-     *  @param out An output stream.
-     *  @deprecated
-     */
-    public void writeOldSyntax(OutputStream out) {
-        // Auto-flush is disabled.
-        PrintWriter output = new PrintWriter(new BufferedOutputStream(out),
-                false);
-        _writeOldSyntax(output);
-        output.flush();
-        // Avoid closing standard out.
-        if(out != System.out) {
-            output.close();
-        }
-    }
-
     /** Zoom in or out to the specified rectangle.
      *  This method calls repaint().
      *  @param lowx The low end of the new X range.
@@ -1061,7 +880,7 @@ public class PlotBox extends Panel {
             for(int i = 0; i < _errorMsg.length;i++) {
                 graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
-                System.err.println(_errorMsg[i]);
+                throw new RuntimeException(_errorMsg[i]);
             }
             return;
         }
@@ -1113,7 +932,7 @@ public class PlotBox extends Panel {
         int ySPos = drawRect.height - 5;
         int xSPos = drawRect.width - _rightPadding;
         if (_xlog)
-            _xExp = (int)Math.floor(_xtickMin);
+            _xExp = (int)PtMath.floor(_xtickMin);
         if (_xExp != 0 && _xticks == null) {
             String superscript = Integer.toString(_xExp);
             xSPos -= _superscriptFontMetrics.stringWidth(superscript);
@@ -1152,7 +971,7 @@ public class PlotBox extends Panel {
         double yStep = _roundUp((_ytickMax-_ytickMin)/(double)ny);
 
         // Compute y starting point so it is a multiple of yStep.
-        double yStart = yStep*Math.ceil(_ytickMin/yStep);
+        double yStart = yStep*PtMath.ceil(_ytickMin/yStep);
 
         // NOTE: Following disables first tick.  Not a good idea?
         // if (yStart == _ytickMin) yStart += yStep;
@@ -1325,7 +1144,7 @@ public class PlotBox extends Panel {
 
                 if (needExponent) {
                     // We zoomed in, so we need the exponent
-                    _yExp = (int)Math.floor(yTmpStart);
+                    _yExp = (int)PtMath.floor(yTmpStart);
                 } else {
                     _yExp = 0;
                 }
@@ -1347,7 +1166,7 @@ public class PlotBox extends Panel {
 
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
-                double ypos = ((Double)(nt.nextElement())).doubleValue();
+                double ypos = ((PtDouble)(nt.nextElement())).doubleValue();
                 if (ypos > _yMax || ypos < _yMin) continue;
                 int yCoord1 = _lry - (int)((ypos-_yMin)*_yscale);
                 int offset = 0;
@@ -1410,7 +1229,7 @@ public class PlotBox extends Panel {
             numfracdigits = _numFracDigits(xStep);
 
             // Compute x starting point so it is a multiple of xStep.
-            double xStart = xStep*Math.ceil(_xtickMin/xStep);
+            double xStart = xStep*PtMath.ceil(_xtickMin/xStep);
 
             // NOTE: Following disables first tick.  Not a good idea?
             // if (xStart == _xMin) xStart += xStep;
@@ -1463,7 +1282,7 @@ public class PlotBox extends Panel {
                 double tmpStep = (xStep > 1.0)? 1.0 : xStep;
 
                 // Recalculate the start using the new step.
-                xTmpStart = tmpStep*Math.ceil(_xtickMin/tmpStep);
+                xTmpStart = tmpStep*PtMath.ceil(_xtickMin/tmpStep);
 
                 Vector unlabeledgrid  = _gridInit(xTmpStart, tmpStep,
                         false, xgrid);
@@ -1484,7 +1303,7 @@ public class PlotBox extends Panel {
                 }
 
                 if (needExponent) {
-                    _xExp = (int)Math.floor(xTmpStart);
+                    _xExp = (int)PtMath.floor(xTmpStart);
                     graphics.setFont(_superscriptFont);
                     graphics.drawString(Integer.toString(_xExp), xSPos,
                             ySPos - halflabelheight);
@@ -1505,7 +1324,7 @@ public class PlotBox extends Panel {
             double preLength = 0.0;
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
-                double xpos = ((Double)(nt.nextElement())).doubleValue();
+                double xpos = ((PtDouble)(nt.nextElement())).doubleValue();
                 // If xpos is out of range, ignore.
                 if (xpos > _xMax || xpos < _xMin) continue;
 
@@ -1630,31 +1449,34 @@ public class PlotBox extends Panel {
 
         // We convert the line to lower case so that the command
         // names are case insensitive.
-        String lcLine = new String(line.toLowerCase());
+        
+        // KVM_FIXME: no toLowerCase
+        //String lcLine = new String(line.toLowerCase());
+        String lcLine = new String(line);
         if (lcLine.startsWith("#")) {
             // comment character
             return true;
         } else if (lcLine.startsWith("titletext:")) {
-            setTitle((line.substring(10)).trim());
+            setTitle((line.substring(10))/*.trim()*/);
             return true;
         } else if (lcLine.startsWith("title:")) {
             // Tolerate alternative tag.
-            setTitle((line.substring(10)).trim());
+            setTitle((line.substring(10))/*.trim()*/);
             return true;
         } else if (lcLine.startsWith("xlabel:")) {
-            setXLabel((line.substring(7)).trim());
+            setXLabel((line.substring(7))/*.trim()*/);
             return true;
         } else if (lcLine.startsWith("ylabel:")) {
-            setYLabel((line.substring(7)).trim());
+            setYLabel((line.substring(7))/*.trim()*/);
             return true;
         } else if (lcLine.startsWith("xrange:")) {
-            int comma = line.indexOf(",", 7);
+            int comma = line.indexOf(',', 7);
             if (comma > 0) {
-                String min = (line.substring(7, comma)).trim();
-                String max = (line.substring(comma+1)).trim();
+                String min = (line.substring(7, comma))/*.trim()*/;
+                String max = (line.substring(comma+1))/*.trim()*/;
                 try {
-                    Double dmin = new Double(min);
-                    Double dmax = new Double(max);
+                    PtDouble dmin = new PtDouble(min);
+                    PtDouble dmax = new PtDouble(max);
                     setXRange(dmin.doubleValue(), dmax.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
@@ -1662,13 +1484,13 @@ public class PlotBox extends Panel {
             }
             return true;
         } else if (lcLine.startsWith("yrange:")) {
-            int comma = line.indexOf(",", 7);
+            int comma = line.indexOf(',', 7);
             if (comma > 0) {
-                String min = (line.substring(7, comma)).trim();
-                String max = (line.substring(comma+1)).trim();
+                String min = (line.substring(7, comma))/*.trim()*/;
+                String max = (line.substring(comma+1))/*.trim()*/;
                 try {
-                    Double dmin = new Double(min);
-                    Double dmax = new Double(max);
+                    PtDouble dmin = new PtDouble(min);
+                    PtDouble dmax = new PtDouble(max);
                     setYRange(dmin.doubleValue(), dmax.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
@@ -1686,35 +1508,40 @@ public class PlotBox extends Panel {
             _parsePairs(line.substring(7), false);
             return true;
         } else if (lcLine.startsWith("xlog:")) {
-            if (lcLine.indexOf("off",5) >= 0) {
+            //if (lcLine.indexOf("off",5) >= 0) {
+            if (lcLine.regionMatches(true, 5, "off", 0, 3)) {
                 _xlog = false;
             } else {
                 _xlog = true;
             }
             return true;
         } else if (lcLine.startsWith("ylog:")) {
-            if (lcLine.indexOf("off",5) >= 0) {
+            //if (lcLine.indexOf("off",5) >= 0) {
+            if (lcLine.regionMatches(true, 5, "off", 0, 3)) {
                 _ylog = false;
             } else {
                 _ylog = true;
             }
             return true;
         } else if (lcLine.startsWith("grid:")) {
-            if (lcLine.indexOf("off",5) >= 0) {
+            //if (lcLine.indexOf("off",5) >= 0) {
+            if (lcLine.regionMatches(true, 5, "off", 0, 3)) {
                 _grid = false;
             } else {
                 _grid = true;
             }
             return true;
         } else if (lcLine.startsWith("wrap:")) {
-            if (lcLine.indexOf("off",5) >= 0) {
+            //if (lcLine.indexOf("off",5) >= 0) {
+            if (lcLine.regionMatches(true, 5, "off", 0, 3)) {
                 _wrap = false;
             } else {
                 _wrap = true;
             }
             return true;
         } else if (lcLine.startsWith("color:")) {
-            if (lcLine.indexOf("off",6) >= 0) {
+            //if (lcLine.indexOf("off",6) >= 0) {
+            if (lcLine.regionMatches(true, 6, "off", 0, 3)) {
                 _usecolor = false;
             } else {
                 _usecolor = true;
@@ -1730,98 +1557,6 @@ public class PlotBox extends Panel {
      */
     protected void _setButtonsVisibility(boolean vis) {
         _fillButton.setVisible(vis);
-    }
-
-    /** Write plot information to the specified output stream in PlotML.
-     *  Derived classes should override this method to first call
-     *  the parent class method, then add whatever additional information
-     *  they wish to add to the stream.
-     *  @param output A buffered print writer.
-     */
-    protected void _write(PrintWriter output) {
-        // NOTE: If you modify this, you should change the _DTD variable
-        // accordingly.
-        if (_title != null) output.println(
-                "<title>" + _title + "</title>");
-        if (_xlabel != null) output.println(
-                "<xLabel>" + _xlabel + "</xLabel>");
-        if (_ylabel != null) output.println(
-                "<yLabel>" + _ylabel + "</yLabel>");
-        if (_xRangeGiven) output.println(
-                "<xRange min=\"" + _xlowgiven + "\" max=\""
-                + _xhighgiven + "\"/>");
-        if (_yRangeGiven) output.println(
-                "<yRange min=\"" + _ylowgiven + "\" max=\""
-                + _yhighgiven + "\"/>");
-        if (_xticks != null && _xticks.size() > 0) {
-            output.println("<xTicks>");
-            int last = _xticks.size() - 1;
-            for (int i = 0; i <= last; i++) {
-                output.println("  <tick label=\""
-                        + (String)_xticklabels.elementAt(i) + "\" position=\""
-                        + (Double)_xticks.elementAt(i) + "\"/>");
-            }
-            output.println("</xTicks>");
-        }
-        if (_yticks != null && _yticks.size() > 0) {
-            output.println("<yTicks>");
-            int last = _yticks.size() - 1;
-            for (int i = 0; i <= last; i++) {
-                output.println("  <tick label=\""
-                        + (String)_yticklabels.elementAt(i) + "\" position=\""
-                        + (Double)_yticks.elementAt(i) + "\"/>");
-            }
-            output.println("</yTicks>");
-        }
-        if (_xlog) output.println("<xLog/>");
-        if (_ylog) output.println("<yLog/>");
-        if (!_grid) output.println("<noGrid/>");
-        if (_wrap) output.println("<wrap/>");
-        if (!_usecolor) output.println("<noColor/>");
-    }
-
-    /** Write plot information to the specified output stream in the
-     *  old PtPlot syntax.
-     *  Derived classes should override this method to first call
-     *  the parent class method, then add whatever additional information
-     *  they wish to add to the stream.
-     *  @param output A buffered print writer.
-     *  @deprecated
-     */
-    protected void _writeOldSyntax(PrintWriter output) {
-        output.println("# Ptolemy plot, version 2.0");
-        if (_title != null) output.println("TitleText: " + _title);
-        if (_xlabel != null) output.println("XLabel: " + _xlabel);
-        if (_ylabel != null) output.println("YLabel: " + _ylabel);
-        if (_xRangeGiven) output.println("XRange: " + _xlowgiven
-                + ", " + _xhighgiven);
-        if (_yRangeGiven) output.println("YRange: " + _ylowgiven
-                + ", " + _yhighgiven);
-        if (_xticks != null && _xticks.size() > 0) {
-            output.print("XTicks: ");
-            int last = _xticks.size() - 1;
-            for (int i = 0; i < last; i++) {
-                output.print("\"" + (String)_xticklabels.elementAt(i) + "\" "
-                        + (Double)_xticks.elementAt(i) + ", ");
-            }
-            output.println("\"" + (String)_xticklabels.elementAt(last) + "\" "
-                    + (Double)_xticks.elementAt(last));
-        }
-        if (_yticks != null && _yticks.size() > 0) {
-            output.print("YTicks: ");
-            int last = _yticks.size() - 1;
-            for (int i = 0; i < last; i++) {
-                output.print("\"" + (String)_yticklabels.elementAt(i) + "\" "
-                        + (Double)_yticks.elementAt(i) + ", ");
-            }
-            output.println("\"" + (String)_yticklabels.elementAt(last) + "\" "
-                    + (Double)_yticks.elementAt(last));
-        }
-        if (_xlog) output.println("XLog: on");
-        if (_ylog) output.println("YLog: on");
-        if (!_grid) output.println("Grid: off");
-        if (_wrap) output.println("Wrap: on");
-        if (!_usecolor) output.println("Color: off");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1862,7 +1597,8 @@ public class PlotBox extends Panel {
     protected boolean _xlog = false, _ylog = false;
 
     // For use in calculating log base 10. A log times this is a log base 10.
-    protected static final double _LOG10SCALE = 1/Math.log(10);
+    // was 1/PtMath.log(10)
+    protected static final double _LOG10SCALE = .43429448190325182765;
 
     /** @serial Whether to draw a background grid. */
     protected boolean _grid = true;
@@ -1939,7 +1675,7 @@ public class PlotBox extends Panel {
      * FIXME: Sun's appletviewer gives an exception if this is protected.
      * Why?? So we make it temporarily public.
      */
-    public URL _documentBase = null;
+    // KAWT_FIXME_    public URL _documentBase = null;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -2010,14 +1746,14 @@ public class PlotBox extends Panel {
             if (num - (int)(num) < 0.001) {
                 results = "1e" + results;
             } else {
-                results = _formatNum(Math.pow(10.0, (num - (int)num)),
+                results = _formatNum(PtMath.pow(10.0, (num - (int)num)),
                         numfracdigits);
             }
         } else {
             if (-num - (int)(-num) < 0.001) {
                 results = "1e" + results;
             } else {
-                results = _formatNum(Math.pow(10.0, (num - (int)num))*10,
+                results = _formatNum(PtMath.pow(10.0, (num - (int)num))*10,
                         numfracdigits);
             }
         }
@@ -2055,10 +1791,11 @@ public class PlotBox extends Panel {
         // First, round the number.
         double fudge = 0.5;
         if (num < 0.0) fudge = -0.5;
-        String numString = Double.toString(num +
-                fudge*Math.pow(10.0, -numfracdigits));
+        // We don't have PtDoubletoString(double) 
+        PtDouble doubleString = new PtDouble(num + fudge*PtMath.pow(10.0, -numfracdigits));
+        String numString = doubleString.toString();
         // Next, find the decimal point.
-        int dpt = numString.lastIndexOf(".");
+        int dpt = numString.lastIndexOf('.');
         StringBuffer result = new StringBuffer();
         if (dpt < 0) {
             // The number we are given is an integer.
@@ -2119,7 +1856,7 @@ public class PlotBox extends Panel {
 
         Vector grid = new Vector(10);
         //grid.addElement(new Double(0.0));
-        double ratio = Math.pow(10.0, step);
+        double ratio = PtMath.pow(10.0, step);
         int ngrid = 1;
         if (labeled) {
             // Set up the number of grid lines that will be labeled
@@ -2131,7 +1868,7 @@ public class PlotBox extends Panel {
                 else if (ratio > 1.125)
                     ngrid = 10;
                 else
-                    ngrid = (int)Math.rint(1.0/step);
+                    ngrid = (int)PtMath.rint(1.0/step);
 
             }
         } else {
@@ -2153,7 +1890,7 @@ public class PlotBox extends Panel {
         int oldgridi = 0;
         for (int i = 0; i < ngrid; i++) {
             double gridval = i * 1.0/ngrid * 10;
-            double logval = _LOG10SCALE*Math.log(gridval);
+            double logval = _LOG10SCALE*PtMath.log(gridval);
             if (logval == PtMath.NEGATIVE_INFINITY)
                 logval = 0.0;
 
@@ -2166,7 +1903,7 @@ public class PlotBox extends Panel {
                 // that is equal to or greater than the element we are
                 // trying to add.
                 while (oldgridi < oldgrid.size() &&
-                        ((Double)oldgrid.elementAt(oldgridi)).doubleValue() <
+                        ((PtDouble)oldgrid.elementAt(oldgridi)).doubleValue() <
                         logval) {
                     oldgridi++;
                 }
@@ -2174,17 +1911,17 @@ public class PlotBox extends Panel {
                 if (oldgridi < oldgrid.size()) {
                     // Using == on doubles is bad if the numbers are close,
                     // but not exactly equal.
-                    if (Math.abs(
-                            ((Double)oldgrid.elementAt(oldgridi)).doubleValue()
-                            - logval)
+                    if (Math.abs((int)
+                            (((PtDouble)oldgrid.elementAt(oldgridi)).doubleValue()
+                            - logval))
                             > 0.00001) {
-                        grid.addElement(new Double(logval));
+                        grid.addElement(new PtDouble(logval));
                     }
                 } else {
-                    grid.addElement(new Double(logval));
+                    grid.addElement(new PtDouble(logval));
                 }
             } else {
-                grid.addElement(new Double(logval));
+                grid.addElement(new PtDouble(logval));
             }
         }
 
@@ -2192,14 +1929,14 @@ public class PlotBox extends Panel {
         _gridCurJuke = 0;
         if (low == -0.0)
             low = 0.0;
-        _gridBase = Math.floor(low);
+        _gridBase = PtMath.floor(low);
         double x = low - _gridBase;
 
         // Set gridCurJuke so that the value in grid is greater than
         // or equal to x.  This sets us up to process the first point.
         for (_gridCurJuke = -1;
              (_gridCurJuke+1) < grid.size() && x >=
-                 ((Double)grid.elementAt(_gridCurJuke+1)).doubleValue();
+                 ((PtDouble)grid.elementAt(_gridCurJuke+1)).doubleValue();
              _gridCurJuke++){
         }
         return grid;
@@ -2209,15 +1946,15 @@ public class PlotBox extends Panel {
      * Round pos up to the nearest value in the grid.
      */
     private double _gridRoundUp(Vector grid, double pos) {
-        double x = pos - Math.floor(pos);
+        double x = pos - PtMath.floor(pos);
         int i;
         for(i = 0; i < grid.size() &&
-                x >= ((Double)grid.elementAt(i)).doubleValue();
+                x >= ((PtDouble)grid.elementAt(i)).doubleValue();
             i++){}
         if (i >= grid.size())
             return pos;
         else
-            return Math.floor(pos) + ((Double)grid.elementAt(i)).doubleValue();
+            return PtMath.floor(pos) + ((PtDouble)grid.elementAt(i)).doubleValue();
     }
 
     /*
@@ -2235,12 +1972,12 @@ public class PlotBox extends Panel {
         if (logflag) {
             if (++_gridCurJuke >= grid.size()) {
                 _gridCurJuke = 0;
-                _gridBase += Math.ceil(step);
+                _gridBase += PtMath.ceil(step);
             }
             if (_gridCurJuke >= grid.size())
                 return pos + step;
             return _gridBase +
-                ((Double)grid.elementAt(_gridCurJuke)).doubleValue();
+                ((PtDouble)grid.elementAt(_gridCurJuke)).doubleValue();
         } else {
             return pos + step;
         }
@@ -2270,7 +2007,7 @@ public class PlotBox extends Panel {
      */
     private int _numFracDigits(double num) {
         int numdigits = 0;
-        while (numdigits <= 15 && num != Math.floor(num)) {
+        while (numdigits <= 15 && num != PtMath.floor(num)) {
             num *= 10.0;
             numdigits += 1;
         }
@@ -2312,37 +2049,37 @@ public class PlotBox extends Panel {
         int start = 0;
         boolean cont = true;
         while (cont) {
-            int comma = line.indexOf(",", start);
+            int comma = line.indexOf(',', start);
             String pair = null ;
             if (comma > start) {
-                pair = (line.substring(start, comma)).trim();
+                pair = (line.substring(start, comma))/*.trim()*/;
             } else {
-                pair = (line.substring(start)).trim();
+                pair = (line.substring(start))/*.trim()*/;
                 cont = false;
             }
             int close = -1;
             int open = 0;
             if (pair.startsWith("\"")) {
-                close = pair.indexOf("\"",1);
+                close = pair.indexOf('\"',1);
                 open = 1;
             } else {
-                close = pair.indexOf(" ");
+                close = pair.indexOf(' ');
             }
             if (close > 0) {
                 String label = pair.substring(open, close);
-                String index = (pair.substring(close+1)).trim();
+                String index = (pair.substring(close+1))/*.trim()*/;
                 try {
-                    double idx = (Double.valueOf(index)).doubleValue();
+                    double idx = (PtDouble.valueOf(index)).doubleValue();
                     if (xtick) addXTick(label, idx);
                     else addYTick(label, idx);
                 } catch (NumberFormatException e) {
-                    System.err.println("Warning from PlotBox: " +
+                    throw new RuntimeException("Warning from PlotBox: " +
                             "Unable to parse ticks: " + e.getMessage());
                     // ignore if format is bogus.
                 }
             }
             start = comma + 1;
-            comma = line.indexOf(",",start);
+            comma = line.indexOf(',',start);
         }
     }
 
@@ -2353,12 +2090,12 @@ public class PlotBox extends Panel {
      * Note: The argument must be strictly positive.
      */
     private double _roundUp(double val) {
-        int exponent = (int) Math.floor(Math.log(val)*_LOG10SCALE);
-        val *= Math.pow(10, -exponent);
+        int exponent = (int) PtMath.floor(PtMath.log(val)*_LOG10SCALE);
+        val *= PtMath.pow(10, -exponent);
         if (val > 5.0) val = 10.0;
         else if (val > 2.0) val = 5.0;
         else if (val > 1.0) val = 2.0;
-        val *= Math.pow(10, exponent);
+        val *= PtMath.pow(10, exponent);
         return val;
     }
 
@@ -2380,11 +2117,11 @@ public class PlotBox extends Panel {
         _xMax = max + ((max - min) * _PADDING);
 
         // Find the exponent.
-        double largest = Math.max(Math.abs(_xMin), Math.abs(_xMax));
-        _xExp = (int) Math.floor(Math.log(largest)*_LOG10SCALE);
+        double largest = Math.max(Math.abs((int)_xMin), Math.abs((int)_xMax));
+        _xExp = (int) PtMath.floor(PtMath.log(largest)*_LOG10SCALE);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_xExp > 1 || _xExp < -1) {
-            double xs = 1.0/Math.pow(10.0, (double)_xExp);
+            double xs = 1.0/PtMath.pow(10.0, (double)_xExp);
             _xtickMin = _xMin*xs;
             _xtickMax = _xMax*xs;
         } else {
@@ -2418,11 +2155,11 @@ public class PlotBox extends Panel {
         //        }
 
         // Find the exponent.
-        double largest = Math.max(Math.abs(_yMin), Math.abs(_yMax));
-        _yExp = (int) Math.floor(Math.log(largest)*_LOG10SCALE);
+        double largest = Math.max(Math.abs((int)_yMin), Math.abs((int)_yMax));
+        _yExp = (int) PtMath.floor(PtMath.log(largest)*_LOG10SCALE);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_yExp > 1 || _yExp < -1) {
-            double ys = 1.0/Math.pow(10.0, (double)_yExp);
+            double ys = 1.0/PtMath.pow(10.0, (double)_yExp);
             _ytickMin = _yMin*ys;
             _ytickMax = _yMax*ys;
         } else {

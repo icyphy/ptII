@@ -54,6 +54,8 @@ JSRCS = \
 	PlotApplication.java \
 	PlotBox.java \
 	PlotPoint.java \
+	PtDouble.java \
+	PtFloatingDecimal.java \
 	PtMath.java
 
 EXTRA_SRCS =	$(JSRCS)

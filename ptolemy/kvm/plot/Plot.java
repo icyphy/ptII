@@ -244,7 +244,7 @@ public class Plot extends PlotBox {
                         x);
                 //return;
             }
-            x = Math.log(x)*_LOG10SCALE;
+            x = PtMath.log(x)*_LOG10SCALE;
         }
         if (_ylog) {
             if (y <= 0.0) {
@@ -253,7 +253,7 @@ public class Plot extends PlotBox {
                         y);
                 //return;
             }
-            y = Math.log(y)*_LOG10SCALE;
+            y = PtMath.log(y)*_LOG10SCALE;
         }
         // This point is not an error bar so we set yLowEB
         // and yHighEB to 0
@@ -290,7 +290,7 @@ public class Plot extends PlotBox {
                         x);
                 //return;
             }
-            x = Math.log(x)*_LOG10SCALE;
+            x = PtMath.log(x)*_LOG10SCALE;
         }
         if (_ylog) {
             if (y <= 0.0 || yLowEB <= 0.0 || yHighEB <= 0.0) {
@@ -299,9 +299,9 @@ public class Plot extends PlotBox {
                         y);
                 //return;
             }
-            y = Math.log(y)*_LOG10SCALE;
-            yLowEB = Math.log(yLowEB)*_LOG10SCALE;
-            yHighEB = Math.log(yHighEB)*_LOG10SCALE;
+            y = PtMath.log(y)*_LOG10SCALE;
+            yLowEB = PtMath.log(yLowEB)*_LOG10SCALE;
+            yHighEB = PtMath.log(yHighEB)*_LOG10SCALE;
         }
         _addPoint(dataset, x, y,
                 yLowEB, yHighEB, connected, true);
@@ -479,18 +479,6 @@ public class Plot extends PlotBox {
         return _points.size();
     }
 
-    /** Override the base class to indicate that a new data set is being read.
-     *  This method is deprecated.  Use read() instead (to read the old
-     *  file format) or one of the classes in the plotml package to read
-     *  the new (XML) file format.
-     *  @deprecated
-     */
-    public void parseFile(String filespec, URL documentBase) {
-        _firstinset = true;
-        _sawfirstdataset = false;
-        super.parseFile(filespec, documentBase);
-    }
-
     /** Read a file with the old syntax (non-XML).
      *  Override the base class to register that we are reading a new
      *  data set.
@@ -534,25 +522,25 @@ public class Plot extends PlotBox {
             // System.out.println("x value: " + xvalue);
 
             addPoint(0, xvalue,
-                    5 * Math.cos(PtMath.PI * i/20), !first);
+                    5 * PtMath.cos(PtMath.PI * i/20), !first);
             addPoint(1, xvalue,
-                    4.5 * Math.cos(PtMath.PI * i/25), !first);
+                    4.5 * PtMath.cos(PtMath.PI * i/25), !first);
             addPoint(2, xvalue,
-                    4 * Math.cos(PtMath.PI * i/30), !first);
+                    4 * PtMath.cos(PtMath.PI * i/30), !first);
             addPoint(3, xvalue,
-                    3.5* Math.cos(PtMath.PI * i/35), !first);
+                    3.5* PtMath.cos(PtMath.PI * i/35), !first);
             addPoint(4, xvalue,
-                    3 * Math.cos(PtMath.PI * i/40), !first);
+                    3 * PtMath.cos(PtMath.PI * i/40), !first);
             addPoint(5, xvalue,
-                    2.5 * Math.cos(PtMath.PI * i/45), !first);
+                    2.5 * PtMath.cos(PtMath.PI * i/45), !first);
             addPoint(6, xvalue,
-                    2 * Math.cos(PtMath.PI * i/50), !first);
+                    2 * PtMath.cos(PtMath.PI * i/50), !first);
             addPoint(7, xvalue,
-                    1.5 * Math.cos(PtMath.PI * i/55), !first);
+                    1.5 * PtMath.cos(PtMath.PI * i/55), !first);
             addPoint(8, xvalue,
-                    1 * Math.cos(PtMath.PI * i/60), !first);
+                    1 * PtMath.cos(PtMath.PI * i/60), !first);
             addPoint(9, xvalue,
-                    0.5 * Math.cos(PtMath.PI * i/65), !first);
+                    0.5 * PtMath.cos(PtMath.PI * i/65), !first);
             first = false;
         }
         repaint();
@@ -1150,11 +1138,13 @@ public class Plot extends PlotBox {
         } else {
             // We convert the line to lower case so that the command
             // names are case insensitive
-            String lcLine = new String(line.toLowerCase());
+            // KVM_FIXME: no toLowerCase
+            //String lcLine = new String(line.toLowerCase());
+            String lcLine = new String(line);
             if (lcLine.startsWith("marks:")) {
                 // If we have seen a dataset directive, then apply the
                 // request to the current dataset only.
-                String style = (line.substring(6)).trim();
+                String style = (line.substring(6))/*.trim()*/;
                 if (_sawfirstdataset) {
                     setMarksStyle(style, _currentdataset);
                 } else {
@@ -1165,7 +1155,8 @@ public class Plot extends PlotBox {
                 // Ignore.  No longer relevant.
                 return true;
             } else if (lcLine.startsWith("reusedatasets:")) {
-                if (lcLine.indexOf("off", 16) >= 0) {
+                //if (lcLine.indexOf("off", 16) >= 0) {
+                if (lcLine.regionMatches(true, 16, "off", 0, 3)) {
                     setReuseDatasets(false);
                 } else {
                     setReuseDatasets(true);
@@ -1173,7 +1164,7 @@ public class Plot extends PlotBox {
                 return true;
             } else if (lcLine.startsWith("dataset:")) {
                 if (_reusedatasets && lcLine.length() > 0) {
-                    String tlegend = (line.substring(8)).trim();
+                    String tlegend = (line.substring(8))/*.trim()*/;
                     _currentdataset = -1;
                     int i;
                     for ( i = 0; i <= _maxdataset; i++) {
@@ -1193,7 +1184,7 @@ public class Plot extends PlotBox {
                 _sawfirstdataset = true;
                 _currentdataset++;
                 if (lcLine.length() > 0) {
-                    String legend = (line.substring(8)).trim();
+                    String legend = (line.substring(8))/*.trim()*/;
                     if (legend != null && legend.length() > 0) {
                         addLegend(_currentdataset, legend);
                     }
@@ -1201,7 +1192,8 @@ public class Plot extends PlotBox {
                 _maxdataset = _currentdataset;
                 return true;
             } else if (lcLine.startsWith("lines:")) {
-                if (lcLine.indexOf("off", 6) >= 0) {
+                //if (lcLine.indexOf("off", 6) >= 0) {
+                if (lcLine.regionMatches(true, 6, "off", 0, 3)) {
                     setConnected(false);
                 } else {
                     setConnected(true);
@@ -1212,13 +1204,15 @@ public class Plot extends PlotBox {
                 // as the global default.  Otherwise, it is assumed to apply
                 // only to the current dataset.
                 if (_sawfirstdataset) {
-                    if (lcLine.indexOf("off", 9) >= 0) {
+                    //if (lcLine.indexOf("off", 9) >= 0) {
+                    if (lcLine.regionMatches(true, 9, "off", 0, 3)) {
                         setImpulses(false, _currentdataset);
                     } else {
                         setImpulses(true, _currentdataset);
                     }
                 } else {
-                    if (lcLine.indexOf("off", 9) >= 0) {
+                    //if (lcLine.indexOf("off", 9) >= 0) {
+                    if (lcLine.regionMatches(true, 9, "off", 0, 3)) {
                         setImpulses(false);
                     } else {
                         setImpulses(true);
@@ -1226,24 +1220,25 @@ public class Plot extends PlotBox {
                 }
                 return true;
             } else if (lcLine.startsWith("bars:")) {
-                if (lcLine.indexOf("off", 5) >= 0) {
+                //if (lcLine.indexOf("off", 5) >= 0) {
+                if (lcLine.regionMatches(true, 5, "off", 0, 3)) {
                     setBars(false);
                 } else {
                     setBars(true);
-                    int comma = line.indexOf(",", 5);
+                    int comma = line.indexOf(',', 5);
                     String barwidth;
                     String baroffset = null;
                     if (comma > 0) {
-                        barwidth = (line.substring(5, comma)).trim();
-                        baroffset = (line.substring(comma+1)).trim();
+                        barwidth = (line.substring(5, comma))/*.trim()*/;
+                        baroffset = (line.substring(comma+1))/*.trim()*/;
                     } else {
-                        barwidth = (line.substring(5)).trim();
+                        barwidth = (line.substring(5))/*.trim()*/;
                     }
                     try {
-                        Double bwidth = new Double(barwidth);
+                        PtDouble bwidth = new PtDouble(barwidth);
                         double boffset = _baroffset;
                         if (baroffset != null) {
-                            boffset = (new Double(baroffset)).
+                            boffset = (new PtDouble(baroffset)).
                                 doubleValue();
                         }
                         setBars(bwidth.doubleValue(), boffset);
@@ -1256,20 +1251,20 @@ public class Plot extends PlotBox {
                 // a disconnected point
                 connected = false;
                 // deal with 'move: 1 2' and 'move:2 2'
-                line = line.substring(5, line.length()).trim();
+                line = line.substring(5, line.length())/*.trim()*/;
             } else if (line.startsWith("move")) {
                 // a disconnected point
                 connected = false;
                 // deal with 'move 1 2' and 'move2 2'
-                line = line.substring(4, line.length()).trim();
+                line = line.substring(4, line.length())/*.trim()*/;
             } else if (line.startsWith("draw:")) {
                 // a connected point, if connect is enabled.
-                line = line.substring(5, line.length()).trim();
+                line = line.substring(5, line.length())/*.trim()*/;
             } else if (line.startsWith("draw")) {
                 // a connected point, if connect is enabled.
-                line = line.substring(4, line.length()).trim();
+                line = line.substring(4, line.length())/*.trim()*/;
             }
-            line = line.trim();
+            line = line/*.trim()*/;
 
             // We can't use StreamTokenizer here because it can't
             // process numbers like 1E-01.
@@ -1277,51 +1272,51 @@ public class Plot extends PlotBox {
             // most data consists of two data points, we want
             // to handle that case as efficiently as possible.
 
-            int fieldsplit = line.indexOf(",");
+            int fieldsplit = line.indexOf(',');
             if (fieldsplit == -1) {
-                fieldsplit = line.indexOf(" ");
+                fieldsplit = line.indexOf(' ');
             }
             if (fieldsplit == -1) {
-                fieldsplit = line.indexOf("\t");  // a tab
+                fieldsplit = line.indexOf('\t');  // a tab
             }
 
             if (fieldsplit > 0) {
-                String x = (line.substring(0, fieldsplit)).trim();
-                String y = (line.substring(fieldsplit+1)).trim();
+                String x = (line.substring(0, fieldsplit))/*.trim()*/;
+                String y = (line.substring(fieldsplit+1))/*.trim()*/;
                 // Any more separators?
-                int fieldsplit2 = y.indexOf(",");
+                int fieldsplit2 = y.indexOf(',');
                 if (fieldsplit2 == -1) {
-                    fieldsplit2 = y.indexOf(" ");
+                    fieldsplit2 = y.indexOf(' ');
                 }
                 if (fieldsplit2 == -1) {
-                    fieldsplit2 = y.indexOf("\t");  // a tab
+                    fieldsplit2 = y.indexOf('\t');  // a tab
                 }
                 if (fieldsplit2 > 0) {
-                    line = (y.substring(fieldsplit2+1)).trim();
-                    y = (y.substring(0, fieldsplit2)).trim();
+                    line = (y.substring(fieldsplit2+1))/*.trim()*/;
+                    y = (y.substring(0, fieldsplit2))/*.trim()*/;
                 }
                 try {
-                    Double xpt = new Double(x);
-                    Double ypt = new Double(y);
+                    PtDouble xpt = new PtDouble(x);
+                    PtDouble ypt = new PtDouble(y);
                     if (fieldsplit2 > 0) {
                         // There was one separator after the y value, now
                         // look for another separator.
-                        int fieldsplit3 = line.indexOf(",");
+                        int fieldsplit3 = line.indexOf(',');
                         if (fieldsplit3 == -1) {
-                            fieldsplit3 = line.indexOf(" ");
+                            fieldsplit3 = line.indexOf(' ');
                         }
                         if (fieldsplit3 == -1) {
-                            fieldsplit2 = line.indexOf("\t");  // a tab
+                            fieldsplit2 = line.indexOf('\t');  // a tab
                         }
 
                         if (fieldsplit3 > 0) {
                             // We have more numbers, assume that this is
                             // an error bar
                             String yl = (line.substring(0,
-                                    fieldsplit3)).trim();
-                            String yh = (line.substring(fieldsplit3+1)).trim();
-                            Double yLowEB = new Double(yl);
-                            Double yHighEB = new Double(yh);
+                                    fieldsplit3))/*.trim()*/;
+                            String yh = (line.substring(fieldsplit3+1))/*.trim()*/;
+                            PtDouble yLowEB = new PtDouble(yl);
+                            PtDouble yHighEB = new PtDouble(yh);
                             connected = _addLegendIfNecessary(connected);
                             addPointWithErrorBars(_currentdataset,
                                     xpt.doubleValue(),
@@ -1363,96 +1358,8 @@ public class Plot extends PlotBox {
      *  they wish to add to the stream.
      *  @param output A buffered print writer.
      */
-    protected void _write(PrintWriter output) {
-        super._write(output);
-
-        if (_reusedatasets) output.println("<reuseDatasets/>");
-
-        StringBuffer defaults = new StringBuffer();
-
-        if (!_connected) defaults.append(" connected=\"no\"");
-
-        switch(_marks) {
-        case 1:
-            defaults.append(" marks=\"points\"");
-            break;
-        case 2:
-            defaults.append(" marks=\"dots\"");
-            break;
-        case 3:
-            defaults.append(" marks=\"various\"");
-            break;
-        }
-
-        // Write the defaults for formats that can be controlled by dataset
-        if (_impulses) defaults.append(" stems=\"yes\"");
-
-        if (defaults.length() > 0) {
-            output.println("<default" + defaults.toString() + "/>");
-        }
-
-        if (_bars) output.println(
-                "<barGraph width=\"" + _barwidth
-                + "\" offset=\"" + _baroffset + "\"/>");
-
-        for (int dataset = 0; dataset < _points.size(); dataset++) {
-
-            StringBuffer options = new StringBuffer();
-
-            Format fmt = (Format)_formats.elementAt(dataset);
-
-            if (!fmt.connectedUseDefault) {
-                if (_isConnected(dataset)) {
-                    options.append(" connected=\"yes\"");
-                } else {
-                    options.append(" connected=\"no\"");
-                }
-            }
-
-            if (!fmt.impulsesUseDefault) {
-                if (fmt.impulses) options.append(" stems=\"yes\"");
-                else output.println(" stems=\"no\"");
-            }
-
-            if (!fmt.marksUseDefault) {
-                switch(fmt.marks) {
-                case 0:
-                    options.append(" marks=\"none\"");
-                case 1:
-                    options.append(" marks=\"points\"");
-                case 2:
-                    options.append(" marks=\"dots\"");
-                case 3:
-                    options.append(" marks=\"various\"");
-                }
-            }
-
-            String legend = getLegend(dataset);
-            if (legend != null) {
-                options.append(" name=\"" + getLegend(dataset) + "\"");
-            }
-
-            output.println("<dataset" + options.toString() + ">");
-
-            // Write the data
-            Vector pts = (Vector)_points.elementAt(dataset);
-            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
-                if (!pt.connected) {
-                    output.print("<m ");
-                } else {
-                    output.print("<p ");
-                }
-                output.print("x=\"" + pt.x + "\" y=\"" + pt.y + "\"");
-                if (pt.errorBar) {
-                    output.print(" lowErrorBar=\"" + pt.yLowEB
-                            + "\" highErrorBar=\"" + pt.yHighEB + "\"");
-                }
-                output.println("/>");
-            }
-
-            output.println("</dataset>");
-        }
+    protected void _write(/*PrintWriter*/ String output) {
+        throw new RuntimeException("_write not implemented");
     }
 
     /** Write plot information to the specified output stream in
@@ -1463,65 +1370,8 @@ public class Plot extends PlotBox {
      *  @param output A buffered print writer.
      *  @deprecated
      */
-    protected void _writeOldSyntax(PrintWriter output) {
-        super._write(output);
-
-        // NOTE: NumSets is obsolete, so we don't write it.
-
-        if (_reusedatasets) output.println("ReuseDatasets: on");
-        if (!_connected) output.println("Lines: off");
-        if (_bars) output.println("Bars: " + _barwidth + ", " + _baroffset);
-
-        // Write the defaults for formats that can be controlled by dataset
-        if (_impulses) output.println("Impulses: on");
-        switch(_marks) {
-        case 1:
-            output.println("Marks: points");
-        case 2:
-            output.println("Marks: dots");
-        case 3:
-            output.println("Marks: various");
-        }
-
-        for (int dataset = 0; dataset < _points.size(); dataset++) {
-            // Write the dataset directive
-            String legend = getLegend(dataset);
-            if (legend != null) {
-                output.println("DataSet: " + getLegend(dataset));
-            } else {
-                output.println("DataSet:");
-            }
-            // Write dataset-specific format information
-            Format fmt = (Format)_formats.elementAt(dataset);
-            if (!fmt.impulsesUseDefault) {
-                if (fmt.impulses) output.println("Impulses: on");
-                else output.println("Impulses: off");
-            }
-            if (!fmt.marksUseDefault) {
-                switch(fmt.marks) {
-                case 0:
-                    output.println("Marks: none");
-                case 1:
-                    output.println("Marks: points");
-                case 2:
-                    output.println("Marks: dots");
-                case 3:
-                    output.println("Marks: various");
-                }
-            }
-            // Write the data
-            Vector pts = (Vector)_points.elementAt(dataset);
-            for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
-                if (!pt.connected) output.print("move: ");
-                if (pt.errorBar) {
-                    output.println(pt.x + ", " + pt.y + ", "
-                            + pt.yLowEB + ", " + pt.yHighEB);
-                } else {
-                    output.println(pt.x + ", " + pt.y);
-                }
-            }
-        }
+    protected void _writeOldSyntax(/*PrintWriter*/ String output) {
+        throw new RuntimeException("_writeOldSyntax not implemented");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1588,9 +1438,9 @@ public class Plot extends PlotBox {
         if(_wrap && _xRangeGiven) {
             double width = _xhighgiven - _xlowgiven;
             if (x < _xlowgiven) {
-                x += width*Math.floor(1.0 + (_xlowgiven-x)/width);
+                x += width*PtMath.floor(1.0 + (_xlowgiven-x)/width);
             } else if (x > _xhighgiven) {
-                x -= width*Math.floor(1.0 + (x-_xhighgiven)/width);
+                x -= width*PtMath.floor(1.0 + (x-_xhighgiven)/width);
                 // NOTE: Could quantization errors be a problem here?
                 if (x == _xlowgiven) x = _xhighgiven;
             }
