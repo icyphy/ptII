@@ -131,7 +131,7 @@ public class TwoPlotExample extends Frame {
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        gridbag.setConstraints(leftPlot,c);
+        gridbag.setConstraints(leftPlot, c);
         add(leftPlot);
 
         // Handle the rightPlot
@@ -141,7 +141,7 @@ public class TwoPlotExample extends Frame {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
-        gridbag.setConstraints(rightPlot,c);
+        gridbag.setConstraints(rightPlot, c);
         add(rightPlot);
 
         show();
