@@ -69,7 +69,7 @@ progress for an active process in this model of computation only when the
 process is  blocked.
 <p>
 This director also permits pausing of the execution. An execution is paused
-when all active processes are blocked or paused (atleast one process is 
+when all active processes are blocked or paused (at least one process is 
 paused). In case of PN, a process can be paused only when it tries to 
 communicate with other processes. Thus a process can be paused in the get() 
 or put() methods of the receivers alone. In case a pause is requested, the 
@@ -93,14 +93,14 @@ executive director of the container to decide on the termination of the
 execution. To terminate the execution after detection of a real deadlock, the 
 manager or the executive director calls wrapup() on the director.
 <p>
-An artificial deadlock is when all processes are blocked and atleast one 
+An artificial deadlock is when all processes are blocked and at least one 
 process is blocked on a write. In this case the director increases the 
 capacity of the receiver with the smallest capacity amongst all the 
 receivers on which a process is blocked on a write. 
 This breaks the deadlock and the execution can proceed.
 <p>
 A timed deadlock is when all the processes under the control of this 
-director are blocked, atleast one process is blocked on a delay (time-blocked)
+director are blocked, at least one process is blocked on a delay (time-blocked)
 and no process is blocked on a write. This director supports a notion of global
 time. All active processes that are not blocked and are executing concurrently
 are executing at the same global time. A process that wants time to advance, 
@@ -256,12 +256,12 @@ public class TimedPNDirector extends BasePNDirector {
 	return;
     }
 
-    /** Suspend the calling process until the time has advanced to atleast the
+    /** Suspend the calling process until the time has advanced to at least the
      *  time specified by the method argument.
      *  Add the actor corresponding to the calling process to the priority 
      *  queue and sort it by the time specified by the method argument.
      *  Increment the count of the actors blocked on a delay. Suspend the 
-     *  calling process until the time has advanced to atleast the time 
+     *  calling process until the time has advanced to at least the time 
      *  specified by the method argument. Resume the execution of the calling
      *  process and return.
      *  @exception IllegalActionException If the operation is not

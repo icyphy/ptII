@@ -64,7 +64,7 @@ read from a channel (read-blocked), when trying to write to a channel
 processed (mutation-blocked). 
 <p>
 This director also permits pausing of the execution. An execution is paused
-when all active processes are blocked or paused (atleast one process is 
+when all active processes are blocked or paused (at least one process is 
 paused). In case of PN, a process can be paused only when it tries to 
 communicate with other processes. Thus a process can be paused in the get() 
 or put() methods of the receivers alone. In case a pause is requested, the 
@@ -88,7 +88,7 @@ executive director of the container to decide on the termination of the
 execution. To terminate the execution after detection of a real deadlock, the 
 manager or the executive director calls wrapup() on the director.
 <p>
-An artificial deadlock is when all processes are blocked and atleast one 
+An artificial deadlock is when all processes are blocked and at least one 
 process is blocked on a write. In this case the director increases the 
 capacity of the receiver with the smallest capacity amongst all the 
 receivers on which a process is blocked on a write. 
