@@ -48,18 +48,19 @@ import ptolemy.kernel.util.Workspace;
 /**
    A timer actor extends the DETransformer actor and produces an event with
    a time delay specified by its input.
-   <p>
-   When a timer actor receives an input, if the input value is bigger than
-   0.0, the timer schedules itself to fire again some time later to produce
-   an output specified by the value parameter. The amount of delay is
-   specified by the input value. If the input value is 0.0, an output is
-   produced immediately. If there is no input token, then no output is produced.
-   <p>
-   This actor is different from the {@link
+
+   <p> When a timer actor receives an input, if the input value is
+   bigger than 0.0, the timer schedules itself to fire again some time
+   later to produce an output specified by the <i>value</i>
+   parameter. The amount of delay is specified by the input value. If
+   the input value is 0.0, an output is produced immediately. If there
+   is no input token, then no output is produced.
+
+   <p> This actor is different from the {@link
    ptolemy.domains.de.lib.NonInterruptibleTimer} actor. If the
-   NonInterruptibleTimer actor has not finished processing the previous input,
-   a new input has to be delayed for processing. The Timer actor begins
-   processing inputs upon their arrival.
+   NonInterruptibleTimer actor has not finished processing the
+   previous input, a new input has to be delayed for processing. The
+   Timer actor begins processing inputs upon their arrival.
 
    @author Jie Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
