@@ -48,7 +48,7 @@ public interface InequalityTerm {
      *   underlining CPO.
      *  @exception IllegalActionException this term is not a variable.
      */
-    public void set(Object e)
+    public void setValue(Object e)
             throws IllegalActionException;
 
     /** Checks if this term can be set to a specific element of the
@@ -57,7 +57,7 @@ public interface InequalityTerm {
      *  @return <code>true</code> if this term is a variable;
      *   <code>false</code> otherwise.
      */
-    public boolean settable();
+    public boolean isSettable();
  
     /** Returns the value of this term.  If this term is a constant,
      *  that constant is returned; if this term is a variable, the
@@ -66,6 +66,6 @@ public interface InequalityTerm {
      *  value of variables in the function is returned.
      *  @return an Object representing an element in the underlining CPO.
      */
-    public Object value();
+    public Object getValue();
 }
 

@@ -135,7 +135,7 @@ public class InequalitySolver {
 	LinkedList result = new LinkedList();
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    if (variable.value().equals(bottom)) {
+	    if (variable.getValue().equals(bottom)) {
 		result.insertLast(variable);
 	    }
 	}
@@ -171,10 +171,10 @@ public class InequalitySolver {
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
 	    try {
-	        variable.set(init);
+	        variable.setValue(init);
 	    } catch (IllegalActionException ex) {
 		throw new RuntimeException("InequalitySolver.solve: " +
-			"Can't set variable value(when Initialize variable). "
+			"Cannot set variable value(when Initialize variable). "
 			+ ex.getMessage());
 	    }
 	}
@@ -191,8 +191,8 @@ public class InequalitySolver {
 
 	for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
-	    info._inCvar = least ? info._ineq.greaterTerm().settable()
-                : info._ineq.lesserTerm().settable();
+	    info._inCvar = least ? info._ineq.greaterTerm().isSettable()
+                : info._ineq.lesserTerm().isSettable();
 
 	    if (info._inCvar) {
 	    	if (info._ineq.satisfied(_cpo)) {
@@ -226,12 +226,12 @@ public class InequalitySolver {
 	    InequalityTerm updateTerm = null;
 	    if (least) {
 		updateTerm = info._ineq.greaterTerm();
-	        value = _cpo.lub(info._ineq.lesserTerm().value(),
-                        updateTerm.value());
+	        value = _cpo.lub(info._ineq.lesserTerm().getValue(),
+                        updateTerm.getValue());
 	    } else {
 		updateTerm = info._ineq.lesserTerm();
-	        value = _cpo.glb(updateTerm.value(),
-                        info._ineq.greaterTerm().value());
+	        value = _cpo.glb(updateTerm.getValue(),
+                        info._ineq.greaterTerm().getValue());
 	    }
 
             if (value == null) {
@@ -240,7 +240,7 @@ public class InequalitySolver {
             }
 
 	    try {
-		updateTerm.set(value);
+		updateTerm.setValue(value);
 	    } catch (IllegalActionException ex) {
 		throw new RuntimeException("InequalitySolver.solve: " +
 			"Can't set variable value(when update variable). " +
@@ -308,7 +308,7 @@ public class InequalitySolver {
 	LinkedList result = new LinkedList();
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    if (variable.value().equals(top)) {
+	    if (variable.getValue().equals(top)) {
 		result.insertLast(variable);
 	    }
 	}

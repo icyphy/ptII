@@ -110,13 +110,13 @@ public class DirectedGraph extends Graph {
      *  mutation.  So the first call to this method after graph
      *  mutation may be slow, but all the subsequent calls returns
      *  in constant time.
-     *  @return <code>true</code> if the the graph is acyclic.
-     *   <code>false</code> otherwise.
+     *  @return <code>true</code> if the the graph is acyclic, or
+     *   empty; <code>false</code> otherwise.
      *  @exception InvalidStateException the graph is empty.
      */
     public boolean isAcyclic() {
         _computeTransitiveClosure();
-        
+ 
         return _isAcyclic;
     }
 
@@ -131,7 +131,6 @@ public class DirectedGraph extends Graph {
      *  @param o an Object representing a node in this graph.
      *  @return an array of Objects representing nodes reachable from
      *   the specified one.
-     *  @exception InvalidStateException the graph is empty.
      *  @exception IllegalArgumentException the specified Object is
      *   not a node in this graph.
      */
@@ -205,12 +204,13 @@ public class DirectedGraph extends Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /*  Computes the transitive closure. Puts the result in the
-     *  boolean array _transitiveClosure. The implementation uses
-     *  Warshall's algorithm, which can be found in chapter 6 of
-     *  "Discrete Mathematics and Its Applications", 3rd Ed.,
-     *  by Kenneth H. Rosen.  The complexity of this algorithm is
-     *  O(|N|^3), where N for nodes.
+    /** Computes the transitive closure. Puts the result in the
+     *  boolean array _transitiveClosure. If this graph is empty,
+     *  set the dimension of _transitiveClosure to be 0 by 0.
+     *  The implementation uses Warshall's algorithm, which can be
+     *  found in chapter 6 of "Discrete Mathematics and Its
+     *  Applications", 3rd Ed., by Kenneth H. Rosen.  The complexity
+     *  of this algorithm is O(|N|^3), where N for nodes.
      */ 
     // This method also checks if the graph is acyclic and set
     // _isAcyclic.
@@ -220,10 +220,6 @@ public class DirectedGraph extends Graph {
         }
 
         int size = getNodeCount();
-        if (size == 0) {          // graph empty
-            throw new InvalidStateException(
-		"DirectedGraph._computeTransitiveClosure: graph empty.");
-        }
 
 	// Initialize _transitiveClosure to the adjacency matrix
         _transitiveClosure = new boolean[size][size];

@@ -79,7 +79,7 @@ public class Inequality {
      *   <code>null</code>.
      */
     public void addVariable(InequalityTerm variable) {
-	if ( !variable.settable()) {
+	if ( !variable.isSettable()) {
 	    throw new IllegalArgumentException("Inequality.addVariable: " +
                     "the specified InequalityTerm is not a variable.");
 	}
@@ -111,8 +111,8 @@ public class Inequality {
      *   <code>false</code> otherwise.
      */
     public boolean satisfied(CPO cpo) {
-        int result = cpo.compare(_lesserTerm.value(),
-                _greaterTerm.value());
+        int result = cpo.compare(_lesserTerm.getValue(),
+                _greaterTerm.getValue());
         return (result == CPO.STRICT_LESS || result == CPO.EQUAL);
     }
     
