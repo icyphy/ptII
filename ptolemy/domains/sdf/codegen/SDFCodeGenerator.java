@@ -88,18 +88,22 @@ public class SDFCodeGenerator extends CompositeActorApplication
                     "with the -outdir option");
         }
 
+        // Assume exactly one model on the command line.
+        _compositeActor = (TypedCompositeActor)
+            _models.iterator().next();
+
+        _sourceSystemClassName = _compositeActor.getClass().getName();
+
         if (_outputPackageName == null) {
-            throw new RuntimeException("output package was not specified " +
-                    "with the -outpkg option");
+            // Output Package name defaults to cg.Foo.
+            _outputPackageName = "cg." +
+                _sourceSystemClassName.substring(_sourceSystemClassName
+                        .lastIndexOf('.') + 1);
         }
 
         _packageDirectoryName = _outputDirectoryName + File.separatorChar +
             _outputPackageName.replace('.', File.separatorChar) +
             File.separatorChar;
-
-        // Assume exactly one model on the command line.
-        _compositeActor = (TypedCompositeActor)
-            _models.iterator().next();
 
         try {
             _generateMakefile();
@@ -794,20 +798,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
      */
     protected void _generateMakefile() throws IOException {
         String makefileName;
-        String sourceSystemClassName = _compositeActor.getClass().getName();
-
         // If _makefileOnly is true, create a makefile in the
         // current directory that uses the name of the class that
         // defines the system
         if (_makefileOnly) {
-            if (sourceSystemClassName.lastIndexOf('.') == -1) {
-                makefileName = sourceSystemClassName + ".mk";
-            } else {
-                makefileName =
-                    sourceSystemClassName.substring(sourceSystemClassName
-                            .lastIndexOf('.') + 1)
-                    + ".mk";
-            }
+            makefileName =
+                _sourceSystemClassName.substring(_sourceSystemClassName
+                        .lastIndexOf('.') + 1)
+                + ".mk";
         } else {
             makefileName = _packageDirectoryName + "makefile";
         }
@@ -828,7 +826,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 + "ME =	" + _outputPackageName + "\n"
                 + "ROOT =                $(PTII)\n"
                 + "CG_ROOT =             $(ROOT)\n"
-                + "SOURCE_SYSTEM_CLASS = " +  sourceSystemClassName + "\n"
+                + "SOURCE_SYSTEM_CLASS = " + _sourceSystemClassName + "\n"
                 + "ITERATIONS =          " + iterations + "\n"
                 + "OUTPKG =              " + _outputPackageName + "\n"
                 + "OUTPKG_DIR =          " + _packageDirectoryName + "\n"
@@ -1144,21 +1142,23 @@ public class SDFCodeGenerator extends CompositeActorApplication
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                    ////
 
-
-    /** SDF Code Generator Class Factory */
+    // SDF Code Generator Class Factory.
     protected CodeGeneratorClassFactory _codeGeneratorClassFactory =
             SDFCodeGeneratorClassFactory.getInstance();
 
-    /** A flag indicating that we are expecting an output directory as the
-     *  next argument in the command-line.
-     */
+    // A flag indicating that we are expecting an output directory as the
+    //  next argument in the command-line.
     private boolean _expectingOutputDirectory = false;
 
-    /** A flag indicating that we are expecting an output package name as the
-     *  next argument in the command-line.
-     */
+    // A flag indicating that we are expecting an output package name as the
+    //  next argument in the command-line.
     private boolean _expectingOutputPackage = false;
 
-    /** A non-decreasing number used for globally unique labeling. */
+    // A non-decreasing number used for globally unique labeling.
     private int _labelNumber = 0;
+
+    // Fully dot qualified name of the class we are generating code
+    // for.  This class usually extends TypedCompositeActor
+    // and is named using the -class command line argument
+    private String _sourceSystemClassName;
 }
