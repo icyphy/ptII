@@ -506,6 +506,29 @@ public class PtolemyUtilities {
         return null;
     }
 
+    /** Return the depth of the given type.  Most simple types have
+     *  depth one, while structured types have depth greater than one.
+     */
+    public static int getTypeDepth(ptolemy.data.type.Type type) {
+        if(type instanceof ptolemy.data.type.ArrayType) {
+            return 1 + getTypeDepth(((ptolemy.data.type.ArrayType)type).getElementType());
+        } else if(type instanceof ptolemy.data.type.RecordType) {
+            ptolemy.data.type.RecordType recordType = 
+                (ptolemy.data.type.RecordType)type;
+            Iterator labels = recordType.labelSet().iterator();
+            int maxDepth = 0;
+            while(labels.hasNext()) {
+                ptolemy.data.type.Type elementType = 
+                    recordType.get((String)labels.next());
+                int depth = getTypeDepth(elementType);
+                if(depth > maxDepth) maxDepth = depth;
+            }
+            return maxDepth + 1;
+        } else {
+            return 1;
+        }
+    }
+
     /** Given a ptolemy token type, return the soot type that can reference
      *  tokens of the ptolemy type.
      */
@@ -638,28 +661,6 @@ public class PtolemyUtilities {
                 string += "Definition = " + i.next().toString();
             }
             throw new RuntimeException(string);
-        }
-    }
-
-    /** Inline the given invocation expression, given knowledge that the
-     *  method was invoked on the given named object.  In general,
-     *  methods that return information that can be determined from the
-     *  given object return that value, methods that set information
-     *  are removed and methods that are non-sensical in generated
-     *  code throw an exception.
-     *  @param body The body in which the invoke occurred.
-     *  @param unit The unit in which the invoke occurred.
-     *  @param box The value box containing the invoke expression.
-     *  @param typeable A reference to an object that has the same
-     *  resolve type as the typeable object that the invoke would have
-     *  occurred on, has the code actually been executed.
-     */
-    public static void inlineNamedObjMethods(JimpleBody body,
-            Unit unit, ValueBox box, InstanceInvokeExpr expr,
-            NamedObj typeable) {
-        String name = expr.getMethod().getName();
-        // FIXME name matching here is rather imprecise.
-        if (name.equals("getType")) {
         }
     }
 
