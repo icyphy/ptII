@@ -1,6 +1,6 @@
-# Tests for the Composite Entity class
+# Tests for the CompositeEntity class
 #
-# @Author: 
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -63,3 +63,29 @@ test CompositeEntity-1.1 {Get information about an instance \
   properties:    fullName allContents portList class contents params atomic name container
   superclass:    pt.kernel.HierEntity
 }}
+
+######################################################################
+####
+# 
+test CompositeEntity-1.1 {Construct CompositeEntities, call a few methods} {
+    set e1 [java::new pt.kernel.CompositeEntity]
+    set e2 [java::new pt.kernel.CompositeEntity "My CompositeEntity"]
+    set e1contents [$e1 getAllContents]
+    list [$e1 getName] [$e2 getName] \
+	    [$e1 getFullName] [$e2 getFullName] \
+	    [$e1 isAtomic] [$e2 isAtomic] \
+	    [ java::instanceof $e1contents pt.kernel.NamedObjList] \
+	    [expr {[java::null] == [$e1 getContainer]}]
+} {{} {My CompositeEntity} {} {My CompositeEntity} 0 0 1 1}
+
+######################################################################
+####
+# 
+test CompositeEntity-2.1 {Create a 3 level deep tree} {
+    # FIXME, not done yet
+    set grandparent [java::new pt.kernel.HierEntity "grandparent"]
+    set parent1 [java::new pt.kernel.HierEntity "parent1"]
+    set parent2 [java::new pt.kernel.HierEntity "parent2"]
+    set child [java::new pt.kernel.HierEntity "child"]
+    list {}
+} {{}}
