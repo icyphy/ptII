@@ -1127,7 +1127,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                         + "Declared type is " + _declaredType.toString()
                         + ".\n"
                         + "The connection or type constraints, however, "
-                        + "requires type " + type.toString());
+                        + "require type " + type.toString());
             }
 
             Type oldType = _resolvedType;
