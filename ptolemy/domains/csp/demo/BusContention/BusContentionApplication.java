@@ -42,7 +42,6 @@ import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
-import ptolemy.actor.process.*;
 import ptolemy.actor.gui.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.kernel.*;
@@ -161,7 +160,7 @@ public class BusContentionApplication implements ActionListener {
         GraphModel model = new GraphModel();
 
         // Nodes, with user object set to the actor
-        Node n1 = model.createNode(_contentionActor);
+       Node n1 = model.createNode(_contentionActor);
         Node n2 = model.createNode(_alarmActor);
         Node n3 = model.createNode(_memoryActor);
         Node n4 = model.createNode(_processActor1);
