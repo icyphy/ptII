@@ -197,8 +197,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void connectionsChanged(Port port) {
         if (port instanceof IOPort) {
             IOPort castedPort = (IOPort) port;
-            if(castedPort.isOpaque() && castedPort.isOutput()) {
-                // Note that if castedPort is opaque, there must be a director.
+            if(castedPort.isOpaque() && castedPort.isOutput() 
+                    && getDirector() != null) {
+                // Note that even if castedPort is opaque, we still have to 
+                // check for director above.
                 try {
                     castedPort.createReceivers();
                 } catch(IllegalActionException ex) {
