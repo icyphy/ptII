@@ -513,7 +513,9 @@ public class ActorTransformer extends SceneTransformer {
                 Stmt stmt = (Stmt)units.next();
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
-                    if (r.getMethod().getDeclaringClass().equals(theClass)) {
+                    // Avoid inlining recursive methods.
+                    if (r.getMethod() != method && 
+                         r.getMethod().getDeclaringClass().equals(theClass)) {
                         // FIXME: What if more than one method could be called?
                         SiteInliner.inlineSite(r.getMethod(), stmt, method);
                     }
