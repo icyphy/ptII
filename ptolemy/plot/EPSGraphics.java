@@ -210,6 +210,15 @@ public class EPSGraphics extends Graphics {
             int arcWidth, int arcHeight) {
     }
 
+    public void drawString(java.text.AttributedCharacterIterator iterator,
+            int x, int y) {
+        // FIXME: This method is present in the graphics class in JDK1.2,
+        // but not in JDK1.1.
+        throw new RuntimeException(
+                "Sorry, drawString(java.text.AttributedCharacterIterator, " +
+                "int , int) is not implemented in EPSGraphics");
+    }
+
     public void drawString(String str, int x, int y) {
         Point start = _convert(x, y);
         _buffer.append("" + start.x + " " + start.y + " moveto\n");
