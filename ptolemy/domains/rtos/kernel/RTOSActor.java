@@ -40,7 +40,7 @@ and maybe in an input-dependent manner.
 @author Jie Liu
 @version $Id$
 
-*/ 
+*/
 public interface RTOSActor extends Actor {
 
     /** Return the execution time for this iteration. This method
@@ -52,7 +52,7 @@ public interface RTOSActor extends Actor {
     public double getExecutionTime();
 }
 
-    
-    
-    
-    
+
+
+
+

@@ -34,7 +34,7 @@ import ptolemy.actor.util.CQComparator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RTOSEventComparator
-/** 
+/**
 A comparator for RTOS events. This class extends CQComparator so that
 it can be used by CalendarQueue. This class ignores all the configuration
 parameters in CQComparator. Only the default parameters are used.
@@ -73,17 +73,17 @@ public class RTOSEventComparator implements CQComparator {
      *  the zero reference, divided by the priority of the bin width.
      *  @param event The event.
      *  @return The index of the virtual bin containing the event.
-     * 
+     *
      */
     public final long getVirtualBinNumber(Object event) {
         return (long)((RTOSEvent) event).priority();
     }
 
-    
+
     /** Do nothing.
      *
      *  @param entryArray An array of RTOSEvent objects.
-     * 
+     *
      */
     public void setBinWidth(Object[] entryArray) {
     }
@@ -97,13 +97,13 @@ public class RTOSEventComparator implements CQComparator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-        
+
     // The bin width.
     private RTOSEvent _binWidth = new RTOSEvent(null, null, 1, 0.0);
-    
+
     // The zero reference.
     private RTOSEvent _zeroReference = new RTOSEvent(null, null, 0, 0.0);
-    
+
 }
 
-            
+

@@ -59,11 +59,11 @@ import java.awt.BorderLayout;
 //////////////////////////////////////////////////////////////////////////
 //// RTOSDirector
 /**
-A director that implements a priority-driven multitasking 
+A director that implements a priority-driven multitasking
 model of computation. This model of computation is usually seen in
 real-time operating systems.
 <P>
-Each actor in this domain is called a task. A task is eligible to 
+Each actor in this domain is called a task. A task is eligible to
 execute if there is an event that triggers it. Source actors may trigger
 themselves by calling fireAt(time, actor) on this director. This call
 is treated as an interrupt that happens at that particular time.
@@ -76,35 +76,35 @@ to input events at different ports. If these parameters are not
 specified, then the default priority value is the java.Thread.NORM
 on the JVM, and the default execution time is 0.
 <P>
-This domain assumes there is a single resource, say CPU, shared by  
+This domain assumes there is a single resource, say CPU, shared by
 the execution of all actors. At one particular time, only
 one of the tasks can get the resource and execute. If the execution
 is preemptable (by setting the <i>preemptive</i> parameter of
-this director to true), then the execution of one task 
+this director to true), then the execution of one task
 may be preempted by another eligible task with a higher priority.
 Otherwise, the higher priority task has to wait until the current
 task finishes its execution.
 <P>
-The priority-driven execution is achieved by using an event 
+The priority-driven execution is achieved by using an event
 dispatcher, which sorts and dispatches events that trigger
-the execution of tasks. The events being dispatched are called 
-RTOS events (implemented by the RTOSEvent class). 
+the execution of tasks. The events being dispatched are called
+RTOS events (implemented by the RTOSEvent class).
 An RTOS event has a priority and a remaining processing time,
 among other properties. The priority of the event
 is inherited from its destination port, which may further inherit
-its priority from the actor that contains the port. Whenever an 
+its priority from the actor that contains the port. Whenever an
 event is produced by an actor, it is queued with the event dispatcher.
-At any time, the event with the highest priority is dequeued, 
+At any time, the event with the highest priority is dequeued,
 and delivered into its destination receiver. The director then starts
 the execution of the destination actor (by calling its prefire()
 method). After that, the director tracks how much time remained
-for the task to finish processing the event. 
+for the task to finish processing the event.
 <P>
 The events, called interrupt events, produced by calling fireAt()
 on this director are treated differently. These events carry
 a time stamp, and are queued with another queue which sorts these
 events in their chronological order. When the modeling time reaches
-an interrupt event time, (regardless whether there is a task 
+an interrupt event time, (regardless whether there is a task
 executing), the interrupt event is processed. And the corresponding
 (source) actor is fired, which may in turn produce some RTOS events.
 If one of these RTOS events has a higher priority than the event
@@ -196,7 +196,7 @@ public class RTOSDirector extends Director {
 
     /** Indicating whether the execution synchronizes to the
      *  real time. This parameter has default value false, of type boolean.
-     *  If this parameter is true, then the director does not process 
+     *  If this parameter is true, then the director does not process
      *  events until the
      *  elapsed real time matches the time stamp of the events.
      */
@@ -209,7 +209,7 @@ public class RTOSDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
-    
+
     /** Append a listener to the current set of schedule listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send scheduling messages.
@@ -227,9 +227,9 @@ public class RTOSDirector extends Director {
 
     /** Update the director parameters when the attributes are changed.
      *  If the change is <i>stopTime</i>, or <i>defaultTaskExecutionTime</i>,
-     *  then check whether its value is less than zero. If so, throw an 
+     *  then check whether its value is less than zero. If so, throw an
      *  exception.
-     *  
+     *
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
@@ -275,7 +275,7 @@ public class RTOSDirector extends Director {
         }
     }
 
-    /** Execute the model for one iteration. It first 
+    /** Execute the model for one iteration. It first
      *  compare the current time to the time stamp of the first
      *  event in the interrupt event queue. If they are equal, then
      *  dequeue the events at the current time from the interrupt event
@@ -299,7 +299,7 @@ public class RTOSDirector extends Director {
             double timeStamp = interruptEvent.timeStamp();
             if (timeStamp < (getCurrentTime() - 1e-10)) {
                 // This should never happen.
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                             "external input in the past.");
             } else if (Math.abs(timeStamp - getCurrentTime()) < 1e-10) {
                 _interruptQueue.take();
@@ -324,23 +324,23 @@ public class RTOSDirector extends Director {
         RTOSEvent event = null;
         while (!_eventQueue.isEmpty()) {
             event = (RTOSEvent)_eventQueue.get();
-            
+
             if(_debugging) _debug("The first event in the queue is ",
                     event.toString());
             // Notice that the first event in the queue
             // either has processing time > 0 or hasn't been started.
             if (!event.hasStarted()) {
                 if(_debugging) _debug(getName(),
-                        "put trigger event ",  event.toString(), " into " 
-                        + ((NamedObj)event.actor()).getName() 
+                        "put trigger event ",  event.toString(), " into "
+                        + ((NamedObj)event.actor()).getName()
                         + " and processing");
                 event.receiver()._triggerEvent(event.token());
                 // FIXME: What shall we do if there are events to
                 // the same actor with the same priority.
                 // Check if there are any events with equal priority
-                // for this actor. If so, make them available to the 
+                // for this actor. If so, make them available to the
                 // actor at the same time.
-                
+
                 Actor actor = event.actor();
                 if(actor == getContainer() || !actor.prefire()) {
                     // If the actor is the container of this director,
@@ -391,19 +391,19 @@ public class RTOSDirector extends Director {
                         if(_debugging) _debug("Set processing time ",
                                 event.toString());
                         // Start a new task.
-                        // Now the behavior depend on whether the 
+                        // Now the behavior depend on whether the
                         // execution is preemptive.
                         if (!_preemptive) {
                             event = (RTOSEvent)_eventQueue.take();
                             event.startProcessing();
-                                // Set it priority to o so it won't 
+                                // Set it priority to o so it won't
                                 // be preempted.
                             event.setPriority(0);
                             _eventQueue.put(event);
                         } else {
                             event.startProcessing();
                         }
-                        if (_debugging) _debug("Start processing ", 
+                        if (_debugging) _debug("Start processing ",
                                 event.toString());
 			_displaySchedule();
                         // Start one real time task a time.
@@ -414,13 +414,13 @@ public class RTOSDirector extends Director {
                 break;
             }
         }
-        // The event may be null, when the prefire() of the actor 
+        // The event may be null, when the prefire() of the actor
         // returns false for the last event in the queue.
         // The event may have processing time < 0, in which case
         // it is an event at the output boundary.
         if (event != null && event.processingTime() > 0) {
             // Check the finish processing time.
-            double finishTime = getCurrentTime() + 
+            double finishTime = getCurrentTime() +
                 event.processingTime();
             if ( finishTime < _nextIterationTime) {
                 _nextIterationTime = finishTime;
@@ -430,7 +430,7 @@ public class RTOSDirector extends Director {
             _requestFiringAt(_nextIterationTime);
         }
     }
-    
+
     /** Request an interrupt at the specified time. This inserts
      *  an event into the interrupt event queue.
      *  The corresponding actor will be executed when the current
@@ -474,16 +474,16 @@ public class RTOSDirector extends Director {
         return _realStartTime;
     }
 
-    /** Set the starting time of execution and initialize all the 
-     *  actors. If this is director is not at the top level and 
+    /** Set the starting time of execution and initialize all the
+     *  actors. If this is director is not at the top level and
      *  the interrupt event queue is not empty, the request a refire from
      *  the executive director.
-     *  
+     *
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        
+
         if(_isEmbedded()) {
             _outsideTime = ((CompositeActor)getContainer()).
                 getExecutiveDirector().getCurrentTime();
@@ -494,7 +494,7 @@ public class RTOSDirector extends Director {
         super.initialize();
         _realStartTime = System.currentTimeMillis();
         if (_isEmbedded() && !_interruptQueue.isEmpty()) {
-            double nextPureEventTime = 
+            double nextPureEventTime =
                 ((DEEvent)_interruptQueue.get()).timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
@@ -509,17 +509,17 @@ public class RTOSDirector extends Director {
 	return new RTOSReceiver();
     }
 
-    
+
     /** Advance time to the next event time (or the outside time
      *  if this director is embedded in another domain); if there
-     *  are any tasks that finish at the current time, then 
+     *  are any tasks that finish at the current time, then
      *  finish the execution of the current task by calling the
-     *  fire() method of that actors. 
-     *  
+     *  fire() method of that actors.
+     *
      *  If <i>synchronizeToRealTime</i> is true, then wait until the
-     *  real time has caught up the current time. 
+     *  real time has caught up the current time.
      *  @return True
-     *  @exception IllegalActionException If the execution method 
+     *  @exception IllegalActionException If the execution method
      *  of one of the actors throws it.
      */
     public boolean prefire() throws IllegalActionException {
@@ -560,8 +560,8 @@ public class RTOSDirector extends Director {
         if (!_eventQueue.isEmpty()) {
             RTOSEvent event = (RTOSEvent)_eventQueue.get();
             if (event.hasStarted()) {
-                if (_debugging) _debug("deduct "+ 
-                        (_outsideTime - getCurrentTime()), 
+                if (_debugging) _debug("deduct "+
+                        (_outsideTime - getCurrentTime()),
                         " from processing time of event",
                         event.toString());
                 event.timeProgress(_outsideTime - getCurrentTime());
@@ -588,7 +588,7 @@ public class RTOSDirector extends Director {
             }
         }
 	setCurrentTime(_outsideTime);
-        
+
         return true;
     }
 
@@ -599,7 +599,7 @@ public class RTOSDirector extends Director {
     public void preinitialize() throws IllegalActionException {
         _eventQueue = new CalendarQueue(new RTOSEventComparator(), 16, 2);
         _interruptQueue =  new DECQEventQueue(2, 2, true);
-        
+
         _disabledActors = null;
         //_noMoreActorsToFire = false;
 
@@ -620,7 +620,7 @@ public class RTOSDirector extends Director {
      *  @return Whether the execution should continue.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_debugging) _debug("Finish one iteration at time:" + 
+        if(_debugging) _debug("Finish one iteration at time:" +
                 getCurrentTime(),
                 " Next iteration time = " + _nextIterationTime);
         if (!_isEmbedded()) {
@@ -635,7 +635,7 @@ public class RTOSDirector extends Director {
         return true;
 
     }
-    
+
     /** Set the current time of this director. This method override the
      *  default implementation, since time is allowed to go backward.
      *  @param newTime The current time to set.
@@ -647,7 +647,7 @@ public class RTOSDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                    protected methods                           ////
-        
+
     /** Disable the specified actor.  All events destinated for this actor
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
@@ -690,14 +690,14 @@ public class RTOSDirector extends Director {
             stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(Double.MAX_VALUE));
 	    stopTime.setTypeEquals(BaseType.DOUBLE);
-            preemptive = new Parameter(this, "preemptive", 
+            preemptive = new Parameter(this, "preemptive",
                     new BooleanToken(false));
             preemptive.setTypeEquals(BaseType.BOOLEAN);
-            defaultTaskExecutionTime = new Parameter(this, 
+            defaultTaskExecutionTime = new Parameter(this,
                     "defaultTaskExecutionTime", new DoubleToken(0.0));
             defaultTaskExecutionTime.setTypeEquals(BaseType.DOUBLE);
-            
-            synchronizeToRealTime = new Parameter(this, 
+
+            synchronizeToRealTime = new Parameter(this,
 						  "synchronizeToRealTime",
 						  new BooleanToken(false));
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
@@ -734,7 +734,7 @@ public class RTOSDirector extends Director {
                 (Actor)getContainer(), time);
     }
 
-    /** Send the status of the current RTOS scheduling to all debug 
+    /** Send the status of the current RTOS scheduling to all debug
      *  listeners that have registered.
      *  By convention, messages should not include a newline at the end.
      *  The newline will be added by the listener, if appropriate.
@@ -751,20 +751,20 @@ public class RTOSDirector extends Director {
 	  if (i == 0) {
 	    scheduleEvent = SchedulePlotter.TASK_RUNNING;
 	  }
-//	  System.out.println("EVENT: " + actorName + ", " + 
-//                           time + ", " + scheduleEvent); 
+//	  System.out.println("EVENT: " + actorName + ", " +
+//                           time + ", " + scheduleEvent);
 	  _displaySchedule(actorName, time, scheduleEvent);
 	}
       }
     }
-	  
-    
+
+
     /** Send a debug message to all debug listeners that have registered.
      *  By convention, messages should not include a newline at the end.
      *  The newline will be added by the listener, if appropriate.
      *  @param message The message.
      */
-    protected final void _displaySchedule(String actorName, 
+    protected final void _displaySchedule(String actorName,
 					  double time, int scheduleEvent) {
         synchronized(this) {
 	    if (_scheduleDisplay != null) {
@@ -772,11 +772,11 @@ public class RTOSDirector extends Director {
                 while (listeners.hasNext()) {
                     ((ScheduleListener)listeners.next()).
 		       event(actorName, time, scheduleEvent);
-                }  
+                }
             }
         }
     }
-  
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                    private variables                           ////
@@ -793,7 +793,7 @@ public class RTOSDirector extends Director {
     // The interrupt event queue.
     // Time in this queue is absolute, and not affected by the execution
     // of other tasks.
-    private DECQEventQueue _interruptQueue; 
+    private DECQEventQueue _interruptQueue;
 
     // local cache of the parameter
     private boolean _preemptive = false;

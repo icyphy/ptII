@@ -57,7 +57,7 @@ public class SchedulePlotter implements ScheduleListener {
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
-    /** Create a schedule listener that displays the schedule in 
+    /** Create a schedule listener that displays the schedule in
         a plot window.
      */
     public SchedulePlotter() {
@@ -66,7 +66,7 @@ public class SchedulePlotter implements ScheduleListener {
 	try {
 	    plot = new Plot();
 	    plot.setTitle("RTOS Schedule");
-	    plot.setButtons(true);	    
+	    plot.setButtons(true);
 	} catch (Exception e) {
 	    System.out.println(e);
         }
@@ -85,12 +85,12 @@ public class SchedulePlotter implements ScheduleListener {
                 _taskState.clear();
 	    } else {
 	        Object taskID = _taskMap.get(actorName);
-                int id; 
+                int id;
 	        if (taskID == null) {
 	            id = _taskMap.size();
 	            _taskMap.put(actorName, new Integer(id));
 		    _taskState.add(new Integer(0));
-		    plot.addLegend(id, actorName); 
+		    plot.addLegend(id, actorName);
 	        } else {
 	            id = ((Integer) taskID).intValue();
 	        }
@@ -98,7 +98,7 @@ public class SchedulePlotter implements ScheduleListener {
 	        plot.addPoint(id, time, id  + _oldState/2.1, true);
 	        plot.addPoint(id, time, id + scheduleEvent/2.1, true);
 		plot.repaint();
-                _taskState.set(id, new Integer(scheduleEvent)); 
+                _taskState.set(id, new Integer(scheduleEvent));
 	    }
 	} catch (Exception e) {
 

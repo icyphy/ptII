@@ -52,16 +52,16 @@ import java.util.LinkedList;
 //// RTOSReceiver
 /**
 The receiver for the RTOS domain. This receiver contains a FIFO queue.
-Upon receiving a token, it creates a RTOSEvent. The properties of the 
+Upon receiving a token, it creates a RTOSEvent. The properties of the
 RTOS events are:
 <ul>
-<li> The destination receiver is this receiver. 
+<li> The destination receiver is this receiver.
 <li> The destination actor is the container's container of this receiver.
 <li> The token is the received token.
 <li> The priority is the value of the parameter with name <i>priority</i>
-of the container of this receiver. If the container does not has a 
+of the container of this receiver. If the container does not has a
 parameter with that name, then look at the actor. If none of them
-has the parameter, then use the default priority value, which is 
+has the parameter, then use the default priority value, which is
 java.Thread.NORMAL_PRIORITY.
 <li> The flag <i>hasStarted</i> is false.
 <li> The processing time is obtained from the container or the container's
@@ -69,7 +69,7 @@ container of this receiver, similar to the way obtaining the priority
 value. If none of them has the parameter, then use the default value 0.
 <ul>
 The event is then queued with the director, so it is not immediately
-available by the get() method. Later, the director may make the 
+available by the get() method. Later, the director may make the
 token available again by calling the _triggerEvent() method.
 See the RTOSDirector class for the event dispatching mechanism.
 
@@ -94,7 +94,7 @@ public class RTOSReceiver extends AbstractReceiver {
      *  among all the appending events (system wide), and the resource
      *  is ready to be allocated to its destination actor. Whether the
      *  resource is ready depends on whether there is any active tasks,
-     *  and whether the execution is preemptive. 
+     *  and whether the execution is preemptive.
      *  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
@@ -176,14 +176,14 @@ public class RTOSReceiver extends AbstractReceiver {
 	return true;
     }
 
-    /** Return true if there is at least one token available to the 
+    /** Return true if there is at least one token available to the
      *  get() method.
      *  @return True if there are more tokens.
      */
     public final boolean hasToken() {
         return (!_tokens.isEmpty());
     }
-    
+
     /** Return true if there are <i>numberOfTokens</i>
      *  tokens available to the get() method.
      *  @return True if there are <i>numberOfTokens</i> tokens available.
@@ -200,7 +200,7 @@ public class RTOSReceiver extends AbstractReceiver {
      *  the get() method.  By default, this token will be enqueued by
      *  the director with the default priority -- 5.
      *  However, by setting a <i>priority</i> parameter to the container
-     *  of this receiver, or the container's container, 
+     *  of this receiver, or the container's container,
      *  you can enqueue the event with any priority.
      *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
@@ -219,7 +219,7 @@ public class RTOSReceiver extends AbstractReceiver {
                 priorityValue = ((IntToken)priority.getToken()).
                     intValue();
             }
-            getDirector()._enqueueEvent(new RTOSEvent(this, token, 
+            getDirector()._enqueueEvent(new RTOSEvent(this, token,
                     priorityValue, -1.0));
 
         } catch (IllegalActionException ex) {
