@@ -108,7 +108,7 @@ public class Relation extends NamedObj {
 
             while( ports.hasMoreElements() ) {
                 Port port = (Port)ports.nextElement();
-                Entity parent = (Entity) port.getContainer();
+                Entity parent = (Entity) port.getAssocEntity();
                 // Ignore ports with no container.
                 if (parent != null) {
                     storedEntities.insertLast( parent );

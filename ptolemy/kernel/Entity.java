@@ -116,7 +116,7 @@ public class Entity extends NamedObj {
                     "Cannot add port because workspaces are different.");
         }
         synchronized(workspace()) {
-            Entity prevcontainer = (Entity) port.getContainer();
+            Entity prevcontainer = (Entity) port.getAssocEntity();
             // Do this first, because it may throw an exception.
             _addPort(port);
             if (prevcontainer != null) {
@@ -124,7 +124,7 @@ public class Entity extends NamedObj {
             } else {
                 workspace().remove(port);
             }
-            port._setContainer(this);
+            port._setAssocEntity(this);
         }
     }
 
@@ -132,7 +132,7 @@ public class Entity extends NamedObj {
      *  Ports in this entity is not included unless there is a loopback, 
      *  meaning that two distinct ports of this entity are linked to the same
      *  relation.  This method is sychronized on the workspace.  The connected
-     *  entities can be obtained from the ports using getContainer().
+     *  entities can be obtained from the ports using getAssocEntity().
      *  @return An enumeration of Port objects.
      */	
     public Enumeration getConnectedPorts() {
@@ -258,14 +258,14 @@ public class Entity extends NamedObj {
                         "Attempt to remove a port from an entity that "
                         + "does not contain it.");
             }
-            Entity portcontainer = (Entity) port.getContainer();
+            Entity portcontainer = (Entity) port.getAssocEntity();
             if (portcontainer != this) {
                 throw new InvalidStateException(this, port,
                         "Inconsistent container relationship!");
             }
             port.unlinkAll();
             _removePort(port);
-            port._setContainer(null);
+            port._setAssocEntity(null);
         }
     }
 
