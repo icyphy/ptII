@@ -219,7 +219,7 @@ runTreeShakeWithoutCodegen:
 			$(TARGETPACKAGE).Main
 
 profileTreeShakeWithoutCodegen:
-	@echo "Prorile without codegen with treeshake.jar"
+	@echo "Profile without codegen with treeshake.jar"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
