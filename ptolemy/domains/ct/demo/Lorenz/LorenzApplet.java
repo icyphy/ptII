@@ -215,14 +215,8 @@ public class LorenzApplet extends CTApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The thread that runs the simulation.
-    private boolean _isSimulationRunning;
-
-    // FIXME: Under jdk 1.2, the following can (and should) be private
     private CTSingleSolverDirector _dir;
-
     private Query _query;
-
     private Const _LAMBDA;
     private Scale _SIGMA;
     private Scale _B;
