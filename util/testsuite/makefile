@@ -66,6 +66,7 @@ SCRIPTS = \
 	chkextra \
 	chkjava \
 	deprecated \
+	gcstats \
 	html2ps \
 	jindent \
 	memorystats \
