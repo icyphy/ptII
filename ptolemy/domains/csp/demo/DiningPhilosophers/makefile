@@ -36,6 +36,10 @@ ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
+# Used to build jar files
+PTPACKAGE = 	DiningPhilosophers
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -53,37 +57,22 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 # want make checkjunk to barf on them.
 MISC_FILES =
 
-PTAUXJAR = diningapplet.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	diningapplet.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass diningapplet.jar
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
 demo:
 	CLASSPATH=$(CLASSPATH) appletviewer DiningPhilosophers.html
-
-
-# 'make clean' removes everything in KRUFT
-KRUFT = $(PTAUXJAR)
-
-# Jar file for the Dining Philosophers applet
-$(PTAUXJAR): $(JSRCS) $(JCLASS) makefile
-	(cd $(ROOT); \
-		$(JAR) cf \
-		$(ME)/$@ \
-		$(ME)/*.class)
-
 
 depend:
 	@echo "no dependencies in this directory"
