@@ -102,11 +102,11 @@ public class CSPActor extends AtomicActor implements Runnable {
      *  NullPointerException will be thrown.
      * 
      *  @param container The CompositeActor that contains this actor.
-     *  @param name the actor's name
+     *  @param name the actor's name.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
-     *   an entity already in the container
+     *   an entity already in the container.
      */	
     public CSPActor(CSPCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
@@ -226,7 +226,7 @@ public class CSPActor extends AtomicActor implements Runnable {
                 }
                                 
                 // Now terminate non-successful branches
-                for (int i=0; i<branches.length; i++) {
+                for (int i = 0; i<branches.length; i++) {
                     // if a branch is null, indicates boolean 
                     // preceding communication was false.
                     if ( (i!= _successfulBranch) && (branches[i] != null) ) {
@@ -242,7 +242,7 @@ public class CSPActor extends AtomicActor implements Runnable {
                 
                 // when there are no more active branches, branchFailed should 
                 // issue a notifyAll on the internalLock
-                while (_branchesActive !=0) {  
+                while (_branchesActive != 0) {  
                     _getInternalLock().wait();
                 }
                 // counter indicating # active branches, should be zero
@@ -426,7 +426,7 @@ public class CSPActor extends AtomicActor implements Runnable {
             IOPort port = (IOPort)inports.nextElement();
             if (port.isInput()) {
                 Receiver[][] receivers = port.getReceivers();
-                for (int i=0; i < receivers.length; i++) {
+                for (int i = 0; i < receivers.length; i++) {
                     if (receivers[i].length > 1) {
                         String str = "Error: more than one receiver ";
                         System.out.println(str + "on CSP input channel");
@@ -507,4 +507,3 @@ public class CSPActor extends AtomicActor implements Runnable {
     // Thread this actor is to be run in.
     private Thread _myThread;
 }
-
