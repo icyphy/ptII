@@ -85,7 +85,7 @@ public class Graph {
         _graph.addElement(new Vector());
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
-        
+ 
     /** Adds an edge to connect twe nodes.  Multiple connections between
      *  two nodes are allowed, but they are counted separately.  Self loop
      *  is also allowed.
@@ -103,9 +103,65 @@ public class Graph {
         int id2 = _getNodeId(o2);
         
         ((Vector)(_graph.elementAt(id1))).addElement(new Integer(id2));
+	_numEdges++;
     }
 
-    /** Finds the total number of nodes in this graph.
+    /** Returns all the edges in this graph in the form of a 2-D object
+     *  array. Multiple connections between two nodes have multiple
+     *  entries in the array.
+     *  Each entry in the first array dimension represents an edge.
+     *  The second dimension always has two entries, holding the two
+     *  objects connected by the edge.  For example, Object[i][0] and
+     *  Object[i][1] are the two objects connected by the i'th edge.
+     *  In the derived class <code>DirectedGraph</code>, Object[i][0]
+     *  is the source node, Object[i][1] is the sink node.
+     *  @ return an array of objects representing all the edges.
+     */
+    public Object[][] allEdges() {
+	Object[][] result = new Object[_numEdges][2];
+
+	int count = 0;
+	for (int i = 0; i < numNodes(); i++) {
+	    Object source = _backRef.elementAt(i);
+	    Vector sinkIds = (Vector)_graph.elementAt(i);
+	    for (int j = 0; j < sinkIds.size(); j++) {
+		int id = ((Integer)(sinkIds.elementAt(j))).intValue();
+		Object sink = _backRef.elementAt(id);
+		result[count][0] = source;
+		result[count++][1] = sink;
+	    }
+	}
+
+	return result;
+    }
+
+    /** Returns all the nodes in this graph in the form of an
+     *  array of objects.  The objects are the ones passed to the
+     *  <code>add()</code> method.
+     *  @return an array of objects representing all the nodes in this graph.
+     */
+    public Object[] allNodes() {
+
+	// FIXME: restore this line for jdk1.2
+//	return _backRef.toArray();
+
+	// FIXME: delete the following code for jdk1.2
+	Object[] arr = new Object[numNodes()];
+	for (int i = 0; i < numNodes(); i++) {
+	    arr[i] = _backRef.elementAt(i);
+	}
+	return arr;
+    }
+
+    /** Returns the total number of edges in this graph.  Multiple
+     *  connections between two nodes are counted multiple times.
+     *  @return the total number of edges in this graph.
+     */
+    public int numEdges() {
+	return _numEdges;
+    }
+
+    /** Returns the total number of nodes in this graph.
      *  @return the total number of nodes in this graph.
      */
     public int numNodes() {
@@ -175,5 +231,8 @@ public class Graph {
     // Translation from Object to nodeId.  This can be down with
     // _backRef.indexOf(), but Hashtable is faster.
     private Hashtable _nodeIdTable;
+
+    // number of edges in this graph
+    private int _numEdges = 0;
 }
 
