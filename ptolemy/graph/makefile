@@ -44,17 +44,19 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in tycho.mk)
 JDOCFLAGS = 	-author -version -public
 
-DIRS = 		test demo #doc
-
-# Used to build zip files
-JPACKAGE = 	pt.graph
-JPACKAGE_DIR = 	pt/graph
-JVERSION =	1.0
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		pt/graph/pt.graph.zip
-JARFILE = 	$(JPACKAGE).jar
+DIRS = 		test demo doc
 
 CLASSPATH = ../..
+
+# Used to build zip files
+TYPACKAGE = 	pt.graph
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
+TYPACKAGE_DIR = pt/graph
+TYVERSION =	1.0
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
+
 
 JSRCS = \
         InvalidGraphException.java \
