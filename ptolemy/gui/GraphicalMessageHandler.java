@@ -31,6 +31,7 @@ package ptolemy.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -86,26 +87,33 @@ public class GraphicalMessageHandler extends MessageHandler {
     ////                         protected methods                 ////
 
     /** Show the specified error message.
+     *  This is deferred to execute in the swing event thread if it is
+     *  called outside that thread.
      *  @param info The message.
      */
-    protected void _error(String info) {
-        Object[] message = new Object[1];
-        String string = info;
-        message[0] = StringUtilities.ellipsis(string,
-                StringUtilities.ELLIPSIS_LENGTH_SHORT);
+    protected void _error(final String info) {
+        Runnable doMessage = new Runnable() {
+            public void run() {
+                Object[] message = new Object[1];
+               String string = info;
+               message[0] = StringUtilities.ellipsis(string,
+                       StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
-        Object[] options = {"Dismiss"};
+               Object[] options = {"Dismiss"};
 
-        // Show the MODAL dialog
-        JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Error",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                options,
-                options[0]);
+               // Show the MODAL dialog
+               JOptionPane.showOptionDialog(
+                       _context,
+                       message,
+                       "Error",
+                       JOptionPane.YES_NO_OPTION,
+                       JOptionPane.ERROR_MESSAGE,
+                       null,
+                       options,
+                       options[0]);
+           }
+        };
+        Top.deferIfNecessary(doMessage);
     }
 
     /** Show the specified message and throwable information.
@@ -113,67 +121,81 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  is not shown.  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
+     *  This is deferred to execute in the swing event thread if it is
+     *  called outside that thread.
      *
      *  @param info The message.
      *  @param throwable The throwable.
      *  @see CancelException
      */
-    protected void _error(String info, Throwable throwable) {
-        if (throwable instanceof CancelException) return;
+    protected void _error(final String info, final Throwable throwable) {
+        Runnable doMessage = new Runnable() {
+            public void run() {
+                if (throwable instanceof CancelException) return;
 
-        // Sometimes you find that errors are reported multiple times.
-        // To find out who is calling this method, uncomment the following.
-        // System.out.println("------ reporting error:");
-        // (new Throwable()).printStackTrace();
+                // Sometimes you find that errors are reported multiple times.
+                // To find out who is calling this method, uncomment the following.
+                // System.out.println("------ reporting error:");
+                // (new Throwable()).printStackTrace();
 
-        Object[] message = new Object[1];
-        String string;
-        if (info != null) {
-            string = info + "\n" + throwable.getMessage();
-        } else {
-            string = throwable.getMessage();
-        }
-        message[0] = StringUtilities.ellipsis(string,
-                StringUtilities.ELLIPSIS_LENGTH_SHORT);
+                Object[] message = new Object[1];
+                String string;
+                if (info != null) {
+                    string = info + "\n" + throwable.getMessage();
+                } else {
+                    string = throwable.getMessage();
+                }
+                message[0] = StringUtilities.ellipsis(string,
+                        StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
-        Object[] options = {"Dismiss", "Display Stack Trace"};
+                Object[] options = {"Dismiss", "Display Stack Trace"};
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                MessageHandler.shortDescription(throwable),
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                options,
-                options[0]);
+                // Show the MODAL dialog
+                int selected = JOptionPane.showOptionDialog(
+                        _context,
+                        message,
+                        MessageHandler.shortDescription(throwable),
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
 
-        if (selected == 1) {
-            _showStackTrace(throwable, info);
-        }
+                if (selected == 1) {
+                    _showStackTrace(throwable, info);
+                }
+            }
+        };
+        Top.deferIfNecessary(doMessage);
     }
 
     /** Show the specified message in a modal dialog.
+     *  This is deferred to execute in the swing event thread if it is
+     *  called outside that thread.
      *  @param info The message.
      */
-    protected void _message(String info) {
-        Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(info,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+    protected void _message(final String info) {
+        Runnable doMessage = new Runnable() {
+            public void run() {
+                Object[] message = new Object[1];
+                message[0] = StringUtilities.ellipsis(info,
+                        StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-        Object[] options = {"OK"};
+                Object[] options = {"OK"};
 
-        // Show the MODAL dialog
-        JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Message",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                options,
-                options[0]);
+                // Show the MODAL dialog
+                JOptionPane.showOptionDialog(
+                        _context,
+                        message,
+                        "Message",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        options,
+                        options[0]);
+            }
+        };
+        Top.deferIfNecessary(doMessage);
     }
 
     /** Show the specified message in a modal dialog.  If the user
@@ -181,33 +203,70 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
+     *  NOTE: If this is called outside the swing event thread, then
+     *  no cancel button is presented and no CancelException will be
+     *  thrown.  This is because the displaying of the message must
+     *  be deferred to the swing event thread, according to the swing
+     *  architecture, or we could get deadlock or rendering problems.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
-    protected void _warning(String info) throws CancelException {
-        Object[] message = new Object[1];
-        // If the message lines are longer than 80 characters, we split it
-        // into shorter new line separated strings.
-        // Running vergil on a HSIF .xml file will create a line longer
-        // than 80 characters
-        message[0] = StringUtilities.ellipsis(info,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+    protected void _warning(final String info) throws CancelException {
 
-        Object[] options = {"OK", "Cancel"};
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, defer.
+        if (EventQueue.isDispatchThread()) {
+            Object[] options = {"OK", "Cancel"};
+            Object[] message = new Object[1];
+        
+            // If the message lines are longer than 80 characters, we split it
+            // into shorter new line separated strings.
+            // Running vergil on a HSIF .xml file will create a line longer
+            // than 80 characters
+            message[0] = StringUtilities.ellipsis(info,
+                    StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Warning",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,
-                options,
-                options[0]);
+            // Show the MODAL dialog
+            int selected = JOptionPane.showOptionDialog(
+                    _context,
+                    message,
+                    "Warning",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
 
-        if (selected == 1) {
-            throw new CancelException();
+            if (selected == 1) {
+                throw new CancelException();
+            }
+        } else {
+            Runnable doWarning = new Runnable() {
+                public void run() {
+                    Object[] options = {"OK"};
+                    Object[] message = new Object[1];
+        
+                    // If the message lines are longer than 80 characters, we split it
+                    // into shorter new line separated strings.
+                    // Running vergil on a HSIF .xml file will create a line longer
+                    // than 80 characters
+                    message[0] = StringUtilities.ellipsis(info,
+                            StringUtilities.ELLIPSIS_LENGTH_LONG);
+
+                    // Show the MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(
+                            _context,
+                            message,
+                            "Warning",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+                }
+            };
+            Top.deferIfNecessary(doWarning);
         }
     }
 
@@ -218,40 +277,77 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  By default, only the message of the throwable
-     *  is thrown.  The stack trace information is only shown if the
+     *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
+     *  NOTE: If this is called outside the swing event thread, then
+     *  no cancel button is presented and no CancelException will be
+     *  thrown.  This is because the displaying of the message must
+     *  be deferred to the swing event thread, according to the swing
+     *  architecture, or we could get deadlock or rendering problems.
      *  @param info The message.
      *  @param throwable The throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
-    protected void _warning(String info, Throwable throwable)
+    protected void _warning(final String info, final Throwable throwable)
             throws CancelException {
-        Object[] message = new Object[1];
-        message[0] = StringUtilities.ellipsis(info,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
-        Object[] options = {"OK", "Display Stack Trace", "Cancel"};
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, defer.
+        if (EventQueue.isDispatchThread()) {
+            Object[] message = new Object[1];
+            message[0] = StringUtilities.ellipsis(info,
+                    StringUtilities.ELLIPSIS_LENGTH_LONG);
+            Object[] options = {"OK", "Display Stack Trace", "Cancel"};
 
-        // Show the MODAL dialog
-        int selected = JOptionPane.showOptionDialog(
-                _context,
-                message,
-                "Warning",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null,
-                options,
-                options[0]);
+            // Show the MODAL dialog
+            int selected = JOptionPane.showOptionDialog(
+                    _context,
+                    message,
+                    "Warning",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
 
-        if (selected == 1) {
-            _showStackTrace(throwable, info);
-        } else if (selected == 2) {
-            throw new CancelException();
+            if (selected == 1) {
+                _showStackTrace(throwable, info);
+            } else if (selected == 2) {
+                throw new CancelException();
+            }
+        } else {
+            Runnable doWarning = new Runnable() {
+                public void run() {
+                    Object[] message = new Object[1];
+                    message[0] = StringUtilities.ellipsis(info,
+                            StringUtilities.ELLIPSIS_LENGTH_LONG);
+                    Object[] options = {"OK", "Display Stack Trace"};
+
+                    // Show the MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(
+                            _context,
+                            message,
+                            "Warning",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                    if (selected == 1) {
+                        _showStackTrace(throwable, info);
+                    }
+                }
+            };
+            Top.deferIfNecessary(doWarning);
         }
     }
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.  In this base class, this prints the question on standard
      *  output and looks for the reply on standard input.
+     *  NOTE: This must be called in the swing event thread!
+     *  It is an error to call it outside the swing event thread.
      *  @return True if the answer is yes.
      */
     protected boolean _yesNoQuestion(String question) {
