@@ -158,7 +158,10 @@ OPTIONAL_FILES = \
 
 # Files to be removed by 'make clean'
 KRUFT = \
-	vergil.jnlp
+	vergil.jnlp \
+	$(PLOTAPPLICATIONJAR) \
+	$(PLOTMLAPPLETJAR) \
+	$(PXGRAPHAPPLETJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
