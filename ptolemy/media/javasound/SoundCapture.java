@@ -165,7 +165,7 @@ public class SoundCapture {
 
     }
 
-    /** Construct a sound capture object that caputures audio from a
+    /** Construct a sound capture object that captures audio from a
      *  sound file specified as a URL. Note that it is still possible
      *  to capture audio from a file on the native file system, even
      *  though a URL is required. For example, to capture from a
@@ -202,7 +202,7 @@ public class SoundCapture {
      *  return the number of audio channels, regardless of
      *  which constructor was used. However, this method is
      *  really only useful when the constructor that causes
-     *  audio to be catpured from a file is used, since
+     *  audio to be captured from a file is used, since
      *  the number of channels is unknown until the file
      *  is opened.
      *  <p>
@@ -224,7 +224,7 @@ public class SoundCapture {
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getChannels() was called while audio capture was" +
-	    " innactive (startCapture() was never called).");
+	    " inactive (startCapture() was never called).");
 	}
     }
 
@@ -254,7 +254,7 @@ public class SoundCapture {
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getSampleRate() was called while audio capture was" +
-	    " innactive (startCapture() was never called).");
+	    " inactive (startCapture() was never called).");
 	}
     }
 
@@ -294,7 +294,7 @@ public class SoundCapture {
      *
      *  @exception IOException If there is a problem capturing audio.
      *  @exception IllegalStateException If audio capture is currently
-     *  innactive. That is, If startCapture() has not yet been called
+     *  inactive. That is, If startCapture() has not yet been called
      *  or if stopCapture() has already been called.
      */
     public double[][] getSamples() throws IOException,
@@ -335,7 +335,7 @@ public class SoundCapture {
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getSamples() was called while audio capture was" +
-	    " innactive (startCapture() was never called or " +
+	    " inactive (startCapture() was never called or " +
             "stopCapture has already been called).");
 	}
     }
@@ -382,7 +382,7 @@ public class SoundCapture {
      *
      *  @exception IOException If there is a problem capturing audio.
      *  @exception IllegalStateException If audio capture is currently
-     *  innactive. That is, If startCapture() has not yet been called
+     *  inactive. That is, If startCapture() has not yet been called
      *  or if stopCapture() has already been called.
      */
     public int[][] getSamplesInt() throws IOException,
@@ -423,7 +423,7 @@ public class SoundCapture {
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getSamples() was called while audio capture was" +
-	    " innactive (startCapture() was never called or " +
+	    " inactive (startCapture() was never called or " +
             "stopCapture has already been called).");
 	}
     }
@@ -440,7 +440,7 @@ public class SoundCapture {
      *  
      *  @exception IOException If there is a problem setting up
      *  the system for audio capture. This will occur if the
-     *  a URL cannot be oppened or if the audio in port cannot
+     *  a URL cannot be opened or if the audio in port cannot
      *  be accessed.
      *  @exception IllegalStateException If this method is called
      *  more than once between invocations of stopCapture().
@@ -513,7 +513,7 @@ public class SoundCapture {
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getSampleSizeInBits() was called while audio capture was" +
-	    " innactive (startCapture() was never called).");
+	    " inactive (startCapture() was never called).");
 	}
     }
 
@@ -702,7 +702,7 @@ public class SoundCapture {
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
      * format into a (signed) int array of audio samples. The range
-     * of the returned samples is approximetly 
+     * of the returned samples is approximately
      * (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
      * @param byteArray  The linear signed pcm big endian byte array
      * formatted array representation of audio data.

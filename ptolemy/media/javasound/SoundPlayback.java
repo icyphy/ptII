@@ -241,7 +241,7 @@ public class SoundPlayback {
      *
      *  @exception IOException If there is a problem playing audio.
      *  @exception IllegalStateException If audio playback is currently
-     *  innactive. That is, If startPlayback() has not yet been called
+     *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
     public void putSamples(double[][] putSamplesArray) throws IOException,
@@ -280,7 +280,7 @@ public class SoundPlayback {
 	} else {
 	    throw new IllegalStateException("SoundPlayback: " +
 	    "putSamples() was called while audio playback was" +
-	    " innactive (startPlayback() was never called or " +
+	    " inactive (startPlayback() was never called or " +
             "stopPlayback has already been called).");
 	}
     }
@@ -319,7 +319,7 @@ public class SoundPlayback {
      *
      *  @exception IOException If there is a problem playing audio.
      *  @exception IllegalStateException If audio playback is currently
-     *  innactive. That is, If startPlayback() has not yet been called
+     *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
     public void putSamplesInt(int[][] putSamplesArray) throws IOException,
@@ -358,7 +358,7 @@ public class SoundPlayback {
 	} else {
 	    throw new IllegalStateException("SoundPlayback: " +
 	    "putSamples() was called while audio playback was" +
-	    " innactive (startPlayback() was never called or " +
+	    " inactive (startPlayback() was never called or " +
             "stopPlayback has already been called).");
 	}
     }
@@ -371,7 +371,7 @@ public class SoundPlayback {
      *
      *  @exception IOException If there is a problem setting up
      *  the system for audio playback. This will occur if
-     *  a file cannot be oppened or if the audio out port cannot
+     *  a file cannot be opened or if the audio out port cannot
      *  be accessed.
      *  @exception IllegalStateException If this method is called
      *  more than once between invocations of stopCapture().
@@ -414,7 +414,7 @@ public class SoundPlayback {
      *
      *  @exception IOException If there is a problem closing the
      *   audio resources, or if the "write audio data 
-     *   to file" constructor was used  and the soundfile has an
+     *   to file" constructor was used  and the sound file has an
      *   unsupported format.
      */
     public void stopPlayback() throws IOException {
