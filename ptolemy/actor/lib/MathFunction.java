@@ -30,12 +30,19 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 // NOTE: If you update the list of functions, then you will want
 // to update the list in actor/lib/math.xml.
@@ -177,14 +184,15 @@ public class MathFunction extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         if (firstOperand.hasToken(0)) {
-            double in1 = ((DoubleToken) firstOperand.get(0)).doubleValue();
-            double in2 = 0;
+            double input1 = ((DoubleToken) firstOperand.get(0)).doubleValue();
+            double input2 = 0;
             if (_function == REMAINDER) {
                 if (secondOperand.hasToken(0)) {
-                    in2 = ((DoubleToken) secondOperand.get(0)).doubleValue();
+                    input2 =
+                        ((DoubleToken) secondOperand.get(0)).doubleValue();
                 }
             }
-            output.send(0, new DoubleToken(_doFunction(in1,in2)));
+            output.send(0, new DoubleToken(_doFunction(input1, input2)));
         }
     }
 
@@ -202,7 +210,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY, and do
      *   not consume any input tokens.
-     *  @exception IllegalActionException Should not be thrown
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
@@ -210,20 +218,20 @@ public class MathFunction extends TypedAtomicActor {
             _resultArray = new DoubleToken[count];
         }
 
-        if (firstOperand.hasToken(0,count)) {
-            Token[] inArray1 = firstOperand.get(0,count);
+        if (firstOperand.hasToken(0, count)) {
+            Token[] inArray1 = firstOperand.get(0, count);
 
 
             if (_function == REMAINDER) {
-                if (secondOperand.hasToken(0,count)) {
-                    Token[] inArray2 = secondOperand.get(0,count);
+                if (secondOperand.hasToken(0, count)) {
+                    Token[] inArray2 = secondOperand.get(0, count);
                     for (int i = 0; i < count; i++) {
                         double input1 =
                             ((DoubleToken)(inArray1[i])).doubleValue();
                         double input2 =
                             ((DoubleToken)(inArray2[i])).doubleValue();
                         _resultArray[i] =
-                            new DoubleToken(_doFunction(input1,input2));
+                            new DoubleToken(_doFunction(input1, input2));
                     }
                     output.send(0, _resultArray, count);
                     return COMPLETED;
@@ -233,7 +241,7 @@ public class MathFunction extends TypedAtomicActor {
             } else {
                 for(int i = 0; i < count ; i++) {
                     double input1 = ((DoubleToken)(inArray1[i])).doubleValue();
-                    _resultArray[i] = new DoubleToken(_doFunction(input1,0));
+                    _resultArray[i] = new DoubleToken(_doFunction(input1, 0));
                 }
                 output.send(0, _resultArray, count);
                 return COMPLETED;
@@ -265,23 +273,23 @@ public class MathFunction extends TypedAtomicActor {
      *  @param in The input value.
      *  @return The result of applying the function.
      */
-    private double _doFunction(double in1, double in2) {
+    private double _doFunction(double input1, double input2) {
         double result;
         switch(_function) {
         case EXP:
-            result = Math.exp(in1);
+            result = Math.exp(input1);
             break;
         case LOG:
-            result = Math.log(in1);
+            result = Math.log(input1);
             break;
         case SQUARE:
-            result = in1 * in1;
+            result = input1 * input1;
             break;
         case SQRT:
-            result = Math.sqrt(in1);
+            result = Math.sqrt(input1);
             break;
         case REMAINDER:
-            result = in1 % in2;
+            result = input1 % input2;
             break;
         default:
             throw new InternalErrorException(
