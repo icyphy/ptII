@@ -85,8 +85,7 @@ test TimedDelay-3.2 {test with negative delay} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.TimedDelay.delay:
-Error evaluating expression "-1.0":
-ptolemy.kernel.util.IllegalActionException: .top.TimedDelay:
+.top.TimedDelay:
 Cannot have negative delay.}}
 
 test TimedDelay-4.1 {test a self loop with the zero TimedDelay} {
