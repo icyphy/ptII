@@ -555,10 +555,9 @@ public class Complex implements Cloneable, Serializable {
      */
     public final boolean isCloseTo(Complex z, double distance) {
         // NOTE: I couldn't find a way to make this as precise as double.
-        // With this implementation, the following two examples yield the
+        // With this implementation, the following example yields the
         // wrong answer due to rounding errors:
         //    close (1.0i, 1.1i, 0.1)
-        //    close (1.0i, 1.0, 0.0)
         // (This is how to invoke this in the expression language.)
         double differenceSquared = subtract(z).magnitudeSquared();
         double distanceSquared = distance*distance;
