@@ -67,7 +67,6 @@ public class CSPPutToken extends CSPPut {
      */
     public void fire() throws IllegalActionException {
         int cnt = 0;
-        Token token = new Token();
         while (cnt < _numTokens) {
             outputPort.send(0, _tokens[cnt]);
             cnt++;
@@ -84,6 +83,5 @@ public class CSPPutToken extends CSPPut {
     ////                         private variables                 ////
 
     private int _numTokens;
-    private int _pauseCnt = -1;
     private Token[] _tokens = null;
 }
