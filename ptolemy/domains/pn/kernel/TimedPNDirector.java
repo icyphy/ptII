@@ -235,8 +235,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  @exception IllegalActionException If any of the called methods throw
      *  it.
      */
-    public void fire()
-	    throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         boolean timedmut;
         Workspace worksp = workspace();
         synchronized (this) {
@@ -494,11 +493,6 @@ public class TimedPNDirector extends BasePNDirector {
      *  After all threads are created, unblock the processes blocked on a
      *  mutation (mutation-blocked) and start the threads for the
      *  newly created actors.
-     *
-     *  @exception IllegalActionException If any of the pending requests have
-     *  already been implemented or the type system detects some type conflicts
-     *  after performing the mutations.
-     *  @exception TopologyChangeFailedException If any of the requests fails.
      */
     //     protected void _processTopologyRequests()
     //         throws IllegalActionException, TopologyChangeFailedException {
