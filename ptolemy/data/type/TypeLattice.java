@@ -126,11 +126,11 @@ public class TypeLattice {
 	        return _basicLattice.compare(ct1, ct2);
 	    }
 
-	    Type t1Rep = _getRepresentative(ct1);
-	    Type t2Rep = _getRepresentative(ct2);
+	    Type t1Rep = _toRepresentative(ct1);
+	    Type t2Rep = _toRepresentative(ct2);
 	    if (t1Rep == t2Rep) {
 	        // t1 and t2 are of the same structured type
-	        return ((StructuredType)t1).compare((StructuredType)ct2);
+	        return ((StructuredType)t1)._compare((StructuredType)ct2);
 	    }
 
 	    // t1 and t2 are of different structured type, or one is
@@ -169,11 +169,11 @@ public class TypeLattice {
 	        return _basicLattice.greatestLowerBound(ct1, ct2);
 	    }
 
-	    Type t1Rep = _getRepresentative(ct1);
-	    Type t2Rep = _getRepresentative(ct2);
+	    Type t1Rep = _toRepresentative(ct1);
+	    Type t2Rep = _toRepresentative(ct2);
 	    if (t1Rep == t2Rep) {
 	        // t1 and t2 are of the same structured type
-	        return ((StructuredType)ct1).greatestLowerBound(
+	        return ((StructuredType)ct1)._greatestLowerBound(
 			(StructuredType)ct2);
 	    }
 
@@ -246,11 +246,11 @@ public class TypeLattice {
 	        return _basicLattice.leastUpperBound(ct1, ct2);
 	    }
 
-	    Type t1Rep = _getRepresentative(ct1);
-	    Type t2Rep = _getRepresentative(ct2);
+	    Type t1Rep = _toRepresentative(ct1);
+	    Type t2Rep = _toRepresentative(ct2);
 	    if (t1Rep == t2Rep) {
 	        // t1 and t2 are of the same structured type
-	        return ((StructuredType)ct1).leastUpperBound(
+	        return ((StructuredType)ct1)._leastUpperBound(
 			(StructuredType)ct2);
 	    }
 
@@ -301,7 +301,7 @@ public class TypeLattice {
 	private TheTypeLattice() {
 	    _basicLattice = new DirectedAcyclicGraph();
 	    StructuredType arrayRep =
-		(new ArrayType(BaseType.NAT)).getRepresentative();
+		(new ArrayType(BaseType.NAT))._getRepresentative();
 
 	    _basicLattice.add(BaseType.BOOLEAN);
 	    _basicLattice.add(BaseType.COMPLEX);
@@ -344,11 +344,11 @@ public class TypeLattice {
 
     	// If the argument is a base type, return it directly; otherwise,
         // return the representative of the structured type of the argument.
-        private Type _getRepresentative(Type t) {
+        private Type _toRepresentative(Type t) {
 	    if (t instanceof BaseType) {
 	        return t;
 	    } else {
-	        return ((StructuredType)t).getRepresentative();
+	        return ((StructuredType)t)._getRepresentative();
 	    }
         }
 

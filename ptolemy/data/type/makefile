@@ -48,9 +48,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayType.java \
 	BaseType.java \
 	StructuredType.java \
-	Type.java
+	Type.java \
+	TypeLattice.java
 
 EXTRA_SRCS =	$(JSRCS)
 

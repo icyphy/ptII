@@ -1,4 +1,4 @@
-/** An Interface for structured type.
+/** Base class for structured type.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,25 +31,44 @@
 
 package ptolemy.data.type;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+
 //////////////////////////////////////////////////////////////////////////
 //// StructuredType
 /**
-An interface for structured type.
+Base class for structured type. Making this an abstract class (not an
+interface) allows the methods to be protected.
 All the types of the same structured type (e.g. all the array types)
 must form a lattice. Each instance of a structured type must know how
 to compare itself with another instance of the same structured type,
 and compute the least upper bound and greatest lower bound. This
 interface defines methods for these operations.
+<p>
+Subclasses should override clone() to do a deep cloning.
 
 @author Yuhong Xiong
 $Id$
 
 */
 
-public interface StructuredType extends Type {
+public abstract class StructuredType implements Type, Cloneable {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                       protected methods                   ////
+
+    /** Return a deep copy this StructuredType. The returned copy does
+     *  not have the user set.
+     *  @return A StructuredType.
+     */
+    protected Object clone() {
+	try {
+	    return super.clone();
+	} catch (CloneNotSupportedException ex) {
+	    throw new InternalErrorException("StructuredType.clone: " +
+		ex.getMessage());
+	}
+    }
 
     /** Compare this type with the specified type. The specified type
      *  must be of the same structured type, otherwise an exception will
@@ -64,7 +83,7 @@ public interface StructuredType extends Type {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
-    public int compare(StructuredType t);
+    protected abstract int _compare(StructuredType t);
 
     /** Determine if the specified StructuredType is a direct or
      *  indirect user of this type. This method returns true if the
@@ -72,19 +91,19 @@ public interface StructuredType extends Type {
      *  StructuredType, or the user on a higher level.
      *  @return A boolean.
      */
-    public booean deepIsUser(StructuredType st);
+    protected abstract boolean _deepIsUser(Object st);
 
     /** Return a static instance of this structured type. The return
      *  value is used by TypeLattice to represent this type.
      *  @return a StructuredType.
      */
-    public StructuredType getRepresentative();
+    protected abstract StructuredType _getRepresentative();
 
     /** Return the user of this StructuredType. If the user is not set,
      *  return null.
      *  @return An Object.
      */
-    public Object getUser();
+    protected abstract Object _getUser();
 
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be of the same structured type,
@@ -94,7 +113,7 @@ public interface StructuredType extends Type {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
-    public StructuredType greatestLowerBound(StructuredType t);
+    protected abstract StructuredType _greatestLowerBound(StructuredType t);
 
     /** Return the least upper bound of this type with the specified
      *  type. The specified type must be of the same structured type,
@@ -104,14 +123,35 @@ public interface StructuredType extends Type {
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
-    public StructuredType leastUpperBound(StructuredType t);
+    protected abstract StructuredType _leastUpperBound(StructuredType t);
 
-    /** Set the user of this StructuedType. This method can only be
-     *  called once. Otherwise, an exception will be thrown.
-     *  @param Object The user.
-     *  @exception IllegalActionException If this method is called more
-     *   than once.
+    /** Test if this StructuredType is a constant. A StructuredType is
+     *  a constant if it does not contain BaseType.NAT in any level within
+     *  it.
+     *  @return True if this type is a constant.
      */
-    public void setUser(Object user) throws IllegalActionException;
+    protected abstract boolean _isConstant();
+
+    /** Update this StructuredType to the specified Structured Type.
+     *  This StructuredType must not be a constant, otherwise an
+     *  exception will be thrown. The specified type must have the same
+     *  structure as this type. This method will only update the
+     *  component type that is BaseType.NAT, and leave the constant
+     *  part of this type intact.
+     *  @param st A StructuredType.
+     *  @exception IllegalActionException If this Structured type 
+     *   is a constant, or the specified type has a different structure.
+     */
+    protected abstract void _updateType(StructuredType st)
+	throws IllegalActionException;
+
+    /** Set the user of this StructuedType. The user can only be set once
+     *  Otherwise, an exception will be thrown.
+     *  @param Object The user.
+     *  @exception IllegalActionException If the user is already set, or
+     *   if the argument is null.
+     */
+    protected abstract void _setUser(Object user) throws IllegalActionException;
+
 }
 
