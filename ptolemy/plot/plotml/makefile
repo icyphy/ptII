@@ -72,6 +72,7 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
+	'EditablePlotMLApplet$$1.class' \
 	'EditablePlotMLApplet$$ChoiceListener.class' \
 	'EditablePlotMLApplication$$SelectListener.class'
 

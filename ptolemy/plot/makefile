@@ -106,7 +106,7 @@ EXTRA_SRCS = $(JSRCS) \
 	index.htm
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = test #bean
+MISC_FILES = test images #bean
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -120,28 +120,37 @@ OPTIONAL_FILES = \
 	'EditablePlot$$ModifyListener.class' \
 	'EditablePlot$$UndoListener.class' \
 	'Histogram$$1.class' \
+	'Histogram$$2.class' \
+	'Histogram$$3.class' \
 	'Plot$$1.class' \
 	'Plot$$2.class' \
-	'PlotFrame$$1.class' \
-	'PlotFrame$$2.class' \
-	'PlotFrame$$FormatListener.class' \
+	'Plot$$3.class' \
+	'Plot$$4.class' \
+	'Plot$$5.class' \
+	'Plot$$6.class' \
+	'Plot$$7.class' \
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
 	$(PTAUXJAR) \
 	$(PXGRAPHAPPLETJAR) \
 	$(PLOTMLAPPLETJAR) \
 	$(PLOTAPPLICATIONJAR) \
+	'PlotBox$$1.class' \
+	'PlotBox$$ButtonListener.class' \
 	'PlotBox$$CommandListener.class' \
 	'PlotBox$$DragListener.class' \
-	'PlotBox$$FillButtonListener.class' \
 	'PlotBox$$ZoomListener.class' \
+	'PlotFormatter$$1.class' \
+	'PlotFormatter$$2.class' \
 	'PlotLive$$StartButtonListener.class' \
 	'PlotLive$$StopButtonListener.class' \
 	'Plot$$Format.class' \
 	'PlotApplication$$1.class' \
 	'PlotFrame$$FileMenuListener.class' \
-	'PlotFrame$$PlotFilenameFilter.class' \
-	'PlotFrame$$SpecialMenuListener.class'
+	'PlotFrame$$FormatListener.class' \
+	'PlotFrame$$SpecialMenuListener.class' \
+	'Render$$1.class' \
+	'RenderApplication$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -157,18 +166,26 @@ BASECLASSFILES = \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
 		'$(ME)/Histogram$$1.class' \
+		'$(ME)/Histogram$$2.class' \
+		'$(ME)/Histogram$$3.class' \
 		$(ME)/HistogramApplet.class \
 		$(ME)/Plot.class \
 		'$(ME)/Plot$$1.class' \
 		'$(ME)/Plot$$2.class' \
+		'$(ME)/Plot$$3.class' \
+		'$(ME)/Plot$$4.class' \
+		'$(ME)/Plot$$5.class' \
+		'$(ME)/Plot$$6.class' \
+		'$(ME)/Plot$$7.class' \
 		$(ME)/PlotBox.class \
+		'$(ME)/PlotBox$$1.class' \
+		'$(ME)/PlotBox$$ButtonListener.class' \
 		$(ME)/PlotDataException.class \
 		$(ME)/PlotPoint.class \
 		'$(ME)/Plot$$Format.class' \
 		'$(ME)/PlotBox$$CommandListener.class' \
 		'$(ME)/PlotBox$$DragListener.class' \
-		'$(ME)/PlotBox$$FillButtonListener.class' \
-		'$(ME)/PlotBox$$ZoomListener.class' \
+		'$(ME)/PlotBox$$ZoomListener.class'
 
 # Class files used in simple applets
 APPLETCLASSFILES = \
@@ -187,8 +204,6 @@ COMPLEXCLASSFILES = \
 		$(ME)/HistogramApplet.class \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
-		'$(ME)/PlotFrame$$1.class' \
-		'$(ME)/PlotFrame$$2.class' \
 		'$(ME)/PlotFrame$$FileMenuListener.class' \
 		'$(ME)/PlotFrame$$FormatListener.class' \
 		'$(ME)/PlotFrame$$SpecialMenuListener.class' \
@@ -269,7 +284,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo "$(PTDIST) - A Java plotting package" > \
 		$(PTTMPDIR)/$(PTDIST)/README
-	echo "Ptplot is a set of two dimensional signal plotters >> \
+	echo "Ptplot is a set of two dimensional signal plotters" >> \
 		$(PTTMPDIR)/$(PTDIST)/README
 	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README
 	echo "Ptplot is embeddable in applets and applications." >> \
@@ -288,7 +303,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README
 	echo " because of limitations in the InstallShield tool." >> \
 		$(PTTMPDIR)/$(PTDIST)/README
-	mv /tmp/ptplotfix $(PTTMPME)/makefile
+	#mv /tmp/ptplotfix $(PTTMPME)/makefile
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPME)/doc/img/ptplot.ico \
 		$(PTTMPDIR)/$(PTDIST)

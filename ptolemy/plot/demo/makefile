@@ -87,6 +87,7 @@ MISC_FILES = data $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	TwoPlotExample.class \
+	'PlotLiveDemo$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
