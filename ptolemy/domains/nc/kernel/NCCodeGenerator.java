@@ -271,7 +271,7 @@ public class NCCodeGenerator extends Attribute {
                 //String portID = port.getName();
             System.out.println("tring to get the connected port for: "
                                + port.getName());
-            List sourcePortList = port.insideSourcePortList();
+            List sourcePortList = port.insidePortList();
             //FIXME: can the list be empty?
             if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(port, "Input port " +
