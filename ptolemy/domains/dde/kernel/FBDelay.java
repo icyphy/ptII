@@ -114,6 +114,8 @@ public class FBDelay extends DDEActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _setVariables();
+        
+        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -215,11 +217,13 @@ public class FBDelay extends DDEActor {
     public void setDelay(double delay) {
 	_delay = delay;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     protected double _delay = 4.0;
+    
+    private String _name;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

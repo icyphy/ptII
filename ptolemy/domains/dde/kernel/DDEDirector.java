@@ -153,8 +153,7 @@ public class DDEDirector extends ProcessDirector {
      *  name must be unique with respect to the container. If
      *  the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     * @param workspace Object for synchronization and version
-     *  tracking
+     * @param container The container of this director.
      * @param name Name of this director.
      * @exception IllegalActionException It may be thrown in derived
      *  classes if the director is not compatible with the specified
@@ -613,11 +612,12 @@ public class DDEDirector extends ProcessDirector {
 
     /** Check to see if the actors governed by this director are
      *  externally read deadlocked. Return true in the affirmative 
-     *  and false otherwise.
+     *  and false otherwise. This method is not synchronized so
+     *  the caller should be.
      *  @return True if the actors governed by this director are
      *   externally read deadlocked; return false otherwise.
      */
-    protected synchronized boolean _isExternallyReadDeadlocked() {
+    protected boolean _isExternallyReadDeadlocked() {
     	if( _isDeadlocked() ) {
             if( _externalReadBlocks > 0 && _writeBlocks == 0 ) {
             	return true;
@@ -628,11 +628,12 @@ public class DDEDirector extends ProcessDirector {
     
     /** Check to see if the actors governed by this director are
      *  externally write deadlocked. Return true in the affirmative 
-     *  and false otherwise.
+     *  and false otherwise. This method is not synchronized so
+     *  the caller should be.
      *  @return True if the actors governed by this director are
      *   externally write deadlocked; return false otherwise.
      */
-    protected synchronized boolean _isExternallyWriteDeadlocked() {
+    protected boolean _isExternallyWriteDeadlocked() {
     	if( _isDeadlocked() ) {
             if( _writeBlocks > 0 ) {
             	return true;
@@ -643,11 +644,12 @@ public class DDEDirector extends ProcessDirector {
     
     /** Check to see if the actors governed by this director are
      *  internally deadlocked on a read. Return true in the 
-     *  affirmative and false otherwise.
+     *  affirmative and false otherwise. This method is not 
+     *  synchronized so the caller should be
      *  @return True if the actors governed by this director are
      *   internally deadlocked on a read; return false otherwise.
      */
-    protected synchronized boolean _isInternallyReadDeadlocked() {
+    protected boolean _isInternallyReadDeadlocked() {
     	if( _isDeadlocked() ) {
             if( _writeBlocks == 0 ) {
                 if( _externalReadBlocks == 0 ) {
@@ -661,11 +663,12 @@ public class DDEDirector extends ProcessDirector {
     
     /** Check to see if the actors governed by this director are
      *  internally deadlocked on a write. Return true in the 
-     *  affirmative and false otherwise.
+     *  affirmative and false otherwise. This method is not 
+     *  synchronized so the caller should be
      *  @return True if the actors governed by this director are
      *   internally deadlocked on a write; return false otherwise.
      */
-    protected synchronized boolean _isInternallyWriteDeadlocked() {
+    protected boolean _isInternallyWriteDeadlocked() {
     	if( _isDeadlocked() ) {
             if( _writeBlocks > 0 ) {
             	return true;
@@ -739,8 +742,6 @@ public class DDEDirector extends ProcessDirector {
      */
     protected boolean _resolveInternalReadDeadlock() throws
     	    IllegalActionException {
-        String name = ((Nameable)getContainer()).getName();
-        System.out.println("Inside of "+name+" there is an Internal Read Deadlock!");
         if( _pendingMutations ) {
 	    /* FIXME
                try {
@@ -785,8 +786,7 @@ public class DDEDirector extends ProcessDirector {
     ////                         private variables                 ////
 
     private double _completionTime = TimedQueueReceiver.ETERNITY;
-    // FIXME
-    public int _internalReadBlocks = 0;
+    private int _internalReadBlocks = 0;
     private int _externalReadBlocks = 0;
     private int _writeBlocks = 0;
     private boolean _pendingMutations = false;

@@ -108,8 +108,6 @@ public class DDEGetToken extends DDEGet {
 			    _threadTimes[cnt] =
                                 timeKeeper.getCurrentTime();
 			}
-		    } else {
-			System.out.println("No token for cnt "+cnt);
 		    }
 		}
 	    }

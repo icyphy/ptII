@@ -124,17 +124,9 @@ public class DDEGetNToken extends DDEGet {
 		    }
 		}
 	    }
-            System.out.println(_name + ", DDEGetNToken: cnt = " + cnt +
-            	    "   time = " + _afterTimes[cnt-1]);
 	}
     }
 
-    // FIXME
-    public void wrapup() {
-        // FIXME
-        System.out.println(_name + " has called wrapup()");
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

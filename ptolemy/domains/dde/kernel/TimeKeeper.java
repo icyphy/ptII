@@ -429,7 +429,8 @@ public class TimeKeeper {
                 try {
                     rcvrs = port.deepGetReceivers();
                 } catch( IllegalActionException e ) {
-                    // FIXME: Do Something
+                    System.err.println("Error while accessing "
+                            + "the receivers");
                 }
                 double time = getCurrentTime();
                 for (int i = 0; i < rcvrs.length; i++) {

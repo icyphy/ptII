@@ -37,7 +37,6 @@ import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 
-// import java.util.Enumeration;
 import java.util.List;
 import java.util.Iterator;
 
@@ -387,7 +386,7 @@ public class TimedQueueReceiver {
 	    }
 	    IOPort port = (IOPort)getContainer();
 	    NamedObj actor = (NamedObj)port.getContainer();
-	    // Note: Maintain the following IllegalArgumentException
+	    // NOTE: Maintain the following IllegalArgumentException
 	    // message as it is used by DDEIOPort.send().
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time in the past.");
@@ -493,19 +492,21 @@ public class TimedQueueReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                ////
 
-    /** Return the completion time of this receiver.
+    /** Return the completion time of this receiver. This method
+     *  is not synchronized so the caller should be.
      * @return double The completion time.
      */
-    synchronized double getCompletionTime() {
+    double getCompletionTime() {
         return _completionTime;
     }
 
     /** Return true if this receiver has a NullToken at the front
-     *  of the queue; return false otherwise.
+     *  of the queue; return false otherwise. This method is not
+     *  synchronized so the caller should be.
      * @return True if this receiver contains a NullToken in the
      *  oldest queue position; return false otherwise.
      */
-    synchronized boolean hasNullToken() {
+    boolean hasNullToken() {
 	if( _queue.size() > 0 ) {
 	    Event event = (Event)_queue.get(0);
 	    if( event.getToken() instanceof NullToken ) {
@@ -542,19 +543,21 @@ public class TimedQueueReceiver {
         _completionTime = time;
     }
 
-    /** Set the priority of this receiver.
+    /** Set the priority of this receiver. This method is
+     *  not synchronized so the caller should be.
      * @param int The priority of this receiver.
      */
-    synchronized void setPriority(int priority) {
+    void setPriority(int priority) {
         _priority = priority;
     }
 
     /** Set the receiver time of this receiver to the specified
      *  value. If this queue is not empty, then the receiver
-     *  time will not be set to the specified value.
+     *  time will not be set to the specified value. This method
+     *  is not synchronized so the caller should be.
      * @param time The new rcvr time.
      */
-    synchronized void setRcvrTime(double time) {
+    void setRcvrTime(double time) {
 	if( !(_queue.size() > 0) ) {
             _rcvrTime = time;
 	}
@@ -580,7 +583,7 @@ public class TimedQueueReceiver {
 
     // The IOPort which contains this receiver.
     private IOPort _container;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 

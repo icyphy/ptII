@@ -61,7 +61,14 @@ JSIMPLE_TESTS = \
 	FBDelay.tcl \
 	TimeKeeper.tcl \
 	TimedQueueReceiver.tcl 
-	# DDEDirector.tcl \
+	
+	# DDEIOPort.tcl \
+	# DDEReceiver.tcl \
+	# FBDelay.tcl \
+	# TimeKeeper.tcl \
+	# TimedQueueReceiver.tcl 
+	
+	# Test.tcl
 	# test.tcl 
 
 # Graphical Java tests that use Tcl.
