@@ -200,6 +200,7 @@ public class IconEditor {
 	String Circle = "gifs/circle.gif";
 	String Ellipse = "gifs/ellipse.gif";
 	String Fill = "gifs/fill.gif";
+	String Stroke = "gifs/stroke.gif";
 	String thickness1 = "gifs/thickness1.gif";
 	String thickness2 = "gifs/thickness2.gif";
 	String thickness3 = "gifs/thickness3.gif";
@@ -225,7 +226,9 @@ public class IconEditor {
 	GUIUtilities.addToolBarButton(shapesToolBar, ellipseAction, 
 				      "Ellipse", new ImageIcon(Ellipse));
 	GUIUtilities.addToolBarButton(shapesToolBar, fillAction, 
-				      "Fill Shape", new ImageIcon(Fill));
+				      "Fill shape with selected color", new ImageIcon(Fill));
+	GUIUtilities.addToolBarButton(shapesToolBar, strokeAction, 
+				      "Fill outline with selected color", new ImageIcon(Stroke));
 	
 	GUIUtilities.addToolBarButton(thicknessToolBar, thickness1Action,
 				      "Thickness of Outline", new ImageIcon(thickness1));
@@ -446,6 +449,13 @@ public class IconEditor {
         public void actionPerformed(ActionEvent e) {
 	    BasicFigure basicFigure = (BasicFigure)m.getFirstSelection();
 	    basicFigure.setFillPaint(strokeColor);
+	    basicFigure.repaint();
+	}
+    };
+    Action strokeAction = new AbstractAction ("Stroke") {
+        public void actionPerformed(ActionEvent e) {
+	    BasicFigure basicFigure = (BasicFigure)m.getFirstSelection();
+	    basicFigure.setStrokePaint(strokeColor);
 	    basicFigure.repaint();
 	}
     };
