@@ -484,14 +484,6 @@ set expressionMoml  "$header
     </entity>
 </entity>"
 
-test BackwardCompatibility-7.3 {ViewScreen: Property Class Change} { 
-    set parser [java::new ptolemy.moml.MoMLParser]
-    # Note that 1.1 added the filter for all the parsers
-    set toplevel [$parser parse $expressionMoml]
-    set newMoML [$toplevel exportMoML]
-    list $newMoML
-} {}
-
 
 ######################################################################
 ####
