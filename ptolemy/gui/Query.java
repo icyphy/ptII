@@ -147,11 +147,15 @@ public class Query extends JPanel {
         // Add the listener last so that there is no notification
         // of the first value.
         entryBox.addActionListener(new QueryActionListener(name));
+        // Add a listener for loss of focus.  When the entry gains
+        // and then loses focus, listeners are notified of an update.
+        entryBox.addFocusListener(new QueryFocusListener(name));
     }
 
     /** Add a listener.  The changed() method of the listener will be
      *  called when any of the entries is changed.  Note that "line"
-     *  entries only trigger this call when Return is pressed.
+     *  entries only trigger this call when Return is pressed, or
+     *  when the entry gains and then loses the keyboard focus.
      *  If the listener has already been added, then do nothing.
      *  @param listener The listener to add.
      */
@@ -648,6 +652,21 @@ public class Query extends JPanel {
         }
         /** Call all registered QueryListeners. */
         public void actionPerformed(ActionEvent e) {
+            _notifyListeners(_name);
+        }
+        private String _name;
+    }
+
+    /** Listener for line entries, for when they lose the focus.
+     */
+    class QueryFocusListener implements FocusListener {
+        public QueryFocusListener(String name) {
+            _name = name;
+        }
+        public void focusGained(FocusEvent e) {
+            // Nothing to do.
+        }
+        public void focusLost(FocusEvent e) {
             _notifyListeners(_name);
         }
         private String _name;
