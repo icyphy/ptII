@@ -223,23 +223,23 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         case CG_CLASS:
         case CG_INTERFACE:
             {
-                ClassDecl cd = (ClassDecl) d;
-                cd.loadSource();
-                int modifiers = cd.getModifiers();
+                ClassDecl classDecl = (ClassDecl) d;
+                classDecl.loadSource();
+                int modifiers = classDecl.getModifiers();
                 boolean isPublic = ((modifiers & PUBLIC_MOD) != 0);
                 boolean isStatic = ((modifiers & STATIC_MOD) != 0);
 
                 // check access : public?
                 if (!isPublic) {
-                    JavaDecl container = cd.getContainer();
+                    JavaDecl container = classDecl.getContainer();
 
                     // a top-level class in the same package?
                     if (container != currentPackage) {
 
                         // inner class, in the same package?
                         // FIXME : this check is too simple
-                        if (!cd.deepContainedBy(currentPackage)) {
-                            ApplicationUtility.error(cd.getName() +
+                        if (!classDecl.deepContainedBy(currentPackage)) {
+                            ApplicationUtility.error(classDecl.getName() +
 						     " not accessible");
                         }
                     }
@@ -500,8 +500,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         System.out.println("StaticResolution<static>: --- loading java.lang package ---" + (System.currentTimeMillis() - startTime));
 
 	// JAVA_LANG_PACKAGE is only used in FindExtraImportsVisitor
-        NameNode javaLangName = (NameNode) makeNameNode("java.lang");
-        JAVA_LANG_PACKAGE = _importPackage(env, javaLangName);
+	NameNode javaLangName = (NameNode) makeNameNode("java.lang");
+	JAVA_LANG_PACKAGE = _importPackage(env, javaLangName);
 
         System.out.println("StaticResolution<static>: --- require class on Object ---" + (System.currentTimeMillis() - startTime));
 
@@ -543,6 +543,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         arrayCompileUnitNode.setProperty(IDENT_KEY, "<array>");
 
         // resolve the names of the virtual class
+        System.out.println("StaticResolution<static>: --- load arrayCompileUnitNode ---" + (System.currentTimeMillis() - startTime));
         load(arrayCompileUnitNode, 0);
 
         ARRAY_CLASS_DECL = (ClassDecl) JavaDecl.getDecl((NamedNode) arrayClassNode);
@@ -699,6 +700,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     private static CompileUnitNode _loadCanonical(
             String filename, int pass) {
         //System.out.println("StaticResolution._loadCanonical: " + filename);
+	System.out.print(".");
 
         String noExtensionName = StringManip.partBeforeLast(filename, '.');
 
@@ -716,23 +718,42 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     }
 
     private static final ClassDecl _requireClass(Environ env, String name) {
+	ClassDecl classDecl = null;
+	System.out.println("StaticResolution._requireClass() " + name);
         Decl decl = env.lookup(name);
 
         if (decl == null) {
-            ApplicationUtility.error("could not find class or interface \"" +
-                    name + "\" in bootstrap environment: " + env);
-        }
+	    System.out.println("StaticResolution:_requireClass(): using refl");
+	    // Use reflection
+	    ClassDeclNode classDeclNode= ASTReflect.lookupClassDeclNode(name);
+	    // FIXME: what if this is an interface
+            classDecl = new ClassDecl(name,
+				      CG_CLASS,
+				      new TypeNameNode(classDeclNode.getName()),
+				      classDeclNode.getModifiers(),
+				      classDeclNode, null);
 
-        if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
-            ApplicationUtility.error("fatal error: " + decl.getName() +
-                    " should be a class or interface");
-        }
+	    //classDecl =
+	    //   (ClassDecl) classDeclNode.getDefinedProperty(DECL_KEY);
+	    if (classDecl == null) {
+		ApplicationUtility.error("could not find class or " +
+					 "interface \"" + name + 
+					 "\" in bootstrap environment: "
+					 + env);
+	    }
+	    env.add(classDecl);
 
-        ClassDecl cdecl = (ClassDecl) decl;
-
-        cdecl.loadSource();
-
-        return cdecl;
+        } else {
+	    if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
+		ApplicationUtility.error("fatal error: " + decl.getName() +
+					 " should be a class or interface");
+	    }
+	    classDecl = (ClassDecl) decl;
+	}
+	System.out.println("StaticResolution._requireClass() loadSource()");
+	classDecl.loadSource();
+	System.out.println("\nStaticResolution._requireClass() -- leaving");
+        return classDecl;
     }
 
     // Do pass 0 resolution on a CompileUnitNode that just been built by
