@@ -118,7 +118,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
     }
 
     /**
-     * Return an iteractor over the attached interactors.
+     * Return an interactor over the attached interactors.
      */
     public Iterator interactors () {
         return _interactors.iterator();

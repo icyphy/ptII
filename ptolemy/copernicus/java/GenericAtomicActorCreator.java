@@ -183,7 +183,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             JimpleBody body = (JimpleBody)method.getActiveBody();
             Stmt insertPoint = body.getFirstNonIdentityStmt();
             
-            // Do we initialize parameters in preintialize or in the
+            // Do we initialize parameters in preinitialize or in the
             // constructor?
             // ModelTransformer.initializeAttributesBefore(body,
             // insertPoint,

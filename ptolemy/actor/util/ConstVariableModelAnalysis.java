@@ -361,7 +361,7 @@ public class ConstVariableModelAnalysis {
 
     // Update the change context associated with the given variable to
     // be at least the given change context.
-    // return true if a change occured
+    // return true if a change occurred
     private final boolean _updateChangeContext(
             Variable variable, Entity changeContext) {
         Entity oldChangeContext = (Entity)

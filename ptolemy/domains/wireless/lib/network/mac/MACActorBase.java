@@ -143,7 +143,7 @@ public class MACActorBase extends NetworkActorBase {
     // all time are in the unit of microseconds
     
     /** The paremeter for SIFS (Short Inter Frame Space). This time
-     *  is used to separate transmissions belong to a single diolog.
+     *  is used to separate transmissions belong to a single dialog.
      *  This Value is fixed per PHY and is calculated base on
      *  the time that takes for the transmitting part to switch back
      *  to receive mode.    
@@ -179,7 +179,7 @@ public class MACActorBase extends NetworkActorBase {
     public Parameter aSlotTime;
    
     /** The nominal time between the end of a symbol at the air interface to
-     *  the issurance of a PMD-DATA.indicate to the PLCP.
+     *  the issuance of a PMD-DATA.indicate to the PLCP.
      */
     public Parameter aRxRfDelay;
 

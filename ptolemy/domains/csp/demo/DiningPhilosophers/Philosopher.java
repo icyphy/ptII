@@ -232,7 +232,7 @@ public class Philosopher extends CSPActor {
         return false;
     }
 
-    /** Set this actor to its intial state, i.e. not having nor waiting
+    /** Set this actor to its initial state, i.e. not having nor waiting
      *  for any chopsticks.
      */
     public void preinitialize() throws IllegalActionException {

@@ -338,7 +338,7 @@ public class MoMLApplication {
      *  typically "ptolemy/configs".
      *  Some subclasses of this class use configurations from ptolemy/configs.
      *  For example, if ptolemy/configs/full/configuration.xml exists
-     *  then -full is a legitmate argument.
+     *  then -full is a legitimate argument.
      *  @param commandTemplate The form of the command line
      *  @param commandOptions Command-line options that take arguments.
      *  @param commandFlags Command-line options that are either present

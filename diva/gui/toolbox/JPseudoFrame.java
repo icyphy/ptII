@@ -62,7 +62,7 @@ import javax.swing.event.EventListenerList;
  * must be overridden to place a component in the correct place in the
  * hierarchy.
  *
- * <P> To be notified of events occuring in the frame, attach an
+ * <P> To be notified of events occurring in the frame, attach an
  * action listener. Pressing the buttons will cause action events to
  * be fired with the command strings "iconified", "minimized", or
  * "closed."  By the time that these events are generated, the

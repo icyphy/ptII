@@ -89,7 +89,7 @@ public class TransformerAdapter extends SceneTransformer {
                         transformer.transform(body, phaseName, options);
                     }
                 } catch (RuntimeException ex) {
-                    System.err.println("Exception occured while processing "
+                    System.err.println("Exception occurred while processing "
                             + method);
                     throw ex;
                 }

@@ -416,7 +416,7 @@ public class Expression extends TypedAtomicActor {
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(Expression.this, ex, 
-                        "An error occured during expression type inference");
+                        "An error occurred during expression type inference");
             }
         }
 

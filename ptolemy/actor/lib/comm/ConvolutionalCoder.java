@@ -210,7 +210,7 @@ public class ConvolutionalCoder extends Transformer {
      */
     public Parameter polynomialArray;
 
-    /** Integer defining the intial state of the shift register.
+    /** Integer defining the initial state of the shift register.
      *  The i-th bit of the integer indicates the value of the
      *  i-th register. This parameter should be a non-negative
      *  integer. Its default value is the integer 0.

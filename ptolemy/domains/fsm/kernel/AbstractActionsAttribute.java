@@ -414,7 +414,7 @@ public abstract class AbstractActionsAttribute extends Action
             } catch (Exception ex) {
                 throw new IllegalActionException(
                         AbstractActionsAttribute.this, ex, 
-                        "An error occured during expression type inference");
+                        "An error occurred during expression type inference");
             }
         }
 

@@ -47,7 +47,7 @@ when the input token.toString is 5.
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">There are 5 legitmate values in the Test
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">There are 5 legitimate values in the Test
 actor known good input, and then some dummy
 values to make sure that we actually terminate
 after 5.</text></svg></configure>

@@ -258,7 +258,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
     /** If the specified attribute is <i>SNRThresholdInDB</i>,
      *  or <i>powerThreshold</i> then
-     *  check that a non-negtive number is given. Otherwise,
+     *  check that a non-negative number is given. Otherwise,
      *  defer to the base class.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable

@@ -64,7 +64,7 @@ the clock starts. The default value is 0.
 The clock has a stopTime parameter and a numberOfCycles parameter. If the
 stopTime is a positive double, the whole model will stop execution when the
 stop time is reached. If the numberOfCycles is set to a positive integer, 
-the clock will continue outputing the value of the defaultValue parameter
+the clock will continue outputting the value of the defaultValue parameter
 after the number of cycles are reached.
 <p>
 @see ptolemy.actor.lib.Clock

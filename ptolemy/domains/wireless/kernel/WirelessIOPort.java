@@ -790,7 +790,7 @@ public class WirelessIOPort
      *  the port is inside wireless. If there is no inside channel,  
      *  then defer to the base class. 
      *  @param channelIndex The index of the channel, from 0 to width-1.
-     *  If there is an intside channel, then this argument is ignored.
+     *  If there is an inside channel, then this argument is ignored.
      *  @param token The token to send
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException If conversion to the type of

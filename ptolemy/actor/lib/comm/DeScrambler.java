@@ -98,7 +98,7 @@ public class DeScrambler extends Transformer {
      */
     public Parameter polynomial;
 
-    /** Integer defining the intial state of the shift register.
+    /** Integer defining the initial state of the shift register.
      *  The n-th bit of the integer indicates the value of the
      *  n-th register. This parameter should be a non-negative
      *  integer. Its default value is the integer 1.
