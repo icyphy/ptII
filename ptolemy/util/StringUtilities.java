@@ -323,7 +323,7 @@ public class StringUtilities {
 
     /**  If the string is longer than 79 characters, split it up by
      *  displaying adding newlines in all newline delimited substrings
-     *  that are longer than 79 characters.
+     *  that are longer than 79 characters. 
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
      *  @see #abbreviate(String longName)
@@ -347,9 +347,22 @@ public class StringUtilities {
             new StringTokenizer(longName, "\r\n", true);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
-            int i;
-            for (i = 0; i < token.length() - 79; i += 79) {
-                results.append(token.substring(i, i + 79) + "\n");
+            int i = 0;
+            while (i < token.length() - 79) {
+                // We look for the space from the end of the first 79
+                // characters.  If we find one, then we use that
+                // as the place to insert a newline.
+                int lastSpaceIndex
+                    = token.substring(i, i + 79).lastIndexOf(" ");
+
+                if (lastSpaceIndex < 0 ) {
+                    // No space found, just insert a new line after 79.
+                    results.append(token.substring(i, i + 79) + "\n");
+                    i += 79;
+                } else {
+                    results.append(token.substring(i, lastSpaceIndex) + "\n");
+                    i = lastSpaceIndex + 1;
+                }
             }
             results.append(token.substring(i));
         }
