@@ -53,7 +53,7 @@ TODO: automate regression test (python?, jtcl?)
 @author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
 */
-class TestEngine {
+public class TestEngine {
 
     public static void main(String[] args) throws IllegalActionException {
         Engine eng = new Engine();
