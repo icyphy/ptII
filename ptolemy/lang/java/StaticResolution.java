@@ -447,8 +447,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         //        file.getName());
         try {
             return _loadCanonicalFile(file.getCanonicalPath(), pass);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe.toString());
+        } catch (Exception ex) {
+            throw new RuntimeException("StaticResolution.loadFile(" + 
+                    file + ", " + pass + "): " + ex.toString());
         }
     }
 
