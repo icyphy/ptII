@@ -49,9 +49,9 @@ test RemoveActor-1.0 {test removing an actor} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    $e0 connect \
+    set relation [$e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
     set m [$e0 getManager]
     $m addChangeListener \
             [java::new ptolemy.kernel.event.StreamChangeListener]
@@ -61,16 +61,15 @@ test RemoveActor-1.0 {test removing an actor} {
     $dir addDebugListener $debuglistener
     set scheduler [[java::cast ptolemy.domains.sdf.kernel.SDFDirector $dir]\
 	    getScheduler]
-    $scheduler addDebugListener $debuglistener
     $m initialize
     $m iterate
     set c1 [java::new ptolemy.actor.event.RemoveActor $e0 $ramp]
     $m requestChange $c1
+    set c2 [java::new ptolemy.actor.event.RemoveRelation $e0 $relation]
+    $m requestChange $c2
     $m iterate
     $m iterate
     $m wrapup
     list [enumToTokenValues [$rec getRecord 0]] \
             [enumToTokenValues [$rec getRecord 1]]
-} {{1 1 1} {0 _ _}} {This fails because RemoveActor does not remove the
-connected relations as well.  This leaves a dangling relation that the SDF
-scheduler is barfing on.}
+} {{1 1 1} {0 _ _}}
