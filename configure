@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBOOST_INCLUDE PTCALTROP_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBOOST_INCLUDE PTCALTROP_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCOMM_PACKAGES PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4022,6 +4022,8 @@ echo "${ECHO_T}$COMMAPI_DIR" >&6
 	# Subdirectories that contains Java Communications API specific code
 	PTLEGO_DIR=lego
 	PTCOMM_DIR=comm
+	# PTCOMM_PACKAGES is used in ptII/doc/makefile
+	PTCOMM_PACKAGES=ptolemy.actor.lib.io.comm
 	COMMAPI_PRESENT=yes
     else
 	echo "$as_me:$LINENO: result: Did not find
@@ -5363,6 +5365,8 @@ echo "${ECHO_T}$JOYSTICK_JAR" >&6
 	# Set to joystick and used in
 	# $PTII/ptolemy/actor/lib/joystick if joystick was found
 	PTJOYSTICK_DIR=joystick
+        # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
+	PTJOYSTICK_PACKAGES=ptolemy.actor.lib.joystick
     fi
 
     if test "$PTJOYSTICK_DIR" = ""; then
@@ -5872,6 +5876,8 @@ echo $ECHO_N "checking for Java 3D... $ECHO_C" >&6
 echo "${ECHO_T}ok" >&6
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
+       # PTGR_PACKAGES is used in ptII/doc/makefile
+       PTGR_PACKAGES="ptolemy.dimains.gr.kernel ptolemy.domains.gr.lib"
     else
        { echo "$as_me:$LINENO: WARNING: '\"$JAVAC\" java3dTest.java' failed.
 	http://java.sun.com/products/java-media/3D/download.html
@@ -6710,6 +6716,8 @@ echo $ECHO_N "checking again for Quicktime for Java... $ECHO_C" >&6
 	         echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 	         PTQUICKTIME_DIR=quicktime
+		 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
+		 PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime
 	     fi
 	  fi
        fi
@@ -7161,6 +7169,8 @@ echo $ECHO_N "checking for \$X10_DIR/tjx10p-11/lib/x10.jar... $ECHO_C" >&6
 	   echo "$as_me:$LINENO: result: $X10_CLASSES" >&5
 echo "${ECHO_T}$X10_CLASSES" >&6
 	   PTX10_DIR=x10
+	   # PTX10_PACKAGES is used in ptII/doc/makefile
+	   PTX10_PACKAGES=ptolemy.actor.lib.x10
 	else
 	   X10_CLASSES=
 	   echo "$as_me:$LINENO: result: no" >&5
@@ -7173,12 +7183,14 @@ echo "${ECHO_T}no" >&6
     perhaps X10 is not installed?
     You need not download X10 unless you plan on building applications
     using the X10 interface.
-    The X10 SDK can be downloaded from http://x10.homelinux.org" >&5
+    The X10 SDK can be downloaded from http://x10.homelinux.org.
+    See also $PTII/vendors/misc/x10/README.txt" >&5
 echo "$as_me: WARNING: Failed to find tjx10p-11/lib/x10.jar
     perhaps X10 is not installed?
     You need not download X10 unless you plan on building applications
     using the X10 interface.
-    The X10 SDK can be downloaded from http://x10.homelinux.org" >&2;}
+    The X10 SDK can be downloaded from http://x10.homelinux.org.
+    See also $PTII/vendors/misc/x10/README.txt" >&2;}
 	# Note that we don't substitute in the ${PTII} or $(X10_DIR) here
 	X10_DIR='${PTII}/vendors/misc/x10'
    	X10_CLASSES='${X10_DIR}/tjx10p-11/lib/x10.jar'
@@ -7339,6 +7351,10 @@ fi
 #
 
 
+# Ptolemy II packages that use the Java Serial Communication facility
+# PTCOMM_PACKAGES is used in ptII/doc/makefile
+
+
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 
 
@@ -7356,6 +7372,10 @@ fi
 
 # Name of the jar file that includes the GR domain if Java 3D was found.
 # Used in domains/makefile.
+
+
+# Ptolemy II packages that use the Java 3D facility
+# PTGR_PACKAGES is used in ptII/doc/makefile
 
 
 # Location of the the PTII directory
@@ -7414,6 +7434,10 @@ fi
 # Set to joystick if Joystick.jar was found
 
 
+# Ptolemy II packages that use the Java Joystick facilty
+# PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
+
+
 # Set to jspaces and used in
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 
@@ -7454,6 +7478,10 @@ fi
 # QuickTime for Java was found.
 
 
+# Ptolemy II packages that use the Quicktime facility
+# PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
+
+
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
 
@@ -7472,6 +7500,10 @@ fi
 
 # Set to x10 and used in
 # $PTII/ptolemy/actor/lib/x10/makefile if the X10 jar files were found
+
+
+# Ptolemy II packages that use the X10 facilty.
+# PTX10_PACKAGES is used in ptII/doc/makefile
 
 
 # Location of the local $PTII directory as a file:/// URL
@@ -8212,11 +8244,13 @@ s,@PTCALTROP_DIR@,$PTCALTROP_DIR,;t t
 s,@PTCOPERNICUS_DIR@,$PTCOPERNICUS_DIR,;t t
 s,@PTCM_DIR@,$PTCM_DIR,;t t
 s,@PTCOMM_DIR@,$PTCOMM_DIR,;t t
+s,@PTCOMM_PACKAGES@,$PTCOMM_PACKAGES,;t t
 s,@PTCHIC_DIR@,$PTCHIC_DIR,;t t
 s,@PTGMP_INCLUDE@,$PTGMP_INCLUDE,;t t
 s,@PTGMP_LD_FLAGS@,$PTGMP_LD_FLAGS,;t t
 s,@PTGMP_LIB@,$PTGMP_LIB,;t t
 s,@PTGRDOMAIN_JAR@,$PTGRDOMAIN_JAR,;t t
+s,@PTGR_PACKAGES@,$PTGR_PACKAGES,;t t
 s,@PTII@,$PTII,;t t
 s,@PTJACL_DIR@,$PTJACL_DIR,;t t
 s,@PTJACL_JAR@,$PTJACL_JAR,;t t
@@ -8234,6 +8268,7 @@ s,@PTJNI_SHAREDLIBRARY_LDFLAG@,$PTJNI_SHAREDLIBRARY_LDFLAG,;t t
 s,@PTJNI_SHAREDLIBRARY_PREFIX@,$PTJNI_SHAREDLIBRARY_PREFIX,;t t
 s,@PTJNI_SHAREDLIBRARY_SUFFIX@,$PTJNI_SHAREDLIBRARY_SUFFIX,;t t
 s,@PTJOYSTICK_DIR@,$PTJOYSTICK_DIR,;t t
+s,@PTJOYSTICK_PACKAGES@,$PTJOYSTICK_PACKAGES,;t t
 s,@PTJSPACES_DIR@,$PTJSPACES_DIR,;t t
 s,@PTJYTHON_DIR@,$PTJYTHON_DIR,;t t
 s,@PTJXTA_DIR@,$PTJXTA_DIR,;t t
@@ -8244,10 +8279,12 @@ s,@PTMATLAB_DIR@,$PTMATLAB_DIR,;t t
 s,@PTMESCAL_DIR@,$PTMESCAL_DIR,;t t
 s,@PTPSDF_DIR@,$PTPSDF_DIR,;t t
 s,@PTQUICKTIME_DIR@,$PTQUICKTIME_DIR,;t t
+s,@PTQUICKTIME_PACKAGES@,$PTQUICKTIME_PACKAGES,;t t
 s,@PTTINI_DIR@,$PTTINI_DIR,;t t
 s,@PTGIOTTO_DIR@,$PTGIOTTO_DIR,;t t
 s,@PTWABA_DIR@,$PTWABA_DIR,;t t
 s,@PTX10_DIR@,$PTX10_DIR,;t t
+s,@PTX10_PACKAGES@,$PTX10_PACKAGES,;t t
 s,@PTII_LOCALURL@,$PTII_LOCALURL,;t t
 s,@QTJAVA_ZIP@,$QTJAVA_ZIP,;t t
 s,@SOOT_CLASSES@,$SOOT_CLASSES,;t t
