@@ -96,9 +96,6 @@ public class Slicer extends Transformer {
         wordLength = new Parameter(this, "wordLength", new IntToken(1));
         wordLength.setTypeEquals(BaseType.INT);
 
-        //ArrayType paramType = (ArrayType)table.getType();
-        //InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        //output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,24 +128,6 @@ public class Slicer extends Transformer {
             // The base class will probably throw an exception.
             super.attributeTypeChanged(attribute);
         }
-    }
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then resets the type constraints.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Slicer newObject = (Slicer)(super.clone(workspace));
-
-        // set the type constraints
-        ArrayType paramType = (ArrayType)newObject.table.getType();
-        InequalityTerm elementTerm = paramType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
-        return newObject;
     }
 
     /** Consume the inputs and produce the corresponding symbol.
