@@ -705,10 +705,13 @@ public class MoMLParser extends HandlerBase {
                 while (attributes.hasNext()) {
                     Map.Entry entry = (Map.Entry)attributes.next();
                     if (entry.getValue() != null) {
+                        // Note that we have to escape the value again,
+                        // so that it is properly parsed.
                         _currentCharData.append(" "
                                 + entry.getKey()
                                 + "=\""
-                                + entry.getValue()
+                                + StringUtilities.escapeForXML(
+                                        (String)entry.getValue())
                                 + "\"");
                     }
                 }
