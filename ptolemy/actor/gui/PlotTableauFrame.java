@@ -46,6 +46,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
@@ -103,6 +104,11 @@ public class PlotTableauFrame extends TableauFrame {
     public PlotTableauFrame(Tableau tableau, PlotBox plotArg) {
         super(tableau, null);
         plot = plotArg;
+
+        // Create a file filter that accepts .xml and .moml files.
+        LinkedList extensions = new LinkedList();
+        extensions.add("plt");
+        _fileFilter = new ExtensionFileFilter(extensions);
 
         // Background color is a light grey.
         plot.setBackground(new Color(0xe5e5e5));

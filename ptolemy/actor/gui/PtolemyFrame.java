@@ -35,7 +35,7 @@ import ptolemy.kernel.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import javax.swing.filechooser.FileFilter;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
@@ -77,7 +77,13 @@ public abstract class PtolemyFrame extends TableauFrame {
      */
     public PtolemyFrame(CompositeEntity model, Tableau tableau) {
         super(tableau);
-	_fileFilter = new XMLOrMoMLFileFilter();
+
+        // Create a file filter that accepts .xml and .moml files.
+        LinkedList extensions = new LinkedList();
+        extensions.add("xml");
+        extensions.add("moml");
+        _fileFilter = new ExtensionFileFilter(extensions);
+
         setModel(model);
 
         // Set the window properties if there is an attribute in the
@@ -206,45 +212,4 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     // The model that this window controls, if any.
     private CompositeEntity _model;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Display only .xml and .moml files */
-    class XMLOrMoMLFileFilter extends FileFilter {
-
-	/** Accept only .xml or .moml files.
-	 *  @param file The file to be checked.
-	 *  @return true if the file is a directory, a .xml or a .moml file.
-         */
-	public boolean accept(File fileOrDirectory) {
-	    if (fileOrDirectory.isDirectory()) {
-		return true;
-	    }
-
-	    String fileOrDirectoryName = fileOrDirectory.getName();
-	    int dotIndex = fileOrDirectoryName.lastIndexOf('.');
-	    if (dotIndex == -1) {
-		return false;
-	    }
-	    String extension =
-		fileOrDirectoryName
-		.substring(dotIndex);
-
-	    if (extension != null) {
-		if (extension.equalsIgnoreCase(".xml")
-		    || extension.equalsIgnoreCase(".moml")) {
-                    return true;
-		} else {
-		    return false;
-		}
-	    }
-	    return false;
-	}
-
-	/**  The description of this filter */
-	public String getDescription() {
-	    return ".xml and .moml files";
-	}
-    }
 }

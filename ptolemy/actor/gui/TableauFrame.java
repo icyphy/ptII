@@ -35,21 +35,22 @@ import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.*;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
-import java.net.URL;
-import java.awt.Image;
-import java.awt.Toolkit;
+import javax.swing.filechooser.FileFilter;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -663,6 +664,81 @@ public class TableauFrame extends Top {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** File filter that filters out files that do not have one of a
+     *  pre-specified list of extensions.
+     */
+    class ExtensionFileFilter extends FileFilter {
+
+        /** Construct a file filter that filters out all files that do
+         *  not have one of the extensions in the given list.
+         *  @param extensionList A list of extensions, each of which is
+         *   a String.
+         */
+        public ExtensionFileFilter(List extensions) {
+            _extensions = extensions;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+	/** Accept only files with one of the extensions given in the
+         *  constructor.
+	 *  @param fileOrDirectory The file to be checked.
+	 *  @return True if the file is a directory or has one of the
+         *   specified extensions.
+         */
+	public boolean accept(File fileOrDirectory) {
+	    if (fileOrDirectory.isDirectory()) {
+		return true;
+	    }
+
+	    String fileOrDirectoryName = fileOrDirectory.getName();
+	    int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+	    if (dotIndex == -1) {
+		return false;
+	    }
+	    String extension = fileOrDirectoryName.substring(dotIndex + 1);
+
+	    if (extension != null) {
+                Iterator extensions = _extensions.iterator();
+                while(extensions.hasNext()) {
+                    String matchExtension = (String)extensions.next();
+                    if (extension.equalsIgnoreCase(matchExtension)) {
+                        return true;
+                    }
+		}
+	    }
+	    return false;
+	}
+
+	/**  The description of this filter */
+	public String getDescription() {
+            StringBuffer result = new StringBuffer();
+            Iterator extensions = _extensions.iterator();
+            int extensionNumber = 1;
+            int size = _extensions.size();
+            while(extensions.hasNext()) {
+                String extension = (String)extensions.next();
+                result.append(".");
+                result.append(extension);
+                if (extensionNumber < size - 1) {
+                    result.append(", ");
+                } else if (extensionNumber < size) {
+                    result.append(" and ");
+                }
+                extensionNumber++;
+            }
+            result.append(" files");
+	    return result.toString();
+	}
+
+        ///////////////////////////////////////////////////////////////
+        ////                     private variables                 ////
+
+        // The list of acceptable file extensions.
+        private List _extensions;
+    }
 
     /** Listener for view menu commands. */
     class ViewMenuListener implements ActionListener {
