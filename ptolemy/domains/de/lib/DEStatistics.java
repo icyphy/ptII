@@ -69,7 +69,7 @@ public class DEStatistics extends DEActor {
         variance = new DEIOPort(this, "variance", false, true);
         variance.setDeclaredType(DoubleToken.class);
         // create input ports
-        input = new DEIOPort(this, "data input", true, false);
+        input = new DEIOPort(this, "input", true, false);
         input.setDeclaredType(DoubleToken.class);
         demand = new DEIOPort(this, "demand", true, false);
         demand.setDeclaredType(Token.class);
