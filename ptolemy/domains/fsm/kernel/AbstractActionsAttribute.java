@@ -186,7 +186,7 @@ public abstract class AbstractActionsAttribute extends Action {
                     + getName()
                     + "_"
                     + completeDestinationSpec.replace('(','_')
-                    .replace(')','_');
+                    .replace(')','_').replace('.','_');
             Variable evalVariable = null;
             if (transition == null) {
                 // Create the variable in the workspace.
