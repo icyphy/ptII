@@ -4,13 +4,38 @@
 </head>
 <body>
 <h1>
-Demos
+Quick Tour
 </h1>
 The following links open Ptolemy models in Vergil.
 To run the models, select "Run Window" from the "View" menu.
 The diagrams are fully editable, so feel free to explore.
 <ul>
-<li><a href="demo/modulation.xml">Modulation of a sine wave in SDF</a></li>
+<li><a href="demo/modulation.xml">Modulation of a sine wave in SDF</a>
+<br> This example illustrates hierarchical models, the Expression actor, live
+parameter editing, the FFT actor, and a scope-style display.
+The Sinewave actors with the blue outline are hierarchical.
+Right click on the mouse and select "look inside" to see their refinement.
+This model is build using the <i>synchronous dataflow</i> (SDF) domain,
+which statically schedules the firing of the actors.
+You can also use a <i>process networks</i> (PN) director,
+in which case each actor is executed in a separate Java thread.
+The PN domain is more flexible than SDF, but this flexibility comes
+with a noticable performance penalty.  To try this model in the PN
+domain, simply drag in a PN director from the director library.
+
+<li>Continuous-time model</li>
+
+<li>Hybrid system model.
+<br> This example illustrates the use of the finite-state-machine (FSM)
+domain together with another domain to get a <i>modal model</i>.
+A special case of modal models are <i>hybrid systems</i>, where FSM
+is combined with CT.</br></li>
+
+<li>Three-dimensional graphics</li>
+
+<li>Discrete-event model</li>
+
+<li>Type system and polymorphism</li>
 </ul>
 </body>
 </html>
