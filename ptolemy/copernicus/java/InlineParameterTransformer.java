@@ -553,6 +553,9 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             } else if (r.getMethod().getName().equals("setVisibility")) {
                                 // Ignoring...  does it matter?
                                 body.getUnits().remove(stmt);
+                            } else if (r.getMethod().getName().equals("validate")) {
+                                // Ignoring...  does it matter?
+                                body.getUnits().remove(stmt);
                             } else {
                                 if (!r.getMethod().getDeclaringClass().isApplicationClass()) {
                                     throw new RuntimeException("Found unknown " +
