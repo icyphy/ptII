@@ -188,6 +188,7 @@ public class ProcessDirector extends Director {
 	_newthreads = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
+            /*
 	    CompositeActor containersContainer =
                 (CompositeActor)container.getContainer();
 	    if( containersContainer == null ) {
@@ -197,9 +198,10 @@ public class ProcessDirector extends Director {
                     containersContainer.getDirector().getCurrentTime();
                 setCurrentTime(time);
 	    }
+            */
 
+            // Creating threads for all actors;
             Enumeration allActors = container.deepGetEntities();
-            //Creating threads for all actors;
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 actor.initialize();
