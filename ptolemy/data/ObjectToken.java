@@ -45,13 +45,13 @@ is acceptable.
 */
 public class ObjectToken extends Token {
 
-    /** Contruct an empty token.
+    /** Construct an empty token.
      */
     public ObjectToken() {
         super();
     }
 
-    /** Contruct a token with a reference to the specified object.
+    /** Construct a token with a reference to the specified object.
      *  @exception IllegalActionException Argument is not of the appropriate
      *   type (may be thrown by derived classes, but is not thrown here).
      */
