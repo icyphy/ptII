@@ -2137,15 +2137,22 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
     // a type that is not supported by token unboxing.
     private boolean _hasBadTypes(NamedObj object) 
             throws IllegalActionException {
+        if(object instanceof Attribute &&
+                ModelTransformer._isIgnorableAttribute((Attribute)object)) {
+            return false;
+        }
         if(object instanceof Typeable) {
             Typeable typeable = (Typeable)object;
+           
             ptolemy.data.type.Type type = typeable.getType();
             if(type instanceof ptolemy.data.type.RecordType) {
+                System.out.println("badTypeObject = " + object);
                 return true;
             }
             if(type instanceof ptolemy.data.type.ArrayType) {
                 type = ((ptolemy.data.type.ArrayType)type).getElementType();
                 if(type instanceof ptolemy.data.type.ArrayType) {
+                    System.out.println("badTypeObject = " + object);
                     return true;
                 }
             }

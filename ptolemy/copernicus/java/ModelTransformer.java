@@ -1749,7 +1749,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
 
     // Return true if the given attribute is one that can be ignored
     // during code generation...
-    private static boolean _isIgnorableAttribute(Attribute attribute) {
+    public static boolean _isIgnorableAttribute(Attribute attribute) {
         // FIXME: This is horrible...  I guess we need an attribute for
         // persistence?
         if (attribute instanceof Variable &&

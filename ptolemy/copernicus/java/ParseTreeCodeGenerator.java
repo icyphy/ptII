@@ -203,7 +203,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             ptolemy.data.type.Type type = 
                 ((ASTPtRootNode)node.jjtGetChild(0)).getType();
-            if (type instanceof ArrayType) {
+            if (type instanceof ptolemy.data.type.ArrayType) {
                 if (argCount == 1) {
                     // array..
                     Local tokenCastLocal = Jimple.v().newLocal("indexToken",
@@ -347,7 +347,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                         argumentsLocal)), _insertPoint);                
             } else {
                 throw new IllegalActionException("Wrong number of indices "
-                        + "when referencing " + node.getFunctionName());
+                        + "when referencing " + node.getFunctionName() + 
+                                                 " with type " + type);
             }
             _nodeToLocal.put(node, resultLocal);
             return;
