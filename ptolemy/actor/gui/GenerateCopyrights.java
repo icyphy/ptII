@@ -103,10 +103,13 @@ public class GenerateCopyrights {
                 "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/copyright.htm");
 
-
         _addIfPresent(copyrightsMap,
                 "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-license.html");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.matlab.Expression",
+                "ptolemy/matlab/copyright.htm");
 
 
         // Now generate the HTML
@@ -118,20 +121,22 @@ public class GenerateCopyrights {
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
                 + "</head>\n<body>\n<dl>\n" 
                 + "<h1>Ptolemy II Copyrights</h1>\n"
-                + "The primary copyright for Ptolemy II can be found\n"
-                + "in <a href=\"" + ptIICopyright + "\"><code>"
-                + ptIICopyright + "</code></a>\n"
+                + "The primary copyright for the Ptolemy II System can be\n"
+                + "found in <a href=\"" + ptIICopyright + "\"><code>"
+                + ptIICopyright + "</code></a>.\n"
+                + "This configuration includes code that uses packages\n"
+                + "with the following copyrights.\n"
                 + "<p>Ptolemy II uses AElfred as an XML Parser.\n"
                 + "AElfred is covered by the copyright in\n "
                 + "<a href=\"" + aelfredCopyright + "\"><code>"
                 + aelfredCopyright + "</code></a>\n"
-                + "<p>Various portions of Ptolemy II use code that falls\n"
-                + "under other copyrights.\n"
-                + "<p>Below, we list actors and their corresponding "
-                + "copyright.\n"
-                + "If an actor is not listed below, then the Ptolemy II\n "
-                + "copyright is the primary copyright"
-                + "<dl>\n");
+                + "<p>Below we list actors and the corresponding copyright of "
+                + "the package that is used.  If an actor is not listed \n"
+                + "below, then the Ptolemy II copyright is the only copyright."
+                + "<table>\n"
+                + "  <tr><th>Actor</th>\n"
+                + "      <th>Copyright of package used by the Actor</th>\n"
+                + "  </tr>\n");
                 
         Iterator copyrights = copyrightsMap.entrySet().iterator();
         while (copyrights.hasNext()) {
@@ -158,9 +163,9 @@ public class GenerateCopyrights {
 
             String foundCopyright = _findURL(copyrightURL);
 
-            htmlBuffer.append("<dt>" + entityBuffer
-                    + "\n<dd> <a href=\"" + foundCopyright + "\"><code>"
-                    + foundCopyright + "</code></a>\n");
+            htmlBuffer.append("<tr><td>" + entityBuffer
+                    + "</td>\n    <td> <a href=\"" + foundCopyright + "\"><code>"
+                    + foundCopyright + "</code></a></td>\n</tr>\n");
         }
         htmlBuffer.append("</dl>\n</body>\n</html>");
         return htmlBuffer.toString();
@@ -191,11 +196,10 @@ public class GenerateCopyrights {
                 // one to the list.
                 entitiesSet.add(className);
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore, this just means that the classname could
             // not be found, so we need not include information
             // about the copyright.
-            System.out.println("_addIfPresent: " + ex);
         }
     }
 
