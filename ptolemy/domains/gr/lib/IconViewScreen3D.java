@@ -167,7 +167,7 @@ public class IconViewScreen3D extends ViewScreen {
             GraphicsContext3D context = getGraphicsContext3D();
             // The raster components need all be set!
             Raster raster = new Raster(
-                    new Point3f(-1.0f,-1.0f,-1.0f),
+                    new Point3f(-1.0f, -1.0f, -1.0f),
                     Raster.RASTER_COLOR,
                     0,0,
                     _frameWidth, _frameHeight,
