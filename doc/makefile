@@ -445,8 +445,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/giotto/kernel/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
-			../ptolemy/domains/nc/kernel/*.java \
-			../ptolemy/domains/nc/lib/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
