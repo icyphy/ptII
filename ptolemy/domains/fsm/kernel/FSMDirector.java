@@ -566,6 +566,7 @@ public class FSMDirector extends Director
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _mutationEnabled = true;
         _buildLocalReceiverMaps();
     }
 
@@ -622,7 +623,12 @@ public class FSMDirector extends Director
         // is based on that each time one transition happens, the 
         // new refinement takes place of the modal model for 
         // execution, consequently, the model structure changes.
-        if (_enabledTransition != null) {
+
+        // Note that we also check whether mutation is enabled at
+        // the current iteration. For some models, such as CT models,
+        // during a discrete phase of execution, the mutation is disable
+        // to avoid unnecessary change requests made by this director.
+        if (_mutationEnabled && _enabledTransition != null) {
             ChangeRequest request =
                 new ChangeRequest(this, "increment workspace version by 1") {
                 protected void _execute() throws KernelException {
@@ -978,20 +984,29 @@ public class FSMDirector extends Director
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Map from input ports of the modal model to the local receivers
-    // for the current state.
+    /** Map from input ports of the modal model to the local receivers 
+     *  for the current state.
+     */
     protected Map _currentLocalReceiverMap = null;
 
-    // The list of enabled actors that refines the current state.
+    /** The list of enabled actors that refines the current state.
+     */
     protected List _enabledRefinements;
 
-    // cached enabled transition.
+    /** cached enabled transition.
+     */
     protected Transition _enabledTransition = null;
 
-    // Stores for each state of the mode controller the map from input
-    // ports of the modal model to the local receivers when the mode
-    // controller is in that state.
+    /** Stores for each state of the mode controller the map from input 
+     *  ports of the modal model to the local receivers when the mode
+     *  controller is in that state.
+     */ 
     protected Map _localReceiverMaps = new HashMap();
+    
+    /** Boolean varialbe indicating whether model change is enabled. The
+     *  default value is true.
+     */
+    protected boolean _mutationEnabled = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -198,6 +198,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // record the enabled preemptive transition 
                 // for the postfire() method.
                 _enabledTransition = transition;
+                // Disable mutation because we are in the middle of an 
+                // iteration. The mutation will be enabled again in the 
+                // postfire() method when the current phase of execution is
+                // updating continuous states.
+                _mutationEnabled = false;
                 Actor[] actors = transition.getRefinement();
                 if (actors != null && actors.length > 0) {
                     for (int i = 0; i < actors.length; ++i) {
@@ -269,6 +274,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // record the enabled nonpreemptive transition for 
                 // the postfire() method 
                 _enabledTransition = transition;
+                // Disable mutation because we are in the middle of an 
+                // iteration. The mutation will be enabled again in the 
+                // postfire() method when the current phase of execution is
+                // updating continuous states.
+                _mutationEnabled = false;
                 Actor[] transitionActors = transition.getRefinement();
                 if (transitionActors != null  && transitionActors.length > 0) {
                     for (int i = 0; i < transitionActors.length; ++i) {
@@ -770,6 +780,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // Only clear the cached enabled transition when no more events
                 // will be generated at the current discrete phase of execution. 
                 _enabledTransition = null;
+                // Enable mutation when the current phase of execution is
+                // updating continuous states. 
+                // This is to avoid unnecessary change requests made by 
+                // the super class FSMDirector.
+                _mutationEnabled = true;
             }
         } else {
             if ((getExecutionPhase() == 
