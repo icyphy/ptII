@@ -55,12 +55,12 @@ JSRCS = \
 	FIRsingle.java
 
 # Non-graphical Java tests written in Tcl
+# FIXME: add FIR.tcl
 JSIMPLE_TESTS = \
 	Object.tcl \
 	Simple.tcl \
     ramp.tcl \
-    FIR.tcl \
-    FIRsingle.tcl \
+    FIRsingle.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
