@@ -54,8 +54,9 @@ OTHER_FILES_TO_BE_JARED = \
 	DemoDatagramDE.xml \
 	DemoDatagramParsed.xml \
 	DemoDatagramSDF.xml \
-	DemoDatagramSender.xml \
-	DemoDatagramUnparsed.xml
+	DemoDatagramUnparsed.xml \
+	DemoDatagramWriter.xml
+
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DemoDatagramSender" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DemoDatagramWriter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -17,7 +17,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="185.0, 114.5">
         </property>
     </property>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
@@ -81,7 +81,7 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="265.0, 220.0">
         </vertex>
     </relation>
-    <link port="DatagramSender.data" relation="relation"/>
+    <link port="DatagramWriter.data" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Display.input" relation="relation"/>
 </entity>
