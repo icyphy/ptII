@@ -1,4 +1,4 @@
-/* An applet that uses Ptolemy II CT and DE domains.
+/* Simulating the Lorenz system, a nonlinear CT system.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -32,29 +32,35 @@ package ptolemy.domains.ct.demo.Lorenz;
 
 import java.awt.*;
 import java.awt.event.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.kernel.util.*;
-import ptolemy.domains.ct.gui.CTApplet;
+import ptolemy.domains.ct.gui.*;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.actor.*;
+import ptolemy.actor.util.*;
+import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.plot.*;
+//import ptolemy.plot.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import collections.LinkedList;
+//import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// LorenzApplet
 /**
+A demonstration of the Lorenz system. The system is given by a set of 
+ODEs like:
+dx1/dt = sigma*(x2-x1)
+dx2/dt = (lamda-x3)*x1 -x2
+dx3/dt = x1*x2-b*x3
+
+This demo plots the projection of the state trajectory to the (x1,x2)
+plane.
 @author Jie Liu
 @version $Id$
 */
 public class LorenzApplet extends CTApplet {
-
-    public static final boolean DEBUG = false;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -64,120 +70,70 @@ public class LorenzApplet extends CTApplet {
     public void init() {
 
         super.init();
-        // Initialization
-        _stopTimeBox = new TextField("50.0", 10);
-        _sigmaBox = new TextField("10.0", 10);
-        _lamdaBox = new TextField("25.0", 10);
-        _bBox = new TextField("-2.0", 10);
-        _currentTimeLabel = new Label("Current time = 0.0     ");
-        _goButton = new Button("Go");
+        Panel controlpanel = new Panel();
+        controlpanel.setLayout(new BorderLayout());
+        add(controlpanel);
 
-        // The applet has two panels, stacked vertically
-        setLayout(new BorderLayout());
-        Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(1, 1));
-        add(appletPanel, "Center");
+        _query = new Query();
+        _query.addQueryListener(new ParameterListener());
+        controlpanel.add("West", _query);
+        _query.line("stopT", "Stop Time", "50.0", 10);
+        _query.line("sigma", "Sigma", "10.0", 10);
+        _query.line("lamda", "Lamda", "25.0", 10);
+        _query.line("b", "b", "2.0", 10);
 
-        Plot ctPanel = new Plot();
-        appletPanel.add(ctPanel);
+        Panel runcontrols = new Panel();
+        controlpanel.add("East",runcontrols);
+        runcontrols.add(_createRunControls(1));
 
-        // Adding a control panel in the main panel.
-        Panel controlPanel = new Panel();
-        add(controlPanel, "South");
-        // Done adding a control panel.
-
-        // Adding simulation parameter panel in the control panel.
-        Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2, 3));
-        controlPanel.add(simulationParam);
-        // Done adding simulation parameter panel.
-
-        // Adding current time in the sub panel.
-        simulationParam.add(_currentTimeLabel);
-        // Done adding average wait time.
-
-        // Adding sample time (minimum service time) in the simulation panel
-        Panel sigmaPanel = new Panel();
-        simulationParam.add(sigmaPanel);
-        sigmaPanel.add(new Label("Sigma:"));
-        sigmaPanel.add(_sigmaBox);
-        // done adding sigma
-
-        // Adding Stop time in the simulation panel.
-        Panel subSimul = new Panel();
-        simulationParam.add(subSimul);
-        subSimul.add(new Label("Stop time:"));
-        subSimul.add(_stopTimeBox);
-        // Done adding stop time.
-
-        // Adding lamda in the simulation panel
-        Panel lamdaPanel = new Panel();
-        simulationParam.add(lamdaPanel);
-        lamdaPanel.add(new Label("Lamda"));
-        lamdaPanel.add(_lamdaBox);
-        // done adding lamda
-
-        // Adding b in the simulation panel
-        Panel bPanel = new Panel();
-        simulationParam.add(bPanel);
-        bPanel.add(new Label("-b"));
-        bPanel.add(_bBox);
-        // done adding b
-
-        // Adding go button in the control panel.
-        ctPanel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());
-
-        //System.out.println("Construct ptII");
-        // Creating the topology.
+        //System.out.println("Construct the model");
+        // Creating the model.
         try {
             
             // Set up the top level composite actor, director and manager
-            TypedCompositeActor sys = _toplevel;
-            sys.setName("LorenzSystem");
-            _dir = new CTSingleSolverDirector(sys, "CTSingleSolverDirector");
-            // FIXME: temporary
-            _dir.addDebugListener(new StreamListener());
-
-            //_manager = new Manager("Manager");
-            _manager.addExecutionListener(new MyExecutionListener());
-            //sys.setManager(_manager);
-            _thismanager = _manager;
+            _toplevel.setName("LorenzSystem");
+            _dir = new CTSingleSolverDirector(
+                    _toplevel, "CTSingleSolverDirector");
+            //_dir.addDebugListener(new StreamListener());
+            //_manager.addDebugListener(new StreamListener());
             // ---------------------------------
-            // Create the actors.
+            // Create the system.
             // ---------------------------------
 
             // CTActors
 
-            CTConst LAMDA = new CTConst(sys, "LAMDA");
-            CTGain SIGMA = new CTGain(sys, "SIGMA");
-            CTGain B = new CTGain(sys, "B");
+            _LAMDA = new Const(_toplevel, "LAMDA");
+            _SIGMA = new Scale(_toplevel, "SIGMA");
+            _B = new Scale(_toplevel, "B");
 
-            CTAdd ADD1 = new CTAdd(sys, "Add1");
-            CTAdd ADD2 = new CTAdd(sys, "Add2");
-            CTAdd ADD3 = new CTAdd(sys, "Add3");
-            CTAdd ADD4 = new CTAdd(sys, "Add4");
+            AddSubtract ADD1 = new AddSubtract(_toplevel, "Add1");
+            AddSubtract ADD2 = new AddSubtract(_toplevel, "Add2");
+            AddSubtract ADD3 = new AddSubtract(_toplevel, "Add3");
+            AddSubtract ADD4 = new AddSubtract(_toplevel, "Add4");
 
-            CTMultiply MULT1 = new CTMultiply(sys, "MULT1");
-            CTMultiply MULT2 = new CTMultiply(sys, "MULT2");
+            MultiplyDivide MULT1 = new MultiplyDivide(_toplevel, "MULT1");
+            MultiplyDivide MULT2 = new MultiplyDivide(_toplevel, "MULT2");
 
-            CTIntegrator X1 = new CTIntegrator(sys, "IntegratorX1");
-            CTIntegrator X2 = new CTIntegrator(sys, "IntegratorX2");
-            CTIntegrator X3 = new CTIntegrator(sys, "IntegratorX3");
+            CTIntegrator X1 = new CTIntegrator(_toplevel, "IntegratorX1");
+            CTIntegrator X2 = new CTIntegrator(_toplevel, "IntegratorX2");
+            CTIntegrator X3 = new CTIntegrator(_toplevel, "IntegratorX3");
 
-            CTGain MINUS1 = new CTGain(sys, "MINUS1");
-            CTGain MINUS2 = new CTGain(sys, "MINUS2");
-            CTGain MINUS3 = new CTGain(sys, "MINUS3");
+            Scale MINUS1 = new Scale(_toplevel, "MINUS1");
+            Scale MINUS2 = new Scale(_toplevel, "MINUS2");
+            Scale MINUS3 = new Scale(_toplevel, "MINUS3");
 
-            CTXYPlot ctPlot = new CTXYPlot(sys, "CTXYPlot", ctPanel);
-            String[] ctLegends = {"(x1, x2)"};
-
-            ctPlot.setLegend(ctLegends);
+            TimeXYPlotter myplot = new TimeXYPlotter(_toplevel, "CTXYPlot");
+            myplot.setPanel(this);
+            myplot.plot.setGrid(true);
+            myplot.plot.setXRange(-25.0, 25.0);
+            myplot.plot.setYRange(-25.0, 25.0);
+            myplot.plot.setSize(400, 400);
+            myplot.plot.addLegend(0,"(x1,x2)");
 
             // CTConnections
-            TypedIORelation x1 = new TypedIORelation(sys, "X1");
-            TypedIORelation x2 = new TypedIORelation(sys, "X2");
-            TypedIORelation x3 = new TypedIORelation(sys, "X3");
+            TypedIORelation x1 = new TypedIORelation(_toplevel, "X1");
+            TypedIORelation x2 = new TypedIORelation(_toplevel, "X2");
+            TypedIORelation x3 = new TypedIORelation(_toplevel, "X3");
             X1.output.link(x1);
             X2.output.link(x2);
             X3.output.link(x3);
@@ -186,96 +142,75 @@ public class LorenzApplet extends CTApplet {
             MINUS3.input.link(x3);
 
             // dx1/dt = sigma*(x2-x1)
-            sys.connect(MINUS1.output, ADD1.input);
-            ADD1.input.link(x2);
-            sys.connect(ADD1.output, SIGMA.input);
-            sys.connect(SIGMA.output, X1.input);
+            _toplevel.connect(MINUS1.output, ADD1.plus);
+            ADD1.plus.link(x2);
+            _toplevel.connect(ADD1.output, _SIGMA.input);
+            _toplevel.connect(_SIGMA.output, X1.input);
 
             // dx2/dt = (lamda-x3)*x1-x2
-            sys.connect(LAMDA.output, ADD2.input);
-            sys.connect(MINUS3.output, ADD2.input);
-            sys.connect(ADD2.output, MULT1.input);
-            MULT1.input.link(x1);
-            sys.connect(MULT1.output, ADD3.input);
-            sys.connect(MINUS2.output, ADD3.input);
-            sys.connect(ADD3.output, X2.input);
+            _toplevel.connect(_LAMDA.output, ADD2.plus);
+            _toplevel.connect(MINUS3.output, ADD2.plus);
+            _toplevel.connect(ADD2.output, MULT1.multiply);
+            MULT1.multiply.link(x1);
+            _toplevel.connect(MULT1.output, ADD3.plus);
+            _toplevel.connect(MINUS2.output, ADD3.plus);
+            _toplevel.connect(ADD3.output, X2.input);
 
             // dx3/dt = x1*x2-b*x3
-            MULT2.input.link(x1);
-            MULT2.input.link(x2);
-            B.input.link(x3);
-            sys.connect(MULT2.output, ADD4.input);
-            sys.connect(B.output, ADD4.input);
-            sys.connect(ADD4.output, X3.input);
+            MULT2.multiply.link(x1);
+            MULT2.multiply.link(x2);
+            _B.input.link(x3);
+            _toplevel.connect(MULT2.output, ADD4.plus);
+            _toplevel.connect(_B.output, ADD4.minus);
+            _toplevel.connect(ADD4.output, X3.input);
 
-            ctPlot.inputX.link(x1);
-            ctPlot.inputY.link(x2);
+            myplot.inputX.link(x1);
+            myplot.inputY.link(x2);
 
             //System.out.println("Parameters");
             // CT Director parameters
-            Parameter initstep =
-                (Parameter)_dir.getAttribute("InitialStepSize");
-            initstep.setToken(new DoubleToken(0.01));
-
-            Parameter minstep =
-                (Parameter)_dir.getAttribute("MinimumStepSize");
-            minstep.setToken(new DoubleToken(1e-6));
-
-            /*Parameter solver1 =
-                (Parameter)_dir.getAttribute("BreakpointODESolver");
-            StringToken token1 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            solver1.setToken(token1);
-            */
-
-            Parameter solver2 =
-                (Parameter)_dir.getAttribute("ODESolver");
+            _dir.InitStepSize.setToken(new DoubleToken(0.01));
+            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-            solver2.setToken(token2);
+            _dir.ODESolver.setToken(token2);
 
             // CTActorParameters
-            Parameter xi1 = (Parameter)X1.getAttribute("InitialState");
-            xi1.setToken(new DoubleToken(1.0));
+            X1.InitialState.setToken(new DoubleToken(1.0));
+            X2.InitialState.setToken(new DoubleToken(1.0));
+            X3.InitialState.setToken(new DoubleToken(1.0));
 
-            Parameter xi2 = (Parameter)X2.getAttribute("InitialState");
-            xi2.setToken(new DoubleToken(1.0));
+            MINUS1.gain.setToken(new DoubleToken(-1.0));
+            MINUS2.gain.setToken(new DoubleToken(-1.0));
+            MINUS3.gain.setToken(new DoubleToken(-1.0));
 
-            Parameter xi3 = (Parameter)X3.getAttribute("InitialState");
-            xi3.setToken(new DoubleToken(1.0));
-
-            Parameter m1 = (Parameter)MINUS1.getAttribute("Gain");
-            m1.setToken(new DoubleToken(-1.0));
-
-            Parameter m2 = (Parameter)MINUS2.getAttribute("Gain");
-            m2.setToken(new DoubleToken(-1.0));
-
-            Parameter m3 = (Parameter)MINUS3.getAttribute("Gain");
-            m3.setToken(new DoubleToken(-1.0));
-
-            //XYPlot ranges
-            Parameter xmin = (Parameter)ctPlot.getAttribute("X_Min");
-            xmin.setToken(new DoubleToken(-25.0));
-
-            Parameter xmax = (Parameter)ctPlot.getAttribute("X_Max");
-            xmax.setToken(new DoubleToken(25.0));
-
-            Parameter ymin = (Parameter)ctPlot.getAttribute("Y_Min");
-            ymin.setToken(new DoubleToken(-25.0));
-
-            Parameter ymax = (Parameter)ctPlot.getAttribute("Y_Max");
-            ymax.setToken(new DoubleToken(25.0));
-
-            // Setting up parameters.
-            _paramSigma = (Parameter)SIGMA.getAttribute("Gain");
-            _paramLamda = (Parameter)LAMDA.getAttribute("Value");
-            _paramB = (Parameter)B.getAttribute("Gain");
-            _paramStopT = (Parameter)_dir.getAttribute("StopTime");
         } catch (Exception ex) {
             report("Setup failed: ",  ex);
         }
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
+    /** Execute the system.  This overrides the base class to read the
+     *  values in the query box first.
+     *  @exception IllegalActionException Not thrown.
+     */
+    protected void _go() throws IllegalActionException {
+        try {
+            _dir.StopTime.setToken(new DoubleToken(
+                    _query.doubleValue("stopT")));
+            _LAMDA.value.setToken(new DoubleToken(
+                    _query.doubleValue("lamda")));
+            _SIGMA.gain.setToken(new DoubleToken(
+                    _query.doubleValue("sigma")));
+            _B.gain.setToken(new DoubleToken(
+                    _query.doubleValue("b")));
+            super._go();
+        } catch (Exception ex) {
+            report(ex);
+        }
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
@@ -284,23 +219,13 @@ public class LorenzApplet extends CTApplet {
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     private CTSingleSolverDirector _dir;
-    private Manager _thismanager;
 
-    private TextField _stopTimeBox;
-    private TextField _lamdaBox;
-    private TextField _bBox;
-    private TextField _sigmaBox;
-    private Label _currentTimeLabel;
-    private double _stopTime = 100.0;
-    private Button _goButton;
+    private Query _query;
 
-    private Parameter _paramLamda;
-    private Parameter _paramSigma;
-    private Parameter _paramB;
-    private Parameter _paramStopT;
+    private Const _LAMDA;
+    private Scale _SIGMA;
+    private Scale _B;
 
-    //private Label _currentTimeLabel;
-    private boolean _isSimulationPaused = false;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -309,85 +234,25 @@ public class LorenzApplet extends CTApplet {
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
 
-    /* Show simulation progress.
+    /** Listener update the parameter change of stop time.
      */
-    private class CurrentTimeThread extends Thread {
-        public void run() {
-            while (_isSimulationRunning) {
-                // get the current time from director.
-                double currenttime = _dir.getCurrentTime();
-                _currentTimeLabel.setText("Current time = "+currenttime);
-                try {
-                    sleep(500);
-                } catch (InterruptedException e) {}
-            }
-        }
-    }
-
-    private class MyExecutionListener extends DefaultExecutionListener {
-        public void executionFinished(Manager manager) {
-            super.executionFinished(manager);
-            _isSimulationRunning = false;
-        }
-
-    }
-
-    private class GoButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            if (_isSimulationRunning) {
-                // report("Simulation still running.. hold on..");
-                return;
-            }
-
+    private class ParameterListener implements QueryListener {
+        public void changed(String name) {
             try {
-                // The simulation is started non-paused (of course :-) )
-                _isSimulationPaused = false;
-
-                // Set the stop time.
-                try {
-                    Double tmp = Double.valueOf( _stopTimeBox.getText());
-                    _paramStopT.setToken(new DoubleToken(tmp.doubleValue()));
-                } catch (NumberFormatException ex) {
-                    report("Invalid stop time: ", ex);
-                    return;
-                }
-                // set lamda
-                try {
-                    Double tmp = Double.valueOf(_lamdaBox.getText());
-                    _paramLamda.setToken(new DoubleToken(tmp.doubleValue()));
-                } catch (NumberFormatException ex) {
-                    report("Invalid Lamda value: ", ex);
-                    return;
-                }
-                // set b.
-                try {
-                    Double tmp = Double.valueOf(_bBox.getText());
-                    _paramB.setToken(new DoubleToken(tmp.doubleValue()));
-                } catch (NumberFormatException ex) {
-                    report("Invalid B value: ", ex);
-                    return;
-                }
-                // set sigma.
-                try {
-                    Double tmp = Double.valueOf(_sigmaBox.getText());
-                    _paramSigma.setToken(new DoubleToken(tmp.doubleValue()));
-                } catch (NumberFormatException ex) {
-                    report("Invalid SigmaValue: ", ex);
-                    return;
-                }
-
-                // Start the CurrentTimeThread.
-                Thread ctt = new CurrentTimeThread();
-                _isSimulationRunning = true;
-                ctt.start();
-                _thismanager.startRun();
-
-            } catch (Exception e) {
-                report("Error: ",  e);
+                _dir.StopTime.setToken(new DoubleToken(
+                        _query.doubleValue("stopT")));
+                _LAMDA.value.setToken(new DoubleToken(
+                        _query.doubleValue("lamda")));
+                _SIGMA.gain.setToken(new DoubleToken(
+                        _query.doubleValue("sigma")));
+                _B.gain.setToken(new DoubleToken(
+                        _query.doubleValue("b")));
+            } catch (Exception ex) {
+                report(ex);
             }
-
         }
     }
+
 }
 
 
