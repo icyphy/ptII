@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Green (yuhong@eecs.berkeley.edu)
+@AcceptedRating Green (lmuliadi@eecs.berkeley.edu)
 
 */
 
@@ -43,7 +43,6 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -220,11 +219,19 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     /** Do type checking and type resolution on the specified composite actor.
      *  The specified actor must be the top level container of the model.
      *  @param topLevel The top level TypedCompositeActor.
+     *  @exception IllegalArgumentException If the specified actor is not the
+     *   top level container. That is, its container is not null.
      *  @exception TypeConflictException If a type conflict is detected.
      */
     public static void resolveTypes(TypedCompositeActor topLevel)
             throws TypeConflictException {
-	try {
+	if (topLevel.getContainer() != null) {
+	    throw new IllegalArgumentException(
+	        "TypedCompositeActor.resolveTypes: The specified actor is "
+		+ "not the top level container.");
+	}
+
+        try {
             List conflicts = new LinkedList();
 
 	    // Check declared types across all connections.
@@ -237,10 +244,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 InequalitySolver solver = new InequalitySolver(
                                                        TypeLattice.lattice());
        	        Iterator constraints = constraintList.iterator();
-                while (constraints.hasNext()) {
-                    Inequality ineq = (Inequality)constraints.next();
-                    solver.addInequality(ineq);
-	        }
+		solver.addInequalities(constraints);
 
                 // Find the least solution (most specific types)
                 boolean resolved = solver.solveLeast();
@@ -290,7 +294,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    }
         } catch (IllegalActionException illegalAction) {
 	    // This should not happen. The exception means that
-	    // _checkDeclaredType is called on a transparent actor.
+	    // _checkDeclaredType or typeConstraintList is called on a
+	    // transparent actor.
 	    throw new InternalErrorException(illegalAction.getMessage());
 	}
     }
@@ -366,12 +371,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		result.addAll(port.typeConstraintList());
 	    }
 
-	    Iterator attributes = attributeList().iterator();
-	    while (attributes.hasNext()) {
-		Attribute attribute = (Attribute)attributes.next();
-		if (attribute instanceof Typeable) {
-		    result.addAll(((Typeable)attribute).typeConstraintList());
-		}
+	    Iterator typeables = attributeList(Typeable.class).iterator();
+	    while (typeables.hasNext()) {
+		Typeable typeable = (Typeable)typeables.next();
+		result.addAll(typeable.typeConstraintList());
 	    }
 
 	    return result;
@@ -474,7 +477,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // If the type of the ports on one or both ends of a connection is
     // not declared, the connection is skipped by this method and left
     // to the type resolution mechanism.
-    // This method returns a List of TypedIOPorts that have
+    // This method returns a List of instances of Inequality that have
     // type conflicts. If no type conflict is detected, an empty
     // list is returned.
     // If this TypedCompositeActor contains other opaque
@@ -525,8 +528,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
     // Check types from a source port to a group of destination ports,
     // assuming the source port is connected to all the ports in the
-    // group of destination ports.  Return a list of
-    // TypedIOPorts that have type conflicts.
+    // group of destination ports.  Return a list of instances of
+    // Inequality that have type conflicts.
     private List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
 	List result = new LinkedList();
@@ -547,8 +550,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		    int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-		    	result.add(sourcePort);
-		    	result.add(destinationPort);
+		        Inequality inequality = new Inequality(
+		                             sourcePort.getTypeTerm(),
+					     destinationPort.getTypeTerm());
+		    	result.add(inequality);
 	    	    }
 		}
 	    }

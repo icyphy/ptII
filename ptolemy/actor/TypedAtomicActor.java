@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -220,12 +220,10 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 		result.addAll(port.typeConstraintList());
 	    }
 
-	    Iterator attributes = attributeList().iterator();
-	    while (attributes.hasNext()) {
-		Attribute attribute = (Attribute)attributes.next();
-		if (attribute instanceof Typeable) {
-		    result.addAll(((Typeable)attribute).typeConstraintList());
-		}
+	    Iterator typeables = attributeList(Typeable.class).iterator();
+	    while (typeables.hasNext()) {
+		Typeable typeable = (Typeable)typeables.next();
+		result.addAll(typeable.typeConstraintList());
 	    }
 
 	    return result;

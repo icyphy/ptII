@@ -24,10 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (lmuliadi@eecs.berkeley.edu)
-Downgrade rating to Red since this class is changed from accepting Typeables
-to inequalities.
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
