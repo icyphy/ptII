@@ -93,23 +93,6 @@ public class StockQuote extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>stockQuoteURL</code> and
-     *  <code>ticker</code> public members to the parameters of the
-     *  new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        StockQuote newobj = (StockQuote)super.clone(ws);
-        newobj.ticker = (Parameter)newobj.getAttribute("ticker");
-	// set the type constraints.
-        return newobj;
-    }
-
     /** Get the stock price from the web and send it to the output.
      *  @exception IllegalActionException If the URL or ticker is invalid;
      *   or if an I/O exception occurs when accessing the URL.
@@ -117,7 +100,8 @@ public class StockQuote extends Source {
     public void fire() throws IllegalActionException {
         try {
             super.fire();
-	    String tickerString = ((StringToken)ticker.getToken()).stringValue();
+	    String tickerString =
+                ((StringToken)ticker.getToken()).stringValue();
 	    String spec = (_urlString + tickerString);
 	    URL url = new URL(spec);
 	    InputStream stream = url.openStream();

@@ -307,24 +307,6 @@ public class AudioSource extends Source {
 	}
     }
 
-    /** Clone the actor into the specified workspace.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        AudioSource newobj = (AudioSource)super.clone(ws);
-        newobj.pathName = (Parameter)newobj.getAttribute("pathName");
-        newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-        newobj.sampleSizeInBits =
-            (Parameter)newobj.getAttribute("sampleSizeInBits");
-        newobj.channels = (Parameter)newobj.getAttribute("channels");
-        newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
-        return newobj;
-    }
-
     /** Check parameters and begin the sound capture process. If the
      *  capture source is a sound file, the file is opened for writing.
      *  Any existing file of the same name will be silently overwritten.

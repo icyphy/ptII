@@ -131,20 +131,6 @@ public class StockServer extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>tickers</code>
-     *  public members to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        StockServer newobj = (StockServer)super.clone(ws);
-        newobj.tickers = (Parameter)newobj.getAttribute("tickers");
-        return newobj;
-    }
-
     /** Parse the tickers string and creat StockQuote/Publisher pairs
      *  to handle each ticker, then call the super class method.
      *  If this actor already contains StockQuote/Publisher pairs, i.e.,
