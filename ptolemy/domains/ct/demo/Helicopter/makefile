@@ -49,8 +49,10 @@ JSRCS = \
 	ClimbLinearizer.java \
 	ControllerActor.java \
 	CruiseLinearizer.java \
-	HelicopterActor.java \
 	Helicopter.java \
+	HelicopterActor.java \
+	HelicopterApplet.java \
+	HelicopterModelPane.java \
 	HoverLinearizer.java \
 	XZHigherDerivatives.java
 
