@@ -1,0 +1,7 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="triple" class="ptolemy.actor.lib.hoc.test.auto.modelsForMobileModel.scaler">
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+</entity>
