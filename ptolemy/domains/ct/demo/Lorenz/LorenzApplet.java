@@ -56,7 +56,7 @@ dx1/dt = sigma*(x2-x1)
 dx2/dt = (lambda-x3)*x1 -x2
 dx3/dt = x1*x2-b*x3
 
-This demo plots the projection of the state trajectory to the (x1,x2)
+This demo plots the projection of the state trajectory to the (x1, x2)
 plane.
 @author Jie Liu
 @version $Id$
@@ -128,7 +128,7 @@ public class LorenzApplet extends CTApplet {
             myplot.plot.setXRange(-25.0, 25.0);
             myplot.plot.setYRange(-25.0, 25.0);
             myplot.plot.setSize(400, 400);
-            myplot.plot.addLegend(0,"(x1,x2)");
+            myplot.plot.addLegend(0, "(x1, x2)");
 
             // CTConnections
             TypedIORelation x1 = new TypedIORelation(_toplevel, "X1");
@@ -190,7 +190,7 @@ public class LorenzApplet extends CTApplet {
 
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
         try {
