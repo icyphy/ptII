@@ -1367,22 +1367,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         return _directory;
     }
 
-    /** Query the user for a filename and save the model to that file.
-     *  This overrides the base class so that if we are in
-     *  an inside composite actor, then only that composite actor is
-     *  saved.  In addition, since the superclass clones the model,
-     *  we need to clear and reconstruct the model.
-     *  @return True if the save succeeds.
-     */
-    protected boolean _saveAs() {
-        try {
-            _saveAsFlag = true;
-            return super._saveAs();
-        } finally {
-            _saveAsFlag = false;
-        }
-    }
-
     /** Set the directory that was last accessed by this window.
      *  @see #_getDirectory
      *  @param directory The directory last accessed.
@@ -1469,20 +1453,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             // Ignore problems here.  Errors simply result in a default
             // size and location.
         }
-        // NOTE: This used to override the base class so that saveAs
-        // on a submodel would save only the submodel.  But this was
-        // strange, to have behavior different from save, and also it
-        // broke save for top-level modal models.  So now we just do
-        // the same thing in saveAs as in save.
-        /*
-          if (_saveAsFlag && getModel().getContainer() != null) {
-          java.io.FileWriter fout = new java.io.FileWriter(file);
-          getModel().exportMoML(fout);
-          fout.close();
-          } else {
-          super._writeFile(file);
-          }
-        */
 
         super._writeFile(file);
     }
@@ -1575,9 +1545,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
-
-    /** Flag indicating "save as" action rather than "save". */
-    private boolean _saveAsFlag = false;
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();
