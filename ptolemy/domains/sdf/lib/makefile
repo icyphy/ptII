@@ -1,8 +1,8 @@
-# Makefile for Communicating Sequential Process domain actors library
+# Makefile for SDF domain actors library
 #
-# @Authors: Christopher Hylands, Neil Smyth
+# @Authors: Christopher Hylands
 #
-# @Version: @(#)makefile	1.4 08/28/98
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.

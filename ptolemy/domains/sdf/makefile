@@ -1,7 +1,7 @@
-# Makefile for PtolemyII Communicating Sequential Proocesses Domain
+# Makefile for PtolemyII SDF Domain
 #
-# @Version: @(#)makefile	1.4 08/31/98
-# @Author: Christopher Hylands, Neil Smyth
+# @Version: $Id$
+# @Author: Christopher Hylands
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -46,5 +46,3 @@ include $(CONFIG)
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptdir.mk
-
-
