@@ -921,11 +921,11 @@ public class Copernicus {
                 // execution of a command prints to stderr, so rather
                 // than use -stderrork, we mark the lines.
 
-                String prefix = ((_stream == System.err) ? "Copernicus._StreamReaderThread() Writing to STDERR: " : "");
+                //String prefix = ((_stream == System.err) ? "Copernicus._StreamReaderThread() Writing to STDERR: " : "");
                 String line = null;
                 while ( (line = bufferedReader.readLine()) != null) {
                     
-                    _stream.println(prefix + line);
+                    _stream.println(/*prefix + */ line);
                 }
             } catch (IOException ioe) {
                 System.out.flush();
