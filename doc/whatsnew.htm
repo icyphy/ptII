@@ -125,6 +125,23 @@ Matlab Continuous Time Demonstration</a>
 These demos require that Matlab be installed locally; they will not work
 within an applet, but will work with Web Start.
 
+<li> <a href="http://embedded.eecs.berkeley.edu/caltrop/index.html#in_browser" target="_top">Cal Actor Language (CAL)</a>
+(J&ouml;rn W. Janneck, Chris Chang, Johan Ecker,
+John Reekie, Yang Zhao, Ed Willink, Lars Wernli):
+
+<br>The CAL actor language is a textual notation for representing the
+functionality of dataflow actors. It is designed to allow low-entropy
+descriptions of actors by providing statically analyzable information
+about the behavior of an actor, such as the number of tokens it
+produces and consumes in each firing, whether there are any conditions
+on being able to fire, what those conditions depend on, etc.
+
+<br>CAL demos:
+<a href="../ptolemy/cal/demo/FunctionClosures/FunctionClosures.xml">Function Closures</a>,
+<a href="../ptolemy/cal/demo/FunctionDefinition/FunctionDefinition.xml">Function Definition</a>
+<a href="../ptolemy/cal/demo/Primes/Primes.xml">Primes</a>,
+<a href="../ptolemy/cal/demo/SDFDDI/SDFDDI.xml">SDFDDI</a>.
+
 <li> <a href="codegen.htm">Code generator improvements</a>
 (Steve Neuendorffer, Christopher Hylands):
 The Java code generator now handles Expression actors.
@@ -363,6 +380,15 @@ Extract minimum element from an array.
 <dd> Adjusted initial value of imageURLTemplate parameter
 <dt> <code>ptolemy/domains/sdf/lib/Autocorrelation.java</code>
 <dd> Can now handle complex data.
+<dt> <code>lib/saxon7.jar</code>
+Updated to 7.6.5 of Saxon.  This was necessary to get both
+the HSIF demos and the Cal demos to work.
+<dt> <code>ptolemy/vergil/actor/ActorEditorGraphController.java</code>
+<dd> Under MacOS look and feel, use Command-Click to create new
+relations and drag new edges
+<dt> <code>ptolemy/vergil/toolbox/PtolemyTransferable.java</code>
+<dd> Under MacOS look and feel, change how we instantiate
+the DataFlavor so as to avoid a stack trace
 </dl>
 
 <h2>Backward compatibility issues</h2>
