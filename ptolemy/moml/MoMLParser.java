@@ -1079,18 +1079,20 @@ public class MoMLParser extends HandlerBase {
                         property = _createInstance(newClass, arguments);
 
                         if (value != null) {
-                            if (!(property instanceof Variable)) {
+                            if (!(property instanceof Settable)) {
                                 throw new XmlException("Property is not an "
-                                + "instance of Variable, so can't set value.",
+                                + "instance of Settable, so can't set value.",
                                 _currentExternalEntity(),
                                 _parser.getLineNumber(),
                                 _parser.getColumnNumber());
                             }
-                            Variable variable = (Variable)property;
-                            variable.setExpression(value);
-                            // Add to the list of parameters to evaluate
-                            // in endDocument().
-                            _paramsToParse.add(variable);
+                            Settable settable = (Settable)property;
+                            settable.setExpression(value);
+                            if (property instanceof Variable) {
+                                // Add to the list of parameters to evaluate
+                                // in endDocument().
+                                _paramsToParse.add(property);
+                            }
                         }
                     } else {
                         // Previously existing property with this name.
@@ -1104,15 +1106,20 @@ public class MoMLParser extends HandlerBase {
                         // If value is null and the property already
                         // exists, then there is nothing to do.
                         if (value != null) {
-                            _checkClass(property, Variable.class,
-                            "property named \"" + propertyName
-                            + "\" is not an instance of Variable,"
-                            + " so its value cannot be set.");
-                            Variable variable = (Variable)property;
-                            variable.setExpression(value);
-                            // Add to the list of parameters to evaluate
-                            // in endDocument().
-                            _paramsToParse.add(variable);
+                            if (!(property instanceof Settable)) {
+                                throw new XmlException("Property is not an "
+                                + "instance of Settable, so can't set value.",
+                                _currentExternalEntity(),
+                                _parser.getLineNumber(),
+                                _parser.getColumnNumber());
+                            }
+                            Settable settable = (Settable)property;
+                            settable.setExpression(value);
+                            if (property instanceof Variable) {
+                                // Add to the list of parameters to evaluate
+                                // in endDocument().
+                                _paramsToParse.add(property);
+                            }
                         }
                     }
                     _containers.push(_current);
