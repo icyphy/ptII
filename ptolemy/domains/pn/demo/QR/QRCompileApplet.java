@@ -1,4 +1,4 @@
-/* An applet that uses Ptolemy II PN domains.
+/* An applet that uses the Ptolemy II PN domain
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -47,14 +47,14 @@ import ptolemy.domains.pn.demo.QR.*;
 import ptolemy.domains.pn.gui.PNApplet;
 
 //////////////////////////////////////////////////////////////////////////
-////  QRcompileApplet
+////  QRCompileApplet
 /**
 An applet that models the compiled QR algorithm.
 
 @author Bart Kienhuis
 @version $Id$
 */
-public class QRcompileApplet extends PNApplet implements QueryListener {
+public class QRCompileApplet extends PNApplet implements QueryListener {
 
 ////////////////////////////////////////////////////////////////////////
 ////                         public methods                         ////
