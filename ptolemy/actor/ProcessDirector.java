@@ -109,6 +109,8 @@ public class ProcessDirector extends Director {
      *  This method should be called only when an active thread that was
      *  registered using increaseActiveCount() is terminated.
      */
+    //FIXME: If _threadList is not being destroyed then remove current thread 
+    //from it.
     public synchronized void decreaseActiveCount() {
 	_actorsActive--;
 	_checkForDeadlock();
@@ -119,6 +121,15 @@ public class ProcessDirector extends Director {
         }
     }
 
+
+    /** This normally waits till the detection of a deadlock. 
+     *  In the base class this waits for all process threads to terminate.
+     * @exception IllegalActionException If a derived class throws it.
+     */
+    public void fire()
+	    throws IllegalActionException {
+        while (!_handleDeadlock());
+    }
 
     /** This invokes the initialize() methods of all its deeply contained
      *  actors. It also creates receivers for all the ports and increases the
@@ -171,6 +182,17 @@ public class ProcessDirector extends Director {
     public synchronized void increasePausedCount() {
         _actorsPaused++;
         _checkForPause();
+    }
+
+    /** This returns false if the simulation has reached a deadlock and can
+     *  be terminated if desired. This flag is set on detection of a deadlock
+     *  in the fire() method.
+     *  @return false if the director has detected a deadlock and does not
+     *  wish to be scheduled.
+     *  @exception IllegalActionException This is never thrown in PN
+     */
+    public boolean postfire() throws IllegalActionException {
+	return _notdone;
     }
 
 
@@ -372,21 +394,19 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Checks for deadlock(Both artificial and true deadlocks).
-     *  noOfStoppedProcess is 0 if the deadlock is being checked for a
-     *  blocked queue. 1 if check is being done when a process stopped.
-     *  This is not synchronized and thus should be called from a
-     *  synchronized method.
-     */
+    // Checks for deadlock.
+    // In the base class implementation it returns true only if there are
+    // no active processes.
     protected synchronized void _checkForDeadlock() {
-	System.out.println("_checkForDeadlock: No default implementation, " +
-                "should be overridden in derived classes.");
+        if (_actorsActive ==0) {
+            _deadlock = true;
+            notifyAll();
+        }
         return;
 
     }
 
-    /** Check if all threads are either blocked or paused.
-     */
+    // Check if all threads are either blocked or paused.
     protected synchronized void _checkForPause() {
 	System.out.println("_checkForPause: No default implementation, " +
                 "should be overridden in derived classes.");
@@ -394,17 +414,19 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** Handles deadlock, both real and artificial
-     * Returns false only if it detects a mutation.
-     * Returns true for termination.
-     * This is not synchronized and should be synchronized in the
-     * calling method.
-     *  @exception IllegalActionException If a derived class throws it.
-     */
+    // Handle deadlock. In the base class implementation this returns true 
+    // on detection of a deadlock. 
+    // @returns true for termination.
+    // @exception IllegalActionException If a derived class throws it.
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
-        System.out.println("_handleDeadlock: No default implementation, " +
-                "should be overridden in derived classes.");
+        Workspace worksp = workspace();
+	synchronized (this) {
+	    while (!_deadlock) {
+		worksp.wait(this);
+	    }
+	}
+        _notdone = false;
         return true;
     }
 
@@ -421,6 +443,13 @@ public class ProcessDirector extends Director {
 
     // The threads under started by this director.
     protected LinkedList _threadList = new LinkedList();
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private boolean _deadlock = false;
+    private boolean _notdone = true;
 }
 
 
