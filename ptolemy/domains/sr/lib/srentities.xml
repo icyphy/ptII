@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="synchronous reactive" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Synchronous-reactive actors</doc>
+
+<entity name="Delay" class="ptolemy.domains.sr.lib.Delay">
+</entity>
+
+<entity name="Latch" class="ptolemy.domains.sr.lib.Latch">
+</entity>
+
+<entity name="TriggeredTime" class="ptolemy.domains.sr.lib.TriggeredTime">
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+

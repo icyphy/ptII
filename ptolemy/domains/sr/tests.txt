@@ -1,0 +1,31 @@
+
+kernel tests:
+
+*OrCyclic - true is fed into a logical or, and the result is complemented and fed back into the logical or (all values should converge).
+
+*OrCyclicUndefined - false is fed into a logical or, and the result is complemented and fed back into the logical or (some values should remain unknown).
+
+*PulseOr - a logical or is performed on tokens from two pulses (would be good to test that Pulse1 produces no token at time 2.0)
+
+*PulseSum - tokens from two pulses are added together (would be good to test that Pulse1 produces no token at time 2.0)
+
+RampDoublePeriod - tokens from a ramp are squared (the period of the director is a double)
+
+RampFiringLimit - tokens from two ramps are added together (one has a firing limit)
+
+RampIntPeriod - tokens from a ramp are squared (the period of the director is an int)
+
+Ramps - tokens from two ramps are added together
+
+
+
+lib tests:
+
+*Delay - tokens from a ramp are delayed by either 0, 1, or 2 instants (need to test for "no token")
+
+*Latch - tokens from a ramp are distributed to three channels, and the tokens are latched (need to test for "no token")
+
+*TriggeredTime - tokens from a ramp are distributed to three channels, which trigger the TriggeredTime actor (need to test for "no token")
+
+
+
