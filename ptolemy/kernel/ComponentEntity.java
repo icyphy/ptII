@@ -277,6 +277,9 @@ public class ComponentEntity extends Entity {
                     Port port = (Port)ports.next();
                     port.unlinkAll();
                 }
+                // Since the new container is null, this object is being
+                // deleted. Break deferral references that it may have.
+                setDeferTo(null);
             } else {
                 // checkContainer() above ensures that this cast is valid.
                 ((CompositeEntity)container)._finishedAddEntity(this);
