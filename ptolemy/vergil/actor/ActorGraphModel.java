@@ -299,11 +299,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     // Note that the source is NOT the graphmodel, so this
                     // will trigger the changerequest listener to
                     // redraw the graph again.
-                    ChangeRequest request = new MoMLChangeRequest(
+                    MoMLChangeRequest request = new MoMLChangeRequest(
                             container, container,
                             "<deleteRelation name=\""
                             + relation.getName(container)
                             + "\"/>\n");
+                    request.setUndoable(true);
+                    // Need to merge the undo for this request in with one that
+                    // triggered it
+                    request.setMergeWithPreviousUndo(true);
                     container.requestChange(request);
                     // If updating requires further updates to the model
                     // i.e. the above change request, then return false.
@@ -563,10 +567,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     "\"/>\n");
 
             // Note: The source is NOT the graph model.
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(this,
                         container,
                         moml.toString());
+            request.setUndoable(true);
             container.requestChange(request);
         }
     }
@@ -659,9 +664,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
  
             // Note: The source is NOT the graph model.
-            ChangeRequest request =
+            MoMLChangeRequest request =
                     new MoMLChangeRequest(
                    this, container, moml);
+            request.setUndoable(true);
             container.requestChange(request);
 	}
     }
@@ -941,7 +947,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // This rather obnoxious hack is here because edge creation
             // is tricky and we can't rerender the edge while we are dragging
             // it.
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(ActorGraphModel.this,
 				      container,
 				      moml.toString()) {
@@ -970,6 +976,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     container,
                     failmoml));
 
+            request.setUndoable(true);
             container.requestChange(request);
         }
 
@@ -1028,7 +1035,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // This rather obnoxious hack is here because edge creation
             // is tricky and we can't rerender the edge while we are dragging
             // it.
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(ActorGraphModel.this,
 				      container,
 				      moml.toString()) {
@@ -1057,6 +1064,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     container,
                     failmoml));
 
+	    request.setUndoable(true);
 	    container.requestChange(request);
 	}
 
@@ -1084,10 +1092,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 // Note: JDK1.2.2 requires that this variable not be
                 // called request or we get a compile error.
                 // Note the source is NOT the graph model
-                ChangeRequest changeRequest =
+                MoMLChangeRequest changeRequest =
                     new MoMLChangeRequest(this,
                             _container,
                             _failMoML.toString());
+                // fail moml not undoable
                 _container.requestChange(changeRequest);
             }
 
@@ -1212,10 +1221,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     "\"/>\n");
 
             // Note: The source is NOT the graph model.
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(this,
                         container,
                         moml.toString());
+	    request.setUndoable(true);
 	    container.requestChange(request);
 	}
     }
@@ -1308,9 +1318,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 			"\"/>\n");
 
             // Note: The source is NOT the graph mode.
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(this,
                         container, moml.toString());
+       	    request.setUndoable(true);
        	    container.requestChange(request);
 	}
     }

@@ -540,7 +540,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                 moml.append("</entity>");
             }
 
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
@@ -557,6 +557,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     location.setLocation(point);
                 }
             };
+            request.setUndoable(true);
 	    container.requestChange(request);
 	    try {
 		request.waitForCompletion();

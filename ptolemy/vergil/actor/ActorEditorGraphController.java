@@ -441,7 +441,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 moml.append("</entity>");
             }
 
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
@@ -456,6 +456,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     vertex.setLocation(point);
                 }
             };
+            request.setUndoable(true);
 	    container.requestChange(request);
 	    try {
 		request.waitForCompletion();

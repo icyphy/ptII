@@ -219,11 +219,15 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 // Note that the source is NOT the graph model, so this
                 // will trigger the ChangeRequest listener to
                 // redraw the graph again.
-                ChangeRequest request = new MoMLChangeRequest(
+                MoMLChangeRequest request = new MoMLChangeRequest(
                         container, container,
                         "<deleteRelation name=\""
                         + relation.getName(container)
                         + "\"/>\n");
+                // Need to merge the undo for this request in with one that
+                // triggered it
+                request.setMergeWithPreviousUndo(true);
+                request.setUndoable(true);
                 container.requestChange(request);
                 return false;
             }
@@ -373,7 +377,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             final CompositeEntity container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
             moml.append(_deleteRelation(container, linkRelation));
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(FSMGraphModel.this,
                         container,
                         moml.toString()) {
@@ -396,6 +400,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     _linkSet.remove(edge);
 		}
 	    });
+	    request.setUndoable(true);
 	    container.requestChange(request);
 	}
 
@@ -447,7 +452,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	    moml.append("</group>\n");
 	    failmoml.append("</group>\n");
 	    final String relationNameToAdd = relationName;
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(FSMGraphModel.this,
                         container,
                         moml.toString()) {
@@ -475,10 +480,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 		    // and queue a new change request to clean up the model
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
-		    ChangeRequest requestChange =
+		    MoMLChangeRequest requestChange =
 			new MoMLChangeRequest(FSMGraphModel.this,
                                 container,
                                 failmoml.toString());
+                    // Fail moml execution not undoable
 		    container.requestChange(requestChange);
 		}
 
@@ -492,6 +498,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 		    }
 		}
 	    });
+            request.setUndoable(true);
 	    container.requestChange(request);
 	}
 
@@ -545,7 +552,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
 	    final String relationNameToAdd = relationName;
 
-	    ChangeRequest request =
+	    MoMLChangeRequest request =
 		new MoMLChangeRequest(FSMGraphModel.this,
                         container,
                         moml.toString()) {
@@ -572,10 +579,11 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 		    // and queue a new change request to clean up the model
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
-		    ChangeRequest requestChange =
+		    MoMLChangeRequest requestChange =
 			new MoMLChangeRequest(FSMGraphModel.this,
                                 container,
                                 failmoml.toString());
+		    // fail moml execution not undaoble
 		    container.requestChange(requestChange);
 		}
 
@@ -589,7 +597,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 		    }
 		}
 	    });
-
+	    request.setUndoable(true);
 	    container.requestChange(request);
 	}
 
@@ -919,9 +927,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                 // Make the request in the context of the container.
                 NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-                ChangeRequest request =
+                MoMLChangeRequest request =
                     new MoMLChangeRequest(
                             FSMGraphModel.this, container, moml);
+                request.setUndoable(true);
                 request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
                             Exception exception) {
@@ -939,6 +948,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 getRoot()));
                     }
                 });
+                request.setUndoable(true);
                 container.requestChange(request);
 	}
     }
@@ -1046,7 +1056,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                 // Make the request in the context of the container.
                 NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-                ChangeRequest request =
+                MoMLChangeRequest request =
                     new MoMLChangeRequest(
                             FSMGraphModel.this, container, moml);
                 request.addChangeListener(new ChangeListener() {
@@ -1066,6 +1076,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 getRoot()));
                     }
                 });
+                request.setUndoable(true);
                 container.requestChange(request);
 	}
     }
