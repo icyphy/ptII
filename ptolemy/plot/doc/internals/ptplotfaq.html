@@ -43,7 +43,9 @@ infrastructure.
 	<LI> <A HREF="#endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
 	<LI> <A HREF="#appletprinting"><B>3.4 How do I print a plot from a Plot applet?</B></A>
 	<LI> <A HREF="#twofiles"><B>3.5 How do I plot two datafiles in an applet?</B></A>
-	<LI> <A HREF="#simpleapp"><B>3.6 How do I create a simple standalone Plot application?</B></A>
+	
+	<LI> <A HREF="#twoplots"><B>3.6 How do I have two separate plots?</B></A>
+	<LI> <A HREF="#simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
 	</MENU>
 
 </MENU>
@@ -68,7 +70,8 @@ Most files have the copyright at the top, for example, see
 
 <DT> <A NAME="contact"><B>1.4 How do I contact the authors?</B></A>
 <DD> The primary author of Ptplot is Professor Edward A. Lee.
-Christopher Hylands is a coauthor.  William Wu contributed code.
+Christopher Hylands is a coauthor.  William Wu and Lukito Muliadi
+contributed code.
 You can contact the authors via
 <A HREF="mailto:ptplot@ptolemy.eecs.berkeley.edu"><CODE>ptplot@ptolemy.eecs.berkeley.edu</CODE></A>
 
@@ -103,15 +106,11 @@ MIF output facilities in the X11 version.
 to the tar and zip files.
 
 <DT> <A NAME="platforms that Ptplot runs under"><B>2.2 What platforms does Ptplot run under?</B></A>
-<DD> Ptplot was develop under JDK1.1.4.  The only part of Ptplot
-that requires JDK1.1 is the printing method in the Pxgraph class and
-the Message class, which is used by the Pxgraph class for the 'About' window.
-The rest of the code should compile under JDK1.0.2.  The code contains
-comments that indicate the various 1.0.2/1.1 compatibility issues.
- <br> Everything else compiles under JDK1.0.2.  The ptplot.zip file we
-supply was built with JDK1.0.2.  We chose to do this so that we could
-support Netscape3.x.  The next release might only support JDK1.1 and
-later.
+<DD> Ptplot was develop under JDK1.1.6.  Ptplot uses the AWT event system,
+so it will not work with JDK1.0.2.  Older browsers may not have support
+for JDK1.1, you may need to upgrade your browser.  ptplot1.3 and earlier
+supported JDK1.0.2, you can find those releases in
+<a href="http://ptolemy.eecs.berkeley.edu/java/old"><CODE>http://ptolemy.eecs.berkeley.edu/java/old</CODE></a>.
 
 <DT> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
 <DD>
@@ -130,7 +129,7 @@ has a few hints.
 <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
 
  <P>If you are really stumped, you can send mail to <A
-HREF="mailto:cxh@eecs.berkeley.edu"><CODE>cxh@eecs.berkeley.edu</CODE></A>.
+HREF="mailto:ptplot@ptolemy.eecs.berkeley.edu"><CODE>ptplot@ptolemy.eecs.berkeley.edu</CODE></A>.
 Your mail should include:
 <OL>
 <LI> What version of Ptplot you are running.
@@ -193,6 +192,8 @@ For more information, see the description of the
 find the
 <A HREF="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
 easier to read.
+ <p>Note that PlotApplication <B>cannot</B> plot binary data yet, only
+applets and Pxgraph can handle binary data.
 
 <DT> <A NAME="endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
 <DD> Binary data is encoded in different ways on different platforms
@@ -252,20 +253,11 @@ Connection (it is free) and search for printing.
 the Pxgraph class.  Note that printing in the Pxgraph class requires
 JDK1.1 and later.
 
- <P>The
-<A HREF="../../ptplot2mif.tcl"><CODE>ptplot2mif.tcl</CODE></A> Tcl
-script can be used to convert the PostScript output of the Pxgraph
-application to Framemaker MIF format.  This script requires Tcl and
-probably works only with the Sun Solaris JDK.  To create a MIF file,
-use the <CODE>pxgraph</CODE> script to display your data, print to file,
-then run <CODE>ptplot2mif.tcl</CODE> on your file
-
  <P>You might want to use the <CODE>-print</CODE> option to bring up
 the print window immediately and the <CODE>-o</CODE> option to specify
 an output file for the PostScriptolemy.  Below is an example:
 <PRE>
 pxgraph -print -o /tmp/data.ps demo/data.plt
-ptplot2mif.tcl /tmp/data.ps &gt; /tmp/data.mif
 </PRE>
 Note that you can also bring up the X11 pxgraph version from
 after starting the Java version by typing an <CODE>x</CODE>.
@@ -298,15 +290,31 @@ of the plot would be <CODE>Two datafiles</CODE>.
 &lt;/APPLET&gt;
 </PRE>
 
-<dt>  <A NAME="simpleapp"><B>3.6 How do I create a simple standalone Plot application?</B></A>
-<dd> <A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>
+<dt>  <A NAME="twoplots"><B>3.6 How do I have two separate plots?</B></A>
+<dd> See <a href="../../demo/LogAxes.html"><CODE>LogAxes.html</CODE></a>
+for an applet that has two separate plots side by side.
+<p>
+See
+<a href="../../demo/TwoPlotExample.java"><CODE>TwoPlotExample.java</CODE></a>
+for a standalone application that has two separate plots side by side.
+
+<dt>  <A NAME="simpleapp"><B>3.7 How do I create a simple standalone Plot application?</B></A>
+<dd> 
+<A HREF="../../PlotApplication.java"><CODE>PlotApplication.java</CODE></A>
+is a standalone application with a menu interface.  PlotApplication
+is started by the <a href="../../ptplot"><CODE>ptplot</CODE></a>
+startup script.
+
+ <p><A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>
  is a standalone application that uses the Plot class.
 Pxgraph.java is fairly large, but most of the code is for argument
 parsing and backward compatibility with an older program.
 Most of the real work is done in the <CODE>Pxgraph</CODE> constructor
-and in <CODE>main()</CODE>.
+and in <CODE>main()</CODE>.  Pxgraph can be started from
+the <CODE>pxgraph</CODE> script, which is merely a link to
+the <a href="../../ptplot"><CODE>ptplot</CODE></a> script.
 
- <p><a href="../../apps/PlotApplication.java"><CODE>ptolemy/apps/PlotApplication.java</CODE></a>
+ <p><a href="../../demo/TwoPlotExample.java"><CODE>ptolemy/plot/demo/TwoPlotExample.java</CODE></a>
 is a simple standalone Java application that uses the Plot class.
 The comment towards the top of the file contains instructions about
 how to compile it.
