@@ -183,6 +183,8 @@ jnlp_all: $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -f $(JNLPS)
+jnlp_distclean: jnlp_clean
+	rm -f  $(ALL_JNLP_JARS)
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -192,7 +194,7 @@ KEYALIAS = claudius
 # The password should not be stored in a makefile, for production
 # purposes, run something like:
 #
-# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_sign
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_all
 #
 STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
 KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
@@ -375,6 +377,7 @@ jnlp_verify:
 DIST_DIR = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0/jnlp
 DIST_URL = http://ptolemy.eecs.berkeley.edu:/ptolemyII/ptII2.0/jnlp
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
+# make jnlp_dist STOREPASSWORD="-storepass xxx"
 jnlp_dist:
 	rm -f $(JNLPS)
 	$(MAKE) KEYSTORE=/users/ptII/adm/certs/ptkeystore \
