@@ -111,7 +111,7 @@ test SimpleDelay-5.1 {test a more complex loop with the zero delay} {
     [java::field $add plus] link $r
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector: Zero delay loop including actor: .top.gain}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.DEDirector: Found zero delay loop including: .top.add, .top.gain}}
 
 test SimpleDelay-5.2 {fix the zero delay with a non-zero delay} {
     set delay [java::new ptolemy.domains.de.lib.test.SimpleDelay $e0 delay]
