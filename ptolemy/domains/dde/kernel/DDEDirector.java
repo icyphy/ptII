@@ -318,36 +318,6 @@ public class DDEDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Apply an algorithm to resolve an internal deadlock and return
-     *  true if the algorithm is successful. If the algorithm is
-     *  unsuccessful then return false. The algorithm applied was
-     *  created by Thomas Parks for resolving internal deadlocks in
-     *  which one or more actors are write blocked.
-     *
-     *  @return True if an internal deadlock has been resolved;
-     *   otherwise return false.
-     */
-    protected synchronized boolean _resolveInternalDeadlock()
-            throws IllegalActionException {
-	if (_writeBlockedQueues.size() > 0) {
-	    _incrementLowestCapacityPort();
-	    return true;
-	}
-	return false;
-    }
-
-    /** Implementations of this method must be synchronized.
-     *  @param internal True if internal read block.
-     */
-    protected synchronized void _actorUnBlocked(LinkedList receivers) {
-        Iterator receiverIterator = receivers.iterator();
-        while (receiverIterator.hasNext()) {
-            DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
-            _actorUnBlocked(receiver);
-        }
-        notifyAll();
-    }
-
     /** Register the receiver that instigated the newly blocked actor
      *  and increment the count of blocked actors by one.
      *  Note whether the receiver is read blocked or write blocked.
@@ -380,6 +350,18 @@ public class DDEDirector extends CompositeProcessDirector {
 	notifyAll();
     }
 
+    /** Implementations of this method must be synchronized.
+     *  @param internal True if internal read block.
+     */
+    protected synchronized void _actorUnBlocked(LinkedList receivers) {
+        Iterator receiverIterator = receivers.iterator();
+        while (receiverIterator.hasNext()) {
+            DDEReceiver receiver = (DDEReceiver)receiverIterator.next();
+            _actorUnBlocked(receiver);
+        }
+        notifyAll();
+    }
+
     /** Unregister the specified receiver that was previously blocked
      *  and decrement the count of blocked actors by one.
      *
@@ -396,23 +378,6 @@ public class DDEDirector extends CompositeProcessDirector {
 	super._actorUnBlocked(receiver);
 	notifyAll();
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                  package friendly methods                 ////
-
-    /** Return the initial time table of this director.
-     *  @return The initial time table of this director.
-     */
-    Hashtable _getInitialTimeTable() {
-	if (_initialTimeTable == null) {
-	    _initialTimeTable = new Hashtable();
-	}
-	return _initialTimeTable;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /** Return a new ProcessThread of a type compatible with this
      *  director.
@@ -454,6 +419,37 @@ public class DDEDirector extends CompositeProcessDirector {
         synchronized(smallestQueue) {
             smallestQueue.notifyAll();
         }
+    }
+
+    /** Apply an algorithm to resolve an internal deadlock and return
+     *  true if the algorithm is successful. If the algorithm is
+     *  unsuccessful then return false. The algorithm applied was
+     *  created by Thomas Parks for resolving internal deadlocks in
+     *  which one or more actors are write blocked.
+     *
+     *  @return True if an internal deadlock has been resolved;
+     *   otherwise return false.
+     */
+    protected synchronized boolean _resolveInternalDeadlock()
+            throws IllegalActionException {
+	if (_writeBlockedQueues.size() > 0) {
+	    _incrementLowestCapacityPort();
+	    return true;
+	}
+	return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  package friendly methods                 ////
+
+    /** Return the initial time table of this director.
+     *  @return The initial time table of this director.
+     */
+    Hashtable _getInitialTimeTable() {
+	if (_initialTimeTable == null) {
+	    _initialTimeTable = new Hashtable();
+	}
+	return _initialTimeTable;
     }
 
     ///////////////////////////////////////////////////////////////////
