@@ -569,6 +569,12 @@ public class FSMController extends CompositeEntity implements TypedActor {
         }
     }
 
+    /** FIXME: This should do something like calling stopfire on the contained 
+     *  actors.
+     */
+    public void stopfire() {
+    }
+
 
     /** By default, an AtomicActor does nothing incredible in its
      *  terminate, it just wraps up.
