@@ -105,25 +105,8 @@ Note that it is not necessary to obtain a write lock just to add
 an item to the workspace directory.  The methods for accessing
 the directory are all synchronized, so there is no risk of any
 thread reading an inconsistent state.
-<p>
-To improve performance, one can use the PtolemyThread class instead of the
-ordinary Thread class. The improvement is gained by having PtolemyThread
-object includes an integer field to store the read depth. This is as opposed
-to using a hashtable as a map between (ordinary )Thread object and its
-read depth field.
-<p>
-Workspace can be made read-only by calling the setReadOnly(boolean)
-method with <i>true</i> as an argument. A read-only workspace can only have
-readers but no writers. The getReadAccess() and doneReading() methods invoked
-on a read-only workspace return immediately bypassing all checks. Note that
-the pairing of the getReadAccess() and doneReading() methods is not checked
-under this condition. The getWriteAccess() and doneWriting() methods invoked
-on a read-only workspace will throw an exception. This is done to improve
-performance, as in many cases there are certain parts of simulation where
-we can predict in advance that no write access will be needed.
 
-
-@author Edward A. Lee, Mudit Goel, Lukito Muliadi
+@author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -235,8 +218,6 @@ public final class Workspace implements Nameable, Serializable {
      *  active read or write permissions), then wake up any threads that are
      *  suspended on access to this
      *  workspace so that they may contend for permissions.
-     *  If the workspace is read-only, the pairing
-     *  between the getReadAccess() and doneReading() methods is not checked.
      *  @exception InvalidStateException If this method is called
      *   before a corresponding call to getReadAccess().
      */
@@ -348,13 +329,14 @@ public final class Workspace implements Nameable, Serializable {
      *  have requested write permission and not gotten it yet. If this thread
      *  already has a read permission, then another permission is granted
      *  irrespective of other write requests.
-     *  It is essential that doneReading() be called
-     *  after this, or write permission may never again be granted in
-     *  this workspace.
-     *  If the workspace is read-only, the calling thread will not suspend,
-     *  and will just return immediately from the method call. The pairing
-     *  between the getReadAccess() and doneReading() methods is not checked
-     *  under this condition.
+     *  If the calling thread is interrupted while waiting to get read
+     *  permission, an InternalErrorException is thrown, and the thread does
+     *  not have read permission to the workspace.
+     *  It is essential that a call to this method is matched by a call to
+     *  doneReading(), regardless of whether this method returns normally or
+     *  an exception is thrown. This is to ensure that the workspace is in a
+     *  consistent state, otherwise write permission may never again be
+     *  granted in this workspace.
      */
     public final synchronized void getReadAccess() {
 
@@ -425,11 +407,15 @@ public final class Workspace implements Nameable, Serializable {
      *  if this thread already has write permission, or if it is the only
      *  thread with read permission.
      *  This method suspends the calling thread until such permission
-     *  has been obtained.  It is essential that doneWriting() be called
-     *  after this, or read or write permission may never again be granted in
-     *  this workspace.
-     *  @exception InvalidStateException If this method is called when the
-     *  workspace is read-only.
+     *  has been obtained.
+     *  If the calling thread is interrupted while waiting to get write
+     *  permission, an InternalErrorException is thrown, and the thread does
+     *  not have write permission to the workspace.
+     *  It is essential that a call to this method is matched by a call to
+     *  doneWriting(), regardless of whether this method returns normally or
+     *  an exception is thrown. This is to ensure that the workspace is in a
+     *  consistent state, otherwise read or write permission may never again
+     *  be granted in this workspace.
      */
     public final synchronized void getWriteAccess() {
 
@@ -556,10 +542,14 @@ public final class Workspace implements Nameable, Serializable {
     /** Release all the read accesses held by the current thread and call
      *  wait() on the specified object. When wait() returns, re-acquire
      *  all the read accesses held earlier by the thread and return.
+     *  An InternalErrorException is thrown if the re-acquisition fails,
+     *  in which case the thread no longer has read access to the workspace.
      *  This method helps prevent deadlocks caused when a thread that
      *  waiting for another thread to do something prevents it from doing
      *  that something by holding read access on the workspace.
      *  @param obj The object that the thread wants to wait on.
+     *  @exception InterruptedException If the calling thread is interrupted
+     *   while waiting on the specified object.
      */
     public void wait(Object obj) throws InterruptedException {
         int depth = 0;
