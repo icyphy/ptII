@@ -43,9 +43,9 @@ import java.util.Iterator;
 (Note however, that it is better to use a class derived from
 KernelException than it is to throw a KernelException directly.)
 
-<p>JDK1.4 supports exception chaining.  We are implementing a version of
-exception chaining here ourselves so that we can use JVMs earlier
-than JDK1.4.
+<p>JDK1.4 and later support exception chaining.  We are implementing a
+version of exception chaining here ourselves so that we can use JVMs
+earlier than JDK1.4.
 
 <p>In this implementation, we have the following differences from
 the JDK1.4 exception chaining implementation:
@@ -66,9 +66,6 @@ public class KernelException extends Exception {
 
     /** Construct an exception with a no specific detail message. */
     public KernelException() {
-        // Note: this nullary exception is required.  If it is
-        // not present, then the subclasses of this class will not
-        // compile.
         this(null, null, null, null);
     }
 
