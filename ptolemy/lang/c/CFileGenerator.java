@@ -181,7 +181,7 @@ public class CFileGenerator extends CCodeGenerator {
         // Declare and allocate the new class instance.
         ClassDeclNode classDeclNode = (ClassDeclNode)
                 JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-        String thisType = _getCNameOf(classDeclNode);
+        String thisType = CNameGenerator.getCNameOf(classDeclNode);
         retList.addLast(_indent(1) + thisType + " this \n");
         retList.addLast(_indent(3) + "= (" + thisType + ")malloc(sizeof(" +
                 thisType + "));\n");
@@ -241,12 +241,6 @@ public class CFileGenerator extends CCodeGenerator {
                                                       "}"});
     }
 
-    public Object visitParameterNode(ParameterNode node, LinkedList args) {
-        return TNLManip.arrayToList(new Object[] {
-            Modifier.toString(node.getModifiers()),
-                node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE),
-                " " + node.getName().getIdent()});
-    }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"super(",
@@ -818,22 +812,26 @@ public class CFileGenerator extends CCodeGenerator {
         return _visitBinaryOpAssignNode(node, "|=");
     }
 
+    /** Generate C code for a variable declaration with optional initialization.
+     *  @param node The AST node for the variable declaration.
+     *  @return The generated C code.
+     */
     protected LinkedList _visitVarInitDeclNode(VarInitDeclNode node) {
-        LinkedList retList = new LinkedList();
+        LinkedList returnList = new LinkedList();
 
-        retList.addLast(_indent(node));
-        retList.addLast(Modifier.toString(node.getModifiers()));
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE));
-        retList.addLast(" " + node.getName().getIdent());
+        returnList.addLast(_indent(node));
+        returnList.addLast(Modifier.toString(node.getModifiers()));
+        returnList.addLast(CNameGenerator.getCNameOf(node.getDefType()));
+        returnList.addLast(" " + node.getName().getIdent());
 
         if (node.getInitExpr() != AbsentTreeNode.instance) {
-            retList.addLast(" = ");
-            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
+            returnList.addLast(" = ");
+            returnList.addLast(node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
         }
 
-        retList.addLast(";\n");
+        returnList.addLast(";\n");
 
-        return retList;
+        return returnList;
     }
 
     protected LinkedList _visitSingleExprNode(SingleExprNode node, String opString,
@@ -987,26 +985,6 @@ public class CFileGenerator extends CCodeGenerator {
         }
     }
 
-    protected static String _stringListToString(List stringList) {
-        Iterator stringItr = stringList.iterator();
-        StringBuffer sb = new StringBuffer();
-
-        while (stringItr.hasNext()) {
-            Object stringObj = stringItr.next();
-
-            if (stringObj instanceof List) {
-                // only use separators for top level
-                sb.append(_stringListToString((List) stringObj));
-            } else if (stringObj instanceof String) {
-                sb.append((String) stringObj);
-            } else {
-                throw new IllegalArgumentException(
-                        "unknown object in string list : " + stringObj);
-            }
-        }
-
-        return sb.toString();
-    }
 
     /** Print information pertaining to a child of a node in
      *  in an abstract syntax tree. The information printed for

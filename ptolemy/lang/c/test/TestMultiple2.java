@@ -64,7 +64,7 @@ public class TestMultiple2 {
 
     // A simple method. 
     public char method1(int threshold, int power) {
-        int temp;
+        int temp = power;
         // FIXME Method calls are not implemented yet. 
         // int temp = _testMultipleOneInstance.method2(power);
         if (temp < threshold) return _c1;
@@ -78,6 +78,6 @@ public class TestMultiple2 {
 
 
     // Private fields
-    TestMultiple1 _testMultipleOneInstance;
-    char _c1, _c2;
+    private TestMultiple1 _testMultipleOneInstance;
+    private char _c1, _c2;
 }

@@ -74,6 +74,27 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         super(TM_CHILDREN_FIRST);
     }
 
+    /** Format a diagnostic message for node visitations in which serious
+     *  errors are detected, and throw a RuntimeException that 
+     *  contains the message.
+     *  @param node The node whose visitation triggered the error.
+     *  @param message A description of the error that occured.
+     *  @exception A run-time exception is thrown unconditionally.
+     */
+    public static void nodeVisitationError(TreeNode node, String message)
+            throws RuntimeException {
+        String exceptionMessage = new String(message + "\n");
+        if (node instanceof TreeNode) {
+            exceptionMessage += "A dump of the offending node follows.\n\n"
+                    + node.toString() + "\nEnd of offending node dump.\n\n";
+        }
+        else if (node == null) 
+            exceptionMessage += "The 'offending node' is NULL.\n";
+        else 
+            exceptionMessage += "The offending node is an instance of '" +
+                    node.getClass().getName() + "'\n";
+        throw new RuntimeException(exceptionMessage);
+    }
 
     /** Generate code for an identifier.
      *  @param node The AST node of the identifier to be translated. 
@@ -128,62 +149,6 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         return TNLManip.addFirst("\"" + node.getLiteral() + '\"');
     }
 
-    public Object visitBoolTypeNode(BoolTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("boolean");
-    }
-
-    public Object visitCharTypeNode(CharTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("char");
-    }
-
-    // FIXME: Figure out exactly how byte types should be dealt with.
-    public Object visitByteTypeNode(ByteTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("char");
-    }
-
-    public Object visitShortTypeNode(ShortTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("short");
-    }
-
-    public Object visitIntTypeNode(IntTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("int");
-    }
-
-    public Object visitFloatTypeNode(FloatTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("float");
-    }
-
-    public Object visitLongTypeNode(LongTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("long");
-    }
-
-    public Object visitDoubleTypeNode(DoubleTypeNode node, LinkedList args) {
-        return TNLManip.addFirst("double");
-    }
-
-    /** Given an AST node corresponding to a type name, return the name
-     *  to be used when referencing this type in the generated C code.
-     *  @param The AST node.
-     *  @param Visitor arguments (unused).
-     *  @return The name corresponding to the referenced type for C code
-     *  generation purposes.
-     */
-    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        JavaDecl declaration = JavaDecl.getDecl((TreeNode)node);
-        if (declaration == null) 
-            _nodeVisitationError(node, "Unresolved type declaration."); 
-        else {
-            TreeNode source = declaration.getSource();
-            if (source.hasProperty(C_INCLUDE_FILE_KEY) &&
-                    (node.hasProperty(C_IMPORT_INCLUDE_FILE_KEY) ||
-                    _importForAllTypeNames))
-                _addIncludeFile((String)(source.getProperty(C_INCLUDE_FILE_KEY)));
-            if (source.hasProperty(C_NAME_KEY)) 
-                return TNLManip.addFirst(_getCNameOf(source));
-            else return node.childReturnValueAt(node.CHILD_INDEX_NAME);
-        }
-        return null; 
-    }
 
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
@@ -237,6 +202,8 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
             retList.addLast("\n");
         }
 
+        _printStringList(retList);
+
         // Generate code for the type definitions in the compilation unit.
         List typeList = (List) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPES);
         Iterator typeItr = typeList.iterator();
@@ -244,6 +211,8 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
             retList.addLast(typeItr.next());
             retList.addLast("\n");
         }
+
+        _printStringList(retList);
 
         // Insert footer code.
         retList.addLast(_footerCode);
@@ -283,7 +252,7 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         Iterator membersIter;
 
         // Extract the unique type name to use for the class
-        String className = _getCNameOf(node);
+        String className = CNameGenerator.getCNameOf(node);
 
         // Avoid multiple inclusions of the generated header file
         retList.addLast("\n#ifndef _" + className + "_h\n");
@@ -413,11 +382,17 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
                                                       "}"});
     }
 
+    /** Generate C code for a Java parameter declaration.
+     *  @param node The AST node of the parameter declaration.
+     *  @param args Unused placeholder for visitor arguments.
+     *  @return Generated C code for the parameter declaration.
+     */
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
-        return TNLManip.arrayToList(new Object[] {
-            Modifier.toString(node.getModifiers()),
-                node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE),
-                " " + node.getName().getIdent()});
+        LinkedList returnList = new LinkedList();
+        returnList.addLast(Modifier.toString(node.getModifiers()));
+        returnList.addLast(CNameGenerator.getCNameOf(node.getDefType()));
+        returnList.addLast(" " + node.getName().getIdent());
+        return returnList;
     }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
@@ -656,12 +631,6 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
 
-        // Object methodName = node.childReturnValueAt(node.CHILD_INDEX_METHOD);
-        // System.out.println("------------- debug -----------------");
-        // System.out.println(methodName.getClass().getName());
-        // System.out.println(methodName.toString());
-        // System.out.println("------------- debug -----------------");
-  
         return TNLManip.arrayToList(new Object[] {
             node.childReturnValueAt(node.CHILD_INDEX_METHOD), "(",
                 _commaList(argsList), ")"});
@@ -973,13 +942,13 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         retList.addLast(Modifier.toString(node.getModifiers()));
         Object nameProperty = node.getProperty(C_NAME_KEY) ;
         if ((nameProperty == null) || !(nameProperty instanceof String))
-            _nodeVisitationError(node, "Unique method name not set."); 
+            nodeVisitationError(node, "Unique method name not set."); 
         else {
             // Set the return type of the constructor to be a pointer to 
             // a structure that implements the corresponding class.
             ClassDeclNode classDeclNode = (ClassDeclNode)
                     JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-            retList.addLast(_getCNameOf(classDeclNode));
+            retList.addLast(CNameGenerator.getCNameOf(classDeclNode));
             retList.addLast(" ");
 
             retList.addLast((String)nameProperty);
@@ -1006,9 +975,9 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         LinkedList retList = new LinkedList();
 
         retList.addLast(Modifier.toString(node.getModifiers()));
-        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_RETURNTYPE));
+        retList.addLast(CNameGenerator.getCNameOf(node.getReturnType()));
         retList.addLast(" ");
-        retList.addLast((String)_getCNameOf(node));
+        retList.addLast((String)CNameGenerator.getCNameOf(node));
         retList.addLast("(");
 
         // Insert a reference to the containing class instance. This
@@ -1018,7 +987,7 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         // should not occur.
         ClassDeclNode classDeclNode = (ClassDeclNode)
                 JavaDecl.getDecl((TreeNode)node).getContainer().getSource();
-        retList.addLast(_getCNameOf(classDeclNode));
+        retList.addLast(CNameGenerator.getCNameOf(classDeclNode));
         retList.addLast(" this");
         if (!(node.getParams().isEmpty())) retList.addLast(", ");
         retList.addLast(
@@ -1026,8 +995,8 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
                 node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
         retList.addLast(")");
 
-        // FIXME: Does any code have to be generated based on the throws
-        // list for exceptions?
+        // FIXME: Generate code for the throws list for exceptions.
+
         return retList;
     }
 
@@ -1085,9 +1054,14 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
                                                       opString, " ", e2StringList});
     }
 
+    /** The default visitation method for C code generation. Return the C name
+     *  that is associated with the visted node via the C_NAME_KEY property.
+     *  @param node The visited node.
+     *  @param args Unused placeholder for visitor arguments.
+     *  @return The C name associated with the node.
+     */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        // for testing purposes only
-        return new LinkedList();
+        return TNLManip.addFirst(CNameGenerator.getCNameOf(node));
     }
 
     protected static LinkedList _commaList(List stringList) {
@@ -1194,28 +1168,52 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         }
     }
 
-    // FIXME: This code should be shared among JavaCodeGenerator,
-    // CCodeGenerator, HeaderFileGenerator, etc.
+    // FIXME: This code should be shared with JavaCodeGenerator.
+    // An empty string ("") results from a null string list.
+    // Null elements within a string list are ignored.
     protected static String _stringListToString(List stringList) {
+        if (stringList == null) return "";
+       
         Iterator stringItr = stringList.iterator();
         StringBuffer sb = new StringBuffer();
 
         while (stringItr.hasNext()) {
             Object stringObj = stringItr.next();
-
-            if (stringObj instanceof List) {
-                // only use separators for top level
-                sb.append(_stringListToString((List) stringObj));
-            } else if (stringObj instanceof String) {
-                sb.append((String) stringObj);
-            } else {
-                throw new IllegalArgumentException(
-                        "unknown object in string list : " + stringObj);
+            if ((stringObj != null) && !(stringObj instanceof NullValue)) {
+                if (stringObj instanceof List) {
+                    // only use separators for top level
+                    sb.append(_stringListToString((List) stringObj));
+                } else if (stringObj instanceof String) {
+                    sb.append((String) stringObj);
+                } else {
+                    throw new IllegalArgumentException(
+                            "unknown object in string list : " + stringObj
+                            + stringObj.getClass().getName());
+                }
             }
         }
 
         return sb.toString();
     }
+
+    protected static void _printStringList(List stringList) {
+        if (stringList == null) return;
+        Iterator stringItr = stringList.iterator();
+        while (stringItr.hasNext()) {
+            Object stringObj = stringItr.next();
+            if ((stringObj != null) && !(stringObj instanceof NullValue)) {
+                if (stringObj instanceof List)
+                    _printStringList((List)stringObj); 
+                else if (stringObj instanceof String) 
+                    System.out.print(stringObj);
+                else 
+                    throw new IllegalArgumentException(
+                            "unknown object in string list : " + stringObj
+                            + stringObj.getClass().getName());
+            }
+        }
+    }
+
 
     /** Print information pertaining to a child of a node in
      *  in an abstract syntax tree. The information printed for
@@ -1253,24 +1251,31 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         System.out.println("----------------------------------------------");
     }
 
-    /** Get the name assigned to an abstract syntax tree (AST) node for 
-     *  C code generation purposes.
-     *  @param node The AST node.
-     *  @return The name assigned to the node.
-     *  @exception A run-time exception is thrown if a "code generation name"
-     *  has not yet been assigned to the given node.
+
+
+    /** Determine the C name associated with a Java PrimitiveTypeNode, 
+     *  and set the C_NAME_KEY property of the TypeNode to be the 
+     *  determined name.
+     *  @param node The AST PrimitiveTypeNode node.
+     *  @return The C name assigned to the node.
      */
-    protected String _getCNameOf(TreeNode node) {
-        if (node == null)
-            _nodeVisitationError(node, "Non-null AST node expected.");
-        else {
-            Object nameProperty = node.getProperty(C_NAME_KEY) ;
-            if ((nameProperty == null) || !(nameProperty instanceof String))
-                _nodeVisitationError(node, "C code generation name not set.");
-            else return (String)nameProperty;
-        }
-        return null;
+    protected String _getCPrimitiveTypeNameOf(TypeNode node) {
+        String name = null;
+        if (node instanceof BoolTypeNode) name = "int"; 
+        else if (node instanceof ByteTypeNode) name = "char"; 
+        else if (node instanceof CharTypeNode) name = "char"; 
+        else if (node instanceof DoubleTypeNode) name = "double"; 
+        else if (node instanceof FloatTypeNode) name = "float"; 
+        else if (node instanceof IntTypeNode) name = "int"; 
+        else if (node instanceof LongTypeNode) name = "long"; 
+        else if (node instanceof ShortTypeNode) name = "short"; 
+        else nodeVisitationError(node, "Unsupported primitive type '"
+                + node.getClass().getName() + "'");
+        node.setProperty(C_NAME_KEY, name);
+        return name;
     }
+
+
  
     ///////////////////////////////////////////////////////////////////
     ////                     protected variables                   ////
@@ -1352,27 +1357,6 @@ public abstract class CCodeGenerator extends JavaVisitor implements CCodeGenerat
         return _indent(level);
     }
 
-    /** Format a diagnostic message for node visitations in which serious
-     *  errors are detected, and throw a RuntimeException that 
-     *  contains the message.
-     *  @param node The node whose visitation triggered the error.
-     *  @param message A description of the error that occured.
-     *  @exception A run-time exception is thrown unconditionally.
-     */
-    private void _nodeVisitationError(TreeNode node, String message)
-            throws RuntimeException {
-        String exceptionMessage = new String(message + "\n");
-        if (node instanceof TreeNode) {
-            exceptionMessage += "A dump of the offending node follows.\n\n"
-                    + node.toString() + "\nEnd of offending node dump.\n\n";
-        }
-        else if (node == null) 
-            exceptionMessage += "The 'offending node' is NULL.\n";
-        else 
-            exceptionMessage += "The offending node is an instance of '" +
-                    node.getClass().getName() + "'\n";
-        throw new RuntimeException(exceptionMessage);
-    }
 
 
     ///////////////////////////////////////////////////////////////////
