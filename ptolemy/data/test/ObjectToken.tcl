@@ -57,10 +57,18 @@ test ObjectToken-1.1 {Get information about the class} {
 } {{
   class:         pt.kernel.ObjectToken
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} clone toString notify notifyAll {wait long} {wait long int} wait {fromString java.lang.String} getValue {setValue java.lang.Object}
-  constructors:  pt.kernel.ObjectToken {pt.kernel.ObjectToken java.lang.Object}
+  methods:       clone {equals java.lang.Object} {fromString java.lang.S
+    tring} getClass getValue hashCode notify notifyAll {set
+    Value java.lang.Object} toString wait {wait long} {wait
+     long int}
+    
+  constructors:  pt.kernel.ObjectToken {pt.kernel.ObjectToken java.lang.
+    Object}
+    
   properties:    class value
+    
   superclass:    pt.kernel.Token
+    
 }}
 
 ######################################################################

@@ -354,7 +354,7 @@ test CompositeEntity-8.4 {Remove relations by name with an error} {
 ######################################################################
 ####
 # 
-test CompositeEntity-8.5 {Test removing all entities} {
+test CompositeEntity-9.1 {Test removing all entities} {
     set a [java::new pt.kernel.CompositeEntity A]
     set b [java::new pt.kernel.CompositeEntity $a B]
     set c [java::new pt.kernel.CompositeEntity $a C]
@@ -366,7 +366,7 @@ test CompositeEntity-8.5 {Test removing all entities} {
 ######################################################################
 ####
 # 
-test CompositeEntity-8.6 {Remove all relations} {
+test CompositeEntity-8.3 {Remove all relations} {
     set a [java::new pt.kernel.CompositeEntity A]
     set r1 [java::new pt.kernel.ComponentRelation $a R1]
     set r2 [java::new pt.kernel.ComponentRelation $a R2]
@@ -534,8 +534,8 @@ test CompositeEntity-11.5 {Test deepGetLinkedRelations on ports} {
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.6 {Test deepGetLinkedPorts on ports} {
-    _testEnums deepGetLinkedPorts $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11
+test CompositeEntity-11.6 {Test deepGetConnectedPorts on ports} {
+    _testEnums deepGetConnectedPorts $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11
 } {{P8 P9 P5 P6 P2} P1 {P8 P9 P5 P6} {P8 P9} P1 P1 {P1 P9} {P1 P9} {P1 P8} {} {P1 P8}}
 
 ######################################################################
