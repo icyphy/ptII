@@ -106,7 +106,7 @@ public interface Set extends Collection {
      *		be stored, if it is big enough; otherwise, a new array of the
      * 		same runtime type is allocated for this purpose.
      * @return an array containing the elements of this set.
-     * @throws    ArrayStoreException the runtime type of a is not a supertype
+     * @exception    ArrayStoreException the runtime type of a is not a supertype
      * of the runtime type of every element in this set.
      */
     Object[] toArray(Object a[]);
@@ -135,11 +135,11 @@ public interface Set extends Collection {
      * @return <tt>true</tt> if this set did not already contain the specified
      *         element.
      * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>add</tt> method is not
      * 	       supported by this set.
-     * @throws ClassCastException if the class of the specified element
+     * @exception ClassCastException if the class of the specified element
      * 	       prevents it from being added to this set.
-     * @throws IllegalArgumentException if some aspect of this element
+     * @exception IllegalArgumentException if some aspect of this element
      *         prevents it from being added to this set.
      */
     boolean add(Object o);
@@ -156,7 +156,7 @@ public interface Set extends Collection {
      *
      * @param o object to be removed from this set, if present.
      * @return true if the set contained the specified element.
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      *         not supported by this set.
      */
     boolean remove(Object o);
@@ -186,12 +186,12 @@ public interface Set extends Collection {
      * @param c collection whose elements are to be added to this set.
      * @return <tt>true</tt> if this set changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>addAll</tt> method is
+     * @exception UnsupportedOperationException if the <tt>addAll</tt> method is
      * 		  not supported by this set.
-     * @throws ClassCastException if the class of some element of the
+     * @exception ClassCastException if the class of some element of the
      * 		  specified collection prevents it from being added to this
      * 		  set.
-     * @throws IllegalArgumentException if some aspect of some element of the
+     * @exception IllegalArgumentException if some aspect of some element of the
      *		  specified collection prevents it from being added to this
      *		  set.
      * @see #add(Object)
@@ -209,7 +209,7 @@ public interface Set extends Collection {
      * @param c collection that defines which elements this set will retain.
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call.
-     * @throws UnsupportedOperationException if the <tt>retainAll</tt> method
+     * @exception UnsupportedOperationException if the <tt>retainAll</tt> method
      * 		  is not supported by this Collection.
      * 
      * @see #remove(Object)
@@ -228,7 +228,7 @@ public interface Set extends Collection {
      *          this set.
      * @return <tt>true</tt> if this set changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>removeAll</tt>
+     * @exception UnsupportedOperationException if the <tt>removeAll</tt>
      * 		  method is not supported by this Collection.
      * 
      * @see #remove(Object) */
@@ -239,7 +239,7 @@ public interface Set extends Collection {
      * This set will be empty after this call returns (unless it throws an
      * exception).
      *
-     * @throws UnsupportedOperationException if the <tt>clear</tt> method
+     * @exception UnsupportedOperationException if the <tt>clear</tt> method
      * 		  is not supported by this set.
      */
     void clear();

@@ -83,9 +83,9 @@ public interface Map {
      * @return <tt>true</tt> if this map contains a mapping for the specified
      * key.
      * 
-     * @throws ClassCastException if the key is of an inappropriate type for
+     * @exception ClassCastException if the key is of an inappropriate type for
      * 		  this map.
-     * @throws NullPointerException if the key is <tt>null</tt> and this map
+     * @exception NullPointerException if the key is <tt>null</tt> and this map
      *            does not not permit <tt>null</tt> keys.
      */
     boolean containsKey(Object key);
@@ -116,9 +116,9 @@ public interface Map {
      * @return the value to which this map maps the specified key, or
      *	       <tt>null</tt> if the map contains no mapping for this key.
      * 
-     * @throws ClassCastException if the key is of an inappropriate type for
+     * @exception ClassCastException if the key is of an inappropriate type for
      * 		  this map.
-     * @throws NullPointerException key is <tt>null</tt> and this map does not
+     * @exception NullPointerException key is <tt>null</tt> and this map does not
      *		  not permit <tt>null</tt> keys.
      * 
      * @see #containsKey(Object)
@@ -140,13 +140,13 @@ public interface Map {
      *	       with the specified key, if the implementation supports
      *	       <tt>null</tt> values.
      * 
-     * @throws UnsupportedOperationException if the <tt>put</tt> operation is
+     * @exception UnsupportedOperationException if the <tt>put</tt> operation is
      *	          not supported by this map.
-     * @throws ClassCastException if the class of the specified key or value
+     * @exception ClassCastException if the class of the specified key or value
      * 	          prevents it from being stored in this map.
-     * @throws IllegalArgumentException if some aspect of this key or value
+     * @exception IllegalArgumentException if some aspect of this key or value
      *	          prevents it from being stored in this map.
-     * @throws NullPointerException this map does not permit <tt>null</tt>
+     * @exception NullPointerException this map does not permit <tt>null</tt>
      *            keys or values, and the specified key or value is
      *            <tt>null</tt>.
      */
@@ -162,7 +162,7 @@ public interface Map {
      *	       also indicate that the map previously associated <tt>null</tt>
      *	       with the specified key, if the implementation supports
      *	       <tt>null</tt> values.
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      *         not supported by this map.
      */
     Object remove(Object key);
@@ -177,16 +177,16 @@ public interface Map {
      *
      * @param t Mappings to be stored in this map.
      * 
-     * @throws UnsupportedOperationException if the <tt>putAll</tt> method is
+     * @exception UnsupportedOperationException if the <tt>putAll</tt> method is
      * 		  not supported by this map.
      * 
-     * @throws ClassCastException if the class of a key or value in the
+     * @exception ClassCastException if the class of a key or value in the
      * 	          specified map prevents it from being stored in this map.
      * 
-     * @throws IllegalArgumentException some aspect of a key or value in the
+     * @exception IllegalArgumentException some aspect of a key or value in the
      *	          specified map prevents it from being stored in this map.
      * 
-     * @throws NullPointerException this map does not permit <tt>null</tt>
+     * @exception NullPointerException this map does not permit <tt>null</tt>
      *            keys or values, and the specified key or value is
      *            <tt>null</tt>.
      */
@@ -195,7 +195,7 @@ public interface Map {
     /**
      * Removes all mappings from this map (optional operation).
      *
-     * @throws UnsupportedOperationException clear is not supported by this
+     * @exception UnsupportedOperationException clear is not supported by this
      * 		  map.
      */
     void clear();
@@ -286,13 +286,13 @@ public interface Map {
 	 * @param value new value to be stored in this entry.
 	 * @return old value corresponding to the entry.
          * 
-	 * @throws UnsupportedOperationException if the <tt>put</tt> operation
+	 * @exception UnsupportedOperationException if the <tt>put</tt> operation
 	 *	      is not supported by the backing map.
-	 * @throws ClassCastException if the class of the specified value
+	 * @exception ClassCastException if the class of the specified value
 	 * 	      prevents it from being stored in the backing map.
-	 * @throws    IllegalArgumentException if some aspect of this value
+	 * @exception    IllegalArgumentException if some aspect of this value
 	 *	      prevents it from being stored in the backing map.
-	 * @throws NullPointerException the backing map does not permit
+	 * @exception NullPointerException the backing map does not permit
 	 *	      <tt>null</tt> values, and the specified value is
 	 *	      <tt>null</tt>.
          */

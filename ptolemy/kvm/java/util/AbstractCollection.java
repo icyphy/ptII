@@ -160,9 +160,9 @@ public abstract class AbstractCollection implements Collection {
      * 	       same runtime type is allocated for this purpose.
      * @return an array containing the elements of the collection.
      * 
-     * @throws NullPointerException if the specified array is <tt>null</tt>.
+     * @exception NullPointerException if the specified array is <tt>null</tt>.
      * 
-     * @throws ArrayStoreException if the runtime type of the specified array
+     * @exception ArrayStoreException if the runtime type of the specified array
      *         is not a supertype of the runtime type of every element in this
      *         collection.
      */
@@ -202,17 +202,17 @@ public abstract class AbstractCollection implements Collection {
      * @param o element whose presence in this collection is to be ensured.
      * @return <tt>true</tt> if the collection changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>add</tt> method is not
      *		  supported by this collection.
      * 
-     * @throws NullPointerException if this collection does not permit
+     * @exception NullPointerException if this collection does not permit
      * 		  <tt>null</tt> elements, and the specified element is
      * 		  <tt>null</tt>.
      * 
-     * @throws ClassCastException if the class of the specified element
+     * @exception ClassCastException if the class of the specified element
      * 		  prevents it from being added to this collection.
      * 
-     * @throws IllegalArgumentException if some aspect of this element
+     * @exception IllegalArgumentException if some aspect of this element
      *            prevents it from being added to this collection.
      */
     public boolean add(Object o) {
@@ -241,7 +241,7 @@ public abstract class AbstractCollection implements Collection {
      * @return <tt>true</tt> if the collection contained the specified
      *         element.
      * 
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      * 		  not supported by this collection.
      */
     public boolean remove(Object o) {
@@ -309,7 +309,7 @@ public abstract class AbstractCollection implements Collection {
      * @param c collection whose elements are to be added to this collection.
      * @return <tt>true</tt> if this collection changed as a result of the
      * call.
-     * @throws UnsupportedOperationException if the <tt>addAll</tt> method is
+     * @exception UnsupportedOperationException if the <tt>addAll</tt> method is
      * 		  not supported by this collection.
      * 
      * @see #add(Object)
@@ -341,7 +341,7 @@ public abstract class AbstractCollection implements Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      * call.
      * 
-     * @throws    UnsupportedOperationException removeAll is not supported
+     * @exception    UnsupportedOperationException removeAll is not supported
      * 		  by this collection.
      * 
      * @see #remove(Object)
@@ -377,7 +377,7 @@ public abstract class AbstractCollection implements Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call.
      * 
-     * @throws UnsupportedOperationException if the <tt>retainAll</tt> method
+     * @exception UnsupportedOperationException if the <tt>retainAll</tt> method
      * 		  is not supported by this collection.
      * 
      * @see #remove(Object)
@@ -410,7 +410,7 @@ public abstract class AbstractCollection implements Collection {
      * collection's <tt>iterator</tt> method does not implement the
      * <tt>remove</tt> method.
      *
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      * 		  not supported by this collection.
      */
     public void clear() {

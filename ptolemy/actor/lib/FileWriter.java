@@ -112,7 +112,7 @@ public class FileWriter extends Writer {
      *  base class and then set the filename public member.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {

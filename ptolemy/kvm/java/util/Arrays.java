@@ -68,8 +68,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(long[] a, int fromIndex, int toIndex) {
@@ -104,8 +104,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(int[] a, int fromIndex, int toIndex) {
@@ -140,8 +140,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(short[] a, int fromIndex, int toIndex) {
@@ -176,8 +176,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(char[] a, int fromIndex, int toIndex) {
@@ -212,8 +212,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(byte[] a, int fromIndex, int toIndex) {
@@ -248,8 +248,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(double[] a, int fromIndex, int toIndex) {
@@ -284,8 +284,8 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void sort(float[] a, int fromIndex, int toIndex) {
@@ -988,7 +988,7 @@ public class Arrays {
      * sorted lists.
      * 
      * @param a the array to be sorted.
-     * @throws  ClassCastException if the array contains elements that are not
+     * @exception  ClassCastException if the array contains elements that are not
      *		<i>mutually comparable</i> (for example, strings and integers).
      * @see Comparable
      */
@@ -1019,10 +1019,10 @@ public class Arrays {
      * @param fromIndex the index of the first element (inclusive) to be
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
-     * @throws    ClassCastException if the array contains elements that are
+     * @exception    ClassCastException if the array contains elements that are
      *		  not <i>mutually comparable</i> (for example, strings and
      *		  integers).
      * @see Comparable
@@ -1094,7 +1094,7 @@ public class Arrays {
      *
      * @param a the array to be sorted.
      * @param c the comparator to determine the order of the array.
-     * @throws  ClassCastException if the array contains elements that are
+     * @exception  ClassCastException if the array contains elements that are
      *		not <i>mutually comparable</i> using the specified comparator.
      * @see Comparator
      */
@@ -1125,10 +1125,10 @@ public class Arrays {
      *        sorted.
      * @param toIndex the index of the last element (exclusive) to be sorted.
      * @param c the comparator to determine the order of the array.
-     * @throws ClassCastException if the array contains elements that are not
+     * @exception ClassCastException if the array contains elements that are not
      *	       <i>mutually comparable</i> using the specified comparator.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      * @see Comparator
      */
@@ -1503,7 +1503,7 @@ public class Arrays {
      *	       elements in the list are less than the specified key.  Note
      *	       that this guarantees that the return value will be &gt;= 0 if
      *	       and only if the key is found.
-     * @throws ClassCastException if the array contains elements that are not
+     * @exception ClassCastException if the array contains elements that are not
      *	       <i>mutually comparable</i> (for example, strings and integers),
      *         or the search key in not mutually comparable with the elements
      *         of the array.
@@ -1549,7 +1549,7 @@ public class Arrays {
      *	       elements in the list are less than the specified key.  Note
      *	       that this guarantees that the return value will be &gt;= 0 if
      *	       and only if the key is found.
-     * @throws ClassCastException if the array contains elements that are not
+     * @exception ClassCastException if the array contains elements that are not
      *	       <i>mutually comparable</i> using the specified comparator,
      *	       or the search key in not mutually comparable with the
      *	       elements of the array using this comparator.
@@ -1881,8 +1881,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(long[] a, int fromIndex, int toIndex, long val) {
@@ -1912,8 +1912,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(int[] a, int fromIndex, int toIndex, int val) {
@@ -1943,8 +1943,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(short[] a, int fromIndex, int toIndex, short val) {
@@ -1974,8 +1974,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(char[] a, int fromIndex, int toIndex, char val) {
@@ -2005,8 +2005,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(byte[] a, int fromIndex, int toIndex, byte val) {
@@ -2036,8 +2036,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(boolean[] a, int fromIndex, int toIndex,
@@ -2068,8 +2068,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(double[] a, int fromIndex, int toIndex,double val){
@@ -2099,8 +2099,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(float[] a, int fromIndex, int toIndex, float val) {
@@ -2130,8 +2130,8 @@ public class Arrays {
      * @param toIndex the index of the last element (exclusive) to be
      *        filled with the specified value.
      * @param val the value to be stored in all elements of the array.
-     * @throws IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
-     * @throws ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
+     * @exception IllegalArgumentException if <tt>fromIndex &gt; toIndex</tt>
+     * @exception ArrayIndexOutOfBoundsException if <tt>fromIndex &lt; 0</tt> or
      *	       <tt>toIndex &gt; a.length</tt>
      */
     public static void fill(Object[] a, int fromIndex, int toIndex,Object val){

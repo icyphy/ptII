@@ -101,7 +101,7 @@ public class MoMLApplication extends CompositeActorApplication {
 
     /** Parse a command-line argument.
      *  @return True if the argument is understood, false otherwise.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     protected boolean _parseArg(String arg) throws Exception {
         if (super._parseArg(arg)) {

@@ -533,7 +533,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  contents are described.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @throws IOException If an I/O error occurs.
+     *  @exception IOException If an I/O error occurs.
      *  @see #deferMoMLDefinitionTo(NamedObj)
      */
     public void exportMoML(Writer output, int depth) throws IOException {
@@ -1001,7 +1001,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  depth and terminated with a newline character.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @throws IOException If an I/O error occurs.
+     *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int)
      */
     protected void _exportMoMLContents(Writer output, int depth)

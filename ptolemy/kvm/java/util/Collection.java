@@ -155,7 +155,7 @@ public interface Collection {
      *        runtime type is allocated for this purpose.
      * @return an array containing the elements of this collection
      * 
-     * @throws ArrayStoreException the runtime type of the specified array is
+     * @exception ArrayStoreException the runtime type of the specified array is
      *         not a supertype of the runtime type of every element in this
      *         collection.
      */
@@ -187,11 +187,11 @@ public interface Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call
      * 
-     * @throws UnsupportedOperationException add is not supported by this
+     * @exception UnsupportedOperationException add is not supported by this
      *         collection.
-     * @throws ClassCastException class of the specified element prevents it
+     * @exception ClassCastException class of the specified element prevents it
      *         from being added to this collection.
-     * @throws IllegalArgumentException some aspect of this element prevents
+     * @exception IllegalArgumentException some aspect of this element prevents
      *          it from being added to this collection.
      */
     boolean add(Object o);
@@ -209,7 +209,7 @@ public interface Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call
      * 
-     * @throws UnsupportedOperationException remove is not supported by this
+     * @exception UnsupportedOperationException remove is not supported by this
      *         collection.
      */
     boolean remove(Object o);
@@ -240,11 +240,11 @@ public interface Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call
      * 
-     * @throws UnsupportedOperationException if this collection does not
+     * @exception UnsupportedOperationException if this collection does not
      *         support the <tt>addAll</tt> method.
-     * @throws ClassCastException if the class of an element of the specified
+     * @exception ClassCastException if the class of an element of the specified
      * 	       collection prevents it from being added to this collection.
-     * @throws IllegalArgumentException some aspect of an element of the
+     * @exception IllegalArgumentException some aspect of an element of the
      *	       specified collection prevents it from being added to this
      *	       collection.
      * 
@@ -263,7 +263,7 @@ public interface Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call
      * 
-     * @throws UnsupportedOperationException if the <tt>removeAll</tt> method
+     * @exception UnsupportedOperationException if the <tt>removeAll</tt> method
      * 	       is not supported by this collection.
      * 
      * @see #remove(Object)
@@ -281,7 +281,7 @@ public interface Collection {
      * @return <tt>true</tt> if this collection changed as a result of the
      *         call
      * 
-     * @throws UnsupportedOperationException if the <tt>retainAll</tt> method
+     * @exception UnsupportedOperationException if the <tt>retainAll</tt> method
      * 	       is not supported by this Collection.
      * 
      * @see #remove(Object)
@@ -294,7 +294,7 @@ public interface Collection {
      * This collection will be empty after this method returns unless it
      * throws an exception.
      *
-     * @throws UnsupportedOperationException if the <tt>clear</tt> method is
+     * @exception UnsupportedOperationException if the <tt>clear</tt> method is
      *         not supported by this collection.
      */
     void clear();

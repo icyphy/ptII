@@ -135,7 +135,7 @@ public interface List extends Collection {
      * 		same runtime type is allocated for this purpose.
      * @return  an array containing the elements of this list.
      * 
-     * @throws ArrayStoreException if the runtime type of the specified array
+     * @exception ArrayStoreException if the runtime type of the specified array
      * 		  is not a supertype of the runtime type of every element in
      * 		  this list.
      */
@@ -159,11 +159,11 @@ public interface List extends Collection {
      * @return <tt>true</tt> (as per the general contract of the
      *            <tt>Collection.add</tt> method).
      * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>add</tt> method is not
      * 		  supported by this list.
-     * @throws ClassCastException if the class of the specified element
+     * @exception ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws IllegalArgumentException if some aspect of this element
+     * @exception IllegalArgumentException if some aspect of this element
      *            prevents it from being added to this collection.
      */
     boolean add(Object o);
@@ -178,7 +178,7 @@ public interface List extends Collection {
      * @param o element to be removed from this list, if present.
      * @return <tt>true</tt> if this list contained the specified element.
      * 
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      *		  not supported by this list.
      */
     boolean remove(Object o);
@@ -210,13 +210,13 @@ public interface List extends Collection {
      * @param c collection whose elements are to be added to this list.
      * @return <tt>true</tt> if this list changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>addAll</tt> method is
+     * @exception UnsupportedOperationException if the <tt>addAll</tt> method is
      *         not supported by this list.
      * 
-     * @throws ClassCastException if the class of an element in the specified
+     * @exception ClassCastException if the class of an element in the specified
      * 	       collection prevents it from being added to this list.
      * 
-     * @throws IllegalArgumentException if some aspect of an element in the
+     * @exception IllegalArgumentException if some aspect of an element in the
      *         specified collection prevents it from being added to this
      *         list.
      * 
@@ -240,15 +240,15 @@ public interface List extends Collection {
      * @param c elements to be inserted into this list.
      * @return <tt>true</tt> if this list changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>addAll</tt> method is
+     * @exception UnsupportedOperationException if the <tt>addAll</tt> method is
      *		  not supported by this list.
-     * @throws ClassCastException if the class of one of elements of the
+     * @exception ClassCastException if the class of one of elements of the
      * 		  specified collection prevents it from being added to this
      * 		  list.
-     * @throws IllegalArgumentException if some aspect of one of elements of
+     * @exception IllegalArgumentException if some aspect of one of elements of
      *		  the specified collection prevents it from being added to
      *		  this list.
-     * @throws IndexOutOfBoundsException if the index is out of range (index
+     * @exception IndexOutOfBoundsException if the index is out of range (index
      *		  &lt; 0 || index &gt; size()).
      */
     boolean addAll(int index, Collection c);
@@ -261,7 +261,7 @@ public interface List extends Collection {
      *          this list.
      * @return <tt>true</tt> if this list changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>removeAll</tt> method
+     * @exception UnsupportedOperationException if the <tt>removeAll</tt> method
      * 		  is not supported by this list.
      * 
      * @see #remove(Object)
@@ -279,7 +279,7 @@ public interface List extends Collection {
      * 
      * @return <tt>true</tt> if this list changed as a result of the call.
      * 
-     * @throws UnsupportedOperationException if the <tt>retainAll</tt> method
+     * @exception UnsupportedOperationException if the <tt>retainAll</tt> method
      * 		  is not supported by this list.
      * 
      * @see #remove(Object)
@@ -292,7 +292,7 @@ public interface List extends Collection {
      * list will be empty after this call returns (unless it throws an
      * exception).
      *
-     * @throws UnsupportedOperationException if the <tt>clear</tt> method is
+     * @exception UnsupportedOperationException if the <tt>clear</tt> method is
      * 		  not supported by this list.
      */
     void clear();
@@ -348,7 +348,7 @@ public interface List extends Collection {
      * @param index index of element to return.
      * @return the element at the specified position in this list.
      * 
-     * @throws IndexOutOfBoundsException if the index is out of range (index
+     * @exception IndexOutOfBoundsException if the index is out of range (index
      * 		  &lt; 0 || index &gt;= size()).
      */
     Object get(int index);
@@ -361,13 +361,13 @@ public interface List extends Collection {
      * @param element element to be stored at the specified position.
      * @return the element previously at the specified position.
      * 
-     * @throws UnsupportedOperationException if the <tt>set</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>set</tt> method is not
      *		  supported by this list.
-     * @throws    ClassCastException if the class of the specified element
+     * @exception    ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws    IllegalArgumentException if some aspect of the specified
+     * @exception    IllegalArgumentException if some aspect of the specified
      *		  element prevents it from being added to this list.
-     * @throws    IndexOutOfBoundsException if the index is out of range
+     * @exception    IndexOutOfBoundsException if the index is out of range
      *		  (index &lt; 0 || index &gt;= size()).  */
     Object set(int index, Object element);
 
@@ -380,13 +380,13 @@ public interface List extends Collection {
      * @param index index at which the specified element is to be inserted.
      * @param element element to be inserted.
      * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>add</tt> method is not
      *		  supported by this list.
-     * @throws    ClassCastException if the class of the specified element
+     * @exception    ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws    IllegalArgumentException if some aspect of the specified
+     * @exception    IllegalArgumentException if some aspect of the specified
      *		  element prevents it from being added to this list.
-     * @throws    IndexOutOfBoundsException if the index is out of range
+     * @exception    IndexOutOfBoundsException if the index is out of range
      *		  (index &lt; 0 || index &gt; size()).
      */
     void add(int index, Object element);
@@ -400,10 +400,10 @@ public interface List extends Collection {
      * @param index the index of the element to removed.
      * @return the element previously at the specified position.
      * 
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      *		  not supported by this list.
      * 
-     * @throws IndexOutOfBoundsException if the index is out of range (index
+     * @exception IndexOutOfBoundsException if the index is out of range (index
      *            &lt; 0 || index &gt;= size()).
      */
     Object remove(int index);
@@ -462,7 +462,7 @@ public interface List extends Collection {
      *		    list iterator (by a call to the <tt>next</tt> method).
      * @return a list iterator of the elements in this list (in proper
      * 	       sequence), starting at the specified position in this list.
-     * @throws IndexOutOfBoundsException if the index is out of range (index
+     * @exception IndexOutOfBoundsException if the index is out of range (index
      *         &lt; 0 || index &gt; size()).
      */
     ListIterator listIterator(int index);
@@ -502,7 +502,7 @@ public interface List extends Collection {
      * @param toKey high endpoint (exclusive) of the subList.
      * @return a view of the specified range within this list.
      * 
-     * @throws IndexOutOfBoundsException for an illegal endpoint index value
+     * @exception IndexOutOfBoundsException for an illegal endpoint index value
      *     (fromIndex &lt; 0 || toIndex &gt; size || fromIndex &gt; toIndex).
      */
     List subList(int fromIndex, int toIndex);

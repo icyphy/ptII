@@ -68,7 +68,7 @@ public abstract class AbstractSequentialList extends AbstractList {
      * using <tt>ListIterator.next</tt> and returns it.
      *
      * @return the element at the specified position in this list.  * @param
-     * 		  index index of element to return.  * @throws
+     * 		  index index of element to return.  * @exception
      * 		  IndexOutOfBoundsException if the specified index is out of
      * 		  range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
@@ -97,17 +97,17 @@ public abstract class AbstractSequentialList extends AbstractList {
      * @param index index of element to replace.
      * @param element element to be stored at the specified position.
      * @return the element previously at the specified position.
-     * @throws    UnsupportedOperationException set is not supported
+     * @exception    UnsupportedOperationException set is not supported
      *		  by this list.
-     * @throws    NullPointerException this list does not permit null
+     * @exception    NullPointerException this list does not permit null
      * 		  elements and one of the elements of <code>c</code> is null.
-     * @throws    ClassCastException class of the specified element
+     * @exception    ClassCastException class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws    IllegalArgumentException some aspect of the specified
+     * @exception    IllegalArgumentException some aspect of the specified
      *		  element prevents it from being added to this list.
-     * @throws    IndexOutOfBoundsException index out of range
+     * @exception    IndexOutOfBoundsException index out of range
      *		  <tt>(index &lt; 0 || index &gt;= size()</tt>).
-     * @throws    IllegalArgumentException fromIndex &gt; toIndex.
+     * @exception    IllegalArgumentException fromIndex &gt; toIndex.
      */
     public Object set(int index, Object element) {
 	ListIterator e = listIterator(index);
@@ -135,16 +135,16 @@ public abstract class AbstractSequentialList extends AbstractList {
      *
      * @param index index at which the specified element is to be inserted.
      * @param element element to be inserted.
-     * @throws UnsupportedOperationException if the <tt>add</tt> operation is
+     * @exception UnsupportedOperationException if the <tt>add</tt> operation is
      *		  not supported by this list.
-     * @throws NullPointerException this list does not permit <tt>null</tt>
+     * @exception NullPointerException this list does not permit <tt>null</tt>
      * 		  elements and one of the elements of <code>c</code> is
      * 		  <tt>null</tt>.
-     * @throws    ClassCastException if the class of the specified element
+     * @exception    ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws    IllegalArgumentException if some aspect of the specified
+     * @exception    IllegalArgumentException if some aspect of the specified
      *		  element prevents it from being added to this list.
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *            range (<tt>index &lt; 0 || index &gt; size()</tt>).
      */
     public void add(int index, Object element) {
@@ -166,9 +166,9 @@ public abstract class AbstractSequentialList extends AbstractList {
      *
      * @param the index of the element to be removed from the List.
      * @return the element that was removed from the list.
-     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     * @exception UnsupportedOperationException if the <tt>remove</tt> operation
      *		  is not supported by this list.
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      * 		  range (index &lt; 0 || index &gt;= size()).
      */
     public Object remove(int index) {
@@ -213,16 +213,16 @@ public abstract class AbstractSequentialList extends AbstractList {
      * @param index index at which to insert first element from the specified
      *		    collection.
      * @param c elements to be inserted into this list.
-     * @throws UnsupportedOperationException if the <tt>addAll</tt> operation
+     * @exception UnsupportedOperationException if the <tt>addAll</tt> operation
      *		  is not supported by this list.
-     * @throws NullPointerException this list does not permit <tt>null</tt>
+     * @exception NullPointerException this list does not permit <tt>null</tt>
      * 		  elements and one of the elements of the specified collection
      * 		  is <tt>null</tt>.
-     * @throws    ClassCastException if the class of the specified element
+     * @exception    ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws    IllegalArgumentException if some aspect of the specified
+     * @exception    IllegalArgumentException if some aspect of the specified
      *		  element prevents it from being added to this list.
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *            range (<tt>index &lt; 0 || index &gt; size()</tt>).
      */
     public boolean addAll(int index, Collection c) {

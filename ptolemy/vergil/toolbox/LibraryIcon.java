@@ -154,7 +154,7 @@ public class LibraryIcon extends PatternIcon implements Configurable {
      *  depth and terminated with a newline character.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @throws IOException If an I/O error occurs.
+     *  @exception IOException If an I/O error occurs.
      *  @see NamedObj#_exportMoMLContents
      */
     protected void _exportMoMLContents(Writer output, int depth)

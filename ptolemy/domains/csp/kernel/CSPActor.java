@@ -230,7 +230,7 @@ public class CSPActor extends TypedAtomicActor
     }
 
     /** Initialize the state of the actor.
-     *  @throws IllegalActionException Not thrown in this class, but might
+     *  @exception IllegalActionException Not thrown in this class, but might
      *   be in a derived class.
      */
     public void initialize() throws IllegalActionException {

@@ -131,10 +131,10 @@ public abstract class AbstractMap implements Map {
      * @return <tt>true</tt> if this map contains a mapping for the specified
      *            key.
      * 
-     * @throws ClassCastException if the specified key is of an inappropriate
+     * @exception ClassCastException if the specified key is of an inappropriate
      * 		  type for this map.
      * 
-     * @throws NullPointerException key is <tt>null</tt> and this map does not
+     * @exception NullPointerException key is <tt>null</tt> and this map does not
      *            not permit <tt>null</tt> keys.
      */
     public boolean containsKey(Object key) {
@@ -173,10 +173,10 @@ public abstract class AbstractMap implements Map {
      * @param key key whose associated value is to be returned.
      * @return the value to which this map maps the specified key.
      * 
-     * @throws ClassCastException if the specified key is of an inappropriate
+     * @exception ClassCastException if the specified key is of an inappropriate
      * 		  type for this map.
      * 
-     * @throws NullPointerException if the key is <tt>null</tt> and this map
+     * @exception NullPointerException if the key is <tt>null</tt> and this map
      *		  does not not permit <tt>null</tt> keys.
      * 
      * @see #containsKey(Object)
@@ -219,16 +219,16 @@ public abstract class AbstractMap implements Map {
      *	       with the specified key, if the implementation supports
      *	       <tt>null</tt> values.)
      * 
-     * @throws UnsupportedOperationException if the <tt>put</tt> operation is
+     * @exception UnsupportedOperationException if the <tt>put</tt> operation is
      *	          not supported by this map.
      * 
-     * @throws ClassCastException if the class of the specified key or value
+     * @exception ClassCastException if the class of the specified key or value
      * 	          prevents it from being stored in this map.
      * 
-     * @throws IllegalArgumentException if some aspect of this key or value *
+     * @exception IllegalArgumentException if some aspect of this key or value *
      *            prevents it from being stored in this map.
      * 
-     * @throws NullPointerException this map does not permit <tt>null</tt>
+     * @exception NullPointerException this map does not permit <tt>null</tt>
      *            keys or values, and the specified key or value is
      *            <tt>null</tt>.
      */
@@ -255,7 +255,7 @@ public abstract class AbstractMap implements Map {
      *	       also indicate that the map previously associated <tt>null</tt>
      *	       with the specified key, if the implementation supports
      *	       <tt>null</tt> values.)
-     * @throws UnsupportedOperationException if the <tt>remove</tt> operation
+     * @exception UnsupportedOperationException if the <tt>remove</tt> operation
      * 		  is not supported by this map.
      */
     public Object remove(Object key) {
@@ -297,16 +297,16 @@ public abstract class AbstractMap implements Map {
      *
      * @param t mappings to be stored in this map.
      * 
-     * @throws UnsupportedOperationException if the <tt>putAll</tt> operation
+     * @exception UnsupportedOperationException if the <tt>putAll</tt> operation
      * 		  is not supported by this map.
      * 
-     * @throws ClassCastException if the class of a key or value in the
+     * @exception ClassCastException if the class of a key or value in the
      * 	          specified map prevents it from being stored in this map.
      * 
-     * @throws IllegalArgumentException if some aspect of a key or value in
+     * @exception IllegalArgumentException if some aspect of a key or value in
      *	          the specified map prevents it from being stored in this map.
      * 
-     * @throws NullPointerException this map does not permit <tt>null</tt>
+     * @exception NullPointerException this map does not permit <tt>null</tt>
      *            keys or values, and the specified key or value is
      *            <tt>null</tt>.
      */
@@ -323,7 +323,7 @@ public abstract class AbstractMap implements Map {
      *
      * This implementation calls <tt>entrySet().clear()</tt>.
      *
-     * @throws    UnsupportedOperationException clear is not supported
+     * @exception    UnsupportedOperationException clear is not supported
      * 		  by this map.
      */
     public void clear() {

@@ -71,9 +71,9 @@ public class Collections {
      * to sort a linked list in place.
      *
      * @param  list the list to be sorted.
-     * @throws ClassCastException if the list contains elements that are not
+     * @exception ClassCastException if the list contains elements that are not
      *	       <i>mutually comparable</i> (for example, strings and integers).
-     * @throws UnsupportedOperationException if the specified list's
+     * @exception UnsupportedOperationException if the specified list's
      *	       list-iterator does not support the <tt>set</tt> operation.
      * @see Comparable
      */
@@ -112,9 +112,9 @@ public class Collections {
      *
      * @param  list the list to be sorted.
      * @param  c the comparator to determine the order of the array.
-     * @throws ClassCastException if the list contains elements that are not
+     * @exception ClassCastException if the list contains elements that are not
      *	       <i>mutually comparable</i> using the specified comparator.
-     * @throws UnsupportedOperationException if the specified list's
+     * @exception UnsupportedOperationException if the specified list's
      *	       list-iterator does not support the <tt>set</tt> operation.
      * @see Comparator
      */
@@ -158,7 +158,7 @@ public class Collections {
      *	       elements in the list are less than the specified key.  Note
      *	       that this guarantees that the return value will be &gt;= 0 if
      *	       and only if the key is found.
-     * @throws ClassCastException if the list contains elements that are not
+     * @exception ClassCastException if the list contains elements that are not
      *	       <i>mutually comparable</i> (for example, strings and
      *	       integers), or the search key in not mutually comparable
      *	       with the elements of the list.
@@ -228,7 +228,7 @@ public class Collections {
      *	       elements in the list are less than the specified key.  Note
      *	       that this guarantees that the return value will be &gt;= 0 if
      *	       and only if the key is found.
-     * @throws ClassCastException if the list contains elements that are not
+     * @exception ClassCastException if the list contains elements that are not
      *	       <i>mutually comparable</i> using the specified comparator,
      *	       or the search key in not mutually comparable with the
      *	       elements of the list using this comparator.
@@ -274,7 +274,7 @@ public class Collections {
      * This method runs in linear time.
      *
      * @param  list the list whose elements are to be reversed.
-     * @throws UnsupportedOperationException if the specified list's
+     * @exception UnsupportedOperationException if the specified list's
      *	       list-iterator does not support the <tt>set</tt> operation.
      */
     public static void reverse(List l) {
@@ -308,7 +308,7 @@ public class Collections {
      * quadratic time for a "sequential access" list.
      *
      * @param  list the list to be shuffled.
-     * @throws UnsupportedOperationException if the specified list's
+     * @exception UnsupportedOperationException if the specified list's
      *         list-iterator does not support the <tt>set</tt> operation.
      */
     public static void shuffle(List list) {
@@ -333,7 +333,7 @@ public class Collections {
      *
      * @param  list the list to be shuffled.
      * @param  r the source of randomness to use to shuffle the list.
-     * @throws UnsupportedOperationException if the specified list's
+     * @exception UnsupportedOperationException if the specified list's
      *         list-iterator does not support the <tt>set</tt> operation.
      */
     public static void shuffle(List list, Random rnd) {
@@ -358,7 +358,7 @@ public class Collections {
      *
      * @param  list the list to be filled with the specified element.
      * @param  o The element with which to fill the specified list.
-     * @throws UnsupportedOperationException if the specified list's
+     * @exception UnsupportedOperationException if the specified list's
      *	       list-iterator does not support the <tt>set</tt> operation.
      */
     public static void fill(List list, Object o) {
@@ -379,9 +379,9 @@ public class Collections {
      *
      * @param  dest The destination list.
      * @param  src The source list.
-     * @throws IndexOutOfBoundsException if the destination list is too small
+     * @exception IndexOutOfBoundsException if the destination list is too small
      *         to contain the entire source List.
-     * @throws UnsupportedOperationException if the destination list's
+     * @exception UnsupportedOperationException if the destination list's
      *         list-iterator does not support the <tt>set</tt> operation.
      */
     public static void copy (List dest, List src) {
@@ -411,10 +411,10 @@ public class Collections {
      * @param  coll the collection whose minimum element is to be determined.
      * @return the minimum element of the given collection, according
      *         to the <i>natural ordering</i> of its elements.
-     * @throws ClassCastException if the collection contains elements that are
+     * @exception ClassCastException if the collection contains elements that are
      *	       not <i>mutually comparable</i> (for example, strings and
      *	       integers).
-     * @throws NoSuchElementException if the collection is empty.
+     * @exception NoSuchElementException if the collection is empty.
      * @see Comparable
      */
     public static Object min(Collection coll) {
@@ -442,9 +442,9 @@ public class Collections {
      * @param  coll the collection whose minimum element is to be determined.
      * @return the minimum element of the given collection, according
      *         to the specified comparator.
-     * @throws ClassCastException if the collection contains elements that are
+     * @exception ClassCastException if the collection contains elements that are
      *	       not <i>mutually comparable</i> using the specified comparator.
-     * @throws NoSuchElementException if the collection is empty.
+     * @exception NoSuchElementException if the collection is empty.
      * @see Comparable
      */
     public static Object min(Collection coll, Comparator comp) {
@@ -473,10 +473,10 @@ public class Collections {
      * @param  coll the collection whose maximum element is to be determined.
      * @return the maximum element of the given collection, according
      *         to the <i>natural ordering</i> of its elements.
-     * @throws ClassCastException if the collection contains elements that are
+     * @exception ClassCastException if the collection contains elements that are
      *	       not <i>mutually comparable</i> (for example, strings and
      *         integers).
-     * @throws NoSuchElementException if the collection is empty.
+     * @exception NoSuchElementException if the collection is empty.
      * @see Comparable
      */
     public static Object max(Collection coll) {
@@ -504,9 +504,9 @@ public class Collections {
      * @param  coll the collection whose maximum element is to be determined.
      * @return the maximum element of the given collection, according
      *         to the specified comparator.
-     * @throws ClassCastException if the collection contains elements that are
+     * @exception ClassCastException if the collection contains elements that are
      *	       not <i>mutually comparable</i> using the specified comparator.
-     * @throws NoSuchElementException if the collection is empty.
+     * @exception NoSuchElementException if the collection is empty.
      * @see Comparable
      */
     public static Object max(Collection coll, Comparator comp) {
@@ -1572,7 +1572,7 @@ public class Collections {
      * @param  o the element to appear repeatedly in the returned list.
      * @return an immutable list consisting of <tt>n</tt> copies of the
      * 	       specified object.
-     * @throws IllegalArgumentException if n &lt; 0.
+     * @exception IllegalArgumentException if n &lt; 0.
      * @see    List#addAll(Collection)
      * @see    List#addAll(int, Collection)
      */

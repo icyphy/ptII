@@ -116,14 +116,14 @@ public interface SortedSet extends Set {
      * @param toElement high endpoint (exclusive) of the subSet.
      * @return a view of the specified range within this sorted set.
      * 
-     * @throws ClassCastException if <tt>fromElement</tt> or <tt>toElement</tt>
+     * @exception ClassCastException if <tt>fromElement</tt> or <tt>toElement</tt>
      *		  cannot be compared with the elements currently in the sorted
      *		  set.  (Implementations may, but are not required to, throw
      *		  this exception under these circumstances.)
-     * @throws NullPointerException if <tt>fromElement</tt> or
+     * @exception NullPointerException if <tt>fromElement</tt> or
      *		  <tt>toElement</tt> is <tt>null</tt> and this sorted set does
      *		  not tolerate <tt>null</tt> elements.
-     * @throws IllegalArgumentException if <tt>fromElement</tt> is greater
+     * @exception IllegalArgumentException if <tt>fromElement</tt> is greater
      *         than <tt>toElement</tt>.
      */
     SortedSet subSet(Object fromElement, Object toElement);
@@ -152,11 +152,11 @@ public interface SortedSet extends Set {
      * @param toElement high endpoint (exclusive) of the headSet.
      * @return a view of the specified initial range of this sorted set.
      * 
-     * @throws ClassCastException if <tt>toElement</tt> cannot be compared
+     * @exception ClassCastException if <tt>toElement</tt> cannot be compared
      *		  with the elements currently in the sorted set.
      *		  (Implementations may, but are not required to, throw this
      *		  exception under these circumstances.)
-     * @throws NullPointerException if <tt>toElement</tt> is <tt>null</tt> and
+     * @exception NullPointerException if <tt>toElement</tt> is <tt>null</tt> and
      *         this sorted set does not tolerate <tt>null</tt> elements.
      */
     SortedSet headSet(Object toElement);
@@ -185,12 +185,12 @@ public interface SortedSet extends Set {
      * @param fromElement low endpoint (inclusive) of the tailSet.
      * @return a view of the specified final range of this sorted set.
      * 
-     * @throws ClassCastException if <tt>fromElement</tt> cannot be compared
+     * @exception ClassCastException if <tt>fromElement</tt> cannot be compared
      *		  with the elements currently in the sorted set.
      *		  (Implementations may, but are not required to, throw this
      *		  exception under these circumstances.)
      * 
-     * @throws NullPointerException if <tt>fromElement</tt> is <tt>null</tt>
+     * @exception NullPointerException if <tt>fromElement</tt> is <tt>null</tt>
      *            and this sorted set does not tolerate <tt>null</tt>
      *            elements.
      */
@@ -200,7 +200,7 @@ public interface SortedSet extends Set {
      * Returns the first (lowest) element currently in this sorted set.
      *
      * @return the first (lowest) element currently in this sorted set.
-     * @throws    NoSuchElementException sorted set is empty.
+     * @exception    NoSuchElementException sorted set is empty.
      */
     Object first();
 
@@ -208,7 +208,7 @@ public interface SortedSet extends Set {
      * Returns the last (highest) element currently in this sorted set.
      *
      * @return the last (highest) element currently in this sorted set.
-     * @throws    NoSuchElementException sorted set is empty.
+     * @exception    NoSuchElementException sorted set is empty.
      */
     Object last();
 }

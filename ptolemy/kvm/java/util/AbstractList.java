@@ -78,13 +78,13 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @return <tt>true</tt> (as per the general contract of
      * <tt>Collection.add</tt>).
      * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>add</tt> method is not
      * 		  supported by this Set.
      * 
-     * @throws ClassCastException if the class of the specified element
+     * @exception ClassCastException if the class of the specified element
      * 		  prevents it from being added to this set.
      * 
-     * @throws IllegalArgumentException some aspect of this element prevents
+     * @exception IllegalArgumentException some aspect of this element prevents
      *            it from being added to this collection.
      */
     public boolean add(Object o) {
@@ -98,7 +98,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @param index index of element to return.
      * 
      * @return the element at the specified position in this list.
-     * @throws IndexOutOfBoundsException if the given index is out of range
+     * @exception IndexOutOfBoundsException if the given index is out of range
      * 		  (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
     abstract public Object get(int index);
@@ -114,14 +114,14 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @param element element to be stored at the specified position.
      * @return the element previously at the specified position.
      * 
-     * @throws UnsupportedOperationException if the <tt>set</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>set</tt> method is not
      *		  supported by this List.
-     * @throws ClassCastException if the class of the specified element
+     * @exception ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws IllegalArgumentException if some aspect of the specified
+     * @exception IllegalArgumentException if some aspect of the specified
      *		  element prevents it from being added to this list.
      * 
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *            range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
 
@@ -140,13 +140,13 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @param index index at which the specified element is to be inserted.
      * @param element element to be inserted.
      * 
-     * @throws UnsupportedOperationException if the <tt>add</tt> method is not
+     * @exception UnsupportedOperationException if the <tt>add</tt> method is not
      *		  supported by this list.
-     * @throws ClassCastException if the class of the specified element
+     * @exception ClassCastException if the class of the specified element
      * 		  prevents it from being added to this list.
-     * @throws IllegalArgumentException if some aspect of the specified
+     * @exception IllegalArgumentException if some aspect of the specified
      *		  element prevents it from being added to this list.
-     * @throws IndexOutOfBoundsException index is out of range (<tt>index &lt;
+     * @exception IndexOutOfBoundsException index is out of range (<tt>index &lt;
      *		  0 || index &gt; size()</tt>).
      */
     public void add(int index, Object element) {
@@ -165,9 +165,9 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @param index the index of the element to remove.
      * @return the element previously at the specified position.
      * 
-     * @throws UnsupportedOperationException if the <tt>remove</tt> method is
+     * @exception UnsupportedOperationException if the <tt>remove</tt> method is
      *		  not supported by this list.
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      * 		  range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
     public Object remove(int index) {
@@ -253,7 +253,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * index)</tt> or <tt>removeRange(int fromIndex, int toIndex)</tt> is
      * overridden.
      *
-     * @throws UnsupportedOperationException if the <tt>clear</tt> method is
+     * @exception UnsupportedOperationException if the <tt>clear</tt> method is
      * 		  not supported by this Collection.
      */
     public void clear() {
@@ -286,17 +286,17 @@ public abstract class AbstractList extends AbstractCollection implements List {
      *		    specified collection.
      * @param c elements to be inserted into this List.
      * 
-     * @throws UnsupportedOperationException if the <tt>addAll</tt> method is
+     * @exception UnsupportedOperationException if the <tt>addAll</tt> method is
      *		  not supported by this list.
      * 
-     * @throws ClassCastException if the class of an element of the specified
+     * @exception ClassCastException if the class of an element of the specified
      * 		  collection prevents it from being added to this List.
      * 
-     * @throws IllegalArgumentException some aspect an element of the
+     * @exception IllegalArgumentException some aspect an element of the
      *		  specified collection prevents it from being added to this
      *		  List.
      * 
-     * @throws IndexOutOfBoundsException index out of range (<tt>index &lt; 0
+     * @exception IndexOutOfBoundsException index out of range (<tt>index &lt; 0
      *            || index &gt; size()</tt>).
      */
     public boolean addAll(int index, Collection c) {
@@ -380,7 +380,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @return a list iterator of the elements in this list (in proper
      * 	       sequence), starting at the specified position in the list.
      * 
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *		  range (<tt>index &lt; 0 || index &gt; size()</tt>).
      * 
      * @see #modCount
@@ -564,9 +564,9 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @param fromIndex low endpoint (inclusive) of the subList.
      * @param toKey high endpoint (exclusive) of the subList.
      * @return a view of the specified range within this list.
-     * @throws IndexOutOfBoundsException endpoint index value out of range
+     * @exception IndexOutOfBoundsException endpoint index value out of range
      *         <tt>(fromIndex &lt; 0 || toIndex &gt; size)</tt>
-     * @throws IllegalArgumentException endpoint indices out of order
+     * @exception IllegalArgumentException endpoint indices out of order
      * <tt>(fromIndex &gt; toIndex)</tt>
      */
     public List subList(int fromIndex, int toIndex) {

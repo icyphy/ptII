@@ -94,7 +94,7 @@ public class HashSet extends AbstractSet
      *
      * @param      initialCapacity   the initial capacity of the hash map.
      * @param      loadFactor        the load factor of the hash map.
-     * @throws     IllegalArgumentException if the initial capacity is less
+     * @exception     IllegalArgumentException if the initial capacity is less
      *             than zero, or if the load factor is nonpositive.
      */
     public HashSet(int initialCapacity, float loadFactor) {
@@ -107,7 +107,7 @@ public class HashSet extends AbstractSet
      * <tt>0.75</tt>.
      *
      * @param      initialCapacity   the initial capacity of the hash table.
-     * @throws     IllegalArgumentException if the initial capacity is less
+     * @exception     IllegalArgumentException if the initial capacity is less
      *             than zero.
      */
     public HashSet(int initialCapacity) {

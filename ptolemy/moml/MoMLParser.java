@@ -252,7 +252,7 @@ public class MoMLParser extends HandlerBase {
      *   not known.
      *  @param input The stream from which to read XML.
      *  @return The top-level composite entity of the Ptolemy II model.
-     *  @throws Exception If the parser fails.
+     *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, URL input)
             throws Exception {
@@ -280,7 +280,7 @@ public class MoMLParser extends HandlerBase {
      *   not known.
      *  @param input The stream from which to read XML.
      *  @return The top-level composite entity of the Ptolemy II model.
-     *  @throws Exception If the parser fails.
+     *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, InputStream input)
             throws Exception {
@@ -305,7 +305,7 @@ public class MoMLParser extends HandlerBase {
      *   not known.
      *  @param reader The reader from which to read XML.
      *  @return The top-level composite entity of the Ptolemy II model.
-     *  @throws Exception If the parser fails.
+     *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
         _parser.setHandler(this);
@@ -328,7 +328,7 @@ public class MoMLParser extends HandlerBase {
      *  data does not represent valid MoML data.
      *  @param input The string from which to read MoML.
      *  @return The top-level composite entity of the Ptolemy II model.
-     *  @throws Exception If the parser fails.
+     *  @exception Exception If the parser fails.
      */
     public NamedObj parse(String input) throws Exception {
         URL base = null;
@@ -1040,7 +1040,7 @@ public class MoMLParser extends HandlerBase {
     // be thrown.
     // @param newClass The class.
     // @param arguments The constructor arguments.
-    // @throws Exception If no matching constructor is found, or if
+    // @exception Exception If no matching constructor is found, or if
     //  invoking the constructor triggers an exception.
     private NamedObj _createInstance(Class newClass, Object[] arguments)
             throws Exception {

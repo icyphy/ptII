@@ -274,7 +274,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      *		be stored, if it is big enough; otherwise, a new array of the
      * 		same runtime type is allocated for this purpose.
      * @return an array containing the elements of the list.
-     * @throws ArrayStoreException if the runtime type of a is not a supertype
+     * @exception ArrayStoreException if the runtime type of a is not a supertype
      *         of the runtime type of every element in this list.
      */
     public Object[] toArray(Object a[]) {
@@ -297,7 +297,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      *
      * @param  index index of element to return.
      * @return the element at the specified position in this list.
-     * @throws    IndexOutOfBoundsException if index is out of range <tt>(index
+     * @exception    IndexOutOfBoundsException if index is out of range <tt>(index
      * 		  &lt; 0 || index &gt;= size())</tt>.
      */
     public Object get(int index) {
@@ -313,7 +313,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      * @param index index of element to replace.
      * @param element element to be stored at the specified position.
      * @return the element previously at the specified position.
-     * @throws    IndexOutOfBoundsException if index out of range
+     * @exception    IndexOutOfBoundsException if index out of range
      *		  <tt>(index &lt; 0 || index &gt;= size())</tt>.
      */
     public Object set(int index, Object element) {
@@ -343,7 +343,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      *
      * @param index index at which the specified element is to be inserted.
      * @param element element to be inserted.
-     * @throws    IndexOutOfBoundsException if index is out of range
+     * @exception    IndexOutOfBoundsException if index is out of range
      *		  <tt>(index &lt; 0 || index &gt; size())</tt>.
      */
     public void add(int index, Object element) {
@@ -365,7 +365,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      *
      * @param index the index of the element to removed.
      * @return the element that was removed from the list.
-     * @throws    IndexOutOfBoundsException if index out of range <tt>(index
+     * @exception    IndexOutOfBoundsException if index out of range <tt>(index
      * 		  &lt; 0 || index &gt;= size())</tt>.
      */
     public Object remove(int index) {
@@ -409,7 +409,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      * @param index index at which to insert first element
      *			  from the specified collection.
      * @param c elements to be inserted into this list.
-     * @throws    IndexOutOfBoundsException if index out of range <tt>(index
+     * @exception    IndexOutOfBoundsException if index out of range <tt>(index
      *		  &lt; 0 || index &gt; size())</tt>.
      */
     public boolean addAll(Collection c) {
@@ -435,7 +435,7 @@ public class ArrayList extends AbstractList implements List, Cloneable,
      * @param index index at which to insert first element
      *		    from the specified collection.
      * @param c elements to be inserted into this list.
-     * @throws    IndexOutOfBoundsException if index out of range <tt>(index
+     * @exception    IndexOutOfBoundsException if index out of range <tt>(index
      *		  &lt; 0 || index &gt; size())</tt>.
      */
     public boolean addAll(int index, Collection c) {

@@ -102,7 +102,7 @@ public class LinkedList extends AbstractSequentialList
      * Returns the last element in this list.
      *
      * @return the last element in this list.
-     * @throws    NoSuchElementException if this list is empty.
+     * @exception    NoSuchElementException if this list is empty.
      */
     public Object getLast()  {
 	if (size==0)
@@ -115,7 +115,7 @@ public class LinkedList extends AbstractSequentialList
      * Removes and returns the first element from this list.
      *
      * @return the first element from this list.
-     * @throws    NoSuchElementException if this list is empty.
+     * @exception    NoSuchElementException if this list is empty.
      */
     public Object removeFirst() {
 	Object first = header.next.element;
@@ -127,7 +127,7 @@ public class LinkedList extends AbstractSequentialList
      * Removes and returns the last element from this list.
      *
      * @return the last element from this list.
-     * @throws    NoSuchElementException if this list is empty.
+     * @exception    NoSuchElementException if this list is empty.
      */
     public Object removeLast() {
 	Object last = header.previous.element;
@@ -225,7 +225,7 @@ public class LinkedList extends AbstractSequentialList
      *			  from the specified collection.
      * @param c elements to be inserted into this list.
      * 
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *         range (<tt>index &lt; 0 || index &gt; size()</tt>).
      */
     public boolean addAll(Collection c) {
@@ -243,7 +243,7 @@ public class LinkedList extends AbstractSequentialList
      * @param index index at which to insert first element
      *		    from the specified collection.
      * @param c elements to be inserted into this list.
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *            range (<tt>index &lt; 0 || index &gt; size()</tt>).
      */
     public boolean addAll(int index, Collection c) {
@@ -284,7 +284,7 @@ public class LinkedList extends AbstractSequentialList
      * @param index index of element to return.
      * @return the element at the specified position in this list.
      * 
-     * @throws IndexOutOfBoundsException if the specified index is is out of
+     * @exception IndexOutOfBoundsException if the specified index is is out of
      * range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
     public Object get(int index) {
@@ -298,7 +298,7 @@ public class LinkedList extends AbstractSequentialList
      * @param index index of element to replace.
      * @param element element to be stored at the specified position.
      * @return the element previously at the specified position.
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *		  range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
     public Object set(int index, Object element) {
@@ -316,7 +316,7 @@ public class LinkedList extends AbstractSequentialList
      * @param index index at which the specified element is to be inserted.
      * @param element element to be inserted.
      * 
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      *		  range (<tt>index &lt; 0 || index &gt; size()</tt>).
      */
     public void add(int index, Object element) {
@@ -331,7 +331,7 @@ public class LinkedList extends AbstractSequentialList
      * @param index the index of the element to removed.
      * @return the element previously at the specified position.
      * 
-     * @throws IndexOutOfBoundsException if the specified index is out of
+     * @exception IndexOutOfBoundsException if the specified index is out of
      * 		  range (<tt>index &lt; 0 || index &gt;= size()</tt>).
      */
     public Object remove(int index) {
@@ -439,7 +439,7 @@ public class LinkedList extends AbstractSequentialList
      *		    list-iterator (by a call to <tt>next</tt>).
      * @return a ListIterator of the elements in this list (in proper
      * 	       sequence), starting at the specified position in the list.
-     * @throws    IndexOutOfBoundsException if index is out of range
+     * @exception    IndexOutOfBoundsException if index is out of range
      *		  (<tt>index &lt; 0 || index &gt; size()</tt>).
      * @see List#listIterator(int)
      */
@@ -611,7 +611,7 @@ public class LinkedList extends AbstractSequentialList
      *		be stored, if it is big enough; otherwise, a new array of the
      * 		same runtime type is allocated for this purpose.
      * @return an array containing the elements of the list.
-     * @throws ArrayStoreException if the runtime type of a is not a
+     * @exception ArrayStoreException if the runtime type of a is not a
      *         supertype of the runtime type of every element in this list.
      */
     public Object[] toArray(Object a[]) {

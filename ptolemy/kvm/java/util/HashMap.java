@@ -133,7 +133,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      *
      * @param      initialCapacity   the initial capacity of the HashMap.
      * @param      loadFactor        the load factor of the HashMap
-     * @throws     IllegalArgumentException  if the initial capacity is less
+     * @exception     IllegalArgumentException  if the initial capacity is less
      *               than zero, or if the load factor is nonpositive.
      */
     public HashMap(int initialCapacity, float loadFactor) {
@@ -155,7 +155,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
      * and default load factor, which is <tt>0.75</tt>.
      *
      * @param   initialCapacity   the initial capacity of the HashMap.
-     * @throws    IllegalArgumentException if the initial capacity is less
+     * @exception    IllegalArgumentException if the initial capacity is less
      *              than zero.
      */
     public HashMap(int initialCapacity) {
