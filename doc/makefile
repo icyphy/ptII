@@ -353,8 +353,7 @@ KRUFT = \
 	docConfig.jar
 
 all: suball whatsnew.htm whatsnewVergil.htm \
-	codeDoc/tree.html codeDocHyVisual/doc/codeDoc/tree.html \
-	codeDocVisualSense/doc/codeDoc/tree.html
+	codeDoc/tree.html # codeDocHyVisual/doc/codeDoc/tree.html codeDocVisualSense/doc/codeDoc/tree.html
 
 install: all jars codeDoc.jar codeDocHyVisual.jar codeDocVisualSense.jar
 
