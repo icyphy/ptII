@@ -22,6 +22,8 @@ CVS
 adm
 alljsimpletests.tcl
 ant
+bin/makebat
+bin/makebat.lnk
 brass
 collections
 com/microstar/xml/driver
