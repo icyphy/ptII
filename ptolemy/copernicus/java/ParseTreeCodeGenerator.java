@@ -97,13 +97,13 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _body.getLocals().add(tokenLocal);
 
         _units.insertBefore(Jimple.v().newAssignStmt(
-             tokenLocal, Jimple.v().newNewExpr(
-                     RefType.v(PtolemyUtilities.arrayTokenClass))), _insertPoint);
+                tokenLocal, Jimple.v().newNewExpr(
+                        RefType.v(PtolemyUtilities.arrayTokenClass))), _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
-             Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                 PtolemyUtilities.arrayTokenConstructor, local)), _insertPoint);
+                Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                        PtolemyUtilities.arrayTokenConstructor, local)), _insertPoint);
 
-       _nodeToLocal.put(node, tokenLocal);
+        _nodeToLocal.put(node, tokenLocal);
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
@@ -130,10 +130,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _body.getLocals().add(tokenLocal);
 
         _units.insertBefore(Jimple.v().newAssignStmt(
-                                    tokenLocal,
-                                    Jimple.v().newCastExpr(
-                                            resultLocal,
-                                            bitwiseType)), _insertPoint);
+                tokenLocal,
+                Jimple.v().newCastExpr(
+                        resultLocal,
+                        bitwiseType)), _insertPoint);
 
         for (int i = 1; i < numChildren; i++ ) {
             Local nextLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
@@ -147,7 +147,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         tokenClass, "bitwiseOr");
             } else if (node.isBitwiseXor()) {
                 method = SootUtilities.searchForMethodByName(
-                  tokenClass, "bitwiseXor");
+                        tokenClass, "bitwiseXor");
             } else {
                 throw new RuntimeException("Unrecognized node");
             }
@@ -259,7 +259,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 Local rowIndexLocal = Jimple.v().newLocal("rowIndex",
                         IntType.v());
                 _body.getLocals().add(rowIndexLocal);
-                 Local columnIndexLocal = Jimple.v().newLocal("columnIndex",
+                Local columnIndexLocal = Jimple.v().newLocal("columnIndex",
                         IntType.v());
                 _body.getLocals().add(columnIndexLocal);
                 _units.insertBefore(
@@ -269,7 +269,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                         rowIndexTokenLocal,
                                         PtolemyUtilities.intValueMethod)), _insertPoint);
 
-                 _units.insertBefore(
+                _units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 columnIndexLocal,
                                 Jimple.v().newVirtualInvokeExpr(
@@ -370,123 +370,123 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         //                                 argList)));
 
         /*
-   RefType objectType = RefType.v(PtolemyUtilities.objectClass);
-        Local argValuesLocal = Jimple.v().newLocal("tokenArray",
-                ArrayType.v(objectType, 1));
-        _body.getLocals().add(argValuesLocal);
-        _units.insertBefore(
-                Jimple.v().newAssignStmt(
-                        argValuesLocal,
-                        Jimple.v().newNewArrayExpr(
-                                objectType,
-                                IntConstant.v(node.jjtGetNumChildren()))), _insertPoint);
+          RefType objectType = RefType.v(PtolemyUtilities.objectClass);
+          Local argValuesLocal = Jimple.v().newLocal("tokenArray",
+          ArrayType.v(objectType, 1));
+          _body.getLocals().add(argValuesLocal);
+          _units.insertBefore(
+          Jimple.v().newAssignStmt(
+          argValuesLocal,
+          Jimple.v().newNewArrayExpr(
+          objectType,
+          IntConstant.v(node.jjtGetNumChildren()))), _insertPoint);
 
-        ptolemy.data.type.Type[] argTypes =
-            new ptolemy.data.type.Type[node.jjtGetNumChildren()];
-        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            argTypes[i] = ((ASTPtRootNode)node.jjtGetChild(i)).getType();
-            _units.insertBefore(
-                    Jimple.v().newAssignStmt(
-                            Jimple.v().newArrayRef(
-                                    argValuesLocal,
-                                    IntConstant.v(i)),
-                            (Local)_nodeToLocal.get(node.jjtGetChild(i))), _insertPoint);
-        }
+          ptolemy.data.type.Type[] argTypes =
+          new ptolemy.data.type.Type[node.jjtGetNumChildren()];
+          for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+          argTypes[i] = ((ASTPtRootNode)node.jjtGetChild(i)).getType();
+          _units.insertBefore(
+          Jimple.v().newAssignStmt(
+          Jimple.v().newArrayRef(
+          argValuesLocal,
+          IntConstant.v(i)),
+          (Local)_nodeToLocal.get(node.jjtGetChild(i))), _insertPoint);
+          }
 
-        RefType typeType = RefType.v("ptolemy.data.type.Type");
-        Local argTypesLocal = Jimple.v().newLocal("tokenTypes",
-                ArrayType.v(typeType, 1));
-        _body.getLocals().add(argTypesLocal);
-        Local typeLocal = Jimple.v().newLocal("classType",
-                typeType);
-        _body.getLocals().add(typeLocal);
-        Local tokenLocal = Jimple.v().newLocal("token",
-                PtolemyUtilities.tokenType);
-        _body.getLocals().add(tokenLocal);
+          RefType typeType = RefType.v("ptolemy.data.type.Type");
+          Local argTypesLocal = Jimple.v().newLocal("tokenTypes",
+          ArrayType.v(typeType, 1));
+          _body.getLocals().add(argTypesLocal);
+          Local typeLocal = Jimple.v().newLocal("classType",
+          typeType);
+          _body.getLocals().add(typeLocal);
+          Local tokenLocal = Jimple.v().newLocal("token",
+          PtolemyUtilities.tokenType);
+          _body.getLocals().add(tokenLocal);
 
-        _units.insertBefore(
-                Jimple.v().newAssignStmt(
-                        argTypesLocal,
-                        Jimple.v().newNewArrayExpr(
-                                typeType,
-                                IntConstant.v(argCount))), _insertPoint);
+          _units.insertBefore(
+          Jimple.v().newAssignStmt(
+          argTypesLocal,
+          Jimple.v().newNewArrayExpr(
+          typeType,
+          IntConstant.v(argCount))), _insertPoint);
 
-        Local indexLocal = Jimple.v().newLocal("index", IntType.v());
-        _body.getLocals().add(indexLocal);
+          Local indexLocal = Jimple.v().newLocal("index", IntType.v());
+          _body.getLocals().add(indexLocal);
 
-        // The list of initializer instructions.
-        List initializerList = new LinkedList();
-        initializerList.add(
-                Jimple.v().newAssignStmt(
-                        indexLocal,
-                        IntConstant.v(0)), _insertPoint);
+          // The list of initializer instructions.
+          List initializerList = new LinkedList();
+          initializerList.add(
+          Jimple.v().newAssignStmt(
+          indexLocal,
+          IntConstant.v(0)), _insertPoint);
 
-        // The list of body instructions.
-        List bodyList = new LinkedList();
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        tokenLocal,
-                        Jimple.v().newArrayRef(
-                                argValuesLocal,
-                                indexLocal)));
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        tokenLocal,
-                        Jimple.v().newCastExpr(
-                                tokenLocal,
-                                PtolemyUtilities.tokenType)));
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        typeLocal,
-                        Jimple.v().newVirtualInvokeExpr(
-                                tokenLocal,
-                                PtolemyUtilities.tokenGetTypeMethod)));
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        Jimple.v().newArrayRef(
-                                argTypesLocal,
-                                indexLocal),
-                        typeLocal));
+          // The list of body instructions.
+          List bodyList = new LinkedList();
+          bodyList.add(
+          Jimple.v().newAssignStmt(
+          tokenLocal,
+          Jimple.v().newArrayRef(
+          argValuesLocal,
+          indexLocal)));
+          bodyList.add(
+          Jimple.v().newAssignStmt(
+          tokenLocal,
+          Jimple.v().newCastExpr(
+          tokenLocal,
+          PtolemyUtilities.tokenType)));
+          bodyList.add(
+          Jimple.v().newAssignStmt(
+          typeLocal,
+          Jimple.v().newVirtualInvokeExpr(
+          tokenLocal,
+          PtolemyUtilities.tokenGetTypeMethod)));
+          bodyList.add(
+          Jimple.v().newAssignStmt(
+          Jimple.v().newArrayRef(
+          argTypesLocal,
+          indexLocal),
+          typeLocal));
 
 
-        // Increment the index.
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        indexLocal,
-                        Jimple.v().newAddExpr(
-                                indexLocal,
-                                IntConstant.v(1))));
+          // Increment the index.
+          bodyList.add(
+          Jimple.v().newAssignStmt(
+          indexLocal,
+          Jimple.v().newAddExpr(
+          indexLocal,
+          IntConstant.v(1))));
 
-        Expr conditionalExpr =
-            Jimple.v().newLtExpr(
-                    indexLocal,
-                    IntConstant.v(argCount));
+          Expr conditionalExpr =
+          Jimple.v().newLtExpr(
+          indexLocal,
+          IntConstant.v(argCount));
 
-        Stmt stmt = Jimple.v().newNopStmt();
-        _units.insertBefore(stmt);
+          Stmt stmt = Jimple.v().newNopStmt();
+          _units.insertBefore(stmt);
 
-        SootUtilities.createForLoopBefore(_body,
-                stmt,
-                initializerList,
-                bodyList,
-                conditionalExpr);
+          SootUtilities.createForLoopBefore(_body,
+          stmt,
+          initializerList,
+          bodyList,
+          conditionalExpr);
 
-        SootMethod methodCallEvaluationMethod =
-            Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token functionCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
-        List argList = new ArrayList();
-        argList.add(StringConstant.v(node.getFunctionName()));
-        argList.add(IntConstant.v(argCount));
-        argList.add(argTypesLocal);
-        argList.add(argValuesLocal);
+          SootMethod methodCallEvaluationMethod =
+          Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token functionCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
+          List argList = new ArrayList();
+          argList.add(StringConstant.v(node.getFunctionName()));
+          argList.add(IntConstant.v(argCount));
+          argList.add(argTypesLocal);
+          argList.add(argValuesLocal);
 
-        _units.insertBefore(
-                Jimple.v().newAssignStmt(
-                        tokenLocal,
-                        Jimple.v().newStaticInvokeExpr(
-                                methodCallEvaluationMethod,
-                                argList)));
+          _units.insertBefore(
+          Jimple.v().newAssignStmt(
+          tokenLocal,
+          Jimple.v().newStaticInvokeExpr(
+          methodCallEvaluationMethod,
+          argList)));
 
-         */
+        */
         _nodeToLocal.put(node, tokenLocal);
     }
 
@@ -504,7 +504,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         PtolemyUtilities.tokenClass)) {
             tokenLocal = returnLocal;
         } else if (returnType.equals(
-                          ArrayType.v(PtolemyUtilities.tokenType, 1))) {
+                ArrayType.v(PtolemyUtilities.tokenType, 1))) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.arrayTokenClass,
                     PtolemyUtilities.arrayTokenConstructor,
@@ -980,29 +980,29 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 _insertPoint);
 
         // Otherwise, do the false branch,
-         _generateChild(node, 2);
-         // Assign the false result
-         _units.insertBefore(
-                 Jimple.v().newAssignStmt(
-                         resultLocal,
-                         (Local)_nodeToLocal.get(node.jjtGetChild(2))), _insertPoint);
-         // And continue on.
-         _units.insertBefore(Jimple.v().newGotoStmt(endTrue),
-                 _insertPoint);
+        _generateChild(node, 2);
+        // Assign the false result
+        _units.insertBefore(
+                Jimple.v().newAssignStmt(
+                        resultLocal,
+                        (Local)_nodeToLocal.get(node.jjtGetChild(2))), _insertPoint);
+        // And continue on.
+        _units.insertBefore(Jimple.v().newGotoStmt(endTrue),
+                _insertPoint);
 
-         _units.insertBefore(startTrue,
-                 _insertPoint);
+        _units.insertBefore(startTrue,
+                _insertPoint);
 
         // Otherwise, do the true branch,
-         _generateChild(node, 1);
-         // Assign the true result
-         _units.insertBefore(
-                 Jimple.v().newAssignStmt(
-                         resultLocal,
-                         (Local)_nodeToLocal.get(node.jjtGetChild(1))), _insertPoint);
-         _units.insertBefore(endTrue, _insertPoint);
+        _generateChild(node, 1);
+        // Assign the true result
+        _units.insertBefore(
+                Jimple.v().newAssignStmt(
+                        resultLocal,
+                        (Local)_nodeToLocal.get(node.jjtGetChild(1))), _insertPoint);
+        _units.insertBefore(endTrue, _insertPoint);
 
-         _nodeToLocal.put(node, resultLocal);
+        _nodeToLocal.put(node, resultLocal);
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
@@ -1071,10 +1071,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             // If condition is true then skip to start of true branch.
             _units.insertBefore(
                     Jimple.v().newIfStmt(
-                        Jimple.v().newNeExpr(
-                                flagLocal,
-                                conditionConstant),
-                        failedStmt),
+                            Jimple.v().newNeExpr(
+                                    flagLocal,
+                                    conditionConstant),
+                            failedStmt),
                     _insertPoint);
         }
         // If we fall through, then must be satisfied.
@@ -1097,9 +1097,9 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         // Take the result and turn it back into a BooleanToken
         Local resultLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
-                    PtolemyUtilities.booleanTokenClass,
-                    PtolemyUtilities.booleanTokenConstructor,
-                    conditionLocal);
+                PtolemyUtilities.booleanTokenClass,
+                PtolemyUtilities.booleanTokenConstructor,
+                conditionLocal);
 
 
         _nodeToLocal.put(node, resultLocal);
@@ -1209,7 +1209,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         Local originalBaseLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
         RefType baseType = RefType.v(sootMethod.getDeclaringClass());
         Local baseLocal = Jimple.v().newLocal("base",
-               baseType);
+                baseType);
         _body.getLocals().add(baseLocal);
 
         if (cachedMethod instanceof CachedMethod.BaseConvertCachedMethod) {
@@ -1266,112 +1266,112 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
 
 
-   //      RefType objectType = RefType.v(PtolemyUtilities.objectClass);
-//         Local argValuesLocal = Jimple.v().newLocal("tokenArray",
-//                 ArrayType.v(objectType, 1));
-//         _body.getLocals().add(argValuesLocal);
-//         _units.insertBefore(
-//                 Jimple.v().newAssignStmt(
-//                         argValuesLocal,
-//                         Jimple.v().newNewArrayExpr(
-//                                 objectType,
-//                                 IntConstant.v(node.jjtGetNumChildren()))));
+        //      RefType objectType = RefType.v(PtolemyUtilities.objectClass);
+        //         Local argValuesLocal = Jimple.v().newLocal("tokenArray",
+        //                 ArrayType.v(objectType, 1));
+        //         _body.getLocals().add(argValuesLocal);
+        //         _units.insertBefore(
+        //                 Jimple.v().newAssignStmt(
+        //                         argValuesLocal,
+        //                         Jimple.v().newNewArrayExpr(
+        //                                 objectType,
+        //                                 IntConstant.v(node.jjtGetNumChildren()))));
 
-//         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-//             _units.insertBefore(
-//                     Jimple.v().newAssignStmt(
-//                             Jimple.v().newArrayRef(
-//                                     argValuesLocal,
-//                                     IntConstant.v(i)),
-//                             (Local)_nodeToLocal.get(node.jjtGetChild(i))));
-//         }
+        //         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+        //             _units.insertBefore(
+        //                     Jimple.v().newAssignStmt(
+        //                             Jimple.v().newArrayRef(
+        //                                     argValuesLocal,
+        //                                     IntConstant.v(i)),
+        //                             (Local)_nodeToLocal.get(node.jjtGetChild(i))));
+        //         }
 
-//         RefType typeType = RefType.v("ptolemy.data.type.Type");
-//         Local argTypesLocal = Jimple.v().newLocal("tokenTypes",
-//                 ArrayType.v(typeType, 1));
-//         _body.getLocals().add(argTypesLocal);
-//         Local typeLocal = Jimple.v().newLocal("classType",
-//                 typeType);
-//         _body.getLocals().add(typeLocal);
-//         Local tokenLocal = Jimple.v().newLocal("token",
-//                 PtolemyUtilities.tokenType);
-//         _body.getLocals().add(tokenLocal);
+        //         RefType typeType = RefType.v("ptolemy.data.type.Type");
+        //         Local argTypesLocal = Jimple.v().newLocal("tokenTypes",
+        //                 ArrayType.v(typeType, 1));
+        //         _body.getLocals().add(argTypesLocal);
+        //         Local typeLocal = Jimple.v().newLocal("classType",
+        //                 typeType);
+        //         _body.getLocals().add(typeLocal);
+        //         Local tokenLocal = Jimple.v().newLocal("token",
+        //                 PtolemyUtilities.tokenType);
+        //         _body.getLocals().add(tokenLocal);
 
-//         _units.insertBefore(
-//                 Jimple.v().newAssignStmt(
-//                         argTypesLocal,
-//                         Jimple.v().newNewArrayExpr(
-//                                 typeType,
-//                                 IntConstant.v(argCount))));
+        //         _units.insertBefore(
+        //                 Jimple.v().newAssignStmt(
+        //                         argTypesLocal,
+        //                         Jimple.v().newNewArrayExpr(
+        //                                 typeType,
+        //                                 IntConstant.v(argCount))));
 
-//         Local indexLocal = Jimple.v().newLocal("index", IntType.v());
-//         _body.getLocals().add(indexLocal);
+        //         Local indexLocal = Jimple.v().newLocal("index", IntType.v());
+        //         _body.getLocals().add(indexLocal);
 
-//         // The list of initializer instructions.
-//         List initializerList = new LinkedList();
-//         initializerList.add(
-//                 Jimple.v().newAssignStmt(
-//                         indexLocal,
-//                         IntConstant.v(0)));
+        //         // The list of initializer instructions.
+        //         List initializerList = new LinkedList();
+        //         initializerList.add(
+        //                 Jimple.v().newAssignStmt(
+        //                         indexLocal,
+        //                         IntConstant.v(0)));
 
-//         // The list of body instructions.
-//         List bodyList = new LinkedList();
-//         bodyList.add(
-//                 Jimple.v().newAssignStmt(
-//                         tokenLocal,
-//                         Jimple.v().newArrayRef(
-//                                 argValuesLocal,
-//                                 indexLocal)));
-//         bodyList.add(
-//                 Jimple.v().newAssignStmt(
-//                         typeLocal,
-//                         Jimple.v().newVirtualInvokeExpr(
-//                                 tokenLocal,
-//                                 PtolemyUtilities.tokenGetTypeMethod)));
-//         bodyList.add(
-//                 Jimple.v().newAssignStmt(
-//                         Jimple.v().newArrayRef(
-//                                 argTypesLocal,
-//                                 indexLocal),
-//                         typeLocal));
+        //         // The list of body instructions.
+        //         List bodyList = new LinkedList();
+        //         bodyList.add(
+        //                 Jimple.v().newAssignStmt(
+        //                         tokenLocal,
+        //                         Jimple.v().newArrayRef(
+        //                                 argValuesLocal,
+        //                                 indexLocal)));
+        //         bodyList.add(
+        //                 Jimple.v().newAssignStmt(
+        //                         typeLocal,
+        //                         Jimple.v().newVirtualInvokeExpr(
+        //                                 tokenLocal,
+        //                                 PtolemyUtilities.tokenGetTypeMethod)));
+        //         bodyList.add(
+        //                 Jimple.v().newAssignStmt(
+        //                         Jimple.v().newArrayRef(
+        //                                 argTypesLocal,
+        //                                 indexLocal),
+        //                         typeLocal));
 
 
-//         // Increment the index.
-//         bodyList.add(
-//                 Jimple.v().newAssignStmt(
-//                         indexLocal,
-//                         Jimple.v().newAddExpr(
-//                                 indexLocal,
-//                                 IntConstant.v(1))));
+        //         // Increment the index.
+        //         bodyList.add(
+        //                 Jimple.v().newAssignStmt(
+        //                         indexLocal,
+        //                         Jimple.v().newAddExpr(
+        //                                 indexLocal,
+        //                                 IntConstant.v(1))));
 
-//         Expr conditionalExpr =
-//             Jimple.v().newLtExpr(
-//                     indexLocal,
-//                     IntConstant.v(argCount));
+        //         Expr conditionalExpr =
+        //             Jimple.v().newLtExpr(
+        //                     indexLocal,
+        //                     IntConstant.v(argCount));
 
-//         Stmt stmt = Jimple.v().newNopStmt();
-//         _units.insertBefore(stmt);
+        //         Stmt stmt = Jimple.v().newNopStmt();
+        //         _units.insertBefore(stmt);
 
-//         SootUtilities.createForLoopBefore(_body,
-//                 stmt,
-//                 initializerList,
-//                 bodyList,
-//                 conditionalExpr);
+        //         SootUtilities.createForLoopBefore(_body,
+        //                 stmt,
+        //                 initializerList,
+        //                 bodyList,
+        //                 conditionalExpr);
 
-//         SootMethod methodCallEvaluationMethod =
-//             Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token methodCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
-//         List argList = new ArrayList();
-//         argList.add(StringConstant.v(node.getMethodName()));
-//         argList.add(IntConstant.v(argCount));
-//         argList.add(argTypesLocal);
-//         argList.add(argValuesLocal);
+        //         SootMethod methodCallEvaluationMethod =
+        //             Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token methodCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
+        //         List argList = new ArrayList();
+        //         argList.add(StringConstant.v(node.getMethodName()));
+        //         argList.add(IntConstant.v(argCount));
+        //         argList.add(argTypesLocal);
+        //         argList.add(argValuesLocal);
 
-//         _units.insertBefore(
-//                 Jimple.v().newAssignStmt(
-//                         tokenLocal,
-//                         Jimple.v().newStaticInvokeExpr(
-//                                 methodCallEvaluationMethod,
-//                                 argList)));
+        //         _units.insertBefore(
+        //                 Jimple.v().newAssignStmt(
+        //                         tokenLocal,
+        //                         Jimple.v().newStaticInvokeExpr(
+        //                                 methodCallEvaluationMethod,
+        //                                 argList)));
 
         _nodeToLocal.put(node, tokenLocal);
     }
@@ -1524,15 +1524,15 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _body.getLocals().add(tokenLocal);
 
         _units.insertBefore(Jimple.v().newAssignStmt(
-             tokenLocal, Jimple.v().newNewExpr(
-                     RefType.v(PtolemyUtilities.recordTokenClass))), _insertPoint);
+                tokenLocal, Jimple.v().newNewExpr(
+                        RefType.v(PtolemyUtilities.recordTokenClass))), _insertPoint);
         _units.insertBefore(Jimple.v().newInvokeStmt(
-             Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                 PtolemyUtilities.recordTokenConstructor,
-                     labelsLocal, valuesLocal)), _insertPoint);
+                Jimple.v().newSpecialInvokeExpr(tokenLocal,
+                        PtolemyUtilities.recordTokenConstructor,
+                        labelsLocal, valuesLocal)), _insertPoint);
 
-       _nodeToLocal.put(node, tokenLocal);
-     }
+        _nodeToLocal.put(node, tokenLocal);
+    }
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _generateAllChildren(node);
@@ -1556,7 +1556,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 scalarType);
         _body.getLocals().add(leftScalarLocal);
         Local rightScalarLocal = Jimple.v().newLocal("rightScalar",
-                    scalarType);
+                scalarType);
         _body.getLocals().add(rightScalarLocal);
 
         if (operator.kind == PtParserConstants.EQUALS) {
@@ -1583,15 +1583,15 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                     PtolemyUtilities.tokenNotMethod)), _insertPoint);
         } else {
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               leftScalarLocal,
-                               Jimple.v().newCastExpr(
-                                      leftLocal,
-                                      scalarType)), _insertPoint);
+                    leftScalarLocal,
+                    Jimple.v().newCastExpr(
+                            leftLocal,
+                            scalarType)), _insertPoint);
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               rightScalarLocal,
-                               Jimple.v().newCastExpr(
-                                       rightLocal,
-                                       scalarType)), _insertPoint);
+                    rightScalarLocal,
+                    Jimple.v().newCastExpr(
+                            rightLocal,
+                            scalarType)), _insertPoint);
 
             if (operator.kind == PtParserConstants.GTE) {
                 _units.insertBefore(
@@ -1642,7 +1642,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         "Invalid operation " + operator.image);
             }
         }
-       _nodeToLocal.put(node, tokenLocal);
+        _nodeToLocal.put(node, tokenLocal);
     }
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
@@ -1659,7 +1659,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         Local resultLocal = Jimple.v().newLocal("tokenResult",
                 PtolemyUtilities.tokenType);
         _body.getLocals().add(resultLocal);
-         Local scalarLocal = Jimple.v().newLocal("scalar",
+        Local scalarLocal = Jimple.v().newLocal("scalar",
                 scalarType);
         _body.getLocals().add(scalarLocal);
         Local intLocal = Jimple.v().newLocal("bits",
@@ -1667,45 +1667,45 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _body.getLocals().add(intLocal);
 
         _units.insertBefore(Jimple.v().newAssignStmt(
-                           scalarLocal,
-                           Jimple.v().newCastExpr(
-                                   bitsLocal,
-                                   scalarType)), _insertPoint);
+                scalarLocal,
+                Jimple.v().newCastExpr(
+                        bitsLocal,
+                        scalarType)), _insertPoint);
         _units.insertBefore(Jimple.v().newAssignStmt(
-                           intLocal,
-                           Jimple.v().newVirtualInvokeExpr(
-                                   scalarLocal,
-                                   PtolemyUtilities.tokenIntValueMethod)), _insertPoint);
+                intLocal,
+                Jimple.v().newVirtualInvokeExpr(
+                        scalarLocal,
+                        PtolemyUtilities.tokenIntValueMethod)), _insertPoint);
         _units.insertBefore(Jimple.v().newAssignStmt(
-                           scalarLocal,
-                           Jimple.v().newCastExpr(
-                                   tokenLocal,
-                                   scalarType)), _insertPoint);
+                scalarLocal,
+                Jimple.v().newCastExpr(
+                        tokenLocal,
+                        scalarType)), _insertPoint);
         if (operator.kind == PtParserConstants.SHL) {
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               resultLocal,
-                               Jimple.v().newVirtualInvokeExpr(
-                                       scalarLocal,
-                                       PtolemyUtilities.tokenLeftShiftMethod,
-                                       intLocal)), _insertPoint);
+                    resultLocal,
+                    Jimple.v().newVirtualInvokeExpr(
+                            scalarLocal,
+                            PtolemyUtilities.tokenLeftShiftMethod,
+                            intLocal)), _insertPoint);
         } else if (operator.kind == PtParserConstants.SHR) {
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               resultLocal,
-                               Jimple.v().newVirtualInvokeExpr(
-                                       scalarLocal,
-                                       PtolemyUtilities.tokenRightShiftMethod,
-                                       intLocal)), _insertPoint);
+                    resultLocal,
+                    Jimple.v().newVirtualInvokeExpr(
+                            scalarLocal,
+                            PtolemyUtilities.tokenRightShiftMethod,
+                            intLocal)), _insertPoint);
         } else if (operator.kind == PtParserConstants.LSHR) {
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               resultLocal,
-                               Jimple.v().newVirtualInvokeExpr(
-                                       scalarLocal,
-                                       PtolemyUtilities.tokenLogicalRightShiftMethod,
-                                       intLocal)), _insertPoint);
+                    resultLocal,
+                    Jimple.v().newVirtualInvokeExpr(
+                            scalarLocal,
+                            PtolemyUtilities.tokenLogicalRightShiftMethod,
+                            intLocal)), _insertPoint);
         } else {
             _assert(false, node, "Invalid operation");
         }
-       _nodeToLocal.put(node, resultLocal);
+        _nodeToLocal.put(node, resultLocal);
     }
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
@@ -1771,60 +1771,60 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _body.getLocals().add(zeroLocal);
 
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               zeroLocal,
-                               Jimple.v().newVirtualInvokeExpr(
-                                       tokenLocal,
-                                       PtolemyUtilities.tokenZeroMethod)), _insertPoint);
+                    zeroLocal,
+                    Jimple.v().newVirtualInvokeExpr(
+                            tokenLocal,
+                            PtolemyUtilities.tokenZeroMethod)), _insertPoint);
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               resultLocal,
-                               Jimple.v().newVirtualInvokeExpr(
-                                       zeroLocal,
-                                       PtolemyUtilities.tokenSubtractMethod,
-                                       tokenLocal)), _insertPoint);
+                    resultLocal,
+                    Jimple.v().newVirtualInvokeExpr(
+                            zeroLocal,
+                            PtolemyUtilities.tokenSubtractMethod,
+                            tokenLocal)), _insertPoint);
         } else if (node.isNot()) {
             Type booleanType = RefType.v("ptolemy.data.BooleanToken");
             Local booleanLocal = Jimple.v().newLocal("token",
                     booleanType);
             _body.getLocals().add(booleanLocal);
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               booleanLocal,
-                               Jimple.v().newCastExpr(
-                                       tokenLocal,
-                                       booleanType)), _insertPoint);
+                    booleanLocal,
+                    Jimple.v().newCastExpr(
+                            tokenLocal,
+                            booleanType)), _insertPoint);
 
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               booleanLocal,
-                               Jimple.v().newInterfaceInvokeExpr(
-                                       booleanLocal,
-                                       PtolemyUtilities.tokenBitwiseNotMethod)), _insertPoint);
+                    booleanLocal,
+                    Jimple.v().newInterfaceInvokeExpr(
+                            booleanLocal,
+                            PtolemyUtilities.tokenBitwiseNotMethod)), _insertPoint);
 
-             _units.insertBefore(Jimple.v().newAssignStmt(
-                               resultLocal,
-                               Jimple.v().newCastExpr(
-                                       booleanLocal,
-                                       PtolemyUtilities.tokenType)), _insertPoint);
+            _units.insertBefore(Jimple.v().newAssignStmt(
+                    resultLocal,
+                    Jimple.v().newCastExpr(
+                            booleanLocal,
+                            PtolemyUtilities.tokenType)), _insertPoint);
         } else if (node.isBitwiseNot()) {
             Type bitwiseType = RefType.v("ptolemy.data.BitwiseOperationToken");
             Local bitwiseLocal = Jimple.v().newLocal("token",
                     bitwiseType);
             _body.getLocals().add(bitwiseLocal);
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               bitwiseLocal,
-                               Jimple.v().newCastExpr(
-                                       tokenLocal,
-                                       bitwiseType)), _insertPoint);
+                    bitwiseLocal,
+                    Jimple.v().newCastExpr(
+                            tokenLocal,
+                            bitwiseType)), _insertPoint);
 
             _units.insertBefore(Jimple.v().newAssignStmt(
-                               bitwiseLocal,
-                               Jimple.v().newInterfaceInvokeExpr(
-                                       bitwiseLocal,
-                                       PtolemyUtilities.tokenBitwiseNotMethod)), _insertPoint);
+                    bitwiseLocal,
+                    Jimple.v().newInterfaceInvokeExpr(
+                            bitwiseLocal,
+                            PtolemyUtilities.tokenBitwiseNotMethod)), _insertPoint);
 
-             _units.insertBefore(Jimple.v().newAssignStmt(
-                               resultLocal,
-                               Jimple.v().newCastExpr(
-                                       bitwiseLocal,
-                                       PtolemyUtilities.tokenType)), _insertPoint);
+            _units.insertBefore(Jimple.v().newAssignStmt(
+                    resultLocal,
+                    Jimple.v().newCastExpr(
+                            bitwiseLocal,
+                            PtolemyUtilities.tokenType)), _insertPoint);
 
         } else {
             _assert(false, node, "Unrecognized unary node");
