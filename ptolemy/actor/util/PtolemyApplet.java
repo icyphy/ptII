@@ -167,7 +167,7 @@ public class PtolemyApplet extends Applet {
      *  
      *  @param first The first string array.  
      *  @param second The second string array.
-     *  @returns A concatenated string array.
+     *  @return A concatenated string array.
      */
     protected String[][] _concatStringArrays(
             String[][] first, String[][] second) {
