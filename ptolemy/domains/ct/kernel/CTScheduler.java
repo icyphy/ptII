@@ -135,7 +135,7 @@ public class CTScheduler extends Scheduler{
 
     /** Construct a CT scheduler in the default workspace
      *  with the default name "CTScheduler". There is no director
-     *  containing this scheduler. To attach this schdeuler to a
+     *  containing this scheduler. To attach this scheduler to a
      *  CTDirector, call setScheduler() on the CTDirector.
      */
     public CTScheduler() {
@@ -144,7 +144,7 @@ public class CTScheduler extends Scheduler{
 
     /** Construct a CT scheduler in the given workspace
      *  with the name "CTScheduler". There is no director
-     *  containing this scheduler. To attach this schdeuler to a
+     *  containing this scheduler. To attach this scheduler to a
      *  CTDirector, call setScheduler() on the CTDirector.
      *
      *  @param workspace The workspace.
