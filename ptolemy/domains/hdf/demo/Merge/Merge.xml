@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[12, 268]">
     </property>
-    <property name="HDFDirector" class="ptolemy.domains.hdf.kernel.HDFDirector">
+    <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="30">
@@ -25,7 +25,7 @@
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, -2, 762, 728}, maximized=false}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows consumption and production rates&#10;to vary dynamically, depending on the different states of the modal model.&#10;&#10;In this example, the modal model merges two increasing sequences of numbers&#10;into one increasing sequence.The model uses a feedback loop to remember&#10;the previous largest number, which is from either input1 or input2. This&#10;number is fed back to input3 and used to compare with the new input from &#10;input2 or input1. Whether the consumption of token from input2 or input1 &#10;is described in the state machine. The smaller of the two is sent to the &#10;output and the larger one is updated to be the largest number and fedback &#10;in the next iteraton.&#10;&#10;Author: Rachel Zhou, Brian Vogel">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows consumption and production rates&#10;to vary dynamically. The port rates of the modal model is determined by&#10;the model inside the state refinement.&#10;&#10;In this example, two increasing sequences of numbers is merged into one &#10;increasing sequence.The model uses a feedback loop to remember the&#10;previous largest number, which is from either input1 or input2. This number &#10;is fed back to input3 and used to compare with the new input from input2 or &#10;input1. Whether the consumption of token from input2 or input1 is described &#10;in the state machine. The smaller of the two is sent to the output and the &#10;larger one is updated to be the current largest number and fedback in the &#10;next iteraton.&#10;&#10;Author: Rachel Zhou, Brian Vogel">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 330.0]">
         </property>
