@@ -692,8 +692,13 @@ String tidied, x;
                     Long value = new Long(x.substring(0, len-1 ));
                     jjtThis._ptToken = new LongToken(value.longValue());
                 } else {
-                   Integer value = new Integer(x);
-                   jjtThis._ptToken = new IntToken(value.intValue()); 
+		    try { 
+                        Integer value = new Integer(x);
+                        jjtThis._ptToken = new IntToken(value.intValue()); 
+                    } catch (NumberFormatException nfe) {
+                        Long value = new Long(x);
+                        jjtThis._ptToken = new LongToken(value.longValue());
+                    }
                 }
 		jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
