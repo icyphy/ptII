@@ -490,10 +490,19 @@ public class GeneratorTableau extends Tableau {
 	    throw internalError;
         }
 
+        // What directory does the makefile that we want to run
+        // reside in?
+        String copernicusSubdirectory = null;
+	if (generateShallowJavaCode) {
+            copernicusSubdirectory = "shallow";
+        } else {
+            copernicusSubdirectory = "java";
+        }
+
 	// Make sure the directory exists.
 	String makefileDirectory = home + File.separatorChar + "ptolemy"
 	    + File.separatorChar + "copernicus" + File.separatorChar
-	    + "java";
+	    + copernicusSubdirectory;
 	File makefileDirectoryFile = new File(makefileDirectory);
 	if (!makefileDirectoryFile.isDirectory()) {
 	    IllegalArgumentException illegalArgument =
