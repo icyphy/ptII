@@ -49,9 +49,10 @@ import ptolemy.kernel.util.Workspace;
 /**
 A specialized port for use with PortParameter.  This port is created
 by an instance of PortParameter and provides values to a parameter.
-The parameter's current value is updated whenever get() is
-called on this port.  This port is only useful if the container is
-opaque, however, this is not checked.
+Data should not be read directly from this port.  Instead, the update
+method of the corresponding PortParameter should be invoked.  This
+port is only useful if the container is opaque, however, this is not
+checked.
 
 @see PortParameter
 @author  Edward A. Lee
@@ -103,48 +104,6 @@ public class ParameterPort extends TypedIOPort {
         // that parameter is cloned and the container of both is set.
         newObject._parameter = null;
         return newObject;
-    }
-
-    /** Get a token from the specified channel as done by the superclass,
-     *  but override the superclass to set the current value of
-     *  of the associated parameter, if there is one.
-     *  @param channelIndex The channel index.
-     *  @return A token from the specified channel.
-     *  @exception NoTokenException If there is no token.
-     *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created, if the port is not an input port, or
-     *   if the channel index is out of range.
-     */
-    public Token get(int channelIndex)
-            throws NoTokenException, IllegalActionException {
-        Token token = super.get(channelIndex);
-        if (_parameter != null) {
-            _parameter.setCurrentValue(token);
-        }
-        return token;
-    }
-
-    /** Get an array of tokens from the specified channel
-     *  as done by the superclass, but override the superclass to set the
-     *  current value of the corresponding parameter to be the last token
-     *  in the array.
-     *  @param channelIndex The channel index.
-     *  @param vectorLength The number of valid tokens to get in the
-     *   returned array.
-     *  @return A token array from the specified channel containing
-     *   <i>vectorLength</i> valid tokens.
-     *  @exception NoTokenException If there is no array of tokens.
-     *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created, if the port is not an input port, or
-     *   if the channel index is out of range.
-     */
-    public Token[] get(int channelIndex, int vectorLength)
-            throws NoTokenException, IllegalActionException {
-        Token[] retArray = super.get(channelIndex, vectorLength);
-        if (_parameter != null) {
-            _parameter.setToken(retArray[vectorLength-1]);
-        }
-        return retArray;
     }
 
     /** Set the container of this port. If the container is different

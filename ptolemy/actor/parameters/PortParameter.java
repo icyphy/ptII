@@ -31,6 +31,7 @@
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -66,7 +67,6 @@ and is set by any of three different mechanisms:
 <li> calling setCurrentValue();
 <li> calling update() sets the current value if there is an associated
      port, and that port has a token to consume; and
-<li> calling get() on the associated port.
 </ul>
 These three techniques do not change the persistent value, so after
 these are used, the persistent value and current value may be different.
@@ -112,7 +112,11 @@ public class PortParameter extends Parameter {
     public PortParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _createParameterPort(container, name);
+        if (container instanceof TypedActor) {
+            // If we get to here, we know the container is a ComponentEntity,
+            // so the cast is safe.
+            _port = new ParameterPort((ComponentEntity)container, name);
+        }
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -319,10 +323,12 @@ public class PortParameter extends Parameter {
      *   port throws it.
      */
     public void update() throws IllegalActionException {
-        if (_port != null
-                && _port.getWidth() > 0
-                && _port.hasToken(0)) {
-            _port.get(0);
+        ParameterPort port = _port;
+        if (port != null
+                && port.getWidth() > 0
+                && port.hasToken(0)) {
+            Token token = port.get(0);
+            setCurrentValue(token);
         }
     }
 
@@ -340,35 +346,6 @@ public class PortParameter extends Parameter {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
                     "PortParameter can only be used in an instance of Entity.");
-        }
-    }
-
-    /** If the specified container is of type TypedActor, then create an
-     *  associated instance of ParameterPort and set the protected variable
-     *  _port equal to that port.  This method is called during construction,
-     *  so this parameter may not be fully constructed.  It is a protected
-     *  method to allow subclasses to create subclasses as associated ports.
-     *  @param container The container for the port.
-     *  @param name The name for the port.
-     *  @throws IllegalActionException If the port cannot be contained by
-     *   specified container.
-     *  @throws NameDuplicationException If a name collision occurs.
-     */
-    protected void _createParameterPort(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        if (container instanceof TypedActor) {
-            // If we get to here, we know the container is a ComponentEntity,
-            // so the cast is safe.
-            _port = new ParameterPort((ComponentEntity)container, name);
-            // NOTE: The following two statements are not necessary, since
-            // the port will discover this parameter when it's setContainer()
-            // method is called.  Moreover, doing this again is not a good
-            // idea, since the setTypeSameAs() method will just add an
-            // extra (redundant) set of constraints.  This will cause
-            // the clone tests to fail, since cloning does not produce
-            // the extra set of constraints.
-            // _port._parameter = this;
-            // _port.setTypeSameAs(this);
         }
     }
 
