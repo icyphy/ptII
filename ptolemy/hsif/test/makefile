@@ -46,6 +46,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	StandardOutEffigy.java	\
+	StandardOutTableau.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -60,6 +62,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	HSIFConfiguration.xml \
 	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -69,6 +72,8 @@ MISC_FILES =	alljtests.tcl
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
+
+JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
