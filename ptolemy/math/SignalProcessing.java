@@ -55,7 +55,8 @@ public class SignalProcessing {
      *  The function computed is :
      *  <p>
      *  <pre>
-     *  h(t) = (1/(sqrt(2*PI) * stdDev) * exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
+     *  h(t) = (1/(sqrt(2*PI) * stdDev) *
+     *         exp(-(t - mean)<sup>2</sup>/stdDev<sup>2</sup>)
      *  </pre>
      *  </p>
      */
@@ -149,7 +150,8 @@ public class SignalProcessing {
      *  h(t) = cos(frequency * t + phase)
      *  </pre>
      *  </p>
-     *  To use this class to generate a sine wave, simply subtract PI/2 from the
+     *  To use this class to generate a sine wave, simply
+     *  subtract PI/2 from the
      *  phase, since sin(t) = cos(t - PI/2).
      */
     public static class SinusoidSampleGenerator implements SampleGenerator {
@@ -268,9 +270,8 @@ public class SignalProcessing {
      *  <i>Digital Communication, Second Edition</i>,
      *  Kluwer Academic Publishers, Boston, 1994.
      */
-    public static class SqrtRaisedCosineSampleGenerator implements
-                                                                                                                SampleGenerator {
-
+    public static class SqrtRaisedCosineSampleGenerator
+        implements SampleGenerator {
         /** Construct a SqrtRaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing of
          *  the corresponding raised cosine pulse.
@@ -334,7 +335,8 @@ public class SignalProcessing {
                     (_onePlus * Math.sin(onePlusTime) -
                             _oneMinusFZCOverFourExcess * oneOverTime *
                             Math.cos(oneMinusTime) +
-                            _fzcOverFourExcess * squareTime * Math.sin(oneMinusTime));
+                            _fzcOverFourExcess * squareTime * 
+                            Math.sin(oneMinusTime));
             }
             return _fourExcessOverPISqrtFZC *
                 (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
@@ -473,8 +475,8 @@ public class SignalProcessing {
         _checkTransformArgs(x, order);
 
         if (type >= DCT_TYPES) {
-            throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
-                    "DCT() : Bad DCT type");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.DCT() : Bad DCT type");
         }
 
         int size = 1 << order;
@@ -547,8 +549,8 @@ public class SignalProcessing {
         // check if order > 31
 
         if (type >= DCT_TYPES) {
-            throw new IllegalArgumentException("ptolemy.math.SignalProcessing." +
-                    "IDCT() : Bad DCT type");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.SignalProcessing.IDCT() : Bad DCT type");
         }
 
         int size    = 1 << order;
@@ -948,8 +950,8 @@ public class SignalProcessing {
 
         if (length < 1) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.generateWindow() : length of " +
-                    "window should be greater than 0.");
+                    "ptolemy.math.SignalProcessing.generateWindow(): " +
+                    " length of window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -1029,8 +1031,8 @@ public class SignalProcessing {
 
         default:
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.generateWindow() : Unknown window " +
-                    "type (" + windowType + ").");
+                    "ptolemy.math.SignalProcessing.generateWindow(): " +
+                    "Unknown window type (" + windowType + ").");
         }
 
         return window;
@@ -1070,8 +1072,8 @@ public class SignalProcessing {
     public static final int order(int size) {
         if (size <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing : size of transform must be "+
-                    "positive.");
+                    "ptolemy.math.SignalProcessing:" +
+                    " size of transform must be positive.");
         }
 
         double m = Math.log(size)*_LOG2SCALE;
@@ -1278,7 +1280,7 @@ public class SignalProcessing {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** A small number (= 1.0e-9). This number is used by algorithms to
+    /** A small number ( = 1.0e-9). This number is used by algorithms to
      *  detect whether a double is close to zero.
      */
     public static final double epsilon = 1.0e-9;
@@ -1297,7 +1299,7 @@ public class SignalProcessing {
      *  <p>
      *  and the inverse transform :
      *              N - 1 <br>
-     *   x(n) =(2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)<br>
+     *   x(n) = (2/N) sum  e(k) X[k] * cos ((2n + 1)k * PI / 2N)<br>
      *              k = 0 <br>
      *  </p>
      *  use this DCT type.
@@ -1402,12 +1404,12 @@ public class SignalProcessing {
     private static void _checkTransformOrder(int order) {
         if (order < 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing : order of transform must be "+
-                    "non-negative.");
+                    "ptolemy.math.SignalProcessing : order of transform " +
+                    "must be non-negative.");
         } else if (order > 31) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing : order of transform must be "+
-                    "less than 32.");
+                    "ptolemy.math.SignalProcessing : order of transform " +
+                    "must be less than 32.");
         }
     }
 
