@@ -575,7 +575,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 </port>
             </entity>
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="4">
                 </property>
                 <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
@@ -779,11 +779,11 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                     </property>
                 </property>
             </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+            </property>
             <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                 <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
                 </property>
-            </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 180.0">
             </property>
