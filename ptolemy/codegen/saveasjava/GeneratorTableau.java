@@ -55,6 +55,7 @@ import ptolemy.gui.SwingWorker;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -70,6 +71,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -267,7 +269,7 @@ public class GeneratorTableau extends Tableau {
 					       + "options are: " 
 					       + options.toString());
                             // Handle the directory entry.
-                            String directoryName = options.directory
+                            final String directoryName = options.directory
                                 .getExpression();
 
                             // If the directory name is empty, then set
@@ -301,22 +303,20 @@ public class GeneratorTableau extends Tableau {
 				// FIXME: we should disable the compile
 				// button.
 
-				// FIXME: Note that we use the statusBar
-				// of the JTextAreaExec JPanel instead
-				// of report() so that we can print
-				// messages as we are compiling.
-				// Ideally, we would have some sort of
-				// call back from JTextAreaExec 
-				// that would update the standard
-				// PtolemyFrame status area.
-				exec.updateStatusBar("Starting soot "
-						     + "code generation");
-				ptolemy.copernicus.java
-				    .Main.generate((CompositeActor)model,
-						   directoryName);
+				// Soot is a memory pig, so we run
+				// it in a separate process
+				try {
+				    execCommands
+					.add(_generateJavaCommand(model,
+								  directoryName));
+				} catch (Exception exception) {
+				    throw new IllegalActionException(exception.toString());
+				}
 
-				exec.updateStatusBar("Soot code generation "
-						     + "complete.");
+				//ptolemy.copernicus.java
+				//    .Main.generate((CompositeActor)model,
+				//		   directoryName);
+
 				disassemble = true;
 			    } else if (((BooleanToken)options
 				 .generateC.getToken())
@@ -418,7 +418,7 @@ public class GeneratorTableau extends Tableau {
                                 execCommands.add("java "
                                         + runOptions
                                         + " ptolemy.actor.gui"
-                                        + ".CompositeActorApplication -class "
+					+ ".CompositeActorApplication -class "
                                         + className);
                             }
                             if(execCommands.size() > 0) {
@@ -483,6 +483,103 @@ public class GeneratorTableau extends Tableau {
 	    }
 	}
     }
-}
 
+    // Return a command string that will generate Java for model
+    // in the directoryName directory
+    private String _generateJavaCommand(CompositeEntity model,
+					String directoryName)
+	throws IllegalArgumentException, InternalErrorException
+    {
+	// This method is only called in one place, but the method
+	// it gets called from is rather large, so we place this
+	// code in its own method
+
+	// Determine where $PTII is so that we can find the right directory
+	String home = null;
+        try {
+            // NOTE: getProperty() will probably fail in applets, which
+            // is why this is in a try block.
+	    // NOTE: This property is set by the vergil startup script.
+	    home = System.getProperty("ptolemy.ptII.dir");
+        } catch (SecurityException security) {
+	    InternalErrorException internalError =
+		new InternalErrorException("Could not find 'ptolemy.ptII.dir'"
+					   + " property.  Vergil should be "
+					   + "invoked with -Dptolemy.ptII.dir"
+					   + "=\"$PTII\": "
+					   + security);
+	    internalError.fillInStackTrace();
+	    throw internalError;
+        }
+
+	// Make sure the directory exists.
+	String makefileDirectory = home + File.separatorChar + "ptolemy"
+	    + File.separatorChar + "copernicus" + File.separatorChar
+	    + "java";
+	File makefileDirectoryFile = new File(makefileDirectory);
+	if (!makefileDirectoryFile.isDirectory()) {
+	    IllegalArgumentException illegalArgument =
+		new IllegalArgumentException("'" + makefileDirectory 
+					   + "' is not a directory. "
+					   + "This directory should contain "
+					   + "the makefile used for code "
+					   + " generation.");
+	    illegalArgument.fillInStackTrace();
+	    throw illegalArgument;
+	}
+
+	// Create a temporary file in c:/temp or /tmp.
+	File temporaryMoMLFile = null;
+
+	try {
+	    temporaryMoMLFile = File.createTempFile("CGTmp", ".xml");
+	    temporaryMoMLFile.deleteOnExit();
+
+	    // We write out the model so that we can run the code generator
+	    // in a separate process.
+	    java.io.FileWriter fileWriter =
+		new java.io.FileWriter(temporaryMoMLFile);
+	    model.exportMoML(fileWriter);
+	    fileWriter.close();
+	} catch (IOException io) {
+	    InternalErrorException internalError =
+		new InternalErrorException("Warning: failed to write model to"
+					   + " '"
+					   + temporaryMoMLFile + "': " + io);
+	    internalError.fillInStackTrace();
+	    throw internalError;
+	}
+	if (temporaryMoMLFile == null) {
+	    return "# Could not write temporary moml file";
+	}
+
+//  	URL temporaryMoMLURL = null;
+//  	try {
+//  	    temporaryMoMLURL = temporaryMoMLFile.toURL();
+//  	} catch (MalformedURLException malformedURL) {
+//  	    InternalErrorException internalError =
+//  		new InternalErrorException("Failed to convert '"
+//  					   + temporaryMoMLFile + "' to a URL: "
+//  					   + malformedURL);
+//  	    internalError.fillInStackTrace();
+//  	    throw internalError;
+//  	}
+
+	String temporaryMoMLCanonicalPath = null;
+	try {
+	    temporaryMoMLCanonicalPath = temporaryMoMLFile.getCanonicalPath();
+  	} catch (IOException io) {
+  	    InternalErrorException internalError =
+  		new InternalErrorException("Failed to get canonical pathe '"
+  					   + temporaryMoMLFile + ": " + io);
+  	    internalError.fillInStackTrace();
+  	    throw internalError;
+	}
+
+	return "make -C \"" + makefileDirectory
+	    + "\" MODEL=\"" + model.getName()
+	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
+	    + "\" compileShallowDemo";
+    }
+}
 
