@@ -262,9 +262,7 @@ public class SigmaDeltaApplet extends Applet {
             deplot.setLegend(deLegends);
             DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" + 
                     " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
-            
-
-            
+                  
             // DE ports
             IOPort firin = (IOPort)fir.getPort("input");
             IOPort firout = (IOPort)fir.getPort("output");
