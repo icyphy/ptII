@@ -39,10 +39,12 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
+import ptolemy.moml.MoMLWriter;
 
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.List;
@@ -377,7 +379,18 @@ public class EntityLibrary
      *  configuration string need be used to configure this object.
      */
     public String getText() {
-        return _text;
+        try {
+            StringWriter stringWriter = new StringWriter();
+            MoMLWriter writer = new MoMLWriter(stringWriter);
+            writer.write("<group>\n");
+            writer.writeContents(this, new EntityLibrary(), 1);
+            writer.write("</group>");
+            String string = stringWriter.toString();
+            return string;
+        } catch (IOException ex) {
+            return "";
+        }
+        //    return _text;
     }
 
     /** Return the number of contained entities. This overrides the base class
@@ -426,14 +439,13 @@ public class EntityLibrary
                 // NOTE: This does not seem like the right thing to do!
                 // removeAllEntities();
 
-                if (_parser == null) {
-                    _parser = new MoMLParser(workspace());
-                }
-                _parser.setContext(this);
+                MoMLParser parser = new MoMLParser(workspace());
+ 
+                parser.setContext(this);
                 if (_source != null && !_source.equals("")) {
                     URL xmlFile = new URL(_base, _source);
                     InputStream stream = xmlFile.openStream();
-                    _parser.parse(xmlFile, stream);
+                    parser.parse(xmlFile, stream);
                     stream.close();
                 }
                 if (_text != null && !_text.equals("")) {
@@ -446,13 +458,13 @@ public class EntityLibrary
                             .trim();
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();
-                            _parser.parse(_base, trimmed);
+                            parser.parse(_base, trimmed);
                         }
                         // If it's not a moml processing instruction, ignore.
                     } else {
                         // Data is not enclosed in a processing instruction.
                         // Must have been given in a CDATA section.
-                        _parser.parse(_base, _text);
+                        parser.parse(_base, _text);
                     }
                 }
             }
@@ -478,11 +490,11 @@ public class EntityLibrary
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        output.write(_getIndentPrefix(depth) + "<configure><?moml\n");
+        output.write(_getIndentPrefix(depth) + "<configure>\n");
         output.write(_getIndentPrefix(depth+1) + "<group>\n");
         super._exportMoMLContents(output, depth+2);
         output.write(_getIndentPrefix(depth+1) + "</group>\n");
-        output.write(_getIndentPrefix(depth) + "?></configure>\n");
+        output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -496,9 +508,6 @@ public class EntityLibrary
 
     /** Indicate whether data given by configure() has been processed. */
     private boolean _configureDone = false;
-
-    /** The parser for parsing MoML. */
-    private MoMLParser _parser;
 
     /** Indicator that we are in the midst of populating. */
     private boolean _populating = false;
