@@ -1,8 +1,8 @@
-# DE example using TclBlend
+# SDF example using TclBlend
 #
-# @Author: Lukito Muliadi
+# @Author: Steve Neuendorffer
 #
-# @Version: @(#)RampSystem.tcl	1.10  09/21/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -31,7 +31,9 @@
 #######################################################################
 
 #######################################################################
-#  DEClock->DERamp->DEPlot
+#  This tests hierarchy.   Same as RampSystem.tcl, but the ramp is placed
+#  inside an SDFCompositeActor
+#  Ramp->Delay->Plot
 #
 
 # Create the top level Composite Actor
@@ -41,8 +43,8 @@ $sys setName SDFSystem
 # Create directors and associate them with the top level composite actor.
 set dir [java::new ptolemy.domains.sdf.kernel.SDFDirector SDFLocalDirector]
 $sys setDirector $dir
-set exec [java::new ptolemy.actor.Director]
-$sys setExecutiveDirector $exec
+set manager [java::new ptolemy.actor.Manager]
+$sys setManager $manager
 set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
 $dir setScheduler $scheduler
 $dir setScheduleValid false
@@ -88,7 +90,8 @@ set debugger [java::new ptolemy.debug.DebugListener]
 java::call $debug register $debugger
 
 # Run it
-$dir go 5
+$manager go 5ls
+
 
 
 
