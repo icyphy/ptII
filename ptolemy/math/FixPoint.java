@@ -460,6 +460,8 @@ public final class FixPoint implements Cloneable, Serializable {
 			    + " Precision: " + _precision.toString() );
 	System.out.println (" Errors:     " + _value.getErrorDescription());
 	System.out.println (" Round Mode: " + _value.getOverflowDescription());
+	System.out.println (" Max value:  " + _findMax( _precision ) );	
+	System.out.println (" Min value:  " + _findMin( _precision ) );
     }
 
     /** Return a Fixvalue which fractional part is aligned with the
@@ -543,9 +545,30 @@ public final class FixPoint implements Cloneable, Serializable {
 	// determine the scale factor by calculating 2^fractionbitlength
 	// By multiply the given value 'x' with this scale factor, we get
 	// a value of which we drop the fraction part. The integer remaining
-	// will be represented by the BigInteger. 
-	BigDecimal kl = _twoRaisedTo[precision.getFractionBitLength()].
-	    multiply( new BigDecimal( x ));
+	// will be represented by the BigInteger.
+
+	// Rounding is x - RESOLUTION ( x = negative  -0.9 - 0.25 > 1)
+	// double resolution = Math.pow(2,-(precision.getFractionBitLength()+1));// 
+	int number = precision.getFractionBitLength();
+	double resolution = Math.pow(2,-(number+1));
+	double tmp = 1/(Math.pow(2,number) + 1.0 / Math.pow(2,number));
+
+	// Saturate
+	//double resolution = 0;
+	resolution = tmp;
+
+	System.out.println(" Resolution: " + resolution );
+	System.out.println(" tmp:        " + tmp );
+	BigDecimal multiplier;
+	if ( x >= 0 ) {
+	    multiplier = new BigDecimal( x + resolution );
+	} else {
+	    multiplier = new BigDecimal( x - resolution );
+	}
+	BigDecimal kl = 
+		_twoRaisedTo[precision.getFractionBitLength()].multiply( multiplier );
+	// BigDecimal rounding = ( new BigDecimal( 0.25 ) ).multiply( multiplier );
+	// kl.subtract( rounding  );
 
 	// By going from BigDecimal to BigInteger, remove the fraction
 	// part introducing a quantization error.
@@ -564,10 +587,9 @@ public final class FixPoint implements Cloneable, Serializable {
 	@return Fixvalue with the desired new precision 
     */
     private Fixvalue _scaleBits(Fixvalue x, Precision oldprecision, 
-				Precision newprecision ) 
-    {
+				Precision newprecision ) {
 
-	int delta,a,b = 0;
+	int delta, a, b = 0;
 
 	Fixvalue intResult;
 	Fixvalue fractionResult;
