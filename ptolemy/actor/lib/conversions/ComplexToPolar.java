@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -98,26 +98,32 @@ public class ComplexToPolar extends TypedAtomicActor {
     /** Consume one complex token on the input port and output a new double
      *  token on each of the two output ports (magnitude and angle). The
      *  outputs are a polar form representation of the complex input. The
-     *  output angle is in radians. If there is no input token, then do
-     *  nothing.
+     *  output angle is in radians.
      *
      *  @exception IllegalActionException If there is no director.
      */
 
     public void fire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
+        Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
 
-            double magnitudeValue = Math.sqrt(
-                    inputValue.real * inputValue.real
-                    + inputValue.imag * inputValue.imag);
+        double magnitudeValue = Math.sqrt(
+                inputValue.real * inputValue.real
+                + inputValue.imag * inputValue.imag);
 
-            double angleValue = Math.atan2(
-                    inputValue.imag, inputValue.real);
+        double angleValue = Math.atan2(
+                inputValue.imag, inputValue.real);
 
-            magnitude.send(0, new DoubleToken (magnitudeValue));
-            angle.send(0, new DoubleToken (angleValue));
-        }
+        magnitude.send(0, new DoubleToken (magnitudeValue));
+        angle.send(0, new DoubleToken (angleValue));
+    }
+
+    /** Return false if the input port has no token, otherwise return
+     *  what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input.hasToken(0)) return false;
+        return super.prefire();
     }
 }
 

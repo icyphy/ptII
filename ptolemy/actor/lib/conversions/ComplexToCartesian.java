@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -103,6 +103,15 @@ public class ComplexToCartesian extends TypedAtomicActor {
 
         real.send(0, new DoubleToken (complexNumber.real));
         imag.send(0, new DoubleToken (complexNumber.imag));
+    }
+
+    /** Return false if the input port has no token, otherwise return
+     *  what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input.hasToken(0)) return false;
+        return super.prefire();
     }
 }
 

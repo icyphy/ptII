@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -100,20 +100,26 @@ public class PolarToComplex extends TypedAtomicActor {
      *  a complex representation of the components given at the inputs in
      *  polar form. The input angle is assumed to be in radians. If either
      *  input has no token, then do nothing.
-     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (magnitude.hasToken(0) && angle.hasToken(0)) {
-            double magnitudeValue
-                = ((DoubleToken)(magnitude.get(0))).doubleValue();
-            double angleValue
-                = ((DoubleToken) (angle.get(0))).doubleValue();
+        double magnitudeValue
+            = ((DoubleToken)(magnitude.get(0))).doubleValue();
+        double angleValue
+            = ((DoubleToken) (angle.get(0))).doubleValue();
+        
+        double xValue = magnitudeValue * Math.cos(angleValue);
+        double yValue = magnitudeValue * Math.sin(angleValue);
 
-            double xValue = magnitudeValue * Math.cos(angleValue);
-            double yValue = magnitudeValue * Math.sin(angleValue);
+        output.send(0, new ComplexToken (new Complex(xValue, yValue)));
+    }
 
-            output.send(0, new ComplexToken (new Complex(xValue, yValue)));
-        }
+    /** Return false if either of the input ports has no token, otherwise
+     *  return what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if ( (!magnitude.hasToken(0)) || (!angle.hasToken(0)) ) return false;
+        return super.prefire();
     }
 }

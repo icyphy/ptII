@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;
 
@@ -77,15 +77,28 @@ public class FixToDouble extends Transformer {
     ////                         public methods                    ////
 
     /** Read one FixToken from the input and output the converted
-     *  DoubleToken to the output port. If there is no input available,
-     *  then no output is produced.
+     *  DoubleToken to the output port.
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	if (input.hasToken(0)) {
-    	    FixToken in = (FixToken)input.get(0);
-            FixPoint value = in.fixValue();
-	    output.send(0, new DoubleToken(value.doubleValue()));
-        }
+        FixToken in = (FixToken)input.get(0);
+        FixPoint value = in.fixValue();
+        output.send(0, new DoubleToken(value.doubleValue()));
+    }
+
+    /** Return false if the input port has no token, otherwise return
+     *  what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input.hasToken(0)) return false;
+        return super.prefire();
     }
 }
+
+
+
+
+
+
+

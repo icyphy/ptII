@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -97,9 +97,8 @@ public class CartesianToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume exactly one token from each input port and convert the
-     *  pair to a complex token. If either input port is empty, do nothing.
-     *
+    /** Consume exactly one token from each input port and output the
+     *  converted complex token on the output port. 
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -110,5 +109,14 @@ public class CartesianToComplex extends TypedAtomicActor {
                 = new ComplexToken (new Complex(realValue, imagValue));
             output.send(0, token);
         }
+    }
+
+    /** Return false if either of the input ports has no token, otherwise
+     *  return what the superclass returns (presumably true).
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if ( (!real.hasToken(0)) || (!imag.hasToken(0)) ) return false;
+        return super.prefire();
     }
 }
