@@ -61,7 +61,7 @@ JSRCS = JAIBMPWriter.java \
 	JAIJPEGWriter.java \
 	JAIPNMWriter.java \
 	JAIScale.java \
-	JAITIFFWriter.java
+	JAITIFFWriter.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	jai.xml

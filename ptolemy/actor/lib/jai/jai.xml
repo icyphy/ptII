@@ -53,6 +53,66 @@
 	  </property>
 	</entity>
 	<entity name="JAIEdgeDetection" class="ptolemy.actor.lib.jai.JAIEdgeDetection">
+	  <property name="firstMask">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Backdiagonal" value="Backdiagonal"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Diagonal" value="Diagonal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Frei and Chen Horizontal" value="Frei and Chen Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Frei and Chen Vertical" value="Frei and Chen Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Prewitt Horizontal" value="Prewitt Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Prewitt Vertical" value="Prewitt Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>	      
+	          <property name="Roberts Horizontal" value="Roberts Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Roberts Vertical" value="Roberts Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Sobel Horizontal" value="Sobel Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Sobel Vertical" value="Sobel Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Transparent" value="Transparent"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="User Specified" value="User Specified"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Zero" value="Zero"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>	
+	  <property name="secondMask">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="Backdiagonal" value="Backdiagonal"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Diagonal" value="Diagonal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Frei and Chen Horizontal" value="Frei and Chen Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Frei and Chen Vertical" value="Frei and Chen Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Prewitt Horizontal" value="Prewitt Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Prewitt Vertical" value="Prewitt Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>	      
+	          <property name="Roberts Horizontal" value="Roberts Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Roberts Vertical" value="Roberts Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Sobel Horizontal" value="Sobel Horizontal"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Sobel Vertical" value="Sobel Vertical"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="Transparent" value="Transparent"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="User Specified" value="User Specified"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="Zero" value="Zero"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
 	</entity>
 	<entity name="JAIIDCT" class="ptolemy.actor.lib.jai.JAIIDCT">
 	</entity>

@@ -71,21 +71,27 @@ public class JAIEdgeDetection extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
         
-        firstMaskChoice =
-            new Parameter(this, "firstMaskChoice", new IntToken(1));        
-        secondMaskChoice =
-            new Parameter(this, "secondMaskChoice", new IntToken(2));           
-        userSpecifiedFirstMask =
+        firstMask =
+            new StringAttribute(this, "firstMask");
+        firstMask.setExpression("Sobel Horizontal");
+        _firstMask = _SOBEL_HORIZONTAL;
+
+        secondMask =
+            new StringAttribute(this, "secondMask");           
+        secondMask.setExpression("Sobel Vertical");
+        _secondMask = _SOBEL_VERTICAL;
+        
+        specifiedFirstMask =
             new Parameter(this, "userSpecifiedFirstMask", new ArrayToken(_doubleArrayToken));
-        userSpecifiedFirstXDim = 
+        specifiedFirstXDim = 
             new Parameter(this, "userSpecifiedFirstXDim", new IntToken(3));
-        userSpecifiedFirstYDim = 
+        specifiedFirstYDim = 
             new Parameter(this, "userSpecifiedFirstYDim", new IntToken(3));                         
-        userSpecifiedSecondMask =
+        specifiedSecondMask =
             new Parameter(this, "userSpecifiedSecondMask", new ArrayToken(_doubleArrayToken));
-        userSpecifiedSecondXDim = 
+        specifiedSecondXDim = 
             new Parameter(this, "userSpecifiedSecondXDim", new IntToken(3));
-        userSpecifiedSecondYDim = 
+        specifiedSecondYDim = 
             new Parameter(this, "userSpecifiedSecondYDim", new IntToken(3));                        
     }
 
@@ -119,28 +125,62 @@ public class JAIEdgeDetection extends Transformer {
      *  mask.  The default mask for the second choice is a Sobel
      *  vertical mask.
      */    
-    public Parameter firstMaskChoice;    
-    public Parameter secondMaskChoice;
+    public StringAttribute firstMask;    
+    public StringAttribute secondMask;
 
     /** The first user specified mask, and its corresponding x and
      *  y dimensions.  The Default mask is the transparent mask,
      *  and the default x and y dimensions is 3.
      */
-    public Parameter userSpecifiedFirstMask;
-    public Parameter userSpecifiedFirstXDim;
-    public Parameter userSpecifiedFirstYDim;
+    public Parameter specifiedFirstMask;
+    public Parameter specifiedFirstXDim;
+    public Parameter specifiedFirstYDim;
 
     /** The second user specified mask, and its corresponding x and
      *  y dimensions.  The Default mask is the transparent mask,
      *  and the default x and y dimensions is 3.
      */
-    public Parameter userSpecifiedSecondMask;
-    public Parameter userSpecifiedSecondXDim;
-    public Parameter userSpecifiedSecondYDim;
+    public Parameter specifiedSecondMask;
+    public Parameter specifiedSecondXDim;
+    public Parameter specifiedSecondYDim;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class and set the scaling factors.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the function is not recognized,
+     *  or if a contained method throws it.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == firstMask) {
+            String firstName = firstMask.getExpression();
+            _firstMask = _maskNumberer(firstName);
+        } else if (attribute == secondMask) {
+            String secondName = secondMask.getExpression();
+            _secondMask = _maskNumberer(secondName);
+        } else if (attribute == specifiedFirstMask) {
+            _firstMaskData = ((ArrayToken)specifiedFirstMask.getToken());            
+        } else if (attribute == specifiedFirstXDim){
+            _specifiedFirstXDim = 
+                ((IntToken)specifiedFirstXDim.getToken()).intValue();
+        } else if (attribute == specifiedFirstYDim) {
+            _specifiedFirstYDim = 
+                ((IntToken)specifiedFirstYDim.getToken()).intValue();            
+        } else if (attribute == specifiedSecondMask) {
+            _secondMaskData = ((ArrayToken)specifiedSecondMask.getToken());            
+        } else if (attribute == specifiedSecondXDim){
+            _specifiedSecondXDim = 
+                ((IntToken)specifiedSecondXDim.getToken()).intValue();
+        } else if (attribute == specifiedSecondYDim) {
+            _specifiedSecondYDim = 
+                ((IntToken)specifiedSecondYDim.getToken()).intValue();            
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+                    
     /** Fire this actor.
      *  Output the edge detected image.
      *  @exception IllegalActionException If a contained method throws
@@ -150,85 +190,98 @@ public class JAIEdgeDetection extends Transformer {
         super.fire();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
+        if (_firstMask == _USER_SPECIFIED) {
+            _firstKernelJAI = 
+                _maskFiller(_firstMaskData, _specifiedFirstXDim, _specifiedFirstYDim);
+        } else {
+            _firstKernelJAI = _filterAssigner(_firstMask);
+        }
+        if (_secondMask == _USER_SPECIFIED) {
+            _secondKernelJAI = 
+                _maskFiller(_secondMaskData, _specifiedSecondXDim, _specifiedSecondYDim);
+        } else {
+            _secondKernelJAI = _filterAssigner(_secondMask);
+        } 
         RenderedOp newImage = JAI.create("gradientmagnitude", oldImage, 
                 _firstKernelJAI, _secondKernelJAI);
         output.send(0, new JAIImageToken(newImage));        
     }
-    
-    /** Initialize this actor.
-     *  Set the two masks to be used in edge detection.
-     *  @exception IllegalActionException If a contained method throws it,
-     *  or if the mask choice is invalid.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _firstMaskChoice = ((IntToken)firstMaskChoice.getToken()).intValue();
-        _secondMaskChoice = ((IntToken)secondMaskChoice.getToken()).intValue();
-        if (_firstMaskChoice == 0) {
-            _firstMaskData = ((ArrayToken)userSpecifiedFirstMask.getToken());
-            _userSpecifiedFirstXDim = ((IntToken)userSpecifiedFirstXDim.getToken()).intValue();
-            _userSpecifiedFirstYDim = ((IntToken)userSpecifiedFirstYDim.getToken()).intValue();
-            _firstKernelJAI = _maskFiller(_firstMaskData, _userSpecifiedFirstXDim, _userSpecifiedFirstYDim);
-        }
-        if (_secondMaskChoice == 0) {
-            _secondMaskData = ((ArrayToken)userSpecifiedSecondMask.getToken());
-            _userSpecifiedSecondXDim = ((IntToken)userSpecifiedSecondXDim.getToken()).intValue();
-            _userSpecifiedSecondYDim = ((IntToken)userSpecifiedSecondYDim.getToken()).intValue();
-            _secondKernelJAI = _maskFiller(_secondMaskData, _userSpecifiedSecondXDim, _userSpecifiedSecondYDim);
-        }
-        if (_firstMaskChoice > 0 && _firstMaskChoice <= _highestChoice) {
-            _firstKernelJAI = _maskAssigner(_firstMaskChoice);
-        }
-        if (_firstMaskChoice > 0 && _firstMaskChoice <= _highestChoice) {
-            _secondKernelJAI = _maskAssigner(_secondMaskChoice);
-        }        
-        if ((_firstMaskChoice < 0) || (_secondMaskChoice < 0) ||
-                (_firstMaskChoice > _highestChoice) || 
-                (_secondMaskChoice > _highestChoice)) {    
-            throw new IllegalActionException("Invalid Mask Choice");
-        } 
-    }   
-
+     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    private int _maskNumberer(String maskName) 
+            throws IllegalActionException {
+        if (maskName.equals("Backdiagonal")) {
+            return _BACKDIAGONAL;
+        } else if (maskName.equals("Diagonal")) {
+            return _DIAGONAL;
+        } else if (maskName.equals("Frei and Chen Horizontal")) {
+            return _FREICHEN_HORIZONTAL;
+        } else if (maskName.equals("Frei and Chen Vertical")) {
+            return _FREICHEN_VERTICAL;
+        } else if (maskName.equals("Prewitt Horizontal")) {
+            return _PREWITT_HORIZONTAL;
+        } else if (maskName.equals("Prewitt Vertical")) {
+            return _PREWITT_VERTICAL;
+        } else if (maskName.equals("Roberts Horizontal")) {
+            return _ROBERTS_HORIZONTAL; 
+        } else if (maskName.equals("Roberts Vertical")) {
+            return _ROBERTS_VERTICAL;
+        } else if (maskName.equals("Sobel Horizontal")) {
+            return _SOBEL_HORIZONTAL;
+        } else if (maskName.equals("Sobel Vertical")) {
+            return _SOBEL_VERTICAL;
+        } else if (maskName.equals("Transparent")) {
+            return _TRANSPARENT;
+        } else if (maskName.equals("User Specified")) {
+            return _USER_SPECIFIED;
+        } else if (maskName.equals("Zero")) {
+            return _ZERO_FILTER;
+        } else {
+            throw new IllegalActionException(this,
+                    "Unrecognized Mask type: " + maskName); 
+        }        
+    }
+    
     /** If the user chooses to use a prespecified mask, then this
      *  method will assign the mask values to a KernelJAI used in edge
      *  detection.
      *  @exception IllegalActionException If the choice value is out of
      *  range.
      */
-    private KernelJAI _maskAssigner(int choice) 
+    private KernelJAI _filterAssigner(int choice) 
             throws IllegalActionException {
         switch (choice) {
-        case 1:
-            return new KernelJAI(3,3,_sobelHorizontalFilter);
-        case 2:
-            return new KernelJAI(3,3,_sobelVerticalFilter);
-        case 3:
-            return new KernelJAI(3,3,_robertsHorizontalFilter);
-        case 4:
-            return new KernelJAI(3,3,_robertsVerticalFilter);
-        case 5:
-            return new KernelJAI(3,3,_prewittHorizontalFilter);
-        case 6:
-            return new KernelJAI(3,3,_prewittVerticalFilter);
-        case 7:
-            return new KernelJAI(3,3,_freiAndChenHorizontalFilter);
-        case 8:
-            return new KernelJAI(3,3,_freiAndChenVerticalFilter);    
-        case 9:
-            return new KernelJAI(3,3,_diagonalFilter);
-        case 10:
+        case _BACKDIAGONAL:
             return new KernelJAI(3,3,_backDiagonalFilter);
-        case 11:
+        case _DIAGONAL:
+            return new KernelJAI(3,3,_diagonalFilter);
+        case _FREICHEN_HORIZONTAL:
+            return new KernelJAI(3,3,_freiAndChenHorizontalFilter);
+        case _FREICHEN_VERTICAL:
+            return new KernelJAI(3,3,_freiAndChenVerticalFilter);
+        case _PREWITT_HORIZONTAL:
+            return new KernelJAI(3,3,_prewittHorizontalFilter);
+        case _PREWITT_VERTICAL:
+            return new KernelJAI(3,3,_prewittVerticalFilter);
+        case _ROBERTS_HORIZONTAL:
+            return new KernelJAI(3,3,_robertsHorizontalFilter);
+        case _ROBERTS_VERTICAL:
+            return new KernelJAI(3,3,_robertsVerticalFilter);    
+        case _SOBEL_HORIZONTAL:
+            return new KernelJAI(3,3,_sobelHorizontalFilter);
+        case _SOBEL_VERTICAL:
+            return new KernelJAI(3,3,_sobelVerticalFilter);
+        case _TRANSPARENT:
             return new KernelJAI(3,3,_transparentFilter);
-        case 12:
+        case _ZERO_FILTER:
             return new KernelJAI(3,3,_zeroFilter);
         default:
-            throw new IllegalActionException("Could not assign mask");
+            throw new IllegalActionException("Could not assign filter");
         }
     }
+
     
     /** If a user decides not to use a prespecified mask, this method
      *  will return a KernalJAI filled with user specified values.
@@ -253,16 +306,16 @@ public class JAIEdgeDetection extends Transformer {
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     /** The ArrayTokens contained the the User Specified Mask Fields */
     private ArrayToken _firstMaskData;
     private ArrayToken _secondMaskData;
 
     /** The dimensions of the user specified masks.  */
-    private int _userSpecifiedFirstXDim;
-    private int _userSpecifiedFirstYDim;
-    private int _userSpecifiedSecondXDim;
-    private int _userSpecifiedSecondYDim;
+    private int _specifiedFirstXDim;
+    private int _specifiedFirstYDim;
+    private int _specifiedSecondXDim;
+    private int _specifiedSecondYDim;
 
     /** The KernalJAI's that contain the masks to be used in edge
      *  detection.
@@ -274,15 +327,15 @@ public class JAIEdgeDetection extends Transformer {
      *  mask.  Otherwise, choices 1-12 are masks that are specified
      *  below.
      */
-    private int _firstMaskChoice;
-    private int _secondMaskChoice;
+    private int _firstMask;
+    private int _secondMask;
 
     /** The bound on the number of prespecified masks */
     private final int _highestChoice = 12;
     
     /** DoubleToken's representing zero and the square root of two */
-    private DoubleToken _zero = new DoubleToken("0.0F");
-    private DoubleToken _halfRootTwo = new DoubleToken("0.707F");
+    private final DoubleToken _zero = new DoubleToken("0.0F");
+    private final DoubleToken _halfRootTwo = new DoubleToken("0.707F");
 
     /** The default for a user specified mask */
     private DoubleToken _doubleArrayToken[] = {_zero, _zero, _zero,
@@ -337,4 +390,19 @@ public class JAIEdgeDetection extends Transformer {
     private final float _backDiagonalFilter[] = {0.0F, 1.0F, 1.0F,
                                                  -1.0F, 0.0F, 1.0F,
                                                  -1.0F, -1.0F, 0.0F};
+    
+    //Constants used for more efficient execution
+    private final int _BACKDIAGONAL = 0;
+    private final int _DIAGONAL = 1;
+    private final int _FREICHEN_HORIZONTAL = 2;
+    private final int _FREICHEN_VERTICAL = 3;
+    private final int _PREWITT_HORIZONTAL = 4;
+    private final int _PREWITT_VERTICAL = 5;
+    private final int _ROBERTS_HORIZONTAL = 6;
+    private final int _ROBERTS_VERTICAL = 7;
+    private final int _SOBEL_HORIZONTAL = 8;
+    private final int _SOBEL_VERTICAL = 9;
+    private final int _TRANSPARENT = 10;
+    private final int _USER_SPECIFIED = 11;
+    private final int _ZERO_FILTER = 12;
 }
