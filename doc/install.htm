@@ -171,10 +171,26 @@ is shipped with Ptolemy II.
 <li> <a href="coding/tcljava.htm"><CODE>java::</CODE> man page</a>
 </menu>
 
+<h3>Saxon</a></h3>
+The CalInterpreter Actor requires Saxon.
+
+The Saxon XSLT Processor from Michael Kay can be found at
+<a href="http://saxon.sourceforge.net/#in_browser" target="_top"><code>http://saxon.sourceforge.net/</code></a>
+
+<p>Note that we modified <code>saxon.jar</code> so that
+it does not include the jar file entry
+<code>META-INF/services/javax.xml.transform.TransformerFactory</code>
+<pre>
+net.sf.saxon.TransformerFactoryImpl
+</pre>
+If this file is present in <code>saxon7.jar</code>, then 
+the HSIF tool will not work.
+
+
 <h3><a name="Soot">Soot</a></h3>
 
 Soot is used by the <a href="codegen.htm">code generator</a>.
-Soot, is a Java optimization framework from
+Soot is a Java optimization framework from
 <a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
 
 <p> If the code generator is present, then we include
@@ -194,7 +210,7 @@ packages if you are interested in using the functionality they provide.
 
 <h3>JAI</h3>
 The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced Imaging (JAI) actors</a> require that JAI, which can be  downloaded from
-<a href="http://java.sun.com/products/java-media/jmf/" target="_top"><code>http://java.sun.com/products/java-media/jmf/</code></a>
+<a href="http://java.sun.com/products/java-media/jai/#in_browser" target="_top"><code>http://java.sun.com/products/java-media/jai/</code></a>
 <p>You need not install JAI if you are not planning on using the JAI Actors.
 <p>We verified that JAI 1.1.2-rc works with these actors.
 
@@ -209,7 +225,7 @@ and <code>mlibwrapper_jai.jar</code> from the
 The 
 <a href="../ptolemy/domains/gr/doc/body.htm" target="body">3-D graphics (GR)</a>
 domain demos require Java3d, which can be installed from
-<a href="http://java.sun.com/products/java-media/3D/" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
+<a href="http://java.sun.com/products/java-media/3D/#in_browser" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
 
 You need not install Java3d if you are not planning on using GR domain.
 
@@ -257,7 +273,7 @@ cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
 
 <h3>JMF</h3>
 The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Media Framework (JMF) actors</a> require that JMF, which can be  downloaded from
-<a href="http://java.sun.com/products/java-media/jmf/" target="_top"><code>http://java.sun.com/products/java-media/jmf/</code></a>
+<a href="http://java.sun.com/products/java-media/jmf/#in_browser" target="_top"><code>http://java.sun.com/products/java-media/jmf/</code></a>
 <p>You need not install JMF if you are not planning on using the JMF Actors.
 <p>We verified that JMF 2.1.1c works with these actors.
 
