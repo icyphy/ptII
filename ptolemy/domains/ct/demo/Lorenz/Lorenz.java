@@ -202,7 +202,11 @@ public class Lorenz extends TypedCompositeActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
-        if (director != null) {
+        if (director != null
+                && director.stopTime != null
+                && stopTime != null) {
+            // This is a hack, we should really use controls=directorparamter
+            // in the applet
             director.stopTime.setToken(stopTime.getToken());
         } else {
             super.attributeChanged(attribute);
