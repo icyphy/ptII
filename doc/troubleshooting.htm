@@ -70,6 +70,8 @@ of <CODE>$PTII/mk/ptII.mk.in</CODE>.
 Be sure that you have installed the <CODE>ash</CODE> package
 
 
+
+
 <dt> Messages about not being the owner of the directory.
 <dd> Run
 
@@ -89,6 +91,21 @@ mkgroup  -l > /etc/group
 </pre>
 For more information, type <CODE>mkpasswd</CODE> and <CODE>mkgroup</CODE>
 without any arguments.  The Cygwin faq also covers these programs.
+
+<dt> Under Windows, javac fails to find jar files like diva.jar
+<dd> If you did not install Cygwin in the root directory, then
+incorrect values may be being passed to javac.  javac does not
+understand Cygwin paths like <CODE>/cygdrive/c</CODE>.
+The fix is to set PTII to a windows style path with backslashes:
+<pre>
+C:\users\yourname\ptII
+</pre>
+Note that if you do this within bash, you would type:
+<pre>
+PTII=c:\\users\\yourname\\ptII
+export PTII
+</pre>
+
 </dl>
 
 
@@ -111,20 +128,20 @@ problems. Please send email to
 find errors or can suggest additions to this page.
 
 <H3><A NAME="jdk">Java version</A></H3>
-The applets on these pages require JDK 1.2.2 or later (JDK stands for the
+The applets on these pages require JDK 1.3 (JDK stands for the
 Java Development Kit).
 (See the <a href="install.htm#java">Java section</a> of the installation page for details)
 
 <h3><a name="plugin">The Java Plugin</a></h3>
 The
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
-provides support for JDK1.2 under Netscape Communicator 4.5 and Internet
+provides support for JDK1.3 under Netscape Communicator 4.5 and Internet
 Explorer 4.0.
 
- <p>Under Windows, the JDK1.2 plugin is automatically installed
-when JRE 1.2 is installed (JRE stands for Java Runtime Environment).
-JRE 1.2 is available as a standalone install from Sun.  JRE 1.2
-is also optionally installed when JDK1.2 is installed.
+ <p>Under Windows, the JDK1.3 plugin is automatically installed
+when JRE 1.3 is installed (JRE stands for Java Runtime Environment).
+JRE 1.3 is available as a standalone install from Sun.
+
 The JRE does not include the Java compiler (<CODE>javac</CODE>), so
 if you are planning on doing any development, you should install
 the JDK, not the JRE.  See the
@@ -135,21 +152,18 @@ installation instructions.
 download (which we have not tested).
 
  <p>If you are on a platform where the browser does not have
-the JDK1.2 plugin, then you can still run the demos with the
+the JDK1.3 plugin, then you can still run the demos with the
 JDK <a href="#appletviewer">Appletviewer</a>
 
 <H3><a name="Diagnosing problems">Diagnosing problems</a></H3>
 
 The Java plugin includes a console window which reports errors.
- <p>Under JDK1.2.2, the console window can be enabled by going
-to the <CODE>Start</CODE> menu -&gt; <CODE>Program</CODE> -&gt;
- <CODE>Java Plugin Control Panel</CODE>
-and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
- <p>Under JDK1.3, the control panel is at
+ <p>Under JDK1.3, the console window can be enabled by going to
 <CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt; 
 <CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
+and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
 
- <p>Note that the JDK1.2 Plugin console is different than
+ <p>Note that the JDK1.3 Plugin console is different than
 the Netscape or IE Java console.
 
  <p><a name="jit">The</a> plugin control panel also has a checkbox
@@ -217,7 +231,7 @@ to turn on verbose class messages:
 appletviewer -J-verbose:class myapplet.html
 </pre>
  <p>If you see the messages below, then you are running
-a JDK1.1 <CODE>appletviewer</CODE> instead of a JDK 1.2 <CODE>appletviewer</CODE>.
+a JDK1.1 <CODE>appletviewer</CODE> instead of a JDK 1.3 <CODE>appletviewer</CODE>.
 <pre>
 Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
 Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
@@ -229,7 +243,7 @@ Warning: No Applets were started. Make sure the input contains an &lt;applet&gt;
 usage: appletviewer [-debug] [-J&lt;javaflag&gt;] [-encoding &lt;character encoding type
  ] url|file ...
 </pre>
-The solution is to adjust your path so that the JDK1.2 appletviewer
+The solution is to adjust your path so that the JDK1.3 appletviewer
 is before the JDK1.1 version.
 
 <h3><a name="Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a></h3>
@@ -249,16 +263,12 @@ the <CODE>Reload</CODE> button will reload any Java
 <li> Restart your browser.
 
  <li>Verify that the Plugin Control Panel menu choice is present.
- <br>JDK1.2: Look for   <CODE>Start</CODE> -&gt; <CODE>Programs</CODE> -&gt;
-you should have a <CODE>Java Plugin Control Panel</CODE> menu choice
-listed in the upper section near the Accessories section.
+ <br>Under JDK1.3, look for
+<CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt; 
+<CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE> 
   <br>If the <CODE>Java Plugin Control Panel</CODE>
  menu choice is not present, then
 you may need to install or reinstall the Java plugin.
- <br>JDK1.3: Look for
-<CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt; 
-<CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE> 
-
  <li> Look for an error message in the Java console.
 See <a href="#Diagnosing problems">Diagnosing problems</a> above.
 
@@ -267,7 +277,7 @@ See <a href="#Diagnosing problems">Diagnosing problems</a> above.
 <a href="about:plugins"><CODE>about:plugins </CODE></a>
 into the Location entry widget.
 
-The JDK1.2 or JDK1.3 plugin should be listed.  If it is not reinstall
+The JDK1.3 plugin should be listed.  If it is not reinstall
 the plugin.
 
 If the plugin is not listed after reinstalling, then remove and reinstall
@@ -279,9 +289,10 @@ See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 
 <li> Verify that you are running a recent version of the browser
 
-<dt> Try out a non-Ptolemy JDK1.2 applet
+<dt> Try out a non-Ptolemy JDK1.3 applet
 <dd> If are having problems with the plugin you may want to try
-<a href="http://www.javasoft.com/products/plugin/1.2/demos/applets.html">Java Plugin 1.2 Demonstration Applets</a> page has a few sample JDK1.2 applets.
+<a href="http://www.javasoft.com/products/plugin/1.3/demos/applets.html">Java Plugin 1.3 Demonstration Applets</a>
+page has a few sample JDK1.3 applets.
 
 <li> Under Internet Explorer, the Swing Query boxes will sometimes
 not respond. The workaround is to minimize the IE window and bring it back.
