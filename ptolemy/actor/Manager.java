@@ -707,6 +707,7 @@ public class Manager extends NamedObj implements Runnable {
         // actually starts up.
         _finishRequested = false;
         _thread = new PtolemyThread(this);
+	_thread.setPriority(Thread.MIN_PRIORITY);
         _thread.start();
     }
 
