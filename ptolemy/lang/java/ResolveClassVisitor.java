@@ -45,6 +45,8 @@ import java.util.List;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// ResolveClassVisitor
 /** 
  *  Create declarations for fields, constructors, and methods, and add them to
  *  their enclosing class's environment.
@@ -60,12 +62,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        //ApplicationUtility.trace("resolveClass for " +
-        // node.getProperty(IDENT_KEY));
-
-        System.out.println("resolveClass for " +
-          node.getProperty(IDENT_KEY));
-
+        ApplicationUtility.trace("resolveClass for " + node.getProperty(IDENT_KEY));
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -74,6 +71,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         childArgs.add(NullValue.instance); // enclosing class environ
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+        
+        ApplicationUtility.trace("finished resolveClass for " +
+         node.getProperty(IDENT_KEY));
+        
         return null;
     }
 
@@ -97,20 +98,33 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         }
 
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+        
+        // record the fact that we are modifying the ClassDecl
+        // exit if we have already done class resolution
+        if (!me.addVisitor(_myClass)) {
+           return null;
+        }
 
         TreeNode superClass = node.getSuperClass();
 
-        ClassDecl superDecl =
-         (superClass == AbsentTreeNode.instance) ?
-         StaticResolution.OBJECT_DECL :
-         (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
+        ClassDecl superDecl;
+        
+        if (me == StaticResolution.OBJECT_DECL) {
+           superDecl = null;
+        } else if (superClass == AbsentTreeNode.instance) {
+           superDecl = StaticResolution.OBJECT_DECL;
+        } else {          
+           superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
+        }
 
-        if (superDecl.category != CG_CLASS) {
+        if ((superDecl != null) && (superDecl.category != CG_CLASS)) {
            ApplicationUtility.error("class " + node.getName().getIdent() +
             " cannot extend interface " + superDecl.getName());
         }
-
-        node.setSuperClass(superDecl.getDefType());
+        
+        if (superDecl != null) {
+           node.setSuperClass(superDecl.getDefType());
+        }
         me.setSuperClass(superDecl);
 
         // initialize the implements list.
@@ -134,12 +148,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // add this declaration to outer class's environment, if applicable
         _addUserTypeToEnclosingClassEnviron(args.get(1), me);
 
-        Environ myEnviron = me.getEnviron();
-
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
-        childArgs.addLast(myEnviron);
+        childArgs.addLast(me.getEnviron());
 
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
@@ -211,6 +223,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         }
       
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+        
+        // record the fact that we are modifying the ClassDecl
+        // exit if we have already done class resolution
+        if (!me.addVisitor(_myClass)) {
+           return null;
+        }
 
         LinkedList declInterfaceList = new LinkedList();
 
@@ -232,12 +250,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // add this declaration to outer class's environment, if applicable
         _addUserTypeToEnclosingClassEnviron(args.get(1), me);
 
-        Environ myEnviron = me.getEnviron();
-
         // have members add themselves to this class's environment
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
-        childArgs.addLast(myEnviron);
+        childArgs.addLast(me.getEnviron());
 
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
         
@@ -384,7 +400,13 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         node.getEnclosingInstance().accept(this, args);
          
         ClassDecl me = (ClassDecl) node.getDefinedProperty(DECL_KEY);
-               
+        
+        // record the fact that we are modifying the ClassDecl
+        // exit if we have already done class resolution
+        if (!me.addVisitor(_myClass)) {
+           return null;
+        }
+                                             
         TypeNameNode superType = node.getSuperType();
         
         ClassDecl sdecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superType);
@@ -418,6 +440,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
 
         return null;        
+    }
+    
+    /** Return the Class object of this visitor. */
+    public static Class visitorClass() {
+        return _myClass;
     }
 
     /** The default visit method. Visits all child nodes with no enclosing
@@ -460,5 +487,8 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     }
 
     /** The package this compile unit is in. */
-    protected PackageDecl _pkgDecl = null;
+    protected PackageDecl _pkgDecl = null;    
+    
+    /** The Class object of this visitor. */
+    private static Class _myClass = new ResolveClassVisitor().getClass();
 }

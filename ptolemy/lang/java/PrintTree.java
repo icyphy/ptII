@@ -37,6 +37,13 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
+//////////////////////////////////////////////////////////////////////////
+//// PrintTree
+/** An application that prints the representation of the AST of a Java program
+ *  to standard out.
+ *
+ *  @author Jeff Tsay
+ */
 public class PrintTree {
 
   public static void main(String[] args) {
@@ -58,14 +65,15 @@ public class PrintTree {
 
     ApplicationUtility.enableTrace = debug;
 
-    for (int f = 0; f < files; f++) {
+    for (int f = fileStart; f < files; f++) {
         JavaParser p = new JavaParser();
 
+        String filename = args[f];
         try {
-          p.init(args[f + fileStart]);
+          p.init(args[f]);
 
         } catch (Exception e) {
-          System.err.println("error opening input file " + args[f + fileStart]);
+          System.err.println("error opening input file " + filename);
           System.err.println(e.toString());
         }
 
@@ -75,7 +83,7 @@ public class PrintTree {
 
         CompileUnitNode ast = p.getAST();
 
-        System.out.println("File : " + args[f + fileStart]);
+        System.out.println("File : " + filename);
         System.out.println(ast.toString());
     }
   }

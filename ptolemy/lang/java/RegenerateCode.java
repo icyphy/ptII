@@ -37,6 +37,13 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
+//////////////////////////////////////////////////////////////////////////
+//// RegenerateCode
+/** An application that parses a Java program, then reconstructs the source
+ *  program using the AST. This is used for testing purposes.
+ *
+ *  @author Jeff Tsay
+ */
 public class RegenerateCode {
   public static void main(String[] args) {
     int files = args.length;

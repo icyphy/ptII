@@ -69,7 +69,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
     
-        System.out.println("resolve name");
+        ApplicationUtility.trace("resolve name on " + 
+         node.getDefinedProperty(IDENT_KEY));
         
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
@@ -79,6 +80,9 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         LinkedList childArgs = TNLManip.cons(c);
         
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+
+        ApplicationUtility.trace("finished resolve name on " + 
+         node.getDefinedProperty(IDENT_KEY));
 
         return node;
     }

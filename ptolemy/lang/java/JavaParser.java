@@ -771,7 +771,7 @@ case 38:
       }
                          
       yyval.obj = new ClassDeclNode(val_peek(5).ival, name, (List) val_peek(1).obj,
-           (List) body, (TypeNameNode) val_peek(2).obj);
+           (List) body, (TreeNode) val_peek(2).obj);
     }
 break;
 case 39:
@@ -781,8 +781,8 @@ break;
 case 40:
 //#line 447 "jparser.y"
 { 
-      /* add the implicit subclass Object. Note this is wrong for Object itself.*/
-      yyval.obj = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
+      /* this will be fixed later by class resolution*/
+      yyval.obj = AbsentTreeNode.instance; 
     }
 break;
 case 41:

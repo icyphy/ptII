@@ -1,4 +1,8 @@
-/* Copyright (c) 1998-2000 The Regents of the University of California.
+/* 
+A declaration of a class or interface in Java.
+Code and comments converted from the Titanium project.
+
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -37,6 +41,13 @@ import java.util.LinkedList;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// ClassDecl
+/** A declaration of a class or interface in Java.
+ *  Code and comments converted from the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public ClassDecl(String name, JavaDecl container) {
@@ -56,11 +67,15 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     public final boolean hasEnviron() { return true; }
 
     public final Environ getEnviron() {
-        if (_environ == null) {
-           ApplicationUtility.trace("getEnviron() for " + _name + ": building environment"); 
+        if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
+           // ApplicationUtility.trace("getEnviron() for " + _name + ": building environment"); 
            _buildEnviron();
         }
-        ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");         
+        // ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");         
+        return _environ;
+    }
+    
+    public final Environ getTypeEnviron() {
         return _environ;
     }
 
@@ -129,10 +144,6 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 	          ApplicationUtility.error("file " + fileName +
                " doesn't contain class or interface " + fullName());
            }
-
-           // this is a hack, but ... set the environment to be null
-           // so that it is reloaded next time
-           // _environ = null;
            
            ApplicationUtility.trace(">Done reading class " + fullName());
         }
@@ -148,7 +159,6 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     protected void _buildEnviron() {
         ApplicationUtility.trace(">Building env for class " + fullName());
-        // ApplicationUtility.assert(!allshouldbeloaded && canbuildenv);
 
         loadSource();
 
@@ -163,6 +173,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
            setSuperClass(StaticResolution.OBJECT_DECL);
+           
+           addVisitor(ResolveClassVisitor.visitorClass());
         }        
     }
 

@@ -1,4 +1,7 @@
-/* Copyright (c) 1998-2000 The Regents of the University of California.
+/* 
+A member of a class or interface. 
+
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -33,6 +36,13 @@ package ptolemy.lang.java;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// MemberDecl
+/** A member of a class or interface. 
+ *  Code and comments converted from the Titanium project.
+ *
+ *  @author Jeff Tsay
+ */
 public abstract class MemberDecl extends TypedDecl {
     public MemberDecl(String name, int category0, TypeNode type, int modifiers, TreeNode source, JavaDecl container) {
         super(name, category0, type, modifiers);

@@ -428,7 +428,7 @@ ClassDeclaration :
       }
                          
       $$ = new ClassDeclNode($1, name, (List) $5,
-           (List) body, (TypeNameNode) $4);
+           (List) body, (TreeNode) $4);
     }
  ;
 
@@ -445,8 +445,8 @@ SuperOpt :
     { $$ = $2; }
   | empty
     { 
-      // add the implicit subclass Object. Note this is wrong for Object itself.
-      $$ = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
+      // this will be fixed later by class resolution
+      $$ = AbsentTreeNode.instance; 
     }
   ;
 

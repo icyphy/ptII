@@ -38,7 +38,10 @@ import java.io.File;
 
 import ptolemy.lang.*;
 
-/** A declaration of a Java package. Code and comments adopted from the Titanium project.
+//////////////////////////////////////////////////////////////////////////
+//// PackageDecl
+/** A declaration of a Java package. 
+ *  Code and comments converted from the Titanium project.
  *
  *  @author Jeff Tsay
  */
@@ -83,15 +86,15 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
 
     protected void _initEnviron() {
 
-        ApplicationUtility.trace("_initEnviron");
+        //ApplicationUtility.trace("_initEnviron");
 
         boolean empty = true;
 
         if (_container == null) {
-            ApplicationUtility.trace("_initEnviron : no container");
+            //ApplicationUtility.trace("_initEnviron : no container");
            _environ = new Environ(null);
         } else {
-            ApplicationUtility.trace("_initEnviron : has container");
+            //ApplicationUtility.trace("_initEnviron : has container");
            _environ = new Environ(_container.getEnviron());
         }
 
@@ -103,13 +106,13 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
            subdir = subdir + File.separatorChar;
         }
 
-        ApplicationUtility.trace("subdir = " + subdir);
-        ApplicationUtility.trace("found " + paths.size() + " class paths");
+        //ApplicationUtility.trace("subdir = " + subdir);
+        //ApplicationUtility.trace("found " + paths.size() + " class paths");
 
         for (int i = 0; i < paths.size(); i++) {
             String path = (String) paths.get(i);
 
-            ApplicationUtility.trace("path = " + path);
+            //ApplicationUtility.trace("path = " + path);
 
             String dirName = path + subdir;
 
@@ -121,10 +124,10 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
   
                String[] nameList = dir.list();
 
-               ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
+               //ApplicationUtility.trace("isDirectory = true, length = " + nameList.length);
 
                for (int j = 0; j < nameList.length; j++) {
-                   ApplicationUtility.trace("iterating over names, j = " + j);
+                   //ApplicationUtility.trace("iterating over names, j = " + j);
                               
                    String name = nameList[j];
 	               int length = name.length();
@@ -142,10 +145,8 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
                       // with the same base name, but with different extensions.
                       if (_environ.lookupProper(className, CG_USERTYPE) == null) {
                       
-                         ApplicationUtility.trace("adding class/interface " +
-                          className + " from " + dirName);
-
-                         //System.out.println("creating new class decl for " + className + " in pd");
+                         //ApplicationUtility.trace("adding class/interface " +
+                         // className + " from " + dirName);
 
                          _environ.add(new ClassDecl(className, this));
 
@@ -163,8 +164,8 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
                       if (fs.isDirectory()) {
              	        _environ.add(new PackageDecl(name, this));
 	                    empty = false;
-                        ApplicationUtility.trace(
-                         getName() + " : found subpackage in " + fullname);
+                        //ApplicationUtility.trace(
+                        // getName() + " : found subpackage in " + fullname);
                       }
 
 	               } // className != null

@@ -1,5 +1,5 @@
 /*
-An interface for a Visitor for a node of an abstract syntax tree.
+An interface for a Visitor of a node of an abstract syntax tree.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -32,9 +32,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
+/** An interface for a Visitor of a node of an abstract syntax tree.
+ *
+ *  @author Jeff Tsay
+ */
 public interface IVisitor {
 
-    int traversalMethod();
+    public int traversalMethod();
     
     public static final int TM_CHILDREN_FIRST = 0;
     public static final int TM_SELF_FIRST = 1;

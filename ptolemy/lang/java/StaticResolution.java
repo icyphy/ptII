@@ -45,6 +45,8 @@ import java.util.Map;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// StaticResolution
 /**
  *  Methods to aid in the static resolution of names and types in a Java
  *  program. The code was mostly converted from the Titanium project.
@@ -100,7 +102,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
            // for inner classes
            if ((categories & CG_USERTYPE) != 0) {
-               newCategories |= CG_USERTYPE;
+               newCategories |= (categories & CG_USERTYPE);
            }
 
            if ((categories & (CG_FIELD | CG_METHOD)) != 0) {
@@ -116,8 +118,16 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
            if (container.hasEnviron()) {
               
-              possibles = container.getEnviron().lookupFirstProper(
-               name.getIdent(), categories);
+              if ((categories & CG_USERTYPE) != 0) {
+                 ApplicationUtility.assert((categories & CG_USERTYPE) == 0);
+                 
+                 possibles = container.getTypeEnviron().lookupFirstProper(
+                  name.getIdent(), categories);
+                 
+              } else {              
+                possibles = container.getEnviron().lookupFirstProper(
+                 name.getIdent(), categories);
+              }
                              
            } else if (container instanceof TypedDecl) {
               TypedDecl typedContainer = (TypedDecl) container;
@@ -126,10 +136,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	             ApplicationUtility.error("cannot select " + name.getIdent() +
                   " from non-reference type represented by " + type);
               } else if (type instanceof ArrayTypeNode) {
-                 possibles = ARRAY_ENVIRON.lookupFirstProper(name.getIdent(),
+                 possibles = ARRAY_CLASS_DECL.getEnviron().lookupFirstProper(name.getIdent(),
                   categories & (CG_FIELD | CG_METHOD));                  
               } else {
-                 // 
+                 // what is this for ???
                  Environ e = JavaDecl.getDecl(type).getEnviron();
                  possibles = e.lookupFirstProper(name.getIdent(),
                   categories & (CG_FIELD | CG_METHOD | CG_USERTYPE));
@@ -138,9 +148,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext()) {
-           // temp
-           Interrogator.interrogate(name);
-           
            ApplicationUtility.error(name.getIdent() + " undefined in environ " +
             env.toString());
         }
@@ -148,7 +155,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         JavaDecl d = (JavaDecl) possibles.head();
         name.setProperty(DECL_KEY, d);
 
-        ApplicationUtility.trace("findPossibles for " + nameString(name) + " ok");
+        // ApplicationUtility.trace("findPossibles for " + nameString(name) + " ok");
 
         return possibles;
     }
@@ -452,9 +459,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
               return pass2ResolvedNode;
            }                            
         }
-        
-        System.out.println("pass 2 on " + filename);
-                
+                                
         node.accept(new ResolveNameVisitor(), null);     
         node.accept(new ResolveFieldVisitor(), null);                               
           
@@ -544,7 +549,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static final TypeNameNode CLASS_TYPE;
     public static final TypeNameNode CLONEABLE_TYPE;
      
-    public static final Environ    ARRAY_ENVIRON;
     public static final ClassDecl  ARRAY_CLASS_DECL;
     public static final FieldDecl  ARRAY_LENGTH_DECL;
     public static final MethodDecl ARRAY_CLONE_DECL;
@@ -579,15 +583,21 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     static {
         SYSTEM_PACKAGE  = new PackageDecl("", null);
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
-        //UNNAMED_PACKAGE.setEnviron(new Environ());
 
         // dummy environment
         Environ env = new Environ();        
 
+        ApplicationUtility.trace("--- loading java.lang package ---");
+
         NameNode javaLangName = (NameNode) makeNameNode("java.lang");
         JAVA_LANG_PACKAGE = importPackage(env, javaLangName);
 
+        ApplicationUtility.trace("--- require class on Object ---");
+
         OBJECT_DECL = _requireClass(env, "Object");
+        
+        ApplicationUtility.trace("--- done require class on Object ---");
+        
         OBJECT_TYPE = OBJECT_DECL.getDefType();
         
         CLONEABLE_DECL = _requireClass(env, "Cloneable");
@@ -623,7 +633,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         load(arrayCompileUnitNode, 0);
 
         ARRAY_CLASS_DECL = (ClassDecl) JavaDecl.getDecl((NamedNode) arrayClassNode);
-        ARRAY_ENVIRON = ARRAY_CLASS_DECL.getEnviron();        
         ARRAY_LENGTH_DECL = (FieldDecl) JavaDecl.getDecl((NamedNode) arrayLengthNode);
         ARRAY_CLONE_DECL  = (MethodDecl) JavaDecl.getDecl((NamedNode) arrayCloneNode);
         
@@ -632,6 +641,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     
         CLASS_DECL  = _requireClass(env, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
+
+        ApplicationUtility.trace("--- 1st buildEnvironments ---");
         
         buildEnvironments();
     }

@@ -91,21 +91,21 @@ public class EnvironIter implements Iterator {
             Decl decl = (Decl) _declIter.next();
 
             if (decl.matches(_name, _mask)) {
-               ApplicationUtility.trace("EnvironIter : found match for " +
-                _name);
+               //ApplicationUtility.trace("EnvironIter : found match for " +
+               // _name);
                return decl;
             }
          }
 
          if (_nextEnviron == null) {
-            ApplicationUtility.trace("EnvironIter : no more elements " +
-             "looking for " + _name);
+           // ApplicationUtility.trace("EnvironIter : no more elements " +
+           //  "looking for " + _name);
  
             throw new NoSuchElementException("No more elements in EnvironIter.");
          }
  
-         ApplicationUtility.trace("EnvironIter : going to next environment " +
-          "looking for " + _name);
+         //ApplicationUtility.trace("EnvironIter : going to next environment " +
+         // "looking for " + _name);
 
          _declIter = _nextEnviron.allProperDecls();
          _nextEnviron = _nextEnviron.parent();
@@ -186,8 +186,8 @@ public class EnvironIter implements Iterator {
          // don't bother to move the iterator back, since there are no matches
        
          if (_nextEnviron == null) {
-            ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
-             _name);
+            //ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
+            // _name);
             return false;
          }
          

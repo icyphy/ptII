@@ -41,6 +41,8 @@ import java.util.Set;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// ResolveInheritanceVisitor
 /** Fills in class and interface environments with inherited members.
  *  Code and comments adopted from st-inherit.cc from the Titanium project.
  *
@@ -53,14 +55,21 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        ApplicationUtility.trace("resolveInheritance for " +
+         node.getProperty(IDENT_KEY));
+        
         TNLManip.traverseList(this, node, null, node.getDefTypes());
+        
+        ApplicationUtility.trace("finished resolveInheritance for " +
+         node.getProperty(IDENT_KEY));
+        
         return null;
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
-        if (!me.addVisitor("ResolveInheritance")) {
+        if (!me.addVisitor(_myClass)) {
            return null;
         }
 
@@ -98,7 +107,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
         ClassDecl me = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 
-        if (!me.addVisitor("ResolveInheritance")) {
+        if (!me.addVisitor(_myClass)) {
            return null;
         }
 
@@ -116,7 +125,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {        
         ClassDecl me = (ClassDecl) node.getDefinedProperty(DECL_KEY);
 
-        if (!me.addVisitor("ResolveInheritance")) {
+        if (!me.addVisitor(_myClass)) {
            return null;
         }
 
@@ -139,7 +148,12 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         
         return null;                   
     }
- 
+    
+    /** Return the Class object of this visitor. */
+    public static Class visitorClass() {
+        return _myClass;
+    }
+  
     /** Return true iff newThrows is a "subset" of oldThrows (j8.4.4) */
     protected static boolean _throwsSubset(Set newThrows,
      Set oldThrows) {
@@ -299,10 +313,8 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
           JavaDecl member = (JavaDecl) memberItr.next();
 
           if ((member.category == CG_METHOD) &&
-              ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
-              
-             // FIXME 
-             System.out.println("found abstract method: " +  member);
+              ((member.getModifiers() & ABSTRACT_MOD) != 0)) {              
+             ApplicationUtility.trace("found abstract method: " +  member);
              return true;
           }
        }
@@ -315,4 +327,8 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, node, args, node.children());
         return null;
     }
+    
+    /** The Class object of this visitor. */
+    private static Class _myClass = new ResolveInheritanceVisitor().getClass();
+    
 }

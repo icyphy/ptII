@@ -43,9 +43,9 @@ import ptolemy.lang.java.nodetypes.TypeNode;
  *  represented as pointers to AST nodes of type TypeNode, just as they
  *  are during parsing.  Packages, statement labels, classes, and
  *  interfaces don't have types (although the latter two ARE types).
- *  (comment from Titanium project)
+ *  Code and comments converted from the Titanium project.
  *
- *  @author ctsay
+ *  @author Jeff Tsay
  */
 public abstract class TypedDecl extends JavaDecl {
     public TypedDecl(String name, int category0, TypeNode type, int modifiers) {

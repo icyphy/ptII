@@ -141,7 +141,7 @@ CompileUnitNode C TreeNode k 0 TreeNode pkg List imports List defTypes k
 ImportNode C TreeNode i NamedNode i k 0 NameNode name k
 ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
-ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members TypeNameNode superClass k
+ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name List interfaces List members TreeNode superClass k
 
 VarDeclNode A TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode defType NameNode name k
 VarInitDeclNode A VarDeclNode k 3 int modifiers TypeNode defType NameNode name TreeNode initExpr k

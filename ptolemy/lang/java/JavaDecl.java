@@ -35,6 +35,8 @@ package ptolemy.lang.java;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// JavaDecl
 /**
  *  The class JavaDecl declares many members, most of which make sense only
  *  for certain types of JavaDecl.  Attempts to access nonsensical members
@@ -147,6 +149,21 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     public Environ getEnviron() {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
+    
+    /** Get an environment of types associated with this declaration. This
+     *  method is used instead of getEnviron() when looking up types contained
+     *  in the environment. getEnviron() for ClassDecl needs to run pass 1 to
+     *  get all the fields and methods into the environment. This method avoids
+     *  running pass 1 while still in pass 0.
+     *
+     *  This method is necessary to allow for inner classes, since the environment
+     *  a class is necessary to lookup its inner classes.
+     * 
+     *  The default method just calls getEnviron().  
+     */
+    public Environ getTypeEnviron() {
+        return getEnviron();
+    } 
 
     /** Set the environment associated with this declaration. */
     public void setEnviron(Environ environ) {

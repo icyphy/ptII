@@ -45,7 +45,7 @@ import java.util.LinkedList;
  *
  *  @author Jeff Tsay
  */
-public abstract class TreeNode extends PropertyMap {
+public abstract class TreeNode extends TrackedPropertyMap {
 
     /** Return the class ID number, which is unique for each sub-type. */    
     public abstract int classID();
@@ -58,7 +58,7 @@ public abstract class TreeNode extends PropertyMap {
         StringBuffer sb = new StringBuffer();
 
         Class c = getClass();
-        String className = _unqualifiedNameString(c.getName());
+        String className = StringManip.unqualifiedPart(c.getName());
 
         sb.append(className);
       
@@ -265,13 +265,6 @@ public abstract class TreeNode extends PropertyMap {
            ite.getTargetException().toString());
         }
         return null;
-    }
-
-    /** Return the unqualified part of a Java name. For example, if the argument
-     *  is "ptolemy.lang.TreeNode" return "TreeNode". 
-     */
-    protected static String _unqualifiedNameString(String s) {
-        return s.substring(s.lastIndexOf('.') + 1);  
     }
   
     // protected methods

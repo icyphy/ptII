@@ -36,8 +36,7 @@ package ptolemy.lang;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 
 public class Interrogator {
 
@@ -97,32 +96,36 @@ public class Interrogator {
                         
            } catch (NumberFormatException nfe) {
              
-             // user input was a method name
-             
-             Method method = null;
-             
+             // user input was a method or field name
+                          
              try {             
-               method = myClass.getMethod(lineString, null);
+               Method method = myClass.getMethod(lineString, null);
+               
+               // can we use null instead of new Object[0] here? It doesn't say
+               // in the spec for Method.invoke()
+               try {                
+                   Object childObj = method.invoke(obj, new Object[0]);                            
+                   interrogate(childObj, reader);
+               } catch (IllegalAccessException iae) {
+                   System.err.println("Illegal access exception invoking method "
+                    + lineString);
+               } catch (InvocationTargetException ite) {
+                   System.err.println("Invocation target exception invoking method "
+                    + lineString + " : target = " + ite.getTargetException().toString());
+               }                                                                              
              } catch (NoSuchMethodException nsme) {
-               System.err.println("No such method '" + lineString + "'.");                                       
-               method = null;
+               try {
+                   Field field = myClass.getField(lineString);
+                   Object childObj = field.get(obj);
+                   interrogate(childObj, reader);
+               } catch (IllegalAccessException iae) {
+                   System.err.println("Illegal access exception getting field "
+                    + lineString);
+               } catch (NoSuchFieldException nsfe) {
+                   System.err.println("no such method or field " + lineString);               
+               }                                                           
              }
-       
-             if (method != null) {
-                // can we use null instead of new Object[0] here? It doesn't say
-                // in the spec for Method.invoke()
-                try {                
-                  Object childObj = method.invoke(obj, new Object[0]);                            
-                  interrogate(childObj, reader);
-                } catch (IllegalAccessException iae) {
-                  System.err.println("Illegal access exception invoking method "
-                   + lineString);
-                } catch (InvocationTargetException ite) {
-                  System.err.println("Invocation target exception invoking method "
-                   + lineString + " : target = " + ite.getTargetException().toString());
-                }                                                
-             }
-           
+                  
              propertyNumber = -1; // dummy number to ensure we don't exit the loop
            } 
         } while (propertyNumber != 0);                 
