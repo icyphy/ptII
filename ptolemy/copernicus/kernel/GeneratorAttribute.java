@@ -142,6 +142,8 @@ public class GeneratorAttribute extends SingletonAttribute
 
     /** Get the string for the argument with the given name from this
      * GeneratorAttribute.
+     *  @exception IllegalActionException If no Settable object with
+     *  the given name exists in this GeneratorAttribute.
      */
     public String getParameter(String name) throws IllegalActionException {
         Attribute attribute = getAttribute(name);
@@ -159,7 +161,7 @@ public class GeneratorAttribute extends SingletonAttribute
             }
         } else {
             throw new IllegalActionException("Parameter with name " + name
-                    + " is not set!");
+                    + " does not exist!");
         }
     }
 
@@ -356,6 +358,23 @@ public class GeneratorAttribute extends SingletonAttribute
 
         _updateNecessaryClassPath();
 
+    }
+
+    /** Set the string for the argument with the given name from this
+     *  GeneratorAttribute to be the given value.
+     *  @exception IllegalActionException If no Settable object with
+     *  the given name exists in this GeneratorAttribute.
+     */
+    public void setParameter(String name, String value) 
+            throws IllegalActionException {
+        Attribute attribute = getAttribute(name);
+        if(attribute instanceof Settable) {
+            ((Settable)attribute).setExpression(value);
+            ((Settable)attribute).validate();
+        } else {
+            throw new IllegalActionException("Parameter with name " + name
+                    + " does not exist!");
+        }
     }
 
     /** Return a String representation of this object. */

@@ -1728,13 +1728,14 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             _ports(body, thisLocal, entity, thisLocal, entity,
                     entityInstanceClass, tempCreatedSet, true);
 
-//             Stmt insertPoint = Jimple.v().newNopStmt();
-//             body.getUnits().add(insertPoint);
+            // Excess initialization, but necessary for -actor???
+            Stmt insertPoint = Jimple.v().newNopStmt();
+            body.getUnits().add(insertPoint);
 
-//             // InitializeAttributes of the ports and parameters.
-//             initializeAttributesBefore(body, insertPoint, 
-//                     entity, thisLocal,
-//                     entity, thisLocal, entityInstanceClass);
+            // InitializeAttributes of the ports and parameters.
+            initializeAttributesBefore(body, insertPoint, 
+                    entity, thisLocal,
+                    entity, thisLocal, entityInstanceClass);
 
             // Create code in the model class to instantiate all
             // actors and relations, and connect the relations

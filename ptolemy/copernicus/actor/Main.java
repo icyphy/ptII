@@ -27,13 +27,12 @@
    @AcceptedRating Red (cxh@eecs.berkeley.edu)
  */
 
-package ptolemy.copernicus.java;
+package ptolemy.copernicus.actor;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
 import ptolemy.copernicus.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.copernicus.java.*;
+import ptolemy.kernel.util.IllegalActionException;
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;
@@ -56,7 +55,7 @@ import java.util.*;
 //// Main
 /**
    Read in a MoML model and generate Java classes for that model.
-   
+
    @author Stephen Neuendorffer, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
@@ -93,12 +92,6 @@ public class Main extends KernelMain {
                "targetPackage:" + _targetPackage + 
                " outDir:" + _outputDirectory);
 
-        // Add a command line interface (i.e. Main)
-       addTransform(pack, "wjtp.clt",
-               CommandLineTransformer.v(toplevel),
-               "targetPackage:" + _targetPackage);
-       
-       
        addTransform(pack, "wjtp.ta1",
                new TransformerAdapter(TypeAssigner.v()));
        addStandardOptimizations(pack, 1);
@@ -110,10 +103,9 @@ public class Main extends KernelMain {
                    "outDir:" + _outputDirectory + "/jimple1");
            addTransform(pack, "wjtp.lur1",
                    LibraryUsageReporter.v(),
-                   "outFile:" + _outputDirectory + 
-                   "/jimple1/jarClassList.txt");
+                   "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
        }
-
+       /*
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
        
        addTransform(pack, "wjtp.ls7",
@@ -149,7 +141,6 @@ public class Main extends KernelMain {
                new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.lns",
                new TransformerAdapter(LocalNameStandardizer.v()));
-       
        addStandardOptimizations(pack, 3);
        
        addTransform(pack, "wjtp.ls3",
@@ -157,7 +148,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.ta3",
                new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.ib2",
-              InvocationBinder.v());
+               InvocationBinder.v());
        
        // Set about removing reference to attributes and parameters.
        // Anywhere where a method is called on an attribute or
@@ -243,7 +234,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.itt2",
                InlineTokenTransformer.v(toplevel),
                "targetPackage:" + _targetPackage);
-       
+        
        //pack.add(new Transform("wjtp.ta",
        //        new TransformerAdapter(TypeAssigner.v()));
        // pack.add(new Transform("wjtp.ibg",
@@ -340,15 +331,12 @@ public class Main extends KernelMain {
                    "outDir:" + _outputDirectory + "/jimple4");
            addTransform(pack, "wjtp.lur4",
                    LibraryUsageReporter.v(),
-                   "outFile:" + _outputDirectory + 
-                   "/jimple4/jarClassList.txt");
+                   "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
        }
-       
+
        addTransform(pack, "wjtp.ttn",
-               TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
-       
-       addStandardOptimizations(pack, 4);
-          
+                        TokenToNativeTransformer.v(toplevel));
+        
        addTransform(pack, "wjtp.ufr",
                UnusedFieldRemover.v());
        
@@ -363,7 +351,7 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
        addStandardOptimizations(pack, 8);
-       
+
        addTransform(pack, "wjtp.smr2",
                SideEffectFreeInvocationRemover.v());
 
@@ -373,27 +361,33 @@ public class Main extends KernelMain {
                UnreachableMethodRemover.v());
        addTransform(pack, "wjtp.cp2",
                new TransformerAdapter(CopyPropagator.v()));
-       addTransform(pack, "wjtp.ufr2",
-               UnusedFieldRemover.v());
-       addStandardOptimizations(pack, 10);   
-         
+              
        // The library usage reporter also pulls in all depended
        // classes for analysis.       
        addTransform(pack, "wjtp.lur",
                LibraryUsageReporter.v(),
                "outFile:" + _outputDirectory + "/jarClassList.txt " + 
-               "analyzeAllReachables:false");
-       // Note: We want to analyze all reachables here!
+               "analyzeAllReachables:true");
        
-//        addTransform(pack, "wjtp.umr4", 
-//                UnreachableMethodRemover.v());
-//        addTransform(pack, "wjtp.ufr3",
-//                UnusedFieldRemover.v());
-//        addStandardOptimizations(pack, 9);
-//        addTransform(pack, "wjtp.umr5", 
-//                UnreachableMethodRemover.v());
+       addTransform(pack, "wjtp.umr4", 
+               UnreachableMethodRemover.v());
+       addTransform(pack, "wjtp.ufr2",
+               UnusedFieldRemover.v());
+       addStandardOptimizations(pack, 9);
+       addTransform(pack, "wjtp.umr5", 
+               UnreachableMethodRemover.v());
        /* */   
        
+       // Convert to grimp.
+       addTransform(pack, "wjtp.gt",
+               GrimpTransformer.v());
+       // This snapshot should be last...
+       addTransform(pack, "wjtp.finalSnapshotJimple",
+               JimpleWriter.v(),
+               "outDir:" + _outputDirectory);
+       addTransform(pack, "wjtp.finalSnapshot", 
+               ClassWriter.v(),
+               "outDir:" + _outputDirectory);
     }
 
 
@@ -401,55 +395,28 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
         addStandardTransforms(_toplevel);
-        
+ 
         Pack pack = PackManager.v().getPack("wjtp");
-        
-        // Convert to grimp.
-        addTransform(pack, "wjtp.gt",
-                GrimpTransformer.v());
-        // This snapshot should be last...
-        addTransform(pack, "wjtp.finalSnapshotJimple",
-               JimpleWriter.v(),
-                "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.finalSnapshot", 
-                ClassWriter.v(),
-                "outDir:" + _outputDirectory);
-        
+ 
         // And write C!
         //      pack.add(
         //                 new Transform("wjtp.finalSnapshot", CWriter.v());
-        
-        // Generate the makefile files in outDir
-        addTransform(pack, "wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel),
-                "_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage + 
-                " templateDirectory:" + _templateDirectory +
-                " outDir:" + _outputDirectory);
-        
-        
+
         addTransform(pack, "wjtp.watchDogCancel",
                 WatchDogTimer.v(), "cancel:true");
     }
 
-
-    /** Parse any code generator specific arguments.
+    /** Parse any Copernicus arguments.
      */ 
     protected String[] _parseArgs(GeneratorAttribute attribute) 
-            throws Exception {
-       //  String snapshots = attribute.getParameter("snapshots");
-//         if(snapshots.equals("true")) {
-//             _snapshots = true;
-//         } else {
-//             _snapshots = false;
-//         }
-        
+            throws IllegalActionException {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
         _generatorAttributeFileName = 
             attribute.getParameter("generatorAttributeFileName");
+        attribute.setParameter("run", "false");
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];
     }

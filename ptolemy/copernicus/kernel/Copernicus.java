@@ -139,11 +139,9 @@ public class Copernicus {
         _parseArgs(args);
         
         if(_modelPath == null) {
-            System.out.println("\nModel not found, perhaps the command line "
-                    + "arguments did not include a model?");
-            System.out.println("Run 'copernicus -help' for information on command line arguments.");
-            // NOTE: This means the test suites cannot test this.
-            System.exit(-1);
+            throw new RuntimeException("No model found in command line " +
+                    "arguments.\nRun 'copernicus -help' for information " +
+                    "on command line arguments.");
         }
 
         // Parse the model.

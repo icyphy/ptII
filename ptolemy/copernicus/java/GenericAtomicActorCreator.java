@@ -154,6 +154,14 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             // Create and initialize ports
             ModelTransformer.createPorts(body, thisLocal, entity,
                     thisLocal, entity, entityInstanceClass, tempCreatedSet);
+            
+            Stmt insertPoint = Jimple.v().newNopStmt();
+            body.getUnits().add(insertPoint);
+          
+            ModelTransformer.initializeAttributesBefore(body, insertPoint,
+                    entity, thisLocal,
+                    entity, thisLocal,
+                    entityInstanceClass);
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());

@@ -1,10 +1,10 @@
-# Ptolemy code generation using Soot 
+# Makefile for Ptolemy II Java deep code generation
 #
-# @Authors: (makefile) Christopher Hylands- based on a file by Thomas M. Parks
+# @Authors: Steve Neuendorffer, Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2003 The Regents of the University of California.
+# @Copyright (c) 1998-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,59 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus
+ME =		ptolemy/copernicus/actor
 
-# kernel first, then alphabetical, then gui
-# PTJHDL_DIR is set by configure in $PTII/mk/ptII.mk if the jhdl jar file
-# was found
-DIRS =		kernel actor applet c interpreted shallow java $(PTJHDL_DIR) gui
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	copernicus
-PTCLASSJAR =
+PTPACKAGE = 	java
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	applet/applet.jar \
-	c/c.jar \
-	interpreted/interpreted.jar \
-	kernel/kernel.jar \
-	java/java.jar \
-	shallow/shallow.jar \
-	gui/gui.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-JSRCS =
+# Keep this list alphabetized.
+JSRCS = \
+	Main.java 
 
 OTHER_FILES_TO_BE_JARED = \
-	copernicus.xml
+	compileCommandTemplate.txt \
+	makefile.in \
+	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) \
-		README.txt
+MISC_FILES =	$(DIRS) 
+
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: all jars
+	@echo "To run the demo, run 'make demo'"
+
+install: jclass $(PTCLASSJAR)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
 
