@@ -90,7 +90,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      *  event whose source is the given source.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
-     *  @exception GraphException if the operation fails.
+     *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
 	if(!(getEdgeModel(edge) instanceof ArcModel)) return;
@@ -164,7 +164,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
-     *  @exception GraphException if the operation fails.
+     *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
 	if(!(getNodeModel(node) instanceof PtolemyNodeModel)) return;
@@ -602,9 +602,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
 	/** Return moml to remove a relation in the specified container.
 	 */
-	private String _deleteRelation (
-                NamedObj container,
-                Relation relation) {
+	private String _deleteRelation(NamedObj container, Relation relation) {
             return "<deleteRelation name=\""
                     + relation.getName(container)
                     + "\"/>\n";
@@ -619,12 +617,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
          *  to execute if the link fails.  This disconnects any partially
          *  constructed link.
 	 */
-	private String _linkHead (
-                NamedObj container,
-                StringBuffer moml,
-                StringBuffer failmoml,
-                NamedObj linkHead,
-                NamedObj linkTail,
+	private String _linkHead(NamedObj container, StringBuffer moml,
+                StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
                 Relation linkRelation) {
 	    if(linkHead != null && linkTail != null) {
 		NamedObj head = (NamedObj)getSemanticObject(linkHead);
@@ -744,12 +738,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
          *  to execute if the link fails.  This disconnects any partially
          *  constructed link.
 	 */
-	private String _linkTail (
-                NamedObj container,
-                StringBuffer moml,
-                StringBuffer failmoml,
-                NamedObj linkHead,
-                NamedObj linkTail,
+	private String _linkTail(NamedObj container, StringBuffer moml,
+                StringBuffer failmoml, NamedObj linkHead, NamedObj linkTail,
                 Relation linkRelation) {
             // NOTE: This method is almost identical to the previous
             // one, but just enough different that it isn't obvious
@@ -841,9 +831,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	/** Return moml to unlink a relation with the given head in the
          *  specified container.
 	 */
-	private String _unlinkHead (
-                NamedObj container,
-                NamedObj linkHead,
+	private String _unlinkHead( NamedObj container, NamedObj linkHead,
                 Relation relation) {
             NamedObj head = (NamedObj)getSemanticObject(linkHead);
             State headState = (State)head;
@@ -858,9 +846,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	/** Return moml to unlink a relation with the given tail in the
          *  specified container.
 	 */
-	private String _unlinkTail(
-                NamedObj container,
-                NamedObj linkTail,
+	private String _unlinkTail(NamedObj container, NamedObj linkTail,
                 Relation relation) {
             NamedObj tail = (NamedObj)getSemanticObject(linkTail);
             State tailState = (State)tail;
