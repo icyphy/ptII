@@ -6,7 +6,7 @@
     <?moml
       <group>
 
-<entity name="StringToXml" class="ptolemy.actor.lib.conversions.StringToXml"/>
+<entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML"/>
 <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer"/>
 
       </group>
