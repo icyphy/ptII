@@ -258,18 +258,20 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 
     /** Override the base class to ensure that the proposed container
      *  implements the TypedActor interface (the base class ensures that
-     *  the container implements the Actor interface).
+     *  the container implements the Actor interface) or null. A null
+     *  argument will remove the port from the container.
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   ComponentEntity, doesn't implement Actor, or has no name,
-     *   or the port and container are not in the same workspace.
+     *   or the port and container are not in the same workspace. Or
+     *   it's not null.
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedActor)) {
+        if (!(container instanceof TypedActor) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedIOPort can only be contained by objects " +
 		    "implementing the TypedActor interface.");

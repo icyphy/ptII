@@ -124,20 +124,22 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     }
 
     /** Override the base class to ensure that the proposed container
-     *  is an instance of TypedCompositeActor. If it is, call the base class
-     *  setContainer() method.
+     *  is an instance of TypedCompositeActor or null. If it is, call the
+     *  base class setContainer() method. A null argument will remove
+     *  the actor from its container.
      *
      *  @param entity The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace, or
-     *   if the argument is not a TypedCompositeActor.
+     *   if the argument is not a TypedCompositeActor or null.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedCompositeActor)) {
+        if (!(container instanceof TypedCompositeActor) &&
+             (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedAtomicActor can only be contained by instances of " +
                     "TypedCompositeActor.");
