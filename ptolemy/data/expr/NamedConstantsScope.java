@@ -1,61 +1,93 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="higher order" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-      <doc>Higher-Order Computation Infrastructure.</doc>
+/* A class representing an evaluation scope that contains a set of named
+constants.
 
-      <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
-        <doc>Creates multiple instances of itself</doc>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-           </property>
-           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
-           </property>
-           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-           </property>
-           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-           </property>
-           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
-           </property>
-         </property>
-      </entity>
+ Copyright (c) 2002-2003 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-      </group>
-    ?>
-  </configure>
-</entity>
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
 
+@ProposedRating Red (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 
+*/
 
+package ptolemy.data.expr;
 
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.IllegalActionException;
 
+import java.util.Map;
+import java.util.HashMap;
 
+//////////////////////////////////////////////////////////////////////////
+//// NamedConstantsScope
+/**
+An implementation of ParserScope that contains a map from names to value
+tokens.
 
+@author Xiaojun Liu
+@version $Id$
+*/
 
+public class NamedConstantsScope implements ParserScope {
 
+    /** Construct a new scope that contains the given map from names to
+	 *  value tokens.
+     */
+    public NamedConstantsScope(Map map) {
+        _map = map;
+    }
 
+    /** Look up and return the value with the specified name in the
+     *  scope. Return null if the name is not defined in this scope.
+     *  @return The token associated with the given name in the scope.
+     */
+    public ptolemy.data.Token get(String name) {
+		ptolemy.data.Token result = (ptolemy.data.Token)_map.get(name);
+        return result;
+    }
 
+    /** Look up and return the type of the value with the specified
+     *  name in the scope. Return null if the name is not defined in
+     *  this scope.
+     *  @return The token associated with the given name in the scope.
+     */
+    public ptolemy.data.type.Type getType(String name) {
+        ptolemy.data.Token value = (ptolemy.data.Token)_map.get(name);
+        if(value == null) {
+            return null;
+        } else {
+            return value.getType();
+        }
+    }
 
+    /** Return null.
+     *  @return null.
+     */
+    public NamedList variableList() {
+        return null;
+    }
 
-
-
-
-
-
-
-
-
+    private Map _map;
+}
 
