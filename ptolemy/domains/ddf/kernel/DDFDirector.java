@@ -55,7 +55,7 @@ which indicates that the run should proceed indefinitely.
 This director is based on the design in Ptolemy Classic by Soonhoi Ha,
 Edward A. Lee, and Thomas M. Parks.
 
-@author Gilles Guerassimoff and Edward A. Lee
+@author Gilles Guerassimoff
 @version $Id$
 */
 public class DDFDirector extends Director {
