@@ -111,7 +111,7 @@ synchronous.
 @see ptolemy.domains.sdf.lib.SampleDelay
 @see ptolemy.domains.sdf.kernel.SDFScheduler
 
-@author Stephen Neuendorffer
+@author Stephen Neuendorffer, Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -183,7 +183,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
         System.out.println("Returned from P-APGAN; the schedule follows."); 
         System.out.println(schedule.toString()); 
-        Schedule result = (Schedule) 
+        SymbolicScheduleElement result = 
                  _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(), 
                  scheduler);
         System.out.println("Completed PSDFScheduler._getSchedule().\n The "
@@ -213,66 +213,151 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
     // @param node The super node to expand.
     // @param apgan The scheduler that was used to build the cluster hierarchy.
     // @return The schedule saving the expansion result.
-    private ScheduleElement _expandAPGAN(PSDFGraph graph, 
+    private SymbolicScheduleElement _expandAPGAN(PSDFGraph graph, 
             ptolemy.graph.Node node, PSDFAPGANStrategy apgan) {
-        ScheduleElement element;
         PSDFGraph childGraph = (PSDFGraph)apgan.getSubgraph(node);
 
-        // atomic node
-        if (childGraph == null) {
-            PSDFNodeWeight weight = (PSDFNodeWeight)node.getWeight();
-            element = new Firing((Actor)weight.getComputation());
-        // super node
-        } else {
-            element = new Schedule();
-            // Expand the super node with adjacent nodes contained within it.
-            Edge edge = (Edge)childGraph.edges().iterator().next();
-            ptolemy.graph.Node source = edge.source();
-            ptolemy.graph.Node sink   = edge.sink();
-            ScheduleElement first  = _expandAPGAN(childGraph, source, apgan);
-            ScheduleElement second = _expandAPGAN(childGraph, sink, apgan);
-            ((Schedule)element).add(first);
-            ((Schedule)element).add(second);
+        // FIXME: Need to set the iteration counts appropriately.
+        try {
+            // atomic node
+            if (childGraph == null) {
+                PSDFNodeWeight weight = (PSDFNodeWeight)node.getWeight();
+                SymbolicFiring firing = new SymbolicFiring((Actor)
+                        weight.getComputation(), "1");
+                return firing;
+            // super node
+            } else {
+                Schedule schedule = new Schedule();
+                // Expand the super node with adjacent nodes contained 
+                // within it.
+                Edge edge = (Edge)childGraph.edges().iterator().next();
+                ptolemy.graph.Node source = edge.source();
+                ptolemy.graph.Node sink   = edge.sink();
+                ScheduleElement first  = _expandAPGAN(childGraph, source, 
+                        apgan);
+                ScheduleElement second = _expandAPGAN(childGraph, sink, 
+                        apgan);
+                schedule.add(first);
+                schedule.add(second);
+                SymbolicSchedule symbolicSchedule = 
+                        new SymbolicSchedule(schedule, "1");
+                return symbolicSchedule;
+               
+            }
+        } catch (Exception exception) {
+            throw new RuntimeException("Error converting cluster hierarchy to "
+                    + "schedule.\n" + exception.getMessage());
         }
-
-        // FIXME: set the iteration count appropriately
-        // element.setIterationCount(graph.getRepetitions(node));
-        return element;
     }
 
-
-    private class SymbolicFiring extends Firing {
-        /** Construct a firing with the given actor.  The given actor
-         *  is assumed to fire the number of times determined by
-         *  evaluating the given expression.  Expression will probably
-         *  be something like
-         *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
-         *  a::out::tokenProductionRate)"
-         *  @param actor The actor in the firing.
+    /** A schedule element whose iteration count is given by an 
+     *  expression.
+     */
+    private abstract class SymbolicScheduleElement extends ScheduleElement {
+        /** Construct a schedule element with an iteration count of 1, and
+         *  with no parent schedule element.
          */
-        public SymbolicFiring(Actor actor, String expression)
+        public SymbolicScheduleElement()
                 throws IllegalActionException {
-            super(actor);
-            PtParser parser = new PtParser();
-            _parseTree = parser.generateParseTree(expression);
+            super();
+            setIterationCount("1");
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-        
+
+        /** Return the actor invocation sequence in the form of a sequence of
+         *  actors.
+         *  @return The actor invocation sequence.
+         */
+        public Iterator actorIterator() {
+            _scheduleElement.setIterationCount(getIterationCount());
+            return _scheduleElement.actorIterator();
+        }
+
+        /** Return the actor invocation sequence in the form of a sequence of
+         *  firings.
+         *  @return The actor invocation sequence.
+         */
+        public Iterator firingIterator() {
+            _scheduleElement.setIterationCount(getIterationCount());
+            return _scheduleElement.firingIterator();
+        }
+       
         /** Return the current iteration count of this firing.
          */
         public int getIterationCount() {
             try {
                 IntToken token = (IntToken)
-                    _evaluateExpressionInModelScope(_parseTree);
+                        _evaluateExpressionInModelScope(_parseTree);
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
                 throw new RuntimeException(ex.getMessage());
             }
         }
+
+        /** Set the expression associated with the iteration count.
+         *  The expression will probably be something like
+         *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
+         *  a::out::tokenProductionRate)."
+         *
+         *  @param expression The expression to be associated with the iteration
+         *  count.
+         */
+        public void setIterationCount(String expression) {
+            // FIXME: Incorporate better exception handling.
+            try {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(expression);
+            } catch (Exception exception) {
+                throw new RuntimeException("Error setting iteration count to "
+                        + expression + ".\n" + exception.getMessage());
+            }
+        }
+
+        /** The schedule element that is being symbolically iterated. 
+         */
+        protected ScheduleElement _scheduleElement;
+
+        // The parse tree of the iteration expression.
         private ASTPtRootNode _parseTree;
+    }
+
+    /** An actor firing with an iteration count that is determined by
+     *  a symbolic expression.
+     */
+    private class SymbolicFiring extends SymbolicScheduleElement {
+        /** Construct a firing with the given actor and the given
+         *  expression.  The given actor
+         *  is assumed to fire the number of times determined by
+         *  evaluating the given expression.  
+         *  @param actor The actor in the firing.
+         *  @param expression The expression associated with the firing.
+         */
+        public SymbolicFiring(Actor actor, String expression)
+                throws IllegalActionException {
+            _scheduleElement = new Firing(actor);
+            setIterationCount(expression);
+        }
+
+    }
+
+    /** A schedule whose iteration count is given by an expression.
+     */
+    private class SymbolicSchedule extends SymbolicScheduleElement {
+        /** Construct a schedule with the given actor and the given expression.
+         *  The given schedule is assumed to fire the number of times determined
+         *  by evaluating the given expression.
+         *  @param schedule The schedule.
+         *  @param expression The expression associated with the schedule. 
+         */
+        public SymbolicSchedule(Schedule schedule, String expression)
+                throws IllegalActionException {
+            _scheduleElement = schedule;
+            setIterationCount(expression);
+        }
+ 
     }
 
     /** Scope implementation with local caching. */
