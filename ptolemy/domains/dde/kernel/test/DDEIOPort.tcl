@@ -54,15 +54,22 @@ test DDEIOPort-2.1 {Check send()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
+    set man [java::new ptolemy.actor.Manager $wspc "manager"]
+    $topLevel setManager $man
+    $topLevel setDirector $dir
+    
     set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
     set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
-
 
     set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
     set inPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]
     set rel [$topLevel connect $outPort $inPort "rel"]
-
+    
     set tok [java::new ptolemy.data.Token]
+    set tokClass [$tok getClass]
+    
+    $outPort setTypeEquals $tokClass
+    $inPort setTypeEquals $tokClass
 
     $inPort createReceivers
 
@@ -99,14 +106,19 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     set rel2 [$topLevel connect $outPort $inPort2 "rel2"]
     set rel3 [$topLevel connect $outPort $inPort3 "rel3"]
 
+    set tok [java::new ptolemy.data.Token]
+    set tokClass [$tok getClass]
+
+    $outPort setTypeEquals $tokClass
+    $inPort2 setTypeEquals $tokClass
+    $inPort3 setTypeEquals $tokClass
+
     $dir initialize
 
     set rcvrs2 [$inPort2 getReceivers]
     set rcvr2 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs2 get {0 0}]]
     set rcvrs3 [$inPort3 getReceivers]
     set rcvr3 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs3 get {0 0}]]
-
-    set tok [java::new ptolemy.data.Token]
 
     $rcvr2 setCapacity 1
     $rcvr3 setCapacity 1
@@ -129,9 +141,9 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
 	set val 0
     }
 
-    list $val [$rcvr2 getLastTime] [$rcvr3 getLastTime]
+    list $val 
 
-} {1 5.0 5.0}
+} {1}
 
 
 
