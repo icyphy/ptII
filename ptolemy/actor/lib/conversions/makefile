@@ -60,6 +60,7 @@ JSRCS = \
 	DoubleToFix.java \
 	FixToDouble.java \
 	FixToFix.java \
+	IntArrayToString.java \
 	InUnitsOf.java \
 	LongToDouble.java \
 	PolarToCartesian.java \

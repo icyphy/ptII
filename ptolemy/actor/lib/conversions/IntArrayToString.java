@@ -48,7 +48,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
-/// StringToIntArray
+/// IntArrayToString
 
 /**
 Convert a complex token to polar coordinates, which are represented by two
@@ -61,7 +61,7 @@ The implementation uses java.lang.Math.atan2(double, double).
 @version $Id$
 */
 
-public class StringToIntArray extends TypedAtomicActor {
+public class IntArrayToString extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -71,15 +71,15 @@ public class StringToIntArray extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public StringToIntArray(CompositeEntity container, String name)
+    public IntArrayToString(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.STRING);
+        input.setTypeEquals(new ArrayType(BaseType.INT));
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(new ArrayType(BaseType.INT));
+        output.setTypeEquals(BaseType.STRING);
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -108,22 +108,16 @@ public class StringToIntArray extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-
-        String inputValue = ((StringToken)(input.get(0))).stringValue();
-
-        // DO THE CONVERSION:
-        byte[] dataBytes = inputValue.getBytes(); //(Creates a new copy)
-        // FIXME The following line assumes one byte per char.  
-        // True for out platform, but not all, under Java.  
-        // Replace with length of the created byte array.
-        int bytesAvailable = inputValue.length();
-        Token[] dataIntTokens = new Token[bytesAvailable];
-        for (int j = 0; j < bytesAvailable; j++) {
-            dataIntTokens[j] = new IntToken(dataBytes[j]);
+        ArrayToken dataIntArrayToken = (ArrayToken) input.get(0);
+        byte[] dataBytes = new byte[dataIntArrayToken.length()];
+        for (int j = 0; j < dataIntArrayToken.length(); j++) {
+            IntToken dataIntOneToken =
+                    (IntToken)dataIntArrayToken.getElement(j);
+            dataBytes[j] = (byte)dataIntOneToken.intValue(); //Keep low 8 bits
         }
-
-        output.send(0, new ArrayToken(dataIntTokens));
-
+        // Note:  Following line may assume 1 byte per character, not sure.
+        String outputValue = new String(dataBytes);
+        output.send(0, new StringToken(outputValue));
     }
 
     /** Return false if the input port has no token, otherwise return

@@ -57,6 +57,10 @@
 
   </entity>
 
+  <entity name="IntArrayToString"
+          class="ptolemy.actor.lib.conversions.IntArrayToString">
+  </entity>
+
   <entity name="IntToBits"
           class="ptolemy.domains.sdf.lib.IntToBits">
   </entity>
