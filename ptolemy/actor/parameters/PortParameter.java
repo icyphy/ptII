@@ -398,7 +398,8 @@ public class PortParameter extends Parameter {
             throws IllegalActionException {
         if (!(container instanceof ComponentEntity)) {
             throw new IllegalActionException(this,
-                    "Container is required to be an instance of ComponentEntity");
+                    "Container is required to be an instance of "
+                    + "ComponentEntity");
         }
     }
 
