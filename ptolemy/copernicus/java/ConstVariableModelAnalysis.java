@@ -62,10 +62,17 @@ variables in a hierarchical model.  Basically, a constant variable in
 a particular model is any variable in the model that is defined by a
 expression of constants, or any variable that is defined by an
 expression whos list of variables is contained within all the constant
-variables in scope of that variable.  (Note that computing the set of
-constant variables requires an iteration to a fixed-point, because it
-is self referential.)
- 
+variables in scope of that variable.  
+
+<p> This class computes the set of constant variables by computing the
+set of variables that are not constant and then performing the
+complement.  This is somewhat easier to compute.  The computation is
+performed in two passes, the first of which extracts the set of
+variables which must be not-constant either by inclusion in an initial
+set, or by assignment from within a modal model.  The second pass
+collects all the variables which are not constant because they depend
+on other variables which are not constant.
+
 @author Stephen Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0

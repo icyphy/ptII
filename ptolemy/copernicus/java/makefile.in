@@ -127,7 +127,7 @@ runTreeShake:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" \
+		"$(JAVA)" -Xmx256M -Xms256M \
 			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -136,7 +136,7 @@ runTreeShake:
 	@rm -f $(STATSFILE)
 
 # Directories that contain snapshots
-SNAPSHOTS=jimple1 jimple2 jimple3 jimple4 jimple5 jimple6
+SNAPSHOTS=jimple1 jimple2 jimple3 jimple4
 
 STATSFILE=runSnapShot.stats
 # $PTII/util/testsuite/codegen.tcl calls runDemoTest
@@ -161,7 +161,7 @@ runTreeShakeWithoutCodegen:
 	@echo "Run without codegen with treeshake.jar"
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" \
+		"$(JAVA)" -Xmx256M -Xms256M \
 			-classpath $(TREESHAKE_PREFIX).jar \
 			ptolemy.copernicus.java.TestApplication \
 			$(MODELPATH) \
@@ -185,7 +185,7 @@ treeShakeAndRunSnapshots:
 		rm -f  $(STATSFILE); \
 		for repeat in 1 2 3 4; \
 		do \
-			"$(JAVA)" \
+			"$(JAVA)" -Xmx256M -Xms256M \
 				-classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 				$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -248,7 +248,7 @@ runObfuscate:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" \
+		"$(JAVA)" -Xmx256M -Xms256M \
 			-classpath obfuscated.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -274,7 +274,7 @@ runTreeShakeObfuscate:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" \
+		"$(JAVA)" -Xmx256M -Xms256M  \
 			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \

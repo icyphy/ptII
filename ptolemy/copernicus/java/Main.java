@@ -177,11 +177,6 @@ public class Main extends KernelMain {
                 new Transform("wjtp.ib",
                         InvocationBinder.v()));
         
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot2", JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot2", ClassWriter.v()));
-                   
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -238,9 +233,9 @@ public class Main extends KernelMain {
         
         
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot4", JimpleWriter.v()));
+                new Transform("wjtp.snapshot2", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot4", ClassWriter.v()));
+                new Transform("wjtp.snapshot2", ClassWriter.v()));
         
         // Set about removing references to ports.
         // Anywhere where a method is called on a port, replace the
@@ -275,9 +270,9 @@ public class Main extends KernelMain {
         //        StaticInliner.v()));
         
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot5", JimpleWriter.v()));
+                new Transform("wjtp.snapshot3", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot5", ClassWriter.v()));
+                new Transform("wjtp.snapshot3", ClassWriter.v()));
            
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
@@ -364,11 +359,11 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-              
+        
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6", JimpleWriter.v()));
+                new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6", ClassWriter.v()));
+                new Transform("wjtp.snapshot4", ClassWriter.v()));
         
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
