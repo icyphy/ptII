@@ -141,9 +141,18 @@ TableauFrame.class: HTMLEffigy.class
 
 install: jclass $(PTCLASSJAR)
 
-demo: all
-	$(ROOT)/bin/ptolemy /users/cxh/ptII/ptolemy/moml/demo/modulation.xml 
-	$(ROOT)/bin/vergil /users/cxh/ptII/ptolemy/moml/demo/modulation.xml 
+demo: all demo_ptolemy demo_vergil demo_caa
+demo_ptolemy:
+	$(ROOT)/bin/ptolemy $(ROOT)/ptolemy/moml/demo/modulation.xml 
+demo_vergil:
+	$(ROOT)/bin/vergil $(ROOT)/ptolemy/moml/demo/modulation.xml 
+
+# Demonstrate CompositeActorApplication
+demo_caa:
+	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)" \
+	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
+	 -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
+
 depend:
 	@echo "no dependencies in this directory"
 
