@@ -37,6 +37,7 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
@@ -74,6 +75,24 @@ public class HuffmanCoder extends HuffmanBasic {
         InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
         input.setTypeAtLeast(elementTerm);
         output.setTypeEquals(BaseType.BOOLEAN);
+    }
+
+    //////////////////////////////////////////////////////////////////
+    ////                   public methods                         ////
+    
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HuffmanCoder newObject = (HuffmanCoder)super.clone(workspace);
+        InequalityTerm elementTerm
+            = ((ArrayType)newObject.alphabet.getType()).getElementTypeTerm();
+        newObject.input.setTypeAtLeast(elementTerm);
+        return newObject;
     }
 
     /** Generate the Huffman codebook for the given <i>pmf</i>, and
