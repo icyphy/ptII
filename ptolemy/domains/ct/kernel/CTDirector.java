@@ -360,22 +360,25 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  be fired as part of the current execution phase.  If the
      *  specified time is in the future, and the specified actor is
      *  not null and not a discrete actor, then this
-     *  director will fire the actor <i>twice</i> in response.  First,
+     *  director will fire the actor <i>three times</i> in response.  First,
      *  it will fire the actor at the registered time point minus the
      *  minimum step size, and then it will fire the actor again at
-     *  exactly at each registered time point.  This ensures that if
-     *  the actor outputs a discontinuity at the registered time point,
-     *  then the output will indeed appear as a discontinuity.
+     *  exactly at each registered time point, and finally it will fire
+     *  the actor again at the requested time plus the minimum time step.
+     *  This ensures that if the actor outputs a discontinuity at the
+     *  registered time point, then the output will indeed appear as
+     *  a discontinuity, at least to the resolution of the minimum time
+     *  step.
      *  <p>
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
      *  executed at every breakpoint.  However, only if the first
-     *  argument is non-null will the double firing described above
+     *  argument is non-null will the triple firing described above
      *  be scheduled.  To request only a single firing, exactly at
      *  a specified time, then specify null for the first argument.
      *  The first argument is also used for reporting exceptions.
      *  @param actor The actor that requested the firing, or null
-     *   to prevent the double firing.
+     *   to prevent the triple firing.
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
      *   the current time.
@@ -412,9 +415,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 _breakPoints = new TotallyOrderedSet(
                         new FuzzyDoubleComparator(resolution));
             }
-            if (actor != null
-                    && time - minStep > currentTime - resolution
-                    && time < Double.POSITIVE_INFINITY) {
+            if (actor != null && time < Double.POSITIVE_INFINITY) {
                 // NOTE: The extra firings introduced here will cause all
                 // actors to be fired at the specified times, except discrete
                 // actors whose firing times don't match. This is not
@@ -424,20 +425,42 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 // properly returns false to prefire(), then it will not
                 // be fired.  Some actors, however, such as Display, will
                 // fire anyway. Another example is Test.  Such actors become
-                // more difficult to use in CT.
-                _breakPoints.insert(new Double(time - minStep));
-                if (_debugging) {
-                    String name = "Director";
-                    if (actor != null) {
-                        name = ((Nameable)actor).getName();
+                // more difficult to use in CT because they will throw
+                // an exception if they are fired when there is no input.
+
+                if (time - minStep > currentTime - resolution) {
+                    if (_debugging) {
+                        String name = "Director";
+                        if (actor != null) {
+                            name = ((Nameable)actor).getName();
+                        }
+                        _debug(name
+                                + " requests refire at "
+                                + (time - minStep)
+                                + ".");
                     }
-                    _debug(name
-                           + " requests refire at "
-                           + (time - minStep)
-                           + " and "
-                           + time);
+                    _breakPoints.insert(new Double(time - minStep));
                 }
-            } else if (_debugging) {
+
+                // NOTE: The firing after the requested time is also
+                // necessary because the actual time that the actor
+                // is fired may not match exactly the requested time.
+                // The actor may be relying on the time matching exactly.
+                if (time + minStep > currentTime - resolution) {
+                    if (_debugging) {
+                        String name = "Director";
+                        if (actor != null) {
+                            name = ((Nameable)actor).getName();
+                        }
+                        _debug(name
+                                + " requests refire at "
+                                + (time + minStep)
+                                + ".");
+                    }
+                    _breakPoints.insert(new Double(time + minStep));
+                }
+            }
+            if (_debugging) {
                 String name = "Director";
                 if (actor != null) {
                     name = ((Nameable)actor).getName();
@@ -596,6 +619,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
+        _postfireReturns = true;
 
         // Record the real time in case we are synchronized to it.
         _timeBase = System.currentTimeMillis();
@@ -826,7 +851,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug("Postfire " + (Nameable)actor);
-            actor.postfire();
+            _postfireReturns = _postfireReturns && actor.postfire();
         }
     }
 
@@ -971,6 +996,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** This flag will be set to false if any actor returns false to
+     *  postfire() during the fire() phase of the director.
+     */
+    protected boolean _postfireReturns = true;
 
     /** A list of actors that requested to refire at the current time. */
     protected LinkedList _refireActors;
