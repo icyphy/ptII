@@ -1,4 +1,4 @@
-/* A polymorphic switch
+/* A switch/demux for GR scene graph objects
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -36,25 +36,19 @@ import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.domains.gr.lib.*;
+
+import javax.media.j3d.*;
+import javax.vecmath.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Switch
+//// Switch3D
 /**
-A polymorphic multiplexor.
-
-This actor has two input ports. One is a multiport, from which the
-available Tokens to be chosen are received. The other input port
-receives IntTokens representing the channel containing the the Token
-to send to the output.  Because Tokens are immutable, the same Token
-is sent without additional creation of another Token.
-<p>
-The input port may receive Tokens of any type.
-
 @author C. Fong
 */
 
-public class Switch extends Transformer {
+public class Switch3D extends GRTransform {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -65,11 +59,11 @@ public class Switch extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Switch(CompositeEntity container, String name)
+    public Switch3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-    	output.setMultiport(true);
+    	sceneGraphOut.setMultiport(true);
 
 	    select = new TypedIOPort(this, "select");
 	    select.setInput(true);
@@ -110,16 +104,59 @@ public class Switch extends Transformer {
 	    if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
-            
-                int width = output.getWidth();
-                if (index < width) {
-                    if (input.hasToken(0)) {
-                        Token token = input.get(0);
-	                    output.send(index, token);
+                if (index != _previousIndex) {
+                    int width = sceneGraphOut.getWidth();
+                    if (index < width) {
+                        detachableGroup.detach();
+                        attachmentGroup[index].addChild(detachableGroup);
+                        _previousIndex = index;
 	                }
 	            }
 	        }
 	    }
     }
+    
+    /** Setup the transform object
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        detachableGroup = new BranchGroup();
+        detachableGroup.setCapability(BranchGroup.ALLOW_DETACH);
+    }
+    
+    
+    public Node getNodeObject() {
+        return null;
+    }
+    
+    public void makeSceneGraphConnection() throws IllegalActionException {
+        _previousIndex = -1;
+        int width = sceneGraphIn.getWidth();
+        int i;
+        for(i=0;i<width;i++) {
+            if (sceneGraphIn.hasToken(i)) {
+                ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
+                Node n = (Node) o.getValue();
+                //System.out.println("node n "+n);
+                //System.out.println("branchgroup ? "+(n instanceof BranchGroup));
+                detachableGroup.addChild(n);
+            }
+        }
+        
+        width = sceneGraphOut.getWidth();
+        System.out.println("width "+width);
+        attachmentGroup = new BranchGroup[width];
+        for(i=0;i<width;i++) {
+            System.out.println("accessing # "+i);
+            attachmentGroup[i] = new BranchGroup();
+            attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_WRITE);
+            attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_EXTEND);
+            sceneGraphOut.send(i,new ObjectToken(attachmentGroup[i]));
+        }
+    }
+    
+    private BranchGroup detachableGroup;
+    private BranchGroup[] attachmentGroup;
+    private int _previousIndex = -1;
 }
 
