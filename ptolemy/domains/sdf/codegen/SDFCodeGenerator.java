@@ -219,6 +219,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
     }
 
+    /** Generate or don't generate statistics such as elapsed time */
+    public void setGenerateStatistics(boolean generateStatistics) {
+	_generateStatistics = generateStatistics;
+    }
+
     /** Generate the main class. */
     protected void _generateMainClass() throws IllegalActionException {
 
@@ -281,6 +286,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
         importList.add(new ImportNode((NameNode)
                 StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
 
+	if (_generateStatistics) {
+	    // For timing measurements.
+	    importList.add(new ImportNode((NameNode)
+  		   StaticResolution.makeNameNode("java.util.Date")));
+	    importList.add(new ImportNode((NameNode)
+		   StaticResolution.makeNameNode("java.io.PrintStream")));
+	}
+
         CompileUnitNode unitNode = new CompileUnitNode(
                 new NameNode(AbsentTreeNode.instance, _outputPackageName),
                 importList, TNLManip.cons(classDeclNode));
@@ -329,6 +342,40 @@ public class SDFCodeGenerator extends CompositeActorApplication
                     (NameNode) actorVarNameNode.clone()));
         }
 
+
+	if (_generateStatistics) {
+	    // Generate    "long startTime = new Date().getTime();"
+	    // FIXME: we should be able to pass a string to something
+	    // that will then generate the parse tree for us?
+	    NameNode startTimeVarNameNode =
+		new NameNode(AbsentTreeNode.instance,
+			     "startTime");
+
+	    TypeNode startTimeTypeNode = LongTypeNode.instance;
+
+	    TypeNameNode dateTypeNode =
+		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+					      "Date"));
+	
+	    AllocateNode allocateStartTimeNode =
+		new AllocateNode(dateTypeNode,
+				 new LinkedList(),
+				 AbsentTreeNode.instance);
+
+	    MethodCallNode getTimeMethodCallNode =
+		new MethodCallNode(new ObjectFieldAccessNode(
+				     new NameNode(AbsentTreeNode.instance,
+						  "getTime"),
+				     allocateStartTimeNode),
+				   new LinkedList());
+
+	    stmtList.addLast(new LocalVarDeclNode(NO_MOD,
+						  startTimeTypeNode,
+						  startTimeVarNameNode,
+						  getTimeMethodCallNode));
+	}
+
+
         // generate preinitialize statements
         actorItr = _actorSet.iterator();
 
@@ -347,6 +394,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             stmtList.addLast(new ExprStmtNode(methodCallNode));
         }
+
 
         // generate initialize statements
         actorItr = _actorSet.iterator();
@@ -515,6 +563,86 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 stmtList.addLast(new ExprStmtNode(methodCallNode));
             }
         }
+
+	if (_generateStatistics) {
+	    // Generate "long endTime = new Date().getTime();"
+	    // FIXME: we should be able to pass a string to something
+	    // that will then generate the parse tree for us?
+
+	    NameNode endTimeVarNameNode =
+		new NameNode(AbsentTreeNode.instance, "endTime");
+
+	    TypeNode endTimeTypeNode = LongTypeNode.instance;
+
+	    TypeNameNode dateTypeNode =
+		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+					      "Date"));
+	
+	    AllocateNode allocateEndTimeNode =
+		new AllocateNode(dateTypeNode,
+				 new LinkedList(),
+				 AbsentTreeNode.instance);
+
+	    MethodCallNode getTimeMethodCallNode =
+		new MethodCallNode(new ObjectFieldAccessNode(
+				     new NameNode(AbsentTreeNode.instance, "getTime"),
+				     allocateEndTimeNode),
+				   new LinkedList());
+
+	    stmtList.addLast(
+			     new LocalVarDeclNode(NO_MOD, endTimeTypeNode,
+						  endTimeVarNameNode,
+						  getTimeMethodCallNode));
+
+	    // Generate "PrintStream _stdOut = System.out;"
+	    NameNode stdOutVarNameNode =
+		new NameNode(AbsentTreeNode.instance, "stdOut");
+
+	    TypeNameNode stdOutTypeNameNode =
+		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+					      "PrintStream"));
+
+	    TypeNameNode systemTypeNameNode =
+		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+					      "System"));
+
+	    TypeFieldAccessNode outTypeFieldAccessNode =
+		new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance,
+						     "out"),
+					systemTypeNameNode);
+
+	    stmtList.addLast(new LocalVarDeclNode(NO_MOD,
+						  stdOutTypeNameNode,
+						  stdOutVarNameNode,
+						  outTypeFieldAccessNode));
+
+	    // Generate
+	    // _stdOut.println("elapsed time: " + (endTime - startTime)+ "ms");
+	    ObjectNode stdOutObjectNode =
+		new ObjectNode(new NameNode(AbsentTreeNode.instance,
+					    "stdOut"));
+
+	    LinkedList timingList = new LinkedList();
+	    timingList.add(new PlusNode(
+				      new PlusNode(
+					 new StringLitNode("elapsed time:"),
+					 new MinusNode(
+						new ObjectNode(new NameNode(AbsentTreeNode.instance,
+					    "endTime")),
+						new ObjectNode(new NameNode(AbsentTreeNode.instance,
+					    "startTime")))
+				      ),
+				      new StringLitNode("ms")));
+
+	    MethodCallNode printlnMethodCallNode =
+		new MethodCallNode(new ObjectFieldAccessNode(
+				     new NameNode(AbsentTreeNode.instance,
+						  "println"),
+				     stdOutObjectNode),
+				   timingList);
+            stmtList.addLast(new ExprStmtNode(printlnMethodCallNode));
+	}
+
 
         return new MethodDeclNode(PUBLIC_MOD | STATIC_MOD,
                 new NameNode(AbsentTreeNode.instance, "main"),
@@ -807,4 +935,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  next argument in the command-line.
      */
     protected boolean _expectingOutputPackage = false;
+
+    /** A flag indicating whether we generate statistics
+     * such as elapsed time
+     */
+    protected boolean _generateStatistics = true;
 }
