@@ -8,6 +8,10 @@
       <group>
 <doc>Continuous-time actors</doc>
 
+<entity name="ContinuousClock" 
+        class="ptolemy.domains.ct.lib.ContinuousClock"/>
+<entity name="TriggeredContinuousClock" 
+        class="ptolemy.domains.ct.lib.TriggeredContinuousClock"/>
 <entity name="ContinuousSinewave"
         class="ptolemy.domains.ct.lib.ContinuousSinewave"/>
 

@@ -254,7 +254,7 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             </property>
         </port>
     </entity>
-    <entity name="ContinuousClock" class="ptolemy.actor.lib.ContinuousClock">
+    <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">

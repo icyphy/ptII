@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 149, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 149, 815, 516}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -193,34 +193,20 @@
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
-        </port>
-    </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.0, PI/2.0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 160.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -234,21 +220,58 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="ContinuousClock" class="ptolemy.domains.ct.lib.ContinuousClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.0, PI/2.0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 160.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ContinuousSinewave.phase" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ContinuousSinewave.phase" relation="relation3"/>
     <link port="ContinuousSinewave.output" relation="relation2"/>
     <link port="PeriodicSampler.input" relation="relation2"/>
     <link port="PeriodicSampler.output" relation="relation4"/>
-    <link port="Clock.output" relation="relation"/>
     <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="ContinuousClock.output" relation="relation3"/>
 </entity>

@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ContinuousClock.java \
 	CTPeriodicSampler.java \
 	CTRateLimiter.java \
 	CTTriggeredSampler.java \
@@ -56,6 +57,7 @@ JSRCS = \
 	Integrator.java \
 	LevelCrossingDetector.java \
 	ThresholdMonitor.java \
+	TriggeredContinuousClock.java \
 	ZeroCrossingDetector.java \
 	ZeroOrderHold.java \
 	ContinuousTransferFunction.java \
