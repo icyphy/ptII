@@ -413,8 +413,12 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	# Note that if running the model generates any output on stderr,
 	# then exec will return an error.  To workaround this,
 	# try passing -stderrok as the first arg to exec: exec -stderrok make
+	set timeout 1200000
+	puts "Setting watchdog for $timeout milliseconds 
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
 	set results [exec make -C ../cg/$modelName MODEL=$modelName \
 	    SOURCECLASS=$modelPath $command]
+	$watchDog cancel
 	puts $results
     }
 
