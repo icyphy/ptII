@@ -91,7 +91,7 @@ public class Units extends Attribute implements Settable {
     public void exportMoML(Writer output, int depth, String name)
         throws IOException {
             
-        if (_suppressMoML()) {
+        if (_suppressMoML(depth)) {
             return;
         }
         String value = getExpression();
