@@ -156,12 +156,6 @@ public class Branch {
     	return false;
     }
 
-    /**
-    public boolean isStopped() {
-        return _stopped;
-    }
-     */
-
     /** Register that the receiver controlled by this branch
      *  is blocked.
      */

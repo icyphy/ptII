@@ -43,7 +43,8 @@ A MailboxBoundaryReceiver stores tokens via a mailbox.
 @version $Id$
 
 */
-public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver {
+public class MailboxBoundaryReceiver extends Mailbox 
+	implements BoundaryReceiver {
 
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
@@ -88,10 +89,10 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
         Branch brnch = controllingBranch;
         
         synchronized(this) {
-            if( !_terminate && !hasToken() && brnch.isActive() ) {
+            if( !_terminate && !hasToken() && !brnch.isIterationOver() ) {
             	brnch.registerRcvrBlocked();
                 _readPending = true;
-                while( _readPending && !_terminate  && brnch.isActive() ) {
+                while( _readPending && !_terminate && !brnch.isIterationOver() ) {
                     try {
                         wait();
                     } catch( InterruptedException e ) {
@@ -104,13 +105,23 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
             
             if( _terminate ) {
             	throw new TerminateProcessException("");
-            } else if( !brnch.isActive() ) {
+            } else if( brnch.isIterationOver() ) {
             	throw new TerminateBranchException("");
             } else {
                 //
                 // Get Permission From Controlling Branch
                 //
-                if( !brnch.isBranchPermitted() ) {
+                while( !brnch.isBranchPermitted() && !brnch.isIterationOver() ) {
+                    brnch.registerRcvrBlocked();
+                    try {
+                        wait();
+                    } catch( InterruptedException e ) {
+                        throw new TerminateProcessException(
+                        	"InterruptedException thrown");
+                    }
+                }
+                brnch.registerRcvrUnBlocked();
+                if( brnch.isIterationOver() ) {
                     throw new TerminateBranchException("");
                 }
                 
@@ -185,10 +196,10 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
         Branch brnch = controllingBranch;
         
         synchronized(this) {
-            if( !_terminate && !hasRoom() && brnch.isActive() ) {
+            if( !_terminate && !hasRoom() && !brnch.isIterationOver() ) {
             	brnch.registerRcvrBlocked();
                 _writePending = true;
-                while( _writePending && !_terminate && brnch.isActive() ) {
+                while( _writePending && !_terminate && !brnch.isIterationOver() ) {
                     try {
                         wait();
                     } catch( InterruptedException e ) {
@@ -207,7 +218,17 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
                 //
                 // Get Permission From Controlling Branch
                 //
-                if( !brnch.isBranchPermitted() ) {
+                while( !brnch.isBranchPermitted() && !brnch.isIterationOver() ) {
+                    brnch.registerRcvrBlocked();
+                    try {
+                        wait();
+                    } catch( InterruptedException e ) {
+                        throw new TerminateProcessException(
+                        	"InterruptedException thrown");
+                    }
+                }
+                brnch.registerRcvrUnBlocked();
+                if( brnch.isIterationOver() ) {
                     throw new TerminateBranchException("");
                 }
             

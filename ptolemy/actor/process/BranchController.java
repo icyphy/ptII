@@ -146,6 +146,42 @@ public class BranchController implements Runnable {
 
     /**
      */
+    public synchronized void endIteration() {
+    	_engagementsAllowed = false;
+        _engagements.clear();
+        notifyAll();
+    }
+    
+    /**
+     */
+    public boolean hasInputPorts() {
+    	if( _ports == null ) {
+            return false;
+        }
+        Iterator ports = _ports.iterator();
+        while( ports.hasNext() ) {
+            IOPort port = (IOPort)ports.next();
+            return port.isInput();
+        }
+        return false;
+    }
+    
+    /**
+     */
+    public boolean hasOutputPorts() {
+    	if( _ports == null ) {
+            return false;
+        }
+        Iterator ports = _ports.iterator();
+        while( ports.hasNext() ) {
+            IOPort port = (IOPort)ports.next();
+            return port.isOutput();
+        }
+        return false;
+    }
+    
+    /**
+     */
     public boolean isIterationOver() {
 	if( !isActive() ) {
 	    return true;
@@ -154,19 +190,39 @@ public class BranchController implements Runnable {
     }
 
     /**
-     * FIXME: What if this is called twice with the same port?
      */
     public void createBranches(IOPort port) throws 
             IllegalActionException {
-	if( _branches == null ) {
-	    _branches = new LinkedList();
-	}
-
 	if( port.getContainer() != getParent() ) {
 	    throw new IllegalActionException("Can not have a "
 		    + "branch for a port not owned by this "
 		    + "controller's container.");
+	}
+        
+        if( _ports == null ) {
+            _ports = new LinkedList();
+        }
+        if( _ports.contains(port) ) {
+            throw new IllegalActionException(port, "This port "
+            	    + "is already controlled by this " 
+                    + "BranchController");
+        }
+        // Careful; maintain order of following test in case
+        // Java is like C
+        if( hasInputPorts() && !port.isInput() ) {
+	    throw new IllegalActionException("BranchControllers "
+            	    + "must have only input ports or only output "
+                    + "ports; not both");
+        }
+        if( hasOutputPorts() && !port.isOutput() ) {
+	    throw new IllegalActionException("BranchControllers "
+            	    + "must have only input ports or only output "
+                    + "ports; not both");
+        }
+        _ports.add(port);
 
+	if( _branches == null ) {
+	    _branches = new LinkedList();
 	}
 
 	Branch branch = null;
@@ -258,26 +314,22 @@ public class BranchController implements Runnable {
 	    if( _branches == null ) {
 		return;
 	    }
-            if( _threadList == null ) {
-                _threadList = new LinkedList();
-                BranchThread bThread = null;
-		Branch branch = null;
-                for( int i=0; i < _branches.size(); i++ ) {
-		    branch = (Branch)_branches.get(i);
-                    bThread = new BranchThread( branch );
-                    _threadList.add(bThread);
-                    // FIXME: should we optimize for a single branch?
-		}
+            LinkedList threadList = new LinkedList();
+            BranchThread bThread = null;
+            Branch branch = null;
+            for( int i=0; i < _branches.size(); i++ ) {
+                branch = (Branch)_branches.get(i);
+                bThread = new BranchThread( branch );
+                threadList.add(bThread);
+                // FIXME: should we optimize for a single branch?
             }
                 
-            Iterator threads = _threadList.iterator();
-            BranchThread thread = null;
-            Branch branch = null;
+            Iterator threads = threadList.iterator();
             while( threads.hasNext() ) {
-                thread = (BranchThread)threads.next();
-                branch = thread.getBranch();
+                bThread = (BranchThread)threads.next();
+                branch = bThread.getBranch();
                 branch.reset();
-                thread.start();
+                bThread.start();
             }
 
 	    _engagementsAllowed = true;
@@ -286,7 +338,7 @@ public class BranchController implements Runnable {
     
     /** 
      */
-    public synchronized void eset() {
+    public synchronized void reset() {
 	_engagementsAllowed = false;
 	_engagements.clear();
 
@@ -309,14 +361,12 @@ public class BranchController implements Runnable {
      */
     public synchronized void deactivateBranches() {
 	setActive(false);
-        if (_threadList != null) {
-            Iterator threads = _threadList.iterator();
-            BranchThread bThread = null;
+        if (_branches != null) {
+            Iterator branches = _branches.iterator();
             Branch branch = null;
             BoundaryReceiver bRcvr = null;
-            while (threads.hasNext()) {
-                bThread = (BranchThread)threads.next();
-                branch = bThread.getBranch();
+            while (branches.hasNext()) {
+                branch = (Branch)branches.next();
                 branch.setActive(false);
                 bRcvr = branch.getConsReceiver();
                 synchronized(bRcvr) {
@@ -334,6 +384,9 @@ public class BranchController implements Runnable {
     /**
      */
     public synchronized boolean areEngagementsComplete() {
+        if( !_engagementsAllowed ) {
+            return true;
+        }
 	if( _engagements.size() == _maxEngagers ) {
 	    Iterator engagements = _engagements.iterator();
 	    Branch branch = null;
@@ -341,13 +394,14 @@ public class BranchController implements Runnable {
 		branch = (Branch)engagements.next();
 		if( branch.numberOfCompletedEngagements() 
 			< _maxEngagements ) {
-		    _engagementsAllowed = false;
+		    _engagementsAllowed = true;
 		    return false;
 		}
 	    }
+	    _engagementsAllowed = false;
 	    return true;
 	}
-	_engagementsAllowed = false;
+	_engagementsAllowed = true;
 	return false;
     }
 
@@ -433,18 +487,6 @@ public class BranchController implements Runnable {
         }
     }
 
-    /** Resets the internal state controlling the execution of a conditional
-     *  branching construct (CIF or CDO). It is only called by chooseBranch()
-     *  so that it starts with a consistent state each time.
-    public void reset() {
-        synchronized(this) {
-	    _branchesBlocked = 0;
-            _branchesActive = 0;
-	    notifyAll();
-        }
-    }
-     */
-
     /**
      */
     public int getNumberOfBranches() {
@@ -477,16 +519,11 @@ public class BranchController implements Runnable {
     // trying to rendezvous.
     private int _branchesBlocked = 0;
 
-    // Point to the actor who owns this controller object.
+    // The MultiBranchActor who owns this controller object.
     private MultiBranchActor _parentActor;
 
-    // Threads created by this actor to perform a conditional rendezvous.
-    // Need to keep a list of them in case the execution of the model is
-    // terminated abruptly.
-    private List _threadList = null;
-    
     private LinkedList _branches;
-    
+    private LinkedList _ports;
     private LinkedList _engagements;
     
     private int _maxEngagements = -1;

@@ -198,33 +198,13 @@ public class ProcessDirector extends Director {
             }
         }
 
-	/*
 	// Instantiate Input/Output Branch Controllers
 	if( container != null ) {
-            // Use the local director to transfer inputs.
-	    // Note that tranferInputs is non-blocking
             Iterator inports = container.inputPortList().iterator();
-            while(inports.hasNext()) {
-                IOPort p = (IOPort)inports.next();
-                transferInputs(p);
-            }
-	    if( _inputBranchCntlr.getNumberOfBranches() > 0 ) {
-		_branchControllersActive++;
-	    }
-
-	    // Use the local director to transfer outputs.
-	    // Note that tranferInputs is non-blocking
+            createBranchController(inports);
 	    Iterator outports = container.outputPortList().iterator();
-	    while(outports.hasNext()) {
-		IOPort p = (IOPort)outports.next();
-		transferOutputs(p);
-	    }
-	    if( _outputBranchCntlr.getNumberOfBranches() > 0 ) {
-		_branchControllersActive++;
-	    }
-
+            createBranchController(outports);
 	}
-	*/
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
@@ -275,15 +255,16 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException  {
+        // (Re)Start Actor Threads
         Iterator threads = _newthreads.iterator();
-        ProcessThread thread = null;
+        ProcessThread procThread = null;
 	if( _areAllThreadsStopped() ) {
 	    threads = _threadList.iterator();
 	    while( threads.hasNext() ) {
-		thread = (ProcessThread)threads.next();
-		thread.restartThread();
-		synchronized(thread) {
-		    thread.notifyAll();
+		procThread = (ProcessThread)threads.next();
+		procThread.restartThread();
+		synchronized(procThread) {
+		    procThread.notifyAll();
 		}
 		if( _threadsStopped > 0 ) {
 		    _threadsStopped--;
@@ -292,11 +273,31 @@ public class ProcessDirector extends Director {
 	} else {
             threads = _newthreads.iterator();
             while (threads.hasNext()) {
-                thread = (ProcessThread)threads.next();
-		thread.start();
+                procThread = (ProcessThread)threads.next();
+		procThread.start();
 	    }
 	    _newthreads.clear();
         }
+        
+        // (Re)Start BranchControllers 
+        Thread thread = null;
+        if( _areBranchControllersStopped() ) {
+            Iterator controllers = _branchControllers.iterator();
+            BranchController controller = null;
+            while( controllers.hasNext() ) {
+                controller = (BranchController)controllers.next();
+                controller.reset();
+            }
+        } else {
+            Iterator controllers = _branchControllers.iterator();
+            BranchController controller = null;
+            while( controllers.hasNext() ) {
+                controller = (BranchController)controllers.next();
+                thread = new Thread(controller);
+                thread.start();
+            }
+        }
+        
         return true;
     }
 
@@ -331,62 +332,78 @@ public class ProcessDirector extends Director {
      *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
-        }
-
-	if( _inputBranchCntlr == null ) {
-	    Nameable cont = getContainer();
-	    if( !(cont instanceof MultiBranchActor) ) {
-		throw new IllegalActionException(this, "Must be " +
-			"contained by a MultiBranchActor.");
-	    }
-	    MultiBranchActor mCont = (MultiBranchActor)cont;
-	    _inputBranchCntlr = new BranchController(mCont);
-	}
-	_inputBranchCntlr.createBranches(port);
-	
-	return true;
+        throw new IllegalActionException(this, "transferInputs(IOPort) "
+                + "is an invalid command for ProcessDirector."); 
     }
-
-    /**
-     */
-    public void transferBoundaryData() {
-	if( _inputBranchCntlr != null ) {
-	    _inputBranchCntlr.activateBranches();
-	}
-	if( _outputBranchCntlr != null ) {
-	    _outputBranchCntlr.activateBranches();
-	}
-    }
-
+    
     /**
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not an opaque" +
-                    "output port.");
+        throw new IllegalActionException(this, "transferOutputs(IOPort) "
+                + "is an invalid command for ProcessDirector."); 
+    }
+    
+    /**
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public void createBranchController(Iterator ports) 
+    	    throws IllegalActionException {
+            
+        if( !ports.hasNext() ) {
+            return;
         }
-
-	if( _outputBranchCntlr == null ) {
-	    Nameable cont = getContainer();
-	    if( !(cont instanceof MultiBranchActor) ) {
-		throw new IllegalActionException(this, "Must be " +
-			"contained by a MultiBranchActor.");
-	    }
-	    MultiBranchActor mCont = (MultiBranchActor)cont;
-	    _outputBranchCntlr = new BranchController(mCont);
-	}
-	_outputBranchCntlr.createBranches(port);
-	
-	return true;
+        
+        // Instantiate a BranchController
+        Nameable cont = getContainer();
+        if( !(cont instanceof MultiBranchActor) ) {
+            throw new IllegalActionException(this, "Must be " +
+                    "contained by a MultiBranchActor.");
+        }
+        MultiBranchActor mCont = (MultiBranchActor)cont;
+        BranchController cntlr = new BranchController(mCont);
+        
+        
+        // Create Branches in the BranchController
+        IOPort port = null;
+        while( ports.hasNext() ) {
+            port = (IOPort)ports.next();
+            if (!port.isOpaque()) {
+                    throw new IllegalActionException(this, port,
+                    "port argument is not an opaque" +
+                    "input port.");
+            }
+            cntlr.createBranches(port);
+        }
+        _branchControllers.add(cntlr);
     }
 
+    /**
+     */
+    public void transferBoundaryData() {
+        /*
+	if( _inputBranchCntlr != null ) {
+	    _inputBranchCntlr.reset();
+	}
+	if( _outputBranchCntlr != null ) {
+	    _outputBranchCntlr.reset();
+	}
+        */
+    }
+
+    /**
+     */
+    public void  stopBranchController() {
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+            controller.endIteration();
+        }
+    }
+    
     /** Terminates all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
      *  to be performed, and the model should be recreated after calling
@@ -422,7 +439,16 @@ public class ProcessDirector extends Director {
      *  this director.
      */
     public void wrapup() throws IllegalActionException {
-	// First wake up threads if they are stopped.
+        // Kill all branch controllers
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+            controller.setActive(false);
+            controller.reset();
+        }
+        
+	// Wake up threads if they are stopped.
         ProcessThread thread = null;
 	if( _areAllThreadsStopped() ) {
 	    Iterator threads = _threadList.iterator();
@@ -490,6 +516,24 @@ public class ProcessDirector extends Director {
 	_threadList.addFirst(thr);
     }
 
+    /**
+     */
+    protected synchronized boolean _areBranchControllersStopped() {
+        if( _branchControllersBlocked == 0 ) {
+            // We haven't started yet.
+            return false;
+        }
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+            if( !controller.isIterationOver() ) {
+            	return false;
+            }
+        }
+        return true;
+    }
+    
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire().
      *  Override this method in subclasses to account for possible
@@ -650,12 +694,14 @@ public class ProcessDirector extends Director {
 
     /** 
      */
-    protected synchronized void _branchBlocked(BranchController cntlr) {
+    protected synchronized void _branchCntlrBlocked() {
+    	_branchControllersBlocked++;
     }
 
     /** 
      */
-    protected synchronized void _branchUnBlocked(BranchController cntlr) {
+    protected synchronized void _branchCntlrUnBlocked() {
+    	_branchControllersBlocked--;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -681,10 +727,8 @@ public class ProcessDirector extends Director {
     // have been stopped
     private int _threadsStopped = 0;
 
-    private BranchController _inputBranchCntlr;
-    private BranchController _outputBranchCntlr;
-
     private long _branchControllersActive;
     private long _branchControllersBlocked;
+    private LinkedList _branchControllers = new LinkedList();
 
 }
