@@ -52,9 +52,9 @@ JSRCS = \
 	FIFORelation.java \
 	Galaxy.java \
 	GenericPort.java \
-	GenericPortForTcl.java \
 	GraphElement.java \
 	HasValue.java \
+	InitInterface.java \
 	IntervalTag.java \
 	IntParam.java \
 	MultiPort.java \
@@ -72,7 +72,6 @@ JSRCS = \
 	Relation.java \
 	SampleTarget.java \
 	SampleSDFExecutive.java \
-	Scheduler.java \
 	SDFPort.java \
 	SDFRamp.java \
 	SDFStar.java \
