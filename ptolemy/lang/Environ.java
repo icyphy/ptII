@@ -57,7 +57,7 @@ public class Environ {
         this(null, new LinkedList());
     }
 
-    /** Constuct an environment nested inside the parent argument,
+    /** Construct an environment nested inside the parent argument,
      *  without its own proper Decl's.
      */
     public Environ(Environ parent) {
