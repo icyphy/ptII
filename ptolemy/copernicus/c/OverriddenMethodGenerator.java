@@ -332,7 +332,7 @@ public class OverriddenMethodGenerator {
     }
 
     /** Checks if the given class is overridden.
-     *  @param class The class to check.
+     *  @param sootClass The class to check.
      *  @return True if the entire class is overridden.
      */
     public static boolean isOverridden(SootClass sootClass) {
