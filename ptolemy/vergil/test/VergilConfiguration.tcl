@@ -62,10 +62,13 @@ proc memoryGCmemory {} {
 proc expandConfiguration {configuration} {
     set parser [java::new ptolemy.moml.MoMLParser]
 
-    # Filter out graphical classes while inside MoMLParser so that
-    # these test will run at night.
-    $parser addMoMLFilter [java::new \
-	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+
+    # Filter out graphical classes while inside MoMLParser
+    # See ptII/util/testsuite/removeGraphicalClasses.tcl
+    removeGraphicalClasses $parser
 
     set loader [[$parser getClass] getClassLoader]
     
