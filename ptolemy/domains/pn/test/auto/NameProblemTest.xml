@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NameProblemTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={140, 44, 822, 512}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={140, 44, 817, 517}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 399]">
     </property>
@@ -20,8 +20,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 199.5}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test illustrates a problem with&#10;port naming.&#10;For details, look at the pn/test/NameProblem.java&#10;class, which can be inside the class icon.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 100.0]">
+        </property>
+    </property>
     <class name="Class" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 135.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, 470, 886, 521}, maximized=false}">
         </property>
@@ -65,14 +71,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 300.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 295.0]">
-        </property>
-    </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;string&quot;">
         </property>
@@ -98,6 +96,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 240.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;out&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 270.0}">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;out&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490, 330}">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -109,12 +123,12 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation3"/>
-    <link port="Display.input" relation="relation"/>
-    <link port="Display.input" relation="relation2"/>
     <link port="Expression.output" relation="relation5"/>
     <link port="Expression.input" relation="relation3"/>
     <link port="InstanceOfClass.output" relation="relation2"/>
     <link port="InstanceOfClass.input" relation="relation5"/>
     <link port="InstanceOfClass2.output" relation="relation"/>
     <link port="InstanceOfClass2.input" relation="relation5"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test2.input" relation="relation2"/>
 </entity>
