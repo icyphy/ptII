@@ -45,12 +45,12 @@ import java.util.Enumeration;
 //// Pulse
 /**
 Produce a pulse with a shape specified by the parameters.
-The <i>values</i> parameter specifies the sequence of values
-to produce at the output.  The <i>indexes</i> parameter specifies
-when those values should be produced.  These two parameters
-must both contain row vectors of the same length or an
-exception will be thrown by the fire() method.
-The value of these parameters must be a MatrixToken with one row.
+The <i>values</i> parameter contains an ArrayToken, which specifies
+the sequence of values to produce at the output.  The <i>indexes</i>
+parameter contains an IntMatrixToken, which specifies when those values
+should be produced.  The IntMatrixToken in the <i>indexes</i> parameter
+must be a row vector with the same length as ArrayToken in the
+<i>values</i> parameter or an exception will be thrown by the fire() method.
 <p>
 The <i>indexes</i> vector must be increasing and non-negative,
 or an exception will be thrown when it is set.
@@ -64,9 +64,8 @@ an integer vector of form [1, 0].
 The default indexes matrix is [0, 1].
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
-The type of the output can be any token type that has a corresponding
-matrix token type.  The type is inferred from the type of the
-<i>values</i> parameter.
+The type of the output can be any token type. The type is inferred
+from the type of the <i>values</i> parameter.
 <p>
 NOTE: A reset input for this actor would be useful.  This would reset
 the iterations count, to cause the pulse to emerge again.  Also,
