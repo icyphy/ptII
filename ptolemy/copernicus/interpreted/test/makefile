@@ -53,12 +53,6 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	Interpreted.tcl
 
-# Long tests, that take so damn long they are not even done in the
-# nightly build.
-JLONG_TESTS = \
-	$(JSIMPLE_TESTS)
-
-
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
@@ -94,8 +88,6 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 #JAVAFLAGS = -Xms228m -Xmx228m
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	@echo "There are also long tests in this directory."
-	@echo "Run 'make test_long' to run these tests, which will take 4 hrs" 
 	$(JTCLSH) alljtests.tcl
 
 # 'make ptjacl' will start up jacl with the proper classpath
