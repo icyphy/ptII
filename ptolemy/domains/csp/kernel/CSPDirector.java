@@ -49,65 +49,64 @@ of the Communicating Sequential Processes (CSP) domain.
 <p>
 In the CSP domain, the director creates a thread for executing each
 actor under its control. Each actor corresponds to a
-process in the model. The threads are created in the directors initialize
-method and started in its prefire method.  After the thread for an actor
+process in the model. The threads are created in the initialize
+method and started in the prefire method.  After the thread for an actor
 is started it is <i>active</i> until the thread finishes. While the
 process is active, it can also be <i>blocked</i> or <i>delayed</i>, but
 not both. A process is blocked if it is trying to communicate but
 the the process with which it is trying to communicate is not
 ready to do so yet. A process is delayed if it is waiting for
-time to advance.
+time to advance, or if it is waiting for a deadlock to occur.
 <p>
 The director is responsible for handling deadlocks, both real
 and timed.  It is also responsible for carrying out any requests for
-changes to the topology that have been made when a deadlock occurs.
+changes to the topology, that have been made when a deadlock occurs.
 It maintains counts of the number of active
 processes, the number of blocked processes, and the number of
-delayed processes. <i>Deadlock</i> is when the number of blocked processes
-plus the number delayed processes equals the number of active processes.
+delayed processes. <i>Deadlock</i> occurs when the number of blocked processes
+plus the number of delayed processes equals the number of active processes.
 <i>Time deadlock</i> occurs if at least one of the active processes
 is delayed. <i>Real deadlock</i> occurs if all of the active processes
 under the control of this director are blocked trying to communicate.
 The fire method controls and responds to deadlocks and carries out
 changes to the topology when it is appropriate.
 <p>
-If real deadlock occurs, the fire method returns and is the end
-of one iteration one level up in the hierarchy. If there are no
+If real deadlock occurs, the fire method returns. If there are no
 levels above this level in the hierarchy then this marks the end
 of execution of the model. The model execution is terminated by setting 
-a flag in every
-receiver contained in actors controlled by this director. When a
-process tries to send or receive from a receiver with the terminated
+a flag in every receiver contained in actors controlled by this director. 
+When a process tries to send or receive from a receiver with the terminated
 flag set, a TerminateProcessException is thrown which causes the
 actors execution thread to terminate.
 <p>
 Time is controlled by the director. Each process can delay for some
-delta time, and it will continue when the director has sufficiently
-advanced time. The director <i>advances</i> time each occasion a time
-deadlock occurs and no changes to the topology  are pending. Processes
-may specify zero delay, in which case they
-delay until the next occasion time is advanced. Note that time can
-be advanced to the current time. This happens if one of the
-delayed actors delayed with a delta delay of zero. Otherwise the
-current model time is increased as well as being advanced.  By default the 
-model uses time. To use CSP without a notion of time, do not use the 
-delay(double) method in any process.
+delta time, and it will continue when the director has advanced time 
+by that length of time from the current time. A process is delayed by 
+calling delay(double) method. The director <i>advances</i> time each 
+occasion a time deadlock occurs and no changes to the topology  are 
+pending. If a process specifies zero delay, then the process 
+continues immediately. A process may delay itself until the next 
+time deadlock occurs by calling waitForDeadlock(). Then the next 
+occasion time deadlock occurs, the director wakes up any processes 
+waiting for deadlock, and does not advance the current time. Otherwise 
+the current model time is increased as well as being advanced.  By default 
+the model of computation used in the CSP domain is timed. To use CSP 
+without a notion of time, do not use the delay(double) method in any process.
 <p>
-The execution of the model may be paused by calling setPauseRequested() which
-will cause each process to pause the next time it tries to communicate.
-Note that the a pause can only be requested and may not happen
-immediately or even at all(if there are no communications taking
-place).To resume a paused model call setResumeRequested(). The
-execution of the model may also be terminated abruptly by calling the
-terminate() method directly. This may led to inconsistent state
-so any results outputted after it should be ignored.
+The execution of the model may be paused by calling pause() which
+will cause each process to pause the next time it tries to communicate 
+or delay itself. The pause() method only returns when the execution of 
+the model is paused. A paused model may be resumed by calling resume(). These 
+methods only effect the progress of executing the model; they do not have any 
+effect on the results of executing the model. The execution of the model 
+may also be terminated abruptly by calling the terminate() method directly. 
+This may lead to inconsistent state so any results generated after 
+it should be ignored.
 <p>
-Changes to the topology can occur each time deadlock, real or time, is
+Changes to the topology can occur each occasion deadlock, real or time, is
 reached. The director carries out any changes that have been queued
 with it. Note that the result of the topology changes may remove the
 deadlock that caused the changes to be carried out.
-<p>
-more compositionality discussion...
 <p>
 @author Neil Smyth
 @version $Id$
@@ -165,27 +164,33 @@ public class CSPDirector extends ProcessDirector {
         CSPDirector newobj = (CSPDirector)super.clone(ws);
         newobj._actorsBlocked = 0;
 	newobj._actorsDelayed = 0;
-        newobj._currentTime = 0.0;
         newobj._delayedActorList = new LinkedList();
         newobj._topologyChangesPending = false;
         return newobj;
     }
 
     /** Handles deadlocks, both real and timed, and changes to the
-     *  topology. It returns when a real deadlock(all processes blocked
+     *  topology. It returns when a real deadlock (all processes blocked
      *  trying to communicate) occurs.
      */
     public synchronized void fire() {
         // Check if still deadlocked after transferring tokens
         // from ports of composite actor to internal actors.
-        _checkForDeadlock();
-        // This method will not return until real deadlock occurs.
-        while(!_handleDeadlock()) {
-            // something may go here e.g. notify GUI
-        };
+	boolean continueExec = true;
+	while (continueExec) {
+	    while (!_checkForDeadlock()) {
+	        System.out.println("fire() waiting for deadlock.");
+	        workspace().wait(this);
+	    }
+	    System.out.println("fire() handling deadlock.");
+	    continueExec = !_handleDeadlock();
+	}
+	// something may go here e.g. notify GUI
     }
 
-    /** The current model time.
+    /** Returns the current model time. 
+     *  Note: this method may dissappear if time is implemented in 
+     *  super classes.
      *  @return The current model time.
      */
     public double getCurrentTime() {
@@ -203,8 +208,8 @@ public class CSPDirector extends ProcessDirector {
     /** Return false to indicate that the iteration is over. Real
      *   deadlock must have occurred.
      *  <P>
-     *  FIXME: when considering compositionality, this method will need 
-     *  to be changed, together with prefire.
+     *  NOTE: when considering composing CSP with other domains, this method
+     *  will need to be changed, together with prefire.
      *  <P>
      *  @return false indicating the iteration is over.
      */
@@ -213,7 +218,7 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Queue a topology change request. This sets a flag so that
-     *  the next time deadlock is reached the changes
+     *  the next occasion deadlock is reached the changes
      *  to the topology are made.
      *  @param req The topology change being queued.
      */
@@ -223,9 +228,16 @@ public class CSPDirector extends ProcessDirector {
         super.queueTopologyChangeRequest(req);
     }
 
-    /** Set the current model time. This method should only be
-     *  called when no processes are delayed. It is intended for
-     *  use when composing CSP with other timed domains.
+    /** Set the current model time. It is intended for use when composing 
+     *  CSP with other timed domains.
+     *  <P>
+     *  This method should only be called when no processes are delayed, as 
+     *  the director stores the model time at which to resume them. If 
+     *  the current model time changed while one or more processes are 
+     *  delayed, then the state of the diretor would be undefined as 
+     *  the resumption time of the delayed processes would not be 
+     *  comparable with the new model time.
+     *  <P>
      *  @exception IllegalActionException If one or more processes
      *   are delayed.
      *  @param newTime The new current model time.
@@ -239,9 +251,9 @@ public class CSPDirector extends ProcessDirector {
         _currentTime = newTime;
     }
 
-    /** Finish executing the model. A flag is set in all the receivers, and
+    /** Finish executing the model. A flag is set in all the receivers and
      *  in the director, which causes each process to terminate the
-     *  next time it reaches a synchronization or delay point.
+     *  next occasion it tries to communicate or delay itself.
      *  <p>
      *  The model finishes executing when real deadlock occurs and this
      *  director is controlling the top-level composite actor. It can
@@ -257,29 +269,16 @@ public class CSPDirector extends ProcessDirector {
      *  @exception IllegalActionException If a method accessing the topology
      *   throws it.
      */
-    public synchronized void wrapup() throws IllegalActionException {
+    public void wrapup() throws IllegalActionException {
         System.out.println(Thread.currentThread().getName() +
                 ": CSPDirector: about to end the model");
-        //FIXME FIXME FIXME 
-        if ((_actorsDelayed !=0) || _topologyChangesPending ) {
-            //                || (_actorsPaused != 0)){
+        if ((_actorsDelayed !=0) || _topologyChangesPending || (_getPausedActorsCount() != 0)) {
             /*throw new InvalidStateException( "CSPDirector wrapping up " +
                     "when there are actors delayed or paused, or when " +
                     "topology changes are pending.");*/
         }
         super.wrapup();
     }
-
-
-    //FIXME FIXME FIXME
-    public void setResumeRequested() {
-        //resume();
-    }
-
-    public void setPauseRequested() {
-        //pause();
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -288,70 +287,71 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized void _actorBlocked() {
         _actorsBlocked++;
-        _checkForDeadlock();
+        if (_checkForDeadlock()) {
+	    notifyAll();
+	}
     }
 
     /** Called by a CSPActor when it wants to delay. When the
-     *  director has sufficiently advanced time the process
-     *  corresponding to the actor will continue.
-     *  Note that actors can only deal with delta time.
+     *  director has advanced time to "getCurrentTime() + delta", the process
+     *  corresponding to the actor will continue. Note that actors 
+     *  can only deal with delta time.
+     *  <P>
+     *  The method waitForDeadlock() in CSPActor calls this method 
+     *  with a zero argument. Thus the process will continue the 
+     *  next occasion time deadock occurs. 
      *  <p>
-     *  If the actor is delayed for a negative time, treat as zero delay.
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor) {
-        if (delta < 0) {
-            delta = 0.0;
-            System.out.println("Warning: actor( " + actor.getName() +
-                    ") delaying for negative time, treating as zero delay.");
-        }
-        _actorsDelayed++;
-        // Enter the actor and the time to wake it up into the
-        // LinkedList of delayed actors..
-        _registerDelayedActor( (getCurrentTime() + delta), actor);
-        _checkForDeadlock();
-        return;
+        if (delta < 0.0) {
+	    throw new InvalidStateException(((Nameable)actor).getName() +
+		       ": delayed for negative time.");
+	} else {
+	  // System.out.println("Delaying actor " + ((Nameable)actor).getName()+
+	  //    " for time " + delta + ".");
+	    _actorsDelayed++;
+	    // Enter the actor and the time to wake it up into the
+	    // LinkedList of delayed actors.
+	    _registerDelayedActor( (getCurrentTime() + delta), actor);
+	    if (_checkForDeadlock()) {
+	        notifyAll();
+	    }
+	    return;
+	}
     }
 
-    /** A actor has unblocked, decrease the count of blocked actors.
+    /** An actor has unblocked, decrease the count of blocked actors.
      */
     protected synchronized void _actorUnblocked() {
         _actorsBlocked--;
     }
 
-    /** Check if all active processes are either blocked or delayed.
-     *  If so, then wake up the director so that it can handle
-     *  the deadlock.
+    /** Returns true if all active processes are either blocked or 
+     *  delayed, false otherwise.
      */
-    //FIXME FIXME FIXME: Made return type boolean
     protected synchronized boolean _checkForDeadlock() {
-        // System.out.println(Thread.currentThread().getName() +
-//                 ": _checkForDeadlock: Active = " +
-//                 _actorsActive + ", blocked = " + _actorsBlocked +
-//                 ", delayed = " + _actorsDelayed );
-//         if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
-//             this.notifyAll();
-//         } else if (_pauseRequested) {
-//             _checkForPause();
-//         }
-        //FIXME FIXME FIXME
+        System.out.println(Thread.currentThread().getName() +
+                ": _checkForDeadlock: Active = " +
+                _getActiveActorsCount() + ", blocked = " + _actorsBlocked +
+                ", delayed = " + _actorsDelayed );
+        if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
+            return true;
+        } 
         return false;
     }
 
-    /** Check if all active processes are either blocked, delayed or
+    /** Returns true if all active processes are either blocked, delayed or
      *  paused. If so, then all of the processes cannot make any progress 
-     *  and the model has been paused.
+     *  and the model has been paused. It returns false otherwise.
      */
-    //FIXME FIXME FIXME 
     protected synchronized boolean _checkForPause() {
-//         if (_actorsBlocked + _actorsPaused + _actorsDelayed == _actorsActive) {
-//             _paused = true;
-//             System.out.println("CSPDirector: model successfully paused!");
-//             // FIXME should throw a pauseEvent here
-
-//         }
-        //FIXME FIXME FIXME
+        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed == 
+	    _getActiveActorsCount()) {
+            System.out.println("CSPDirector: model successfully paused!");
+	    return true;
+        }
         return false;
     }
 
@@ -359,10 +359,10 @@ public class CSPDirector extends ProcessDirector {
      *  detected. It is where nearly all the control for the
      *  model at this level in the hierarchy is located.
      *  <p>
-     *  Deadlock occurs if the number of blocked and delayed process
+     *  Deadlock occurs if the number of blocked and delayed processes
      *  equals the number of active processes. The method looks for
      *  three cases in the following order: are there topology changes
-     *  waiting to happen, are there any process delayed, are all the
+     *  waiting to happen, are there any processes delayed, are all the
      *  processes blocked trying to rendezvous.
      *  <p>
      *  If there are changes to the topology waiting to happen, they are
@@ -371,104 +371,81 @@ public class CSPDirector extends ProcessDirector {
      *  to remove the deadlock that had occurred.
      *  <p>
      *  If the number of delayed processes is greater than zero, then
-     *  <i> time deadlock</i> has occurred. Time is advanced and at least
-     *  one of the delayed actors will wake up and continue. Note that
-     *  time can be advanced to the current time. This happens if one of the
-     *  delayed actors delayed with a delta delay of zero. Otherwise the
-     *  current model time is increased as well as being advanced.
-     *  Current time is defined as the double value returned by
-     *  getCurrentTime() plus/minus 10e-10.
+     *  <i>time deadlock</i> has occurred. If one or more processes 
+     *  are delayed waiting for deadlock to occur, then those processes 
+     *  are resumed and time is not advanced. Otherwise time is advanced 
+     *  and the earliest delayed process is resumed. Current time is 
+     *  defined as the double value returned by getCurrentTime() 
+     *  plus/minus 10e-10.
      *  <p>
      *  If all the processes are blocked, then <i>real deadlock</i> has
-     *  occurred. This method returns true, indicating the end of one
-     *  iteration one level up in the hierarchy. If there is no level
-     *  above this one, then real deadlock marks the end of executing the
-     *  model.
+     *  occurred, and this method returns true. If there are no levels
+     *  above this one in the hierarchy, then real deadlock marks the 
+     *  end of executing the model.
      *  @return True if real deadlock occurred, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
         try {
-            //FIXME FIXME FIXME
-            //if (_actorsActive == (_actorsBlocked + _actorsDelayed)) {
-              if (true) {
-                if (_topologyChangesPending) {
-                    System.out.println("TOPOLOGY CHANGES PENDING!!");
-                    _processTopologyRequests();
-                    LinkedList newThreads = new LinkedList();
-                    Enumeration newActors = _newActors();
-                    while (newActors.hasMoreElements()) {
-                        Actor actor = (Actor)newActors.nextElement();
-                        System.out.println("Adding and starting new actor; " +
-                                ((Nameable)actor).getName() + "\n");
-                        //FIXME FIXME FIXME
-                        //increaseActiveCount();
-                        actor.createReceivers();
-                        actor.initialize();
-                        String name = ((Nameable)actor).getName();
-                        //FIXME FIXME FIXME
-                        //ProcessThread pnt = new ProcessThread(actor,
-                                //        this, name);
-                        ProcessThread pnt = new ProcessThread(actor,
-                                     this);
-                        newThreads.insertFirst(pnt);
-                    }
-                    // Note we only start the threads after they have
-                    // all had the receivers created.
-                    Enumeration allThreads = newThreads.elements();
-                    while (allThreads.hasMoreElements()) {
-                            ProcessThread p =
-                                (ProcessThread)allThreads.nextElement();
-                            p.start();
-                            //FIXME FIXME FIXME 
-                            //_threadList.insertFirst(p);
-                    }
-                    _topologyChangesPending = false;
+	  if (_topologyChangesPending) {
+	      System.out.println("TOPOLOGY CHANGES PENDING!!");
+	      _processTopologyRequests();
+	      LinkedList newThreads = new LinkedList();
+	      Enumeration newActors = _newActors();
+	      while (newActors.hasMoreElements()) {
+		  Actor actor = (Actor)newActors.nextElement();
+		  System.out.println("Adding and starting new actor; " +
+				     ((Nameable)actor).getName() + "\n");
+		  actor.createReceivers();
+		  actor.initialize();
+		  String name = ((Nameable)actor).getName();
+		  ProcessThread pnt = new ProcessThread(actor, this);
+		  newThreads.insertFirst(pnt);
+	      }
+	      // Note we only start the threads after they have
+	      // all had the receivers created.
+	      Enumeration allThreads = newThreads.elements();
+	      while (allThreads.hasMoreElements()) {
+		  ProcessThread p = (ProcessThread)allThreads.nextElement();
+		  p.start();
+		  _addNewThread(p);
+	      }
+	      _topologyChangesPending = false;
 
-                    // Note that we return here so that this method does
-                    // not wait. This is because the result of the
-                    // topology change might not resolve the deadlock
-                    // that caused these changes to be carried out.
-                    return false;
-                } else if (_actorsDelayed > 0) {
-                    // Time deadlock.
-		    double nextTime = _getNextTime();
-                    System.out.println("\nCSPDirector: advancing time " +
-                            "to: " + nextTime);
-                    _currentTime = nextTime;
-
-                    // Now go through list of delayed actors
-                    // and wake up those at this time
-                    // Note that to deal with roundoff errors on doubles,
-                    // any times within 0.000000001 are considered the same.
-                    boolean done = false;
-                    while (!done && _delayedActorList.size() > 0 ) {
-                        DelayListLink val =
-                            (DelayListLink)_delayedActorList.first();
-                        double tolerance = Math.pow(10, -10);
-                        if (Math.abs(val._resumeTime - nextTime) < tolerance) {
-                            _delayedActorList.removeFirst();
-                            val._actor._continue();
-                            System.out.println("\nresumeing actor at " +
-                                    "time: " + val._resumeTime);
-                            _actorsDelayed--;
-                        } else {
-                            done = true;
-                        }
-                    }
-                } else {
-                    System.out.println("REAL DEADLOCK!!");
-                    // Real deadlock. This marks the end of an
-                    // iteration so return.
-                    return true;
-                }
-            }
-            System.out.println("\nhandleDeadlock waiting...");
-            this.wait();
-            return false;
-        } catch (InterruptedException ex ) {
-            throw new InvalidStateException("CSPDirector: interrupted " +
-                    "while waiting for a real deadlock to occur or " +
-                    "resolving a time deadlock.");
+	      // FIXME: removeNote that we return here so that this method does
+	      // not wait. This is because the result of the
+	      // topology change might not resolve the deadlock
+	      // that caused these changes to be carried out.
+	  } else if (_actorsDelayed > 0) {
+	      // Time deadlock.
+	      double nextTime = _getNextTime();
+	      System.out.println("\nCSPDirector: advancing time " +
+				 "to: " + nextTime);
+	      _currentTime = nextTime;
+	      
+	      // Now go through list of delayed actors
+	      // and wake up those at this time
+	      // Note that to deal with roundoff errors on doubles,
+	      // any times within 0.000000001 are considered the same.
+	      boolean done = false;
+	      while (!done && _delayedActorList.size() > 0 ) {
+	          DelayListLink val = (DelayListLink)_delayedActorList.first();
+		  double tolerance = Math.pow(10, -10);
+		  if (Math.abs(val._resumeTime - nextTime) < tolerance) {
+		      _delayedActorList.removeFirst();
+		      val._actor._continue();
+		      System.out.println("\nresumeing actor at time: " +
+					 val._resumeTime);
+		      _actorsDelayed--;
+		  } else {
+		      done = true;
+		  }
+	      }
+	  } else {
+	      System.out.println("REAL DEADLOCK!!");
+	      // Real deadlock. Return true so that the fire method can return.
+	      return true;
+	  }
+	  return false;
         } catch (TopologyChangeFailedException ex ) {
             throw new InvalidStateException("CSPDirector: failed to " +
                     "complete topology change requests.");
@@ -528,6 +505,9 @@ public class CSPDirector extends ProcessDirector {
     // sufficiently advances.
     private int _actorsDelayed = 0;
 
+    // The cuurent model time.
+    private double _currentTime = 0.0;
+
     // A sorted list of the times of delayed actors. The time the model
     // will next be advanced to is the time at the top of the list.
     private LinkedList _delayedActorList = new LinkedList();
@@ -535,9 +515,6 @@ public class CSPDirector extends ProcessDirector {
     // Flag indicating that changes in the topology have been
     // registered with this director.
     private boolean _topologyChangesPending = false;
-
-    // The current time of this model.
-    private double _currentTime = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -550,3 +527,4 @@ public class CSPDirector extends ProcessDirector {
         public CSPActor _actor;
     }
 }
+
