@@ -149,7 +149,7 @@ public abstract class DDEStringSource extends DDESourceActor {
         }
         
         private String _str;
-        private double _time = -1.0;
+        private double _time = TimedQueueReceiver.INACTIVE;
     }
 
 }
