@@ -121,14 +121,14 @@ public class ProduceOutput extends BroadcastOutput {
     /** Clone the action into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new action.
-     *  @param ws The workspace for the new action.
+     *  @param workspace The workspace for the new action.
      *  @return A new action.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        ProduceOutput newObject = (ProduceOutput)super.clone(ws);
+        ProduceOutput newObject = (ProduceOutput)super.clone(workspace);
         newObject.channel = (Parameter)newObject.getAttribute("channel");
         return newObject;
     }

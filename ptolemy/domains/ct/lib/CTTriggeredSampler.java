@@ -93,14 +93,14 @@ public class CTTriggeredSampler extends Transformer
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-     public Object clone(Workspace ws)
+     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        CTTriggeredSampler newObject = (CTTriggeredSampler)super.clone(ws);
+        CTTriggeredSampler newObject = (CTTriggeredSampler)super.clone(workspace);
         newObject.input.setMultiport(true);
         newObject.output.setMultiport(true);
         newObject.output.setTypeAtLeast(newObject.input);

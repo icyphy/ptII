@@ -234,17 +234,18 @@ public class EntityLibrary
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there). If the library has not yet been
      *  populated, then the clone will also not have been populated.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If the library contains
      *   level crossing transitions so that its connections cannot be cloned,
      *   or if one of the attributes cannot be cloned.
      *  @return A new EntityLibrary.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         // To prevent populating during cloning, we set a flag.
         _cloning = true;
         try {
-            EntityLibrary result = (EntityLibrary)super.clone(ws);
+            EntityLibrary result = (EntityLibrary)super.clone(workspace);
             result._cloning = false;
             return result;
         } finally {

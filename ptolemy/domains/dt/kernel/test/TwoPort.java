@@ -75,11 +75,12 @@ public class TwoPort extends SDFAtomicActor {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TwoPort newObject = (TwoPort)(super.clone(ws));
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        TwoPort newObject = (TwoPort)(super.clone(workspace));
         newObject.input1 = (SDFIOPort)newObject.getPort("input1");
         newObject.input2 = (SDFIOPort)newObject.getPort("input2");
         newObject.output1 = (SDFIOPort)newObject.getPort("output1");

@@ -136,15 +136,16 @@ public class RemoteCompositeActor extends CompositeActor {
      *  The executive director is not cloned.
      *  NOTE: This will not work if there are level-crossing transitions.
      *
-     * @param ws The workspace for the cloned object.
+     * @param workspace The workspace for the cloned object.
      * @exception CloneNotSupportedException If the actor contains
      *  level crossing transitions so that its connections cannot be
      *  cloned, or if one of the attributes cannot be cloned.
      * @return A new RemoteCompositeActor.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         RemoteCompositeActor newObject =
-            (RemoteCompositeActor)super.clone(ws);
+            (RemoteCompositeActor)super.clone(workspace);
 	if( getDirector() != getExecutiveDirector() ) {
 	    if( getDirector() != null ) {
 	        newObject._hasLocalDirector = true;

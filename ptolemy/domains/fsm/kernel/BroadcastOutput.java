@@ -130,14 +130,14 @@ public class BroadcastOutput extends Action implements ChoiceAction {
     /** Clone the action into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new action.
-     *  @param ws The workspace for the new action.
+     *  @param workspace The workspace for the new action.
      *  @return A new action.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        BroadcastOutput newObject = (BroadcastOutput)super.clone(ws);
+        BroadcastOutput newObject = (BroadcastOutput)super.clone(workspace);
         // FIXME: is this necessary?  This extends Attribute, will
         // cloning an attribute do the right thing?
         newObject.expression = (Parameter)newObject.getAttribute("expression");

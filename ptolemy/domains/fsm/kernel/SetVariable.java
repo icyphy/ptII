@@ -130,14 +130,14 @@ public class SetVariable extends Action implements CommitAction {
     /** Clone the action into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new action.
-     *  @param ws The workspace for the new action.
+     *  @param workspace The workspace for the new action.
      *  @return A new action.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        SetVariable newObject = (SetVariable)super.clone(ws);
+        SetVariable newObject = (SetVariable)super.clone(workspace);
         newObject.expression = (Parameter)newObject.getAttribute("expression");
         newObject.variableName = (Parameter)newObject.getAttribute("variableName");
         newObject._variableVersion = -1;

@@ -166,14 +166,14 @@ public class FSMDirector extends Director {
     /** Clone the director into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new director.
-     *  @param ws The workspace for the new director.
+     *  @param workspace The workspace for the new director.
      *  @return A new director.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        FSMDirector newObject = (FSMDirector)super.clone(ws);
+        FSMDirector newObject = (FSMDirector)super.clone(workspace);
         newObject.controllerName =
                 (Parameter)newObject.getAttribute("controllerName");
         newObject._controllerVersion = -1;

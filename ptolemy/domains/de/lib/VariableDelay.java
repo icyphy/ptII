@@ -113,13 +113,14 @@ public class VariableDelay extends DETransformer {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        VariableDelay newObject = (VariableDelay)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        VariableDelay newObject = (VariableDelay)super.clone(workspace);
         try {
             newObject.input.delayTo(newObject.output);
         } catch (IllegalActionException ex) {

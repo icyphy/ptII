@@ -99,14 +99,14 @@ public class Const extends Source {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the value public variable in the new
      *  object to equal the cloned parameter in that new object.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Const newObject = (Const)super.clone(ws);
+        Const newObject = (Const)super.clone(workspace);
 	// Set the type constraint.
 	newObject.output.setTypeAtLeast(newObject.value);
         return newObject;

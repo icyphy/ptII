@@ -165,14 +165,15 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  The result is a new director with no container, no pending mutations,
      *  and no topology listeners. The count of active processes is zero.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new ProcessDirector.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         CompositeProcessDirector newObj = 
-	        (CompositeProcessDirector)super.clone(ws);
+	        (CompositeProcessDirector)super.clone(workspace);
 	newObj._onFirstIteration = true;
 	newObj._inputBranchController = null;
 	newObj._outputBranchController = null;

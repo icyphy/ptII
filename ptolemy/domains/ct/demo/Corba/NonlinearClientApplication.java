@@ -68,8 +68,8 @@ public class NonlinearClientApplication {
         TypedCompositeActor _toplevel;
         CorbaActorClient _client;
         try {
-            Workspace ws = new Workspace("NonlinearClient");
-            _toplevel = new TypedCompositeActor(ws);
+            Workspace workspace = new Workspace("NonlinearClient");
+            _toplevel = new TypedCompositeActor(workspace);
             _toplevel.setName( "system");
             Manager man = new Manager(ws, "Manager");
             _toplevel.setManager(man);

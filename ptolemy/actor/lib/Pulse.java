@@ -208,14 +208,14 @@ public class Pulse extends SequenceSource {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Pulse newObject = (Pulse)super.clone(ws);
+        Pulse newObject = (Pulse)super.clone(workspace);
         try {
             newObject.attributeChanged(newObject.indexes);
             newObject.attributeChanged(newObject.values);

@@ -171,14 +171,15 @@ public class CSPActor extends TypedAtomicActor
      *  as the original, but no connections and no container.
      *  A container must be set before much can be done with the actor.
      *  <p>
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
      *   if one of the attributes cannot be cloned.
      *  @return A new CSPActor.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CSPActor newObject = (CSPActor)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        CSPActor newObject = (CSPActor)super.clone(workspace);
         newObject._delayed = false;
         newObject._conditionalBranchController =
 	    new ConditionalBranchController(newObject);

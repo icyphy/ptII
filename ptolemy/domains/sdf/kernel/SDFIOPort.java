@@ -139,14 +139,14 @@ public final class SDFIOPort extends TypedIOPort {
     /** Clone the port into the specified workspace. This calls the
      *  base class and then creates new parameters.  The new
      *  port will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new SDFIOPort.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        SDFIOPort newObject = (SDFIOPort)(super.clone(ws));
+        SDFIOPort newObject = (SDFIOPort)(super.clone(workspace));
         newObject.tokenConsumptionRate =
             (Parameter)newObject.getAttribute("tokenConsumptionRate");
         newObject.tokenInitProduction =

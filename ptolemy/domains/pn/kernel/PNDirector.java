@@ -145,13 +145,14 @@ public class PNDirector extends BasePNDirector {
      *  The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new PNDirector.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        PNDirector newObject = (PNDirector)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        PNDirector newObject = (PNDirector)super.clone(workspace);
 	newObject._mutationsRequested = false;
         return newObject;
     }

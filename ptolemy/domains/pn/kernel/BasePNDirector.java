@@ -202,13 +202,14 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new BasePNDirector.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        BasePNDirector newObject = (BasePNDirector)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        BasePNDirector newObject = (BasePNDirector)super.clone(workspace);
         newObject._readBlockCount = 0;
 	newObject._writeBlockCount = 0;
         newObject._writeblockedQueues = new LinkedList();

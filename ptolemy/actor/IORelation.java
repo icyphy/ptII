@@ -122,13 +122,14 @@ public class IORelation extends ComponentRelation {
      *  The result is a new relation with no links and no container, but with
      *  the same width as the original.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one or more of the attributes
      *   cannot be cloned.
      *  @return A new ComponentRelation.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        IORelation newObject = (IORelation)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        IORelation newObject = (IORelation)super.clone(workspace);
         newObject._inferredWidthVersion = -1;
         return newObject;
     }

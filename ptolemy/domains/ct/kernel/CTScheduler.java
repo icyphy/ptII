@@ -146,10 +146,10 @@ public class CTScheduler extends Scheduler{
      *  containing this scheduler. To attach this schduler to a
      *  CTDirector, call setSchduler() on the CTDirector.
      *
-     *  @param ws The workspace.
+     *  @param workspace The workspace.
      */
-    public CTScheduler(Workspace ws) {
-        super(ws);
+    public CTScheduler(Workspace workspace) {
+        super(workspace);
         try {
             setName(_STATIC_NAME);
         } catch (KernelException ex) {

@@ -125,13 +125,14 @@ public class Plotter extends TypedAtomicActor
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Plotter newObject = (Plotter)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Plotter newObject = (Plotter)super.clone(workspace);
         newObject.plot = null;
         newObject._frame = null;
         return newObject;

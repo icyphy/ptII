@@ -51,7 +51,7 @@ NOTE: This is a very primitive test.  It does not check very much.
 */
 public class PtestWorkspace extends PtolemyThread {
 
-    public PtestWorkspace(String name, Workspace ws) {
+    public PtestWorkspace(String name, Workspace workspace) {
         _name = name;
         _workspace = ws;
     }

@@ -74,14 +74,14 @@ public class FIRDouble extends FIR {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters. The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        FIRDouble newObject = (FIRDouble)(super.clone(ws));
+        FIRDouble newObject = (FIRDouble)(super.clone(workspace));
         return newObject;
     }
 

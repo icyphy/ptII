@@ -166,14 +166,14 @@ public class Transition extends ComponentRelation {
     /** Clone the transition into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer to
      *  the parameters of the new transition.
-     *  @param ws The workspace for the new transition.
+     *  @param workspace The workspace for the new transition.
      *  @return A new transition.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Transition newObject = (Transition)super.clone(ws);
+        Transition newObject = (Transition)super.clone(workspace);
         newObject.guardExpression =
                 (Parameter)newObject.getAttribute("guardExpression");
         newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");

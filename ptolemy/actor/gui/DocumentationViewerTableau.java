@@ -138,14 +138,15 @@ public class DocumentationViewerTableau extends Tableau {
     /** Clone the object into the specified workspace. This calls the
      *  base class and then sets the <code>url</code>
      *  public members to the parameters of the new object.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         DocumentationViewerTableau newObject =
-                 (DocumentationViewerTableau)super.clone(ws);
+                 (DocumentationViewerTableau)super.clone(workspace);
         newObject.dottedClass = 
 	    (StringAttribute)newObject.getAttribute("dottedClass");
         return newObject;

@@ -177,13 +177,14 @@ public class DEIOPort extends TypedIOPort {
      *  The new port will have the same type as this one, but will not
      *  have any type listeners and type constraints attached to it.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one or more of the
      *   attributes cannot be cloned.
      *  @return A new TypedIOPort.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        DEIOPort newObject = (DEIOPort)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        DEIOPort newObject = (DEIOPort)super.clone(workspace);
         newObject._delayToSet = new HashSet();
 	return newObject;
     }

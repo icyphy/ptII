@@ -67,8 +67,9 @@ public class OnePort extends SDFAtomicActor {
     }
 
     
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        OnePort newObject = (OnePort)(super.clone(ws));
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        OnePort newObject = (OnePort)(super.clone(workspace));
         newObject.input =  (SDFIOPort)newObject.getPort("input");
         newObject.output = (SDFIOPort)newObject.getPort("output");
         newObject.inrate = (Parameter) newObject.getAttribute("inrate");

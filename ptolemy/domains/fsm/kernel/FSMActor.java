@@ -203,14 +203,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter public members to refer
      *  to the parameters of the new actor.
-     *  @param ws The workspace for the new actor.
+     *  @param workspace The workspace for the new actor.
      *  @return A new FSMActor.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        FSMActor newObject = (FSMActor)super.clone(ws);
+        FSMActor newObject = (FSMActor)super.clone(workspace);
         newObject.initialStateName =
                 (Parameter)newObject.getAttribute("initialStateName");
         newObject._inputPortsVersion = -1;

@@ -86,13 +86,14 @@ public class TimeBomb extends DETransformer {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the parameter.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        TimeBomb newObject = (TimeBomb)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        TimeBomb newObject = (TimeBomb)super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.COMPLEX);
         newObject.output.setTypeEquals(BaseType.DOUBLE);
         try {

@@ -137,14 +137,14 @@ public class State extends ComponentEntity {
     /** Clone the state into the specified workspace. This calls the
      *  base class and then sets the parameter and port public members
      *  to refer to the parameters and ports of the new state.
-     *  @param ws The workspace for the new state.
+     *  @param workspace The workspace for the new state.
      *  @return A new state.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        State newObject = (State)super.clone(ws);
+        State newObject = (State)super.clone(workspace);
         newObject.incomingPort = (ComponentPort)newObject.getPort("incomingPort");
         newObject.outgoingPort = (ComponentPort)newObject.getPort("outgoingPort");
         newObject.refinementName =

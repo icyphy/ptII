@@ -320,14 +320,14 @@ public class DEDirector extends Director {
     /** Clone the director into the specified workspace. This calls the
      *  base class and then copies the parameter of this director.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        DEDirector newObject = (DEDirector)(super.clone(ws));
+        DEDirector newObject = (DEDirector)(super.clone(workspace));
         newObject.startTime = 
             (Parameter)newObject.getAttribute("startTime");
         newObject.stopTime = 

@@ -101,14 +101,14 @@ public class Commutator extends Transformer implements SequenceActor {
 
     /** Clone the actor into the specified workspace. This calls the base
      *  class method and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   attributes that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Commutator newObject = (Commutator)super.clone(ws);
+        Commutator newObject = (Commutator)super.clone(workspace);
         newObject.tokenProductionRate = (Parameter)
             (newObject.output.getAttribute("tokenProductionRate"));
         return newObject;

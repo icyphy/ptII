@@ -112,14 +112,14 @@ public class MyRamp extends SequenceSource {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        MyRamp newObject = (MyRamp)super.clone(ws);
+        MyRamp newObject = (MyRamp)super.clone(workspace);
 	// set the type constraints.
 	newObject.output.setTypeAtLeast(newObject.init);
 	newObject.output.setTypeAtLeast(newObject.step);

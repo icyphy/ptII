@@ -116,13 +116,14 @@ public class ProcessDirector extends Director {
      *  The result is a new director with no container, no pending mutations,
      *  and no topology listeners. The count of active processes is zero.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new ProcessDirector.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ProcessDirector newObject = (ProcessDirector)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ProcessDirector newObject = (ProcessDirector)super.clone(workspace);
         newObject._actorsActive = 0;
         newObject._actorThreadList = new LinkedList();
         newObject._blockedActorCount = 0;

@@ -110,8 +110,8 @@ public class SDFScheduler extends Scheduler {
      *
      *  @param workspace Object for synchronization and version tracking.
      */
-    public SDFScheduler(Workspace ws) {
-        super(ws);
+    public SDFScheduler(Workspace workspace) {
+        super(workspace);
 	_localMemberInitialize();
     }
 

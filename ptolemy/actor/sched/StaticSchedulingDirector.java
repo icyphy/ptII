@@ -106,17 +106,18 @@ public class StaticSchedulingDirector extends Director {
      *  no topology listeners, and a clone of the original scheduler, 
      *  if one existed.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new StaticSchedulingDirector.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
 	try {
 	    StaticSchedulingDirector newObject = (StaticSchedulingDirector)
-		super.clone(ws);
+		super.clone(workspace);
 	    if(_scheduler != null) {
-		newObject.setScheduler((Scheduler)_scheduler.clone(ws));
+		newObject.setScheduler((Scheduler)_scheduler.clone(workspace));
 	    } else {
 		newObject._scheduler = null;
 	    }

@@ -156,13 +156,14 @@ public class Effigy extends CompositeEntity {
     /** Clone the object into the specified workspace. This calls the
      *  base class and then sets the <code>identifier</code>
      *  public members to the parameters of the new object.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Effigy newObject = (Effigy)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Effigy newObject = (Effigy)super.clone(workspace);
         newObject.identifier = (StringAttribute)newObject.getAttribute("identifier");
         newObject.url = (URLAttribute)newObject.getAttribute("url");
         return newObject;

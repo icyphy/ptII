@@ -104,14 +104,14 @@ public abstract class Action extends Attribute {
      *  base class clone() method. This does not clone the variable
      *  for expression evaluation. It is cloned when the transition
      *  containing this action is cloned.
-     *  @param ws The workspace for the new action.
+     *  @param workspace The workspace for the new action.
      *  @return A new action.
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Action newObject = (Action)super.clone(ws);
+        Action newObject = (Action)super.clone(workspace);
         newObject._evalVar = null;
         return newObject;
     }

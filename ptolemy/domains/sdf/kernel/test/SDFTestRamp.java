@@ -72,14 +72,14 @@ public class SDFTestRamp extends TypedAtomicActor {
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        SDFTestRamp newObject = (SDFTestRamp)(super.clone(ws));
+        SDFTestRamp newObject = (SDFTestRamp)(super.clone(workspace));
         newObject.output = (SDFIOPort)newObject.getPort("output");
         return newObject;
     }

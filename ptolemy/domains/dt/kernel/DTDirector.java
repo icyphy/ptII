@@ -213,15 +213,15 @@ public class DTDirector extends SDFDirector {
      *  base class and then copies the parameter of this director.  The new
      *  actor will have the same parameter values as the old.
      *  The period parameter is explicitly cloned in this method.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      */
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         _reset();
-        DTDirector newObject = (DTDirector)(super.clone(ws));
+        DTDirector newObject = (DTDirector)(super.clone(workspace));
         newObject.period = (Parameter)newObject.getAttribute("period");
         return newObject;
     }

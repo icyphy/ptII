@@ -102,13 +102,14 @@ public class Sampler extends DETransformer {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Sampler newObject = (Sampler)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Sampler newObject = (Sampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }

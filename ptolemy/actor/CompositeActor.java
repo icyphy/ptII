@@ -166,14 +166,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  The executive director is not cloned.
      *  NOTE: This will not work if there are level-crossing transitions.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If the actor contains
      *   level crossing transitions so that its connections cannot be cloned,
      *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeActor.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CompositeActor newObject = (CompositeActor)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        CompositeActor newObject = (CompositeActor)super.clone(workspace);
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         return newObject;

@@ -96,12 +96,13 @@ public class Delay extends Transformer {
      *  and parameter public members of the new object and the type
      *  constraints among them.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If the base class throws it.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Delay newObject = (Delay)(super.clone(ws));
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Delay newObject = (Delay)(super.clone(workspace));
         // This is private Variable, so it is ok.
         newObject._dummy =
             (Variable)newObject.getAttribute("_dummy");

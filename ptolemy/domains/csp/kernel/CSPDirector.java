@@ -150,13 +150,14 @@ public class CSPDirector extends CompositeProcessDirector {
      *  changes to the topology, current time is 0.0, and no actors
      *  are delayed or blocked.
      *  <p>
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new CSPDirector.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        CSPDirector newObject = (CSPDirector)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        CSPDirector newObject = (CSPDirector)super.clone(workspace);
         // newObject._actorsBlocked = 0;
         /*
         newObject._extReadBlockCount= 0;

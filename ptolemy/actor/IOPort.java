@@ -197,13 +197,14 @@ public class IOPort extends ComponentPort {
      *  yourself if you want it there).
      *  The result is a new port with no connections and no container.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one or more of the attributes
      *   cannot be cloned.
      *  @return A new IOPort.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        IOPort newObject = (IOPort)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        IOPort newObject = (IOPort)super.clone(workspace);
         newObject._insideinputversion = -1;
         newObject._insideoutputversion = -1;
         newObject._width = 0;

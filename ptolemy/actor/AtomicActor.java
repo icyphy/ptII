@@ -104,14 +104,15 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  no connections and no container.  A container must be set before
      *  much can be done with this actor.
      *
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur), or
      *   if one of the attributes cannot be cloned.
      *  @return A new ComponentEntity.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        AtomicActor newObject = (AtomicActor)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        AtomicActor newObject = (AtomicActor)super.clone(workspace);
 	// Reset to force reinitialization of cache.
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;

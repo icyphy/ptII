@@ -148,22 +148,23 @@ public class Relation extends NamedObj {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new relation with no links and no container.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes cannot
      *   be cloned.
      *  @return A new Relation.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Relation newobj = (Relation)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Relation newObject = (Relation)super.clone(workspace);
         try {
-            newobj._portList = new CrossRefList(newobj);
+            newObject._portList = new CrossRefList(newObject);
         } catch (IllegalActionException ex) {
-            // This should not be thrown because newobj is not null.
+            // This should not be thrown because newObject is not null.
             throw new InternalErrorException(
                     "Internal error in Port clone() method!"
                     + ex.getMessage());
         }
-        return newobj;
+        return newObject;
     }
 
     /** List the linked ports.  Note that a port may appear more than
@@ -217,7 +218,7 @@ public class Relation extends NamedObj {
      *  @return An Enumeration of Port objects.
      */
     public Enumeration linkedPorts() {
-        // NOTE: There is no reason to deprecate this because it does
+        // NOTE: There is no reason to deprecate this because it does not
         // depend on Doug Lea's collections, and it is more efficient than
         // the list version.
         try {
@@ -326,10 +327,10 @@ public class Relation extends NamedObj {
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "links {\n";
-                Enumeration enum = linkedPorts();
-                while (enum.hasMoreElements()) {
-                    Port port = (Port)enum.nextElement();
-                    result += port._description(detail, indent+1, 2) + "\n";
+                Enumeration linkedPorts = linkedPorts();
+                while (linkedPorts.hasMoreElements()) {
+                    Port port = (Port)linkedPorts nextElement();
+                    result += port._description(detail, indent + 1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
             }
