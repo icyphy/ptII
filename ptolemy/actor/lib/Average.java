@@ -37,7 +37,7 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// Average
 /**
-Output the average of the inputs so far.
+Output the average of the inputs from the last time a reset is received.
 One output is produced each time the actor fires.
 The inputs and outputs can be any token type that
 supports addition and division by an integer.  The output type is
@@ -47,9 +47,8 @@ Note that the type system will fail to catch some errors. Static type
 checking may result in a resolved type that does not support addition
 and division.  In this case, a run-time error will occur.
 <p>
-NOTE: It would be nice if this actor had a reset input.
 
-@author Edward A. Lee
+@author Edward A. Lee, Jie Liu
 @version $Id$
 */
 
@@ -67,7 +66,18 @@ public class Average extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeSameAs(input);
+        reset = new TypedIOPort(container, "reset", true, false);
+        reset.setTypeEquals(BooleanToken.class);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The reset input port of type BooleanToken. If this port
+     *  receives a True token, then the averaging process will be
+     *  reset.
+     */
+    public TypedIOPort reset;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -82,6 +92,8 @@ public class Average extends Transformer {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Average newobj = (Average)super.clone(ws);
         newobj.output.setTypeSameAs(newobj.input);
+        newobj.reset = (TypedIOPort)newobj.getPort("reset");
+        newobj.reset.setTypeEquals(BooleanToken.class);
         return newobj;
     }
 
@@ -95,11 +107,22 @@ public class Average extends Transformer {
      *  input read on the last invocation in the iteration will affect
      *  future averages.  Inputs that are read earlier in the iteration
      *  are forgotten.
+     *  <P>
+     *  If a BooleanToken with true value is received from the reset
+     *  input, the averaging process will be reset. 
      *  @exception IllegalActionException If the right arithmetic operations
      *   are not supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
         try {
+            if (reset.hasToken(0)) {
+                BooleanToken r = (BooleanToken)reset.get(0);
+                if(r.booleanValue()) {
+                    // Being reset at this firing.
+                    _accum = null;
+                    _count = 1;
+                }
+            }
             Token in = input.get(0);
             if (_accum == null) {
                 _accum = in.zero();
