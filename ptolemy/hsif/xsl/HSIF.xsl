@@ -230,6 +230,29 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 	<xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
 	<xsl:attribute name="class"><xsl:value-of select="$class"/></xsl:attribute>
 
+    <!-- Help on how to use the model -->
+    <property name="annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 70.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">Please use Ctrl_t to get the actors automatically Placed. 
+
+Please add the TimedPoltter from the actor_library / timed_sinks
+in the left upper box, and wire the output you want to see to it.
+
+To run the model, choose View -> Run_Window. You may modify the parameters
+there showed in the opened run_window.
+
+For more help, choose Help from the upper menu bar.</text>
+           </svg>
+           </configure>
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
+    </property>
+
     <xsl:choose>
         <xsl:when test="$type='CT'"><xsl:call-template name="CTDirector"/></xsl:when>
         <xsl:when test="$type='CTEmbedded'"><xsl:call-template name="CTEmbeddedDirector"/></xsl:when>
@@ -248,6 +271,8 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
         <!-- attributes of entity -->
         <xsl:attribute name="name">CT Director</xsl:attribute>
         <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50"></property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1"></property>
     </xsl:element>
 </xsl:template>
 
