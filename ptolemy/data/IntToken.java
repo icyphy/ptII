@@ -82,7 +82,8 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token add(ptolemy.data.Token rightArg) throws IllegalActionException {
+    public Token add(ptolemy.data.Token rightArg)
+            throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
