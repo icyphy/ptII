@@ -165,8 +165,13 @@ public class Director extends NamedObj implements Executable {
     }
     
     /** This does all the mutations and informs the listeners of the mutations
+     *  @exception IllegalActionException if the port is not of the expected 
+     *   class, or the port has no name.
+     *  @exception NameDuplicationException if the name collides with a name 
+     *   already on the port list.
      */
-    public final void processPendingMutations() {
+    public final void processPendingMutations()
+            throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
             Mutation m;
             if (!_pendingMutations.isEmpty()) {
