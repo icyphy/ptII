@@ -85,7 +85,7 @@ control-clicking and dragging from one state to another.
 @author Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
- */
+*/
 public class FSMGraphController extends FSMViewerController {
 
     /** Create a new basic controller with default
@@ -111,17 +111,17 @@ public class FSMGraphController extends FSMViewerController {
        	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
 	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
        	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
-	diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
-       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInOutPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInOutPortAction);
 	diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
        	diva.gui.GUIUtilities.addToolBarButton(
                    toolbar, _newInputMultiportAction);
 	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
        	diva.gui.GUIUtilities.addToolBarButton(
                    toolbar, _newOutputMultiportAction);
-	diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInOutMultiportAction);
        	diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newInoutMultiportAction);
+                   toolbar, _newInOutMultiportAction);
 
         // Add an item that adds new states.
         menu.addSeparator();
@@ -156,6 +156,8 @@ public class FSMGraphController extends FSMViewerController {
      *  at that time.
      */
     protected void initializeInteraction() {
+        // NOTE: This method name does not have a leading underscore
+        // because it is a diva method.
         super.initializeInteraction();
         GraphPane pane = getGraphPane();
 
@@ -214,8 +216,8 @@ public class FSMGraphController extends FSMViewerController {
             PortController._GENERIC_OUTPUT, "New output port",
             KeyEvent.VK_O);
 
-    /** Action for creating a new inout port. */
-    private Action _newInoutPortAction = new NewPortAction(
+    /** Action for creating a new in/out port. */
+    private Action _newInOutPortAction = new NewPortAction(
             PortController._GENERIC_INOUT, "New input/output port",
             KeyEvent.VK_P);
 
@@ -231,8 +233,8 @@ public class FSMGraphController extends FSMViewerController {
             "New output multiport",
             KeyEvent.VK_U);
 
-    /** Action for creating a new inout multiport. */
-    private Action _newInoutMultiportAction = new NewPortAction(
+    /** Action for creating a new in/out multiport. */
+    private Action _newInOutMultiportAction = new NewPortAction(
             PortController._GENERIC_INOUT_MULTIPORT,
             "New input/output multiport",
             KeyEvent.VK_T);
@@ -327,7 +329,6 @@ public class FSMGraphController extends FSMViewerController {
 	public NewStateAction() {
 	    super("New State");
 	    putValue("tooltip", "New State");
-	    String dflt = "";
 	    NodeRenderer renderer = new FSMStateController.StateRenderer();
 	    Figure figure = renderer.render(_prototypeState);
 	    // Standard toolbar icons are 25x25 pixels.

@@ -54,7 +54,7 @@ the "Compose With" menu item to the Graph menu.
 @author Steve Neuendorffer, Yuhong Xiong
 @contributor Edward A. Lee
 @version $Id$
- */
+*/
 public class InterfaceAutomatonGraphController extends FSMGraphController {
 
     /** Create a new controller with the specified directory of the current
@@ -135,8 +135,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     fileDialog.setCurrentDirectory(new File(cwd));
                 }
             }
-            int returnVal = fileDialog.showOpenDialog(getFrame());
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
+            int returnValue = fileDialog.showOpenDialog(getFrame());
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
 	        _directory = fileDialog.getCurrentDirectory();
                 try {
                     // NOTE: It would be nice if it were possible to enter

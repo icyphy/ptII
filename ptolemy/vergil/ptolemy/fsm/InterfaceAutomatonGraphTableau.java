@@ -59,11 +59,6 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public parameters                 ////
-
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-
-    ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
     /** Override the super class to create an instance of
@@ -125,4 +120,9 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
 	    }
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

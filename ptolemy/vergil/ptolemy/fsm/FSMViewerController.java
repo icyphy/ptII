@@ -149,6 +149,9 @@ public class FSMViewerController extends PtolemyGraphController {
      *  at that time.
      */
     protected void initializeInteraction() {
+        // NOTE: This method name does not have a leading underscore
+        // because it is a diva method.
+
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger

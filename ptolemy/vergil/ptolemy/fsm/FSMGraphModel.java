@@ -144,7 +144,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	return super.getNodeModel(node);
     }
 
-    /** Return the semantic object correspoding to the given node, edge,
+    /** Return the semantic object corresponding to the given node, edge,
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this case, if the node is icon, the
      *  semantic object is the entity containing the icon.  If it is
@@ -172,7 +172,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
         model.removeNode(eventSource, node);
     }
 
-    // FIXME: The following methods are probably innappropriate.
+    // FIXME: The following methods are probably inappropriate.
     // They make it impossible to have customized models for
     // particular links or icons. getLinkModel() and
     // getNodeModel() should be sufficient.
@@ -222,8 +222,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 // remove the relation  This should trigger removing the
                 // other link. This will only happen when we've deleted
                 // the state at one end of the model.
-                // Note that the source is NOT the graphmodel, so this
-                // will trigger the changerequest listener to
+                // Note that the source is NOT the graph model, so this
+                // will trigger the ChangeRequest listener to
                 // redraw the graph again.
                 ChangeRequest request = new MoMLChangeRequest(
                         container, container,
@@ -439,7 +439,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 } else {
                     // There will be a further connection, so preserve
                     // the relation.
-                    moml.append(_unlinkHead(container, linkHead, linkRelation));
+                    moml.append(_unlinkHead(container, linkHead,
+                            linkRelation));
                 }
             }
 
@@ -534,7 +535,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
                 } else {
                     // There will be a further connection, so preserve
                     // the relation.
-                    moml.append(_unlinkTail(container, linkTail, linkRelation));
+                    moml.append(_unlinkTail(container, linkTail,
+                            linkRelation));
                 }
             }
 
@@ -831,7 +833,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	/** Return moml to unlink a relation with the given head in the
          *  specified container.
 	 */
-	private String _unlinkHead( NamedObj container, NamedObj linkHead,
+	private String _unlinkHead(NamedObj container, NamedObj linkHead,
                 Relation relation) {
             NamedObj head = (NamedObj)getSemanticObject(linkHead);
             State headState = (State)head;

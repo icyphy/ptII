@@ -132,14 +132,13 @@ public class FSMGraphTableau extends Tableau {
 
     /** The class to display. */
     public StringAttribute library;
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
     /** Create the graph frame that displays the model associated with
      *  this tableau. This method creates a FSMGraphFrame. If subclass
-     *  uses another frame, this method should be overriden to create
+     *  uses another frame, this method should be overridden to create
      *  that frame.
      *  @param model The Ptolemy II model to display in the graph frame.
      */
@@ -197,4 +196,9 @@ public class FSMGraphTableau extends Tableau {
 	    }
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

@@ -58,7 +58,7 @@ This class provides interaction with nodes that represent states in an
 FSM graph.  It provides a double click binding to edit the parameters
 of the state, and a context menu containing a commands to edit parameters
 ("Configure"), rename, get documentation, and look inside.  The looks
-inside command opends the refinement of the state, if it exists.
+inside command opens the refinement of the state, if it exists.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
