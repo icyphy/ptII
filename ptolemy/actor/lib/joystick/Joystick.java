@@ -167,6 +167,11 @@ public class Joystick extends TypedAtomicActor {
             if (_debugging){
                 _debug("JoystickID: " + _joy.getID());
             }
+
+            // FIXME: Also, we probably need to close the joystick,
+            // but I'm not sure how.  Running the model twice would be
+            // a good test
+
 	}
 	catch (IOException ex) {
             throw new IllegalActionException(this, ex,
