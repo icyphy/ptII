@@ -54,6 +54,12 @@ public interface CTTransparentDirector {
     ////                         public methods                    ////
 
     /** Implementations of this method should return
+     *  true if there is an event at current time.
+     *  @return True if there is an event at current time.
+     */
+    public boolean hasCurrentEvent();
+
+    /** Implementations of this method should return
      *  true if the current integration step is accurate from
      *  this director's point of view.
      *  @return True if the current step is accurate.
