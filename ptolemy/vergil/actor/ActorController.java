@@ -168,10 +168,10 @@ public class ActorController extends AttributeController {
         Filter portFilter = new Filter() {
             public boolean accept(Object candidate) {
                 GraphModel model = getController().getGraphModel();
-                if (candidate instanceof Port &&
-                        model.getParent(candidate) instanceof Locatable) {
+                if(candidate instanceof Locatable &&
+                   model.getSemanticObject(candidate) instanceof Entity) {
                     return true;
-                } else {
+                } else { 
                     return false;
                 }
             }
@@ -180,8 +180,13 @@ public class ActorController extends AttributeController {
         // Anytime we add a port to an entity, we want to layout all the
         // ports within that entity.
         GlobalLayout layout = new EntityLayout();
-        controller.addGraphViewListener(new IncrementalLayoutListener(
-                new IncrLayoutAdapter(layout), portFilter));
+        controller.addGraphViewListener(
+                new IncrementalLayoutListener(
+                        new IncrLayoutAdapter(layout) {
+                            public void nodeDrawn(Object node) {
+                                layout(node);
+                            }
+                        }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -244,8 +249,10 @@ public class ActorController extends AttributeController {
          *  @param node The node, which is assumed to be an entity.
          */
 	public void layout(Object node) {
-	    GraphModel model = getController().getGraphModel();
-	    Iterator nodes = model.nodes(node);
+            GraphModel model = getController().getGraphModel();
+            // System.out.println("layout = " + node);
+            //        new Exception().printStackTrace();
+            Iterator nodes = model.nodes(node);
 	    Vector westPorts = new Vector ();
 	    Vector eastPorts = new Vector ();
 	    Vector southPorts = new Vector ();
@@ -372,8 +379,7 @@ public class ActorController extends AttributeController {
         ////                     private methods                   ////
 
         // re-order the ports according to _ordinal property
-        private
-        void _reOrderPorts( Vector ports ) {
+        private void _reOrderPorts( Vector ports ) {
             int size = ports.size();
             Enumeration enum = ports.elements();
             IOPort port;
