@@ -191,10 +191,12 @@ public class XSLTUtilities {
                     transformer = transformerFactory
                         .newTransformer(new StreamSource(entryURL.toString()));
                 } else {
-                    throw ex;
+                    throw new Exception("Failed to open '" + xslFileName
+                            + "'", ex);
                 }
             } catch (Exception ex2) {
-                throw ex;
+                throw new Exception("Failed to open \"" + xslFileName + "\".\n"
+                        + "Searching classpath threw:\n" + ex2, ex);
             }
         }
         DOMResult result = new DOMResult();
