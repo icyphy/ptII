@@ -1116,6 +1116,10 @@ public class PtolemyUtilities {
     public static SootMethod getEntityMethod;
 
     // SootMethod representing
+    // ptolemy.actor.gui.Configuration findEffigy
+    public static SootMethod findEffigyMethod;
+
+    // SootMethod representing
     // ptolemy.kernel.util.Settable.getExpression();
     public static SootMethod getExpressionMethod;
 
@@ -1636,5 +1640,8 @@ public class PtolemyUtilities {
 
         managerClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.Manager");
+
+        Scene.v().loadClassAndSupport("ptolemy.actor.gui.Configuration");
+        findEffigyMethod = Scene.v().getMethod("<ptolemy.actor.gui.Configuration: ptolemy.actor.gui.Effigy findEffigy(ptolemy.kernel.util.NamedObj)>");
     }
 }
