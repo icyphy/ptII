@@ -613,18 +613,21 @@ public class PtolemyQuery extends Query
     }
 
     /** Return the preferred foreground color for editing the specified
-     *  object.  The default is Color.black, but if the object is an
-     *  instance of NamedObj and it's isOverridden() method returns
-     *  false, then a dark red is returned.
+     *  object.  This returns Color.black, but in the future this might
+     *  be changed to use color for some informative purpose.
      *  @param object The object to be edited.
      */
     public static Color preferredForegroundColor(Object object) {
         Color foreground = Color.black;
+        /* NOTE: This doesn't work very well because when you
+         * start typing on a red entry, it remains red rather
+         * than switching to black to indicate an override.
         if (object instanceof NamedObj) {
             if (!((NamedObj)object).isOverridden()) {
                 foreground = _NOT_OVERRIDDEN_FOREGROUND_COLOR;
             }
         }
+        */
         return foreground;
     }
 
