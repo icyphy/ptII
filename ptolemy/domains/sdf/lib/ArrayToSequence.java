@@ -141,7 +141,7 @@ public class ArrayToSequence extends SDFAtomicActor {
 	    throw new IllegalActionException("ArrayToSequence.fire: The " +
                     "number of elements in the input ArrayToken (" +
                     token.length() + ") is not the same as the token " +
-                    production rate (" + rate + ").");
+                    "production rate (" + rate + ").");
 	}
 
 	Token[] elements = token.arrayValue();

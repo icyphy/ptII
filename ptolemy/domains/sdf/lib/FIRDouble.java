@@ -120,9 +120,9 @@ public class FIRDouble extends FIR {
 
 	// Case the tapsToken matrix because it will be
 	// a matrix with doubles.
-        _taps = new double[tapstoken.getColumnCount()];
+        _taps = new double[_tapsToken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = ((DoubleMatrixToken)tapstoken).getElementAt(0, i);
+            _taps[i] = ((DoubleMatrixToken)_tapsToken).getElementAt(0, i);
         }
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
