@@ -54,6 +54,7 @@ EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	StickyMasses.htm \
 	StickyMassesVergil.htm \
+	StickyMassesNewVersion.htm \
 	SMdiagram.gif \
 	SMphysics.gif \
 	SMresult.gif
@@ -78,6 +79,7 @@ install: all $(PTCLASSJAR)
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer StickyMasses.htm
+	CLASSPATH=$(CLASSPATH) appletviewer StickyMassesNewVersion.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" StickyMasses.xml

@@ -1,10 +1,10 @@
-# Makefile for CT Vehicle to Vehicle demo
+# Makefile for Ptolemy II demonstration
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptolemy/domains/ct/demo/V2V
-
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)
 
@@ -41,18 +39,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	V2V
+PTPACKAGE = 	Satellite
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	V2V.xml
+	Satellite.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	V2V.htm
+	Satellite.htm
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,13 +73,13 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer V2V.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Satellite.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" V2V.xml
+	"$(PTII)/bin/ptolemy" Satellite.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" V2V.xml
+	"$(PTII)/bin/vergil" Satellite.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
