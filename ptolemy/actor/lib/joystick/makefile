@@ -36,8 +36,8 @@ DIRS =		demo
 # Root of the Java directory
 ROOT =          ../../../..
 
-# COMMAPI_DIR is set in $PTII/mk/ptII.mk by running configure
-CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar
+# JOYSTICK_JAR is set in $PTII/mk/ptII.mk by running configure
+CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
