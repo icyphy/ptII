@@ -43,11 +43,15 @@ such objects with their corresponding Class objects.
 @version $Id$
  */
 public class TrackedPropertyMap extends PropertyMap {
+
     /** Create a new TrackedPropertyMap. */
     public TrackedPropertyMap() {
         super();
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add the visitor with the argument class object to the set of visitors
      *  that have visited this object.
@@ -68,6 +72,13 @@ public class TrackedPropertyMap extends PropertyMap {
         return _visitedBySet.remove(c);
     }
 
+    /** Return an iterator over the class objects of the visitors that have
+     *  visited this object.
+     */
+    public Iterator visitorIterator() {
+        return _visitedBySet.iterator();
+    }
+
     /** Return true iff this object was visited by a visitor with the
      *  argument class object.
      */
@@ -75,12 +86,9 @@ public class TrackedPropertyMap extends PropertyMap {
         return _visitedBySet.contains(c);
     }
 
-    /** Return an iterator over the class objects of the visitors that have
-     *  visited this object.
-     */
-    public Iterator visitorIterator() {
-        return _visitedBySet.iterator();
-    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** A set of class objects of the visitors that have visited this
      *  object. The initial capacity is set to 1 to conserve memory.
