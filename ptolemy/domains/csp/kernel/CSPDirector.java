@@ -60,9 +60,9 @@ each actor. The simulation may also be terminated directly by calling the
 terminateSimulation() method on the director.
 <p>
 When all the actors are blocked and there are mutations waiting to be 
-perfromed, this is the end of an iteration. If the simulation is being 
+performed, this is the end of an iteration. If the simulation is being 
 run for more than one iteration, the prefire method in the Director 
-perfroms any neccesary mutations and wakes up any threads waiting for 
+performs any necessary mutations and wakes up any threads waiting for 
 the mutations to be performed.
 <p>
 FIXME: what else could mark the end of an iteration?
@@ -112,8 +112,8 @@ public class CSPDirector extends Director {
     ////                         public methods                    ////
 
   
-    /** Checks for deadLock each time a Actor blocks. Also updates 
-     *  count of number of blocked actores.
+    /** Checks for deadlock each time a Actor blocks. Also updates 
+     *  count of number of blocked actors.
      *  FIXME: need to put in code to account for delays here.
      */
     public void actorBlocked() {
@@ -153,7 +153,7 @@ public class CSPDirector extends Director {
             if (_simulationTerminated) {
                 return; 
                 // simulation has already been terminated so do not need to
-                // terminate it agin!
+                // terminate it again!
             }
             if (_actorsAlive == _actorsBlocked) {
                 // simulation has ended in deadlock, so terminate
@@ -195,7 +195,7 @@ public class CSPDirector extends Director {
 	_simulationTerminated = false;
         return newobj;
     }
-    
+     
     /** Returns the threadGroup in which all the threads corresponding to 
      *  CSP actors are started. If this is an executive director this 
      *  returns null.
@@ -264,8 +264,8 @@ public class CSPDirector extends Director {
     }
     
     /** The action to terminate all actors under control of this local 
-     *  director because a real deadlock has occured. It could also 
-     *  be called when a UI deides to terminate a simulation prematurely.
+     *  director because a real deadlock has occurred. It could also 
+     *  be called when a UI decides to terminate a simulation prematurely.
      *  <p>
      *  FIXME: this method is designed to be used with a local director. 
      *  How should an executive director call the local director to make 

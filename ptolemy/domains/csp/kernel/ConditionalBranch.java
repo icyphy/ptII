@@ -47,12 +47,12 @@ assumed to be the container of the port argument.
 It is also given the identification number of the branch according 
 to the parent.
 <p>
-A conditional branch is created to perfrom a single conditional communication.
-The information it contains in its private memebers is immutable and 
+A conditional branch is created to perform a single conditional communication.
+The information it contains in its private members is immutable and 
 fixed upon creation.
 <p>
 FIXME: does this class want/need to have a notion of workspace?
-FIXME: a bit strange to only use the construtor arguments to set internal 
+FIXME: a bit strange to only use the constructor arguments to set internal 
 fields! 
 
 @author  Neil Smyth
@@ -128,7 +128,7 @@ public abstract class ConditionalBranch {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         prrotected variables                   ////
+    ////                         protected variables                    ////
     
     // The receiver this thread is trying to rendezvous with. It is immutable.
     protected CSPReceiver _receiver;
@@ -139,7 +139,8 @@ public abstract class ConditionalBranch {
     // Has another branch successfully rendezvoused? 
     private boolean _alive = true;
     
-    // The parent this thread is trying to perform a conditional rendezous for.
+    // The parent this thread is trying to perform a conditional 
+    // rendezvous for.
     private CSPActor _parent;
     
     // The identification number of this branch (according to its parent)

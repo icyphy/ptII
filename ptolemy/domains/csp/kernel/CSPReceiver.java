@@ -41,11 +41,11 @@ Receiver for CSP style communication. For rendezvous, the receiver is the key
 synchronization point. It is assumed each receiver has at most one 
 thread trying to send to it and at most one thread trying to receive 
 from it at any one time. The receiver performs the synchronization 
-neccessary for simple rendezvous (get() and put() operations). It 
+necessary for simple rendezvous (get() and put() operations). It 
 also stores the flags that allow conditionalSends and conditionalReceives 
 to know when they can proceed.
 <p>
-FIXME: If more than receiver or sender were alowed, what would this mean?
+FIXME: If more than receiver or sender were allowed, what would this mean?
 Is the synchronization below provable? Or is it just reasoned?
 
 @author Neil Smyth
@@ -79,7 +79,7 @@ public class CSPReceiver implements Receiver {
      *  @exception NoSuchItemException Thrown if this receiver does 
      *   not have a container. It is not possible to get from a 
      *   floating(disconnected, legacy reference) receiver.
-     *  @return The Token transfered by the rendezvous.
+     *  @return The Token transferred by the rendezvous.
      */
     public synchronized Token get() throws NoSuchItemException {   
         Token tmp = _token;
@@ -109,11 +109,11 @@ public class CSPReceiver implements Receiver {
     }
     
     /** Place a Token in the receiver. If a get has already been reached, 
-     *  the Token is transfered and the method returns. If a get has not 
+     *  the Token is transferred and the method returns. If a get has not 
      *  yet been reached, the method delays until a get is reached.
      *  Currently, each receiver assumes it has at most one channels trying 
      *  to receive from it and at most one channel send to it.
-     *  @param t The token being transfered in the rendezvous.
+     *  @param t The token being transferred in the rendezvous.
      */
     /*  /@exception NoSuchItemException Thrown if this receiver does 
      *   not have a container. It is not possible to put to a 
@@ -174,7 +174,7 @@ public class CSPReceiver implements Receiver {
     /** May be obsolete...The parent CSPActor of the conditional branch 
      * to reach the 
      * rendezvous point first. It is needed in the conditionalBranch 
-     * that arives second to check if both branches are the first to 
+     * that arrives second to check if both branches are the first to 
      * succeed for both parent actors.
      * @return The parent actor which created the first conditional
      *   branch to arrive.
@@ -225,7 +225,7 @@ public class CSPReceiver implements Receiver {
      *  FIXME: a null argument should remove it from the IOPort it 
      *  currently belongs to.
      *  @exception IllegalActionException Thrown if this receiver has 
-     *   already benn placed into an IOPort. A receiver can only ever 
+     *   already been placed into an IOPort. A receiver can only ever 
      *   be contained by ne IOPort during its life.
      *  @param parent The IOPort this receiver is to be contained by.
      */
@@ -374,10 +374,10 @@ public class CSPReceiver implements Receiver {
     private CSPDirector _director;
     private long _directorVersion = -1;
 
-    // Flag indicating whather or not a get is waiting at this receiver.  
+    // Flag indicating whether or not a get is waiting at this receiver.  
     private boolean _getWaiting = false;
     
-    // Flag indicating whather or not a get is waiting at this receiver.
+    // Flag indicating whether or not a get is waiting at this receiver.
     private boolean _putWaiting = false;
     
     // obsolete when implement containment
@@ -395,7 +395,7 @@ public class CSPReceiver implements Receiver {
     //receiver is contained by has terminated the simulation.
     private boolean _simulationTerminated = false;
     
-    // The token being transfered during the rendezvous.
+    // The token being transferred during the rendezvous.
     private Token _token;
     
 }  

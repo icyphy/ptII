@@ -1,4 +1,4 @@
-/* Class for perfroming Conditional Receives.
+/* Class for performing Conditional Receives.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -38,17 +38,17 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalReceive
 /**
-Class for executing a conditional receive in a seperate thread. 
+Class for executing a conditional receive in a separate thread. 
 For rendezvous, the receiver is the key synchronization point. 
 ConditionalReceive branches are designed to be used once. Upon instantiation, 
-private memebers are set to the receiver to try to receive from, the parent 
+private members are set to the receiver to try to receive from, the parent 
 object they are performing the conditional rendezvous for, and the 
 identification number of the branch according to the parent.
 <p>
-A ConditionalReceive branch is created to perfrom a single conditional 
-communication. The information it contains in its private memebers is 
+A ConditionalReceive branch is created to perform a single conditional 
+communication. The information it contains in its private members is 
 immutable and fixed upon creation. This class is designed to be executed 
-in a seperate thread. If it succeeds in rendezvousing, it notifies the 
+in a separate thread. If it succeeds in rendezvousing, it notifies the 
 parent actor and terminates. If it cannot rendezvous immediately, it waits 
 until it can rendezvous or until it receives notification that another 
 branch has succeeded , in which case it notifies the parent actor that 
@@ -60,20 +60,20 @@ to the different rendezvous scenarios.
 Case 1: There is a put already waiting at the rendezvous point. In this case 
 the branch attempts to register itself, with the parent actor, as the first 
 branch ready to rendezvous. If it succeeds it performs the rendezvous, 
-notifies the parent that it suceeded and returns. If it is not the first, it 
+notifies the parent that it succeeded and returns. If it is not the first, it 
 keeps on trying to register itself until it finally succeeds or another 
 branch successfully rendezvoused in which case it fails and terminates. Note 
-that a put cannot "go away" so it remians in an innerloop trying to 
+that a put cannot "go away" so it remains in an innerloop trying to 
 rendezvous or failing.
 <br>
 Case 2: There is a conditional send waiting. In this case it tries to 
 register both branches with their parents as the first to try. If it 
 succeeds it performs the transfer, notifies the parent and returns. It 
-performs the registration in two steps, first reistering this branch and 
+performs the registration in two steps, first registering this branch and 
 then registering the other branch. If it successfully registers this branch, 
 but cannot register the other, it unregisters itself as the first branch 
-trying, and starts trying to rendezvous from the begining. This is because 
-the conditional send could "go away". If it is unable to reister itself as 
+trying, and starts trying to rendezvous from the beginning. This is because 
+the conditional send could "go away". If it is unable to register itself as 
 the first branch to try, it again starts trying to rendezvous from the 
 beginning.
 <br>
@@ -125,7 +125,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
              }
              receivers = port.getReceivers();
              if (receivers == null || receivers[channel] == null) {
-                 System.out.println("Warning:rendezvous with a null receiver");
+                 System.out.println("Warning: rendezvous with a null receiver");
                  return;
              }
              if (receivers[channel].length != 1) {
@@ -177,8 +177,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         return;
                     } else if (getReceiver().isPutWaiting()) {
                         // CASE 1: a put is already waiting at the receiver.
-                        // A put cannot dissappear so remain in this part
-                        // of the loop until this branch sucessfully 
+                        // A put cannot disappear so remain in this part
+                        // of the loop until this branch successfully 
                         // rendezvous or dies.
                         while (true) {
                             if (getParent().amIFirst(getBranchNumber())) {
@@ -202,7 +202,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         // this condionalReceive arrived second, it has to 
                         // check if both branches are "first" and if so 
                         // perform transfer & reset state of the receiver. 
-                        // A ConditionalSend can "dissappear" so this 
+                        // A ConditionalSend can "disappear" so this 
                         // part of the loop can exit & return to the top of 
                         // main loop.
                         int id = getBranchNumber();
@@ -244,7 +244,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                     return;
                                 } 
                             }
-                            //can't rendrezvous this time, but still alive
+                            //can't rendezvous this time, but still alive
                             getReceiver()._checkAndWait();
                         }
                     } 
