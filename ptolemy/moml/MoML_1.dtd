@@ -71,7 +71,7 @@
 
 <!ELEMENT link EMPTY>
 <!ATTLIST link insertAt CDATA #IMPLIED
-               insertInsideLink CDATA #IMPLIED
+               insertInsideAt CDATA #IMPLIED
                port CDATA #REQUIRED
                relation CDATA #IMPLIED
                vertex CDATA #IMPLIED>
