@@ -83,6 +83,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	MaximumEntropySpectrum.xml \
+	Periodogram.xml \
+	SmoothedPeriodogram.xml \
 	SmoothedSpectrum.xml \
 	Spectrum.xml \
 	SpectrumPlot.xml \
