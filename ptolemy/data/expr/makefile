@@ -77,11 +77,12 @@ JSRCS = \
 	ExplicitScope.java \
 	FixPointFunctions.java \
 	ModelScope.java \
+        NamedConstantsScope.java \
+        NestedScope.java \
 	Parameter.java \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
 	ParseTreeFreeVariableCollector.java \
-        ParseTreeFunctionDefinitionEvaluator.java \
 	ParseTreeTypeInference.java \
 	ParseTreeVisitor.java \
 	ParseTreeWriter.java \

@@ -39,6 +39,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import ptolemy.data.*;
@@ -384,9 +387,33 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 	
 	public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
 			throws IllegalActionException {
-		ParseTreeFunctionDefinitionEvaluator evaluator =
-				new ParseTreeFunctionDefinitionEvaluator();
-		evaluator.evaluateFunctionDefinition(node, _scope);
+		// collect all free variables in the function definition
+		ParseTreeFreeVariableCollector collector =
+				new ParseTreeFreeVariableCollector();
+		Set freeVariableNames = collector.collectFreeVariables(node);
+		// construct a NamedConstantsScope that maps the free variables to
+		// their current value in the scope
+		Map map = new HashMap();
+		Iterator variableNameIterator = freeVariableNames.iterator();
+		while (variableNameIterator.hasNext()) {
+			String name = (String)variableNameIterator.next();
+			if(_scope != null) {
+				ptolemy.data.Token value = _scope.get(name);
+				if(value != null) {
+					map.put(name, value);
+					continue;
+                }
+			}
+			throw new IllegalActionException(
+                	"The ID " + name + " is undefined.");
+		}
+		NamedConstantsScope constantsScope = new NamedConstantsScope(map);
+		ExpressionFunction definedFunction =
+				new ExpressionFunction(node.getArgumentNameList(),
+						(ASTPtRootNode)node.jjtGetChild(0), constantsScope);
+		FunctionToken result = new FunctionToken(definedFunction);
+		node.setToken(result);
+		return;
 	}
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
@@ -973,4 +1000,48 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
     private ParserScope _scope;
     private ParseTreeTypeInference _typeInference;
+	
+    ///////////////////////////////////////////////////////////////////
+    ////                       inner classes                       ////
+
+	private class ExpressionFunction implements FunctionToken.Function {
+		
+		public ExpressionFunction(List argumentNames, ASTPtRootNode exprRoot,
+				ParserScope freeVariablesScope) {
+			_argumentNames = new ArrayList(argumentNames);
+			_exprRoot = exprRoot;
+			_freeVariablesScope = freeVariablesScope;
+		}
+		
+		public ptolemy.data.Token apply(List args)
+				throws IllegalActionException {
+			if (_parseTreeEvaluator == null) {
+				_parseTreeEvaluator = new ParseTreeEvaluator();
+			}
+			// construct a NamedConstantsScope that contains mappings from
+			// argument names to the given argument values
+			Map map = new HashMap();
+			for (int i = 0; i < args.size(); ++i) {
+				String name = (String)_argumentNames.get(i);
+				ptolemy.data.Token arg = (ptolemy.data.Token)args.get(i);
+				map.put(name, arg);
+			}
+			NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
+			ArrayList listOfScopes = new ArrayList(2);
+			listOfScopes.add(0, argumentsScope);
+			listOfScopes.add(1, _freeVariablesScope);
+			ParserScope evaluationScope = new NestedScope(listOfScopes);
+			return _parseTreeEvaluator.evaluateParseTree(_exprRoot, evaluationScope);
+		}
+		
+		public int getNumberOfArguments() {
+			return _argumentNames.size();
+		}
+
+		private ASTPtRootNode _exprRoot;
+		private List _argumentNames;
+		private ParserScope _freeVariablesScope;
+		private ParseTreeEvaluator _parseTreeEvaluator;
+	}
+
 }
