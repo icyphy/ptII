@@ -54,6 +54,7 @@ import soot.RefType;
 import soot.IntType;
 import soot.Local;
 import soot.Modifier;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
@@ -113,6 +114,7 @@ public class SDFPortInliner implements PortInliner {
         _modelClass = modelClass;
         _model = model;
         _options = options;
+        _debug = PhaseOptions.getBoolean(_options, "debug");
     }
 
     /** Initialize the inliner.  Create communication buffers and index arrays.
@@ -375,7 +377,6 @@ public class SDFPortInliner implements PortInliner {
         _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
                 channelValue, bufferSizeValue, _portToIndexArrayField);
 
-        System.out.println("inlining get at " + stmt);
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
             body.getUnits().insertAfter(_createIndexUpdateInstructions(
@@ -550,7 +551,6 @@ public class SDFPortInliner implements PortInliner {
         _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
                 channelValue, bufferSizeValue, _portToInsideIndexArrayField);
 
-        System.out.println("inlining getInside at " + stmt);
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
             body.getUnits().insertAfter(_createIndexUpdateInstructions(
@@ -1116,9 +1116,10 @@ public class SDFPortInliner implements PortInliner {
                             arrayType,
                             Modifier.PUBLIC);
                     _modelClass.addField(field);
-                    System.out.println("creating field = " + field +
-                            " of size " + bufferSize);
-
+                    if(_debug) {
+                        System.out.println("creating field = " + field +
+                                " of size " + bufferSize);
+                    }
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
 
@@ -1358,7 +1359,10 @@ public class SDFPortInliner implements PortInliner {
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
     private void _createInsideBufferReferences() {
-        System.out.println("creating inside buffer references for " + _model.getFullName());
+        if(_debug) {
+            System.out.println("creating inside buffer references for " 
+                    + _model.getFullName());
+        }
         // Loop over all the ports of the _model
         for (Iterator ports = _model.portList().iterator();
              ports.hasNext();) {
@@ -1368,8 +1372,10 @@ public class SDFPortInliner implements PortInliner {
             _portToTypeNameToInsideBufferField.put(port,
                     typeNameToInsideBufferField);
 
-            System.out.println("port = " + port.getFullName() + " type = " + port.getType());
-
+            if(_debug) {
+                System.out.println("port = " + port.getFullName() +
+                        " type = " + port.getType());
+            }
             // If the port is connected.
             if (port.getWidthInside() > 0) {
                 // Create a field for the indexes into the buffer for that field.
@@ -1828,6 +1834,7 @@ public class SDFPortInliner implements PortInliner {
         return bufferSize;
     }
 
+    private boolean _debug;
     private CompositeActor _model;
     private SootClass _modelClass;
     private Map _options;

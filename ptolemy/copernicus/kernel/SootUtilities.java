@@ -607,10 +607,10 @@ public class SootUtilities {
      *  given class.  Add statements to the given body to initialize the
      *  field from the given local.
      */
-    public static void createAndSetFieldFromLocal(JimpleBody body,
+    public static SootField createAndSetFieldFromLocal(JimpleBody body,
             Local local, SootClass theClass, Type type,
             String name) {
-        createAndSetFieldFromLocal(body, local, theClass,
+        return createAndSetFieldFromLocal(body, local, theClass,
                 type, name, (Unit)body.getUnits().getLast());
     }
 
@@ -619,7 +619,7 @@ public class SootUtilities {
      *  after the given insertion point to initialize the field from
      *  the given local.
      */
-    public static void createAndSetFieldFromLocal(JimpleBody body,
+    public static SootField createAndSetFieldFromLocal(JimpleBody body,
             Local local, SootClass theClass, Type type,
             String name, Unit insertPoint) {
         Chain units = body.getUnits();
@@ -655,6 +655,7 @@ public class SootUtilities {
                         Jimple.v().newInstanceFieldRef(thisLocal, field),
                         castLocal),
                 insertPoint);
+        return field;
     }
 
     /** Create statements that correspond to a for loop and return

@@ -209,8 +209,10 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-            System.out.println("inline inside port body of " +
-                    method + " = " + body);
+            if(_debug) {
+                System.out.println("inline inside port body of " +
+                        method + " = " + body);
+            }
             boolean moreToDo = true;
             while (moreToDo) {
                 moreToDo = _inlineInsideMethodCalls(
@@ -409,61 +411,101 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         }
 
                         if (r.getMethod().getName().equals("isInput")) {
-                                // return true.
+                            if(debug) {
+                                System.out.println(
+                                        "replacing isInput at " 
+                                        + stmt);
+                            } 
                             if (port.isInput()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("isOutput")) {
-                                // return true.
+                            if(debug) {
+                                System.out.println(
+                                        "replacing isOutput at " 
+                                        + stmt);
+                            }   
                             if (port.isOutput()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("isMultiport")) {
-                                // return true.
+                            if(debug) {
+                                System.out.println(
+                                        "replacing isMultiport at " 
+                                        + stmt);
+                            }      
                             if (port.isMultiport()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("getWidth")) {
-                                // Reflect and invoke the same method on our port
-                            Object object = SootUtilities.reflectAndInvokeMethod(
-                                    port, r.getMethod(), argValues);
-                                // System.out.println("method result  = " + constant);
+                            if(debug) {
+                                System.out.println("replacing getWidth at " 
+                                        + stmt);
+                            }  
+                            // Reflect and invoke the same method on our port
+                            Object object = 
+                                SootUtilities.reflectAndInvokeMethod(
+                                        port, r.getMethod(), argValues);
+                            // System.out.println("method result  = " + constant);
                             Constant constant =
-                                SootUtilities.convertArgumentToConstantValue(object);
-
-                                // replace the method invocation.
+                                SootUtilities.convertArgumentToConstantValue(
+                                        object);
+                            
+                            // replace the method invocation.
                             box.setValue(constant);
                         } else if (r.getMethod().getName().equals("hasToken")) {
-                                // return true.
+                            // return true.
+                            if(debug) {
+                                System.out.println("replacing hasToken at " 
+                                        + stmt);
+                            }  
                             box.setValue(IntConstant.v(1));
                         } else if (r.getMethod().getName().equals("hasRoom")) {
-                                // return true.
+                            // return true.
+                            if(debug) {
+                                System.out.println("replacing hasRoom at " + stmt);
+                            }
                             box.setValue(IntConstant.v(1));
                         } else if (r.getMethod().getName().equals("get")) {
-                                // Could be get that takes a channel and returns a token,
-                                // or get that takes a channel and a count and returns
-                                // an array of tokens.
-                                // In either case, replace the get with circular array ref.
+                            // Could be get that takes a channel and
+                            // returns a token, or get that takes a
+                            // channel and a count and returns an
+                            // array of tokens.  In either case,
+                            // replace the get with circular array
+                            // ref.
+                            if(debug) {
+                                System.out.println("replacing get at " + stmt);
+                            }
                             inliner.inlineGet(body, stmt, box, r, port);
 
 
                         } else if (r.getMethod().getName().equals("send")) {
-                                // Could be send that takes a channel and returns a token,
-                                // or send that takes a channel and an array of tokens.
-                                // In either case, replace the send with circular array ref.
-
+                            // Could be send that takes a channel and
+                            // returns a token, or send that takes a
+                            // channel and an array of tokens.  In
+                            // either case, replace the send with
+                            // circular array ref.
+                            if(debug) {
+                                System.out.println("replacing send at " 
+                                        + stmt);
+                            }
                             inliner.inlineSend(body, stmt, r, port);
 
                         } else if (r.getMethod().getName().equals("broadcast")) {
-                                // Broadcasting on a port of zero width does
-                                // nothing.
+                            // Broadcasting on a port of zero width does
+                            // nothing.
                             if (port.getWidth() == 0) {
+                                if(debug) {
+                                    System.out.println(
+                                            "removing width zero broadcast at" 
+                                            + stmt);
+                                }
                                 body.getUnits().remove(stmt);
                             } else {
                                 // Could be broadcast that takes a
@@ -471,6 +513,11 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                                 // array of tokens.  In either case,
                                 // replace the broadcast with circular
                                 // array ref.
+                                if(debug) {
+                                    System.out.println(
+                                            "replacing broadcast at" 
+                                            + stmt);
+                                }
                                 inliner.inlineBroadcast(body, stmt, r, port);
                             }
                         }
@@ -664,35 +711,55 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                                 box.setValue(IntConstant.v(0));
                             }
                         } else if (r.getMethod().getName().equals("getWidth")) {
-                                // Reflect and invoke the same method on our port
+                            // Reflect and invoke the same method on our port
                             Object object = SootUtilities.reflectAndInvokeMethod(
                                     port, r.getMethod(), argValues);
-                                // System.out.println("method result  = " + constant);
+                            // System.out.println("method result  = " + constant);
                             Constant constant =
                                 SootUtilities.convertArgumentToConstantValue(object);
 
-                                // replace the method invocation.
+                            // replace the method invocation.
                             box.setValue(constant);
                         } else if (r.getMethod().getName().equals("hasToken")) {
-                                // return true.
+                            // return true.
+                            if(debug) {
+                                System.out.println("inlining hasToken at " 
+                                        + stmt);
+                            }   
                             box.setValue(IntConstant.v(1));
                         } else if (r.getMethod().getName().equals("hasRoom")) {
-                                // return true.
+                            // return true.
+                            if(debug) {
+                                System.out.println("inlining hasRoom at " 
+                                        + stmt);
+                            }
                             box.setValue(IntConstant.v(1));
                         } else if (r.getMethod().getName().equals("getInside")) {
-                                // Could be get that takes a channel and returns a token,
-                                // or get that takes a channel and a count and returns
-                                // an array of tokens.
-                                // In either case, replace the get with circular array ref.
+                            // Could be get that takes a channel and
+                            // returns a token, or get that takes a
+                            // channel and a count and returns an
+                            // array of tokens.  In either case,
+                            // replace the get with circular array
+                            // ref.
+                            if(debug) {
+                                System.out.println("inlining getInside at " 
+                                        + stmt);
+                            }
                             inliner.inlineGetInside(body, stmt, box, r, port);
 
                         } else if (r.getMethod().getName().equals("sendInside")) {
-                                // Could be send that takes a channel and returns a token,
-                                // or send that takes a channel and an array of tokens.
-                                // In either case, replace the send with circular array ref.
-
+                            // Could be send that takes a channel and
+                            // returns a token, or send that takes a
+                            // channel and an array of tokens.  In
+                            // either case, replace the send with
+                            // circular array ref.
+                            
+                            if(debug) {
+                                System.out.println("inlining sendInside at " 
+                                        + stmt);
+                            }
                             inliner.inlineSendInside(body, stmt, r, port);
-
+                            
                         }
                     }
 

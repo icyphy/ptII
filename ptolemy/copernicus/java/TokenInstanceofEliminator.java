@@ -92,8 +92,8 @@ public class TokenInstanceofEliminator extends BodyTransformer
     {
         JimpleBody body = (JimpleBody)b;
 
-        System.out.println("TokenInstanceofEliminator.internalTransform(" +
-                body.getMethod() + ", " + phaseName + ")");
+//         System.out.println("TokenInstanceofEliminator.internalTransform(" +
+//                 body.getMethod() + ", " + phaseName + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 

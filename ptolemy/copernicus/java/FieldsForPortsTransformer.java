@@ -127,8 +127,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
         _portToFieldMap = new HashMap();
-        _classToObjectMap = new HashMap();
-
+   
         _indexExistingFields(ModelTransformer.getModelClass(),
                 _model);
 
@@ -222,7 +221,8 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
 
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        Entity entity = (Entity)_classToObjectMap.get(type.getSootClass());
+        Entity entity = (Entity)
+            ModelTransformer.getObjectForClass(type.getSootClass());
         if (entity != null) {
             // Then we are dealing with a getPort call on one of the
             // classes we are generating.
@@ -297,10 +297,10 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
                 ModelTransformer.getFieldNameForPort(port, container);
             SootField field;
             if (!theClass.declaresFieldByName(fieldName)) {
-                throw new RuntimeException("Class " + theClass
-                        + " does not declare field "
-                        + fieldName + " for port "
-                        + port.getFullName());
+//                 throw new RuntimeException("Class " + theClass
+//                         + " does not declare field "
+//                         + fieldName + " for port "
+//                         + port.getFullName());
             }
 
             // retrieve the existing field.
@@ -343,8 +343,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
         // the fields that already exist.
         _getPortFields(actorClass, actor,
                 actor);
-        _classToObjectMap.put(actorClass, actor);
-
+   
         // Loop over all the actor instance classes and get
         // fields for ports.
         if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
@@ -366,7 +365,6 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     private Map _options;
     private boolean _debug;
     private static Map _portToFieldMap;
-    private Map _classToObjectMap;
 }
 
 

@@ -125,7 +125,6 @@ public class HSPortInliner implements PortInliner {
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt,
             InvokeExpr expr, TypedIOPort port) {
-        System.out.println("inlining broadcast at " + stmt);
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -169,8 +168,6 @@ public class HSPortInliner implements PortInliner {
      */
     public void inlineGet(JimpleBody body, Stmt stmt,
             ValueBox box, InvokeExpr expr, TypedIOPort port) {
-        System.out.println("inlining get at " + stmt);
-
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -207,8 +204,6 @@ public class HSPortInliner implements PortInliner {
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt,
             ValueBox box, InvokeExpr expr, TypedIOPort port) {
-        System.out.println("inlining getInside at " + stmt);
-
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -244,9 +239,6 @@ public class HSPortInliner implements PortInliner {
      */
     public void inlineSend(JimpleBody body, Stmt stmt,
             InvokeExpr expr, TypedIOPort port) {
-
-        System.out.println("inlining send at " + stmt);
-
         if (expr.getArgCount() != 2) {
             throw new RuntimeException("multirate send not supported.");
         }
@@ -270,8 +262,6 @@ public class HSPortInliner implements PortInliner {
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt,
             InvokeExpr expr, TypedIOPort port) {
-        System.out.println("inlining sendInside at " + stmt);
-
         if (expr.getArgCount() != 2) {
             throw new RuntimeException("multirate sendInside not supported on port "
                     + port.getFullName() + ".");
@@ -344,9 +334,7 @@ public class HSPortInliner implements PortInliner {
                             tokenType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     _modelClass.addField(field);
-                    System.out.println("creating field = " + field);
-
-
+              
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
 

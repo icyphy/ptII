@@ -30,13 +30,7 @@
 package ptolemy.copernicus.java;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
@@ -49,6 +43,7 @@ import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
@@ -72,12 +67,14 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
+import soot.Body;
 import soot.BooleanType;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
@@ -92,17 +89,11 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
+import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
-import soot.jimple.AssignStmt;
-import soot.jimple.IntConstant;
-import soot.jimple.InvokeExpr;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.SpecialInvokeExpr;
-import soot.jimple.Stmt;
-import soot.jimple.StringConstant;
+import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
@@ -303,7 +294,12 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 continue;
             }
 
-            String className = attribute.getClass().getName();
+            SootClass attributeClass = (SootClass)
+                _objectToClassMap.get(attribute);
+            if(attributeClass == null) {
+                attributeClass = Scene.v().loadClassAndSupport(attribute.getClass().getName());
+            }
+            String className = attributeClass.getName();
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(
@@ -350,9 +346,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             // System.out.println("creating new field");
             // Create a new field for the attribute, and initialize
             // it to the the attribute above.
-            SootUtilities.createAndSetFieldFromLocal(body, local,
-                    theClass, attributeType, fieldName);
-
+            SootField field = 
+                SootUtilities.createAndSetFieldFromLocal(body, local,
+                        theClass, attributeType, fieldName);
+            field.addTag(new ValueTag(attribute));
+                    
             createAttributes(body, context, contextLocal,
                     attribute, local, theClass, createdSet);
         }
@@ -390,12 +388,6 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
              ports.hasNext();) {
             Port port = (Port)ports.next();
             //   System.out.println("ModelTransformer: port: " + port);
-            // Ignore PortParameters...
-            if(port instanceof ParameterPort) {
-                updateCreatedSet(entity.getFullName() + "."
-                        + port.getName(),
-                        port, port, createdSet);
-            }
                    
             String className = port.getClass().getName();
             String portName = port.getName(context);
@@ -405,7 +397,32 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     portType);
             body.getLocals().add(portLocal);
 
-            if (createdSet.contains(port.getFullName())) {
+            // Deal with ParameterPorts specially, since they are
+            // created by the PortParameter.  Just use the
+            // portParameter to get a reference to the ParameterPort.
+            if(port instanceof ParameterPort) {
+                updateCreatedSet(entity.getFullName() + "."
+                        + port.getName(),
+                        port, port, createdSet);
+                PortParameter parameter = ((ParameterPort)port).getParameter();
+                Local parameterLocal = Jimple.v().newLocal("parameter",
+                        RefType.v(PtolemyUtilities.portParameterClass));
+                body.getLocals().add(parameterLocal);
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(parameterLocal,
+                                Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                        PtolemyUtilities.getAttributeMethod,
+                                        StringConstant.v(parameter.getName(context)))));
+              
+                // If the class for the object already creates the
+                // port, then get a reference to the existing port.
+                // First assign to temp
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        parameterLocal,
+                                        PtolemyUtilities.portParameterGetPortMethod)));
+            } else if (createdSet.contains(port.getFullName())) {
                 //       System.out.println("already created!");
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
@@ -488,9 +505,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             }
 
             if (!theClass.declaresFieldByName(fieldName)) {
-                SootUtilities.createAndSetFieldFromLocal(body,
-                        portLocal, theClass, RefType.v(className),
-                        fieldName);
+                SootField field = 
+                    SootUtilities.createAndSetFieldFromLocal(body,
+                            portLocal, theClass, RefType.v(className),
+                            fieldName);
+                field.addTag(new ValueTag(port));
             }
             createAttributes(body, context, contextLocal,
                     port, portLocal, theClass, createdSet);
@@ -1171,10 +1190,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         Jimple.v().newAssignStmt(local,
                                 Jimple.v().newCastExpr(entityLocal,
                                         PtolemyUtilities.componentEntityType)));
-                SootUtilities.createAndSetFieldFromLocal(
+                SootField field = SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
-
+                field.addTag(new ValueTag(entity));
+                
                 _ports(body, thisLocal, composite,
                         local, entity, modelClass, createdSet, false);
             } else {
@@ -1196,9 +1216,10 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         composite.getFullName() + "." + entity.getName(),
                         entity, entity, createdSet);
 
-                SootUtilities.createAndSetFieldFromLocal(
+                SootField field = SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
+                field.addTag(new ValueTag(entity));
 
                 _ports(body, containerLocal, container,
                         local, entity, modelClass, createdSet, false);
@@ -1210,8 +1231,8 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
     }
 
     // Create and set external ports.
-    private static void _ports(JimpleBody body, Local containerLocal,
-            Entity container, Local entityLocal,
+    private static void _ports(JimpleBody body, Local contextLocal,
+            Entity context, Local entityLocal,
             Entity entity, EntitySootClass modelClass, HashSet createdSet,
             boolean createFieldsInClass) {
         Entity classObject = (Entity)_findDeferredInstance(entity);
@@ -1227,19 +1248,42 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             Port port = (Port)ports.next();
             //System.out.println("ModelTransformer: port: " + port);
 
-            // FIXME: what about subclasses?
-            String className = "ptolemy.actor.TypedIOPort";
-            RefType portType = RefType.v(PtolemyUtilities.ioportClass);
+                 
+            String className = port.getClass().getName();
+            String portName = port.getName(context);
+            String fieldName = getFieldNameForPort(port, context);
+            RefType portType = RefType.v(className);
+            Local portLocal = Jimple.v().newLocal("port",
+                    portType);
+            body.getLocals().add(portLocal);
 
-            String portName = port.getName(container);
-            String fieldName = getFieldNameForPort(port, container);
-            Local portLocal;
-
-            if (createdSet.contains(port.getFullName())) {
+            // Ignore ParameterPorts, since they are created by the
+            // PortParameter.  Just use the portParameter to get a
+            // reference to the ParameterPort.
+            if(port instanceof ParameterPort) {
+                updateCreatedSet(entity.getFullName() + "."
+                        + port.getName(),
+                        port, port, createdSet);
+                PortParameter parameter = ((ParameterPort)port).getParameter();
+                Local parameterLocal = Jimple.v().newLocal("parameter",
+                        RefType.v(PtolemyUtilities.portParameterClass));
+                body.getLocals().add(parameterLocal);
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(parameterLocal,
+                                Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                        PtolemyUtilities.getAttributeMethod,
+                                        StringConstant.v(parameter.getName(context)))));
+              
+                // If the class for the object already creates the
+                // port, then get a reference to the existing port.
+                // First assign to temp
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        parameterLocal,
+                                        PtolemyUtilities.portParameterGetPortMethod)));
+            } else if (createdSet.contains(port.getFullName())) {
                 //    System.out.println("already created!");
-                portLocal = Jimple.v().newLocal("port",
-                        portType);
-                body.getLocals().add(portLocal);
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
                 // First assign to temp
@@ -1262,11 +1306,15 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 Local local = PtolemyUtilities.createNamedObjAndLocal(
                         body, className,
                         entityLocal, port.getName());
-                createdSet.add(entity.getFullName() + "."
-                        + port.getName());
 //                 updateCreatedSet(entity.getFullName() + "."
 //                         + port.getName(),
 //                         port, port, createdSet);
+                createdSet.add(entity.getFullName() + "."
+                        + port.getName());
+                // Then assign to portLocal.
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                local));
                 if (port instanceof TypedIOPort) {
                     TypedIOPort ioport = (TypedIOPort)port;
                     if (ioport.isInput()) {
@@ -1311,15 +1359,17 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 }
                 portLocal = local;
                 // Create attributes for the port.
-                createAttributes(body, container, containerLocal,
+                createAttributes(body, context, contextLocal,
                         port, portLocal, modelClass, createdSet);
             }
 
             _portLocalMap.put(port, portLocal);
             if (createFieldsInClass &&
                     !modelClass.declaresFieldByName(fieldName)) {
-                SootUtilities.createAndSetFieldFromLocal(body,
-                        portLocal, modelClass, portType, fieldName);
+                SootField field = 
+                    SootUtilities.createAndSetFieldFromLocal(body,
+                            portLocal, modelClass, portType, fieldName);
+                field.addTag(new ValueTag(port));
             }
         }
     }

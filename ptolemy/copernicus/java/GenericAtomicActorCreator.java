@@ -44,6 +44,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
 import soot.FastHierarchy;
@@ -52,6 +53,7 @@ import soot.Local;
 import soot.Modifier;
 import soot.Scene;
 import soot.SootClass;
+import soot.SootField;
 import soot.SootMethod;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
@@ -173,8 +175,6 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         // special casing.
         ModelTransformer.implementExecutableInterface(entityInstanceClass);
 
-        _copyAttributesOtherThanVariable(entity, theClass, options);
-
         {
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
@@ -182,10 +182,14 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             SootMethod method = theClass.getMethodByName("preinitialize");
             JimpleBody body = (JimpleBody)method.getActiveBody();
             Stmt insertPoint = body.getFirstNonIdentityStmt();
-            ModelTransformer.initializeAttributesBefore(body, insertPoint,
-                    entity, body.getThisLocal(),
-                    entity, body.getThisLocal(),
-                    entityInstanceClass);
+            
+            // Do we initialize parameters in preintialize or in the
+            // constructor?
+            // ModelTransformer.initializeAttributesBefore(body,
+            // insertPoint,
+//                     entity, body.getThisLocal(),
+//                     entity, body.getThisLocal(),
+//                     entityInstanceClass);
          
             LocalNameStandardizer.v().transform(body, "at.lns");
             LocalSplitter.v().transform(body, "at.ls");
@@ -223,7 +227,6 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         try {
             Scene.v().setFastHierarchy(new FastHierarchy());
         } catch (Error ex) {
-            System.out.println("foo");
             ex.printStackTrace(System.out);
         }
 
@@ -237,69 +240,6 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 entityInstanceClass.getInitMethod());
 
         return entityInstanceClass;
-    }
-
-    private static void _copyAttributesOtherThanVariable(
-            Entity entity, SootClass entityClass, Map options) {
-        // Loop over all the attributes of the actor
-        for(Iterator attributes = 
-                entity.attributeList(Attribute.class).iterator();
-            attributes.hasNext();) {
-            Attribute attribute = (Attribute) attributes.next();
-            
-            // Ignore attributes that are ignorable.
-            if(ModelTransformer._isIgnorableAttribute(attribute)) {
-                continue;
-            }
-            
-            // PortParameters are handled specially.
-            if(attribute instanceof PortParameter) {
-                continue;
-            }
-
-            // If we have an attribute that derives from
-            // stringAttribute, or Parameter then we need to grab some
-            // code for it. (i.e. FileAttribute, and FileParameter)
-            if((attribute instanceof StringAttribute &&
-                    !attribute.getClass().equals(StringAttribute.class)) ||
-               (attribute instanceof Parameter &&
-                    !attribute.getClass().equals(Parameter.class))) {
-                String className = attribute.getClass().getName();
-                
-                SootClass attributeClass = 
-                    Scene.v().loadClassAndSupport(className);
-                attributeClass.setLibraryClass();
-                String newClassName = 
-                    ModelTransformer.getInstanceClassName(attribute, options);
-                
-                // Create a new class for the attribute.
-                SootClass newClass = SootUtilities.copyClass(
-                        attributeClass, newClassName);
-                // Make sure that we generate code for the new class.
-                newClass.setApplicationClass();
-
-                // Associate the new class with the attribute.
-                ModelTransformer.addAttributeForClass(newClass, attribute);
-
-                // Loop over all the methods and replace construction
-                // of the old attribute with construction of the
-                // copied class.
-                SootUtilities.changeTypesOfFields(entityClass, 
-                        attributeClass, newClass);
-                SootUtilities.changeTypesInMethods(entityClass, 
-                        attributeClass, newClass);
-              
-                // Fold the copied class up to StringAttribute, or parameter
-                SootClass superClass = newClass.getSuperclass();
-                while (superClass != PtolemyUtilities.objectClass &&
-                        superClass != PtolemyUtilities.stringAttributeClass &&
-                        superClass != PtolemyUtilities.parameterClass) {
-                    superClass.setLibraryClass();
-                    SootUtilities.foldClass(newClass);
-                    superClass = newClass.getSuperclass();
-                }
-            }
-        }
     }
 
     private static void _removeAttributeInitialization(SootClass theClass) {

@@ -123,8 +123,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
         _attributeToFieldMap = new HashMap();
-        _classToObjectMap = new HashMap();
-
+    
         _getDirectorSig =
             PtolemyUtilities.getDirectorMethod.getSubSignature();
         _getAttributeSig =
@@ -234,7 +233,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
 
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        NamedObj baseObject = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        NamedObj baseObject = 
+            ModelTransformer.getObjectForClass(type.getSootClass());
         if (baseObject != null) {
             // Then we are dealing with a getAttribute call on one of the
             // classes we are generating.
@@ -329,10 +329,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
                     attribute, container);
 
             if (!theClass.declaresFieldByName(fieldName)) {
-                // FIXME: This should be an exception.
-                System.out.println("Class " + theClass
-                        + " does not declare field for attribute "
-                        + attribute.getFullName());
+//                 System.out.println("Class " + theClass
+//                         + " does not declare field for attribute "
+//                         + attribute.getFullName());
                 continue;
             }
 
@@ -382,8 +381,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
             Port port = (Port)ports.next();
             _getAttributeFields(actorClass, actor, port);
         }
-        _classToObjectMap.put(actorClass, actor);
-
+   
         // Loop over all the actor instance classes and get
         // fields for ports.
         if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
@@ -405,7 +403,6 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
     private Map _options;
     private boolean _debug;
     private Map _attributeToFieldMap;
-    private Map _classToObjectMap;
     private String _getDirectorSig;
     private String _getAttributeSig;
 }

@@ -35,7 +35,6 @@ import ptolemy.actor.Manager;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
@@ -257,10 +256,6 @@ public abstract class KernelMain {
     /** The CompositeActor we are generating code for.
      */
     protected CompositeActor _toplevel;
-
-    /** The MoMLParser for parsing models.
-     */
-    protected MoMLParser _parser = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -105,7 +105,7 @@ public class Main extends KernelMain {
                    LibraryUsageReporter.v(),
                    "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
        }
-       /*
+       
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
        
        addTransform(pack, "wjtp.ls7",
@@ -209,7 +209,7 @@ public class Main extends KernelMain {
                    LibraryUsageReporter.v(),
                    "outFile:" + _outputDirectory + "/jimple2/jarClassList.txt");
        }
-
+       /*
        // Set about removing references to ports.
        // Anywhere where a method is called on a port, replace the
        // method call with an inlined version of the method.

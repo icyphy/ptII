@@ -77,6 +77,7 @@ JSRCS = \
 	NamedObjEqualityEliminator.java \
 	ParseTreeCodeGenerator.java \
 	PortInliner.java \
+	ReplaceComplexParameters.java \
 	SDFPortInliner.java \
 	TestApplication.java \
 	TokenConstructorAnalysis.java \

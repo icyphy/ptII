@@ -165,50 +165,66 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
                     Value left = binop.getOp1();
                     Value right = binop.getOp2();
                     // handle nulls
-                    if (left.getType() instanceof NullType &&
-                            right.getType() instanceof NullType) {
+                    NamedObj leftObject = null;
+                    NamedObj rightObject = null;
+                    if (left.getType() instanceof NullType) {
+                        leftObject = null;
+                    } else if (left.getType() instanceof RefType) {
+                       RefType leftType = (RefType)left.getType(); 
+                       SootClass leftClass = leftType.getSootClass();
+                       if (SootUtilities.derivesFrom(leftClass,
+                                   PtolemyUtilities.namedObjClass)) {
+                           try {
+                               leftObject =
+                                   getNamedObjValue(method, (Local)left,
+                                           stmt, localDefs, localUses);
+                           } catch (Exception ex) {
+                                // Ignore... We cannot determine the
+                                // value of the object.
+                               continue;
+                           }
+                       } else {
+                           continue;
+                       }
+                    } else {
+                        continue;
+                    }
+                    if (right.getType() instanceof NullType) {
+                        rightObject = null;
+                    } else if (right.getType() instanceof RefType) {
+                        RefType rightType = (RefType)right.getType();
+                        SootClass rightClass = rightType.getSootClass();
+                        if (SootUtilities.derivesFrom(rightClass,
+                                    PtolemyUtilities.namedObjClass)) {
+                            try {
+                                rightObject =
+                                    getNamedObjValue(method, (Local)right,
+                                            stmt, localDefs, localUses);
+                            } catch (Exception ex) {
+                                // Ignore... We cannot determine the
+                                // value of the object.
+                                continue;
+                            }
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
+                    //   System.out.println("leftObject = "
+                    //          + leftObject);
+                    //  System.out.println("rightObject = "
+                    //        + rightObject);
+                    if (leftObject == rightObject) {
                         binop.getOp1Box().setValue(
                                 IntConstant.v(0));
                         binop.getOp2Box().setValue(
                                 IntConstant.v(0));
-                    } else if (left.getType() instanceof RefType &&
-                            right.getType() instanceof RefType) {
-                        RefType leftType = (RefType)left.getType();
-                        RefType rightType = (RefType)right.getType();
-                        SootClass leftClass = leftType.getSootClass();
-                        SootClass rightClass = rightType.getSootClass();
-                        if (SootUtilities.derivesFrom(leftClass,
-                                PtolemyUtilities.namedObjClass) &&
-                                SootUtilities.derivesFrom(rightClass,
-                                        PtolemyUtilities.namedObjClass)) {
-                            try {
-                                NamedObj leftObject =
-                                    getNamedObjValue(method, (Local)left,
-                                            stmt, localDefs, localUses);
-                                NamedObj rightObject =
-                                    getNamedObjValue(method, (Local)right,
-                                            stmt, localDefs, localUses);
-                                //   System.out.println("leftObject = "
-                                //          + leftObject);
-                                //  System.out.println("rightObject = "
-                                //        + rightObject);
-
-                                if (leftObject == rightObject) {
-                                    binop.getOp1Box().setValue(
-                                            IntConstant.v(0));
-                                    binop.getOp2Box().setValue(
-                                            IntConstant.v(0));
-                                } else {
-                                    binop.getOp1Box().setValue(
-                                            IntConstant.v(0));
-                                    binop.getOp2Box().setValue(
-                                            IntConstant.v(1));
-                                }
-                            } catch (Exception ex) {
-                                // Ignore... We cannot determine the
-                                // value of the object.
-                            }
-                        }
+                    } else {
+                        binop.getOp1Box().setValue(
+                                IntConstant.v(0));
+                        binop.getOp2Box().setValue(
+                                IntConstant.v(1));
                     }
                 }
             }

@@ -1363,8 +1363,15 @@ public class PtolemyUtilities {
     // Soot Class representing the ptolemy.kernel.Port class.
     public static SootClass portClass;
 
+    // Soot Class representing the
+    // ptolemy.actor.parameters.PortParameter class.
+    public static SootClass portParameterClass;
+
     // Soot Method representing PortParameter.getPort().
     public static SootMethod portParameterGetPortMethod;
+
+    // Soot Method representing PortParameter.update().
+    public static SootMethod portParameterUpdateMethod;
 
     // Soot Method representing the
     // ptolemy.actor.TypedIOPort.setTypeEquals method.
@@ -1616,9 +1623,13 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
         ioportType = RefType.v(ioportClass);
 
-        Scene.v().loadClassAndSupport("ptolemy.actor.parameters.PortParameter");
+        portParameterClass = 
+            Scene.v().loadClassAndSupport("ptolemy.actor.parameters.PortParameter");
         portParameterGetPortMethod = 
             Scene.v().getMethod("<ptolemy.actor.parameters.PortParameter: ptolemy.actor.parameters.ParameterPort getPort()>");
+        portParameterUpdateMethod = 
+            Scene.v().getMethod("<ptolemy.actor.parameters.PortParameter: void update()>");
+
         portSetTypeMethod =
             Scene.v().getMethod("<ptolemy.actor.TypedIOPort: void setTypeEquals(ptolemy.data.type.Type)>");
 

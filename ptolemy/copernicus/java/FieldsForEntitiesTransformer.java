@@ -258,10 +258,12 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         }
     }
 
-    public void _createContainerField(SootClass theClass) {
+    public static void _createContainerField(SootClass theClass) {
         NamedObj correspondingObject = 
             ModelTransformer.getObjectForClass(theClass);
         // Create a field referencing the container, for all but the top level.
+    //     System.out.println("theClass = " + theClass);
+//         System.out.println("object = " + correspondingObject);
         if(!correspondingObject.equals(_model)) {
             Entity container = (Entity)correspondingObject.getContainer();
             SootClass containerClass = 
@@ -272,6 +274,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                     Modifier.PUBLIC);
            
             theClass.addField(field);
+            
+            field.addTag(new ValueTag(container));
 
             ModelTransformer.addFieldForEntity(field, container);
             
@@ -312,7 +316,9 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
     }
 
     private void _replaceEntityCalls(SootClass theClass) {
-        System.out.println("replacing entity calls in " + theClass);
+        if(_debug) {
+            System.out.println("replacing entity calls in " + theClass);
+        }
         NamedObj correspondingObject = ModelTransformer.getObjectForClass(theClass);
 
         // Replace calls to entity method with field references.
@@ -496,7 +502,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         return null;
     }
 
-    private CompositeActor _model;
+    private static CompositeActor _model;
     private Map _options;
     private boolean _debug;
 }

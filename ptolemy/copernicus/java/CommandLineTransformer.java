@@ -174,7 +174,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
             if (!method.getName().equals("<init>"))
                 continue;
 
-            System.out.println("method = " + method);
+            //  System.out.println("method = " + method);
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             Chain units = body.getUnits();
             Stmt insertPoint = (Stmt)units.getLast();
@@ -389,7 +389,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
         for (Iterator methods = mainClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            System.out.println("method = " + method.toString());
+            //  System.out.println("method = " + method.toString());
             SootMethod method2 = Scene.v().getMethod(method.toString());
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
@@ -421,7 +421,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
      */
     private void _insertIterateCalls(Body body, Unit unit, SootClass mainClass,
             SootClass modelClass, Local modelLocal, Map options) {
-        System.out.println("modelClass = " + modelClass);
+        //  System.out.println("modelClass = " + modelClass);
         Chain units = body.getUnits();
 
         int iterationLimit = PhaseOptions.getInt(options, "iterations");

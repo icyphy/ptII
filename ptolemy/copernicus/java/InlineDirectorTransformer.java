@@ -40,6 +40,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -153,8 +155,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
         MakefileWriter.addMakefileSubstitution("@extraClassPath@", "");
 
         try {
-            if (model.getDirector() instanceof SDFDirector) {
-      
+            if (model.getDirector() instanceof SDFDirector) {      
                 _inlineSDFDirector(model, modelClass, phaseName, options);
             } else if (model.getDirector() instanceof HSDirector ||
                     model.getDirector() instanceof FSMDirector) {
@@ -663,10 +664,10 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
-            ModelTransformer.initializeAttributesBefore(body, insertPoint,
-                    model, body.getThisLocal(),
-                    model, body.getThisLocal(),
-                    modelClass);
+//             ModelTransformer.initializeAttributesBefore(body, insertPoint,
+//                     model, body.getThisLocal(),
+//                     model, body.getThisLocal(),
+//                     modelClass);
                     
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -1113,10 +1114,10 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
-            ModelTransformer.initializeAttributesBefore(body, insertPoint,
-                    model, body.getThisLocal(),
-                    model, body.getThisLocal(),
-                    modelClass);
+//             ModelTransformer.initializeAttributesBefore(body, insertPoint,
+//                     model, body.getThisLocal(),
+//                     model, body.getThisLocal(),
+//                     modelClass);
             
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -1557,10 +1558,10 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
-            ModelTransformer.initializeAttributesBefore(body, insertPoint,
-                    model, body.getThisLocal(),
-                    model, body.getThisLocal(),
-                    modelClass);
+//             ModelTransformer.initializeAttributesBefore(body, insertPoint,
+//                     model, body.getThisLocal(),
+//                     model, body.getThisLocal(),
+//                     modelClass);
      
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
@@ -1685,10 +1686,41 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                     PtolemyUtilities.tokenType);
             body.getLocals().add(tokenLocal);
 
+            // Update PortParameters.
+            for (Iterator parameters = model.attributeList(PortParameter.class).iterator();
+                 parameters.hasNext();) {
+                PortParameter parameter = (PortParameter)parameters.next();
+                String fieldName = ModelTransformer.getFieldNameForAttribute(
+                        parameter, model);
+                SootField field = modelClass.getFieldByName(fieldName);
+                RefType fieldType = (RefType)field.getType();
+                Local parameterLocal = Jimple.v().newLocal("parameter",
+                        fieldType);
+                SootClass fieldClass = fieldType.getSootClass();
+                
+                body.getLocals().add(parameterLocal);
+                // Get a reference to the port parameter.
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(parameterLocal,
+                                Jimple.v().newInstanceFieldRef(
+                                        thisLocal, field)),
+                        insertPoint);
+                // Invoke the update() method.
+                units.insertBefore(
+                        Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(parameterLocal,
+                                        fieldClass.getMethod(
+                                                PtolemyUtilities.portParameterUpdateMethod.getSubSignature()))),
+                        insertPoint);
+            }
+
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
+                if(port instanceof ParameterPort) {
+                    continue;
+                }
                 int rate;
                 rate = SDFUtilities.getTokenConsumptionRate(port);
                

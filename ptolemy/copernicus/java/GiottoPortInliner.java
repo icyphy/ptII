@@ -54,6 +54,7 @@ import soot.IntType;
 import soot.RefType;
 import soot.Local;
 import soot.Modifier;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
@@ -91,6 +92,7 @@ public class GiottoPortInliner implements PortInliner {
         _modelClass = modelClass;
         _model = model;
         _options = options;
+        _debug = PhaseOptions.getBoolean(_options, "debug");
     }
 
     public SootField getBufferField(IOPort port, ptolemy.data.type.Type type) {
@@ -239,8 +241,6 @@ public class GiottoPortInliner implements PortInliner {
 
         Value channelValue = expr.getArg(0);
 
-        System.out.println("inlining get at " + stmt);
-
         _getBuffer(_modelClass, body,
                 stmt, port, port.getType(), bufferLocal,
                 _portToTypeNameToBufferField);
@@ -367,8 +367,6 @@ public class GiottoPortInliner implements PortInliner {
         body.getLocals().add(returnLocal);
 
         Value channelValue = expr.getArg(0);
-
-        System.out.println("inlining getInside at " + stmt);
 
         _getBuffer(_modelClass, body,
                 stmt, port, port.getType(), bufferLocal,
@@ -767,7 +765,10 @@ public class GiottoPortInliner implements PortInliner {
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
-        System.out.println("creating  buffer reference for " + port + " type = " + type);
+        if(_debug) {  
+            System.out.println("creating  buffer reference for " + port 
+                    + " type = " + type);
+        }
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
@@ -821,7 +822,10 @@ public class GiottoPortInliner implements PortInliner {
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
     private void _createInsideBufferReferences() {
-        System.out.println("creating inside buffer references for " + _model.getFullName());
+        if(_debug) {
+            System.out.println("creating inside buffer references for "
+                    + _model.getFullName());
+        }
         // Loop over all the ports of the _model
         for (Iterator ports = _model.portList().iterator();
              ports.hasNext();) {
@@ -831,8 +835,10 @@ public class GiottoPortInliner implements PortInliner {
             _portToTypeNameToInsideBufferField.put(port,
                     typeNameToInsideBufferField);
 
-            System.out.println("port = " + port.getFullName() + " type = " + port.getType());
-
+            if(_debug) {
+                System.out.println("port = " + port.getFullName() 
+                        + " type = " + port.getType());
+            }
 
             // If the port is an input, then it might have to
             // convert to multiple inside types.  If the port is
@@ -1041,6 +1047,7 @@ public class GiottoPortInliner implements PortInliner {
         return set;
     }
 
+    private boolean _debug;
     private CompositeActor _model;
     private SootClass _modelClass;
     private Map _options;

@@ -33,7 +33,7 @@ package ptolemy.copernicus.java;
 import soot.tagkit.AttributeValueException;
 import soot.tagkit.Tag;
 
-
+import soot.SootField;
 //////////////////////////////////////////////////////////////////////////
 //// ValueTag
 /**
@@ -69,6 +69,18 @@ public class ValueTag implements Tag {
      */
     public byte[] getValue() throws AttributeValueException {
         return new byte[0];
+    }
+
+    /** Return the object of the tag of the given field.
+     *  If the field does not have a value tag, then return null.
+     */
+    public static Object getFieldObject(SootField field) {
+        ValueTag tag = (ValueTag)field.getTag("_CGValue");
+        if (tag == null) {
+            return null;
+        } else {
+            return tag.getObject();
+        }
     }
 
     private Object _object;

@@ -55,9 +55,20 @@ named obj locals.
 */
 public class NamedObjAnalysis {
     public NamedObjAnalysis(SootMethod method, NamedObj thisBinding) {
+        _errorObject = new NamedObj();
+        try {
+            _errorObject.setName("Error");
+        } catch (Exception ex) {
+            // Ignore..
+        }
         JimpleBody body = (JimpleBody)method.getActiveBody();
         _localToObject = new HashMap();
-        _set(body.getThisLocal(), thisBinding);
+        if(method.isStatic()) {
+  //           System.out.println("Ignoring this binding for static method: "
+//                     + method);
+        } else {
+            _set(body.getThisLocal(), thisBinding);
+        }
         _notDone = true;
         while(_notDone) {
             _notDone = false;
@@ -79,13 +90,13 @@ public class NamedObjAnalysis {
                             }
                         } else if (rightValue instanceof FieldRef) {
                             SootField field = ((FieldRef)rightValue).getField();
-                            _set(local, _getFieldValueTag(field));
+                            _set(local, _getFieldObject(field));
                         }
                     } else if(stmt.getLeftOp() instanceof FieldRef) {
                         if(rightValue instanceof Local) {
                             SootField field = 
                                 ((FieldRef)stmt.getLeftOp()).getField();
-                            _set((Local)rightValue, _getFieldValueTag(field));
+                            _set((Local)rightValue, _getFieldObject(field));
                         }
                     } else {
                         // Ignore..  probably not a named obj anyway.
@@ -108,7 +119,12 @@ public class NamedObjAnalysis {
         }
     }
     
-    public NamedObj _getFieldValueTag(SootField field) {
+    /** Retrieve the field value tag for the given field and 
+     *  return its value.  If the field does not point to a namedObj,
+     *  then return null.  If the field does not have a value tag, then
+     *  return a unique namedObj.
+     */
+    private NamedObj _getFieldObject(SootField field) {
         if(field.getType() instanceof RefType &&
                 SootUtilities.derivesFrom(
                         ((RefType)field.getType()).getSootClass(), 
@@ -130,8 +146,11 @@ public class NamedObjAnalysis {
     }
 
     private void _set(Local local, NamedObj object) {
+//         System.out.println("setting local " + local + 
+//                 " to value of " + object);
         Object current = _localToObject.get(local);
-        if(object == null) {
+//         System.out.println("current = " + current);
+         if(object == null) {
             // No new information.
             return;
         } else if(current != null) {
@@ -149,7 +168,7 @@ public class NamedObjAnalysis {
         }
     }
 
-    private NamedObj _errorObject = new NamedObj();
+    private NamedObj _errorObject;
     private Map _localToObject;
     private boolean _notDone;
 }

@@ -389,9 +389,9 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                             if (expr.getMethod().getName().equals("<init>") &&
                                     modifiedConstructorClassList.contains(
                                             declaringClass)) {
-                                System.out.println(
-                                        "replacing constructor invocation = "
-                                        + unit + " in method " + method);
+                                // System.out.println(
+//                                         "replacing constructor invocation = "
+//                                         + unit + " in method " + method);
                                 SootMethod newConstructor = 
                                     declaringClass.getMethodByName("<init>");
                                 if(newConstructor.getParameterCount() == 1) {
@@ -475,6 +475,16 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                         theClass.getFields().remove(field);
                     }
                 }
+                // If any arguments are removable, then remove the method.
+              //   for (Iterator params = method.getParameterTypes().iterator();
+//                      params.hasNext();) {
+//                     Type type = (Type)params.next();
+//                     if (_isRemovableType(type)) {
+//                         System.out.println("removing method with removable parameters = " + method);
+//                         theClass.removeMethod(method);
+//                         break;
+//                     }
+//                 }
             }
         }/*
           */
