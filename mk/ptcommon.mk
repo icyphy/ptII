@@ -235,7 +235,7 @@ makefiles: makefile
 ##############
 # Java rules
 
-.SUFFIXES: .class .java
+.SUFFIXES: .class .java .jskel
 .java.class:
 	rm -f `basename $< .java`.class
 	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" $(JAVAC) $(JFLAGS) $<
@@ -304,10 +304,12 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 	CLASSPATH="$(CLASSPATH)" netscape $(TESTHTML)
 
 # Build the jar file
+# OTHER_FILES_TO_BE_JARED is used in ptolemy/vergil/lib/makefile
 jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
 	(cd $(ROOT); rm -f $(ME)/$@; \
 		$(JAR) cf $(ME)/$@ \
+			$(OTHER_FILES_TO_BE_JARED) \
 			$(ME)/*.class)
 subjars:
 	@if [ "x$(DIRS)" != "x" ]; then \
