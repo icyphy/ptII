@@ -46,11 +46,16 @@ it is connected to a dangling Relation.
 */
 public class Relation extends Node {
     /** 
+     */	
+    public Relation() {
+	super();
+    }
+
+    /** 
      * @param name The name of the Relation.
      */	
     public Relation(String name) {
 	super(name);
-	_links = null;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -138,6 +143,13 @@ public class Relation extends Node {
 	     return 0;
 	}
         return _links.size();
+    }
+
+    /** Generate a Relation object from a String.
+     *  FIXME: How should this method be implemented??
+     */
+    public static Relation valueOf(String string) {
+        return new Relation(string);
     }
 
     //////////////////////////////////////////////////////////////////////////

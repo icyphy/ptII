@@ -48,6 +48,7 @@ JSRCS = \
 	FlowStar.java \
 	Galaxy.java \
 	GenericPort.java \
+	GenericPortForTcl.java \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \

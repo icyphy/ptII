@@ -40,6 +40,12 @@ A Port is the interface between Entities and Relations.
 */
 public class Port extends GenericPort {
     /** 
+     */	
+    public Port() {
+	 super();
+    }
+
+    /** 
      * @param name The name of the Port.
      */	
     public Port(String name) {
@@ -102,7 +108,7 @@ public class Port extends GenericPort {
     /** Return the name of this Port's Relation. Return null if
      *  the Relation is null.
      */	
-    public String getRelation() {
+    public String getRelationName() {
 	if( relation_ == null ) {
 	     return null;
 	}
