@@ -1,23 +1,34 @@
 #!/bin/sh
 # Fix the copyright date
-#-[Wed Mar 17 14:59:14 2004 by cxh]-
+#  $Id$
 #
 # The way to run this is to use $PTII/adm/bin/ptIItxtfiles to generate
 # a list of files and then run this script on that over and over
 # again until all the bogus copyrights have been found
 
 # 1. Check out a fresh tree in a separate directory 
-#    cd ~/tmp; cvs -d :ext:gigasource:/home/cvs co ptII
+#    PtII:  cd ~/tmp; cvs -d :ext:gigasource:/home/cvs co ptII
+#    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
+#
 # 2. Remove ptII/vendors
+#
 # 3. Generate a list of text files
-#   cd ptII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
+#    cd ptII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
+#    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
+#
 # 4. Update the script
 #    - Update the year regex in the lines marked 'EVERY_YEAR' below
+#
 # 5. Run the script in testing mode:
-#    cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
+#    PtII:  cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
+#    Metro: cat /tmp/f | xargs $METRO/adm/bin/fixcopyright -n >& /tmp/fc.txt
+#
 # 6. Check the output in /tmp/fc.txt
+#
 # 7. Run it for real:
-#    cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
+#    PtII:  cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
+#    Metro: cat /tmp/f | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
+#
 # 8. Do a clean checkout somewhere and rebuild and test
 #    cd ~/tmp_2; cvs -d :ext:gigasource:/home/cvs co ptII
 #    make fast
@@ -73,22 +84,22 @@ cd $topdir
 }
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2003\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2004\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2003"
+LOGMESSAGE="Changed copyright to 2004"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2003/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2004/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2003"
+LOGMESSAGE="Changed copyright to 2004"
 
 search $@
 
