@@ -61,7 +61,7 @@ The setThread() and getThread() methods serve this purpose.
 @see ptolemy.domains.odf.kernel.ODFReceiver
 */
 
-public class TimedQueueReceiver {
+public class TimedQueueReceiver implements Receiver {
 
     /** Construct an empty queue with no container.
      */
@@ -228,10 +228,10 @@ public class TimedQueueReceiver {
      *  If the queue is full, throw a NoRoomException. Update the
      *  RcvrTimeTriple entry in the ODFThread which manages this receiver.
      * @param token The token to put on the queue.
+     */
     public void put(Token token) {
         put( token, _lastTime );
     }
-     */
 
     /** Put a token on the queue with the specified time stamp and set
      *  the value of the lastTime flag to be equal to this time stamp.
