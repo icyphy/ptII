@@ -590,6 +590,11 @@ public class DEDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         _realStartTime = System.currentTimeMillis();
+        if (!_isEmbedded() && getStartTime() > getStopTime()) {
+            throw new IllegalActionException(this,
+                    " startTime must be less than the stopTime.");
+        }
+        _exceedStopTime = false;
         super.initialize();
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
@@ -625,9 +630,10 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-
-        if (_noMoreActorsToFire) {
-            return false;
+        //boolean  = ((BooleanToken)stopWhenQueueIsEmpty.getToken()).
+        //    booleanValue();
+        if (_noMoreActorsToFire && _exceedStopTime) {
+            return false; 
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
@@ -996,6 +1002,7 @@ public class DEDirector extends Director {
                     if (_debugging) {
                         _debug("Current time has passed the stop time.");
                     }
+                    _exceedStopTime = true;
                     return null;
                 }
 
@@ -1247,6 +1254,10 @@ public class DEDirector extends Director {
     // Set to true when it's time to end the execution.
     private boolean _noMoreActorsToFire = false;
 
+    // Set to true when the time stamp of the token to be dequeue has
+    // exceeded the stopTime.
+    private boolean _exceedStopTime = false;
+    
     // The real time at which the model begins executing.
     private long _realStartTime = 0;
 
