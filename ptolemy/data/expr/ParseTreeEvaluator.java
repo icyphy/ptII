@@ -685,17 +685,24 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         for(int i = 1; i < numChildren; i++) {
             int times = 1;
             ptolemy.data.Token token = node.jjtGetChild(i).getToken();
+            // Note that we check for ScalarTokens because anything
+            // that has a meaningful intValue() method, such as
+            // UnsignedByteToken will also work here.
             if(!(token instanceof ScalarToken)) {
                 throw new IllegalActionException(
-                        "Exponent must be an integer.\n" +
-                        "Use pow(10,3.5) for non-integer exponents");
+                        "Exponent must be ScalarToken and have a valid "
+                        + "lossless conversion to integer. Integer or "
+                        + "unsigned byte meet these criteria.\n"
+                        + "Use pow(10,3.5) for non-integer exponents");
             }
             try {
                 times = ((ptolemy.data.ScalarToken)token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(
-                        "Exponent must be an integer.\n" +
-                        "Use pow(10,3.5) for non-integer exponents");
+                        "Exponent must have a valid "
+                        + "lossless conversion to integer. Integer or "
+                        + "unsigned byte meet this criterion.\n"
+                        + "Use pow(10,3.5) for non-integer exponents");
             }
 
             result = result.pow(times);
