@@ -7,7 +7,8 @@ If an executed model refs other files, then those files should be relative
 	to the model, not to the cwd of the editor.
 In TimedSource, attributeChanged triggers a fireAt().  What happens if 
 	an attribute changes before fireAt can be called?
-Exception reporting window doesn't grow vertically.
+Snap off port isn't accurate.
+GraphControllers should be able to report errors in a systematic way.
 
 TODO:
 Snap to Grid.
@@ -37,3 +38,6 @@ Director specification.
 Printing.
 Better parameter configuration.
 Better layout for Palette.
+Exception reporting window doesn't grow vertically.
+Mutation mechanism shouldn't always call wrapup.
+SaveAs doesn't change model title.

@@ -52,6 +52,7 @@ JSRCS = \
 	MoMLViewerApplet.java \
 	Module.java \
 	Service.java \
+	VergilApplet.java \
 	VergilApplication.java \
 	VergilDocument.java \
 	VergilDocumentFactory.java \

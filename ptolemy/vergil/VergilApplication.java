@@ -56,6 +56,8 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.awt.print.PrinterException;
 import java.awt.print.PageFormat;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -98,46 +100,46 @@ public class VergilApplication extends MDIApplication {
      * for this application and open a starting document using the default
      * document factory.
      */
-    protected VergilApplication() {
+    protected VergilApplication(AppContext context) {
         super();
 
-        // Create local objects
-	//JTreePane treepane = new JTreePane(".");
-       	
-	DesktopFrame frame = new DesktopFrame(this, new JPanel());
-        setApplicationFrame(frame);
-    
-        // Create and initialize the storage policy
-        DefaultStoragePolicy storage = new DefaultStoragePolicy();
-        setStoragePolicy(storage);
-	FileFilter filter = new FileFilter() {
-	    public boolean accept(File file) {
-		if(file.isDirectory()) {
-		    return true;
-		}
-		else {
-		    return GUIUtilities.getFileExtension(file).
-                        toLowerCase().equals("xml");
-		}
-	    }
-	    public String getDescription() {
-		return "XML files";
-	    }
-	};
-        JFileChooser chooser;
-        chooser = storage.getOpenFileChooser();
-        chooser.addChoosableFileFilter(filter);
-        chooser.setFileFilter(filter);
+        // Initialize behavioral objects for superclass
+        DesktopContext frame = new DesktopContext(context, new JPanel());
+        setAppContext(frame);
 
-        chooser = storage.getSaveFileChooser();
-        chooser.addChoosableFileFilter(filter);
-        chooser.setFileFilter(filter);
-    
-        // _incrementalLayout = new LevelLayout();
+        // Create and initialize the storage policy
+        try {
+	    DefaultStoragePolicy storage = new DefaultStoragePolicy();
+	    setStoragePolicy(storage);
+	    FileFilter filter = new FileFilter() {
+		public boolean accept(File file) {
+		    if(file.isDirectory()) {
+			return true;
+		    }
+		    else {
+			return GUIUtilities.getFileExtension(file).
+                        toLowerCase().equals("xml");
+		    }
+		}
+		public String getDescription() {
+		    return "XML files";
+		}
+	    };
+	    JFileChooser chooser;
+	    chooser = storage.getOpenFileChooser();
+	    chooser.addChoosableFileFilter(filter);
+	    chooser.setFileFilter(filter);
+	    
+	    chooser = storage.getSaveFileChooser();
+	    chooser.addChoosableFileFilter(filter);
+	    chooser.setFileFilter(filter);
+	} catch (SecurityException ex) {
+	    // FIXME: create a new "NoStoragePolicy"
+	    System.out.println(ex.getMessage());
+	}
 
         // Initialize the menubar, toolbar, and palettes
-        _initializeMenuBar(frame.getJMenuBar());
-        _initializeToolBar(frame.getJToolBar());
+        _initializeActions(frame.getJMenuBar(), frame.getJToolBar());
 	JPanel toolBarPane = frame.getToolBarPane();
 	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
 
@@ -145,7 +147,7 @@ public class VergilApplication extends MDIApplication {
         Image iconImage = getResources().getImage("GraphIconImage");
 
         frame.setFrameIcon(icon);
-        frame.setIconImage(iconImage);
+	frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
 
@@ -155,12 +157,14 @@ public class VergilApplication extends MDIApplication {
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
         new ptolemy.vergil.debugger.DebuggerModule(this);
 	
+	frame.setVisible(true);
+
 	// Start with a new document.
 	// This is kindof
 	// bogus, but it is not easy to fire the action manually.
 	Action action = getAction(DefaultActions.NEW);
 	// FIXME this is really a horrible horrible hack.
-	javax.swing.Timer timer = new javax.swing.Timer(200, action);
+	javax.swing.Timer timer = new javax.swing.Timer(500, action);
 	timer.setRepeats(false);
 	timer.start();
     }
@@ -194,7 +198,7 @@ public class VergilApplication extends MDIApplication {
      * Add the menu to the menu bar of this application.
      */
     public void addMenu(JMenu menu) {
-	JFrame frame = getApplicationFrame();
+	AppContext frame = getAppContext();
 	if(frame == null) return;
 	JMenuBar menuBar = frame.getJMenuBar();
 	menuBar.add(menu);
@@ -224,13 +228,47 @@ public class VergilApplication extends MDIApplication {
 	JComponent view = ((VergilDocument)document).createView();
         return view;
     }
+
+    /** 
+     * Display the given document. In addition to the normal stuff, this
+     * class in addition adds a listener which keeps the title of the
+     * internal frame representing the document the same as the title of the
+     * document.
+     */
+    public void displayDocument (Document d) {
+	super.displayDocument(d);
+
+ 	// Update the title of the frame when the title of the document
+	// changes.
+	d.addPropertyChangeListener(new PropertyChangeListener() {
+	    public void propertyChange(PropertyChangeEvent e) {
+		String name = e.getPropertyName();
+		if (name.equals("file") || 
+		    name.equals("url")) {
+		    // the title has changed.
+		    Document d = (Document)e.getSource();
+		    JInternalFrame frame = 
+			getDesktopContext().getInternalFrame(getView(d));
+		    frame.setTitle(d.getTitle());
+		}
+	    }
+	});
+    }
+
         
     /** 
      * Return the list of factories that create new documents.
      * @return An unmodifiable list of instances of DocumentFactory.
      */
-    public List documentFactoryList () {
+    public List documentFactoryList() {
         return Collections.unmodifiableList(_documentFactoryList);
+    }
+
+    /**
+     * Return the DesktopContext that this application is using.
+     */
+    public DesktopContext getDesktopContext() {
+	return (DesktopContext) getAppContext();
     }
 
     /** 
@@ -267,8 +305,8 @@ public class VergilApplication extends MDIApplication {
      * interface which will remain after this method returns.
      */
     public static void main(String argv[]) {
-        _instance = new VergilApplication();
-        _instance.setVisible(true);
+ 	AppContext context = new ApplicationContext();
+	_instance = new VergilApplication(context);
     }
 
    /** 
@@ -294,7 +332,7 @@ public class VergilApplication extends MDIApplication {
      * Remove the given menu from the menu bar of this application.
      */
     public void removeMenu(JMenu menu) {
-	JFrame frame = getApplicationFrame();
+	AppContext frame = getAppContext();
 	if(frame == null) return;
 	JMenuBar menuBar = frame.getJMenuBar();
 	menuBar.remove(menu);
@@ -378,7 +416,7 @@ public class VergilApplication extends MDIApplication {
    /** Show the error without the stack trace by default.
      */
     public void showError(String op, Exception e) {
-	GUIUtilities.showException(getApplicationFrame(), e, op);
+	GUIUtilities.showException(getAppContext().makeComponent(), e, op);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -392,49 +430,73 @@ public class VergilApplication extends MDIApplication {
      * are actions that defer to the current document for their
      * functionality.
      */
-    private void _initializeMenuBar(JMenuBar menuBar) {
+    private void _initializeActions(JMenuBar menuBar, JToolBar toolBar) {
         Action action;
         JMenuItem item;
+        RelativeBundle resources = getResources();
+
 	// FIXME pull the strings out of resources instead of hardcoding.
 
-        // Create the File menu
+	// Create the File menu
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
         menuBar.add(menuFile);
-
+	
+	// File->New and associated toolbar button.
         _fileNewMenu = new JMenu("New");
         _fileNewMenu.updateUI();
         _fileNewMenu.setMnemonic('N');
 	menuFile.add(_fileNewMenu);
+	
+	action = DefaultActions.newAction(this);
+        addAction(action);
+	GUIUtilities.addToolBarButton(toolBar, action, null, 
+			 resources.getImageIcon("NewImage"));
 
+	// File->Open and associated toolbar button.
         action = DefaultActions.openAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'O', "Open a graph document");
-
+	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
+ 	    KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));	
+        GUIUtilities.addMenuItem(menuFile, action, 'O', "Open a graph document");
+        GUIUtilities.addToolBarButton(toolBar, action, null, 
+				      resources.getImageIcon("OpenImage"));
+		
+	// File->Close
         action = DefaultActions.closeAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'C', "Close the current graph document");
+        GUIUtilities.addMenuItem(menuFile, action, 'C', "Close the current graph document");
 
         menuFile.addSeparator();
 
+	// File->Save
         action = DefaultActions.saveAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'S', "Save the current graph document");
-
+	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
+ 	    KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));	
+        GUIUtilities.addMenuItem(menuFile, action, 'S', "Save the current graph document");
+        GUIUtilities.addToolBarButton(toolBar, action, null, 
+			 resources.getImageIcon("SaveImage"));
+	
+	// File->SaveAs
         action = DefaultActions.saveAsAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'A',
+        GUIUtilities.addMenuItem(menuFile, action, 'A',
                 "Save the current graph document to a different file");
 
+	// File->Print
         action = DefaultActions.printAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'P', "Print current document");
+	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
+ 	    KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));	
+        GUIUtilities.addMenuItem(menuFile, action, 'P', "Print current document");
 
         menuFile.addSeparator();
 
+	// File->Exit
         action = DefaultActions.exitAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'X', "Exit from the graph editor");
+        GUIUtilities.addMenuItem(menuFile, action, 'X', "Exit from the graph editor");
 
         // Create the File menu
         menuFile = new JMenu("Edit");
@@ -444,45 +506,31 @@ public class VergilApplication extends MDIApplication {
 	// FIXME implement cut.
 	//action = DefaultActions.cutAction(this);
         //addAction(action);
-        //addMenuItem(menuFile, action, 'u', "Cut");
+        //GUIUtilities.addMenuItem(menuFile, action, 'u', "Cut");
 
+	// Edit->Copy
         action = DefaultActions.copyAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'C', "Copy");
-	getApplicationFrame().getRootPane().
-	    registerKeyboardAction(action, "Copy",
-	    KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK),
-	    JComponent.WHEN_IN_FOCUSED_WINDOW);	
+	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
+ 	    KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK));	
+        GUIUtilities.addMenuItem(menuFile, action, 'C', "Copy");
 
-        action = DefaultActions.pasteAction(this);
+	// Edit->Paste
+	action = DefaultActions.pasteAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'P', "Paste");
-	getApplicationFrame().getRootPane().
-	    registerKeyboardAction(action, "Paste",
-	    KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK),
-	    JComponent.WHEN_IN_FOCUSED_WINDOW);	
-
+	GUIUtilities.addHotKey(getAppContext().getRootPane(), action, 
+ 	    KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK));	
+        GUIUtilities.addMenuItem(menuFile, action, 'P', "Paste");
     }
 
-    /** 
-     * Initialize the given toolbar.  Create a new buttons that correspond
-     * to the "New", "Open" and "Save" actions in the menu bar.
-     */
-    private void _initializeToolBar(JToolBar toolBar) {
-        Action action;
-        RelativeBundle resources = getResources();
+    ///////////////////////////////////////////////////////////////////
+    ////                         package variables                 ////
 
-	// Conventional new/open/save buttons
-	action = DefaultActions.newAction(this);
-        addAction(action);
-	addToolBarButton(toolBar, action, null, 
-			 resources.getImageIcon("NewImage"));
-        action = getAction(DefaultActions.OPEN);
-        addToolBarButton(toolBar, action, null, 
-			 resources.getImageIcon("OpenImage"));
-        action = getAction(DefaultActions.SAVE);
-        addToolBarButton(toolBar, action, null, 
-			 resources.getImageIcon("SaveImage"));
+    /**
+     * Set the vergil instance.  I really don't like to do this. 
+     */
+    static void setInstance(VergilApplication application) {
+	_instance = application;
     }
 
     ///////////////////////////////////////////////////////////////////

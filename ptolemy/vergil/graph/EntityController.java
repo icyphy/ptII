@@ -91,7 +91,7 @@ public class EntityController extends LocatableNodeController {
 	interactor.setSelectionModel(sm);
 
 
-        Action action = 
+	Action action = 
 	    VergilApplication.getInstance().getAction("Look Inside");
 	ActionInteractor actionInteractor = new ActionInteractor(action);
 	actionInteractor.setConsuming(false);
