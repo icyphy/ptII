@@ -1,0 +1,324 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="soundSpectrum" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 8, 974, 459}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 350]">
+    </property>
+    <entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8000" class="ptolemy.kernel.util.StringAttribute" value="8000">
+                </property>
+                <property name="11025" class="ptolemy.kernel.util.StringAttribute" value="11025">
+                </property>
+                <property name="22050" class="ptolemy.kernel.util.StringAttribute" value="22050">
+                </property>
+                <property name="44100" class="ptolemy.kernel.util.StringAttribute" value="44100">
+                </property>
+                <property name="48000" class="ptolemy.kernel.util.StringAttribute" value="48000">
+                </property>
+            </property>
+        </property>
+        <property name="bitsPerSample" class="ptolemy.data.expr.Parameter" value="16">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="8" class="ptolemy.kernel.util.StringAttribute" value="8">
+                </property>
+                <property name="16" class="ptolemy.kernel.util.StringAttribute" value="16">
+                </property>
+            </property>
+        </property>
+        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="1" class="ptolemy.kernel.util.StringAttribute" value="1">
+                </property>
+                <property name="2" class="ptolemy.kernel.util.StringAttribute" value="2">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 125.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Chop" class="ptolemy.domains.sdf.lib.Chop">
+        <property name="numberToRead" class="ptolemy.data.expr.Parameter" value="500">
+        </property>
+        <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="128">
+        </property>
+        <property name="offset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="usePastInputs" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="500">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="128">
+            </property>
+        </port>
+    </entity>
+    <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
+        <property name="order" class="ptolemy.data.expr.Parameter" value="7">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="128">
+            </property>
+        </port>
+    </entity>
+    <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="128">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 135.0">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 280.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 381, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 65.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Time-Domain Signal</title>
+<xLabel>time (sec)</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="127.0"/>
+<yRange min="-0.5" max="0.5"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="128">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 65.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="128">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={498, 385, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-4000.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/128.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Spectrum</title>
+<xLabel>frequency (Hz)</xLabel>
+<yLabel>amplitude</yLabel>
+<xRange min="-4000.0" max="4000.0"/>
+<yRange min="0.0" max="5.0"/>
+<xTicks>
+  <tick label="-4000.0" position="-4000.0"/>
+  <tick label="-2000.0" position="-2000.0"/>
+  <tick label="0.0" position="0.0"/>
+  <tick label="2000.0" position="2000.0"/>
+  <tick label="4000.0" position="4000.0"/>
+</xTicks>
+<default stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="215.0, 125.0">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AudioCapture.output" relation="relation"/>
+    <link port="Chop.input" relation="relation"/>
+    <link port="Chop.output" relation="relation8"/>
+    <link port="FFT.input" relation="relation6"/>
+    <link port="FFT.output" relation="relation3"/>
+    <link port="AbsoluteValue.input" relation="relation3"/>
+    <link port="AbsoluteValue.output" relation="relation4"/>
+    <link port="SequenceToArray.input" relation="relation4"/>
+    <link port="SequenceToArray.output" relation="relation9"/>
+    <link port="MultiplyDivide.multiply" relation="relation7"/>
+    <link port="MultiplyDivide.multiply" relation="relation8"/>
+    <link port="MultiplyDivide.output" relation="relation6"/>
+    <link port="Pulse.output" relation="relation7"/>
+    <link port="ArrayPlotter.input" relation="relation2"/>
+    <link port="SequenceToArray2.input" relation="relation8"/>
+    <link port="SequenceToArray2.output" relation="relation2"/>
+    <link port="ArrayPlotter2.input" relation="relation9"/>
+</entity>
