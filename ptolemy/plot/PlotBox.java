@@ -1032,24 +1032,18 @@ public class PlotBox extends Applet {
         
     } 
   
-    /** Set the background color.  The color is not actually changed
-     * until a  later time.
+    /** Set the background color.
      */
-    public void saveBackground (Color background) {
-	// Can't call this setBackground, or we will get confused
-	// with the Component method.
+    public void setBackground (Color background) {
 	_background = background;
-	setBackground(_background);
+	super.setBackground(_background);
     }
 
-    /** Set the foreground color.  The color is not actually changed
-     * until a  later time.
+    /** Set the foreground color.
      */
-    public void saveForeground (Color foreground) {
-	// Can't call this setForeground, or we will get confused
-	// with the Component method.
+    public void setForeground (Color foreground) {
 	_foreground = foreground;
-	setForeground(_foreground);
+	super.setForeground(_foreground);
     }
 
     /** Set the binary flag to true if we are reading pxgraph format binary

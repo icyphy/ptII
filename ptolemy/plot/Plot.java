@@ -320,7 +320,7 @@ public class Plot extends PlotBox {
 		}
 		if (badarg) continue;
 		if (arg.equals("-bg")) {
-		    saveBackground(getColorByName(args[i++]));
+		    setBackground(getColorByName(args[i++]));
 		    continue;
 		} else if (arg.equals("-brw")) {
 		    // -brw <width> BarWidth Bars: 
@@ -380,7 +380,7 @@ public class Plot extends PlotBox {
 		    _debug = (int)Integer.valueOf(args[i++]).intValue();
 		    continue;
 		} else if (arg.equals("-fg")) {
-		    saveForeground(getColorByName(args[i++]));
+		    setForeground(getColorByName(args[i++]));
 		    continue;
 		} else if (arg.equals("-help")) {
 		    // -help is not in the original X11 pxgraph.
@@ -407,8 +407,8 @@ public class Plot extends PlotBox {
 		    setMarksStyle("dots");
 		    continue;
 		} else if (arg.equals("-rv")) {
-		    saveBackground(getColorByName("black"));
-		    saveForeground(getColorByName("white"));
+		    setBackground(getColorByName("black"));
+		    setForeground(getColorByName("white"));
 		    continue;
 		} else if (arg.equals("-test")) {
 		    // -test is not in the original X11 pxgraph.
