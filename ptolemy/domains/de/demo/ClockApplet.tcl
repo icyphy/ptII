@@ -76,3 +76,6 @@ set r3 [$sys connect $waitout $plotIn R3]
 
 # Run it
 $exec run
+
+$dir setStopTime 12.0
+$exec run 
