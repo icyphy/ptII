@@ -35,7 +35,7 @@ ME =		ptolemy/domains/hde/lib/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-# fsm.modal.ModalMoel in auto/hde_sdf_fib_two_nums.xml requires DIVA_JAR
+# fsm.modal.ModalModel in auto/hde_sdf_fib_two_nums.xml requires DIVA_JAR
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
