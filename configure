@@ -2142,10 +2142,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-    if test "${PTCC:-none}" != "none"; then
-        echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6
-    else
+    if test "${PTCC:-none}" == "none"; then
         { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
 echo "$as_me: WARNING: Failed to find gcc" >&2;}
         # Extract the first word of "cc", so it can be a program name with args.
@@ -4373,8 +4370,6 @@ echo "$as_me: WARNING: Failed to find matlab executable in the path.
 	    startdir=`pwd`
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
-		echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
 		echo "$as_me:$LINENO: checking the value of the Matlab root directory " >&5
 echo $ECHO_N "checking the value of the Matlab root directory ... $ECHO_C" >&6
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
