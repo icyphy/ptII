@@ -274,7 +274,8 @@ public class VergilApplication extends MoMLApplication {
         Configuration configuration = _createDefaultConfiguration();
 
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL("ptolemy/configs/vergilWelcomeWindow.xml");
+        URL inurl = specToURL("ptolemy/configs/"
+                + _configurationSubdirectory + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
