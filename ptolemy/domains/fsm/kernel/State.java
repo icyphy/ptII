@@ -103,7 +103,7 @@ public class State extends ComponentEntity {
         // FIXME should be 'svg'
 	icon.setInstruction(null);
 	icon.setString("<svg>\n" + 
-		"<circle cx=\"0\" cy=\"0\" r=\"4o\" style=\"fill:white\"/>\n" +
+		"<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n" +
 		"</svg>\n");
     }
 
