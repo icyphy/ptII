@@ -290,6 +290,42 @@ JavaCC can be downloaded from http://www.sun.com/suntest'])
 fi
 
 #--------------------------------------------------------------------
+#	See if there was a command-line option for where javasound is;  if
+#	not, check to see if $PTII/vendors/sun/javasound exists
+#
+#--------------------------------------------------------------------
+
+# We only need to look for javasound if $PTII/ptolemy/media/javasound exists
+if test ! -d "$PTII/ptolemy/media/javasound"; then
+    AC_MSG_RESULT([$PTII/ptolemy/media/javasound is not present, so we need not
+find JavaSound])
+    JAVASOUND_LIBDIR=$PTII/vendors/sun/javasound/lib
+else
+    AC_MSG_CHECKING([for JavaSound])
+    AC_ARG_WITH(javacc, [  --with-javasound-lib=DIR    use sound.jar from DIR,
+                           defaults to \$PTII/vendors/sun/javasound/lib],
+	JAVASOUND_LIBDIR=$withval,
+	JAVASOUND_LIBDIR=$PTII/vendors/sun/javasound/lib)
+
+    if test ! -f "$JAVASOUND_LIBDIR/sound.jar"; then
+        AC_MSG_WARN([Failed to find $JAVASOUND_LIBDIR/sound.jar,
+  perhaps JavaSound is not installed?
+  You need not download JavaSound unless you plan using the
+  files in ptolemy/media/javasound.
+  JavaSound can be downloaded from
+  http://developer.java.sun.com/developer/earlyAccess/sound/index.html'])
+	# Directories that require javasound.
+	# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
+	# to add the javasound directory to the list of directories
+	# to run submakes in if we found sound.jar
+	JAVASOUND_NEEDED_DIRS=""
+   else 
+	JAVASOUND_NEEDED_DIRS="javasound"
+	AC_MSG_RESULT([$JAVASOUND_LIBDIR])
+    fi
+fi
+
+#--------------------------------------------------------------------
 #	See if there was a command-line option for where Jacl is
 #--------------------------------------------------------------------
 
@@ -343,6 +379,15 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
+
+# Directory that contains sound.jar, which is part of JavaSound, and
+# used by ptolemy/media/javasound
+AC_SUBST(JAVASOUND_LIBDIR)
+
+# JAVASOUND_NEEDED_DIRS is used in ptolemy/media/makefile
+# to add the javasound directory to the list of directories
+# to run submakes in if we found sound.jar
+AC_SUBST(JAVASOUND_NEEDED_DIRS)
 
 # Arguments to pass to javac.  Usually something like '-g -depend'
 AC_SUBST(JDEPENDFLAG)
