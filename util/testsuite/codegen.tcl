@@ -385,7 +385,11 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	if { ${codeGenType} == "Deep" } {
 	    set codeGenerator "java"
 	} else {
-	    set codeGenerator "shallow"
+	    if { ${codeGenType} == "Interpreted" } {
+		set codeGenerator "interpreted"
+            } else {		
+		set codeGenerator "shallow"
+	    }
 	}
 	# -q means do not echo the command being run
 	set args [list -q $modelPath \
