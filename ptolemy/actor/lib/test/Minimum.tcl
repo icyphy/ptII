@@ -79,3 +79,80 @@ test Minimum-2.1 {test Minimum} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {-2.0 -1.0 0.0 0.0 0.0}
+
+######################################################################
+#### Check types of above model
+#
+test Minimum-2.2 {check types} {
+    set pulseOut [java::field [java::cast ptolemy.actor.lib.Source $pulse] \
+	output]
+    set constOut [java::field [java::cast ptolemy.actor.lib.Source $const] \
+	output]
+    set minimumIn [java::field [java::cast ptolemy.actor.lib.Transformer \
+	$minimum] input]
+    set minimumOut [java::field [java::cast ptolemy.actor.lib.Transformer \
+	$minimum] output]
+    set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    list [[$pulseOut getType] toString] [[$constOut getType] toString] \
+	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
+	[[$recIn getType] toString]
+} {int double double double general}
+
+######################################################################
+#### Test integer input
+#
+test Minimum-2.3 {test integer} {
+    $values setExpression {[-2, -1, 0, 1, 2]}
+    $value setExpression {0}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {-2 -1 0 0 0}
+
+######################################################################
+#### Check types of above model
+#
+test Minimum-2.4 {check types} {
+    list [[$pulseOut getType] toString] [[$constOut getType] toString] \
+	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
+	[[$recIn getType] toString]
+} {int int int int general}
+
+######################################################################
+#### Test long input
+#
+test Minimum-2.5 {test long} {
+    $values setExpression {[-2l, -1, 0, 1, 2]}
+    $value setExpression {0}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {-2 -1 0 0 0}
+
+######################################################################
+#### Check types of above model
+#
+test Minimum-2.6 {check types} {
+    list [[$pulseOut getType] toString] [[$constOut getType] toString] \
+	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
+	[[$recIn getType] toString]
+} {long int long long general}
+
+######################################################################
+#### Test complex input
+#
+test Minimum-2.7 {test complex} {
+    $values setExpression {[-2+i, -1-i, 0, 3+3i, 5+4i]}
+    $value setExpression {4}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{-2.0 + 1.0i} {-1.0 - 1.0i} {0.0 + 0.0i} {4.0 + 0.0i} {4.0 + 0.0i}}
+
+######################################################################
+#### Check types of above model
+#
+test Minimum-2.8 {check types} {
+    list [[$pulseOut getType] toString] [[$constOut getType] toString] \
+	[[$minimumIn getType] toString] [[$minimumOut getType] toString] \
+	[[$recIn getType] toString]
+} {complex int complex complex general}
+

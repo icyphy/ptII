@@ -41,7 +41,9 @@ import ptolemy.data.expr.Parameter;
 /**
 Read at most one token from each input channel and send the one with the
 greatest value to the output.
-The input and output types are DoubleToken, and the input is a multiport.
+This actor works with any scalar token. For ComplexToken, the output is
+the one with the maximum magnitude.
+The input port is a multiport.
 
 @author Edward A. Lee
 @version $Id$
@@ -60,13 +62,27 @@ public class Maximum extends Transformer {
     public Maximum(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeAtMost(BaseType.SCALAR);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        Maximum newobj = (Maximum)super.clone(ws);
+	newobj.output.setTypeAtMost(BaseType.SCALAR);
+
+        return newobj;
+    }
 
     /** Read at most one token from each input channel and send the one 
      *  with the largest value to the output.  If there is no input,
@@ -74,14 +90,14 @@ public class Maximum extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        DoubleToken result = null;
+        ScalarToken result = null;
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                DoubleToken in = (DoubleToken)input.get(i);
+                ScalarToken in = (ScalarToken)input.get(i);
                 if (result == null) {
                     result = in;
                 } else {
-                    if (in.doubleValue() > result.doubleValue()) {
+                    if (result.isLessThan(in).booleanValue() == true) {
                         result = in;
                     }
                 }
@@ -92,3 +108,4 @@ public class Maximum extends Transformer {
         }
     }
 }
+
