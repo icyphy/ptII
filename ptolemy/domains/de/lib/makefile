@@ -74,7 +74,6 @@ JSRCS = \
 	DESampler.java \
 	DEServer.java \
 	DEServerAlt.java \
-	DEStats.java \
 	DEStatistics.java \
 	DETestLevel.java \
 	DEWaitingTime.java \
