@@ -48,7 +48,8 @@ instance of the base class, SingletonAttribute.
 @author Edward A. Lee
 @version $Id$
 */
-public class URLAttribute extends SingletonAttribute {
+public class URLAttribute extends SingletonAttribute
+    implements NotPersistent {
 
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a

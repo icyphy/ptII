@@ -33,6 +33,7 @@ package ptolemy.moml;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NotPersistent;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.CompositeEntity;
@@ -141,8 +142,8 @@ public class MoMLWriter extends Writer {
     public void write(NamedObj object, int depth, String name)
         throws IOException {
         synchronized(lock) {
-            // URLAttribute doesn't appear.
-            if(object instanceof URLAttribute) 
+            // Alot of things aren't presistent and are just skipped.
+            if(object instanceof NotPersistent) 
                 return;
             // Documentation uses a special tag with no class.
             if(object instanceof Documentation) {
