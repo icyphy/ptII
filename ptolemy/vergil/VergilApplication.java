@@ -385,28 +385,43 @@ public class VergilApplication extends MoMLApplication {
     protected Configuration _createEmptyConfiguration()
             throws Exception {
         Configuration configuration = _createDefaultConfiguration();
+        URL welcomeURL = null;
+        URL introURL = null;
 
-        if (_configurationSubdirectory == null) {
-            _configurationSubdirectory = "full";
+        try {
+            // First, we see if we can find the welcome window by
+            // looking at the default configuration.
+            // FIXME: this seems wrong, we should be able to get
+            // an attribute from the configuration that names the
+            // welcome window.
+            String configurationURLString =  _configurationURL.toExternalForm();
+            String base = configurationURLString
+                .substring(0, configurationURLString.lastIndexOf("/"));
+
+            welcomeURL = specToURL(base + "/welcomeWindow.xml");
+            introURL = specToURL(base + "/intro.htm");
+            _parser.reset();
+            _parser.setContext(configuration);
+            _parser.parse(welcomeURL, welcomeURL);
+        } catch (Exception ex) {                     
+            // OK, that did not work, try a different method.
+            if (_configurationSubdirectory == null) {
+                _configurationSubdirectory = "full";
+            }
+            // FIXME: This code is Dog slow for some reason.
+            welcomeURL = specToURL(_basePath + "/" + _configurationSubdirectory
+                    + "/welcomeWindow.xml");
+            introURL = specToURL(_basePath + "/" + _configurationSubdirectory
+                    + "/intro.htm");
+            _parser.reset();
+            _parser.setContext(configuration);
+            _parser.parse(welcomeURL, welcomeURL);
         }
-
-        // FIXME: This code is Dog slow for some reason.
-        URL inURL = specToURL(_basePath + "/" + _configurationSubdirectory
-                + "/welcomeWindow.xml");
-        _parser.reset();
-        _parser.setContext(configuration);
-        _parser.parse(inURL, inURL);
 
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
 
-        if (_configurationSubdirectory == null) {
-            _configurationSubdirectory = "full";
-        }
+        doc.identifier.setExpression(introURL.toExternalForm());
 
-        URL idURL = specToURL(_basePath + "/" + _configurationSubdirectory
-                + "/intro.htm");
-
-        doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
     }
 
