@@ -367,8 +367,5 @@ AC_SUBST(PTJAVA_DIR)
 AC_SUBST(PTII_DEFAULT)
 
 # Files we substitute in
-if test -f "$PTJACL_JAR"; then
-	AC_OUTPUT(mk/ptII.mk bin/ptjacl ptolemy/plot/ptplot, chmod a+x bin/ptjacl; cp bin/ptjacl bin/ptjaclapp)
-else
-	AC_OUTPUT(mk/ptII.mk ptolemy/plot/ptplot)
-fi
+AC_OUTPUT(mk/ptII.mk bin/ptjacl ptolemy/plot/ptplot, chmod a+x bin/ptjacl; cp bin/ptjacl bin/ptjaclapp)
+
