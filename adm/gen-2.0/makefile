@@ -99,7 +99,11 @@ PTII_TOPDIR=	.cshrc \
 		makefile \
 		mk \
 		ptolemy \
-		util
+		util \
+		vergil.jnlp.in \
+		vergilDSP.jnlp.in \
+		vergilPtiny.jnlp.in \
+		vergilPtinySandbox.jnlp.in
 
 # Location of the CVS Repository
 CVS_REPOSITORY = :ext:gigasource.eecs.berkeley.edu:/home/cvs
