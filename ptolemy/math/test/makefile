@@ -74,6 +74,7 @@ JSIMPLE_TESTS = \
 	IntegerMatrixMath.tcl \
 	Interpolation.tcl \
 	LongMatrixMath.tcl \
+	MatrixMath.tcl \
 	Overflow.tcl \
 	Quantization.tcl \
 	Quantizer.tcl \
