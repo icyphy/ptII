@@ -41,25 +41,20 @@ import java.util.LinkedList;
 //// RelationList
 /** A RelationList contains a list of relations of a guard expression.
  It provide facilities to access the former and current information of
- each relation of a guard expression. The information includes type
- and difference information. (See ParseTreeEvaluatorForGuardExpression
+ each relation of a guard expression during its evaluation. The information
+ includes type and difference information. (See ParseTreeEvaluatorForGuardExpression
  for detailed explanation of type and difference.)
  <p>
  This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
  The common usage would be like:
  <p>
-         // Construct a relation list for the transition.
- <p>
+         <i>// Construct a relation list for the transition.</i>
          _relationList = new RelationList(this, "relationList");
  <p>
-         // Associate the relation list with the
- <p>
-         // ParseTreeEvaluatorForGuardExpression
- <p>
+         <i>// Associate the relation list with the ParseTreeEvaluatorForGuardExpression</i>
          _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
  <p>
-         // Register the guard expression with the above parse tree evaluator
- <p>
+         <i>// Register the guard expression with the above parse tree evaluator</i>
          _guard.setParseTreeEvaluator( (ParseTreeEvaluator) _parseTreeEvaluator);
  <p>
 
@@ -191,9 +186,9 @@ public class RelationList extends Attribute {
 
     /** Update the relation in the relation list referred by the relation index
      *  argument with the given type and difference information.
-     *  @parameter relationIndex The position of the relation in the relation list.
-     *  @parameter type The current type of the relation.
-     *  @parameter difference The current difference of the relation.
+     *  @parame relationIndex The position of the relation in the relation list.
+     *  @parame type The current type of the relation.
+     *  @parame difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
         RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);

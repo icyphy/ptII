@@ -492,7 +492,7 @@ public class Transition extends ComponentRelation {
     }
 
     /** Return true if the transition is enabled, that is the guard is true, or
-     *  some event has been detected.
+     *  some event has been detected due to crossing some level.
      *  @return True if the transition is enabled and some event is detected.
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
