@@ -239,22 +239,31 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @return The history array at that index point.
      */
     public double[] getHistory(int index) {        
-        return ((DoubleDouble)_history.get(index)).toArray();
+        return _history.getEntry(index);
     }
 
     /** Return the history capacity.
-     *  FIXME: In this implementation, it always returns 1.
+     *  @return The maximum capacity of the history list.
      */
     public final int getHistoryCapacity() {
-        return _historyCapacity;
+        return _history.getCapacity();
     }
-
+    
     /** Return the initial state.
      *
      *  @return the initial state.
      */
     public double getInitialState() {
         return _initState;
+    }
+
+    /** Return the state of the integrator. The returned state is the 
+     *  latest confirmed state. This is the same as getHistory(0)[0].
+     *
+     *  @return A double number as the state of the integrator.
+     */
+    public double getState() {
+        return _state;
     }
 
     /** Return the tentative state.
@@ -265,13 +274,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
         return _tentativeState;
     }
 
-    /** Return the state of the integrator. The returned state is the 
-     *  latest confirmed state. This is the same as getHistory(0)[0].
-     *
-     *  @return A double number as the state of the integrator.
+    /** Return the number of valid history entries. This number is
+     *  always less than or equal to the history capacity.
+     *  @return The number of valid history entries.
      */
-    public double getState() {
-        return _state;
+    public final int getValidHistoryCount() {
+        return _history.getValidEntryCount();
     }
 
     /** Initialize the integrator. Check for director and ODE 
@@ -301,6 +309,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _tentativeDerivative = 0.0;
         _state = _tentativeState;
         if(_debugging) _debug(getName(), " init, token = " + _initState);
+        if (_history == null) {
+            _history = new History(this);
+        }
     }
 
     /** Emit the tentative output, which is the tentative state of the
@@ -360,6 +371,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
         int n = solver.getIntegratorAuxVariableCount();
         if((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
+        }
+        if(getValidHistoryCount()>=2) {
+            _history.rebalance(dir.getCurrentStepSize());
         }
         return true;
     }
@@ -421,7 +435,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @param cap The capacity.
      */
     public final void setHistoryCapacity(int cap) {
-        _historyCapacity = (cap>0) ? cap : 0;
+        _history.setCapacity(cap);
     }
 
     /** Set the tentative state. Tentative state is the state that
@@ -449,23 +463,11 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Push the state and derivative into the history storage.
      *  If the history capacity is full, then the oldest history
      *  will be lost. The contents of the history storage can be
-     *  retrieved by getHistory() method.
-     */
-    /*  FIXME: In this implementation, the history storage has
-     *        capacity 1.
+     *  retrieved by getHistory() method. 
      */
     protected void _pushHistory(double state, double derivative) {
-        if (_history == null) {
-            _history = new LinkedList();
-        }
-        DoubleDouble entry = new DoubleDouble(state, derivative);
-        if (_history.size() >= _historyCapacity) {
-            // the history list has achieved its capacity, 
-            // so remove the oldest entry.
-            _history.removeLast();
-        }
-        _history.addFirst(entry);
-    }
+        _history.pushEntry(state, derivative);
+    }      
 
     /** Set the state of the integrator.
      *
@@ -474,6 +476,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     protected final void _setState(double value) {
         _state = value;
     }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -497,10 +501,106 @@ public class CTBaseIntegrator extends TypedAtomicActor
     // The history states and its derivative.
     // This variable is needed by Linear Multistep (LMS) methods,
     // like Trapezoidal rule and backward defferential formula.
-    private LinkedList _history;
+    private History _history;
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                           Inner Class                     ////
     
-    // The capacity of the history list.
-    private int _historyCapacity = 1;
+    /** The history information, state and derivatives, at equidistance
+     *  past time points.
+     */
+    public class History {
+        
+        /** Construt the history.
+         */
+        public History (CTBaseIntegrator container) {
+            _container = container;
+            _entries = new LinkedList();
+            _capacity = 1;
+            _stepsize = 0.0;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                         public methods                ////
+
+        /** Return the maximum capacity.
+         *  @return The capacity.
+         */
+        public int getCapacity() {
+            return _capacity;
+        }
+        
+        /** Return the number of valid entries.
+         *  @return The number of valid history entries.
+         */
+        public int getValidEntryCount() {
+            return _entries.size();
+        }
+
+        public double[] getEntry(int index) {
+            return ((DoubleDouble)_entries.get(index)).toArray();
+        }
+
+        /** Push the new state-derivative pair into the history.
+         *  If after the push, the number of entries exceed the 
+         *  capacity, then the olded entry will be lost.
+         *  @param state The state.
+         *  @param derivative THe derivative of the state.
+         */
+        public void pushEntry(double state, double derivative) {
+            if (_capacity >0) {
+                DoubleDouble entry = new DoubleDouble(state, derivative);    
+                if (_entries.size() >= _capacity) {
+                    // the history list has achieved its capacity, 
+                    // so remove the oldest entry.
+                    _entries.removeLast();
+                }
+                _entries.addFirst(entry);
+            }
+        }
+
+        /**
+         *  Rebalances the history information 
+         *  with repect to the next step size, such that the information
+         *  in the history list are equaly distanced, and the the 
+         *  distance is the next step size. 
+         *  @param currentStepSize The current step size.
+         */
+        public void rebalance(double currentStepSize) {
+            if (currentStepSize != _stepsize) {
+                // do the rebalancing.
+                _stepsize = currentStepSize;
+            }
+        }
+
+        /** Set the history capacity. The enties exceed the capacity
+         *  will be lost. If the argument is less than 0, it is set 
+         *  to 0.
+         *  @param capacity The new capacity.
+         */
+        public void setCapacity(int capacity) {
+            _capacity = (capacity>0) ? capacity : 0;
+            while (_entries.size() > capacity) {
+                _entries.removeLast();
+            }
+        }
+        
+        ///////////////////////////////////////////////////////////////
+        ////                        private variables               ////
+        
+        // The container.
+        CTBaseIntegrator _container;
+        
+        // The linked list storing the entries
+        LinkedList _entries;
+        
+        // The capacity.
+        int _capacity;
+
+        // The step size that the entries are based on.
+        double _stepsize;
+    }
+        
 
     ///////////////////////////////////////////////////////////////////
     ////                           Inner Class                     ////
