@@ -144,8 +144,7 @@ public class Timer extends TimedDelay {
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
-            _currentOutput = (Token)_delayedTokens.get(
-                new Double(currentTime.getDoubleValue()));
+            _currentOutput = (Token)_delayedTokens.get(currentTime);
             if (_currentOutput != null) {
                 output.send(0, _currentOutput);
                 return;

@@ -173,8 +173,7 @@ public class TimedDelay extends DETransformer {
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
-            _currentOutput = (Token)_delayedTokens.get(
-                new Double(currentTime.getDoubleValue()));
+            _currentOutput = (Token)_delayedTokens.get(currentTime);
             if (_currentOutput != null) {
                 output.send(0, _currentOutput);
                 return;
@@ -210,13 +209,12 @@ public class TimedDelay extends DETransformer {
        // at the current time.
        if (_delayedTokens.size() > 0 && 
            _currentOutput != null) {
-           _delayedTokens.remove(new Double(currentTime.getDoubleValue()));
+           _delayedTokens.remove(currentTime);
        }
        // Store the not handled token that is scheduled to 
        // be sent in future.
        if (_currentInput != null) {
-           _delayedTokens.put(new Double(delayToTime.getDoubleValue()), 
-               _currentInput);
+           _delayedTokens.put(delayToTime, _currentInput);
            getDirector().fireAt(this, delayToTime);
        }
         return super.postfire();
