@@ -17,6 +17,7 @@ core
 *.mif
 *.out
 *.pdf
+*.tmp
 *.vsd
 */CVS
 */Output
