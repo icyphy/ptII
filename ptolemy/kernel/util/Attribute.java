@@ -100,9 +100,9 @@ public class Attribute extends NamedObj {
      *  @return The new Attribute.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Attribute newobj = (Attribute)super.clone(ws);
-        newobj._container = null;
-        return newobj;
+        Attribute newObject = (Attribute)super.clone(ws);
+        newObject._container = null;
+        return newObject;
     }
 
     /** Get the NamedObj that this Attribute is attached to.
