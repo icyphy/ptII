@@ -1,9 +1,10 @@
-# Makefile for PtolemyII PBO Domain
+# Makefile for the SDF domain kernel
+#
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
-# @Author: Steve Neuendorffer
 #
-# @Copyright (c) 1998-2001 The Regents of the University of California.
+# @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,44 +29,48 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/pbo
+ME =		ptolemy/domains/pbo/kernel
 
-DIRS =		kernel #lib codegen demo test
+DIRS = 		test
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =		../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE = 	pbo
+PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+JSRCS = \
+	PBODirector.java \
+	PBOReceiver.java 
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS =	$(JSRCS)
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel #lib codegen test
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
-all: jclass
-install: jclass jars
+JCLASS = $(JSRCS:%.java=%.class)
 
+
+all: jclass
+install: jclass $(PTCLASSJAR)
+
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
