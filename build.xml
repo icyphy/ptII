@@ -51,7 +51,7 @@
       <property name="name" value="ptolemy"/>
       <property name="Name" value="Ptolemy"/>
       <property name="debug" value="on"/>
-      <property name="release" value="3.0.2"/>
+      <property name="release" value="4.1-devel"/>
 
       <property name="srcdir" value="${PTII}" />
       <property name="testdir" value="${PTII}/tests" />
