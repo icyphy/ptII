@@ -209,7 +209,6 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		    count++;
 		}
 		   		
-		System.out.println("count = " + count);
 		// If there are no verticies, and the relation has
 		// two connections, then create a direct link.
 		if(rootVertex == null && count == 2) {
