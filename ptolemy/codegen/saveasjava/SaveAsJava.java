@@ -158,28 +158,41 @@ class SaveAsJava {
             String moml = attribute.exportMoML();
             if (moml.length() > 0) {
                 // Create an instance of the attribute.
-                // FIXME: Don't do this if there is a matching public member.
-                // Look in TypedAtomicActor clone() for an example.
-                String attributeClass = _getClassName(attribute);
-                String attributeName = _name(attribute);
-                result.append(_indent(3));
-                result.append(attributeClass);
-                result.append(" ");
-                result.append(attributeName);
-                result.append(" = new ");
-                result.append(attributeClass);
-                result.append("(this, \"");
-                result.append(attributeName);
-                result.append("\");");
-                result.append("\n");
+                // Don't do this if there is a matching public member.
+                try {
+                    // If the following succeeds, then there is a public
+                    // field whose name matches that of the attribute.
+                    component.getClass().getField(attribute.getName());
+                    // Henceforth, refer to this attribute as
+                    // containerName.attributeName.
+                    _nameTable.put(attribute,
+                            _name(component)
+                            + "."
+                            + attribute.getName());
+                } catch (NoSuchFieldException ex) {
+                    String attributeClass = _getClassName(attribute);
+                    String attributeName = _name(attribute);
+                    result.append(_indent(3));
+                    result.append(attributeClass);
+                    result.append(" ");
+                    result.append(attributeName);
+                    result.append(" = new ");
+                    result.append(attributeClass);
+                    result.append("(this, \"");
+                    result.append(attribute.getName());
+                    result.append("\");");
+                    result.append("\n");
+                }
 
                 if (attribute instanceof Settable) {
-                    result.append(_indent(3));
-                    result.append(attributeName);
-                    result.append(".setExpression(\"");
-                    result.append(_escapeQuotes(
-                            ((Settable)attribute).getExpression()));
-                    result.append("\");\n");
+                    String expression = ((Settable)attribute).getExpression();
+                    if (expression != null) {
+                        result.append(_indent(3));
+                        result.append(_name(attribute));
+                        result.append(".setExpression(\"");
+                        result.append(_escapeQuotes(expression));
+                        result.append("\");\n");
+                    }
                 }
             }
         }
@@ -196,6 +209,7 @@ class SaveAsJava {
      */
     protected String _generateComponents(ComponentEntity model) 
             throws IllegalActionException {
+        // FIXME: Use StringBuffer, not String.
         String code = new String(); 
         String className = _getClassName(model);
         String sanitizedName = _name(model);
@@ -209,6 +223,7 @@ class SaveAsJava {
                      + "(this, \""
                      + sanitizedName
                      + "\");\n";
+             code += _generateAttributes(model);
         }
         if (!model.isAtomic()) {
 
