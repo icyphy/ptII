@@ -52,7 +52,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	applet/applet.jar \
-	c/c.jar \
 	interpreted/interpreted.jar \
 	kernel/kernel.jar \
 	java/java.jar \
