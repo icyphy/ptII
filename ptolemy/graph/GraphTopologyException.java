@@ -40,10 +40,6 @@ package ptolemy.graph;
  */
 public class GraphTopologyException extends GraphException {
 
-    /** The default constructor without arguments.
-     */
-    public GraphTopologyException() {}
-
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */

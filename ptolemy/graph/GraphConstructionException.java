@@ -44,10 +44,6 @@ import ptolemy.graph.Node;
  */
 public class GraphConstructionException extends GraphException {
 
-    /** The default constructor without arguments.
-     */
-    public GraphConstructionException() {}
-
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */

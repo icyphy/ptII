@@ -45,7 +45,12 @@ public class GraphException extends RuntimeException {
 
     /** The default constructor without arguments.
      */
-    public GraphException() {}
+    public GraphException() {
+        // Note: this nullary exception is required.  If it is
+        // not present, then the subclasses of this class will not
+        // compile.
+        this(null);
+    }
 
     /** Constructor with an argument of text description.
      *  @param message The exception message.

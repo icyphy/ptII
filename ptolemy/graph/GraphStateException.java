@@ -42,10 +42,6 @@ package ptolemy.graph;
  */
 public class GraphStateException extends GraphException {
 
-    /** The default constructor without arguments.
-     */
-    public GraphStateException() {}
-
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */
