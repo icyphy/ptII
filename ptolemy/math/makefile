@@ -55,10 +55,9 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
-	FType.java \
+	ArrayMath.java \
 	Complex.java \
-	PoleZero.java \
-	MathWizard.java
+	SignalProcessing.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -69,11 +68,6 @@ MISC_FILES =	$(DIRS) doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'MathWizard$$1.class' \
-	'MathWizard$$2.class' \
-	'MathWizard$$3.class' \
-	'MathWizard$$ComplexOp.class' \
-	'MathWizard$$DoubleOp.class' \
 	$(JARFILE)	
 
 JCLASS = $(JSRCS:%.java=%.class)
