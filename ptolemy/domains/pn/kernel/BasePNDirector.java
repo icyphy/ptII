@@ -169,6 +169,17 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a process state change listener to this director. The listener
+     *  will be notified of each change to the state of a process. 
+     *  @param listener The PNProcessListener to add.
+     */
+    public void addTopologyListener(PNProcessListener listener) {
+        if (_processListeners == null) {
+            _processListeners = new PNProcessMulticaster();
+        }
+        _processListeners.addProcessListener(listener);
+    }
+
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
@@ -228,6 +239,15 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
 	}
     }
 
+
+    /** Remove a process listener from this director.
+     *  If the listener is not attached to this director, do nothing.
+     *
+     *  @param listener The PNProcessListener to be removed.
+     */
+    public void removeProcessListener(PNProcessListener listener) {
+        _processListeners.removeProcessListener(listener);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
@@ -328,7 +348,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
 	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()*2);
                 //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.getCapacity()+1) );
             }
-	    _writeUnblock(smallestCapacityQueue);
+	    _informOfWriteUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
                 System.out.println("Notifying ........ All");
@@ -352,7 +372,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  This method is not used by the base director and is provided for
      *  use by the derived classes.
      */
-    synchronized void _mutationBlock() {
+    synchronized void _informOfMutationBlock() {
 	_mutationBlockCount++;
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
@@ -364,7 +384,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  (mutation requests) to be processed. This method is not used by the
      *  base director and is provided for use by the derived classes.
      */
-    synchronized void _mutationUnblock() {
+    synchronized void _informOfMutationUnblock() {
 	_mutationBlockCount--;
     }
 
@@ -374,8 +394,9 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  execution. If either of them is detected, then notify the directing
      *  thread of the same.
      */
-    synchronized void _readBlock() {
+    synchronized void _informOfReadBlock() {
 	_readBlockCount++;
+        
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
@@ -386,7 +407,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
 
     /** Decrease by 1 the count of processes blocked on a read.
      */
-    synchronized void _readUnblock() {
+    synchronized void _informOfReadUnblock() {
 	_readBlockCount--;
 	return;
     }
@@ -399,9 +420,14 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  @param receiver The receiver to which the blocking process was trying
      *  to write.
      */
-    synchronized void _writeBlock(PNQueueReceiver receiver) {
+    synchronized void _informOfWriteBlock(PNQueueReceiver receiver) {
 	_writeBlockCount++;
 	_writeblockedQs.insertFirst(receiver);
+        
+        //Inform the listeners
+        if (_processListeners != null && _processListeners.anyListeners() ) {
+            //Actor actor = receiver.getContainer();
+        }
 	//System.out.println("WriteBlockedQ "+_writeBlockCount );
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
@@ -414,7 +440,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  @param receiver The receiver to which the blocked process was trying
      *  to write.
      */
-    synchronized protected void _writeUnblock(PNQueueReceiver queue) {
+    synchronized protected void _informOfWriteUnblock(PNQueueReceiver queue) {
 	_writeBlockCount--;
 	_writeblockedQs.removeOneOf(queue);
 	return;
@@ -438,6 +464,8 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
 
     /** The list of receivers blocked on a write to a receiver. */
     protected LinkedList _writeblockedQs = new LinkedList();
+
+    private PNProcessMulticaster _processListeners = null;
 }
 
 
