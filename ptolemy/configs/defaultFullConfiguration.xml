@@ -97,7 +97,7 @@
             <input source="ptolemy/apps/superb/superb.xml"/>
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
-            <input source="ptolemy/actor/xslt/xmlactors.xml"/>
+            <input source="ptolemy/actor/lib/xslt/xmlactors.xml"/>
           </group>
         ?>
       </configure>
