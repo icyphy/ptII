@@ -25,8 +25,9 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
+
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
 import ptolemy.math.*;

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel.test;
