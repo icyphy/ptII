@@ -171,9 +171,6 @@ public class Copernicus {
         // we need to change ptIIUserDirectoryAsURL.
         _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
 
-
-        System.out.println("_generatorAttribute = " + _generatorAttribute);
-        
         if (_verbose) {
             System.out.println(_generatorAttribute.toString());
         }
