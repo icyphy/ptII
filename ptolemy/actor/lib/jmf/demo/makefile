@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jmf/demo
 
-DIRS =		ItemTracking JMFJAI VideoCapture
+DIRS =		JMFJAI VideoCapture
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -49,7 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	ItemTracking/ItemTracking.jar \
 	JMFJAI/JMFJAI.jar \
 	VideoCapture/VideoCapture.jar
 
