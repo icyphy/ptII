@@ -1,6 +1,6 @@
 /* An object for synchronization and version tracking of groups of objects.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,6 +32,7 @@ package ptolemy.kernel.util;
 
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.Enumeration;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 
@@ -85,13 +86,20 @@ Only one thread can be writing to the workspace at a time, and
 while the write permission is held, no thread can read the workspace.
 Again, the call to doneWriting() is essential, or the workspace
 will remain permanently locked to either reading or writing.
+The call to getWriteAccess() will suspend the calling thread until 
+the access can be granted. If the calling thread has read access, 
+the read access is released before suspending the thread. This has 
+important implications. In particular, the topology may change during 
+the call to getWriteAccess(). That is, the topology before and after 
+the call may be different. Thus you should be cautious about using 
+information collected before the call after the call returns.
 <p>
 Note that it is not necessary to obtain a write lock just to add
 an item to the workspace directory.  The methods for accessing
 the directory are all synchronized, so there is no risk of any
 thread reading an inconsistent state.
 
-@author Edward A. Lee
+@author Edward A. Lee, Neil Smyth
 @version $Id$
 */
 public class Workspace implements Nameable, Serializable {
@@ -270,11 +278,13 @@ public class Workspace implements Nameable, Serializable {
                     depth = new ReadDepth();
                     _readers.put(current, depth);
                 }
+                
                 depth.incr();
                 return;
             }
             try {
                 wait();
+                
             } catch(InterruptedException ex) {
                 throw new InternalErrorException(
                         "Thread interrupted while waiting for read access!"
@@ -301,6 +311,13 @@ public class Workspace implements Nameable, Serializable {
      *  has been obtained.  It is essential that doneWriting() be called
      *  after this, or read or write permission may never again be granted in
      *  this workspace.
+     *  Before suspending the calling thread, if the thread has read 
+     *  permission, that read permission is released. Once the write 
+     *  permission is acquired, the read permission is restored. Note, 
+     *  however, that since the read permission is released some other 
+     *  thread may acquire write permission and modify the topology. 
+     *  Thus the topology may be different before and after the call 
+     *  to this method.
      */
     public synchronized void getWriteAccess() {
         _writeReq++;
@@ -323,15 +340,28 @@ public class Workspace implements Nameable, Serializable {
                     // Sole reader is this thread.
                     _writer = Thread.currentThread();
                     _writeDepth = 1;
-                    return;
+                     return;
                 }
             }
             try {
+                // Release read permission. Save current thread depth
+                // and remove it from _readers.
+                ReadDepth depth = (ReadDepth)_readers.get(current);
+                if (depth != null) {
+                    _readers.remove(current);
+                    _suspendedReaders.put(current, depth);
+                }
                 wait();
             } catch(InterruptedException ex) {
                 throw new InternalErrorException(
                         "Thread interrupted while waiting for write access!"
                         + ex.getMessage());
+            }
+            // Restore read permission.
+            ReadDepth depth = (ReadDepth)_suspendedReaders.get(current);
+            if (depth != null) {
+                _suspendedReaders.remove(current);
+                _readers.put(current, depth);
             }
         }
     }
@@ -458,6 +488,10 @@ public class Workspace implements Nameable, Serializable {
     // A table by readers (threads) of how many times they have gotten
     // read permission.
     private Hashtable _readers = new Hashtable();
+
+    // A table by readers (threads) whose permissions have been suspended 
+    // while they wait for write access.
+    private Hashtable _suspendedReaders = new Hashtable();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
