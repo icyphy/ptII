@@ -88,16 +88,19 @@ JAR =		$(PTJAVA_DIR)/bin/jar
 # The 'java' interpreter.
 JAVA =		$(PTJAVA_DIR)/bin/java
 
-# JavaCC is the Java Compiler Compiler which is used by pt.data.parser.
-JAVACCDIR =	$(PTOLEMY)/vendors/sun/JavaCC
-JJTREE =	$(JAVACCDIR)/bin/jjtree
-JAVACC =	$(JAVACCDIR)/bin/javacc
-# Under NT the following should be used and JavaCC.zip must be in 
+# JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
+# The default location is $(PTII)/vendors/sun/JavaCC
+JAVACCDIR =	@JAVACC_DIR@
+# Under Unix:
+# JJTREE =	$(JAVACCDIR)/bin/jjtree
+# JAVACC =	$(JAVACCDIR)/bin/javacc
+# Under Cygwin32 NT the following should be used and JavaCC.zip must be in 
 # the CLASSPATH
 # JJTREE = 	$(JAVA) COM.sun.labs.jjtree.Main
 # JAVACC = 	$(JAVA) COM.sun.labs.javacc.Main
 
-# Script to run tclBlend for the test suite.
-JTCLSH =	jtclsh
+JJTREE =	@JJTREE@
+JAVACC =	@JAVACC@
 
-
+# jtclsh script to run tclBlend for the test suite.
+JTCLSH =	@JTCLSH@
