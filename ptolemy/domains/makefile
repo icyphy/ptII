@@ -33,7 +33,9 @@ ME =		ptolemy/domains
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
-DIRS =		csp ct dde de fsm pn sdf
+# DT has to come after SDF, sorry.
+
+DIRS =		csp ct dde de fsm pn sdf dt
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -54,6 +56,7 @@ PTCLASSALLJARS = \
 		ct/ct.jar \
 		dde/dde.jar \
 		de/de.jar \
+        dt/dt.jar \
 		fsm/fsm.jar \
 		pn/pn.jar \
 		sdf/sdf.jar
