@@ -16,6 +16,9 @@
   <entity name="Average" class="ptolemy.actor.lib.Average">
   </entity>
 
+  <entity name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
+  </entity>
+
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
   </entity>
   
@@ -37,7 +40,6 @@
         </property>
      </property>
   </entity>
-
 
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
   </entity>

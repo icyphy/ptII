@@ -15,6 +15,9 @@
 
   <entity name="RealTimeDelay" class="ptolemy.actor.lib.RealTimeDelay">
   </entity>
+ 
+  <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+  </entity>
 
       </group>
     ?>
