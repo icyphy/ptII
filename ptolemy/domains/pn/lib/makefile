@@ -66,6 +66,7 @@ JSRCS = \
 	PNRDDecoder.java \
 	PNRDIdentifier.java \
 	PNRDInfo.java \
+	PNRDMainController.java \
 	PNRedirect.java \
 	PNSieve.java \
 	PNSink.java
