@@ -341,10 +341,8 @@ public class DTReceiver extends SDFReceiver {
      */
     public boolean hasToken() {
         if (overrideHasToken == true) {
-            debug.println("disable hasToken");
             return false;
         } else {
-            debug.println("enabled hasToken");
             return super.hasToken();
         }
     }
@@ -375,7 +373,7 @@ public class DTReceiver extends SDFReceiver {
 
         toString += " (" + ((TypedIOPort)_toPort).getType() + ")";
 
-        debug.println(fromString + " " + toString + " " + _deltaTime);
+    //    _debug(fromString + " " + toString + " " + _deltaTime);
     }
 
 
@@ -393,16 +391,15 @@ public class DTReceiver extends SDFReceiver {
         _tokenFlowRate = 0;
         _deltaTime = 0.0;
         overrideHasToken = false;
-        debug = new DTDebug(false);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                  package-access variables                 ////
-
+    
     // override the value of hasToken() given by SDFReceiver
     // This variable is used in mixed-hierarchical DT
     boolean overrideHasToken;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -432,10 +429,8 @@ public class DTReceiver extends SDFReceiver {
 
     // The actor containing this receiver
     private Actor _to;
-
+    
     // The port containing this receiver
     private IOPort _toPort;
-
-    // display for debugging purposes
-    private DTDebug debug;
-}
+  
+    }

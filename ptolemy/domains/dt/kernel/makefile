@@ -49,8 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DTDirector.java \
-	DTReceiver.java \
-	DTDebug.java
+	DTReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
