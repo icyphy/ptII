@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 package ptolemy.actor.lib;
 
@@ -70,10 +70,10 @@ dimension <i>m</i> x 1, and generates one output DoubleMatrixToken of
 dimension <i>r</i> x 1.
 
 <P>
-In addition to produce the output <i>y</i> though port <i>output</i>, the
-actor also produce the state values <i>x</i> though port <i>state</i>.
+In addition to producing the output <i>y</i> through port <i>output</i>, the
+actor also produce the state values <i>x</i> through port <i>state</i>.
 
-@author Jie Liu
+@author Jie Liu and Elaine Cheong
 @version $Id$
 */
 
@@ -135,7 +135,8 @@ public class LinearDifferenceEquationSystem extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Output port that produces DoubleMatrixToken.
+    /** Output port that produces DoubleMatrixToken of dimension
+     *  <i>r</i> x 1 (see class comment).
      */
     public TypedIOPort state;
 
@@ -146,33 +147,35 @@ public class LinearDifferenceEquationSystem extends Transformer {
     public Parameter A;
 
     /** The B matrix in the state-space representation. The number of
-     *  rows must equal to the number of rows of the A matrix. The number
-     *  of columns must equal to the number of roles in the input token.
-     *  The default value is [[1.0]].
+     *  rows must be equal to the number of rows of the A matrix. The
+     *  number of columns must be equal to the number of rows in the
+     *  input token.  The default value is [[1.0]].
      */
     public Parameter B;
 
     /** The C matrix in the state-space representation. The number of
-     *  columns must equal to the number of columns of the A matrix.
-     *  The number of rows must equal to the number of columns in the
-     *  output token. The default value is [[0.0]].
+     *  columns must be equal to the number of columns of the A
+     *  matrix.  The number of rows must be equal to the number of
+     *  columns in the output token. The default value is [[0.0]].
      */
     public Parameter C;
 
     /** The D matrix in the state-space representation. The number of
-     *  columns must equal to the number of rows in the input token.
-     *  And, the number of rows must equal to the number of columns in
-     *  the output token.
-     *  The default value is [[0.0]].
+     *  columns must be equal to the number of rows in the input token
+     *  (a DoubleMatrixToken of dimension <i>m</i> x 1.  The number of
+     *  rows must be equal to the number of columns in the output
+     *  token (a DoubleMatrixToken of dimension <i>r</i> x 1.  The
+     *  default value is [[0.0]].
      */
     public Parameter D;
 
-    /** The initial condition for the state variables. This must be
-     *  a column vector (double matrix with only one column) whose
-     *  length equals to the number of state variables.
-     *  The default value is [0.0].
-     *  NOTE: Changes of the initialStates will be applied at the
-     *  next time when fire() is called.
+    /** The initial condition for the state variables. This must be a
+     *  column vector (double matrix with only one column) whose
+     *  length is equal to the number of state variables.  The default
+     *  value is [0.0].
+     *
+     *  NOTE: Changes to this parameter will be * applied at the next
+     *  time when fire() is called.
      */
     public Parameter initialStates;
 
@@ -180,9 +183,9 @@ public class LinearDifferenceEquationSystem extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is <i>A, B, C, D</i> or <i>initialState</i>
+    /** If the argument is <i>A, B, C, D</i> or <i>initialStates</i>
      *  parameters, check that they are indeed matrices and vectors,
-     *  and request for initialization from the director if there is one.
+     *  and request initialization from the director if there is one.
      *  Other sanity checks like the dimensions of the matrices will
      *  be done in the preinitialize() method.
      *  @param attribute The attribute that changed.
@@ -234,12 +237,12 @@ public class LinearDifferenceEquationSystem extends Transformer {
     }
 
     /** Consume the input token, compute the system response, and
-     *  produces outputs. Notice that
-     *  the state is updated in postfire. That is, if multiple fire()
-     *  are called before a calling of postfire, this actor will use
-     *  the same internal state to compute the outputs.
+     *  produce outputs. Notice that the state is updated in
+     *  postfire. That is, if fire() is called multiple times before
+     *  postfire() is called, this actor will use the same internal
+     *  state to compute the outputs.
      *  @exception IllegalActionException If the get() or send() methods
-     *   of the ports throw it.
+     *   of the ports throw this exception.
      */
     public void fire() throws IllegalActionException {
         if(input.hasToken(0)) {
@@ -271,12 +274,11 @@ public class LinearDifferenceEquationSystem extends Transformer {
         }
     }
 
-    /** If the parameter <i>initialStates</i> has been changed during the
-     *  laster iteration, then update the internal state to be the
-     *  new set value.
-     *
-     *  @exception IllegalActionException If <i>initialStates</i> parameter
-     *   is invalid, or if the base class throws it.
+    /** If the parameter <i>initialStates</i> has changed, then update
+     *  the internal state of this actor to be the value of the
+     *  <i>initialStates</i> parameter.
+     *  @exception IllegalActionException If <i>initialStates</i>
+     *  parameter is invalid, or if the base class throws it.
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
@@ -292,9 +294,11 @@ public class LinearDifferenceEquationSystem extends Transformer {
     }
 
     /** Check the dimension of all parameters. If the system needs
-     *  multiple inputs, then set the input type to be DoubleMatrix.
-     *  Otherwise set the input type to Double. Similar for output
-     *  types.
+     *  multiple inputs, then set the type of the <i>input</i> port to
+     *  be DoubleMatrix; otherwise set the type to Double.  Similarly,
+     *  for the output ports <i>output</i> and <i>state</i>, if the
+     *  system needs multiple outputs, then set the type of the port
+     *  to be DoubleMatrix; otherwise set the type to Double.
      *  @exception IllegalActionException If the dimensions do not
      *  match.
      */

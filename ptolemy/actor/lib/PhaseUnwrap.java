@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -38,18 +38,17 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// PhaseUnwrap
-
 /**
 
 This actor unwraps a phase plot, removing discontinuities of
 magnitude 2*PI. The input is assumed to be a sequence of phases in
 radians in the range [-PI, PI].  The input and output types
-are double.  It assumes that the phase never
+are double.  This actor assumes that the phase never
 changes by more than PI in one sample period. This is not a very
 sophisticated phase unwrapper, but for many applications, it does
 the job.
 
-@author Joe Buck and Edward A. Lee
+@author Joe Buck and Edward A. Lee and Elaine Cheong
 @version $Id$
 */
 
@@ -87,9 +86,9 @@ public class PhaseUnwrap extends Transformer {
             double phaseChange = newPhase - _previousPhaseInput;
             if (phaseChange < -Math.PI) phaseChange += 2*Math.PI;
             if (phaseChange > Math.PI) phaseChange -= 2*Math.PI;
-            _previousPhaseOutput = _previousPhaseOutput + phaseChange;
-            _previousPhaseInput = newPhase;
-            output.send(0, new DoubleToken(_previousPhaseOutput));
+            _tempPreviousPhaseOutput = _previousPhaseOutput + phaseChange;
+            _tempPreviousPhaseInput = newPhase;
+            output.send(0, new DoubleToken(_tempPreviousPhaseOutput));
         }
     }
 
@@ -101,11 +100,35 @@ public class PhaseUnwrap extends Transformer {
         super.initialize();
         _previousPhaseInput = 0.0;
         _previousPhaseOutput = 0.0;
+        _tempPreviousPhaseInput = 0.0;
+        _tempPreviousPhaseOutput = 0.0;
     }
+
+    /** Record the final value of the most recent value of the input,
+     *  for use in the next phase.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _previousPhaseInput = _tempPreviousPhaseInput;
+        _previousPhaseOutput = _tempPreviousPhaseOutput;
+        return super.postfire();
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The value of the input in the previous phase.  Needed to work
+    // in the CT domain.
     private double _previousPhaseInput = 0.0;
+
+    // The value of the input in the previous phase.
+    private double _tempPreviousPhaseInput = 0.0;
+
+    // The value of the output in the previous phase.  Needed to work
+    // in the CT domain.
     private double _previousPhaseOutput = 0.0;
+
+    // The value of the output in the previous phase.
+    private double _tempPreviousPhaseOutput = 0.0;
 }
