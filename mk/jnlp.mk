@@ -216,6 +216,10 @@ PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 # Do not include PTJACL for size reasons
 PTJACL_JARS =
 
+WIRELESS_JARS =
+	ptolemy/domains/wireless/wireless.jar \
+	ptolemy/domains/wireless/demo/demo.jar
+
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
@@ -251,7 +255,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
-	ptolemy/domains/tm/doc/doc.jar
+	ptolemy/domains/tm/doc/doc.jar \
+	$(WIRELESS_JARS)
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -274,10 +279,7 @@ FULL_JNLP_JARS = \
 # Jar files that are only used in JNLP
 VISUAL_SENSE_ONLY_JNLP_JARS = \
 	doc/design/visualsense.jar \
-	doc/codeDocVisualSense.jar \
-	ptolemy/domains/wireless/wireless.jar \
-	ptolemy/domains/wireless/demo/demo.jar
-
+	doc/codeDocVisualSense.jar
 
 VISUAL_SENSE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/VisualSenseApplication.jar
@@ -285,6 +287,7 @@ VISUAL_SENSE_MAIN_JAR = \
 VISUAL_SENSE_JNLP_JARS =	\
 	$(VISUAL_SENSE_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
+	$(WIRELESS_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS)
 
@@ -741,3 +744,6 @@ sign_jar_dist:
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE2) \
 		$(JARFILE) $(KEYALIAS2)
+
+sign_jar_dist_update_remote:
+	scp $(JARFILE) messier:$(DIST_DIR)/$(JARFILE)
