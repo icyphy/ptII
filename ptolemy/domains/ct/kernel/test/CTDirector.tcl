@@ -84,19 +84,19 @@ test CTDirector-2.1 {Get default values} {
     $dir initialize
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
-	    [[$dir getCurrentTime] getTimeValue] \
+	    [$dir getCurrentTime] \
 	    [[$dir getIterationBeginTime] getTimeValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
-	    [[$dir getNextIterationTime] getTimeValue] \
-	    [[$dir getStopTime] toString] \
+	    [$dir getNextIterationTime] \
+	    [$dir getStopTime] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 9.2233720368548E8 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 922337203.685 0.1 1e-10 1e-06}
 
 
 ######################################################################
@@ -156,21 +156,22 @@ test CTDirector-2.2 {set Parameters by expression} {
     $param setExpression 0.1
     $param getToken
 
+    $dir preinitialize
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
-	    [[$dir getCurrentTime] getTimeValue] \
+	    [$dir getCurrentTime] \
 	    [[$dir getIterationBeginTime] getTimeValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
-	    [[$dir getNextIterationTime] getTimeValue] \
-	    [[$dir getStopTime] getTimeValue] \
+	    [$dir getNextIterationTime] \
+	    [$dir getStopTime] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 100.0 0.1 1e-11 0.1}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 10.0 0.1 0.0001 20 1.0 1e-05 10.1 100.0 0.1 1e-11 1e-06}
 
 ######################################################################
 ####  Test set parameters, same as above, but uses setToken
@@ -229,32 +230,33 @@ test CTDirector-2.2a {set Parameters} {
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $param setToken $token
 
+    $dir preinitialize
     $dir prefire
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
-	    [[$dir getCurrentTime] getTimeValue] \
+	    [$dir getCurrentTime] \
 	    [[$dir getIterationBeginTime] getTimeValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
-	    [[$dir getNextIterationTime] getTimeValue] \
-	    [[$dir getStopTime] getTimeValue] \
+	    [$dir getNextIterationTime] \
+	    [$dir getStopTime] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Backward_Euler_Solver 0.1 0.0 0.0 0.5 0.4 10 0.3 0.2 0.1 100.0 0.1 1e-11 0.1}
+} {.System.DIR.CT_Backward_Euler_Solver 0.1 10.0 10.0 0.1 0.0001 20 1.0 1e-05 10.1 100.0 0.1 1e-11 1e-06}
 
 
 test CTDirector-2.3 {sets and gets} {
     #Note: Use above set up.
-    set time [[$dir getCurrentTime] {add double} 0.1]
-    $dir setCurrentTime $time
+    set time [$dir getCurrentTime]
+    $dir setCurrentTime [expr $time+0.1]
     $dir setCurrentStepSize 0.2
-    list [[$dir getCurrentTime] getTimeValue] \
+    list [$dir getCurrentTime] \
 	    [$dir getCurrentStepSize]
-} {0.1 0.2}
+} {10.1 0.2}
 
 #############################################################################
 #### Test set suggested next step size, it is larger than the maximum
@@ -263,7 +265,7 @@ test CTDirector-2.4 {suggested next step greater than max step} {
     #Note: Use above set up.
     $dir setSuggestedNextStepSize 0.5
     list [$dir getSuggestedNextStepSize]
-} {0.3}
+} {0.5}
 
 #############################################################################
 #### Test set suggested next step size, it is less than the maximum
@@ -294,9 +296,9 @@ test CTDirector-3.1 {register a breakpoint} {
     # the time resolution.
     set timeResolution [$dir getTimeResolution]
     set currentTime [$dir getCurrentTime]
-    $dir fireAt $sys [$currentTime {add double} 0.1]
-    $dir fireAt $sys [$currentTime {add double} 0.4]
-    $dir fireAt $sys [$currentTime {add double} 0.2]
+    $dir {fireAt ptolemy.actor.Actor double} $sys 0.1
+    $dir {fireAt ptolemy.actor.Actor double} $sys 0.4
+    $dir {fireAt ptolemy.actor.Actor double} $sys 0.2
     set bptable [$dir getBreakPoints]
     set starttime [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
     $bptable removeFirst
