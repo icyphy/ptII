@@ -143,10 +143,18 @@ public class Analysis {
      *  the analysis was performed.
      */
     public boolean obsolete() {
-        return _lastComputation < _graph.changeCount();
+        return _lastComputation < graph().changeCount();
     }
 
-    /** Return the result of the analysis on the associated graph.
+    /** Return the result (cached value) of the analysis on the associated 
+     *  graph. The cached value is updated (recomputed) if the graph
+     *  has changed since the last time the cached value was computed.
+     *  If the object returned by the analysis is mutable, 
+     *  one may wish to override this method to copy the cached
+     *  value (or convert it to some other form) before returning it.
+     *  Then changes made by the client to the returned value will
+     *  not affect the cached value in the analysis (as an example,
+     *  see {@link #SelfLoopAnalysis.result}).
      *
      *  @return The result of the analysis.
      */
@@ -167,17 +175,18 @@ public class Analysis {
      */
     public String toString() {
         return "Anlaysis for the following graph.\n"
-                + _graph.toString();
+                + graph().toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Main routine for analysis computation. This method is called by
-     *  result(). It recomputes the analysis and assumes the graph has
-     *  changed. Incremental techniques for streamlining the recomputation
-     *  could be incorporated here. This method would typically be
-     *  overridden in each analysis class.
+    /** Perform the graph analysis and
+     *  set the value of {@link _cachedResult} to the value obtained by this 
+     *  invocation of the analysis. This method will typically be overridden
+     *  in each derived class to perform the appropriate graph analysis. 
+     *  Care should be taken to set the value of {@link _cachedResult},
+     *  as described above, before the method returns.
      *  FIXME: this method should be abstract.
      */
     protected void _compute() {
@@ -196,7 +205,7 @@ public class Analysis {
     *  FIXME: This should become private.
     */
     public void registerComputation() {
-        _lastComputation = _graph.changeCount();
+        _lastComputation = graph().changeCount();
     }
 
     /** Reset the analysis to invalidate any cached value (i.e., to force
@@ -212,7 +221,7 @@ public class Analysis {
     ////                         private variables                 ////
 
     // The result of the most recent computation of the analysis.
-    private Object _cachedResult;
+    protected Object _cachedResult;
 
     // The graph that this analysis is associated with.
     private Graph _graph;

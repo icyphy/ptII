@@ -32,6 +32,7 @@
 package ptolemy.graph;
 
 import ptolemy.graph.analysis.Analysis;
+import ptolemy.graph.analysis.SelfLoopAnalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -234,11 +235,11 @@ public class Graph implements Cloneable {
             throw new IllegalArgumentException("Invalid associated graph.\n" +
                     "The listener:\n" + listener + "\n");
         }
-        if (_listenerList.contains(listener)) {
+        if (_analysisList.contains(listener)) {
             throw new IllegalArgumentException("Attempt to add " +
                     "duplicate listener.\nThe listener:\n" + listener);
         }
-        _listenerList.add(listener);
+        _analysisList.add(listener);
     }
 
     /** Add an unweighted node to this graph.
@@ -939,18 +940,7 @@ public class Graph implements Cloneable {
      *  @return The self-loop edges in this graph.
      */
     public Collection selfLoopEdges() {
-        if (_selfLoopListener.obsolete()) {
-            _selfLoopEdges = new ArrayList();
-            Iterator edges = edges().iterator();
-            while (edges.hasNext()) {
-                Edge edge = (Edge)edges.next();
-                if (edge.isSelfLoop()) {
-                    _selfLoopEdges.add(edge);
-                }
-            }
-            _selfLoopListener.registerComputation();
-        }
-        return Collections.unmodifiableList(_selfLoopEdges);
+        return (Collection)_selfLoopAnalysis.result();
     }
 
     /** Return the collection of all self-loop edges that are incident to
@@ -1176,8 +1166,8 @@ public class Graph implements Cloneable {
      *  @see Analysis.
      */
     protected void _initializeListeners() {
-        _listenerList = new ArrayList();
-        _selfLoopListener = new Analysis(this);
+        _analysisList = new ArrayList();
+        _selfLoopAnalysis = new SelfLoopAnalysis(this);
         _changeCount = 0;
     }
 
@@ -1190,7 +1180,7 @@ public class Graph implements Cloneable {
     protected void _registerChange() {
         if (_changeCount == Long.MAX_VALUE) {
             // Invalidate all of the change listeners.
-            Iterator listeners = _listenerList.iterator();
+            Iterator listeners = _analysisList.iterator();
             while (listeners.hasNext()) {
                 ((Analysis)(listeners.next())).reset();
             }
@@ -1402,9 +1392,9 @@ public class Graph implements Cloneable {
     // is an instance of ArrayList whose elements are instances of Edge.
     private HashMap _incidentEdgeMap;
 
-    // A list of objects that track changes to the graph. Each element
-    // is a Analysis.
-    private ArrayList _listenerList;
+    // A list of analyses that are associated with this graph. Each
+    // element of the list is an instance of ptolemy.graph.analysis.Analysis.
+    private ArrayList _analysisList;
 
     // A mapping from node weights to associated nodes. Unweighted nodes are not
     // represented in this map. Keys in this this map are instances of
@@ -1416,8 +1406,8 @@ public class Graph implements Cloneable {
     // Each element of this list is a Node.
     private LabeledList _nodes;
 
-    // The graph listener for computation of self loop edges.
-    private Analysis _selfLoopListener;
+    // The analysis for computation of self loop edges.
+    private SelfLoopAnalysis _selfLoopAnalysis;
 
     // The set of self-loop edges in this graph. Recomputation requirements
     // of this data structure are tracked by _selfLoopListener.
