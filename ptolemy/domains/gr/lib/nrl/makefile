@@ -1,10 +1,10 @@
-# Makefile for GR domain actors library
+# Makefile for GR domain Naval Research Laboratory actors library
 #
 # @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,15 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/gr/lib
+ME =		ptolemy/domains/gr/lib/nrl
 
-# Rule for index.xml uses this
-TITLE = 	"3D actors"
-
-DIRS =		nrl
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,36 +43,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		nrl/nrl.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	nrl
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	Rotate3D.java \
-	Scale3D.java \
-	Translate3D.java \
-	GRTransform.java \
-	Box3D.java \
-	CircularSweep3D.java \
-	Cone3D.java \
-	Cylinder3D.java \
-	GRShadedShape.java \
-	PolyCylinder3D.java \
-	Sphere3D.java \
-	TextString3D.java \
-	Torus3D.java \
-	KeyInput3D.java \
-	MouseInput3D.java \
-	ViewScreen.java
+
 
 OTHER_FILES_TO_BE_JARED = \
-	grentities.xml
+	nrl.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -86,21 +61,12 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'KeyInput3D$$_React.class' \
-	'MouseInput3D$$_React.class' \
-	'KeyInput3D$$1.class' \
-	'KeyInput3D$$React.class' \
-	'MouseInput3D$$1.class' \
-	'MouseInput3D$$React.class' \
-	'ViewScreen$$MouseRotateView.class' \
-	doc \
-	index.xml
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass index.xml
+all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
