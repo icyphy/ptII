@@ -89,13 +89,9 @@ public class VisibleParameterEditorFactory extends EditorFactory {
         if (dialog.buttonPressed().equals("Cancel")) {
             SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        NamedObj parent =
-                            MoMLChangeRequest.getDeferredToParent(object);
-                        if (parent == null) {
-                            parent = (NamedObj)object.getContainer();
-                        }
+                        NamedObj parent = (NamedObj)object.getContainer();
                         String moml = "<property name=\""
-                            + object.getName(parent)
+                            + object.getName()
                             + "\" value=\""
                             + StringUtilities.escapeForXML(_oldExpression)
                             + "\"/>";
