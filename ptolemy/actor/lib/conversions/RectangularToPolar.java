@@ -69,7 +69,8 @@ public class RectangularToPolar extends Transformer {
         yInput = new TypedIOPort(this, "yInput", true, false);
         yInput.setTypeEquals(DoubleToken.class);
 
-        magnitudeOutput = new TypedIOPort(this, "magnitudeOutput", false, true);
+        magnitudeOutput =
+            new TypedIOPort(this, "magnitudeOutput", false, true);
         magnitudeOutput.setTypeEquals(DoubleToken.class);
 
         angleOutput = new TypedIOPort(this, "angleOutput", false, true);
@@ -104,7 +105,8 @@ public class RectangularToPolar extends Transformer {
             RectangularToPolar newobj = (RectangularToPolar)(super.clone(ws));
             newobj.xInput = (TypedIOPort)newobj.getPort("xInput");
             newobj.yInput = (TypedIOPort)newobj.getPort("yInput");
-            newobj.magnitudeOutput = (TypedIOPort)newobj.getPort("magnitudeOutput");
+            newobj.magnitudeOutput =
+                (TypedIOPort)newobj.getPort("magnitudeOutput");
             newobj.angleOutput = (TypedIOPort)newobj.getPort("angleOutput");
                 return newobj;
         } catch (CloneNotSupportedException ex) {

@@ -102,7 +102,8 @@ public class PolarToRectangular extends TypedAtomicActor {
     public Object clone(Workspace ws) {
         try {
             PolarToRectangular newobj = (PolarToRectangular)(super.clone(ws));
-            newobj.magnitudeInput = (TypedIOPort)newobj.getPort("magnitudeInput");
+            newobj.magnitudeInput =
+                (TypedIOPort)newobj.getPort("magnitudeInput");
             newobj.angleInput = (TypedIOPort)newobj.getPort("angleInput");
             newobj.xOutput = (TypedIOPort)newobj.getPort("xOutput");
             newobj.yOutput = (TypedIOPort)newobj.getPort("yOutput");
