@@ -1,4 +1,4 @@
-/* An actor that computes an affine tranformation on a RenderedOp.
+/* An actor that computes an affine transformation on a RenderedOp.
 
 @Copyright (c) 2002-2003 The Regents of the University of California.
 All rights reserved.

@@ -47,7 +47,7 @@ import javax.media.jai.RenderedOp;
 //// JAIEdgeDetection
 /**
    An actor that does edge detection on a image.  This is done by taking
-   the image and seperately convolving it with two different masks.  The
+   the image and separately convolving it with two different masks.  The
    two results are squared, summed together, and square rooted to give the
    final image.  The user may specify one, or both masks.  A series of
    predefined masks are available for the user to use.
@@ -233,7 +233,7 @@ public class JAIEdgeDetection extends Transformer {
     }
 
     /** If a user decides not to use a prespecified mask, this method
-     *  will return a KernalJAI filled with user specified values.
+     *  will return a KernelJAI filled with user specified values.
      */
     private KernelJAI _maskFiller(DoubleMatrixToken matrix) {
         double[][] matrixValue = matrix.doubleMatrix();
@@ -250,7 +250,7 @@ public class JAIEdgeDetection extends Transformer {
         return new KernelJAI(width, height, floatArray);
     }
 
-    /** A convenience method to help in assingning masks.  */
+    /** A convenience method to help in assinging masks.*/
     private int _maskNumberer(String maskName)
             throws IllegalActionException {
         if (maskName.equals("Backdiagonal")) {
@@ -292,7 +292,7 @@ public class JAIEdgeDetection extends Transformer {
     private DoubleMatrixToken _firstMaskData;
     private DoubleMatrixToken _secondMaskData;
 
-    /** The KernalJAI's that contain the masks to be used in edge
+    /** The KernelJAI's that contain the masks to be used in edge
      *  detection.
      */
     private KernelJAI _firstKernelJAI;

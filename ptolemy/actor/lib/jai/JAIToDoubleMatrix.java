@@ -59,7 +59,7 @@ import javax.media.jai.RenderedOp;
 
    To convert multiple banded images (for instance, color images or the
    output of a Discrete Fourier Transform), use either the BandSelect or
-   BandCombine actors to seperate the bands.
+   BandCombine actors to separate the bands.
 
    The normalize parameter allows non floating point data types to be
    normalized when the token is converted.  The normalization that

@@ -88,7 +88,7 @@ public class JAIMedianFilter extends Transformer {
      *  Square - A square mask looks at all elements in the square, and
      *  find the median value.
      *
-     *  Seperable Square - A seperable square mask, first calculates
+     *  Separable Square - A separable square mask, first calculates
      *  the median of every row, and then takes the median of those
      *  values.  Only supported for size 3 and size 5 filters.
      *

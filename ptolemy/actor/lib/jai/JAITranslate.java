@@ -56,7 +56,7 @@ import javax.media.jai.RenderedOp;
 /**
    Moves the origin of an image.  Typically, images in JAI, when created,
    have as their origin, (0, 0) in the top left corner.  This actor moves
-   the origin.  When displayed, there is no noticable difference between
+   the origin.  When displayed, there is no noticeable difference between
    an original image, and a translated image.  The difference shows up
    in operations like adding (when two images are added together, a
    region of intersection is found; this region is effected by

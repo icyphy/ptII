@@ -96,7 +96,7 @@ public class JAITranspose extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class and determine which operation to preform.
+    /** Override the base class and determine which operation to perform.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized.
      */

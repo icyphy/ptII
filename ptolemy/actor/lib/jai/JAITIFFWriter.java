@@ -117,7 +117,7 @@ public class JAITIFFWriter extends Sink {
     public Parameter confirmOverwrite;
 
     /** If <i>false</i> (the default), then write the data in strips.
-     *  This is acceptible for smaller images.
+     *  This is acceptable for smaller images.
      *  If <i>true</i>, then write the data in tiles.  This makes image
      *  access much more efficient in larger images.
      */

@@ -134,7 +134,7 @@ public class JAIImageReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The String that specifes where the file is located. */
+    /** The String that specifies where the file is located. */
     private String _fileRoot;
 
     /** The RenderedOp created by JAI from the stream.  This is then
