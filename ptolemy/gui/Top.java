@@ -34,6 +34,7 @@ import ptolemy.util.StringUtilities;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,9 @@ import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -163,14 +167,21 @@ public abstract class Top extends JFrame {
 
     /** Center the window on the screen.  This must be called after the
      *  window is populated with its contents, since it depends on the size
-     *  being known.
+     *  being known. If this method is called from a thread that is not
+     *  the AWT event dispatch thread, then its execution is deferred
+     *  and performed in that thread.
      */
     public void centerOnScreen() {
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        setLocation((tk.getScreenSize().width - getSize().width)/2,
-                (tk.getScreenSize().height - getSize().height)/2);
-        // Make this the default context for modal messages.
-        GraphicalMessageHandler.setContext(this);
+        Runnable doCenter = new Runnable() {
+            public void run() {
+                Toolkit tk = Toolkit.getDefaultToolkit();
+                setLocation((tk.getScreenSize().width - getSize().width)/2,
+                        (tk.getScreenSize().height - getSize().height)/2);
+                // Make this the default context for modal messages.
+                GraphicalMessageHandler.setContext(Top.this);
+            }
+        };
+        deferIfNecessary(doCenter);
     }
     
     /** Close the window, prompting the user to save changes if there
@@ -185,8 +196,59 @@ public abstract class Top extends JFrame {
                 _close();
             }
         };
-        SwingUtilities.invokeLater(doClose);
+        deferIfNecessary(doClose);
     }
+    
+    /** If this method is called in the AWT event dispatch thread,
+     *  then simply execute the specified action.  Otherwise,
+     *  if there are already deferred actions, then add the specified
+     *  one to the list.  Otherwise, create a list of deferred actions,
+     *  if necessary, and request that the list be processed in the
+     *  event dispatch thread.
+     *  <p>
+     *  Note that it does not work nearly as well to simply schedule
+     *  the action yourself on the event thread because if there are a
+     *  large number of actions, then the event thread will not be able
+     *  to keep up.  By grouping these actions, we avoid this problem.
+     *  @param action The Runnable object to execute.
+     */
+    public static void deferIfNecessary(Runnable action) {
+        // NOTE: This is a static version of a method in PlotBox, but
+        // we do not want to create cross dependencies between these
+        // packages.
+        
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request or add to a pending request.
+        if (EventQueue.isDispatchThread()) {
+            action.run();
+        } else {
+            synchronized(_deferredActions) {
+                // Add the specified action to the list of actions to perform.
+                _deferredActions.add(action);
+
+                // If it hasn't already been requested, request that actions
+                // be performed in the event dispatch thread.
+                if (!_actionsDeferred) {
+                    Runnable doActions = new Runnable() {
+                            public void run() {
+                                _executeDeferredActions();
+                            }
+                        };
+                    try {
+                        // NOTE: Using invokeAndWait() here risks causing
+                        // deadlock.  Don't do it!
+                        SwingUtilities.invokeLater(doActions);
+                    } catch (Exception ex) {
+                        // Ignore InterruptedException.
+                        // Other exceptions should not occur.
+                    }
+                    _actionsDeferred = true;
+                }
+            }
+        }
+    }
+
 
     /** Return true if the window is set to be centered when pack() is called.
      *  @return True if the window will be centered when pack is called.
@@ -208,7 +270,8 @@ public abstract class Top extends JFrame {
     /** Report a Throwable, which is usually an Exception but can also
      *        be an Error.  This displays a message in a dialog by
      *  calling the two-argument version with an empty string as the
-     *  first argument.
+     *  first argument.  If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
      *  @param throwable The Throwable to report
      *  @see #report(String, Throwable)
      */
@@ -217,42 +280,61 @@ public abstract class Top extends JFrame {
     }
 
     /** Report a message to the user by displaying it in a status bar,
-     *  if there is one.
+     *  if there is one. If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
      *  @param message The message to report.
      */
-    public void report(String message) {
-        if (_statusBar != null) {
-            _statusBar.setMessage(message);
-        }
+    public void report(final String message) {
+        Runnable doReport = new Runnable() {
+            public void run() {
+                if (_statusBar != null) {
+                    _statusBar.setMessage(message);
+                }
+            }
+        };
+        deferIfNecessary(doReport);
     }
 
     /** Report a Throwable, which is usually an Exception but can also
-     *        be an Error.
+     *  be an Error. If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
      *  This pops up a window with the option of examining the stack
      *  trace, and reports the specified message in the status bar, if
      *  there is one.
      *  @param message The message.
      *  @param throwable The Throwable to report.
      */
-    public void report(String message, Throwable throwable) {
-        if (_statusBar != null) {
-            _statusBar.setMessage(MessageHandler.shortDescription(throwable)
-                    + ". " + message);
-        }
-        MessageHandler.error(message, throwable);
+    public void report(final String message, final Throwable throwable) {
+        Runnable doReport = new Runnable() {
+            public void run() {
+                if (_statusBar != null) {
+                    _statusBar.setMessage(MessageHandler.shortDescription(throwable)
+                            + ". " + message);
+                }
+                MessageHandler.error(message, throwable);
+            }
+        };
+        deferIfNecessary(doReport);
     }
 
     /** Set background color.  This overrides the base class to set the
-     *  background of the status bar.
+     *  background of the status bar. If this method is called outside
+     *  the AWT event thread, then its execution is deferred and
+     *  performed in that thread.
      *  @param background The background color.
      */
-    public void setBackground(Color background) {
-        super.setBackground(background);
-        // This seems to be called in a base class constructor, before
-        // this variable has been set. Hence the test against null.
-        if (_statusBar != null) {
-            _statusBar.setBackground(background);
-        }
+    public void setBackground(final Color background) {
+        Runnable doSet = new Runnable() {
+            public void run() {
+                Top.super.setBackground(background);
+                // This seems to be called in a base class constructor, before
+                // this variable has been set. Hence the test against null.
+                if (_statusBar != null) {
+                    _statusBar.setBackground(background);
+                }
+            }
+        };
+        deferIfNecessary(doSet);
     }
 
     /** Specify whether or not to center the window on the screen when
@@ -280,106 +362,114 @@ public abstract class Top extends JFrame {
      *  this will center the window on the screen. This is
      *  done here rather than in the constructor so that derived
      *  classes are assured that their constructors have been fully
-     *  executed when _addMenus() is called.
+     *  executed when _addMenus() is called. If this method is called
+     *  outside the AWT event thread, then its execution is deferred and
+     *  performed in that thread.
      */
     public void pack() {
-        if (!_menuPopulated) {
-            _menuPopulated = true;
+        Runnable doPack = new Runnable() {
+            public void run() {
+                if (!_menuPopulated) {
+                    _menuPopulated = true;
 
-            // Set up the menus.
-            _fileMenu.setMnemonic(KeyEvent.VK_F);
-            _helpMenu.setMnemonic(KeyEvent.VK_H);
+                    // Set up the menus.
+                    _fileMenu.setMnemonic(KeyEvent.VK_F);
+                    _helpMenu.setMnemonic(KeyEvent.VK_H);
 
-            // Open button = ctrl-o.
-            _fileMenuItems[0].setAccelerator(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+                    // Open button = ctrl-o.
+                    _fileMenuItems[0].setAccelerator(
+                            KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 
-            // The mnemonic isn't set in the static initializer because
-            // JMenu doesn't have an appropriate constructor.
-            _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
-            // New button disabled by default.
-            _fileMenuItems[2].setEnabled(false);
+                    // The mnemonic isn't set in the static initializer because
+                    // JMenu doesn't have an appropriate constructor.
+                    _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
+                    // New button disabled by default.
+                    _fileMenuItems[2].setEnabled(false);
 
-            // Save button = ctrl-s.
-            _fileMenuItems[3].setAccelerator(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+                    // Save button = ctrl-s.
+                    _fileMenuItems[3].setAccelerator(
+                            KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 
-            // Print button = ctrl-p.
-            _fileMenuItems[5].setAccelerator(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
-            // Print button disabled by default, unless this class implements
-            // one of the JDK1.2 printing interfaces.
-            if (this instanceof Printable ||
-                    this instanceof Pageable) {
-                _fileMenuItems[5].setEnabled(true);
-            } else {
-                _fileMenuItems[5].setEnabled(false);
+                    // Print button = ctrl-p.
+                    _fileMenuItems[5].setAccelerator(
+                            KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+                    // Print button disabled by default, unless this class implements
+                    // one of the JDK1.2 printing interfaces.
+                    if (Top.this instanceof Printable ||
+                            Top.this instanceof Pageable) {
+                        _fileMenuItems[5].setEnabled(true);
+                    } else {
+                        _fileMenuItems[5].setEnabled(false);
+                    }
+
+                    // Close button = ctrl-w.
+                    _fileMenuItems[6].setAccelerator(
+                            KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+
+                    // Construct the File menu by adding action commands
+                    // and action listeners.
+                    FileMenuListener fileMenuListener = new FileMenuListener();
+                    // Set the action command and listener for each menu item.
+                    for (int i = 0; i < _fileMenuItems.length; i++) {
+                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
+                        _fileMenuItems[i].addActionListener(fileMenuListener);
+                        _fileMenu.add(_fileMenuItems[i]);
+                    }
+                    _menubar.add(_fileMenu);
+
+                    // Construct the Help menu by adding action commands
+                    // and action listeners.
+                    HelpMenuListener helpMenuListener = new HelpMenuListener();
+                    // Set the action command and listener for each menu item.
+                    for (int i = 0; i < _helpMenuItems.length; i++) {
+                        _helpMenuItems[i].setActionCommand(
+                                _helpMenuItems[i].getText());
+                        _helpMenuItems[i].addActionListener(helpMenuListener);
+                        _helpMenu.add(_helpMenuItems[i]);
+                    }
+
+                    // Unfortunately, at this time, Java provides no mechanism for
+                    // derived classes to insert menus at arbitrary points in the
+                    // menu bar.  Also, the menubar ignores the alignment property
+                    // of the JMenu.  By convention, however, we want the help menu to
+                    // be the rightmost menu.  Thus, we use a strategy pattern here,
+                    // and call a protected method that derived classes can use to
+                    // add menus.
+                    _addMenus();
+
+                    _menubar.add(_helpMenu);
+
+                    setJMenuBar(_menubar);
+
+                    // Add the status bar, if there is one.
+                    if (_statusBar != null) {
+                        getContentPane().add(_statusBar, BorderLayout.SOUTH);
+                    }
+                }
+                Top.super.pack();
+                if (_centering) {
+                    centerOnScreen();
+                }
             }
-
-            // Close button = ctrl-w.
-            _fileMenuItems[6].setAccelerator(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
-
-            // Construct the File menu by adding action commands
-            // and action listeners.
-            FileMenuListener fileMenuListener = new FileMenuListener();
-            // Set the action command and listener for each menu item.
-            for (int i = 0; i < _fileMenuItems.length; i++) {
-                _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
-                _fileMenuItems[i].addActionListener(fileMenuListener);
-                _fileMenu.add(_fileMenuItems[i]);
-            }
-            _menubar.add(_fileMenu);
-
-            // Construct the Help menu by adding action commands
-            // and action listeners.
-            HelpMenuListener helpMenuListener = new HelpMenuListener();
-            // Set the action command and listener for each menu item.
-            for (int i = 0; i < _helpMenuItems.length; i++) {
-                _helpMenuItems[i].setActionCommand(
-                        _helpMenuItems[i].getText());
-                _helpMenuItems[i].addActionListener(helpMenuListener);
-                _helpMenu.add(_helpMenuItems[i]);
-            }
-
-            // Unfortunately, at this time, Java provides no mechanism for
-            // derived classes to insert menus at arbitrary points in the
-            // menu bar.  Also, the menubar ignores the alignment property
-            // of the JMenu.  By convention, however, we want the help menu to
-            // be the rightmost menu.  Thus, we use a strategy pattern here,
-            // and call a protected method that derived classes can use to
-            // add menus.
-            _addMenus();
-
-            _menubar.add(_helpMenu);
-
-            setJMenuBar(_menubar);
-
-            // Add the status bar, if there is one.
-            if (_statusBar != null) {
-                getContentPane().add(_statusBar, BorderLayout.SOUTH);
-            }
-        }
-        super.pack();
-        if (_centering) {
-            centerOnScreen();
-        }
-    }
-
-    /** Override the base class to record that the bounds have been set.
-     */
-    public void setBounds(int x, int y, int width, int height) {
-        super.setBounds(x, y, width, height);
+        };
+        deferIfNecessary(doPack);
     }
 
     /** Override the base class to deiconify
-     *  the window, if necessary.
+     *  the window, if necessary. If this method is called
+     *  outside the AWT event thread, then its execution is deferred and
+     *  performed in that thread.
      */
     public void show() {
-        // NOTE: We used to call pack() here, but this would override any manual
-        // changes in sizing that had been made.
-        setState(Frame.NORMAL);
-        super.show();
+        Runnable doShow = new Runnable() {
+            public void run() {
+                // NOTE: We used to call pack() here, but this would override any manual
+                // changes in sizing that had been made.
+                setState(Frame.NORMAL);
+                Top.super.show();
+            }
+        };
+        deferIfNecessary(doShow);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -724,6 +814,12 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Indicator of whether actions are deferred. */
+    private static boolean _actionsDeferred = false;
+
+    /** List of deferred actions. */
+    private static List _deferredActions = new LinkedList();
+    
     // The input file.
     private File _file = null;
 
@@ -742,6 +838,28 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Execute all actions pending on the deferred action list.
+    // The list is cleared and the _actionsDeferred variable is set
+    // to false, even if one of the deferred actions fails.
+    // This method should only be invoked in the event dispatch thread.
+    // It is synchronized on the _deferredActions list, so the integrity
+    // of that list is ensured, since modifications to that list occur
+    // only in other places that are also synchronized on the list.
+    private static void _executeDeferredActions() {
+        synchronized(_deferredActions) {
+            try {
+                Iterator actions = _deferredActions.iterator();
+                while (actions.hasNext()) {
+                    Runnable action = (Runnable)actions.next();
+                    action.run();
+                }
+            } finally {
+                _actionsDeferred = false;
+                _deferredActions.clear();
+            }
+        }
+    }
+    
     // Open a dialog to prompt the user to save the data.
     // Return false if the user clicks "cancel", and otherwise return true.
     private boolean _queryForSave() {
