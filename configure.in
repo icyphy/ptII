@@ -584,7 +584,7 @@ LEJOS_PRESENT=no
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 PTLEJOS_DIR=
 if test ! -d "$LEJOS_USER_DIR"; then
-    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present,
+    AC_MSG_RESULT([$LEJOS_USER_DIR is not present,
 	so we need not find lejos.])
     # Use curly brackets around PTII so that if lejos is not present
     # then ${PTII} will appear in ptinvoke.
