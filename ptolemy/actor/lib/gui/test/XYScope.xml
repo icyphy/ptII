@@ -1,9 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="" class="ptolemy.actor.TypedCompositeActor">
+<model name="XYScope" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="42.0, 30.0">
         </property>
     </property>
     <entity name="Ramp0" class="ptolemy.actor.lib.Ramp">
@@ -13,11 +17,10 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="pi/100">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="55.0, 79.0"/>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory1" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="137.0, 128.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -34,10 +37,8 @@
         </property>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="154.0, 81.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="299.0, 129.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -52,11 +53,10 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="pi/70">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="52.0, 138.0"/>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory1" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="141.0, 314.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -73,11 +73,9 @@
         </property>
         <property name="phase" class="ptolemy.data.expr.Parameter" value="pi/2">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="154.0, 141.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 315.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -93,10 +91,8 @@
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="270.0, 95.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 135.0">
+        </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
