@@ -719,18 +719,30 @@ public class GenericJNIActor extends TypedAtomicActor {
         //getting the fire _method
         _methodIndex = -1;
         for (int i = 0; i < _methods.length; i++) {
-            if (_methods[i].getName().equals("fire"))
+            if (_methods[i].getName().equals("fire")) {
                 _methodIndex = i;
-            break;
+                break;
+            }
         }
 
         if (_methodIndex == -1) {
+            StringBuffer methodNames = new StringBuffer();
+            try {
+                for (int i = 0; i < _methods.length; i++) {
+                    if (i > 0) {
+                        methodNames.append(", ");
+                    }
+                    methodNames.append(_methods[i].getName());
+                }
+            } catch (Exception ex) {
+                methodNames.append("Failed to get method names: " + ex);
+            }
             throw new IllegalActionException(this,
                     "After looking at "
                     + _methods.length + " method(s),"
                     + "did not find fire method in '"
-                    +  _class + "'");
-
+                    +  _class + "', method names were: "
+                    + methodNames.toString());
         }
     }
 
