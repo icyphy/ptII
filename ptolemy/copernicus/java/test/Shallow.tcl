@@ -59,21 +59,22 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 #    lrange $result 0 9
 #} {2 4 6 8 10 12 14 16 18 20}
 
-# First, do a SDF and DE test just be sure things are working
+# First, do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
     set result [sootShallowCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    IIR.xml]]
     list {}
-} {}
+} {{}}
 
-test Shallow-1.2 {Compile and run the DE Counter test} {
+test Shallow-1.3 {Compile and run the DE Counter test} {
     set result [sootShallowCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    Counter.xml]]
     list {}
-} {}
+} {{}}
  
+# Now try to generate code for all the tests in the auto directories.
 autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
 #autoShallowCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
