@@ -41,37 +41,37 @@ import collections.LinkedList;
 A CompositeActor is an aggregation of actors.  It may have a
 <i>local director</i>, which is an object of class Director that
 is responsible for executing the contained actors.
-Normally, at the top level of a hierarchy, a composite actor with no
-container will have a local director.  A composite actor at a lower level
+At the top level of a hierarchy, a composite actor (the toplevel 
+CompositeActor of the topology) will normally exist with a local Director,
+and no container.  A composite actor at a lower level
 of the hierarchy may also have a local director.  A composite actor
 with a local director is <i>opaque</i>, and serves the role of the
 <i>wormhole</i> from Ptolemy 0.x. Its ports are opaque, but it can
-contain actors and relations.
+contain actors and relations.  The toplevel composite actor is also 
+with a Manager object that is responsible for managing any execution within 
+the topology at a high level.
+<p>
+The <i>executive director</i> of a composite actor is the local director of
+the actor's container.   The toplevel composite actor has no executive 
+director, and getExecutiveDirector will return null.   For transparent 
+composite actors, the executive director and the local director will be the 
+same.
 <p>
 The getDirector() method returns the local director if there is one.
-Otherwise, it returns the <i>executive director</i>, if there is one.
-Whatever it returns is called (simply) the <i>director</i> of the
-composite (it may be local or executive).
+Otherwise, it returns the <i>executive director</i> of the CompositeActor,
+ if there is one.  Whatever it returns is called (simply) the 
+<i>director</i> of the composite (it may be local or executive).  This
+Director is responsible for the execution of all the actors contained 
+within the composite actor.
 <p>
-The <i>executive director</i>, is simply the director of the container,
-if it has one.  If there is no container (the composite is at the top
-level of the hierarchy), then an executive director can be explicitly
-specified using the setExecutiveDirector() method.  Such an executive
-director implements the master controller for execution of an application.
-It may, for example, be associated with a control panel user interface.
-It is responsible for invoking the director.
-<p>
-A composite actor must have a director in order to be executable.
-In fact, it cannot even receive data in its input ports without a director,
-since the director is responsible for supplying the receivers to the ports.
-If the getDirector() method returns null, then the composite is not
-executable.
-<p>
-If there is no director, then the executive director plays the role
-of director.  I.e., for the purposes of execution, the hierarchy is
-flattened.  The executive director executes the composite by executing
-the contained actors. If there is a director, then the executive director
-executes this composite by issuing commands to the director.
+A composite actor must have an executive director in order communicate with
+the hierarchy around it.   In fact, it cannot even receive data in its
+ input ports without an executive director, since the executive director 
+is responsible for supplying the receivers to the ports.
+The toplevel composite actor has no executive director and cannot have
+ports that transmit data, but it can still be executed as long as it has a 
+local director.  If the getDirector() method returns null, then the 
+composite is not executable.
 <p>
 When a composite actor has both a director and an executive director, then
 the model of computation implemented by the director need not be the
@@ -90,16 +90,19 @@ Derived classes may impose further constraints by overriding setContainer().
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
-@see ptolemy.actors.IOPort
-@see ptolemy.actors.IORelation
+@see ptolemy.actor.IOPort
+@see ptolemy.actor.IORelation
 @see ptolemy.kernel.ComponentEntity
+@see ptolemy.actor.Director
+@see ptolemy.actor.Manager
 */
 public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
-     *  directory.  You should set the local director or executive director
-     *  before attempting to send data to the actor or to execute it.
+     *  directory.  
+     *  You should set the director before attempting to execute it. 
+     *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      */
     public CompositeActor() {
@@ -109,9 +112,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
     /** Construct a CompositeActor in the specified workspace with no container
      *  and an empty string as a name. You can then change the name with
      *  setName(). If the workspace argument is null, then use the default
-     *  workspace.  You should set the local director or executive director
-     *  before attempting to send data to the actor or to execute it.
-     *  Add the actor to the workspace directory.
+     *  workspace. 
+     *  You should set the director before attempting to execute it. 
+     *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
      */
@@ -124,9 +127,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  This actor will have no
+     *  Increment the version of the workspace.  
+     *  This actor will have no
      *  local director initially, and its executive director will be simply
      *  the director of the container.
+     *  You should set the director before attempting to execute it. 
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -151,10 +156,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  The ports of the returned actor are not connected to anything.
      *  The connections of the relations are duplicated in the new composite,
      *  unless they cross levels, in which case an exception is thrown.
-     *  The local director is cloned, if there is one.  The executive director
-     *  is cloned only if it has been explicitly specified using
-     *  setExecutiveDirector().  It is not cloned if it is inherited from
-     *  the container.
+     *  The local director is cloned, if there is one. 
+     *  The executive director is not cloned.
      *  NOTE: This will not work if there are level-crossing transitions.
      *
      *  @param ws The workspace for the cloned object.
@@ -170,11 +173,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } else {
             newobj._director = null;
         }
-        /*        if (_execdirector != null) {
-            newobj._execdirector = (Manager)_execdirector.clone();
-        } else {
-            newobj._execdirector = null;
-        }*/
         newobj._inputPortsVersion = -1;
         newobj._outputPortsVersion = -1;
         return newobj;
@@ -233,19 +231,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Return the executive director.
-     *  If the executive director has been set using setExecutiveDirector,
-     *  then that is what is returned.  Otherwise, the container (if any)
-     *  is queried for its director.  If it has none, or there
+    /** Return the executive director of this CompositeActor.
+     *  The container (if any) is queried for its (local) director.  
+     *  If it has none, or there
      *  is no container, then return null. This method is read-synchronized
      *  on the workspace.
      *
-     *  @return The executive director.
+     *  @return The executive director of this composite actor.
      */
     public Director getExecutiveDirector() {
         try {
             workspace().getReadAccess();
-//            if (_execdirector != null) return _execdirector;
             CompositeActor container = (CompositeActor)getContainer();
             if (container != null) return container.getDirector();
             return null;
@@ -254,13 +250,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
     
-    /** Set the Manager for execution of this CompositeActor.
-     *  This can only be done for a composite actor that has no container.
-     *  For others, the Manager is inherited from the container
-     *  (via its getDirector() method). 
+    /** Get the manager responsible for execution of this composite actor.
+     *  If this is the toplevel composite actor, then return what was
+     *  set with setManager().
+     *  For others, recursively call on the container, until the
+     *  toplevel composite actor is reached.
      *  This method is read-synchronized on the workspace.
+     *  @see setManager
      *
-     *  @param execdir The Manager
+     *  @return The Manager of the topology that contains the composite actor.
      */
     public Manager getManager() {
         try {
@@ -558,52 +556,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Set the executive director for execution of this CompositeActor.
-     *  This can only be done for a composite actor that has no container.
-     *  For others, the executive director is inherited from the container
-     *  (via its getDirector() method).  This is used for example to specify
-     *  a master controller that supervises the execution of an application.
-     *  If the executive director is explicitly specified
-     *  using this method, then it is cloned when this composite is cloned.
-     *  Otherwise, it is not cloned, since it is assumed that the clone
-     *  will inherit its executive director from its container.
-     *  This method is write-synchronized on the workspace.
-     *
-     *  @param execdir The executive director.
-     *  @exception IllegalActionException If this actor has a container, or,
-     *   in derived classes, if the director is not compatible.
-     */
-    /*    public void setExecutiveDirector(Manager execdir)
-            throws IllegalActionException {
-        try {
-            workspace().getWriteAccess();
-            if (getContainer() != null && execdir != null) {
-                throw new IllegalActionException(this, execdir,
-                        "Cannot set the executive director of an actor "
-                        + "with a container.");
-            }
-            // If there was a previous exec director, we need to reset it.
-            if (_execdirector != null) _execdirector._makeExecDirectorOf(null);
-            if (execdir != null) {
-                execdir._makeExecDirectorOf(this);
-            }
-            _execdirector = execdir;
-            return;
-        } finally {
-            workspace().doneWriting();
-        }
-    }
-    */
-
     /** Set the Manager for execution of this CompositeActor.
      *  This can only be done for a composite actor that has no container.
-     *  For others, the Manager is inherited from the container
-     *  (via its getDirector() method). 
+     *  For others, the Manager is inherited from the container.
+     *  @see getManager
      *  This method is write-synchronized on the workspace.
      *
-     *  @param execdir The Manager
-     *  @exception IllegalActionException If this actor has a container, or,
-     *   in derived classes, if the director is not compatible.
+     *  @param manager The Manager
+     *  @exception IllegalActionException If this actor has a container.
      */
     public void setManager(Manager manager)
             throws IllegalActionException {
@@ -614,7 +574,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         "Cannot set the Manager of an actor "
                         + "with a container.");
             }
-            // If there was a previous exec director, we need to reset it.
+            // If there was a previous manager, we need to reset it.
             if (_manager != null) _manager._makeManagerOf(null);
             if (manager != null) {
                 manager._makeManagerOf(this);
@@ -793,7 +753,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ////                         private variables                 ////
 
     private Director _director;
-    //    private Director _execdirector;
     private Manager _manager;
 
     // Cached lists of input and output ports.
@@ -802,3 +761,4 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
     private transient LinkedList _cachedOutputPorts;
 }
+
