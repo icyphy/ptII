@@ -1,9 +1,12 @@
-/* A library for mathematical operations on matrices.
+/* A library for mathematical operations on matrices of doubles.
 
 Some algorithms are from
 
-Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
-Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+[1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
+    Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
+
+This file was automatically generated with a preprocessor, so that 
+similar matrix operations are supported on ints, longs, floats, and doubles. 
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -37,7 +40,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 //////////////////////////////////////////////////////////////////////////
-//// MatrixMath
+//// DoubleMatrixMath
 
 /**
  * This class provides a library for mathematical operations on
@@ -49,17 +52,16 @@ package ptolemy.math;
  * rows of the matrix are expected to have the same number of columns.
  *
  * @author Jeff Tsay
- * @version $Id$
  */
 
-public class MatrixMath {
+public class DoubleMatrixMath {
 
     // Private constructor prevents construction of this class.
-    private MatrixMath() {}
+    private DoubleMatrixMath() {}
 
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
-     *  @param matrix An array of doubles.
+     *  @param matrix A matrix of doubles.
      *  @param z The double number to add.
      *  @return A new matrix of doubles.
      */
@@ -162,7 +164,7 @@ public class MatrixMath {
             // if almost singular matrix, give up now
 
             // FIXME use epsilon instead of this ugly constant
-            if (Math.abs(det) < 1.0e-50) {
+            if (Math.abs(det) <= 1E-50) {
                 return det;
             }
 
@@ -184,6 +186,7 @@ public class MatrixMath {
 
         return det;
     }
+    
 
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
@@ -258,6 +261,7 @@ public class MatrixMath {
         }
         return retval;
     }
+    
 
     /** Return an identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
@@ -362,6 +366,7 @@ public class MatrixMath {
 
         return Ai;
     }
+    
 
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The second matrix argument must be
@@ -401,6 +406,7 @@ public class MatrixMath {
                     colSpan);
         }
     }
+
 
     /** Return a new matrix that is constructed by multiplying the matrix
      *  by a scalefactor.
@@ -551,6 +557,7 @@ public class MatrixMath {
         return result;
     }
 
+
     /** Return a new matrix that is constructed from the argument by
      *  subtracting the second matrix from the first one.  The matrices must be
      *  of the same size.
@@ -570,6 +577,58 @@ public class MatrixMath {
         }
         return result;
     }
+
+
+    /** Return a new matrix that is formed by converting the doubles in
+     *  the argument matrix to floats.
+     *  @param array An matrix of double.
+     *  @return A new matrix of floats.
+     */
+    public static final float[][] toFloatMatrix(final double[][] matrix) {
+        float[][] retval = new float[_rows(matrix)][_columns(matrix)];
+        
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                retval[i][j] = (float) matrix[i][j];
+            }
+        }
+        return retval;
+    }        
+    
+
+    /** Return a new matrix that is formed by converting the doubles in
+     *  the argument matrix to integers.
+     *  @param array An matrix of double.
+     *  @return A new matrix of integers.
+     */
+    public static final int[][] toIntegerMatrix(final double[][] matrix) {
+        int[][] retval = new int[_rows(matrix)][_columns(matrix)];
+        
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                retval[i][j] = (int) matrix[i][j];
+            }
+        }
+        return retval;
+    }        
+    
+
+    /** Return a new matrix that is formed by converting the doubles in
+     *  the argument matrix to longs.
+     *  @param array An matrix of double.
+     *  @return A new matrix of longs.
+     */
+    public static final long[][] toLongMatrix(final double[][] matrix) {
+        long[][] retval = new long[_rows(matrix)][_columns(matrix)];
+        
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                retval[i][j] = (long) matrix[i][j];
+            }
+        }
+        return retval;
+    }        
+    
 
     /** Return a new matrix of doubles that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
@@ -609,8 +668,6 @@ public class MatrixMath {
 
         for (int i = 0; i < _rows(matrix); i++) {
 
-            // Replace with ArrayMath.toString(matrix[i]) when it gets in line
-
             sb.append(asf.vectorBeginString());
             for (int j = 0; j < _columns(matrix); j++) {
                 sb.append(asf.doubleString(matrix[i][j]));
@@ -634,8 +691,9 @@ public class MatrixMath {
 
 
     /** Return the trace of a square matrix, which is the sum of the
-     *  diagonal entries a<sub>11</sub> + <sub>a22</sub> + ... + a<sub>nn</sub>
+     *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
      *  Throw an IllegalArgumentException if the matrix is not square.
+     *  Note that the trace of a matrix is equal to the sum of its eigenvalues.
      *  @param matrix A matrix of doubles.
      *  @return The trace of the matrix.
      */
@@ -756,7 +814,7 @@ public class MatrixMath {
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.MatrixMath." + caller + "() : one matrix " +
+                    "ptolemy.math.doubleMatrixMath." + caller + "() : one matrix " +
                     _dimensionString(matrix1) +
                     " is not the same size as another matrix " +
                     _dimensionString(matrix2) + ".");
@@ -772,7 +830,7 @@ public class MatrixMath {
     private static final int _checkSquare(String caller, double[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.MatrixMath." + caller +
+                    "ptolemy.math.doubleMatrixMath." + caller +
                     "() : matrix argument " + _dimensionString(matrix) +
                     " is not a square matrix.");
         }

@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -118,6 +118,48 @@ public class ComplexArrayMath {
         return retval;
     }
 
+    /** Return true if all the magnitudes of the differences between
+     *  corresponding elements of array1 and array2, are all less than or
+     *  equal to maxMagnitudeDifference. Otherwise, return false.
+     *  Throw an exception if the arrays are not of the same length. If both
+     *  arrays are empty, return true.
+     *  This is computationally more expensive than arePartsWithin().
+     */
+    public static final boolean areMagnitudesWithin(Complex[] array1,
+            Complex[] array2, double maxMagnitudeDifference) {
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.areMagnitudesWithin");
+
+        for (int i = 0; i < length; i++) {
+            if (array1[i].subtract(array2[i]).magnitude() >
+                    maxMagnitudeDifference) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Return true if all the absolute differences between corresponding
+     *  elements of array1 and array2, for both the real and imaginary parts,
+     *  are all less than or equal to maxError. Otherwise, return false.
+     *  Throw an IllegalArgument exception if the arrays are not of the same
+     *  length. If both arrays are empty, return true.
+     *  This is computationally less expensive than isSquaredErrorWithin().
+     */
+    public static final boolean arePartsWithin(Complex[] array1,
+            Complex[] array2, double maxError) {
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.arePartsWithin");
+
+        for (int i = 0; i < length; i++) {
+            if ((Math.abs(array1[i].real - array2[i].real) > maxError) ||
+                    (Math.abs(array1[i].imag - array2[i].imag) > maxError)) {
+                return false;
+            }
+
+        }
+        return true;
+    }
 
     /** Return a new array of complex numbers that is formed by taking the
      *  complex-conjugate of each element in the argument array.
@@ -150,22 +192,6 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array of complex numbers with the values in imagArray for
-     *  the imaginary parts, and 0 for the real parts.
-     *  If imagArray has length 0, return a new Complex array of length 0.
-     */
-    public static final Complex[] imagArrayToComplexArray(double[] imagArray)
-        {
-            int size = imagArray.length;
-
-            Complex[] retval = new Complex[size];
-
-            for (int i = 0; i < size; i++) {
-                retval[i] = new Complex(0, imagArray[i]);
-            }
-            return retval;
-        }
-
     /** Return a new array of doubles with the imaginary parts of the array of
      *  complex numbers.
      */
@@ -181,22 +207,50 @@ public class ComplexArrayMath {
         return retval;
     }
 
-    /** Return a new array of complex numbers using two arrays for the real and
-     *  imaginary parts. If both arrays are of length 0, return a new
-     *  array of complex numbers with length 0.
+    /** Return a new array of Complex numbers using two arrays for the real and
+     *  imaginary parts. If realPart is null, treated realPart as if it were an
+     *  array of zeros, constructing an array of Complex numbers that are
+     *  purely imaginary. If imagPart is null, treated imagPart as if it were an
+     *  array of zeros, constructing an array of Complex numbers that are
+     *  purely real.
+     *  If both arrays are of length 0, or one array is null and the other
+     *  array is of length 0, return a new array of complex numbers with length 0.
+     *  If both arrays are null, allow a NullPointerException to be thrown by
+     *  the array access code.
      *  @param realPart An array of doubles, used for the real parts.
      *  @param imagPart An array of doubles, used for the imaginary parts.
      *  @return A new array of complex numbers.
      */
     public static final Complex[] formComplexArray(double[] realPart,
             double[] imagPart) {
-        int size = DoubleArrayMath._commonLength(realPart, imagPart,
-                "ComplexArrayMath.formComplexArray");
+        Complex[] retval;    
+        int size;
+                  
+        if ((realPart != null) && (imagPart != null)) {
+           size = DoubleArrayMath._commonLength(realPart, imagPart,
+                       "ComplexArrayMath.formComplexArray");
+           retval = new Complex[size];
 
-        Complex[] retval = new Complex[size];
+           for (int i = 0; i < size; i++) {
+               retval[i] = new Complex(realPart[i], imagPart[i]);
+           }                   
+        } else if (realPart == null) {
+           // NullPointerException will be thrown here if both arrays are null.
+           size = imagPart.length; 
+           
+           retval = new Complex[size];
+           
+           for (int i = 0; i < size; i++) {
+               retval[i] = new Complex(0.0, imagPart[i]);
+           }                   
+        } else { // imagPart == null
+           size = realPart.length;
+           
+           retval = new Complex[size];
 
-        for (int i = 0; i < size; i++) {
-            retval[i] = new Complex(realPart[i], imagPart[i]);
+           for (int i = 0; i < size; i++) {
+               retval[i] = new Complex(realPart[i], 0.0);
+           }                   
         }
 
         return retval;
@@ -393,47 +447,6 @@ public class ComplexArrayMath {
         return new Complex(real, imag);
     }
 
-    /** Return true iff all the elements in the array are purely imaginary.
-     *  @param array An array of complex numbers
-     *  @return A boolean.
-     */
-    public static final boolean pureImag(Complex[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].real != 0.0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /** Return true iff all the elements in the array are purely real.
-     *  @param array An array of complex numbers
-     *  @return A boolean.
-     */
-    public static final boolean pureReal(Complex[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].imag != 0.0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /** Return a new array of complex numbers with the values in realArray for
-     *  the real parts, and 0 for the imaginary parts. If the argument is
-     *  of length 0, return a new array of length 0.
-     */
-    public static final Complex[] realArrayToComplexArray(double[] realArray) {
-        int size = realArray.length;
-
-        Complex[] retval = new Complex[size];
-
-        for (int i = 0; i < size; i++) {
-            retval[i] = new Complex(realArray[i], 0);
-        }
-        return retval;
-    }
-
     /** Return a new array of doubles with the real parts of the array of
      *  complex numbers.
      */
@@ -582,55 +595,6 @@ public class ComplexArrayMath {
         sb.append(format.vectorEndString());
 
         return new String(sb);
-    }
-
-    /** @deprecated */
-    public static final boolean within(Complex[] array1, Complex[] array2,
-            double maxError) {
-        return arePartsWithin(array1, array2, maxError);
-    }
-
-    /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2, for both the real and imaginary parts,
-     *  are all less than or equal to maxError. Otherwise, return false.
-     *  Throw an IllegalArgument exception if the arrays are not of the same
-     *  length. If both arrays are empty, return true.
-     *  This is computationally less expensive than isSquaredErrorWithin().
-     */
-    public static final boolean arePartsWithin(Complex[] array1,
-            Complex[] array2, double maxError) {
-        int length = _commonLength(array1, array2,
-                "ComplexArrayMath.arePartsWithin");
-
-        for (int i = 0; i < length; i++) {
-            if ((Math.abs(array1[i].real - array2[i].real) > maxError) ||
-                    (Math.abs(array1[i].imag - array2[i].imag) > maxError)) {
-                return false;
-            }
-
-        }
-        return true;
-    }
-
-    /** Return true if all the magnitudes of the differences between
-     *  corresponding elements of array1 and array2, are all less than or
-     *  equal to maxMagnitudeDifference. Otherwise, return false.
-     *  Throw an exception if the arrays are not of the same length. If both
-     *  arrays are empty, return true.
-     *  This is computationally more expensive than arePartsWithin().
-     */
-    public static final boolean areMagnitudesWithin(Complex[] array1,
-            Complex[] array2, double maxMagnitudeDifference) {
-        int length = _commonLength(array1, array2,
-                "ComplexArrayMath.areMagnitudesWithin");
-
-        for (int i = 0; i < length; i++) {
-            if (array1[i].subtract(array2[i]).magnitude() >
-                    maxMagnitudeDifference) {
-                return false;
-            }
-        }
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

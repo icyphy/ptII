@@ -165,6 +165,8 @@ test ComplexArrayMath-4.3 {formComplexArray normal arguments} {
     epsilonDiff [jdkPrintArray $ca1] [jdkPrintArray $car]
 } {}
 
+## Need more tests for formComplex Array
+
 ####################################################################
 test ComplexArrayMath-5.1 {imagParts empty array} {
     set result [java::call ptolemy.math.ComplexArrayMath imagParts $ca0]
