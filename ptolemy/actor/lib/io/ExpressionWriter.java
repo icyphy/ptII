@@ -60,7 +60,7 @@ without asking.  If <i>true</i> (the default), then if the file
 exists, then this actor will ask for confirmation before overwriting.
 
 @see ExpressionReader
-@see ptolemy.kernel.attributes.FileParameter
+@see ptolemy.data.expr.FileParameter
 @see LineWriter
 
 @author Edward A. Lee
