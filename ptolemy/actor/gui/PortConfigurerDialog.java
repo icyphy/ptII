@@ -52,12 +52,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.Popup;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -68,6 +66,10 @@ import javax.swing.table.TableColumn;
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.unit.ParseException;
 import ptolemy.data.unit.UnitAttribute;
 import ptolemy.data.unit.UnitExpr;
@@ -78,6 +80,7 @@ import ptolemy.kernel.undo.UndoChangeRequest;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -359,11 +362,11 @@ public class PortConfigurerDialog
             Object portInfo[] = (Object[]) (_ports.elementAt(row));
             Port port = (Port) (portInfo[COL_ACTUAL_PORT]);
             if (port != null
-                    && port.isDerived()
-                    && (col == COL_NAME
-                            || col == COL_INPUT
-                            || col == COL_OUTPUT
-                            || col == COL_MULTIPORT)) {
+                && port.isDerived()
+                && (col == COL_NAME
+                    || col == COL_INPUT
+                    || col == COL_OUTPUT
+                    || col == COL_MULTIPORT)) {
                 return false;
             }
             return true;
@@ -448,16 +451,31 @@ public class PortConfigurerDialog
             return this;
         }
     }
-    class PortStringCellEditor
+
+    abstract class CellValidator {
+        String _message = null;
+        public abstract boolean isValid(String value);
+        public void setMessage(String m) {
+            _message = m;
+        }
+        public String getMessage() {
+            return _message;
+        }
+    }
+
+    class StringCellEditor
         extends AbstractCellEditor
         implements TableCellEditor, ActionListener {
 
-        Popup popup;
         String currentLabel;
         JButton button;
+        JDialog dialog = null;
         JTable _jTable;
+        JOptionPane pane = null;
+        CellValidator _validator;
+        JTextField valueText = null;
 
-        public PortStringCellEditor() {
+        public StringCellEditor() {
             button = new JButton();
             button.setActionCommand("edit");
             button.addActionListener(this);
@@ -479,30 +497,55 @@ public class PortConfigurerDialog
             return button;
         }
 
+        public void setValidator(CellValidator validator) {
+            _validator = validator;
+        }
+
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("edit")) {
+            String command = e.getActionCommand();
+            if (command.equals("edit")) {
                 Component source = (Component) e.getSource();
-                JOptionPane pane = new JOptionPane();
-                pane.setWantsInput(true);
-                pane.setInitialSelectionValue(currentLabel);
-                pane.setMessage("");
+                pane = new JOptionPane();
+                JButton[] options = new JButton[2];
+                options[0] = new JButton("OK");
+                options[0].addActionListener(this);
+                options[1] = new JButton("Cancel");
+                options[1].addActionListener(this);
+                valueText = new JTextField(currentLabel);
+                valueText.setOpaque(true);
+                valueText.setBackground(Color.white);
+                valueText.setEnabled(true);
+                Object msg[] = { null, valueText };
+                pane.setMessage(msg);
                 pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
-                pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+
+                pane.setOptions(options);
                 Point p = source.getLocation();
                 SwingUtilities.convertPointToScreen(p, _jTable);
-                JDialog dialog = pane.createDialog(source, null);
+                dialog = pane.createDialog(source, null);
                 dialog.setLocation(p);
                 dialog.show();
-                if (pane.getValue() != null) {
-                    String nv = (String) (pane.getInputValue());
-                    if (!nv.equals(JOptionPane.UNINITIALIZED_VALUE)) {
-                        currentLabel = nv;
-                        fireEditingStopped();
-                        return;
-                    }
+            } else if (command.equals("OK")) {
+                String nv = valueText.getText();
+                boolean valid = true;
+                if (_validator != null) {
+                    valid = _validator.isValid(nv);
                 }
-                fireEditingCanceled();
+                if (valid) {
+                    currentLabel = nv;
+                    fireEditingStopped();
+                    dialog.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(
+                        dialog,
+                        _validator.getMessage(),
+                        "alert",
+                        JOptionPane.ERROR_MESSAGE);
+                }
                 return;
+            } else if (command.equals("Cancel")) {
+                fireEditingCanceled();
+                dialog.dispose();
             }
         }
 
@@ -911,80 +954,69 @@ public class PortConfigurerDialog
         }
         if (updates[PortTableModel.COL_INPUT]) {
             if (((Boolean) (portInfo[PortTableModel.COL_INPUT]))
-                    .booleanValue()) {
-                momlUpdate.append("<property name=\"input\"/>");
+                .booleanValue()) {
+                momlUpdate.append(_momlProperty("input"));
             } else {
-                momlUpdate.append("<property name=\"input\" value=\"false\"/>");
+                momlUpdate.append(_momlProperty("input", null, "false"));
             }
         }
         if (updates[PortTableModel.COL_OUTPUT]) {
             if (((Boolean) (portInfo[PortTableModel.COL_OUTPUT]))
-                    .booleanValue()) {
-                momlUpdate.append("<property name=\"output\"/>");
+                .booleanValue()) {
+                momlUpdate.append(_momlProperty("output"));
             } else {
-                momlUpdate.append(
-                        "<property name=\"output\" value=\"false\"/>");
+                momlUpdate.append(_momlProperty("output", null, "false"));
             }
         }
         if (updates[PortTableModel.COL_MULTIPORT]) {
             if (((Boolean) (portInfo[PortTableModel.COL_MULTIPORT]))
-                    .booleanValue()) {
-                momlUpdate.append("<property name=\"multiport\"/>");
+                .booleanValue()) {
+                momlUpdate.append(_momlProperty("multiport"));
             } else {
-                momlUpdate.append(
-                        "<property name=\"multiport\" value=\"false\"/>");
+                momlUpdate.append(_momlProperty("multiport", null, "false"));
             }
         }
         if (updates[PortTableModel.COL_TYPE]) {
             String type = (String) (portInfo[PortTableModel.COL_TYPE]);
             momlUpdate.append(
-                    "<property name=\"_type\" "
-                    + "class = \"ptolemy.actor.TypeAttribute\" "
-                    + "value = \""
-                    + StringUtilities.escapeForXML(type)
-                    + "\"/>");
+                _momlProperty(
+                    "_type",
+                    "ptolemy.actor.TypeAttribute",
+                    StringUtilities.escapeForXML(type)));
         }
         if (updates[PortTableModel.COL_DIRECTION]) {
             String direction =
                 ((String) (portInfo[PortTableModel.COL_DIRECTION]));
             if (direction.equals("DEFAULT")) {
-                momlUpdate.append("<deleteProperty name=\"_cardinal\" />");
+                momlUpdate.append(_momlDeleteProperty("_cardinal"));
             } else {
                 momlUpdate.append(
-                        "<property name=\"_cardinal\" "
-                        + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                        + "value = \""
-                        + direction
-                        + "\"/>");
+                    _momlProperty("_cardinal", _STRING_ATTRIBUTE, direction));
             }
         }
         if (updates[PortTableModel.COL_SHOW_NAME]) {
             if (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
                     .booleanValue()) {
                 momlUpdate.append(
-                        "<property name=\"_showName\""
-                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                    _momlProperty("_showName", _SINGLETON_ATTRIBUTE));
             } else {
-                momlUpdate.append("<deleteProperty name=\"_showName\" />");
+                momlUpdate.append(_momlDeleteProperty("_showName"));
             }
         }
         if (updates[PortTableModel.COL_HIDE]) {
             if (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
-                    .booleanValue()) {
-                momlUpdate.append(
-                        "<property name=\"_hide\""
-                        + " class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                .booleanValue()) {
+                momlUpdate.append(_momlProperty("_hide", _SINGLETON_ATTRIBUTE));
             } else {
-                momlUpdate.append("<deleteProperty name=\"_hide\" />");
+                momlUpdate.append(_momlDeleteProperty("_hide"));
             }
         }
         if (_units && updates[PortTableModel.COL_UNITS]) {
             momlUpdate.append(
-                    "<property name=\"_units\" "
-                    + "class = \"ptolemy.data.unit.UnitAttribute\" "
-                    + "value = \""
-                    + ((String) (portInfo[PortTableModel.COL_UNITS]))
-                    + "\"/>");
+                _momlProperty(
+                    "_units",
+                    _UNIT_ATTRIBUTE,
+                    ((String) (portInfo[PortTableModel.COL_UNITS]))));
         }
         momlUpdate.append("</port>");
         return momlUpdate.toString();
@@ -993,17 +1025,19 @@ public class PortConfigurerDialog
     private void _enableApplyButton(boolean e) {
         _applyButton.setEnabled(e);
     }
+
     private final static String[] _columnNames =
-    {
-        "Name",
-        "Input",
-        "Output",
-        "Multiport",
-        "Type",
-        "Direction",
-        "Show Name",
-        "Hide",
-        "Units" };
+        {
+            "Name",
+            "Input",
+            "Output",
+            "Multiport",
+            "Type",
+            "Direction",
+            "Show Name",
+            "Hide",
+            "Units" };
+
     // The Listener that is sensitive to selection changes in the table.
     // When a row is selected change the label in the Remove button to
     // show that the associated port is the one that will be removed when
@@ -1048,6 +1082,38 @@ public class PortConfigurerDialog
         column.setPreferredWidth(70);
         column = _portTable.getColumnModel().getColumn(PortTableModel.COL_HIDE);
         column.setPreferredWidth(30);
+    }
+
+    private String _momlDeleteProperty(String name) {
+        return "<deleteProperty name=\"" + name + "\"/>";
+    }
+
+    private String _momlProperty(String name) {
+        return "<property name=\"" + name + "\"/>";
+    }
+
+    private String _momlProperty(String name, String clz) {
+        return "<property name=\"" + name + "\" " + "class = \"" + clz + "\"/>";
+    }
+
+    private String _momlProperty(String name, String clz, String value) {
+        if (clz != null) {
+            return "<property name=\""
+                + name
+                + "\" "
+                + "class = \""
+                + clz
+                + "\" "
+                + "value = \""
+                + value
+                + "\"/>";
+        }
+        return "<property name=\""
+            + name
+            + "\" "
+            + "value = \""
+            + value
+            + "\"/>";
     }
 
     private void _populateActualPorts() {
@@ -1104,8 +1170,26 @@ public class PortConfigurerDialog
                 Boolean.class,
                 new PortBooleanCellRenderer());
         _portTable.setDefaultRenderer(String.class, new StringCellRenderer());
-        _portTable.setDefaultEditor(String.class, new PortStringCellEditor());
+        _portTable.setDefaultEditor(String.class, new StringCellEditor());
         _enableApplyButton(false);
+        TableColumn _portNameColumn =
+            ((TableColumn) (_portTable
+                .getColumnModel()
+                .getColumn(PortTableModel.COL_NAME)));
+        final StringCellEditor portNameEditor = new StringCellEditor();
+        _portNameColumn.setCellEditor(portNameEditor);
+        portNameEditor.setValidator(new CellValidator() {
+            public boolean isValid(String cellValue) {
+                int index = cellValue.indexOf(".");
+                if (index >= 0) {
+                    setMessage(
+                        cellValue + " contains a period in col " + (index + 1));
+                    return false;
+                }
+                return true;
+            }
+        });
+
         TableColumn _portLocationColumn =
             ((TableColumn) (_portTable
                     .getColumnModel()
@@ -1114,68 +1198,69 @@ public class PortConfigurerDialog
                 new DefaultCellEditor(_portLocationComboBox));
         TableColumn _portTypeColumn =
             ((TableColumn) (_portTable
-                    .getColumnModel()
-                    .getColumn(PortTableModel.COL_TYPE)));
-        final PortStringCellEditor portTypeEditor = new PortStringCellEditor();
+                .getColumnModel()
+                .getColumn(PortTableModel.COL_TYPE)));
+        final StringCellEditor portTypeEditor = new StringCellEditor();
         _portTypeColumn.setCellEditor(portTypeEditor);
-        portTypeEditor.addCellEditorListener(new CellEditorListener() {
-
-                public void editingStopped(ChangeEvent arg0) {
-                    // TODO Auto-generated method stub
+        portTypeEditor.setValidator(new CellValidator() {
+            public boolean isValid(String cellValue) {
+                try {
+                    ASTPtRootNode tree =
+                        _typeParser.generateParseTree(cellValue);
+                    Token result =
+                        _parseTreeEvaluator.evaluateParseTree(tree, null);
+                } catch (IllegalActionException e) {
+                    setMessage(e.getMessage());
+                    return false;
                 }
+                return true;
+            }
+        });
 
-                public void editingCanceled(ChangeEvent arg0) {
-                    // TODO Auto-generated method stub
-                }
-            });
         TableColumn _portUnitColumn =
             ((TableColumn) (_portTable
-                    .getColumnModel()
-                    .getColumn(PortTableModel.COL_UNITS)));
-        final PortStringCellEditor portUnitEditor = new PortStringCellEditor();
+                .getColumnModel()
+                .getColumn(PortTableModel.COL_UNITS)));
+        final StringCellEditor portUnitEditor = new StringCellEditor();
         _portUnitColumn.setCellEditor(portUnitEditor);
-        portUnitEditor.addCellEditorListener(new CellEditorListener() {
 
-                public void editingStopped(ChangeEvent arg0) {
-                    String expression = portUnitEditor._getText();
-                    UnitExpr uExpr;
-                    try {
-                        uExpr = UnitLibrary.getParser().parseUnitExpr(expression);
-                    } catch (ParseException e) {
-                        JOptionPane.showMessageDialog(
-                                null,
-                                e.getMessage(),
-                                "alert",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+        portUnitEditor.setValidator(new CellValidator() {
+            public boolean isValid(String cellValue) {
+                UnitExpr uExpr;
+                try {
+                    uExpr = UnitLibrary.getParser().parseUnitExpr(cellValue);
+                } catch (ParseException e) {
+                    setMessage(e.getMessage());
+                    return false;
                 }
-
-                public void editingCanceled(ChangeEvent arg0) {
-                }
-            });
+                return true;
+            }
+        });
     }
+
     ///////////////////////////////////////////////////////////////////
     //// private variables ////
 
     private boolean _hideAllPorts = false;
-    // Following is true if we have full units capability.
-    private boolean _units = true;
     // The combination box used to select the location of a port.
     private JComboBox _portLocationComboBox;
     JTable _portTable;
     // Port TableModel
     PortTableModel _portTableModel = null;
     JTableHeader _jth;
-    // Each element of _ports is a row in the table that PortTableModel is
-    // based
-    // on.
+
+    static ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
     Vector _ports = null;
     private int _selectedRow = -1;
+    private static String _SINGLETON_ATTRIBUTE =
+        "ptolemy.kernel.util.SingletonAttribute";
+
     private boolean _showAllNames = false;
+    private static String _STRING_ATTRIBUTE =
+        "ptolemy.kernel.util.StringAttribute";
+    static PtParser _typeParser = new PtParser();
+    private boolean _units = true;
+    private static String _UNIT_ATTRIBUTE = "ptolemy.data.unit.UnitAttribute";
     // The various buttons.
     private JButton _applyButton, _commitButton, _addButton, _removeButton;
-    /* (non-Javadoc)
-     * @see ptolemy.actor.gui.PtolemyDialog#_getHelpURL()
-     */
-
 }
