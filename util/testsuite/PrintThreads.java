@@ -32,13 +32,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /* This code was originally found at
    http://www.fsg.com/tech/threadmon.htm
    and is
-   Copyright (c) 1997 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved. 
+   Copyright (c) 1997 Fusion Systems Group, a division of Context Integration, Inc. All rights reserved.
 
    Fusion Systems Group
-   One Wall Street Court, New York, NY, 10005 
+   One Wall Street Court, New York, NY, 10005
    Phone: +1-212-376-6300
    Fax: +1-212-376-6320
-   E-mail: threadmon@fsg.com 
+   E-mail: threadmon@fsg.com
 */
 
 package util.testsuite;
@@ -58,7 +58,7 @@ public class PrintThreads {
 
     /** Get the root ThreadGroup of the Java Virtual Machine. This
      * method assumes that the current Thread is a member of a ThreadGroup
-     * which is a descendant of the root ThreadGroup. 
+     * which is a descendant of the root ThreadGroup.
      */
     public static ThreadGroup rootThreadGroup() {
 	ThreadGroup parent, rootGroup;
@@ -73,7 +73,7 @@ public class PrintThreads {
     }
 
     /** Return a String containing all the ThreadGroups in the JVM
-     *  that are decendents of the root ThreadGroup.  
+     *  that are decendents of the root ThreadGroup.
      */
     public static void allThreadGroups() {
 	ThreadGroup rootGroup = rootThreadGroup();
