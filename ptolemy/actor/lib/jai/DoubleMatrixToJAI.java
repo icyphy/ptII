@@ -192,7 +192,7 @@ public class DoubleMatrixToJAI extends Transformer {
                 _maxValue = (double)Double.MAX_VALUE;
                 break;
             default:
-                throw new InternalErrorException(this, 
+                throw new InternalErrorException(this, null,
                         "Invalid value for _dataFormat private variable. "
                         + "DoubleMatrixToJAI actor (" + getFullName()
                         + ") on data type " + _dataFormat);
@@ -277,7 +277,7 @@ public class DoubleMatrixToJAI extends Transformer {
             parameters.add(DataBuffer.TYPE_USHORT);
             break;
         default:
-            throw new InternalErrorException(this, 
+            throw new InternalErrorException(this, null,
                     "Invalid value for _dataFormat private variable. "
                     + "DoubleMatrixToJAI actor (" + getFullName()
                     + ") on data type " + _dataFormat);

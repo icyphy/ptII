@@ -169,7 +169,7 @@ public class JAIDataConvert extends Transformer {
             result = DataBuffer.TYPE_USHORT;
             break;
         default:
-            throw new InternalErrorException(this,
+            throw new InternalErrorException(this, null,
                     "Invalid value for _dataFormat private variable. "
                     + "JAIDataConvert actor (" + getFullName()
                     + ") on data type " + _dataFormat);
