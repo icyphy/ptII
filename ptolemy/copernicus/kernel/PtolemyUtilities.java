@@ -104,6 +104,7 @@ import java.util.Map;
 import java.lang.reflect.Method;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
@@ -209,6 +210,17 @@ public class PtolemyUtilities {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
                     localName, intTokenClass, intTokenConstructor,
                     IntConstant.v(((IntToken)token).intValue()));
+            return tokenLocal;
+        } else if (token instanceof BooleanToken) {
+            Value value;
+            if(((BooleanToken)token).booleanValue()) {
+                value = IntConstant.v(1);
+            } else {
+                value = IntConstant.v(0);
+            }
+            Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
+                    localName, booleanTokenClass, booleanTokenConstructor,
+                    value);
             return tokenLocal;
         } else if (token instanceof DoubleToken) {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
@@ -910,6 +922,11 @@ public class PtolemyUtilities {
 
     // Soot Class representing the ptolemy.data.type.BaseType class.
     public static SootClass baseTypeClass;
+ 
+    // Soot class representing the ptolemy.data.BooleanToken class.
+    public static SootClass booleanTokenClass;
+    // Soot Method representing the BooleanToken(bool) constructor.
+    public static SootMethod booleanTokenConstructor;
 
     public static SootField booleanTypeField;
     public static SootField booleanMatrixTypeField;
@@ -1227,6 +1244,11 @@ public class PtolemyUtilities {
         doubleTokenConstructor =
             doubleTokenClass.getMethod("void <init>(double)");
 
+        booleanTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.BooleanToken");
+        booleanTokenConstructor =
+            booleanTokenClass.getMethod("void <init>(boolean)");
+  
         intTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.IntToken");
         intTokenConstructor =

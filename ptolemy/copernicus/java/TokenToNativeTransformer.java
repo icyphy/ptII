@@ -1610,9 +1610,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
             return LongConstant.v(77);
         } else if (type instanceof IntType ||
                 type instanceof ShortType ||
-                type instanceof ByteType ||
-                type instanceof BooleanType) {
+                type instanceof ByteType) {
             return IntConstant.v(7);
+        } else if (type instanceof BooleanType) {
+            return IntConstant.v(0);
         } else {
             throw new RuntimeException("Unknown type = " + type);
         }
