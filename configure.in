@@ -463,7 +463,7 @@ fi
 #       JHDL is a Java Highlevel Description Language, see
 #	http://www.jhdl.org
 #       See if there was a command-line option for where JHDL is
-#       If not, look in $PTII/vendors/jhdl
+#       If not, look for $PTII/vendors/jhdl/ptjhdllib/JHDL.jar
 #--------------------------------------------------------------------
 
 # PTJHDL_DIR is set to jhdl and used in
@@ -471,19 +471,19 @@ fi
 PTJHDL_DIR=
 
 # Directory that contains the jhdl jar files
-JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
+JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
 
 # We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
 if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus/jhdl is not present,
-	so we need not find the Jhdl - a Java Optimization Framework.])
-    JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
+	so we need not find the JHDL - a Java Optimization Framework.])
+    JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
 else
     AC_MSG_CHECKING([for jhdl jar file])
     AC_ARG_WITH(jhdl_jar, [  --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
-                          defaults to \$PTII/vendors/jhdl/JHDL_0_3_4.jar],
+                          defaults to \$PTII/vendors/jhdl/ptjhdllib/JHDL.jar],
 	JHDL_JAR=$withval,
-	JHDL_JAR=$PTII/vendors/jhdl/JHDL_0_3_4.jar)
+	JHDL_JAR=$PTII/vendors/jhdl/ptjhdllib/JHDL.jar)
 
     if test -f "$JHDL_JAR"; then
 	AC_MSG_RESULT([$JHDL_JAR])
@@ -491,7 +491,7 @@ else
 	# $PTII/ptolemy/apps/makefile if jhdl was found
 	PTJHDL_DIR=jhdl
     else
-	JHDL_JAR=$PTII/vendors/jhdl/JHDL_0_3_4_1.jar
+	JHDL_JAR=$PTII/vendors/jhdl/ptjhdllib/JHDL.jar
 	if test -f "$JHDL_JAR"; then
 	    AC_MSG_RESULT([$JHDL_JAR])
 	    # Set to jhdl and used in
@@ -501,13 +501,12 @@ else
     fi	
 
     if test "$PTJHDL_DIR" = ""; then
-        AC_MSG_WARN(['Failed to find PTII/vendors/jhdl/JHDL_0_3_4.jar
-    or JHDL_0_3_4_1.jar
-    perhaps Jhdl is not installed?
-    You need not download Jhdl unless you plan on using code generation
-    The Jhdl SDK can be downloaded from http://www.jhdl.org'])
+        AC_MSG_WARN(['Failed to find PTII/vendors/jhdl/ptjhdllib/JHDL.jar
+    perhaps JHDL is not installed?
+    You need not download JHDL unless you plan on using code generation
+    The JHDL SDK can be downloaded from http://www.jhdl.org'])
 	# Note that we don't substitute in the ${PTII} here
-	JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
+	JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
     fi
 fi
 
