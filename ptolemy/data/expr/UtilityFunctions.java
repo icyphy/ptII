@@ -1502,9 +1502,9 @@ public class UtilityFunctions {
 
     /** Return the return type of the subarray() method, which is the
      *  same as the array type.
-     *  @param array The array.
-     *  @param index The index of the beginning of the subarray.
-     *  @param count The length of the subarray.
+     *  @param arrayType The type of the array argument.
+     *  @param indexType The type of the index argument.
+     *  @param countType The type of the count argument.
      *  @return The extracted subarray.
      *  @exception IllegalActionException If the index argument is less
      *   than zero.
