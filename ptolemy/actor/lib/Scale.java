@@ -41,7 +41,7 @@ import ptolemy.data.expr.Parameter;
 Produce an output token on each firing with a value that is
 equal to a scaled version of the input.  The actor is polymorphic
 in that it can support any token type that supports multiplication
-by the <i>gain</i> parameter.  The output type is constained to be at least
+by the <i>gain</i> parameter.  The output type is constrained to be at least
 as general as both the input and the <i>gain</i> parameter.
 For data types where multiplication is not commutative (such
 as matrices), the parameter is multiplied on the left, and the input
