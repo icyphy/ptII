@@ -306,11 +306,9 @@ public class UnitUtilities {
      */
     public static String summarizeUnitCategories() {
         synchronized (_indexTable) {
-            StringBuffer buffer =
-                new StringBuffer("The registered categories are:");
-            buffer.append("" + _categories);
-            buffer.append(_categoryList.toString());
-            return buffer.toString();
+            return "The registered categories are: "
+                + categories
+                + _categoryList.toString();
         }
     }
 
@@ -332,7 +330,7 @@ public class UnitUtilities {
                 return "";
             }
 
-            System.out.println(summarizeUnitCategories());
+            //System.out.println(summarizeUnitCategories());
 
             String positiveUnits = "";
             String negativeUnits = "";
