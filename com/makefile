@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = oroinc microstar JLex
+DIRS = microstar JLex
 
 # Root of Ptolemy II directory
 ROOT =		..
