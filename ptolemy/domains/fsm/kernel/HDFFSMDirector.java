@@ -485,6 +485,9 @@ public class HDFFSMDirector extends FSMDirector {
 
         IOPort p;
         Receiver rec;
+	// Get token queue associated with "port".
+	ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)inputPortNameToArrayFIFOQueue.get(port.getName());
+
         while (port.hasToken(0)) {
             try {
 		
@@ -495,8 +498,7 @@ public class HDFFSMDirector extends FSMDirector {
 		t = port.get(0);
 		
 
-		// Get token queue associated with "port".
-		ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)inputPortNameToArrayFIFOQueue.get(port.getName());
+		
 		
 		// Remove the oldest token from the queue and throw it away
 		// to make room for a new token. 
@@ -505,16 +507,7 @@ public class HDFFSMDirector extends FSMDirector {
 		// Put the most recently read in token in the queue.
 		guardTokenArray.put(t);
 
-		// FIXME: For the non-homogeneous case, only do this
-		// on the last firing of an iteration.
-		// Get the array of variables associated with "port".
-		Variable[] guardVarArray = (Variable[])inputPortNameToVariableArray.get(port.getName());
-
-		// Copy the newest token into the Variable array.
-		Token tempToken2 = (Token)guardTokenArray.get(0);
-
-		// Copy the token(s) into the array of variables.
-		(guardVarArray[0]).setToken(tempToken2);
+		
 		
 
 		System.out.println("HDFFSMDirector: transferInputs(): Port " + port.getFullName() + " has token.");
@@ -578,6 +571,22 @@ public class HDFFSMDirector extends FSMDirector {
                         ex.getMessage());
             }
         }
+	// Copy the token(s) into the array of variables.
+	// FIXME: As a performance optimization, only do this
+	// on the last firing of an iteration.
+	// Get the array of variables associated with "port".
+	Variable[] guardVarArray = (Variable[])inputPortNameToVariableArray.get(port.getName());
+	
+	// Copy the newest token into the Variable array.
+	//Token tempToken2 = (Token)guardTokenArray.get(0);
+	
+	// Copy the token(s) into the array of variables.
+	//(guardVarArray[0]).setToken(tempToken2);
+	
+	int i; // loop var.
+	for (i = 0; i < guardVarArray.length; i++) {
+	    (guardVarArray[i]).setToken((Token)guardTokenArray.get(guardVarArray.length -1 - i));
+	}
         return trans;
     }
 
