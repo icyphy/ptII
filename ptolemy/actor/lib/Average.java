@@ -48,6 +48,9 @@ One output is produced each time the actor is fired.
 The inputs and outputs can be any token type that
 supports addition and division by an integer.  The output type is
 constrained to be the same as the input type.
+Note that if the input is an integer, then the output is an
+integer, which may not be what you want. You may need to convert
+the input to a double.
 <p>
 Note that the type system will fail to catch some errors. Static type
 checking may result in a resolved type that does not support addition
