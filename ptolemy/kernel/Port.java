@@ -340,7 +340,7 @@ public class Port extends NamedObj {
             Port another = container.getPort(name);
             if((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                    "already contains a port with the name "+name+".");
+                        "already contains a port with the name "+name+".");
             }
         }
         super.setName(name);
