@@ -30,44 +30,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-// FIXME: Trim
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Manager;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.PlotTableau;
-import ptolemy.actor.gui.PlotTableauFrame;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
-import ptolemy.plot.PlotBox;
-import ptolemy.plot.PlotFrame;
 
-import javax.swing.SwingUtilities;
-import java.awt.Container;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plotter
