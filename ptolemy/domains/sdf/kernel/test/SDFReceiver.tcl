@@ -124,6 +124,18 @@ test SDFReceiver-2.1 {Check put and get and hasToken} {
     list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString]
 } {0 1 1 0 {"foo"} {"foo"}}
 
+test SDFReceiver-2.1a {Check clear} {
+    $receiver {put ptolemy.data.Token} $token
+    $receiver {put ptolemy.data.Token} $token
+
+    set result1 [$receiver size]
+    
+    $receiver clear
+    set result2 [$receiver size]
+    
+    list $result1 $result2
+} {}
+
 test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in the queue} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
     # Check that hasToken returns false when the receiver is empty
