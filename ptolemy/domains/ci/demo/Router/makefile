@@ -52,6 +52,8 @@ JSRCS = QueueControl.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Router.xml \
+	Router.htm \
+	RouterVergil.htm
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -70,9 +72,25 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Router.htm
+
+demo_vergil_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer RouterVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Router.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Router.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
