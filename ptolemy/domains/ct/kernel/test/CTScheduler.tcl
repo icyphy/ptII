@@ -87,7 +87,8 @@ test CTScheduler-2.1 {schedule a chain of actors} {
     $ca setName CA
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector Dir]
     $ca setDirector $dir
-    set sch [$dir getScheduler]
+    set sch [java::cast ptolemy.domains.ct.kernel.CTScheduler \
+	    [$dir getScheduler]]
     #### construct a chain with no feedback.
     set a1 [java::new ptolemy.domains.ct.kernel.test.CTDummySource $ca A1]
     set a2 [java::new ptolemy.domains.ct.kernel.test.CTDummyMISOActor $ca A2]
