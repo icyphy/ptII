@@ -419,3 +419,16 @@ test Variable-11.0 {Check reach of scope} {
     $p2 setExpression {P1}
     [$p2 getToken] stringValue
 } {a}
+
+######################################################################
+####
+#
+test Variable-12.0 {Test exportMoML} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.data.expr.Variable $a "A1"]
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
+</entity>
+}
+

@@ -911,4 +911,39 @@ test CompositeEntity-17.0 {test getPort} {
     $r getFullName
 } {.e1.e2.a}
 
+######################################################################
+####
+#
+test CompositeEntity-18.0 {test exportMoML} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "p1"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $e1 "a1"]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 "p2"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $e2 "a2"]
+    set r [java::new ptolemy.kernel.ComponentRelation $e1 "r"]
+    $p1 link $r
+    $p2 link $r
+    $e1 exportMoML
+} {<entity name="e1" class="ptolemy.kernel.CompositeEntity">
+    <attribute name="a1" class="ptolemy.kernel.util.Attribute">
+    </attribute>
+    <port name="p1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        <attribute name="a2" class="ptolemy.kernel.util.Attribute">
+        </attribute>
+        <port name="p2" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="p1" relation="r"/>
+    <link port="e2.p2" relation="r"/>
+</entity>
+}
+
+
 

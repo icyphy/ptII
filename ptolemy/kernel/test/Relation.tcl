@@ -228,3 +228,13 @@ test Relation-15.1 {Test a Relation linked twice to the same port} {
     {ptolemy.kernel.Port {.my entity.my port} attributes {
     }}
 }}
+
+######################################################################
+####
+#
+test Relation-16.0 {Test exportMoML} {
+    $r1 exportMoML
+} {<relation name="my relation" class="ptolemy.kernel.Relation">
+</relation>
+}
+

@@ -41,6 +41,6 @@ This class is used to test protected method(s) in CompositeEntity.java
 */
 public class TestCompositeEntity extends CompositeEntity {
     public String uniqueEntityName() {
-        return _uniqueEntityName();
+        return uniqueName("_E");
     }
 }

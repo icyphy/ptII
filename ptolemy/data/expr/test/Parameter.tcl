@@ -326,3 +326,26 @@ test Parameter12.0 {Check that notification does not occur when dependents chang
     $a setExpression {3.5}
     $e getParamValue
 } {4.5}
+
+######################################################################
+####
+#
+test Parameter-13.0 {Test exportMoML} {
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set a1 [java::new ptolemy.data.expr.Parameter $a "A1"]
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
+    <attribute name="A1" class="ptolemy.data.expr.Parameter">
+    </attribute>
+</entity>
+}
+
+test Parameter-13.1 {Test exportMoML} {
+    $a1 setExpression {3}
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.util.NamedObj">
+    <attribute name="A1" class="ptolemy.data.expr.Parameter" value="3">
+    </attribute>
+</entity>
+}

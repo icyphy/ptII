@@ -502,3 +502,18 @@ test Port-15.3 {Test for setting name back} {
     $p1 setName P1
     $p1 getFullName
 } {.A.P1}
+
+######################################################################
+####
+#
+test Port-16.0 {Test exportMoML} {
+    set a [java::new ptolemy.kernel.Entity]
+    $a setName A
+    set p1 [java::new ptolemy.kernel.Port $a P1]
+    $a exportMoML
+} {<entity name="A" class="ptolemy.kernel.Entity">
+    <port name="P1" class="ptolemy.kernel.Port">
+    </port>
+</entity>
+}
+
