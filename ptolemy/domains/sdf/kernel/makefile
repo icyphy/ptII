@@ -56,10 +56,11 @@ JSRCS = \
 	DataflowActor.java \
 	Debug.java \
 	DebugListener.java \
-	SDFScheduler.java \
 	SDFAtomicActor.java \
 	SDFCompositeActor.java \
-	SDFDirector.java
+	SDFDirector.java \
+	SDFReceiver.java \
+	SDFScheduler.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -104,6 +104,8 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor.   Return zero if
      *  setTokenConsumptionRate has not been called on this port.
@@ -156,7 +158,7 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      *
      *  @throw IllegalActionException if port is not contained in this actor.
      *  @return The number of tokens produced on the port, as supplied by
-     *  setTokenProductionRate, or zero if setTokenProductionRate has not been
+      *  setTokenProductionRate, or zero if setTokenProductionRate has not been
      *  called
      */
     public int getTokenProductionRate(IOPort p)
@@ -177,7 +179,6 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      *  on the appropriate port of this Actor.
      *
      *  @throw IllegalActionException if port is not contained in this actor.
-     *  @throw IllegalActionException if port is not an input IOPort.
      */
     public void setTokenConsumptionRate(IOPort p,int r)
         throws IllegalActionException {

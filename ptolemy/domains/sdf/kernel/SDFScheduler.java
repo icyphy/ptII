@@ -1,5 +1,4 @@
-
-/* A base class for schedulers.
+/* A Scheduler for the SDF domain
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.

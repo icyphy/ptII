@@ -53,6 +53,7 @@ import java.util.Enumeration;
      before it returns false in postfire.   If this number is not greater
      than zero, then no limit is set and postfire will always return false.
      The default number of iterations is zero.
+
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -102,7 +103,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     public Receiver newReceiver() {
         return new QueueReceiver();
     }
-
 
     /** Prepare for firing and return true if firing can proceed.
      *  If there is no container, return false immediately.  Otherwise,
