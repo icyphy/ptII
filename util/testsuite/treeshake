@@ -71,11 +71,36 @@ ptolemyFiles=`$javaCommand -verbose ${1+"$@"} | \
     awk '{print substr($2, 1, length($2)-1)}' | \
     sed 's@\.@/@g' | awk '{print $1 ".class"}'`
 #set +x
-(cd $PTII; $JAR -cm $manifest $ptolemyFiles) > $treeshakejar
 
-rm -f $manifest
+# Determine if we are on windows and try to set JAVAHOME
+windows=no
+if [ "${OSTYPE-no}" = "no" ]; then
+    case "`uname -s`" in
+    CYGWIN*) 
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+else    
+    case "${OSTYPE-no}" in
+    # Cygwin Bash
+    cygwin*)
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+fi
+
+CLASSPATHSEPARATOR=":"
+if [ "$windows" = "yes" ]; then
+    CLASSPATHSEPARATOR=";"
+fi
+
 
 # Throw away everything before -classpath xxx, where xxx is also tossed
+classPathArg=""
 echo "$@" | egrep -e "-classpath"
 retval=$?
 if [ $retval = 0 ]; then
@@ -83,8 +108,52 @@ if [ $retval = 0 ]; then
     do
 	if [ "$1" = "-classpath" ]; then
 	    shift
-	    echo "third $@: $@"
+	    classPathArg=$@
+	    echo "Passed in -classpath arg was: $classPathArg"
 	    shift
+	    classPathDirectoriesAndJars=`echo $classPathArg | \
+		awk -F "$CLASSPATHSEPARATOR" '{for(i=1;i<NF;i++) printf("%s ", $i)}' `
+            echo "classPathDirectoriesAndJars:	$classPathDirectoriesAndJars"
+	    # Ok, since we might be pulling jar files from multiple
+	    # directories, we split up the value of the classpath argument
+	    # and copy the class files into a temporary location and
+	    # jar that up.
+	    # The trick is that we process the directories in reverse
+	    # order, so if the classpath is "xxx/jimple1;$PTII" we first
+	    # copy the .class files from $PTII and then from xxx/jimple.
+	    # Note that we do not look inside jar files, though we could.
+	    classPathDirectories=""	
+	    for dirOrJar in $classPathDirectoriesAndJars
+	    do
+		if [ -d "$dirOrJar" ]; then
+		    # It is a directory, we add it to the list
+		    # in reverse order
+		    classPathDirectories="$dirOrJar $classPathDirectories"
+		fi
+	    done	
+            #echo "classPathDirectories:	$classPathDirectories"
+
+	    # There is similar jar handling code in ptcommon.mk
+	    PTJAR_TMPDIR=ptjar_tmpdir
+	    rm -rf $PTJAR_TMPDIR
+	    mkdir $PTJAR_TMPDIR
+
+    	    for directory in $classPathDirectories
+	    do
+		echo "Copying files from $directory"
+		for file in $ptolemyFiles
+		do
+			if [ -f "$directory/$file" ]; then
+			    classDir=`dirname $PTJAR_TMPDIR/$file`
+			    if [ ! -d "$classDir" ]; then
+				mkdir -p $classDir
+			    fi	
+			    cp "$directory/$file" $classDir
+			fi
+		done
+	    done	
+	    # Now that we have processed the classpath arg, we break
+	    # out of the argument processing loop
 	    break
 	fi    
 	# Consume 
@@ -92,5 +161,16 @@ if [ $retval = 0 ]; then
     done	
 fi
 
+if [ "$classPathArg" != "" ]; then
+    (cd $PTJAR_TMPDIR; $JAR -cm $manifest $ptolemyFiles) > $treeshakejar
+    rm -rf $PTJAR_TMPDIR
+else
+    (cd $PTII; $JAR -cm $manifest $ptolemyFiles) > $treeshakejar
+fi
+
+
+rm -f $manifest
+
 #set -x
 $javaCommand -classpath $treeshakejar $@
+
