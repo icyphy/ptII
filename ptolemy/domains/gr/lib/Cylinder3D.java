@@ -1,4 +1,4 @@
-/* A DD3D Shape consisting of a cylinder with a circular base
+/* A GR Shape consisting of a cylinder with a circular base
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,9 +44,9 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// Cylinder3D
 
-/** This actor contains the geometry and appearance specifications for a DD3D
+/** This actor contains the geometry and appearance specifications for a GR
 cylinder.  The output port is used to connect this actor to the Java3D scene
-graph. This actor will only have meaning in the DD3D domain.
+graph. This actor will only have meaning in the GR domain.
 
 
 @author C. Fong

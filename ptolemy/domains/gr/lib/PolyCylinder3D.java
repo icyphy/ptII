@@ -1,4 +1,4 @@
-/* A DD3D Shape consisting of a generalized cylinder with a polygon base
+/* A GR Shape consisting of a generalized cylinder with a polygon base
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -45,9 +45,9 @@ import com.sun.j3d.utils.geometry.*;
 //// PolyCylinder3D
 /**
 
-This actor produces a generalized cylindrical shape in the DD3D domain. 
+This actor produces a generalized cylindrical shape in the GR domain. 
 The output port is used to connect this actor to the Java3D scene
-graph. This actor will only have meaning in the DD3D domain.
+graph. This actor will only have meaning in the GR domain.
 
 The parameter <i>polygon</i> determines the polygonal shape of the base
 of this generalized cylinder. One will need to enter an array of coordinates

@@ -1,4 +1,4 @@
-/* An abstract base class for shaded DD3D Actors
+/* An abstract base class for shaded GR Actors
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -45,7 +45,7 @@ import javax.vecmath.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRShadedShape
-/** An abstract base class for DD3D Actors that have material and color
+/** An abstract base class for GR Actors that have material and color
 properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
 <i>blueComponent</i> determine the color of the object.  The parameter
 <i>shininess</i> determines the Phong exponent used in calculating
@@ -81,7 +81,7 @@ public class GRShadedShape extends GRActor {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The output port for connecting to other DD3D Actors in
+    /** The output port for connecting to other GR Actors in
      *  the scene graph
      */
     public TypedIOPort output;

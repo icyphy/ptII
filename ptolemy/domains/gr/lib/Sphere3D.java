@@ -1,4 +1,4 @@
-/* A DD3D Shape consisting of a sphere
+/* A GR Shape consisting of a sphere
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -46,10 +46,10 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// Sphere3D
 
-/** This actor contains the geometry and appearance specifications for a DD3D
+/** This actor contains the geometry and appearance specifications for a GR
 sphere.  The output port is used to connect this actor to the Java3D scene
 graph. This actor may be used along with the Scale3D transformer to produce
-ellipsoid shapes. This actor will only have meaning in the DD3D domain.
+ellipsoid shapes. This actor will only have meaning in the GR domain.
 
 @author C. Fong
 */

@@ -47,7 +47,7 @@ import javax.vecmath.*;
 /** Conceptually, this actor takes 3D geometry in its input and produces a rotated
 version in its output. In reality, this actor encapsulates a Java3D TransformGroup
 which is converted into a node in the resulting Java3D scene graph. This actor will
-only have meaning in the DD3D domain. 
+only have meaning in the GR domain. 
 
 The parameters <i>axisDirectionX</i>,<i>axisDirectionY</i>, and <i>axisDirectionZ</i>
 determine the direction of the axis of rotation.  The parameters <i>baseX</i>,

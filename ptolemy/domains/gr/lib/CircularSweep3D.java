@@ -1,4 +1,4 @@
-/* A DD3D Shape consisting of a circularly-swept surface
+/* A GR Shape consisting of a circularly-swept surface
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,9 +44,9 @@ import javax.vecmath.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircularSweep3D
-/** This actor contains the geometry and appearance specifications for a DD3D
+/** This actor contains the geometry and appearance specifications for a GR
 circularly swept object.  The output port is used to connect this actor to the
-Java3D scene graph. This actor will only have meaning in the DD3D domain. 
+Java3D scene graph. This actor will only have meaning in the GR domain. 
 
     The parameter <i>polyline</i> determines the silhouette of the object. One
 will need to enter an array of coordinates in the X-Y plane to specify the 

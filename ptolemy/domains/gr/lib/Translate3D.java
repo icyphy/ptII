@@ -46,7 +46,7 @@ import javax.vecmath.*;
 /** Conceptually, this actor takes 3D geometry in its input and produces a translated
 version in its output. In reality, this actor encapsulates a Java3D TransformGroup
 which is converted into a node in the resulting Java3D scene graph. This actor will
-only have meaning in the DD3D domain.
+only have meaning in the GR domain.
 @author C. Fong
 */
 public class Translate3D extends GRTransform {

@@ -1,4 +1,4 @@
-/* An abstract base class for Transform3Ding input 3D shape
+/* An abstract base class for transforming input 3D shape
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -44,8 +44,8 @@ import javax.vecmath.*;
 //////////////////////////////////////////////////////////////////////////
 //// GRTransform
 
-/** An abstract base class for a transform operator of DD3D shapes. This actor
-will only have meaning in the DD3D domain.
+/** An abstract base class for a transform operator of GR shapes. This actor
+will only have meaning in the GR domain.
 
 The parameter <i>accumulate</i> determines whether transformations are 
 accumulated or reset during firing.
@@ -80,12 +80,12 @@ public class GRTransform extends GRActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port for connecting to other DD3D Actors in
+    /** The input port for connecting to other GR Actors in
      *  the scene graph
      */
     public TypedIOPort input;
     
-    /** The output port for connecting to other DD3D Actors in
+    /** The output port for connecting to other GR Actors in
      *  the scene graph
      */
     public TypedIOPort output;
