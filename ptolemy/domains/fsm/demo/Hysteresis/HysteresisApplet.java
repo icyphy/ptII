@@ -132,8 +132,8 @@ public class HysteresisApplet extends SDFApplet {
             HDFFSMController ctrl =
 		new HDFFSMController(tempAct, "Controller");
 
-	    StreamListener sa = new StreamListener();
-	    ctrl.addDebugListener(sa);
+	    //StreamListener sa = new StreamListener();
+	    //ctrl.addDebugListener(sa);
 	    // states and transitions
             HDFFSMState ctrls0 = new HDFFSMState(ctrl, "ctrls0");
 	    HDFFSMState ctrls1 = new HDFFSMState(ctrl, "ctrls1");
@@ -180,8 +180,8 @@ public class HysteresisApplet extends SDFApplet {
 		new HDFFSMDirector(tempAct, "ControllerDirector");
             ctrlDir.setController(ctrl);
 
-	    StreamListener sa2 = new StreamListener();
-	    ctrlDir.addDebugListener(sa2);
+	    //StreamListener sa2 = new StreamListener();
+	    //ctrlDir.addDebugListener(sa2);
 
 	    // submachine refining tempAct's s0 state
             TypedCompositeActor tempActState0 =
