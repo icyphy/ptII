@@ -59,12 +59,12 @@ public final class ImageUnpartition extends SDFAtomicActor {
         partition = (SDFIOPort) newPort("partition");
         partition.setInput(true);
         setTokenConsumptionRate(partition, 3168);
-        partition.setDeclaredType(IntMatrixToken.class);
+        partition.setTypeEquals(IntMatrixToken.class);
 
         image = (SDFIOPort) newPort("image");
         image.setOutput(true);
         setTokenProductionRate(image, 1);
-        image.setDeclaredType(IntMatrixToken.class);
+        image.setTypeEquals(IntMatrixToken.class);
     }
 
     public SDFIOPort partition;

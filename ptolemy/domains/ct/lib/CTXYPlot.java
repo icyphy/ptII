@@ -81,12 +81,12 @@ public class  CTXYPlot extends TypedAtomicActor {
         inputX = new TypedIOPort(this, "inputX");
         inputX.setInput(true);
         inputX.setMultiport(false);
-        inputX.setDeclaredType(DoubleToken.class);
+        inputX.setTypeEquals(DoubleToken.class);
     
         inputY = new TypedIOPort(this, "inputY");
         inputY.setInput(true);
         inputY.setMultiport(false);
-        inputY.setDeclaredType(DoubleToken.class);
+        inputY.setTypeEquals(DoubleToken.class);
         _plot = plot;
 
         // FIXME: This is not the right way to handle this...

@@ -97,10 +97,10 @@ public class FIR extends SDFAtomicActor {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
 
         taps = new Parameter(this, "taps", new DoubleMatrixToken());
         interpolation = new Parameter(this, "interpolation", new IntToken(1));

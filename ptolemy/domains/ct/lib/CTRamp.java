@@ -55,7 +55,7 @@ public class CTRamp extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _initValue = (double)0.0;
         _paramInitValue = new Parameter(this, "InitialValue",
                 new DoubleToken(_initValue));

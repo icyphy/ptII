@@ -63,7 +63,7 @@ public class CTSquareWave extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _maxValue = (double)1.0;
         _paramMaxValue = new Parameter(this, "MaximumValue",
                 new DoubleToken(_maxValue));

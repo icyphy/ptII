@@ -88,17 +88,17 @@ public class DEFIFOQueue extends TypedAtomicActor {
         super(container, name);
         // create an output port
         outData = new TypedIOPort(this, "outData", false, true);
-        outData.setDeclaredType(DoubleToken.class);
+        outData.setTypeEquals(DoubleToken.class);
 	overflow = new TypedIOPort(this, "overflow", false, true);
-        overflow.setDeclaredType(DoubleToken.class);
+        overflow.setTypeEquals(DoubleToken.class);
 	queueSize = new TypedIOPort(this, "queueSize", false, true);
-        queueSize.setDeclaredType(DoubleToken.class);
+        queueSize.setTypeEquals(DoubleToken.class);
 
         // create input ports
         inData = new TypedIOPort(this, "inData", true, false);
-        inData.setDeclaredType(DoubleToken.class);
+        inData.setTypeEquals(DoubleToken.class);
         demand = new TypedIOPort(this, "demand", true, false);
-        demand.setDeclaredType(DoubleToken.class);
+        demand.setTypeEquals(DoubleToken.class);
 
 	// set up the parameter
 

@@ -118,9 +118,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  are examined to see if the the type of the port at the source end
      *  of the connection is less than or equal to the type at the
      *  destination port. If not, the two ports have a type conflict.
-     *  If the ports on one or both ends of a connection have an undeclared
-     *  type, the connection is skipped by this method and left to the
-     *  type resolution mechanism.
+     *  If the type of the ports on one or both ends of a connection is
+     *  not declared, the connection is skipped by this method and left
+     *  to the type resolution mechanism.
      *  This method returns an Enumeration of TypedIOPorts that have
      *  type conflicts. If no type conflict is detected, an empty
      *  Enumeration is returned.
@@ -260,17 +260,20 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     /** Return the type constraints of this typed composite actor, if it
      *  is opaque.
      *  The constraints have the form of an enumeration of inequalities.
-     *  The constraints come from two sources, the topology and the
-     *  contained actors. To generate the constraints based on the
-     *  topology, this method scans all the connections within this
-     *  composite between opaque TypedIOPorts. If the ports on one or both
-     *  ends of a connection have an undeclared type, a type constraint is
-     *  formed that requires the the type of the port at the source end
-     *  of the connection to be less than or equal to the type at the
-     *  destination port.
+     *  The constraints come from three sources, the topology, the
+     *  contained actors and the contained Typeables. To generate the
+     *  constraints based on the topology, this method scans all the
+     *  connections within this composite between opaque TypedIOPorts.
+     *  If the type of the ports on one or both ends of a connection is
+     *  not declared, a type constraint is formed that requires the
+     *  type of the port at the source end of the connection to be less
+     *  than or equal to the type at the destination port.
      *  To collect the type constraints from the contained actors,
      *  This method recursively calls the typeConstraints() method of the
      *  deeply contained actors and combine all the constraints together.
+     *  The type constraints from contained Typeables (ports and
+     *  parameters) are collected by calling the typeConstraints() method
+     *  of all the contained Typeables.
      *  <p>
      *  This method is read-synchronized on the workspace.
      *  @return an Enumerations of Inequality.
@@ -318,6 +321,21 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 result.appendElements(
                         _typeConstraintsFromTo(srcport, destPorts));
             }
+
+	    // collect constraints from contained Typeables
+	    Enumeration ports = getPorts();
+	    while (ports.hasMoreElements()) {
+		Typeable port = (Typeable)ports.nextElement();
+		result.appendElements(port.typeConstraints());
+	    }
+
+	    Enumeration attrib = getAttributes();
+	    while (attrib.hasMoreElements()) {
+		Attribute att = (Attribute)attrib.nextElement();
+		if (att instanceof Typeable) {
+		    result.appendElements(((Typeable)att).typeConstraints());
+		}
+	    }
 
 	    return result.elements();
 	} finally {
@@ -417,14 +435,17 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
-	Class srcDeclared = srcport.getDeclaredType();
-	if (srcDeclared != null) {
+	boolean isUndeclared = srcport.getTypeTerm().isSettable();
+	if (!isUndeclared) {
+	    // srcport has a declared type.
+	    Class srcDeclared = srcport.getType();
 	    while (destPorts.hasMoreElements()) {
             	TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
-	    	Class destDeclared = destport.getDeclaredType();
+		isUndeclared = destport.getTypeTerm().isSettable();
 
-	    	if (destDeclared != null) {
+	    	if (!isUndeclared) {
 	    	    // both source/destination ports are declared, check type
+	    	    Class destDeclared = destport.getType();
 		    int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
@@ -459,12 +480,12 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
-        Class srcDeclared = srcport.getDeclaredType();
+	boolean srcUndeclared = srcport.getTypeTerm().isSettable();
 	while (destPorts.hasMoreElements()) {
             TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
-            Class destDeclared = destport.getDeclaredType();
+	    boolean destUndeclared = destport.getTypeTerm().isSettable();
 
-	    if (srcDeclared == null || destDeclared == null) {
+	    if (srcUndeclared || destUndeclared) {
 	    	// at least one of the source/destination ports does not have
 		// declared type, form type constraint.
 		Inequality ineq = new Inequality(srcport.getTypeTerm(),

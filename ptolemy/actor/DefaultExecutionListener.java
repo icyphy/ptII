@@ -58,16 +58,8 @@ public class DefaultExecutionListener implements ExecutionListener {
     public void executionError(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionError()");
         Exception e = event.getException();
-        if (e instanceof TypeConflictException) {
-            TypeConflictException tce = (TypeConflictException) e;
-            Enumeration ports = tce.getPorts();
-            System.out.println("Type conflict exception with the offending "+
-                    "ports:");
-            while (ports.hasMoreElements() ) {
-                IOPort port = (IOPort) ports.nextElement();
-                System.out.println(port.getFullName());
-            }
-        }
+
+	System.out.println(e.getMessage());
         e.printStackTrace();
     }
 

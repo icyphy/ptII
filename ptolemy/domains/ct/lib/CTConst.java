@@ -61,7 +61,7 @@ public class CTConst extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _value = (double)0.0;
         _paramValue = new Parameter(this, "Value", new DoubleToken(_value));
     }

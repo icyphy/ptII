@@ -73,17 +73,17 @@ public class CTZeroCrossingDetector extends TypedAtomicActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         trigger = new TypedIOPort(this, "trigger");
         trigger.setMultiport(false);
         trigger.setInput(true);
         trigger.setOutput(false);
-        trigger.setDeclaredType(DoubleToken.class);
+        trigger.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setMultiport(false);
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _errorTolerance = (double)1e-4;
         _paramErrorTolerance = new Parameter(this, "ErrorTolerance", 
                 new DoubleToken(_errorTolerance));

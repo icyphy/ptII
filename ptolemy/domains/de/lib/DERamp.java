@@ -87,7 +87,7 @@ public class DERamp extends TypedAtomicActor {
         output.setMultiport(true);
         // create an input port
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(Token.class);
+        input.setTypeEquals(Token.class);
     }
 
     /** Construct a DERamp with the specified container, name, initial
@@ -119,7 +119,7 @@ public class DERamp extends TypedAtomicActor {
         output.setMultiport(true);
         // create an input port
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(Token.class);
+        input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,9 +139,9 @@ public class DERamp extends TypedAtomicActor {
             throw new InvalidStateException("Bad parameter type in DERamp.initialize()");
         }
         if (compare == CPO.LOWER) {
-            output.setDeclaredType(stepClass);
+            output.setTypeEquals(stepClass);
         } else {
-            output.setDeclaredType(valueClass);
+            output.setTypeEquals(valueClass);
         }
         _stateToken = _value.getToken();
     }

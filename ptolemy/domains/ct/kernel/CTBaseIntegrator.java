@@ -104,10 +104,10 @@ public class CTBaseIntegrator extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _initState = 0.0;
         _paramInitState = new Parameter(this, "InitialState",
             new DoubleToken(_initState));
@@ -132,10 +132,10 @@ public class CTBaseIntegrator extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _paramInitState = new Parameter(this, "InitialState",
             new DoubleToken(_initState));
     }
@@ -160,10 +160,10 @@ public class CTBaseIntegrator extends CTActor
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _paramInitState = new Parameter(this, "InitialState",
             new DoubleToken(_initState));
     }

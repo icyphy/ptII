@@ -63,7 +63,7 @@ public class CTButtonEvent extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(BooleanToken.class);
+        output.setTypeEquals(BooleanToken.class);
         _buttonClicked = false;
         _paramButtonClicked = new Parameter(this, "ButtonClicked",
                 new BooleanToken(_buttonClicked));

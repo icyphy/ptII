@@ -57,12 +57,12 @@ public class CTMultiply extends TypedAtomicActor {
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(true);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
         output.setMultiport(false);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

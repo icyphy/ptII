@@ -55,12 +55,12 @@ public class Delay extends SDFAtomicActor {
             TypedIOPort input = (TypedIOPort)newPort("input");
             input.setInput(true);
             setTokenConsumptionRate(input, 1);
-            input.setDeclaredType(Token.class);
+            input.setTypeEquals(Token.class);
 
             TypedIOPort output = (TypedIOPort)newPort("output");
             output.setOutput(true);
             setTokenProductionRate(output, 1);
-            output.setDeclaredType(Token.class);
+            output.setTypeEquals(Token.class);
             setTokenInitProduction(output, 1);
         }
         catch (IllegalActionException e1) {

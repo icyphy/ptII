@@ -102,13 +102,13 @@ public class SDFDelay extends SDFAtomicActor {
 	     * The setDelcaredType calls use the type system to define what
 	     * types of tokens are valid for this actor.
 	     */
-	    input.setDeclaredType(IntToken.class);
+	    input.setTypeEquals(IntToken.class);
 	
 	    /* Similarly for the output port */
 	    output = (TypedIOPort)newPort("output");
             output.setOutput(true);
             setTokenProductionRate(output, 1);
-	    output.setDeclaredType(IntToken.class);
+	    output.setTypeEquals(IntToken.class);
        }
         catch (IllegalActionException e1) {
             System.out.println("SDFDelay: constructor error");
@@ -169,8 +169,8 @@ public class SDFDelay extends SDFAtomicActor {
          * The setDelcaredType calls use the type system to define what
          * types of tokens are valid for this actor.
          */
-	input.setDeclaredType(IntToken.class);
-	output.setDeclaredType(IntToken.class);
+	input.setTypeEquals(IntToken.class);
+	output.setTypeEquals(IntToken.class);
 
         /* Figure out how many tokens should be copied from the input to the
          * output.

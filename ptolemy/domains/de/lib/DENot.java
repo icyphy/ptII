@@ -61,10 +61,10 @@ public class DENot extends TypedAtomicActor {
         super(container, name);
         // create an output port
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create an input port
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -63,7 +63,7 @@ public class DEBus extends DEActor {
         super(container, name);
         ioport = new TypedIOPort(this, "ioport", true, true);
         ioport.setMultiport(true);
-        ioport.setDeclaredType(DoubleToken.class);
+        ioport.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -61,11 +61,11 @@ public class LineCoder extends SDFAtomicActor {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(BooleanToken.class);
+        input.setTypeEquals(BooleanToken.class);
 
         output = new TypedIOPort(this, "output", false, true);
         // FIXME: Type should be inferred from the code table.
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
 
         double[][] deftbl = {{-1.0, 1.0}};
         table = new Parameter(this, "table", new DoubleMatrixToken(deftbl));

@@ -70,12 +70,12 @@ public class CTPeriodicalSampler extends TypedAtomicActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setMultiport(false);
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
 
         _samplePeriod = (double)1.0;
         _paramSamplePeriod = new Parameter(this,

@@ -95,13 +95,12 @@ test TypedIOPort-3.1 {set declared/resolved types} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P2]
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
-    $p1 setDeclaredType $tDouble
+    $p1 setTypeEquals $tDouble
 
-    set dt1 [[$p1 getDeclaredType] getName]
-    set rt1 [[$p1 getResolvedType] getName]
+    set rt1 [[$p1 getType] getName]
 
-    list $dt1 $rt1
-} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
+    list $rt1
+} {ptolemy.data.DoubleToken}
 
 ######################################################################
 ####
@@ -116,9 +115,10 @@ test TypedIOPort-3.2 {set resolved types} {
     set tt [$p1 getTypeTerm]
     $tt setValue [$tDouble getClass]
 
-    set rt1 [[$p1 getResolvedType] getName]
+    set isUndec [[$p1 getTypeTerm] isSettable]
+    set rt1 [[$p1 getType] getName]
 
-    list [expr {[$p1 getDeclaredType] == [java::null]}] $rt1
+    list $isUndec $rt1
 } {1 ptolemy.data.DoubleToken}
 
 ######################################################################
@@ -127,10 +127,11 @@ test TypedIOPort-3.2 {set resolved types} {
 test TypedIOPort-4.2 {test clone} {
     # use set up above
     set p2 [_testClone $p1]
-    set rt2 [[$p2 getResolvedType] getName]
+    set rt2 [[$p2 getType] getName]
 
-    list [expr {[$p1 getDeclaredType] == [java::null]}] $rt1 \
-    [expr {[$p2 getDeclaredType] == [java::null]}] $rt2
+    set isUndec1 [[$p1 getTypeTerm] isSettable]
+    set isUndec2 [[$p2 getTypeTerm] isSettable]
+    list $isUndec $rt1 $isUndec2 $rt2
 } {1 ptolemy.data.DoubleToken 1 ptolemy.data.DoubleToken}
 
 ######################################################################
@@ -141,16 +142,16 @@ test TypedIOPort-4.3 {test clone} {
 
     set tInt [java::new ptolemy.data.IntToken]
     set tString [java::new ptolemy.data.StringToken]
-    $p1 setDeclaredType [$tInt getClass]
+    $p1 setTypeEquals [$tInt getClass]
 
     set tt2 [$p2 getTypeTerm]
     $tt2 setValue [$tString getClass]
 
-    set dt1 [[$p1 getDeclaredType] getName]
-    set rt1 [[$p1 getResolvedType] getName]
-    set rt2 [[$p2 getResolvedType] getName]
-    list $dt1 $rt1 [expr {[$p2 getDeclaredType] == [java::null]}] $rt2
-} {ptolemy.data.IntToken ptolemy.data.IntToken 1 ptolemy.data.StringToken}
+    set rt1 [[$p1 getType] getName]
+    set rt2 [[$p2 getType] getName]
+    set isUndec2 [[$p2 getTypeTerm] isSettable]
+    list $rt1 $isUndec2 $rt2
+} {ptolemy.data.IntToken 1 ptolemy.data.StringToken}
 
 ######################################################################
 ####
@@ -179,7 +180,7 @@ test TypedIOPort-4.2 {test description} {
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
-    $p1 setDeclaredType $tDouble
+    $p1 setTypeEquals $tDouble
 
     $p1 description $detail
 } {ptolemy.actor.TypedIOPort {..E1.P1} type {declared ptolemy.data.DoubleToken resolved ptolemy.data.DoubleToken}}

@@ -101,7 +101,7 @@ public class Pulse extends TypedAtomicActor {
             _valueToken = new DoubleToken(1.0);
             value.setToken(_valueToken);
         }
-        output.setDeclaredType(value.getType());
+        output.setTypeEquals(value.getType());
         _zero = _valueToken.zero();
 
         _width = ((IntToken)(width.getToken())).intValue();

@@ -63,86 +63,86 @@ public class AccelerLinearizer extends CTActor{
         inputPx.setInput(true);
         inputPx.setOutput(false);
         inputPx.setMultiport(false);
-        inputPx.setDeclaredType(DoubleToken.class);
+        inputPx.setTypeEquals(DoubleToken.class);
 
         inputDPx = new TypedIOPort(this, "inputDPx");
         inputDPx.setInput(true);
         inputDPx.setOutput(false);
         inputDPx.setMultiport(false);
-        inputDPx.setDeclaredType(DoubleToken.class);
+        inputDPx.setTypeEquals(DoubleToken.class);
 
         inputDDPx = new TypedIOPort(this, "inputDDPx");
         inputDDPx.setInput(true);
         inputDDPx.setOutput(false);
         inputDDPx.setMultiport(false);
-        inputDDPx.setDeclaredType(DoubleToken.class);
+        inputDDPx.setTypeEquals(DoubleToken.class);
 
         inputD3Px = new TypedIOPort(this, "inputD3Px");
         inputD3Px.setInput(true);
         inputD3Px.setOutput(false);
         inputD3Px.setMultiport(false);
-        inputD3Px.setDeclaredType(DoubleToken.class);
+        inputD3Px.setTypeEquals(DoubleToken.class);
 
         inputD4Px = new TypedIOPort(this, "inputD4Px");
         inputD4Px.setInput(true);
         inputD4Px.setOutput(false);
         inputD4Px.setMultiport(false);
-        inputD4Px.setDeclaredType(DoubleToken.class);
+        inputD4Px.setTypeEquals(DoubleToken.class);
 
         inputPz = new TypedIOPort(this, "inputPz");
         inputPz.setInput(true);
         inputPz.setOutput(false);
         inputPz.setMultiport(false);
-        inputPz.setDeclaredType(DoubleToken.class);
+        inputPz.setTypeEquals(DoubleToken.class);
 
         inputDPz = new TypedIOPort(this, "inputDPz");
         inputDPz.setInput(true);
         inputDPz.setOutput(false);
         inputDPz.setMultiport(false);
-        inputDPz.setDeclaredType(DoubleToken.class);
+        inputDPz.setTypeEquals(DoubleToken.class);
 
         inputDDPz = new TypedIOPort(this, "inputDDPz");
         inputDDPz.setInput(true);
         inputDDPz.setOutput(false);
         inputDDPz.setMultiport(false);
-        inputDDPz.setDeclaredType(DoubleToken.class);
+        inputDDPz.setTypeEquals(DoubleToken.class);
 
         inputD3Pz = new TypedIOPort(this, "inputD3Pz");
         inputD3Pz.setInput(true);
         inputD3Pz.setOutput(false);
         inputD3Pz.setMultiport(false);
-        inputD3Pz.setDeclaredType(DoubleToken.class);
+        inputD3Pz.setTypeEquals(DoubleToken.class);
 
         inputD4Pz = new TypedIOPort(this, "inputD4Pz");
         inputD4Pz.setInput(true);
         inputD4Pz.setOutput(false);
         inputD4Pz.setMultiport(false);
-        inputD4Pz.setDeclaredType(DoubleToken.class);
+        inputD4Pz.setTypeEquals(DoubleToken.class);
 
 
         outputVx = new TypedIOPort(this, "outputVx");
         outputVx.setInput(false);
         outputVx.setOutput(true);
         outputVx.setMultiport(false);
-        outputVx.setDeclaredType(DoubleToken.class);
+        outputVx.setTypeEquals(DoubleToken.class);
 
         outputVz = new TypedIOPort(this, "outputVz");
         outputVz.setInput(false);
         outputVz.setOutput(true);
         outputVz.setMultiport(false);
-        outputVz.setDeclaredType(DoubleToken.class);
+        outputVz.setTypeEquals(DoubleToken.class);
 
         outputV = new TypedIOPort(this, "outputV");
         outputV.setInput(false);
         outputV.setOutput(true);
         outputV.setMultiport(false);
-        outputV.setDeclaredType(DoubleToken.class);
+        outputV.setTypeEquals(DoubleToken.class);
 
         outputR = new TypedIOPort(this, "outputR");
         outputR.setInput(false);
         outputR.setOutput(true);
         outputR.setMultiport(false);
-        outputR.setDeclaredType(DoubleToken.class);       
+        outputR.setTypeEquals(DoubleToken.class);       
        
         String sP = new String();
         for(int i = 0; i< 5; i++) {

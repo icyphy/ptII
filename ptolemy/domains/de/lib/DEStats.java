@@ -65,16 +65,16 @@ public class DEStats extends DEActor {
 
         // create output ports.
         average = new DEIOPort(this, "average", false, true);
-        average.setDeclaredType(DoubleToken.class);
+        average.setTypeEquals(DoubleToken.class);
         variance = new DEIOPort(this, "variance", false, true);
-        variance.setDeclaredType(DoubleToken.class);
+        variance.setTypeEquals(DoubleToken.class);
         // create input ports
         input = new DEIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         demand = new DEIOPort(this, "demand", true, false);
-        demand.setDeclaredType(Token.class);
+        demand.setTypeEquals(Token.class);
         reset = new DEIOPort(this, "reset", true, false);
-        reset.setDeclaredType(Token.class);
+        reset.setTypeEquals(Token.class);
 
 	// Assert priorities
         input.before(demand);

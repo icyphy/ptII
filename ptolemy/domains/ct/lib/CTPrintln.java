@@ -58,7 +58,7 @@ public class CTPrintln extends TypedAtomicActor {
         input.setInput(true);
         input.setOutput(false);
         input.setMultiport(true);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

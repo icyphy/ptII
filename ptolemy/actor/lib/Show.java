@@ -63,7 +63,7 @@ public class Show extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setDeclaredType(StringToken.class);
+        input.setTypeEquals(StringToken.class);
 
         // create the parameter and make it a string.
         labels = new Parameter(this, "labels", new StringToken(""));

@@ -75,7 +75,7 @@ public class DEPlot extends DEActor {
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
-        input.setDeclaredType(Token.class);
+        input.setTypeEquals(Token.class);
         input.setMultiport(true);
 
         _plot = plot;

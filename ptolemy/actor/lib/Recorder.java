@@ -74,7 +74,7 @@ public class Recorder extends TypedAtomicActor {
         super(container, name);
     	input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setDeclaredType(StringToken.class);
+        input.setTypeEquals(StringToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"Event.tcl ODFActor.tcl ODFDirector.tcl ODFIOPort.tcl ODFConservativeRcvr.tcl RcvrTimeTriple.tcl TimedQueueReceiver.tcl" != ""} {foreach i [list Event.tcl ODFActor.tcl ODFDirector.tcl ODFIOPort.tcl ODFConservativeRcvr.tcl RcvrTimeTriple.tcl TimedQueueReceiver.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"ODFActor.tcl ODFReceiver.tcl ODFThread.tcl TimeKeeper.tcl TimedQueueReceiver.tcl RcvrTimeTriple.tcl " != ""} {foreach i [list ODFActor.tcl ODFReceiver.tcl ODFThread.tcl TimeKeeper.tcl TimedQueueReceiver.tcl RcvrTimeTriple.tcl ] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}

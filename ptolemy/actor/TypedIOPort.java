@@ -42,19 +42,16 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
 /**
-An IOPort with a type.  The type is one of the token types in the data
-package.  A TypedIOPort has a declared type which can be set by calling
-setDeclaredType().  If this method is not called, the declared type is
-null, and the type is said to be undeclared.  In this case, the port has
-more than one types and the acceptable types are defined by a set of
-constraints.<p>
+An IOPort with a type. This class implements the Typeable interface.
+The type is one of the token types in the data package. It can be declared
+by calling setTypeEquals() with an argument that is a Class object
+representing one of the token types. If this method is not called, or
+called with a null argument, the type of this port will be set by
+type resolution using the type constraints. The type constraints on
+this port can be specified using the methods defined in the Typeable
+interface.
 
-In addition to the declared type, a TypedIOPort also has a resolved type.
-If the declared type is not null, the resolved type will be the same as
-the declared type; otherwise, the type resolution algorithm will assign
-a resolved type according to the type constraints.<p>
-
-This class keeps a list of TypeListeners.  Whenever the resolved type
+This class keeps a list of TypeListeners. Whenever the type
 changes, this class will generate an instance of TypeEvent and pass it
 to the listeners by calling their typeChanged() method. A TypeListener
 register its interest in the type change event of this port by calling
@@ -74,7 +71,7 @@ setContainer().
 @version $Id$
 */
 
-public class TypedIOPort extends IOPort {
+public class TypedIOPort extends IOPort implements Typeable {
 
     // all the constructors are wrappers of the super class constructors.
 
@@ -139,8 +136,8 @@ public class TypedIOPort extends IOPort {
      *  <i>not</i> added to the directory of that workspace (you must
      *  do this yourself if you want it there).
      *  The result is a new port with no connections and no container.
-     *  The new port will have the same declared and resolved types
-     *  as this one.
+     *  The new port will have the same type as this one, but will not
+     *  have any type listeners and type constraints attached to it.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one or more of the
@@ -150,33 +147,20 @@ public class TypedIOPort extends IOPort {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TypedIOPort newobj = (TypedIOPort)super.clone(ws);
 	newobj._typeTerm = null;
+	newobj._typeListeners = new LinkedList();
+	newobj._constraints = new LinkedList();
 	return newobj;
     }
 
-    /** Return the declared type of this port.  The type is represented
+    /** Return the type of this port.  The type is represented
      *  by an instance of Class associated with a token type.
-     *  If the type is undeclared, returns null.
+     *  If the type is not set through setTypeEquals(), and this method
+     *  is called before type resolution takes place, this method
+     *  returns null.
      *  This method is read-synchronized on the workspace.
-     *  @return a Class representing the declared type, or null if the
-     *   type is undeclared.
+     *  @return a Class representing the type.
      */
-    public Class getDeclaredType() {
-	try {
-	    workspace().getReadAccess();
-	    return _declaredType;
-	} finally {
-	    workspace().doneReading();
-	}
-    }
-
-    /** Return the resolved type of this object.  The type is represented
-     *  by an instance of Class associated with a token type.
-     *  If this port has an undeclared type, and this method is called
-     *  before type resolution takes place, this method returns null.
-     *  This method is read-synchronized on the workspace.
-     *  @return a Class representing the resolved type.
-     */
-    public Class getResolvedType() {
+    public Class getType() {
 	try {
 	    workspace().getReadAccess();
 	    return _resolvedType;
@@ -185,12 +169,12 @@ public class TypedIOPort extends IOPort {
 	}
     }
 
-    /** Return an InequalityTerm encapsulating the resolved type of
+    /** Return an InequalityTerm encapsulating the type of
      *  this port. The InequalityTerm can be used to form type constraints.
-     *  If this port has a declared type, the inequality
+     *  If the type is set through setTypeEquals(), the inequality
      *  term represents a type constant; otherwise, it represents a
      *  type variable.
-     *  @return An InequalityTerm whose value is the resolved type.
+     *  @return An InequalityTerm whose value is the type of this port.
      */
     public InequalityTerm getTypeTerm() {
 	if (_typeTerm == null) {
@@ -208,16 +192,16 @@ public class TypedIOPort extends IOPort {
     }
 
     /** Override the method in the super class to do type checking.
-     *  If the type of the specified token is the resolved type of this
-     *  TypedIOPort, or the token can be converted to the resolved type
+     *  If the type of the specified token is the type of this
+     *  port, or the token can be converted to that type
      *  losslessly, the token is sent to all receivers connected to the
      *  specified channel. Otherwise, IllegalActionException is thrown.
      *  Before putting the token into the destination receivers, this
-     *  method also finds the resolved type of the input TypedIOPort
+     *  method also finds the type of the input TypedIOPort
      *  containing the receivers, and tests if the token is an instance
      *  of that type. If not, this method will convert the token to the
      *  type of the input port. The conversion is done by calling the
-     *  convert() method on an instance of a token with the resolved type
+     *  convert() method on an instance of a token with the type
      *  of the input port.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
@@ -230,7 +214,7 @@ public class TypedIOPort extends IOPort {
      *  @param token The token to send
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range, or if the token to be sent cannot
-     *   be converted to the resolved type of this IOPort.
+     *   be converted to the type of this port.
      *  @exception NoRoomException If there is no room in the receiver.
      */
     public void send(int channelindex, Token token)
@@ -252,7 +236,7 @@ public class TypedIOPort extends IOPort {
 		throw new IllegalArgumentException("Run-time type checking " +
 		    "failed. token: " + token.getClass().getName() +
 		    ", port: " + getFullName() + ", port type: " +
-		    getResolvedType().getName());
+		    getType().getName());
 	    }
 
 	    // Note that the getRemoteReceivers() method doesn't throw
@@ -269,7 +253,7 @@ public class TypedIOPort extends IOPort {
             for (int j = 0; j < farRec[channelindex].length; j++) {
 	        TypedIOPort port =
                     (TypedIOPort)farRec[channelindex][j].getContainer();
-	        Class farType = port.getResolvedType();
+	        Class farType = port.getType();
 
 		// farType might be "Token", since the base class Token
 		// does not have a convert method, the convert method
@@ -317,9 +301,29 @@ public class TypedIOPort extends IOPort {
         super.setContainer(container);
     }
 
-    /** Sets the declared type of this object.  The type is represented
+    /** Constrain that the type of this port is equal to or greater
+     *  than the type of the specified Typeable object.
+     *  @param less A Typeable object.
+     */
+    public void setTypeAtLeast(Typeable lesser) {
+	Inequality ineq = new Inequality(lesser.getTypeTerm(),
+					 this.getTypeTerm());
+	_constraints.insertLast(ineq);
+    }
+
+    /** Constrain that the type of this port to be equal to or less
+     *  than the argument.
+     */
+    public void setTypeAtMost(Class type) {
+	Inequality ineq = new Inequality(this.getTypeTerm(),
+					 new TypeConstant(type));
+	_constraints.insertLast(ineq);
+    }
+
+    /** Sets the type of this port. The type is represented
      *  by an instance of Class associated with a non-abstract token type,
-     *  or null. If the type is null, the type of this port is undeclared.
+     *  or null. If the type is null, the determination of the type is
+     *  left to type resolution.
      *  This method is write-synchronized on the workspace.
      *  @param type an instance of a Class representing a token type.
      *  @exception IllegalArgumentException If the specified type is not
@@ -327,16 +331,16 @@ public class TypedIOPort extends IOPort {
      */
     // FIXME: this method may want to inform its director about this
     // change.
-    public void setDeclaredType(Class c) {
-	if (c != null && !(TypeLattice.isInstantiableType(c))) {
+    public void setTypeEquals(Class type) {
+	if (type != null && !(TypeLattice.isInstantiableType(type))) {
 	    throw new IllegalArgumentException(
-		    "TypedIOPort.setDeclaredType: argument is not " +
+		    "TypedIOPort.setTypeEquals: argument is not " +
 		    "a non-abstract token type, or null.");
 	}
 
 	try {
 	    workspace().getWriteAccess();
-	    _declaredType = c;
+	    _declaredType = type;
 
 	    // also set the resolved type,  If _declaredType == null, i.e.,
 	    // undeclared, the type resolution algorithm will reset the
@@ -346,6 +350,28 @@ public class TypedIOPort extends IOPort {
 	} finally {
 	    workspace().doneWriting();
 	}
+    }
+
+    /** Constrain that the type of this port is the same as the type
+     *  of the specified Typeable object.
+     *  @param equal A Typeable object.
+     */
+    public void setTypeSameAs(Typeable equal) {
+	Inequality ineq = new Inequality(this.getTypeTerm(),
+					 equal.getTypeTerm());
+	_constraints.insertLast(ineq);
+	ineq = new Inequality(equal.getTypeTerm(),
+			      this.getTypeTerm());
+	_constraints.insertLast(ineq);
+    }
+
+    /** Return the type constraints of this port in the form of an
+     *  enumeration of Inequality.
+     *  @return An Enumeration of Inequality.
+     *  @see ptolemy.graph.Inequality
+     */
+    public Enumeration typeConstraints() {
+	return _constraints.elements();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -373,8 +399,10 @@ public class TypedIOPort extends IOPort {
      *  If the detail argument sets the bit defined by the constant
      *  TYPE, then append to the description a field of the form
      *  "type {declared <i>declaredType</i> resolved <i>resolvedType</i>}".
-     *  The declaredType and resolvedType are the names of the tokens
-     *  representing the types.
+     *  The declared type is the type set through setTypeEquals(). If this
+     *  method is not called, the declard type is null. The resolved type
+     *  is the type of this port.  Both types are represented by the names
+     *  of the corresponding tokens.
      *  <p>
      *
      *  This method is read-synchronized on the workspace.
@@ -398,16 +426,16 @@ public class TypedIOPort extends IOPort {
                     result += " ";
                 }
                 result += "type {declared ";
-		if (getDeclaredType() == null) {
+		if (_declaredType == null) {
 		    result += "null";
 		} else {
-		    result += getDeclaredType().getName();
+		    result += _declaredType.getName();
 		}
-		result += " resolved ";
-		if (getResolvedType() == null) {
+                result += " resolved ";
+		if (getType() == null) {
 		    result += "null";
 		} else {
-		    result += getResolvedType().getName();
+		    result += getType().getName();
 		}
 		result += "}";
             }
@@ -521,6 +549,9 @@ public class TypedIOPort extends IOPort {
     // Listeners for type change.
     private LinkedList _typeListeners = new LinkedList();
 
+    // type constraints
+    private LinkedList _constraints = new LinkedList();
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -545,18 +576,17 @@ public class TypedIOPort extends IOPort {
 	/** Return the type of this TypedIOPort.
 	 */
 	public Object getValue() {
-	    return getResolvedType();
+	    return getType();
         }
 
         /** Return this TypeTerm in an array if this term represent
 	 *  a type variable. This term represents a type variable
-	 *  if the type of this port is undeclared. If the type of
-	 *  this port is declared, return an array of size zero.
+	 *  if the type of this port is not set through setTypeEquals().
+         *  If the type of this port is set, return an array of size zero.
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    Class declared = getDeclaredType();
-	    if (declared == null) {
+	    if (_declaredType == null) {
 	    	InequalityTerm[] variable = new InequalityTerm[1];
 	    	variable[0] = this;
 	    	return variable;
@@ -564,28 +594,25 @@ public class TypedIOPort extends IOPort {
 	    return (new InequalityTerm[0]);
         }
 
-        /** Test if this term represents a type variable.
-	 *  This term represents a type variable if the type of this
-	 *  port is undeclared.
-         *  @return True if this term represents a type variable;
-	 *  false otherwise.
+        /** Test if the type of this TypedIOPort is set thought
+	 *  setTypeEquals().
+         *  @return True if the type of this TypedIOPort is set;
+	 *   false otherwise.
          */
         public boolean isSettable() {
-	    Class declared = getDeclaredType();
-	    if (declared == null) {
+	    if (_declaredType == null) {
 		return true;
 	    }
 	    return false;
         }
 
-        /** Set the resolved type of this port if this port has an
-	 *  undeclared type.
-         *  @exception IllegalActionException If this port has a
-	 *   declared type.
+        /** Set the type of this port if it is not set throught
+	 *  setTypeEquals().
+         *  @exception IllegalActionException If the type is already set
+	 *   through setTypeEquals().
          */
         public void setValue(Object e) throws IllegalActionException {
-	    Class declared = getDeclaredType();
-	    if (declared == null) {
+	    if (_declaredType == null) {
 		_setResolvedType((Class)e);
 		return;
 	    }

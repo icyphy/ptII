@@ -49,17 +49,17 @@ public class SDFSplit extends SDFAtomicActor {
             input = (TypedIOPort)newPort("input");
             input.setInput(true);
             setTokenConsumptionRate(input, 2);
-            input.setDeclaredType(IntToken.class);
+            input.setTypeEquals(IntToken.class);
 
             output1 = (TypedIOPort)newPort("output1");
             output1.setOutput(true);
             setTokenProductionRate(output1, 1);
-            output1.setDeclaredType(IntToken.class);
+            output1.setTypeEquals(IntToken.class);
 
             output2 = (TypedIOPort)newPort("output2");
             output2.setOutput(true);
             setTokenProductionRate(output2, 1);
-            output2.setDeclaredType(IntToken.class);
+            output2.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFSplit: constructor error");

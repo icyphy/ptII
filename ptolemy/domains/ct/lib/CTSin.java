@@ -55,7 +55,7 @@ public class CTSin extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         _magnitude = 1.0;
         _paramMagnitude =  new Parameter(this, "Magnitude",
                 new DoubleToken(_magnitude));

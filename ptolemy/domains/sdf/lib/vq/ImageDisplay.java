@@ -64,7 +64,7 @@ public final class ImageDisplay extends SDFAtomicActor {
         TypedIOPort inputport = (TypedIOPort) newPort("image");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
-        inputport.setDeclaredType(IntMatrixToken.class);
+        inputport.setTypeEquals(IntMatrixToken.class);
 
         _oldxsize = 0;
         _oldysize = 0;

@@ -73,7 +73,7 @@ public class TestSource extends TypedAtomicActor {
      */
     public void setToken(Token t) {
 	_token = t;
-	_output.setDeclaredType(_token.getClass());
+	_output.setTypeEquals(_token.getClass());
     }
 
     ///////////////////////////////////////////////////////////////////

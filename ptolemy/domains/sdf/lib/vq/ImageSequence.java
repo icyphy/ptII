@@ -55,7 +55,7 @@ public final class ImageSequence extends SDFAtomicActor {
         TypedIOPort outputport = (TypedIOPort) newPort("image");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
-        outputport.setDeclaredType(IntMatrixToken.class);
+        outputport.setTypeEquals(IntMatrixToken.class);
 
         /*        Parameter p = new Parameter(this, "imageUrlTemplate",
                 new StringToken("http://ptolemy.eecs.berkeley.edu/"+

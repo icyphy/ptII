@@ -55,7 +55,7 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
 
         // create parameters.
         timed = new Parameter(this, "timed", new BooleanToken(true));
@@ -94,7 +94,7 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
             PlotActor newobj = (PlotActor)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
-            newobj.input.setDeclaredType(DoubleToken.class);
+            newobj.input.setTypeEquals(DoubleToken.class);
             newobj.timed
                 = (Parameter)newobj.getAttribute("timed");
             newobj.fillOnWrapup

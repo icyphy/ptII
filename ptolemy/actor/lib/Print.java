@@ -54,7 +54,7 @@ public class Print extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setDeclaredType(StringToken.class);
+        input.setTypeEquals(StringToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

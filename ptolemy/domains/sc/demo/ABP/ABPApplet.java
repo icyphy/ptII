@@ -184,31 +184,31 @@ public class ABPApplet extends Applet {
             // create ports
             TypedIOPort sdrRequest = (TypedIOPort)sender.newPort("request");
             sdrRequest.setInput(true);
-            sdrRequest.setDeclaredType(Token.class);
+            sdrRequest.setTypeEquals(Token.class);
             TypedIOPort sdrMsgIn = (TypedIOPort)sender.newPort("msgIn");
             sdrMsgIn.setInput(true);
-            sdrMsgIn.setDeclaredType(IntToken.class);
+            sdrMsgIn.setTypeEquals(IntToken.class);
             TypedIOPort sdrNext = (TypedIOPort)sender.newPort("next");
             sdrNext.setOutput(true);
-            sdrNext.setDeclaredType(Token.class);
+            sdrNext.setTypeEquals(Token.class);
             TypedIOPort sdrError = (TypedIOPort)sender.newPort("error");
             sdrError.setOutput(true);
-            sdrError.setDeclaredType(Token.class);
+            sdrError.setTypeEquals(Token.class);
             TypedIOPort sdrAck = (TypedIOPort)sender.newPort("ack");
             sdrAck.setInput(true);
-            sdrAck.setDeclaredType(IntToken.class);
+            sdrAck.setTypeEquals(IntToken.class);
             TypedIOPort sdrPktOut = (TypedIOPort)sender.newPort("pktOut");
             sdrPktOut.setOutput(true);
-            sdrPktOut.setDeclaredType(IntToken.class);
+            sdrPktOut.setTypeEquals(IntToken.class);
             TypedIOPort sdrSetTimer = (TypedIOPort)sender.newPort("setTimer");
             sdrSetTimer.setOutput(true);
-            sdrSetTimer.setDeclaredType(DoubleToken.class);
+            sdrSetTimer.setTypeEquals(DoubleToken.class);
             TypedIOPort sdrExpired = (TypedIOPort)sender.newPort("expired");
             sdrExpired.setInput(true);
-            sdrExpired.setDeclaredType(Token.class);
+            sdrExpired.setTypeEquals(Token.class);
             TypedIOPort sdrMonitor = (TypedIOPort)sender.newPort("monitor");
             sdrMonitor.setOutput(true);
-            sdrMonitor.setDeclaredType(IntToken.class);
+            sdrMonitor.setTypeEquals(IntToken.class);
 
             // sender's top level controller
             DEFSMActor ctrl = new DEFSMActor(sender, "Controller");
@@ -235,25 +235,25 @@ public class ABPApplet extends Applet {
             // ports
             TypedIOPort conRequest = (TypedIOPort)connect.newPort("request");
             conRequest.setInput(true);
-            conRequest.setDeclaredType(Token.class);
+            conRequest.setTypeEquals(Token.class);
             TypedIOPort conNext = (TypedIOPort)connect.newPort("next");
             conNext.setOutput(true);
-            conNext.setDeclaredType(Token.class);
+            conNext.setTypeEquals(Token.class);
             TypedIOPort conError = (TypedIOPort)connect.newPort("error");
             conError.setOutput(true);
-            conError.setDeclaredType(Token.class);
+            conError.setTypeEquals(Token.class);
             TypedIOPort conAck = (TypedIOPort)connect.newPort("ack");
             conAck.setInput(true);
-            conAck.setDeclaredType(IntToken.class);
+            conAck.setTypeEquals(IntToken.class);
             TypedIOPort conPktOut = (TypedIOPort)connect.newPort("pktOut");
             conPktOut.setOutput(true);
-            conPktOut.setDeclaredType(IntToken.class);
+            conPktOut.setTypeEquals(IntToken.class);
             TypedIOPort conSetTimer = (TypedIOPort)connect.newPort("setTimer");
             conSetTimer.setOutput(true);
-            conSetTimer.setDeclaredType(DoubleToken.class);
+            conSetTimer.setTypeEquals(DoubleToken.class);
             TypedIOPort conExpired = (TypedIOPort)connect.newPort("expired");
             conExpired.setInput(true);
-            conExpired.setDeclaredType(Token.class);
+            conExpired.setTypeEquals(Token.class);
             // connect's states and transitions
             SCState conInit = new SCState(connect, "Init");
             SCState conWait = new SCState(connect, "Wait");
@@ -300,25 +300,25 @@ public class ABPApplet extends Applet {
             // create ports
             TypedIOPort sendMsgIn = (TypedIOPort)send.newPort("msgIn");
             sendMsgIn.setInput(true);
-            sendMsgIn.setDeclaredType(IntToken.class);
+            sendMsgIn.setTypeEquals(IntToken.class);
             TypedIOPort sendNext = (TypedIOPort)send.newPort("next");
             sendNext.setOutput(true);
-            sendNext.setDeclaredType(Token.class);
+            sendNext.setTypeEquals(Token.class);
             TypedIOPort sendAck = (TypedIOPort)send.newPort("ack");
             sendAck.setInput(true);
-            sendAck.setDeclaredType(IntToken.class);
+            sendAck.setTypeEquals(IntToken.class);
             TypedIOPort sendPktOut = (TypedIOPort)send.newPort("pktOut");
             sendPktOut.setOutput(true);
-            sendPktOut.setDeclaredType(IntToken.class);
+            sendPktOut.setTypeEquals(IntToken.class);
             TypedIOPort sendSetTimer = (TypedIOPort)send.newPort("setTimer");
             sendSetTimer.setOutput(true);
-            sendSetTimer.setDeclaredType(DoubleToken.class);
+            sendSetTimer.setTypeEquals(DoubleToken.class);
             TypedIOPort sendExpired = (TypedIOPort)send.newPort("expired");
             sendExpired.setInput(true);
-            sendExpired.setDeclaredType(Token.class);
+            sendExpired.setTypeEquals(Token.class);
             TypedIOPort sendMonitor = (TypedIOPort)send.newPort("monitor");
             sendMonitor.setOutput(true);
-            sendMonitor.setDeclaredType(IntToken.class);
+            sendMonitor.setTypeEquals(IntToken.class);
             // the states and transitions
             SCState s0 = new SCState(send, "0");
             SCState s1 = new SCState(send, "1");
@@ -423,13 +423,13 @@ public class ABPApplet extends Applet {
             // ports
             TypedIOPort recPktIn = (TypedIOPort)receiver.newPort("pktIn");
             recPktIn.setInput(true);
-            recPktIn.setDeclaredType(IntToken.class);
+            recPktIn.setTypeEquals(IntToken.class);
             TypedIOPort recAck = (TypedIOPort)receiver.newPort("ack");
             recAck.setOutput(true);
-            recAck.setDeclaredType(IntToken.class);
+            recAck.setTypeEquals(IntToken.class);
             TypedIOPort recMsgOut = (TypedIOPort)receiver.newPort("msgOut");
             recMsgOut.setOutput(true);
-            recMsgOut.setDeclaredType(IntToken.class);
+            recMsgOut.setTypeEquals(IntToken.class);
             // states and transitions
             SCState recInit = new SCState(receiver, "Init");
             SCState recS0 = new SCState(receiver, "S0");

@@ -61,9 +61,9 @@ public class DEChannel extends DEActor {
                 throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(IntToken.class);
+        output.setTypeEquals(IntToken.class);
         input = new DEIOPort(this, "input", true, false);
-        input.setDeclaredType(IntToken.class);
+        input.setTypeEquals(IntToken.class);
         _dropRate = new Parameter(this, "DropRate", new DoubleToken(dropRate));
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
         _minDelay = new Parameter(this, "MinDelay", new DoubleToken(minDelay));

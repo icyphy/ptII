@@ -56,7 +56,7 @@ public class CTDummySource extends CTActor{
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
     }
 
 

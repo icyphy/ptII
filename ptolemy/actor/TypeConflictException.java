@@ -31,7 +31,8 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.*;
+import ptolemy.data.Typeable;
 import collections.LinkedList;
 import java.util.Enumeration;
 
@@ -39,81 +40,82 @@ import java.util.Enumeration;
 //// TypeConflictException
 /**
 Thrown on detecting type conflicts.
-This class contains all the TypedIOPorts where type conflicts occurred.
-There are several kinds of type conflicts: (1) Two TypedIOPorts
-with declared types are connected, but the type of the port at the
-source end of the connection is not less than or equal to the type of
-the port at the destination end. In this case, both ports should be
-included in this exception; (2) A type constraint cannot be satisfied
-in type resolution. In this case, all the ports whose types are
-involved in that constraint should be included in this exception;
-(3) After type resolution, the type of a port is resolved to NaT (not
-a type), or a type corresponding to an abstract token class or interface.
+This class contains all the Typeable objects where type conflicts
+occurred.
 
 @author Yuhong Xiong
 @version $Id$
+@see ptolemy.data.Typeable
 */
 public class TypeConflictException extends KernelException {
 
-    /** Construct an Exception with an Enumeration of TypedIOPorts.
-     *  The ports are the places where type conflicts
+    /** Construct an Exception with an Enumeration of Typeables.
+     *  The Typeables are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
-     *  the string "Type conflicts occurred on the following ports:",
-     *  followed by a list of ports and their resolved types. The
-     *  type is represented by the corresponding class name. For
-     *  example, the type "Int" is represented by "ptolemy.data.IntToken"
-     *  in the message.
-     *  Each port takes one line, and each line starts
+     *  the string "Type conflicts occurred on the following Typeables:",
+     *  followed by a list of Typeables and their types. The Typeables
+     *  are represented by their names if the Typeable object is a
+     *  NamedObj, otherwise, they are represented by the string
+     *  "Unnamed Typeable".  The type is represented by the corresponding
+     *  class name. For example, the type "Int" is represented by
+     *  "ptolemy.data.IntToken" in the message.
+     *  Each Typeable takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
-     *  @param ports an Enumeration of TypedIOPorts.
+     *  @param typeables an Enumeration of Typeables.
      */
-    public TypeConflictException(Enumeration ports) {
-	this(ports, "Type conflicts occurred on the following ports:");
+    public TypeConflictException(Enumeration typeables) {
+	this(typeables, "Type conflicts occurred on the following Typeables:");
     }
 
-    /** Construct an Exception with an Enumeration of TypedIOPorts
-     *  and a message. The ports are the places where type conflicts
+    /** Construct an Exception with an Enumeration of Typeables.
+     *  The Typeables are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
-     *  the specified message, following by the list of ports with
-     *  type conflicts, and their resolved types.  The type is
-     *  represented by the corresponding class name. For example,
-     *  the type "Int" is represented by "ptolemy.data.IntToken"
-     *  in the message.
-     *  Each port takes one line, and each line starts
+     *  the specified message,
+     *  followed by a list of Typeables and their types. The Typeables
+     *  are represented by their names if the Typeable object is a
+     *  NamedObj, otherwise, they are represented by the string
+     *  "Unnamed Typeable".  The type is represented by the corresponding
+     *  class name. For example, the type "Int" is represented by
+     *  "ptolemy.data.IntToken" in the message.
+     *  Each Typeable takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
-     *  @param ports an Enumeration of TypedIOPorts.
+     *  @param typeables an Enumeration of Typeables.
      *  @param detail a message.
      */
-    public TypeConflictException(Enumeration ports, String detail) {
-	_portList.appendElements(ports);
-	_setMessage(detail + "\n" + _getPortsAndTypes());
+    public TypeConflictException(Enumeration typeables, String detail) {
+	_typeables.appendElements(typeables);
+	_setMessage(detail + "\n" + _getTypeablesAndTypes());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
-    /** Return an Enumeration of TypedIOPorts where type conflicts
+    /** Return an Enumeration of Typeables where type conflicts
      *  occurred. The ports are those specified in the Enumeration
      *  argument of the constructor.
      *  @return An Enumeration.
      */
-    public Enumeration getPorts() {
-	return _portList.elements();
+    public Enumeration getTypeables() {
+	return _typeables.elements();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
-    // Create a string listing all the ports in _portList and their
-    // resolved types. Each port takes one line, and each line starts
+    // Create a string listing all the Typeables in _typeables and
+    // their types. Each Typeable takes one line, and each line starts
     // with 2 white spaces to make the String more readable.
-    private String _getPortsAndTypes() {
+    private String _getTypeablesAndTypes() {
 	String result = "";;
-	Enumeration ports = getPorts();
-	while(ports.hasMoreElements()) {
-	    TypedIOPort port = (TypedIOPort)ports.nextElement();
-	    result += "  " + port.getFullName() + ": ";
-	    Class type = port.getResolvedType();
+	Enumeration e = getTypeables();
+	while(e.hasMoreElements()) {
+	    Typeable typeable = (Typeable)e.nextElement();
+	    if (typeable instanceof NamedObj) {
+	        result += "  " + ((NamedObj)typeable).getFullName() + ": ";
+	    } else {
+		result += "Unnamed Typeable: ";
+	    }
+	    Class type = typeable.getType();
 	    if (type.equals(Void.TYPE)) {
 		result += "NaT\n";
 	    } else {
@@ -127,6 +129,6 @@ public class TypeConflictException extends KernelException {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _portList = new LinkedList();
+    private LinkedList _typeables = new LinkedList();
 }
 

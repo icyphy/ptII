@@ -81,12 +81,12 @@ public class DEInterruptibleServer extends DEActor {
         super(container, name);
         // create an output port
         output = new DEIOPort(this, "output", false, true);
-        //output.setDeclaredType(DoubleToken.class);
+        //output.setTypeEquals(DoubleToken.class);
         // create input ports
         input = new DEIOPort(this, "input", true, false);
-        //input.setDeclaredType(DoubleToken.class);
+        //input.setTypeEquals(DoubleToken.class);
         interrupt = new DEIOPort(this, "interrupt", true, false);
-        interrupt.setDeclaredType(Token.class);
+        interrupt.setTypeEquals(Token.class);
 
         // set the parameters.
         _minimumServiceTime = new Parameter(this, 

@@ -66,11 +66,11 @@ public class DEWaitingTime extends DEActor {
         super(container, name);
         // create the ports
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         waiter = new DEIOPort(this, "waiter", true, false);
-        waiter.setDeclaredType(Token.class);
+        waiter.setTypeEquals(Token.class);
         waitee = new DEIOPort(this, "waitee", true, false);
-        waitee.setDeclaredType(Token.class);
+        waitee.setTypeEquals(Token.class);
         // Ensure that waiters are seen before simultaneous waitees.
         waiter.before(waitee);
         waitee.triggers(output);

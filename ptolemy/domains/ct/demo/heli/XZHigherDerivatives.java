@@ -71,61 +71,61 @@ public class XZHigherDerivatives extends CTActor{
         inputTm.setInput(true);
         inputTm.setOutput(false);
         inputTm.setMultiport(false);
-        inputTm.setDeclaredType(DoubleToken.class);
+        inputTm.setTypeEquals(DoubleToken.class);
 
         inputDTm = new TypedIOPort(this, "inputDTm");
         inputDTm.setInput(true);
         inputDTm.setOutput(false);
         inputDTm.setMultiport(false);
-        inputDTm.setDeclaredType(DoubleToken.class);
+        inputDTm.setTypeEquals(DoubleToken.class);
 
         inputDDTm = new TypedIOPort(this, "inputDDTm");
         inputDDTm.setInput(true);
         inputDDTm.setOutput(false);
         inputDDTm.setMultiport(false);
-        inputDDTm.setDeclaredType(DoubleToken.class);
+        inputDDTm.setTypeEquals(DoubleToken.class);
 
         inputA = new TypedIOPort(this, "inputA");
         inputA.setInput(true);
         inputA.setOutput(false);
         inputA.setMultiport(false);
-        inputA.setDeclaredType(DoubleToken.class);
+        inputA.setTypeEquals(DoubleToken.class);
 
         inputTh = new TypedIOPort(this, "inputTh");
         inputTh.setInput(true);
         inputTh.setOutput(false);
         inputTh.setMultiport(false);
-        inputTh.setDeclaredType(DoubleToken.class);
+        inputTh.setTypeEquals(DoubleToken.class);
 
         inputDTh = new TypedIOPort(this, "inputDTh");
         inputDTh.setInput(true);
         inputDTh.setOutput(false);
         inputDTh.setMultiport(false);
-        inputDTh.setDeclaredType(DoubleToken.class);
+        inputDTh.setTypeEquals(DoubleToken.class);
 
         outputD3Px = new TypedIOPort(this, "outputD3Px");
         outputD3Px.setInput(false);
         outputD3Px.setOutput(true);
         outputD3Px.setMultiport(false);
-        outputD3Px.setDeclaredType(DoubleToken.class);
+        outputD3Px.setTypeEquals(DoubleToken.class);
 
         outputD4Px = new TypedIOPort(this, "outputD4Px");
         outputD4Px.setInput(false);
         outputD4Px.setOutput(true);
         outputD4Px.setMultiport(false);
-        outputD4Px.setDeclaredType(DoubleToken.class);
+        outputD4Px.setTypeEquals(DoubleToken.class);
 
         outputD3Pz = new TypedIOPort(this, "outputD3Pz");
         outputD3Pz.setInput(false);
         outputD3Pz.setOutput(true);
         outputD3Pz.setMultiport(false);
-        outputD3Pz.setDeclaredType(DoubleToken.class);
+        outputD3Pz.setTypeEquals(DoubleToken.class);
 
         outputD4Pz = new TypedIOPort(this, "outputD4Pz");
         outputD4Pz.setInput(false);
         outputD4Pz.setOutput(true);
         outputD4Pz.setMultiport(false);
-        outputD4Pz.setDeclaredType(DoubleToken.class);
+        outputD4Pz.setTypeEquals(DoubleToken.class);
 
         _Iy = (double)0.271256;
         _paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));

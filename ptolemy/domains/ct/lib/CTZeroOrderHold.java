@@ -77,12 +77,12 @@ public class CTZeroOrderHold extends TypedAtomicActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         output = new TypedIOPort(this, "output");
         output.setMultiport(false);
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
 
     }
 

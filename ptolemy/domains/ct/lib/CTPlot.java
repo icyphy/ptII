@@ -76,9 +76,9 @@ public class  CTPlot extends TypedAtomicActor {
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
-        //input.setDeclaredType(DoubleToken.class);
+        //input.setTypeEquals(DoubleToken.class);
         input.setMultiport(true);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
 
         _plot = plot;
 

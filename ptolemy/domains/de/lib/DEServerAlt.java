@@ -81,10 +81,10 @@ public class DEServerAlt extends DEActor {
         super(container, name);
         // create an output port
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create an input port
         input = new DEIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         // set the service time.
         _serviceTime = serviceTime;
     }

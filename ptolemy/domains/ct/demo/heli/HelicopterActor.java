@@ -75,37 +75,37 @@ public class HelicopterActor extends CTActor{
         inputTm.setInput(true);
         inputTm.setOutput(false);
         inputTm.setMultiport(false);
-        inputTm.setDeclaredType(DoubleToken.class);
+        inputTm.setTypeEquals(DoubleToken.class);
 
         inputA = new TypedIOPort(this, "inputA");
         inputA.setInput(true);
         inputA.setOutput(false);
         inputA.setMultiport(false);
-        inputA.setDeclaredType(DoubleToken.class);
+        inputA.setTypeEquals(DoubleToken.class);
 
         inputTh = new TypedIOPort(this, "inputTh");
         inputTh.setInput(true);
         inputTh.setOutput(false);
         inputTh.setMultiport(false);
-        inputTh.setDeclaredType(DoubleToken.class);
+        inputTh.setTypeEquals(DoubleToken.class);
 
         outputDDPx = new TypedIOPort(this, "outputDDPx");
         outputDDPx.setInput(false);
         outputDDPx.setOutput(true);
         outputDDPx.setMultiport(false);
-        outputDDPx.setDeclaredType(DoubleToken.class);
+        outputDDPx.setTypeEquals(DoubleToken.class);
 
         outputDDPz = new TypedIOPort(this, "outputDDPz");
         outputDDPz.setInput(false);
         outputDDPz.setOutput(true);
         outputDDPz.setMultiport(false);
-        outputDDPz.setDeclaredType(DoubleToken.class);
+        outputDDPz.setTypeEquals(DoubleToken.class);
 
         outputDDTh = new TypedIOPort(this, "outputDDTh");
         outputDDTh.setInput(false);
         outputDDTh.setOutput(true);
         outputDDTh.setMultiport(false);
-        outputDDTh.setDeclaredType(DoubleToken.class);
+        outputDDTh.setTypeEquals(DoubleToken.class);
 
         _Iy = (double)0.271256;
         _paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));

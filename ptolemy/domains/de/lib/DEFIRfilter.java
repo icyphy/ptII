@@ -87,10 +87,10 @@ public class DEFIRfilter extends DEActor {
         _paramDelay = new Parameter( this, "Delay", new DoubleToken(_delay));
         // create an output port
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create an input port
         input = new DEIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
     }
 
     /** Construct a DEFIRfilter with the specified container, name, initial
@@ -121,10 +121,10 @@ public class DEFIRfilter extends DEActor {
 
         // create an output port
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create an input port
         input = new DEIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         
     }
     

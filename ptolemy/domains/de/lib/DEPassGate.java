@@ -60,12 +60,12 @@ public class DEPassGate extends DEActor {
         super(container, name);
         // create an output port
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create input ports
         input = new DEIOPort(this, "data input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         gate = new DEIOPort(this, "gate input", true, false);
-        gate.setDeclaredType(DoubleToken.class);
+        gate.setTypeEquals(DoubleToken.class);
 
 	// Assert priorities
         gate.before(input);

@@ -85,9 +85,9 @@ public class DEDelay extends DEActor {
         _delay = new Parameter(this, "delay", new DoubleToken(delay));
         // create the ports
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         input = new DEIOPort(this, "input", true, false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

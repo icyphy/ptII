@@ -73,10 +73,10 @@ public class DEABRO extends DEThreadActor {
         B = new DEIOPort(this, "B", true, false);
         R = new DEIOPort(this, "R", true, false);
         O = new DEIOPort(this, "O", false, true);
-        A.setDeclaredType(Token.class);
-        B.setDeclaredType(Token.class);
-        R.setDeclaredType(Token.class);
-        O.setDeclaredType(DoubleToken.class);
+        A.setTypeEquals(Token.class);
+        B.setTypeEquals(Token.class);
+        R.setTypeEquals(Token.class);
+        O.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

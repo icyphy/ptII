@@ -98,7 +98,7 @@ public class DESampler extends DEActor {
         input = new DEIOPort(this, "dataInput", true, false);
 
         clock = new DEIOPort(this, "clockInput", true, false);
-        clock.setDeclaredType(Token.class);
+        clock.setTypeEquals(Token.class);
         clock.triggers(output);
     }
 

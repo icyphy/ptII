@@ -107,61 +107,61 @@ public class ControllerActor extends CTActor{
         inputTm.setInput(true);
         inputTm.setOutput(false);
         inputTm.setMultiport(false);
-        inputTm.setDeclaredType(DoubleToken.class);
+        inputTm.setTypeEquals(DoubleToken.class);
 
         inputDTm = new TypedIOPort(this, "inputDTm");
         inputDTm.setInput(true);
         inputDTm.setOutput(false);
         inputDTm.setMultiport(false);
-        inputDTm.setDeclaredType(DoubleToken.class);
+        inputDTm.setTypeEquals(DoubleToken.class);
 
         inputDDTm = new TypedIOPort(this, "inputDDTm");
         inputDDTm.setInput(true);
         inputDDTm.setOutput(false);
         inputDDTm.setMultiport(false);
-        inputDDTm.setDeclaredType(DoubleToken.class);
+        inputDDTm.setTypeEquals(DoubleToken.class);
 
         inputA = new TypedIOPort(this, "inputA");
         inputA.setInput(true);
         inputA.setOutput(false);
         inputA.setMultiport(false);
-        inputA.setDeclaredType(DoubleToken.class);
+        inputA.setTypeEquals(DoubleToken.class);
 
         inputTh = new TypedIOPort(this, "inputTh");
         inputTh.setInput(true);
         inputTh.setOutput(false);
         inputTh.setMultiport(false);
-        inputTh.setDeclaredType(DoubleToken.class);
+        inputTh.setTypeEquals(DoubleToken.class);
 
         inputDTh = new TypedIOPort(this, "inputDTh");
         inputDTh.setInput(true);
         inputDTh.setOutput(false);
         inputDTh.setMultiport(false);
-        inputDTh.setDeclaredType(DoubleToken.class);
+        inputDTh.setTypeEquals(DoubleToken.class);
 
         inputVx = new TypedIOPort(this, "inputVx");
         inputVx.setInput(true);
         inputVx.setOutput(false);
         inputVx.setMultiport(false);
-        inputVx.setDeclaredType(DoubleToken.class);
+        inputVx.setTypeEquals(DoubleToken.class);
 
         inputVz = new TypedIOPort(this, "inputVz");
         inputVz.setInput(true);
         inputVz.setOutput(false);
         inputVz.setMultiport(false);
-        inputVz.setDeclaredType(DoubleToken.class);
+        inputVz.setTypeEquals(DoubleToken.class);
 
         outputDDDTm = new TypedIOPort(this, "outputDDDTm");
         outputDDDTm.setInput(false);
         outputDDDTm.setOutput(true);
         outputDDDTm.setMultiport(false);
-        outputDDDTm.setDeclaredType(DoubleToken.class);
+        outputDDDTm.setTypeEquals(DoubleToken.class);
 
         outputDA = new TypedIOPort(this, "outputDA");
         outputDA.setInput(false);
         outputDA.setOutput(true);
         outputDA.setMultiport(false);
-        outputDA.setDeclaredType(DoubleToken.class);
+        outputDA.setTypeEquals(DoubleToken.class);
 
         _Iy = (double)0.271256;
         _paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));

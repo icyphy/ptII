@@ -94,11 +94,11 @@ test Add-1.1 {use default value} {
     $const initialize
 
     $manager resolveTypes
-    set rtRamp [[$rampOut getResolvedType] getName]
-    set rtConst [[$constOut getResolvedType] getName]
-    set rtAdderIn [[$adderIn getResolvedType] getName]
-    set rtAdderOut [[$adderOut getResolvedType] getName]
-    set rtSinkIn [[$sinkIn getResolvedType] getName]
+    set rtRamp [[$rampOut getType] getName]
+    set rtConst [[$constOut getType] getName]
+    set rtAdderIn [[$adderIn getType] getName]
+    set rtAdderOut [[$adderOut getType] getName]
+    set rtSinkIn [[$sinkIn getType] getName]
     list $rtRamp $rtConst $rtAdderIn $rtAdderOut $rtSinkIn
 } {ptolemy.data.DoubleToken ptolemy.data.IntToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
@@ -146,11 +146,11 @@ test Add-2.1 {change Ramp init value type to double} {
     $ramp initialize
 
     $manager resolveTypes
-    set rtRamp [[$rampOut getResolvedType] getName]
-    set rtConst [[$constOut getResolvedType] getName]
-    set rtAdderIn [[$adderIn getResolvedType] getName]
-    set rtAdderOut [[$adderOut getResolvedType] getName]
-    set rtSinkIn [[$sinkIn getResolvedType] getName]
+    set rtRamp [[$rampOut getType] getName]
+    set rtConst [[$constOut getType] getName]
+    set rtAdderIn [[$adderIn getType] getName]
+    set rtAdderOut [[$adderOut getType] getName]
+    set rtSinkIn [[$sinkIn getType] getName]
     list $rtRamp $rtConst $rtAdderIn $rtAdderOut $rtSinkIn
 } {ptolemy.data.DoubleToken ptolemy.data.IntToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
@@ -211,12 +211,12 @@ test Add-3.2 {fix above by changing source type to Complex} {
     $source setToken $cToken
 
     $manager resolveTypes
-    set rtSource [[$sourceOut getResolvedType] getName]
-    set rtRamp [[$rampOut getResolvedType] getName]
-    set rtConst [[$constOut getResolvedType] getName]
-    set rtAdderIn [[$adderIn getResolvedType] getName]
-    set rtAdderOut [[$adderOut getResolvedType] getName]
-    set rtSinkIn [[$sinkIn getResolvedType] getName]
+    set rtSource [[$sourceOut getType] getName]
+    set rtRamp [[$rampOut getType] getName]
+    set rtConst [[$constOut getType] getName]
+    set rtAdderIn [[$adderIn getType] getName]
+    set rtAdderOut [[$adderOut getType] getName]
+    set rtSinkIn [[$sinkIn getType] getName]
     list $rtSource $rtRamp $rtConst $rtAdderIn $rtAdderOut $rtSinkIn
 } {ptolemy.data.ComplexToken ptolemy.data.DoubleToken ptolemy.data.IntToken ptolemy.data.ComplexToken ptolemy.data.ComplexToken ptolemy.data.ComplexToken}
 

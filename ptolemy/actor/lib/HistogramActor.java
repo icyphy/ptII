@@ -54,7 +54,7 @@ public class HistogramActor extends TypedAtomicActor implements Placeable {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
     }
@@ -85,7 +85,7 @@ public class HistogramActor extends TypedAtomicActor implements Placeable {
                 (HistogramActor)super.clone(ws);
             newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
-            newobj.input.setDeclaredType(DoubleToken.class);
+            newobj.input.setTypeEquals(DoubleToken.class);
             newobj.fillOnWrapup
                 = (Parameter)newobj.getAttribute("fillOnWrapup");
             return newobj;

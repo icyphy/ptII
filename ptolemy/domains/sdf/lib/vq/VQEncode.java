@@ -54,12 +54,12 @@ public class VQEncode extends SDFAtomicActor {
         TypedIOPort outputport = (TypedIOPort) newPort("index");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
-        outputport.setDeclaredType(IntToken.class);
+        outputport.setTypeEquals(IntToken.class);
 
         TypedIOPort inputport = (TypedIOPort) newPort("imagepart");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
-        inputport.setDeclaredType(IntMatrixToken.class);
+        inputport.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));

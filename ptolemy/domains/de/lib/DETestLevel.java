@@ -69,10 +69,10 @@ public class DETestLevel extends TypedAtomicActor {
         super(container, name);
         // create an output port
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create an input port
         input = new TypedIOPort(this, "input", true, false);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         
         _crossingsOnly = false;
         _threshold = 0.0;
@@ -96,10 +96,10 @@ public class DETestLevel extends TypedAtomicActor {
         super(container, name);
         // create an output port
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // create an input port
         input = new TypedIOPort(this, "input", true, false);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
         // set the parameters
         _crossingsOnly = crossingsOnly;
         _threshold = threshold;

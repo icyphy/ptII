@@ -344,6 +344,9 @@ public class Variable extends Attribute implements Typeable {
         // _token, _typeEquals, _typeAtMost are all preserved in clone.
         newvar._typeAtLeast = null;
         newvar._typeSameAs = null;
+
+	newvar._constraints = new LinkedList();
+
         // FIXME: When _typeTerm is added...
         // newvar._typeTerm = null;
         return newvar;
@@ -874,8 +877,7 @@ public class Variable extends Attribute implements Typeable {
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints() {
-        // FIXME: fill in.
-        return null;
+        return _constraints.elements();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1222,4 +1224,7 @@ public class Variable extends Attribute implements Typeable {
     // Type constraints.
     private Class _typeEquals, _typeAtMost;
     private Typeable _typeAtLeast, _typeSameAs;
+
+    private LinkedList _constraints = new LinkedList();
 }
+

@@ -216,7 +216,7 @@ test InequalitySolver-3.1 {solve constraints on TypeLattic} {
 
     # init. type terms
     set pDouble [java::new ptolemy.actor.TypedIOPort]
-    $pDouble setDeclaredType [[java::new ptolemy.data.DoubleToken] getClass]
+    $pDouble setTypeEquals [[java::new ptolemy.data.DoubleToken] getClass]
     set tDouble [$pDouble getTypeTerm]
 
     set ps1c [java::new ptolemy.actor.TypedIOPort]
@@ -263,11 +263,11 @@ test InequalitySolver-3.1 {solve constraints on TypeLattic} {
 
     set sat [$s solveLeast]
     list $sat \
-	 [[$ps1c getResolvedType] getName] \
-	 [[$ps1d getResolvedType] getName] \
-	 [[$ps1o getResolvedType] getName] \
-	 [[$ps2c getResolvedType] getName] \
-	 [[$ps2d getResolvedType] getName] \
-	 [[$ps2o getResolvedType] getName]
+	 [[$ps1c getType] getName] \
+	 [[$ps1d getType] getName] \
+	 [[$ps1o getType] getName] \
+	 [[$ps2c getType] getName] \
+	 [[$ps2d getType] getName] \
+	 [[$ps2o getType] getName]
 } {1 ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken} 
 

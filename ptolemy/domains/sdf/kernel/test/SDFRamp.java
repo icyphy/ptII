@@ -54,7 +54,7 @@ public class SDFRamp extends SDFAtomicActor {
             output = (TypedIOPort) newPort("output");
             output.setOutput(true);
             setTokenProductionRate(output, 1);
-            output.setDeclaredType(IntToken.class);
+            output.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFRamp: constructor error");

@@ -64,14 +64,14 @@ test Manager-8.1 {Test type checking} {
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 setOutput true
     set t1 [[java::new ptolemy.data.IntToken] getClass]
-    $p1 setDeclaredType $t1
+    $p1 setTypeEquals $t1
 
     #create e2
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
     $p2 setInput true
     set t2 [[java::new ptolemy.data.DoubleToken] getClass]
-    $p2 setDeclaredType $t2
+    $p2 setTypeEquals $t2
 
     #link up p1, p2
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 R1]
@@ -80,8 +80,8 @@ test Manager-8.1 {Test type checking} {
 
     $director initialize
     $manager resolveTypes
-    set rt1 [[$p1 getResolvedType] getName]
-    set rt2 [[$p2 getResolvedType] getName]
+    set rt1 [[$p1 getType] getName]
+    set rt2 [[$p2 getType] getName]
     list $rt1 $rt2
 } {ptolemy.data.IntToken ptolemy.data.DoubleToken}
 
@@ -114,7 +114,7 @@ test Manager-8.3 {Test run-time type checking} {
 #
 test Manager-8.4 {Test type resolution} {
     # use the setup above
-    $p1 setDeclaredType [java::null]
+    $p1 setTypeEquals [java::null]
 
     catch {$manager resolveTypes} msg
     list $msg
@@ -128,12 +128,12 @@ test Manager-8.4 {Test type resolution} {
 test Manager-8.5 {Test type resolution} {
     # use the setup above
     set tInt [[java::new ptolemy.data.IntToken] getClass]
-    $p1 setDeclaredType $tInt
-    $p2 setDeclaredType [java::null]
+    $p1 setTypeEquals $tInt
+    $p2 setTypeEquals [java::null]
 
     $manager resolveTypes
-    set rt1 [[$p1 getResolvedType] getName]
-    set rt2 [[$p2 getResolvedType] getName]
+    set rt1 [[$p1 getType] getName]
+    set rt2 [[$p2 getType] getName]
     list $rt1 $rt2
 } {ptolemy.data.IntToken ptolemy.data.IntToken}
 
@@ -152,7 +152,7 @@ test Manager-8.6 {Test type resolution} {
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 setOutput true
     set tDouble [[java::new ptolemy.data.DoubleToken] getClass]
-    $p1 setDeclaredType $tDouble
+    $p1 setTypeEquals $tDouble
 
     #create e2, a fork
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
@@ -172,7 +172,7 @@ test Manager-8.6 {Test type resolution} {
     set e4 [java::new ptolemy.actor.TypedAtomicActor $e0 E4]
     set p4 [java::new ptolemy.actor.TypedIOPort $e4 P4]
     $p4 setInput true
-    $p4 setDeclaredType $tDouble
+    $p4 setTypeEquals $tDouble
 
     #link up p1-p21, p22-p3, p23-p4
     set r12 [java::new ptolemy.actor.TypedIORelation $e0 R12]
@@ -189,12 +189,12 @@ test Manager-8.6 {Test type resolution} {
 
     $director initialize
     $manager resolveTypes
-    set rt1 [[$p1 getResolvedType] getName]
-    set rt21 [[$p21 getResolvedType] getName]
-    set rt22 [[$p22 getResolvedType] getName]
-    set rt23 [[$p23 getResolvedType] getName]
-    set rt3 [[$p3 getResolvedType] getName]
-    set rt4 [[$p4 getResolvedType] getName]
+    set rt1 [[$p1 getType] getName]
+    set rt21 [[$p21 getType] getName]
+    set rt22 [[$p22 getType] getName]
+    set rt23 [[$p23 getType] getName]
+    set rt3 [[$p3 getType] getName]
+    set rt4 [[$p4 getType] getName]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
 } {ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken\
@@ -206,16 +206,16 @@ ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 test Manager-8.7 {Test type resolution} {
     # use the setup above
     set tInt [[java::new ptolemy.data.IntToken] getClass]
-    $p1 setDeclaredType $tInt
-    $p4 setDeclaredType $tDouble
+    $p1 setTypeEquals $tInt
+    $p4 setTypeEquals $tDouble
 
     $manager resolveTypes
-    set rt1 [[$p1 getResolvedType] getName]
-    set rt21 [[$p21 getResolvedType] getName]
-    set rt22 [[$p22 getResolvedType] getName]
-    set rt23 [[$p23 getResolvedType] getName]
-    set rt3 [[$p3 getResolvedType] getName]
-    set rt4 [[$p4 getResolvedType] getName]
+    set rt1 [[$p1 getType] getName]
+    set rt21 [[$p21 getType] getName]
+    set rt22 [[$p22 getType] getName]
+    set rt23 [[$p23 getType] getName]
+    set rt3 [[$p3 getType] getName]
+    set rt4 [[$p4 getType] getName]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
 } {ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.IntToken\
@@ -227,8 +227,8 @@ ptolemy.data.IntToken ptolemy.data.IntToken ptolemy.data.DoubleToken}
 test Manager-8.8 {Test type resolution} {
     # use the setup in 8.6
     set tInt [[java::new ptolemy.data.IntToken] getClass]
-    $p1 setDeclaredType $tDouble
-    $p4 setDeclaredType $tInt
+    $p1 setTypeEquals $tDouble
+    $p4 setTypeEquals $tInt
 
     catch {$manager resolveTypes} msg
     list $msg

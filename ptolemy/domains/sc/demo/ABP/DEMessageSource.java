@@ -60,11 +60,11 @@ public class DEMessageSource extends DEActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);
-        output.setDeclaredType(IntToken.class);
+        output.setTypeEquals(IntToken.class);
         request = new DEIOPort(this, "request", false, true);
-        request.setDeclaredType(Token.class);
+        request.setTypeEquals(Token.class);
         next = new DEIOPort(this, "next", true, false);
-        next.setDeclaredType(Token.class);
+        next.setTypeEquals(Token.class);
         _maxDelay = new Parameter(this, "MaxDelay", new DoubleToken(maxDelay));
     }
 

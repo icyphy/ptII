@@ -88,7 +88,7 @@ public class DERegister extends DEActor {
         // create input ports
         input = new DEIOPort(this, "data input", true, false);
         clock = new DEIOPort(this, "clock input", true, false);
-        clock.setDeclaredType(Token.class);
+        clock.setTypeEquals(Token.class);
         clock.triggers(output);
     }
 

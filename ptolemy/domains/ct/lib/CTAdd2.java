@@ -56,17 +56,17 @@ public class CTAdd2 extends TypedAtomicActor {
         input1 = new TypedIOPort(this, "input1");
         input1.setInput(true);
         input1.setOutput(false);
-        input1.setDeclaredType(DoubleToken.class);
+        input1.setTypeEquals(DoubleToken.class);
 
         input2 = new TypedIOPort(this, "input2");
         input2.setInput(true);
         input2.setOutput(false);
-        input2.setDeclaredType(DoubleToken.class);
+        input2.setTypeEquals(DoubleToken.class);
 
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -78,7 +78,7 @@ public class DEClock extends DEActor {
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(Token.class);
+        output.setTypeEquals(Token.class);
         _interval = new Parameter(this, "interval", new DoubleToken(interval));
         _value = new Parameter(this, "value", new DoubleToken(value));
     }
@@ -103,7 +103,7 @@ public class DEClock extends DEActor {
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(Token.class);
+        output.setTypeEquals(Token.class);
         _interval = new Parameter(this, "interval", new DoubleToken(interval));
         _value = new Parameter(this, "value", value);
     }

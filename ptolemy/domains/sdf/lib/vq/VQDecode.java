@@ -57,12 +57,12 @@ public final class VQDecode extends SDFAtomicActor {
         SDFIOPort inputport = (SDFIOPort) newPort("index");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 3168);
-        inputport.setDeclaredType(IntToken.class);
+        inputport.setTypeEquals(IntToken.class);
 
         SDFIOPort outputport = (SDFIOPort) newPort("imagepart");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
-        outputport.setDeclaredType(IntMatrixToken.class);
+        outputport.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
                 new StringToken("../lib/vq/data/usc_hvq_s5.dat"));

@@ -116,14 +116,15 @@ public class DEFSMActor extends SCController implements TypedActor {
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
-		if (inport.getDeclaredType() == null) {
+		boolean isUndeclared = inport.getTypeTerm().isSettable();
+		if (isUndeclared) {
 		    Enumeration outPorts = outputPorts();
 	    	    while (outPorts.hasMoreElements()) {
 		    	TypedIOPort outport =
 				 (TypedIOPort)outPorts.nextElement();
 
-		    	if (outport.getDeclaredType() == null &&
-			    inport != outport) {
+			isUndeclared = outport.getTypeTerm().isSettable();
+		    	if (isUndeclared && inport != outport) {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
 				inport.getTypeTerm(), outport.getTypeTerm());

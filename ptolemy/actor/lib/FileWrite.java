@@ -59,7 +59,7 @@ public class FileWrite extends TypedAtomicActor {
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        input.setDeclaredType(StringToken.class);
+        input.setTypeEquals(StringToken.class);
 
         filename = new Parameter(this, "filename", new StringToken(""));
     }

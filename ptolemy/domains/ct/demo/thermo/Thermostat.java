@@ -124,16 +124,16 @@ public class Thermostat extends CTApplet {
             // the ports
             TypedIOPort hsin = (TypedIOPort)hs.newPort("input");
             hsin.setInput(true);
-            hsin.setDeclaredType(DoubleToken.class);
+            hsin.setTypeEquals(DoubleToken.class);
             //TypedIOPort hsout = (TypedIOPort)hs.newPort("output");
             //hsout.setOutput(true);
-            //hsout.setDeclaredType(DoubleToken.class);
+            //hsout.setTypeEquals(DoubleToken.class);
             TypedIOPort hsst = (TypedIOPort)hs.newPort("state");
             hsst.setOutput(true);
-            hsst.setDeclaredType(DoubleToken.class);
+            hsst.setTypeEquals(DoubleToken.class);
             //TypedIOPort hstr = (TypedIOPort)hs.newPort("trig");
             //hstr.setOutput(true);
-            //hstr.setDeclaredType(DoubleToken.class);
+            //hstr.setTypeEquals(DoubleToken.class);
  
 
             // the FSM controller
@@ -166,24 +166,24 @@ public class Thermostat extends CTApplet {
             //CTPeriodicalSampler ctIncS = new CTPeriodicalSampler(ctInc, "Sample");
             TypedIOPort ctIncGFi = (TypedIOPort)ctIncGF.newPort("in");
             ctIncGFi.setInput(true);
-            ctIncGFi.setDeclaredType(DoubleToken.class);
+            ctIncGFi.setTypeEquals(DoubleToken.class);
             TypedIOPort ctIncGFo = (TypedIOPort)ctIncGF.newPort("out");
             ctIncGFo.setOutput(true);
-            ctIncGFo.setDeclaredType(DoubleToken.class);
+            ctIncGFo.setTypeEquals(DoubleToken.class);
             ctIncGF.setOutputExpression("out", "in - 0.2");
             // the ports
             TypedIOPort ctIncIn = (TypedIOPort)ctInc.newPort("input");
             ctIncIn.setInput(true);
-            ctIncIn.setDeclaredType(DoubleToken.class);
+            ctIncIn.setTypeEquals(DoubleToken.class);
             TypedIOPort ctIncOut = (TypedIOPort)ctInc.newPort("output");
             ctIncOut.setOutput(true);
-            ctIncOut.setDeclaredType(DoubleToken.class);
+            ctIncOut.setTypeEquals(DoubleToken.class);
             TypedIOPort ctIncSt = (TypedIOPort)ctInc.newPort("state");
             ctIncSt.setOutput(true);
-            ctIncSt.setDeclaredType(DoubleToken.class);
+            ctIncSt.setTypeEquals(DoubleToken.class);
             TypedIOPort ctIncTr = (TypedIOPort)ctInc.newPort("trig");
             ctIncTr.setOutput(true);
-            ctIncTr.setDeclaredType(DoubleToken.class);
+            ctIncTr.setTypeEquals(DoubleToken.class);
             // connect ctInc
             ctInc.connect(ctIncIn, ctIncH.input);
             ctInc.connect(ctIncH.output, ctIncI.input);
@@ -213,24 +213,24 @@ public class Thermostat extends CTApplet {
             //CTPeriodicalSampler ctDecS = new CTPeriodicalSampler(ctDec, "Sample");
             TypedIOPort ctDecGFi = (TypedIOPort)ctDecGF.newPort("in");
             ctDecGFi.setInput(true);
-            ctDecGFi.setDeclaredType(DoubleToken.class);
+            ctDecGFi.setTypeEquals(DoubleToken.class);
             TypedIOPort ctDecGFo = (TypedIOPort)ctDecGF.newPort("out");
             ctDecGFo.setOutput(true);
-            ctDecGFo.setDeclaredType(DoubleToken.class);
+            ctDecGFo.setTypeEquals(DoubleToken.class);
             ctDecGF.setOutputExpression("out", "in + 0.0");
             // the ports
             TypedIOPort ctDecIn = (TypedIOPort)ctDec.newPort("input");
             ctDecIn.setInput(true);
-            ctDecIn.setDeclaredType(DoubleToken.class);
+            ctDecIn.setTypeEquals(DoubleToken.class);
             TypedIOPort ctDecOut = (TypedIOPort)ctDec.newPort("output");
             ctDecOut.setOutput(true);
-            ctDecOut.setDeclaredType(DoubleToken.class);
+            ctDecOut.setTypeEquals(DoubleToken.class);
             TypedIOPort ctDecSt = (TypedIOPort)ctDec.newPort("state");
             ctDecSt.setOutput(true);
-            ctDecSt.setDeclaredType(DoubleToken.class);
+            ctDecSt.setTypeEquals(DoubleToken.class);
             TypedIOPort ctDecTr = (TypedIOPort)ctDec.newPort("trig");
             ctDecTr.setOutput(true);
-            ctDecTr.setDeclaredType(DoubleToken.class);
+            ctDecTr.setTypeEquals(DoubleToken.class);
             // connect ctDec
             ctDec.connect(ctDecIn, ctDecH.input);
             ctDec.connect(ctDecH.output, ctGain.input);

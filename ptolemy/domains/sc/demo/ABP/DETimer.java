@@ -56,9 +56,9 @@ public class DETimer extends DEActor {
                 throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         expired = new DEIOPort(this, "expired", false, true);
-        expired.setDeclaredType(Token.class);
+        expired.setTypeEquals(Token.class);
         set = new DEIOPort(this, "set", true, false);
-        set.setDeclaredType(DoubleToken.class);
+        set.setTypeEquals(DoubleToken.class);
     }
 
 

@@ -65,7 +65,7 @@ public class CoinFlip extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(BooleanToken.class);
+        output.setTypeEquals(BooleanToken.class);
 
         trueProbability = new Parameter(this, "trueProbability",
                 new DoubleToken(0.5));
@@ -103,7 +103,7 @@ public class CoinFlip extends TypedAtomicActor {
         try {
             CoinFlip newobj = (CoinFlip)super.clone(ws);
             newobj.output = (TypedIOPort)newobj.getPort("output");
-            // newobj.output.setDeclaredType(DoubleToken.class);
+            // newobj.output.setTypeEquals(DoubleToken.class);
 	    newobj.trueProbability =
                 (Parameter)newobj.getAttribute("trueProbability");
 	    newobj.seed = (Parameter)newobj.getAttribute("seed");

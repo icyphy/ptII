@@ -55,7 +55,7 @@ public class CTThresholdMonitor extends TypedAtomicActor
         input.setMultiport(false);
         input.setInput(true);
         input.setOutput(false);
-        input.setDeclaredType(DoubleToken.class);
+        input.setTypeEquals(DoubleToken.class);
         
         _thWidth = (double)1e-2;
         _paramThWidth = new Parameter(this, "ThresholdWidth", 

@@ -64,7 +64,7 @@ public class Gaussian extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setTypeEquals(DoubleToken.class);
 
         mean = new Parameter(this, "mean", new DoubleToken(0.0));
         stddev = new Parameter(this, "stddev", new DoubleToken(1.0));
@@ -107,7 +107,7 @@ public class Gaussian extends TypedAtomicActor {
         try {
             Gaussian newobj = (Gaussian)super.clone(ws);
             newobj.output = (TypedIOPort)newobj.getPort("output");
-            // newobj.output.setDeclaredType(DoubleToken.class);
+            // newobj.output.setTypeEquals(DoubleToken.class);
 	    newobj.mean = (Parameter)newobj.getAttribute("mean");
 	    newobj.stddev = (Parameter)newobj.getAttribute("stddev");
 	    newobj.seed = (Parameter)newobj.getAttribute("seed");

@@ -81,12 +81,12 @@ public final class HTVQEncode extends SDFAtomicActor {
 
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
-        outputport.setDeclaredType(IntToken.class);
+        outputport.setTypeEquals(IntToken.class);
 
         SDFIOPort inputport = (SDFIOPort) newPort("imagepart");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 3168);
-        inputport.setDeclaredType(IntMatrixToken.class);
+        inputport.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
                 new StringToken("../lib/vq/data/usc_hvq_s5.dat"));
