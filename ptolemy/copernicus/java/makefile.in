@@ -283,9 +283,7 @@ runTreeShakeObfuscate:
 # Rules to run gcj, the GNU Java -> Native compiler
 # This code is very experimental, and not likely to work
 
-
-GCJ_DIR =	/home/eecs/cxh/src/ptII/vendors/gcj
-#GCJ_DIR =	/usr/local
+GCJ_DIR =	/usr/local
 # The GNU C/Java compiler 
 GCJ =		$(GCJ_DIR)/bin/gcj
 GCJ_LIBDIR =	$(GCJ_DIR)/lib
