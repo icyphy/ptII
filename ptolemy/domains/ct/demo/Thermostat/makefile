@@ -49,7 +49,6 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	ModalThermostat.xml \
 	Thermostat.xml
 
 EXTRA_SRCS = \
