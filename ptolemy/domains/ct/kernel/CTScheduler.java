@@ -517,7 +517,13 @@ public class CTScheduler extends Scheduler {
                     if (type.equals(UNKNOWN)) {
                         throw new NotSchedulableException("Cannot resolve "
                                 + "signal type for port "
-                                + port.getFullName());
+                                + port.getFullName()
+                                + ". If you are certain about the signal type"
+                                + ", you can set them manually.\n" 
+                                + " To do this, you can add a parameter "
+                                + "called \'signalType\' with value "
+                                + "\'\"CONTINUOUS\"\' or \'\"DISCRETE\"\'"
+                                + " to a port.");
                     } else if (knownType == UNKNOWN) {
                         knownType = type;
                         needManuallySetType = false;
@@ -536,9 +542,9 @@ public class CTScheduler extends Scheduler {
                         throw new NotSchedulableException("Cannot resolve "
                                 + "signal type for port " + port.getFullName()
                                 + ".\n To set the signal type manually, "
-                                + "add a parameter with name signalType "
-                                + "and a string value \"CONTINUOUS\" "
-                                + "or \"DISCRETE\".");
+                                + "add a parameter with name \'signalType\' "
+                                + "and a string value \'\"CONTINUOUS\"\' "
+                                + "or \'\"DISCRETE\"\'.");
                     } else {
                         _signalTypes.setType(port, knownType);
                     }
@@ -859,7 +865,11 @@ public class CTScheduler extends Scheduler {
                 Integer previousType = (Integer)_map.get(port);
                 if (!previousType.equals(type)) {
                     throw new NotSchedulableException(port.getFullName()
-                            + " has a signal type conflict.");
+                            + " has a signal type conflict: \n"
+                            + "Its signal type was set/resolved to "
+                            + signalTypeToString(previousType)
+                            + ", but is going to be set to " 
+                            + signalTypeToString(type) + " now.");
                 }
             }
         }
