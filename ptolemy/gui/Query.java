@@ -708,7 +708,7 @@ public class Query extends JPanel {
         return getIntValue(name);
     }
 
-    /** Nofify listeners of the current value of all entries, unless
+    /** Notify listeners of the current value of all entries, unless
      *  those entries have not changed since the last notification.
      */
     public void notifyListeners() {
