@@ -56,6 +56,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
+import ptolemy.copernicus.kernel.MustAliasAnalysis;
 
 
 /**
@@ -95,28 +96,50 @@ public class TokenToNativeTransformer extends SceneTransformer {
             return;
         }
 
+        boolean debug = Options.getBoolean(options, "debug");
         // Loop over all the actor instance classes.
-        for(Iterator i = _model.entityList().iterator();
-            i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className = Options.getString(options, "targetPackage")
-                + "." + entity.getName();
-            SootClass entityClass = Scene.v().loadClassAndSupport(className);
-        
+        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+            classes.hasNext();) {
+            SootClass entityClass = (SootClass)classes.next();
+            
+            System.out.println("Inlining token methods in " + entityClass);
+
             // Inline all token methods, until we run out of things to inline
             boolean doneSomething = true;
             int count = 0;
             while(doneSomething && count < 10) {
                 doneSomething = false;
                 System.out.println("inlining iteration " + count++);
-                Map objectToTokenType = TypeSpecializer.specializeTypes(false, entityClass);
+                // First split local variables that are redefined...  
+                // This will allow us to get a better type inference below.
+                for(Iterator methods = entityClass.getMethods().iterator();
+                    methods.hasNext();) {
+                    SootMethod method = (SootMethod)methods.next();
+                    
+                    JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                    
+                    LocalSplitter.v().transform(body, phaseName + ".ls", "");
+                    // Run some cleanup...  this will speedup the rest of the analysis.
+                    // And prevent typing errors.
+                    CastAndInstanceofEliminator.v().transform(body, phaseName + ".cie", "");
+                    CopyPropagator.v().transform(body, phaseName + ".cp", "");
+                    ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
+                    ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
+                    UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
+                }
+
+                // Now run the type specialization algorithm...  This 
+                // allows us to resolve the methods that we are inlining
+                // with better precision.
+                Map objectToTokenType = TypeSpecializer.specializeTypes(debug, entityClass);
+
                 for(Iterator methods = entityClass.getMethods().iterator();
                     methods.hasNext();) {
                     SootMethod method = (SootMethod)methods.next();
 
                     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                    //System.out.println("method = " + method);
+                    if(debug) System.out.println("method = " + method);
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
                     // First inline all the methods that execute on Tokens.
@@ -129,7 +152,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             Value value = box.getValue();
                             if(value instanceof VirtualInvokeExpr) {
                                 VirtualInvokeExpr r = (VirtualInvokeExpr)value;
-                                //System.out.println("invoking = " + r.getMethod());
+                                // System.out.println("invoking = " + r.getMethod());
                                 
                                 if(r.getBase().getType() instanceof RefType) {
                                     RefType type = (RefType)r.getBase().getType();
@@ -156,6 +179,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                 declaringClass.setLibraryClass();
                                                 if(!inlinee.isAbstract() && 
                                                         !inlinee.isNative()) {
+                                                    // FIXME: only inline things where we are 
+                                                    // also inlining the constructor???
                                                     // System.out.println("inlining");
                                                     inlinee.retrieveActiveBody();
                                                     // Then we know exactly what method will
@@ -232,12 +257,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
             classes.hasNext();) {
             SootClass entityClass = (SootClass)classes.next();
       
-            System.out.println("class = " + entityClass);
+            if(debug) System.out.println("creating replacement fields in Class = " + entityClass);
             // For every Token field of the actor, create new fields
             // that represent the fields of the token class in this actor.
             for(Iterator fields = entityClass.getFields().snapshotIterator();
                 fields.hasNext();) {
                 SootField field = (SootField)fields.next();
+                if(!_isTokenType(field.getType())) {
+                    continue;
+                }
                 RefType type;
                 if(field.getType() instanceof RefType) {
                     type = (RefType)field.getType();
@@ -249,6 +277,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 } else continue;
 
                 SootClass fieldClass = type.getSootClass();
+                
                 if(SootUtilities.derivesFrom(fieldClass, 
                         PtolemyUtilities.tokenClass)) {
                     Map tokenFieldToReplacementField = new HashMap();
@@ -257,17 +286,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     for(Iterator tokenFields = _getTokenClassFields(fieldClass).iterator();
                         tokenFields.hasNext();) {
                         SootField tokenField = (SootField)tokenFields.next();
-                        Type replacementType = null;
-                        if(field.getType() instanceof RefType) {
-                            replacementType = tokenField.getType();
-                        } else if(field.getType() instanceof ArrayType) {
-                            ArrayType arrayType = (ArrayType)field.getType();
-                            replacementType = ArrayType.v((BaseType)tokenField.getType(), 
-                                    arrayType.numDimensions);
-                        }
+                        // We need a type that is the same shape as the field, with 
+                        // the same type as the field in the token.  This is complicated
+                        // by the fact that both may be arraytypes.
+                        Type replacementType = 
+                            SootUtilities.createIsomorphicType(field.getType(), 
+                                    tokenField.getType());
                         SootField replacementField = 
-                                new SootField("_CG_" + field.getName() + tokenField.getName(),
-                                        replacementType, field.getModifiers());
+                            new SootField("_CG_" + field.getName() + tokenField.getName(),
+                                    replacementType, field.getModifiers());
                         tokenFieldToReplacementField.put(tokenField, replacementField);
                         entityClass.addField(replacementField);
                     }
@@ -280,14 +307,18 @@ public class TokenToNativeTransformer extends SceneTransformer {
         for(Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass entityClass = (SootClass)classes.next();
-      
+            if(debug) System.out.println("creating replacement locals in Class = " + entityClass);
+            
             for(Iterator methods = entityClass.getMethods().iterator();
                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                System.out.println("method = " + method);
+                UnitGraph graph = new CompleteUnitGraph(body);
+                MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(graph);
+
+                System.out.println("creating replacement locals in method = " + method);
 
                 // A map from a local variable that references a token and a field of that token class
                 // to the local variable that will replace a fieldReference to that field based on the 
@@ -298,6 +329,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 for(Iterator locals = body.getLocals().snapshotIterator();
                     locals.hasNext();) {
                     Local local = (Local)locals.next();
+                    
                     RefType type;
                     if(local.getType() instanceof RefType) {
                         type = (RefType)local.getType();
@@ -311,16 +343,20 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     SootClass localClass = type.getSootClass();
                     if(SootUtilities.derivesFrom(localClass, 
                             PtolemyUtilities.tokenClass)) {
+                        if(debug) System.out.println("local = " + local);
+                        if(debug) System.out.println("localClass = " + localClass);
+                        
                         // Create a boolean value that tells us whether or
                         // not the token is null.  Initialize it to true.
                         Local isNullLocal = Jimple.v().newLocal(
                                 local.getName() + "_isNull", BooleanType.v());
                         body.getLocals().add(isNullLocal);
                         localToIsNullLocal.put(local, isNullLocal);
-                        body.getUnits().addFirst(
+                        body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(
                                         isNullLocal,
-                                        IntConstant.v(1)));
+                                        IntConstant.v(1)),
+                                body.getFirstNonIdentityStmt());
 
                         Map tokenFieldToReplacementLocal = new HashMap();
                         localToFieldToLocal.put(local,
@@ -328,14 +364,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         for(Iterator tokenFields = _getTokenClassFields(localClass).iterator();
                             tokenFields.hasNext();) {
                             SootField tokenField = (SootField)tokenFields.next();
-                            Type replacementType = null;
-                            if(local.getType() instanceof RefType) {
-                                replacementType = tokenField.getType();
-                            } else if(local.getType() instanceof ArrayType) {
-                                ArrayType arrayType = (ArrayType)local.getType();
-                                replacementType = ArrayType.v((BaseType)tokenField.getType(), 
-                                        arrayType.numDimensions);
-                            }                            
+                            if(debug) System.out.println("tokenField = " + tokenField);
+                            Type replacementType = SootUtilities.createIsomorphicType(local.getType(), 
+                                    tokenField.getType());
                             Local replacementLocal = Jimple.v().newLocal(
                                     local.getName() + "_" + tokenField.getName(),
                                     replacementType);
@@ -344,13 +375,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         }
                     }
                 }
-
-                CastAndInstanceofEliminator.v().transform(body, phaseName + ".cie", "");
-                CopyPropagator.v().transform(body, phaseName + ".cp", "");
-                ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
-                ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
-                UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
-
+                
                 // Go back again and replace references to fields in the token with references
                 // to local variables.
                 for(Iterator units = body.getUnits().snapshotIterator();
@@ -360,92 +385,129 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     if(unit instanceof AssignStmt) {
                         AssignStmt stmt = (AssignStmt)unit;
                         Type assignmentType = stmt.getLeftOp().getType();
-                        if(_isTokenType(assignmentType)) {
-                            // FIXME: We need a proper points to Analysis here...
-                            if(stmt.getLeftOp() instanceof Local &&
-                                    stmt.getRightOp() instanceof Local) {
-                                System.out.println("handling as local-local assign");
-                                // We have an assignment from one local token to another.
-                                Map map = (Map)localToFieldToLocal.get(stmt.getRightOp());
-                                if(map != null &&
-                                        localToFieldToLocal.get(stmt.getLeftOp()) != null) {
-                                    localToFieldToLocal.put(stmt.getLeftOp(), map);
-                                    localToIsNullLocal.put(stmt.getLeftOp(),
-                                            localToIsNullLocal.get(stmt.getRightOp()));
+                        if(stmt.getLeftOp() instanceof Local &&
+                                stmt.getRightOp() instanceof LengthExpr) {
+                            System.out.println("handling as length expr");
+                            LengthExpr lengthExpr = (LengthExpr)stmt.getRightOp();
+                            Local baseLocal = (Local)lengthExpr.getOp();
+                            System.out.println("operating on " + baseLocal);
+                            
+                            Map fieldToReplacementArrayLocal = 
+                                (Map) localToFieldToLocal.get(baseLocal);
+                            
+                            if(fieldToReplacementArrayLocal == null) {
+                                continue;
+                            }
+                            
+                            // Get the length of a random one of the replacement fields.
+                            SootField field = (SootField)fieldToReplacementArrayLocal.keySet().iterator().next();
+                            System.out.println("replace with  " + fieldToReplacementArrayLocal.get(field));
+                            lengthExpr.setOp((Local)
+                                    fieldToReplacementArrayLocal.get(field));
+                            System.out.println("unit now = " + unit);
+  
+                            //body.getUnits().remove(unit);   
+                        } else if(_isTokenType(assignmentType)) {
+                            if(false) {//stmt.getLeftOp() instanceof Local &&
+                                //    stmt.getRightOp() instanceof NullConstant) {
+                                System.out.println("handling as local-null assign");
+                                
+                                Map fieldToReplacementLocal = 
+                                    (Map) localToFieldToLocal.get(stmt.getLeftOp());
+                                                                                
+                                if(fieldToReplacementLocal == null) {
+                                    continue;
                                 }
+                               
+                                body.getUnits().insertBefore(
+                                        Jimple.v().newAssignStmt(
+                                                (Local)localToIsNullLocal.get(stmt.getLeftOp()),
+                                                IntConstant.v(1)),
+                                        unit);
+                                System.out.println("local = " + stmt.getLeftOp());
+                                for(Iterator tokenFields = fieldToReplacementLocal.keySet().iterator();
+                                    tokenFields.hasNext();) {
+                                    SootField tokenField = (SootField)tokenFields.next();
+                                    System.out.println("tokenField = " + tokenField);
+                                    Local replacementLocal = (Local)
+                                        fieldToReplacementLocal.get(tokenField);
+                                    // FIXME: ??
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    replacementLocal,
+                                                    IntConstant.v(77)),
+                                            unit);
+                                }
+                            } else if(stmt.getLeftOp() instanceof Local &&
+                                    (stmt.getRightOp() instanceof Local ||
+                                     stmt.getRightOp() instanceof Constant)) {
+                                System.out.println("handling as local-immediate assign");
+                                _handleImmediateAssignment(body, unit, 
+                                        localToFieldToLocal, localToIsNullLocal,
+                                        stmt.getLeftOp(), stmt.getRightOp());
+                              
+                                   // The below code handles assignment to token fields.
+                                   /*List aliasList = MustAliasAnalysis.getAliasesOfBefore(
+                                            stmt.getLeftOp(), unit);
+                                    for(Iterator aliases = aliasList.iterator();
+                                        aliases.hasNext();) {
+                                        Object alias = aliases.next();
+                                        if(alias instanceof Local) {
+                                            Map fieldToReplacementLocal = 
+                                                (Map)localToFieldToLocal.get(stmt.getLeftOp());
+                                
+                                            for(Iterator tokenFields =
+                                                    fieldToReplacementLocal.keySet().iterator();
+                                                tokenFields.hasNext();) {
+                                                SootField tokenField = (SootField)tokenFields.next();
+                                                System.out.println("tokenField = " + tokenField);
+                                                Local replacementArrayLocal = (Local)
+                                                    fieldToReplacementArrayLocal.get(tokenField);
+                                                Local replacementLocal = (Local)
+                                                    fieldToReplacementLocal.get(tokenField);
+                                   */
+                         
+                                   //}
                             } else if(stmt.getLeftOp() instanceof Local &&
                                     stmt.getRightOp() instanceof CastExpr) {
                                 System.out.println("handling as local cast");
                                 Value rightLocal = ((CastExpr)stmt.getRightOp()).getOp();
+                                
+                                _handleImmediateAssignment(body, unit, 
+                                        localToFieldToLocal, localToIsNullLocal,
+                                        stmt.getLeftOp(), rightLocal);
+                                /*
+                                Value rightLocal = ((CastExpr)stmt.getRightOp()).getOp();
                                 // We have an assignment from one local token to another.
-                                Map map = (Map)localToFieldToLocal.get(rightLocal);
-                                if(map != null &&
-                                        localToFieldToLocal.get(stmt.getLeftOp()) != null) {
-                                    localToFieldToLocal.put(stmt.getLeftOp(), map);
-                                    localToIsNullLocal.put(stmt.getLeftOp(),
-                                            localToIsNullLocal.get(rightLocal));
-                                 }
-                            } else if(stmt.getLeftOp() instanceof Local &&
-                                    stmt.getRightOp() instanceof NewExpr) {
-                                System.out.println("handling as new object");
-                                NewExpr newExpr = (NewExpr)stmt.getRightOp();
+                                Map fieldToReplacementLeftLocal = 
+                                    (Map)localToFieldToLocal.get(stmt.getLeftOp());
+                                Map fieldToReplacementRightLocal = 
+                                    (Map)localToFieldToLocal.get(rightLocal);
+                                
                                 // We have an assignment from one local token to another.
-                                Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
-                                if(map != null) {
-                                    Local isNullLocal = (Local)
-                                        localToIsNullLocal.get(stmt.getLeftOp());
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    isNullLocal,
-                                                    IntConstant.v(0)),
-                                            unit);
-                                    for(Iterator tokenFields = map.keySet().iterator();
-                                        tokenFields.hasNext();) {
-                                        SootField tokenField = (SootField)tokenFields.next();
-                                        Local replacementLocal = (Local)
-                                            map.get(tokenField);
-                                        // Initialize fields?
-                                    }
-                                }
-                            } else if(stmt.getLeftOp() instanceof Local &&
-                                    stmt.getRightOp() instanceof NewArrayExpr) {
-                                System.out.println("handling as new array object");
-                                NewArrayExpr newExpr = (NewArrayExpr)stmt.getRightOp();
-                                // We have an assignment from one local token to another.
-                                Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
-                                if(map != null) {
-                                    Local isNullLocal = (Local)
-                                        localToIsNullLocal.get(stmt.getLeftOp());
-                                    body.getUnits().insertBefore(
-                                            Jimple.v().newAssignStmt(
-                                                    isNullLocal,
-                                                    IntConstant.v(0)),
-                                            unit);
-                                    for(Iterator tokenFields = map.keySet().iterator();
-                                        tokenFields.hasNext();) {
-                                        SootField tokenField = (SootField)tokenFields.next();
-                                        Local replacementLocal = (Local)
-                                            map.get(tokenField);
-                                        
-                                        Type replacementType;
-                                        if(newExpr.getType() instanceof ArrayType) {
-                                            replacementType = ArrayType.v(
-                                                    (BaseType)tokenField.getType(),
-                                                    ((ArrayType)newExpr.getBaseType()).numDimensions);
-                                        } else {
-                                            replacementType = tokenField.getType();
-                                        }
-
-                                        // Initialize fields?
-                                        body.getUnits().insertBefore(
-                                                Jimple.v().newAssignStmt(
-                                                        replacementLocal,
-                                                        Jimple.v().newNewArrayExpr(
-                                                                replacementType,
-                                                                newExpr.getSize())),
-                                                unit);
-                                    }
-                                }
+                               if(fieldToReplacementLeftLocal != null &&
+                                       fieldToReplacementRightLocal != null) {
+                                   body.getUnits().insertBefore(
+                                           Jimple.v().newAssignStmt(
+                                                   (Local)localToIsNullLocal.get(stmt.getLeftOp()),
+                                                   (Local)localToIsNullLocal.get(rightLocal)),
+                                           unit);
+                                   System.out.println("local = " + stmt.getLeftOp());
+                                   for(Iterator tokenFields = fieldToReplacementLeftLocal.keySet().iterator();
+                                       tokenFields.hasNext();) {
+                                       SootField tokenField = (SootField)tokenFields.next();
+                                       System.out.println("tokenField = " + tokenField);
+                                       Local replacementLeftLocal = (Local)
+                                           fieldToReplacementLeftLocal.get(tokenField);
+                                       Local replacementRightLocal = (Local)
+                                           fieldToReplacementRightLocal.get(tokenField);
+                                       body.getUnits().insertBefore(
+                                               Jimple.v().newAssignStmt(
+                                                       replacementLeftLocal,
+                                                       replacementRightLocal),
+                                               unit);
+                                   }
+                                   }*/ 
                             } else if(stmt.getLeftOp() instanceof FieldRef &&
                                     stmt.getRightOp() instanceof Local) {
                                 System.out.println("handling as assignment to Field");
@@ -576,7 +638,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             } else if(stmt.getLeftOp() instanceof Local &&
                                     stmt.getRightOp() instanceof ArrayRef) {
                                 System.out.println("handling as assignment from Array");
-                               ArrayRef arrayRef = (ArrayRef)stmt.getRightOp();
+                                ArrayRef arrayRef = (ArrayRef)stmt.getRightOp();
                                 Map fieldToReplacementLocal = 
                                     (Map) localToFieldToLocal.get(stmt.getLeftOp());
                                 Local baseLocal = (Local)arrayRef.getBase();
@@ -615,21 +677,88 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 }
                                 //body.getUnits().remove(unit);   
                             } else if(stmt.getLeftOp() instanceof Local &&
-                                    stmt.getRightOp() instanceof LengthExpr) {
-                                System.out.println("handling as length expr");
-                                LengthExpr lengthExpr = (LengthExpr)stmt.getRightOp();
-                                Local baseLocal = (Local)lengthExpr.getOp();
-                                Map fieldToReplacementArrayLocal = 
-                                    (Map) localToFieldToLocal.get(baseLocal);
-                                                          
-                                if(fieldToReplacementArrayLocal == null) {
-                                    continue;
+                                    stmt.getRightOp() instanceof NewArrayExpr) {
+                                System.out.println("handling as new array object");
+                                NewArrayExpr newExpr = (NewArrayExpr)stmt.getRightOp();
+                                // We have an assignment from one local token to another.
+                                Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
+                                if(map != null) {
+                                    Local isNullLocal = (Local)
+                                        localToIsNullLocal.get(stmt.getLeftOp());
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    isNullLocal,
+                                                    IntConstant.v(0)),
+                                            unit);
+                                    for(Iterator tokenFields = map.keySet().iterator();
+                                        tokenFields.hasNext();) {
+                                        SootField tokenField = (SootField)tokenFields.next();
+                                        Local replacementLocal = (Local)
+                                            map.get(tokenField);
+                                        
+                                        Type replacementType = 
+                                            SootUtilities.createIsomorphicType(newExpr.getBaseType(), 
+                                            tokenField.getType());
+                                        
+                                        // Initialize fields?
+                                        body.getUnits().insertBefore(
+                                                Jimple.v().newAssignStmt(
+                                                        replacementLocal,
+                                                        Jimple.v().newNewArrayExpr(
+                                                                replacementType,
+                                                                newExpr.getSize())),
+                                                unit);
+                                    }
                                 }
-                                // Get the length of a random one of the replacement fields.
-                                lengthExpr.getOpBox().setValue((Local)
-                                        fieldToReplacementArrayLocal.entrySet().iterator().next());
-                                //body.getUnits().remove(unit);   
-                            }
+                            } else if(stmt.getLeftOp() instanceof Local &&
+                                    stmt.getRightOp() instanceof NewExpr) {
+                                System.out.println("handling as new object");
+                                NewExpr newExpr = (NewExpr)stmt.getRightOp();
+                                // We have an assignment from one local token to another.
+                                Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
+                                if(map != null) {
+                                    Local isNullLocal = (Local)
+                                        localToIsNullLocal.get(stmt.getLeftOp());
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    isNullLocal,
+                                                    IntConstant.v(0)),
+                                            unit);
+                                    for(Iterator tokenFields = map.keySet().iterator();
+                                        tokenFields.hasNext();) {
+                                        SootField tokenField = (SootField)tokenFields.next();
+                                        Local replacementLocal = (Local)
+                                            map.get(tokenField);
+                                        // Initialize fields?
+                                    }
+                                }
+                            } /*else if(stmt.getLeftOp() instanceof Local &&
+                                      stmt.getRightOp() instanceof InvokeExpr) {
+                                System.out.println("handling as method call.");
+                                // We have an assignment from one local token to another.
+                                Map map = (Map)localToFieldToLocal.get(stmt.getLeftOp());
+                                if(map != null) {
+                                    Local isNullLocal = (Local)
+                                        localToIsNullLocal.get(stmt.getLeftOp());
+                                    body.getUnits().insertAfter(
+                                            Jimple.v().newAssignStmt(
+                                                    isNullLocal,
+                                                    IntConstant.v(0)),
+                                            unit);
+                                    for(Iterator tokenFields = map.keySet().iterator();
+                                        tokenFields.hasNext();) {
+                                        SootField tokenField = (SootField)tokenFields.next();
+                                        Local replacementLocal = (Local)
+                                            map.get(tokenField);
+                                        // Initialize fields?
+                                        body.getUnits().insertAfter(
+                                                Jimple.v().newAssignStmt(
+                                                        replacementLocal,
+                                                        ),
+                                                unit);
+                                    }
+                                }
+                                }*/
                         }
                     }
                     for(Iterator boxes = unit.getUseAndDefBoxes().iterator();
@@ -689,7 +818,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             }
                         }                        
                         
-                        /*    if(value instanceof NewExpr) {
+                        if(value instanceof NewExpr) {
                             NewExpr newExpr = (NewExpr)value;
                             RefType type = newExpr.getBaseType();
                             if(SootUtilities.derivesFrom(type.getSootClass(), 
@@ -706,10 +835,15 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 // remove
                                 body.getUnits().remove(unit);
                             }
-                            } */                       
+                        }                        
                     }                    
                 }
-                CopyPropagator.v().transform(body, phaseName + ".cp", "");                
+                CastAndInstanceofEliminator.v().transform(body, phaseName + ".cie", "");
+                CopyPropagator.v().transform(body, phaseName + ".cp", "");
+                ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
+                ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
+                UnreachableCodeEliminator.v().transform(body, phaseName + ".uce", "");
+
             }
         }
     }
@@ -786,10 +920,81 @@ public class TokenToNativeTransformer extends SceneTransformer {
             list = 
                 _getTokenClassFields(tokenClass.getSuperclass());
         }
-        list.addAll(tokenClass.getFields());
+        for(Iterator fields = tokenClass.getFields().iterator();
+            fields.hasNext();) {
+            SootField field = (SootField)fields.next();
+            int modifiers = field.getModifiers();
+            if(!Modifier.isStatic(modifiers) && !Modifier.isFinal(modifiers)) {
+                list.add(field);
+            }
+        }
         return list;
     }
 
+    public static void _handleImmediateAssignment(JimpleBody body, Unit unit, 
+            Map localToFieldToLocal, Map localToIsNullLocal,
+            Value leftValue, Value rightValue) {
+                
+        Map fieldToReplacementLeftLocal = 
+            (Map)localToFieldToLocal.get(leftValue);
+        
+        if(rightValue instanceof NullConstant) {
+            if(fieldToReplacementLeftLocal != null) {
+                
+                               
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                (Local)localToIsNullLocal.get(leftValue),
+                                IntConstant.v(1)),
+                        unit);
+                System.out.println("local = " + leftValue);
+                for(Iterator tokenFields = fieldToReplacementLeftLocal.keySet().iterator();
+                    tokenFields.hasNext();) {
+                    SootField tokenField = (SootField)tokenFields.next();
+                    System.out.println("tokenField = " + tokenField);
+                    Local replacementLocal = (Local)
+                        fieldToReplacementLeftLocal.get(tokenField);
+                    // FIXME: ??
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    replacementLocal,
+                                    IntConstant.v(77)),
+                            unit);
+                }
+            }
+        } else {
+            Map fieldToReplacementRightLocal = 
+                (Map)localToFieldToLocal.get(rightValue);
+       
+            // We have an assignment from one local token to another.
+            if(fieldToReplacementLeftLocal != null &&
+                    fieldToReplacementRightLocal != null) {
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                (Local)localToIsNullLocal.get(leftValue),
+                                (Local)localToIsNullLocal.get(rightValue)),
+                        unit);
+                System.out.println("local = " + leftValue);
+                for(Iterator tokenFields = fieldToReplacementLeftLocal.keySet().iterator();
+                    tokenFields.hasNext();) {
+                    SootField tokenField = (SootField)tokenFields.next();
+                    System.out.println("tokenField = " + tokenField);
+                    Local replacementLeftLocal = (Local)
+                        fieldToReplacementLeftLocal.get(tokenField);
+                    Local replacementRightLocal = (Local)
+                        fieldToReplacementRightLocal.get(tokenField);
+                    System.out.println("replacementLeftLocal = " + replacementLeftLocal);
+                    System.out.println("replacementRightLocal = " + replacementRightLocal);
+                    body.getUnits().insertBefore(
+                            Jimple.v().newAssignStmt(
+                                    replacementLeftLocal,
+                                    replacementRightLocal),
+                            unit);
+                }
+            }
+        }
+        
+    }
     private CompositeActor _model;
 }
 

@@ -13,6 +13,8 @@ import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+
 import soot.toolkits.graph.*;
 import soot.toolkits.scalar.*;
 import soot.dava.*;
@@ -806,7 +808,9 @@ public class InlinePortTransformer extends SceneTransformer {
                                 }
                             }
                         }
+
                     }
+                    LocalNameStandardizer.v().transform(body, phaseName + ".lns", "");
                 }
             }            
         }

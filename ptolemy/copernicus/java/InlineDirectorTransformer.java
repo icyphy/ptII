@@ -267,7 +267,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                 actorMethod)));
             }
             units.add(Jimple.v().newReturnVoidStmt());
-        }       
+        }  
+        Scene.v().setActiveHierarchy(new Hierarchy());
     }
     private CompositeActor _model;
 }

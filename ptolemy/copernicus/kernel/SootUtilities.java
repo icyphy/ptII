@@ -29,6 +29,8 @@
 
 package ptolemy.copernicus.kernel;
 
+import soot.ArrayType;
+import soot.BaseType;
 import soot.Body;
 import soot.Hierarchy;
 import soot.Local;
@@ -645,6 +647,34 @@ public class SootUtilities {
         return list;
     }
         
+    /** Create a type with the same shape as the given shape type, 
+     *  containing elements of the type given by the given element type.
+     *  That is, if <i>shapeType</i> is a base type (a reference Type, or a native type), 
+     *  then return <i>elementType</i>.
+     *  If <i>shapeType</i> is an ArrayType, and <i>elementType</i> is a simple type,
+     *  then return a new array type with the same number of dimensions as <i>shapeType</i>,
+     *  and element type <i>elementType</i>.  If both are array types, then return a
+     *  new array type with the sum of the number of dimensions, and the element type
+     *  <i>elementType</i>.
+     */
+    public static Type createIsomorphicType(Type shapeType, 
+            Type elementType) {
+        if(shapeType instanceof BaseType) {
+            return elementType;
+        } else if(shapeType instanceof ArrayType) {
+            ArrayType arrayShapeType = (ArrayType)shapeType;
+            if(elementType instanceof BaseType) {
+                return ArrayType.v((BaseType)elementType, 
+                        arrayShapeType.numDimensions);
+            } else if(elementType instanceof ArrayType) {
+                ArrayType arrayElementType = (ArrayType)elementType;
+                return ArrayType.v(arrayElementType.baseType, 
+                        arrayElementType.numDimensions + arrayShapeType.numDimensions);
+            }
+        }
+        throw new RuntimeException("Types for shape = " + shapeType 
+                + " and element = " + elementType + " must be arrays or base types.");  
+    }
     /** Create a new local variable in the given body, initialized before the given
      *  unit that refers to a Runtime exception with the given string message.
      */

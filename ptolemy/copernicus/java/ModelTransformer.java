@@ -133,7 +133,6 @@ public class ModelTransformer extends SceneTransformer {
         _removeSuperExecutableMethods(modelClass);
 
         Scene.v().setActiveHierarchy(new Hierarchy());
- 
     }
 
     ///////////////////////////////////////////////////////////////////

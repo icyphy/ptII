@@ -63,8 +63,9 @@ public class InstanceEqualityEliminator extends BodyTransformer
                 "] Eliminating instance equality checks...");
         
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);        
-        
+        //        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);        
+        MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(unitGraph);
+
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -79,6 +80,24 @@ public class InstanceEqualityEliminator extends BodyTransformer
                     Value right = binop.getOp2();
                     if(left.getType() instanceof RefType &&
                             right.getType() instanceof RefType) {
+                        System.out.println("checking unit = " + unit);
+                        System.out.println("left aliases = " + aliasAnalysis.getAliasesOfBefore((Local)left, unit));
+                        System.out.println("right aliases = " + aliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                        // Utter hack... Should be:
+                        // if(aliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
+                        Set intersection = aliasAnalysis.getAliasesOfBefore((Local)left, unit);
+                        intersection.retainAll(aliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                        if(!intersection.isEmpty()) {
+                            binop.getOp1Box().setValue(IntConstant.v(0));
+                            binop.getOp2Box().setValue(IntConstant.v(0));
+                        } else {
+                            // Another awful hack.   In order to do this, we need maybe analysis...  
+                            // System.out.println("unequivalent definitions of -" + binop.getSymbol() + "!");
+                            // Replace with operands that can be statically evaluated.
+                            binop.getOp1Box().setValue(IntConstant.v(0));
+                            binop.getOp2Box().setValue(IntConstant.v(1));
+                        }
+                        /*
                         // System.out.println("expr = " + binop);
                         Object leftDef = _getUniqueDef(left, unit, localDefs);
                         Object rightDef = _getUniqueDef(right, unit, localDefs);
@@ -102,6 +121,7 @@ public class InstanceEqualityEliminator extends BodyTransformer
                                 binop.getOp2Box().setValue(IntConstant.v(1));
                             }
                         }
+                       */
                     }
                 }
             }
@@ -125,228 +145,4 @@ public class InstanceEqualityEliminator extends BodyTransformer
         }
     }
 }
-/*
-class InstanceFlowAnalysis extends ForwardFlowAnalysis
-{
-    FlowSet emptySet;
-    Map localToPreserveSet;
-    Map localToIntPair;
 
-    public InstanceFlowAnalysis(UnitGraph g)
-    {
-        super(g);
-
-        Object[] defs;
-        FlowUniverse defUniverse;
-
-        if(Main.isProfilingOptimization)
-            Main.defsSetupTimer.start();
-
-        // Create a list of all the definitions and group defs of the same local together
-        {
-            Map localToDefList = new HashMap(g.getBody().getLocalCount() * 2 + 1, 0.7f);
-
-            // Initialize the set of defs for each local to empty
-            {
-                Iterator localIt = g.getBody().getLocals().iterator();
-
-                while(localIt.hasNext())
-                    {
-                        Local l = (Local) localIt.next();
-
-                        localToDefList.put(l, new ArrayList());
-                    }
-            }
-
-            // Fill the sets up
-            {
-                Iterator it = g.iterator();
-
-                while(it.hasNext())
-                    {
-                        Unit s = (Unit) it.next();
-
-                    
-                        List defBoxes = s.getDefBoxes();
-                        if(!defBoxes.isEmpty()) {
-                            if(!(defBoxes.size() ==1)) 
-                                throw new RuntimeException("FastColorer: invalid number of def boxes");
-                            
-                            if(((ValueBox)defBoxes.get(0)).getValue() instanceof Local) {
-                                Local defLocal = (Local) ((ValueBox)defBoxes.get(0)).getValue();
-                                List l = (List) localToDefList.get(defLocal);
-                            
-                                if(l == null)
-                                    throw new RuntimeException("local " + defLocal + " is used but not declared!");
-                                else
-                                    l.add(s);
-                            }
-                        }
-                    
-                    }
-            }
-
-            // Generate the list & localToIntPair
-            {
-                Iterator it = g.getBody().getLocals().iterator();
-                List defList = new LinkedList();
-
-                int startPos = 0;
-
-                localToIntPair = new HashMap(g.getBody().getLocalCount() * 2 + 1, 0.7f);
-
-                // For every local, add all its defs
-                {
-                    while(it.hasNext())
-                        {
-                            Local l = (Local) it.next();
-                            Iterator jt = ((List) localToDefList.get(l)).iterator();
-
-                            int endPos = startPos - 1;
-
-                            while(jt.hasNext())
-                                {
-                                    defList.add(jt.next());
-                                    endPos++;
-                                }
-
-                            localToIntPair.put(l, new IntPair(startPos, endPos));
-
-                            // System.out.println(startPos + ":" + endPos);
-
-                            startPos = endPos + 1;
-                        }
-                }
-
-                defs = defList.toArray();
-                defUniverse = new FlowUniverse(defs);
-            }
-        }
-
-        emptySet = new ArrayPackedSet(defUniverse);
-
-        // Create the preserve sets for each local.
-        {
-            Map localToKillSet = new HashMap(g.getBody().getLocalCount() * 2 + 1, 0.7f);
-            localToPreserveSet = new HashMap(g.getBody().getLocalCount() * 2 + 1, 0.7f);
-
-            Chain locals = g.getBody().getLocals();
-
-            // Initialize to empty set
-            {
-                Iterator localIt = locals.iterator();
-
-                while(localIt.hasNext())
-                    {
-                        Local l = (Local) localIt.next();
-
-                        localToKillSet.put(l, emptySet.clone());
-                    }
-            }
-
-            // Add every definition of this local
-            for(int i = 0; i < defs.length; i++)
-                {
-                    Unit s = (Unit) defs[i];
-                    
-                    List defBoxes = s.getDefBoxes();
-                    if(!(defBoxes.size() ==1)) 
-                        throw new RuntimeException("SimpleLocalDefs: invalid number of def boxes");
-                            
-                    if(((ValueBox)defBoxes.get(0)).getValue() instanceof Local) {
-                        Local defLocal = (Local) ((ValueBox)defBoxes.get(0)).getValue();
-                        BoundedFlowSet killSet = (BoundedFlowSet) localToKillSet.get(defLocal);
-                        killSet.add(s, killSet);
-                        
-                    }
-                }
-            
-            // Store complement
-            {
-                Iterator localIt = locals.iterator();
-
-                while(localIt.hasNext())
-                    {
-                        Local l = (Local) localIt.next();
-
-                        BoundedFlowSet killSet = (BoundedFlowSet) localToKillSet.get(l);
-
-                        killSet.complement(killSet);
-
-                        localToPreserveSet.put(l, killSet);
-                    }
-            }
-        }
-
-        if(Main.isProfilingOptimization)
-            Main.defsSetupTimer.end();
-
-        if(Main.isProfilingOptimization)
-            Main.defsAnalysisTimer.start();
-
-        doAnalysis();
-        
-        if(Main.isProfilingOptimization)
-            Main.defsAnalysisTimer.end();
-    }
-    
-    protected Object newInitialFlow()
-    {
-        return emptySet.clone();
-}
-
-    protected void flowThrough(Object inValue, Object d, Object outValue)
-    {
-        FlowSet in = (FlowSet) inValue, out = (FlowSet) outValue;
-        Unit unit = (Unit)d;
-
-        List defBoxes = unit.getDefBoxes();
-        if(!defBoxes.isEmpty()) {
-            if(!(defBoxes.size() ==1)) 
-                throw new RuntimeException("FastColorer: invalid number of def boxes");
-                          
-            Value value = ((ValueBox)defBoxes.get(0)).getValue();
-            if(value  instanceof Local) {
-                Local defLocal = (Local) value;
-            
-                // Perform kill on value
-                in.intersection((FlowSet) localToPreserveSet.get(defLocal), out);
-
-                // Perform generation
-                out.add(unit, out);
-            } else { 
-                in.copy(out);
-                return;
-            }
-
-
-        
-
-        }
-        else
-            in.copy(out);
-    }
-
-    protected void copy(Object source, Object dest)
-    {
-        FlowSet sourceSet = (FlowSet) source,
-            destSet = (FlowSet) dest;
-        
-        sourceSet.copy(destSet);
-    }
-
-    protected void merge(Object in1, Object in2, Object out)
-    {
-        FlowSet inSet1 = (FlowSet) in1,
-            inSet2 = (FlowSet) in2;
-        
-        FlowSet outSet = (FlowSet) out;
-        
-        inSet1.union(inSet2, outSet);
-    }
-}
-
-
-
-
-*/

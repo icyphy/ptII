@@ -116,6 +116,7 @@ public class Main extends KernelMain {
         // uninstantiable types should remain.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
                 TypeSpecializer.v(_toplevel)));
+        
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -127,6 +128,7 @@ public class Main extends KernelMain {
         // assignments to attributes and handle them differently.)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
                 InlineParameterTransformer.v(_toplevel)));
+
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
@@ -146,10 +148,15 @@ public class Main extends KernelMain {
         // Deal with any more statically analyzeable token
         // references that were created.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
-                InlineTokenTransformer.v(_toplevel)));
-
-        //Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
-        //        TokenToNativeTransformer.v(_toplevel)));
+               InlineTokenTransformer.v(_toplevel)));
+        /*Scene.v().getPack("wjtp").add(new Transform("wjtp.ls",
+                new TransformerAdapter(LocalSplitter.v())));
+       
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+                TypeSpecializer.v(_toplevel)));
+        */
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
+                TokenToNativeTransformer.v(_toplevel)));
 
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
@@ -175,8 +182,8 @@ public class Main extends KernelMain {
         // fairly specific to our implementation above, and 
         // could be generalized to arbitrary heap-based alias 
         // analysis, but I haven't bothered yet.
-        Scene.v().getPack("jtp").add(new Transform("jop.iee",
-                InstanceEqualityEliminator.v()));
+        // Scene.v().getPack("jtp").add(new Transform("jop.iee",
+        //       InstanceEqualityEliminator.v()));
       
 
         //   Scene.v().getPack("jop").add(new Transform("jtp.cpaf",

@@ -49,6 +49,7 @@ JSRCS = \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
 	KernelMain.java \
+	MustAliasAnalysis.java \
 	SootUtilities.java \
 	TransformerAdapter.java
 

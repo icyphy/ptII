@@ -367,6 +367,8 @@ public class PtolemyUtilities {
      *  the returned type will have an indeterminate element type.
      */
     // FIXME Records!
+    // FIXME: this is hacked to return unknown types for token types that
+    // are abstract.
     public static ptolemy.data.type.Type getTokenTypeForSootType(
             RefType type) {
         String className = type.getSootClass().getName();
@@ -377,6 +379,8 @@ public class PtolemyUtilities {
         } else if(className.equals("ptolemy.data.Token")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if(className.equals("ptolemy.data.ScalarToken")) {
+            return ptolemy.data.type.BaseType.UNKNOWN;
+        } else if(className.equals("ptolemy.data.MatrixToken")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else {
             ptolemy.data.type.Type tokenType = 

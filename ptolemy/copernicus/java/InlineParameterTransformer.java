@@ -58,7 +58,7 @@ public class InlineParameterTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions() + " deep debug"; 
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -69,38 +69,14 @@ public class InlineParameterTransformer extends SceneTransformer {
             return;
         }
 
-        SootClass stringClass =
-            Scene.v().loadClassAndSupport("java.lang.String");
-        Type stringType = RefType.v(stringClass);
-        SootClass objectClass = 
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootMethod toStringMethod =
-            objectClass.getMethod("java.lang.String toString()");
-        SootClass namedObjClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-       
-        SootClass attributeClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-               
-        SootClass parameterClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = 
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod = 
-            parameterClass.getMethod("void setToken(ptolemy.data.Token)");
-
         Map attributeToValueFieldMap = new HashMap();
+
+        boolean debug = Options.getBoolean(options, "debug");
 
         // For every variable and settable attribute in the model, create a
         // field that has the value of that attributes.
         _createTokenAndExpressionFields(Scene.v().getMainClass(), _model, _model,
-                attributeToValueFieldMap);
+                attributeToValueFieldMap, debug);
 
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();
@@ -111,7 +87,7 @@ public class InlineParameterTransformer extends SceneTransformer {
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
             
             _createTokenAndExpressionFields(entityClass, entity, entity,
-                    attributeToValueFieldMap);
+                    attributeToValueFieldMap, debug);
         }
 
         for(Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -144,7 +120,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                         Jimple.v().newThisRef((RefType)thisLocal.getType())));
                 */
 
-                // System.out.println("method = " + method);
+                if(debug) System.out.println("method = " + method);
 
                 boolean moreToDo = true;
                 while(moreToDo) {
@@ -155,7 +131,8 @@ public class InlineParameterTransformer extends SceneTransformer {
                     SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
                     
                     moreToDo = _inlineMethodCalls(theClass, method, body,
-                        unitGraph, localDefs, localUses, attributeToValueFieldMap);
+                        unitGraph, localDefs, localUses, attributeToValueFieldMap,
+                            debug);
                     LocalNameStandardizer.v().transform(body, phaseName + ".lns");
                 }
             }
@@ -164,8 +141,11 @@ public class InlineParameterTransformer extends SceneTransformer {
     
     private static boolean _inlineMethodCalls(SootClass theClass, SootMethod method, 
             JimpleBody body, UnitGraph unitGraph,
-            LocalDefs localDefs, LocalUses localUses, Map attributeToValueFieldMap) {
+            LocalDefs localDefs, LocalUses localUses, 
+            Map attributeToValueFieldMap, boolean debug) {
         boolean doneSomething = false;
+        if(debug) System.out.println("Inlining method calls in method " + method);
+
         for(Iterator units = body.getUnits().snapshotIterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -175,35 +155,43 @@ public class InlineParameterTransformer extends SceneTransformer {
                 Value value = box.getValue();
                 if(value instanceof InstanceInvokeExpr) {
                     InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                    //      System.out.println("invoking = " + r.getMethod());
+                    // if(debug) System.out.println("invoking = " + r.getMethod());
                     if(r.getBase().getType() instanceof RefType) {
                         RefType type = (RefType)r.getBase().getType();
-                        
                         // inline calls to attribute changed.
                         if(r.getMethod().equals(PtolemyUtilities.attributeChangedMethod)) {
                             // If we are calling attribute changed on one of the classes
                             // we are generating code for.
                             if(type.getSootClass().isApplicationClass()) {
-                             // Now inline the resulting call.
-                               List methodList = 
-                                    Scene.v().getActiveHierarchy().resolveAbstractDispatch(
-                                            type.getSootClass(), PtolemyUtilities.attributeChangedMethod);
-                                if(methodList.size() == 1) {
-                                    // inline the method.
-                                    SootMethod inlinee = (SootMethod)methodList.get(0);
-                                    if(!inlinee.getDeclaringClass().isApplicationClass()) {
-                                        inlinee.getDeclaringClass().setLibraryClass();
+                                SootMethod inlinee = null;
+                                if(r instanceof VirtualInvokeExpr) {
+                                    // Now inline the resulting call.
+                                    List methodList = 
+                                        Scene.v().getActiveHierarchy().resolveAbstractDispatch(
+                                                type.getSootClass(), PtolemyUtilities.attributeChangedMethod);
+                                    if(methodList.size() == 1) {
+                                        // inline the method.
+                                        inlinee = (SootMethod)methodList.get(0);
+                                    } else {
+                                        System.out.println("Can't inline " + unit);
+                                        for(int i = 0; i < methodList.size(); i++) {
+                                            System.out.println("target = " + methodList.get(i));
+                                        }
+                                        continue;
                                     }
-                                    inlinee.retrieveActiveBody();
-                                    SiteInliner.inlineSite(inlinee,
-                                            (Stmt)unit, method);
-                                    doneSomething = true;
-                                } else {
-                                    System.out.println("Can't inline " + unit);
-                                    for(int i = 0; i < methodList.size(); i++) {
-                                        System.out.println("target = " + methodList.get(i));
-                                    }
+                                } else if(r instanceof SpecialInvokeExpr) {
+                                    inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
+                                            (SpecialInvokeExpr)r, method);
                                 }
+                                if(!inlinee.getDeclaringClass().isApplicationClass()) {
+                                    inlinee.getDeclaringClass().setLibraryClass();
+                                }
+                                inlinee.retrieveActiveBody();
+                                if(debug) System.out.println("Inlining method call: " + r);
+                                SiteInliner.inlineSite(inlinee,
+                                        (Stmt)unit, method);
+                                
+                                doneSomething = true;
                             } else {
                                 // FIXME: this is a bit of a hack, but
                                 // for right now it seems to work.
@@ -223,10 +211,10 @@ public class InlineParameterTransformer extends SceneTransformer {
                         for(Iterator args = r.getArgs().iterator();
                             args.hasNext();) {
                             Value arg = (Value)args.next();
-                            //    System.out.println("arg = " + arg);
+                            //  if(debug) System.out.println("arg = " + arg);
                             if(Evaluator.isValueConstantValued(arg)) {
                                 argValues[argCount++] = Evaluator.getConstantValueOf(arg);
-                                //        System.out.println("argument = " + argValues[argCount-1]);
+                                if(debug) System.out.println("argument = " + argValues[argCount-1]);
                             } else {
                                 break;
                             }
@@ -473,10 +461,13 @@ public class InlineParameterTransformer extends SceneTransformer {
     // In addition, add a tag to the field that contains the value of the token or expression
     // that that field contains.
     private static void _createTokenAndExpressionFields(SootClass theClass,
-            NamedObj context, NamedObj container, Map attributeToValueFieldMap) {
+            NamedObj context, NamedObj container, Map attributeToValueFieldMap, 
+            boolean debug) {
         /*   SootClass tokenClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
             Type tokenType = RefType.v(tokenClass);*/
+        if(debug) System.out.println("creating field for " + container + " in class " + theClass);
+
         SootClass stringClass =
             Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
@@ -486,6 +477,8 @@ public class InlineParameterTransformer extends SceneTransformer {
             Attribute attribute = (Attribute)attributes.next();
             if(attribute instanceof Settable) {
                 Settable settable = (Settable)attribute;
+
+                if(debug) System.out.println("creating field for " + settable);
 
                 String fieldName = SootUtilities.sanitizeName(attribute.getName(context));
                 SootField field;
@@ -514,7 +507,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 }
                 attributeToValueFieldMap.put(attribute, field);
             }
-            _createTokenAndExpressionFields(theClass, context, attribute, attributeToValueFieldMap);
+            _createTokenAndExpressionFields(theClass, context, attribute, attributeToValueFieldMap, debug);
         }
     }
 
