@@ -24,10 +24,9 @@
   LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
-Created : May 2002
 */
 
 package ptolemy.data.expr;
@@ -74,12 +73,12 @@ Java's built-in reflection mechanism:
 5) Allows for the possibility of several automatic conversions that
    increase the applicability of single methods
 
-<p> Instances of this class have a type returned by getType(), which
+<p> Instances of this class have a type returned by getCachedMethodType(), which
 is either {@link #FUNCTION} or {@link #METHOD}.  FUNCTION indicates
 that it is a function (a static method of a class registered with the
 parser), while METHOD indicates that it is a method of a Token.  If
 the method or function is actually found, then the CachedMethod is
-considered valid, as returned by the isValid method.  CachedMethods
+considered valid, as returned by the isValid() method.  CachedMethods
 that are not valid cannot be invoked by the invoke() method.
 
 <p> Additional classes to be searched for static methods can be added
@@ -145,7 +144,8 @@ public class CachedMethod {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Clear the cache.
+    /** Clear the cache.  This is generally called by the PtParser class
+     *  when new classes are registered to be searched.
      */
     public static void clear() {
         _cachedMethods.clear();
@@ -154,7 +154,8 @@ public class CachedMethod {
     /** Return true if the argument is an instance of CachedMethod
      *  that represents the same method or function as this instance.
      *  Note that if this returns true, then both this instance and
-     *  the argument will have the same hashcode, as required by Hashtable.
+     *  the argument will have the same hashcode, as required by the
+     *  Object base class.
      *  @param object The object to compare to.
      *  @return True if the argument represents the same method or function.
      */
@@ -184,9 +185,9 @@ public class CachedMethod {
         return true;
     }
 
-    /** Find method or function with the specified name and argument types.
+    /** Find a method or function with the specified name and argument types.
      *  The last argument is either METHOD or FUNCTION to distinguish the
-     *  two cases.  For the METHOD case, the first argument type is class
+     *  two cases.  For the METHOD case, the first argument type is the class
      *  on which the method is to be invoked.  For the FUNCTION case, the
      *  function is a static method of a registered class.
      *  This method attempts to find the specified function in the cache,
@@ -197,11 +198,10 @@ public class CachedMethod {
      *   the type of object on which the method is invoked, if this is a
      *   method invocation.
      *  @param type FUNCTION or METHOD.
-     *  @return A function or method.
+     *  @return A cached method that is valid if a matching method was found.
      */
     public static CachedMethod findMethod(String methodName,
             Type[] argTypes, int type) throws IllegalActionException {
-                
                 
         // Check to see if there is a cache already.
         CachedMethod cachedMethod = _getCachedMethod(
@@ -313,22 +313,31 @@ public class CachedMethod {
         return _conversions;
     }
 
-    /** Return the method or function associated with this instance,
-     *  or null if none has been found.  Note that in most cases, it
-     *  is not necessary to call this method, as the invoke() method
-     *  provides all the necessary information.  It is provided for
-     *  code, such as the code generator that need more than the usual
-     *  amount of information about methods that have been found.
+    /** Return the method giving the operation associated with this
+     *  object, or null if none was found.  Note that in most cases,
+     *  it is not necessary to call this method, as the invoke()
+     *  method provides all the necessary information.  It is provided
+     *  for code, such as the code generator that need more than the
+     *  usual amount of information about methods that have been
+     *  found.
      *  @return The method associated with this instance.
+     *  @exception IllegalActionException If the method was not found,
+     *  or this class represents a method mapped over an array or
+     *  matrix.
      */
-    public Method getMethod() {
-        return _method;
+    public Method getMethod() throws IllegalActionException {
+        if(isValid()) {
+            return _method;
+        } else {
+            throw new IllegalActionException("No method " + toString() + 
+                    " was found!");
+        }
     }
 
     /** Return the type of this class, which is one of METHOD or FUNCTION.
      *  @return The type of this class.
      */
-    public int getType() {
+    public int getCachedMethodType() {
         return _type;
     }
 
@@ -338,8 +347,8 @@ public class CachedMethod {
      *  necessary information.  It is provided for code, such as the
      *  code generator that need more than the usual amount of
      *  information about methods that have been found.
-     *  @exception IllegalActionException If this method or function
-     *   was not found (it is not valid).
+     *  @exception IllegalActionException If a method or function with
+     *  the correct argument types was not found.
      */
     public Type getReturnType() throws IllegalActionException {
         if (!isValid()) {
@@ -352,17 +361,15 @@ public class CachedMethod {
         return type;
     }
 
-    /** Return the hash code calculated when this was constructed.
-     *  This ensures that if two instances of this class are equal (as
-     *  determined by the equals() method), then they have the same
-     *  hash code.
+    /** Return the hash code.  This method is overridden to be
+     *  consistent with the overridden equals method.
      *  @return A hash code.
      */
     public int hashCode() {
         return _hashcode;
     }
 
-    /** Apply the method or function represented by this object to
+    /** Apply the operation represented by this object to
      *  the specified arguments.  This method performs any necessary
      *  conversions on token arguments, and, if necessary,
      *  converts the returned value into a token.  This method may be
@@ -380,14 +387,9 @@ public class CachedMethod {
         //     System.out.println("arg " + i + " = " + argValues[i]);
         // }
 
-        if (!isValid()) {
-            throw new IllegalActionException("A method compatible with "
-                    + toString() + " cannot be found");
-        }
-
         Object result = null;
 
-        int type = getType();
+        int type = getCachedMethodType();
         Method method = getMethod();
 
         if (isMethod()) {
@@ -606,8 +608,9 @@ public class CachedMethod {
     }
 
     /** Return a conversion to convert the second argument into the class
-     *  given by the first argument. If no such conversion is possible, then
-     *  the returned conversion is IMPOSSIBLE.
+     *  given by the first argument. 
+     *  @return The best correct conversion, or IMPOSSIBLE if no such
+     *  conversion exists.
      */
     protected static ArgumentConversion _getConversion(
             Class formal, Type actual) {
@@ -650,20 +653,15 @@ public class CachedMethod {
         return IMPOSSIBLE;
     }
 
-    /** Return the first method in the specified library that has
-     *  the specified name and can be invoked with the specified
-     *  argument types. The last argument is an array that is populated
-     *  with the conversions that will be required to invoke this method.
-     *  It is arguable that it should return the most specific method
-     *  that it finds, but it turns out that this is difficult
-     *  to define.  So it simply returns the first match.
-     *  It returns null if there is no match.
-     *  Regrettably, the getMethod() method in the java Class does not
-     *  support polymorphism.  In particular, it does not recognize a method
-     *  if the class you supply for an argument type is actually derived
-     *  from the class in the method signature.  So we have to reimplement
-     *  this here.
-     *  @param library A class with methods giving a function library.
+    /** Return the first method in the specified class that has the
+     *  specified name and can be invoked with the specified argument
+     *  types.  The last argument is an array that is populated with
+     *  the conversions that will be required to invoke this method.
+     *  This method walks through all the superclasses of the given
+     *  class, and returns the best match (resulting in the most
+     *  preferable set of argument conversions) to the given argument
+     *  types.  It returns null if there is no match.  
+     *  @param library A class to be searched.
      *  @param methodName The name of the method.
      *  @param argTypes The types of the arguments.
      *  @param conversions An array of the same length as <i>argTypes</i>
@@ -673,6 +671,12 @@ public class CachedMethod {
     protected static Method _polymorphicGetMethod(Class library,
             String methodName, Type[] argTypes,
             ArgumentConversion[] conversions) {
+        // This method might appear to duplicate the operation of the
+        // getMethod() method in java.lang.Class.  However, that class
+        // does not support polymorphism, or traversal through
+        // superclasses.  It is simpler to just walk the class
+        // hierarchy ourselves.
+
         Method matchedMethod = null;
         ArgumentConversion[] matchedConversions =
             new ArgumentConversion[conversions.length];
@@ -800,8 +804,7 @@ public class CachedMethod {
                     methodName, methodArgTypes, conversions);
             if (method != null) {
                 cachedMethod = new BaseConvertCachedMethod(
-                        methodName, argTypes, method, NATIVE, conversions,
-                        METHOD);
+                        methodName, argTypes, method, NATIVE, conversions);
             }
         }
         return cachedMethod;
@@ -908,33 +911,55 @@ public class CachedMethod {
     ///////////////////////////////////////////////////////////////////
     //// ArgumentConversion
 
-    /** Class representing an argument conversion.
-     *  Instances of this class are returned by getConversions().
+    /** Class representing an argument conversion.  Instances of this
+     *  class are returned by getConversions().  Note that in most
+     *  cases, it is not necessary to reference this class directly,
+     *  as the invoke() method applies all the necessary conversions.
+     *  It is provided for code, such as the code generator that need
+     *  more than the usual amount of information about methods that
+     *  have been found.
+     *  @param preference An index given an order to the preference of
+     *  conversions.  Lower preferences represent less desirable
+     *  conversions than higher preferences.
      */
     public static class ArgumentConversion {
-        private ArgumentConversion(int type) {
-            _type = type;
+        private ArgumentConversion(int preference) {
+            _preference = preference;
         }
 
-        public int getType() {
-            return _type;
+        /** Return the preference of this conversion, relative to
+         * other conversions.  The higher the preference, the more
+         * preferable the conversion.
+         */
+        public int getPreference() {
+            return _preference;
         }
 
+        /** Convert the given token into an object that can be used to
+         *  invoke a method through the reflection mechanism.  Derived
+         *  classes will override this method to provide different
+         *  types of argument conversions.
+         */
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
             throw new IllegalActionException(
                     "Cannot convert argument token " + input);
         }
 
+        /** Return true if this conversion is preferable to the given
+         * conversion.
+         */
         public boolean isPreferableTo(ArgumentConversion conversion) {
-            return _type > conversion.getType();
+            return _preference > conversion.getPreference();
         }
 
+        /** Return a string representation of this conversion.
+         */
         public String toString() {
-            return "Conversion " + _type;
+            return "Conversion " + _preference;
         }
 
-        private int _type;
+        private int _preference;
     }
 
     //////////////////////////////////////////////////////////////////
@@ -943,17 +968,21 @@ public class CachedMethod {
     /** A cached method that converts the object on which the method
      *  is invoked as well as the arguments.  This allows us to, for
      *  example, invoke instance methods of ptolemy.math.Complex on
-     *  tokens of type ComplexToken.
+     *  tokens of type ComplexToken.  This cached method can only
+     *  operate on methods.
      */
     public static class BaseConvertCachedMethod extends CachedMethod {
 
-        public BaseConvertCachedMethod(
+        private BaseConvertCachedMethod(
                 String methodName, Type[] argTypes,
                 Method method, ArgumentConversion baseConversion,
-                ArgumentConversion[] conversions, int type) {
-            super(methodName, argTypes, method, conversions, type);
+                ArgumentConversion[] conversions) {
+            super(methodName, argTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;
         }
+        /** Return the conversion that is applied to the object
+         *  the method is invoked on.
+         */
         public ArgumentConversion getBaseConversion() {
             return _baseConversion;
         }
