@@ -59,7 +59,7 @@ It is also useful for correctness and performance testing.
 */
 public class SquareWave extends TypedCompositeActor {
 
-    /** Constuct the model
+    /** Construct the model
      */
     public SquareWave(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
