@@ -201,7 +201,7 @@ public class Schematic extends SchematicElement {
         if(e instanceof SchematicEntity) {
             // if it's a Port, then just add it to the list of ports.
             entities.putAt(
-                    ((SchematicPort) e).getName(), e);
+                    ((SchematicEntity) e).getName(), e);
         } else if(e instanceof SchematicRelation) {
             // if a relation, remove the old one and install the new one.
             relations.putAt(
