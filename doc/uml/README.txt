@@ -27,13 +27,17 @@ The easiest way to update the Visio files is to:
      only important functional details.  NamedObj has a private string
      that is the name, it should be included.
 
-   * Static attributes are underlines.  In Visio, this is called
-     Class-Scope:
+   * Static attributes are underlined. 
+     In Visio, this is called Class-Scope:
 
      Class-Scope Check to indicate that the attribute is a class-scope
      attribute rather than an instance-scope attribute. Class-scope
      attributes are underlined when they appear on class or type shapes in
      a UML diagram.
+
+   * Classes do not inherit from interfaces, they extend interfaces,
+     so the line between a class and an interface should be dashed,
+     not solid.
 
 3. Mark up the printed copy
 4. Run Visio and update the file
