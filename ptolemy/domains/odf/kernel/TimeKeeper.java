@@ -96,10 +96,10 @@ list of RcvrTimeTriples is updated.
 public class TimeKeeper {
 
     /**
-     */
     public TimeKeeper() {
         _rcvrTimeList = new LinkedList();
     }
+     */
 
     /** Construct a thread to be used to execute the iteration 
      *  methods of an ODFActor. This increases the count of 
@@ -107,10 +107,15 @@ public class TimeKeeper {
      * @param actor The ODFActor that needs to be executed.
      * @param director The director responsible for the execution 
      *  of this actor.
+     * @exception IllegalActionException if there is an error
+     *  while setting the receiver priorities.
      */
-    public TimeKeeper(Actor actor) {
+    public TimeKeeper(Actor actor) throws IllegalActionException {
 	_actor = actor;
         _rcvrTimeList = new LinkedList();
+
+        setRcvrPriorities(); 
+	initializeRcvrList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -227,6 +232,57 @@ public class TimeKeeper {
 	return true;
     }
 
+    /** Initialize the RcvrTimeList of this ODFThread by properly
+     *  ordering all triples.
+     * @exception IllegalActionException If there is an error
+     *  while accessing the receivers contained by the actor
+     *  that this ODFThread controls.
+     */
+    public void initializeRcvrList() throws IllegalActionException {
+        Actor actor = (Actor)getActor();
+	Enumeration enum = actor.inputPorts();
+
+	//
+	// Set the receiving time keeper and update the RcvrTimeTable
+	//
+        while( enum.hasMoreElements() ) {
+	    IOPort inport = (IOPort)enum.nextElement();
+            Receiver[][] rcvrs = inport.getReceivers();
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
+                    rcvr.setReceivingTimeKeeper(this);
+                    // rcvr.setReceivingTimeKeeper(_timeKeeper);
+                    RcvrTimeTriple triple = new RcvrTimeTriple(
+			    rcvr, rcvr.getRcvrTime(),
+			    rcvr.getPriority() );
+		    updateRcvrList(triple);
+		}
+	    }
+	}
+
+	//
+	// Now set the sending time keeper for all connected receivers.
+	//
+	enum = actor.outputPorts();
+	while( enum.hasMoreElements() ) {
+	    IOPort outport = (IOPort)enum.nextElement();
+            Receiver[][] rcvrs = outport.getRemoteReceivers();
+	    if( rcvrs == null ) {
+		// FIXME: Not necessary anymore
+		System.out.println("Null Rcvrs!!!");
+	    } else {
+	    }
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
+                    rcvr.setSendingTimeKeeper(this);
+                    // rcvr.setSendingTimeKeeper(_timeKeeper);
+		}
+	    }
+	}
+    }
+
     /** Cause the actor controlled by this thread to send a NullToken
      *  to all output channels that have a rcvrTime less than the
      *  current time of this thread. Associate a time stamp with each
@@ -272,6 +328,76 @@ public class TimeKeeper {
 		    + "set current time in the past.");
 	}
         _currentTime = time;
+    }
+
+    /** Set the priorities of the receivers contained in the input
+     *  ports of the actor controlled by this thread. Group the input
+     *  receivers for the controlled actor according to their respective
+     *  container input ports. Order the port groups according to the
+     *  inverse order in which their corresponding ports were connected
+     *  in the model topology. I.e., if two input ports (port A and port
+     *  B) of an actor are such that port A is connected in the topology
+     *  before port B, then all of the receivers of port B will have a
+     *  higher priority than the receivers of port A.
+     *  <P>
+     *  Within a group, order the receiver priorities relative to one
+     *  another according to the inverse order in which they were
+     *  connected to the model topology. I.e., if two input receivers
+     *  (receiver A and receiver B) are added to an actor such that
+     *  receiver A is connected in the model topology before receiver
+     *  B, then receiver B will have a higher priority than receiver A.
+     *  <P>
+     *  Set this thread as the controlling thread for each receiver
+     *  whose priority is set.
+     * @exception IllegalActionException If receiver access leads to
+     *  an error.
+     */
+    public synchronized void setRcvrPriorities() 
+            throws IllegalActionException {
+        LinkedList listOfPorts = new LinkedList();
+        Actor actor = (Actor)getActor();
+	Enumeration enum = actor.inputPorts();
+	if( !enum.hasMoreElements() ) {
+            return;
+	}
+
+        //
+        // First Order The Ports 
+        //
+        while( enum.hasMoreElements() ) {
+	    listOfPorts.insertLast( (IOPort)enum.nextElement() ); 
+        }
+
+        //
+        // Now set the priorities of each port's receiver, set the receiving
+	// time keeper and initialize the rcvrList
+        //
+        int cnt = 0;
+        int currentPriority = 0;
+        while( cnt < listOfPorts.size() ) {
+            IOPort port = (IOPort)listOfPorts.at(cnt);
+            Receiver[][] rcvrs = port.getReceivers();
+            for( int i = 0; i < rcvrs.length; i++ ) {
+                for( int j = 0; j < rcvrs[i].length; j++ ) {
+                    ((ODFReceiver)rcvrs[i][j]).setPriority(
+			    currentPriority);
+                    // ((ODFReceiver)rcvrs[i][j]).setThread(this);
+                    ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(this);
+                    // ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(_timeKeeper);
+
+		    // Is the following necessary?? 
+		    //
+                    RcvrTimeTriple triple = new RcvrTimeTriple(
+                            (ODFReceiver)rcvrs[i][j],
+			    _currentTime, currentPriority );
+                    updateRcvrList( triple );
+		    //
+
+                    currentPriority++;
+                }
+            }
+            cnt++;
+        }
     }
 
     /** FIXME
