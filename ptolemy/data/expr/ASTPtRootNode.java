@@ -75,26 +75,27 @@ public class ASTPtRootNode implements Node {
      */
     protected LinkedList _tokenList = new LinkedList();
 
-    /** Stores the ptTokens of each of the children nodes */
+    /** Stores the pt.data.Tokens of each of the children nodes */
    protected pt.data.Token[] childTokens;
      
     /** Called to recursively evaluate the parse tree 
      *  of nodes returned from the parser. Starting at the top, it resolves 
-     *  the PtToken stored in each Node in a depth first manner. When all
+     *  the pt.data.Token stored in each Node in a depth first manner. When all
      *  the children of a node have returned (type & value resolved), the
      *  type & value of the current node may be resolved by a call to 
-     *  resolveNode() method.
+     *  _resolveNode() method.
      *  @return The PtToken resulting from evaluating the parse tree
      *  @exception IllegalArgumentException Thrown when an error occurs 
      *  trying to evaluate the PtToken type and/or value to be stored in 
      *  node in the tree.
+     *  @return The token contained by the root node for the parse tree.
      */
     public pt.data.Token evaluateParseTree() throws IllegalArgumentException {
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
             String str = "Encountered a node with no children that is ";
-            str = str + "not a leaf node";
+            str += "not a leaf node";
             throw new IllegalArgumentException(str);
         } else {
             childTokens = new pt.data.Token[numChildren];
@@ -115,10 +116,10 @@ public class ASTPtRootNode implements Node {
      *  children have been resolved. Thus this method is concerned with 
      *  evaluating both the value and type of the ptToken to be stored. 
      *  This method should be overridden in all subclasses which have children.
-     *  @return The PtToken to be stored in this node
      *  @exception IllegalArgumentException Thrown when an error occurs 
-     *  trying to evaluate the PtToken type and/or value to be stored in
-     *  the current node.
+     *   rying to evaluate the PtToken type and/or value to be stored in
+     *   the current node.
+     *  @return The pt.data.Token stored in this node.
      */
     protected pt.data.Token _resolveNode() throws IllegalArgumentException {  
         int num = jjtGetNumChildren();
