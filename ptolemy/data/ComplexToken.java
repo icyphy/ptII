@@ -142,7 +142,7 @@ public class ComplexToken extends ScalarToken {
      *  an instance of ComplexToken or one of the subclasses of
      *  ComplexToken and returned. If none of the above condition is
      *  met, an exception is thrown.
-     *  @param token The token to be converted to a Complextoken.
+     *  @param token The token to be converted to a ComplexToken.
      *  @return A ComplexToken.
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out in a lossless fashion.
