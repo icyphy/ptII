@@ -76,7 +76,7 @@ install: all
 
 PTAUXJAR = QRcompile.jar
 
-demo: QRcompile.jar
+demo: QRCompile.jar
 	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.html
 
 show: QRcompile.class
