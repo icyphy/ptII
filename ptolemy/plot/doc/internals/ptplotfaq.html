@@ -41,6 +41,7 @@ infrastructure.
 	<LI> <A HREF="#mydata"><B>3.1 Plot my own data?</B></A>
 	<LI> <A HREF="#binarydata"><B>3.2 How do I plot binary data?</B></A>
 	<LI> <A HREF="#appletprinting"><B>3.3 How do I print an plot from a Plot applet?</B></A>
+	<LI> <A HREF="#twofiles"><B>3.4 How do I plot two datafiles in an applet? </B></A>
 	</MENU>
 
 </MENU>
@@ -206,6 +207,24 @@ Connection (it is free) and search for printing.
  <P>Note that printing is supported from standalone Pxgraph applications in
 the Pxgraph class.  Note that printing in the Pxgraph class requires
 JDK1.1 and later.
+
+<DT>  <A NAME="twofiles"><B>3.4 How do I plot two datafiles in an applet? </B></A>
+<DD>The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
+more than one file to the plotter.  The <CODE>pxgraphargs</CODE> parameter
+can also pass <CODE>pxgraph</CODE> command line arguments.
+For example, the HTML below would plot two datafiles at once.  The title
+of the plot would be <CODE>Two datafiles</CODE>.
+<PRE>
+&lt;APPLET name="twofiles" CODE="ptplot.PlotApplet" Height=400 Width=400
+    codebase="../.."
+    archive="ptplot/ptplot.zip"
+    alt="If you had a java-enabled browser, you would see an applet here."
+&gt;
+&lt;param name="pxgraphargs" value="-t 'Two datafiles' file1.plt file2.plt"&gt;
+   &lt;hr&gt;If your browser recognized the applet tag,
+    you would see an applet here.&lt;hr&gt;
+&lt;/APPLET&gt;
+</PRE>
 
 </DL>
 
