@@ -7,7 +7,7 @@
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="37.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="36.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -35,9 +35,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{245.5316722972973, 257.2899070945946}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple example illustrates modeling terrain effects. The TerrainProperty&#10;models some obstacle which blocks the communication from the Sender &#10;to the Receiver if the communication path between them intersects with&#10;the terrain shape. When you run this model, the sender will emit a signal&#10;every second from time 0.0 to time 37.0. The Receiver will move around &#10;the Sender and measure the received power. It then plots the received &#10;power on timed plot if it is greater than 0.0. The plot shows that the &#10;receiver can only receive the signal (with power value larger than 0) &#10;when it is not shadowed by the terrain model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple example illustrates modeling terrain effects. The TerrainProperty&#10;models some obstacle which blocks the communication from the Sender &#10;to the Receiver if the communication path between them intersects with&#10;the terrain shape. When you run this model, the sender will emit a signal&#10;every second from time 0.0 to time 36.0. The Receiver will move around &#10;the Sender and measure the received power. It then plots the received &#10;power on timed plot if it is greater than 0.0. The plot shows that the &#10;receiver can only receive the signal (with power value larger than 0) &#10;when it is not shadowed by the terrain model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 300.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +45,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 470.0]">
         </property>
     </property>
     <entity name="TerrainChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
@@ -57,7 +57,7 @@
         </property>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0000000000004]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
