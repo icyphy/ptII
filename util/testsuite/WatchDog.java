@@ -62,7 +62,7 @@ public class WatchDog {
         TimerTask doTimeToDie = new TimerTask() {
                 public void run() {
                     try {
-                        System.err.println("util.test.WatchDog went "
+                        System.err.println("*** util.test.WatchDog went "
                                 + "off after " + timeToDie + "ms.");
 
                         // Get the root ThreadGroup
