@@ -19,7 +19,8 @@
 <!-- features of the XSLT 2.0 language -->
 <xsl:decimal-format name="comma" decimal-separator="," grouping-separator="."/>
 
-<!-- include necessary attributes here -->
+<!-- index every node -->
+<xsl:key name="nid" match="*" use="@_id"/>
 
 <!-- time function -->
 <xsl:variable name="now" xmlns:Date="/java.util.Date">
@@ -64,9 +65,26 @@
         </xsl:for-each>
 
         <!-- I/O ports -->
-        <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
+        <xsl:for-each select="IntegerVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.actor.TypedIOPort'"/>
+                <xsl:with-param name="dataType" select="'int'"/>
+                <xsl:with-param name="environment" select = "'DNHA'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+
+        <xsl:for-each select="RealVariable">
+            <xsl:call-template name="variable">
+                <xsl:with-param name="portType" select="'ptolemy.actor.TypedIOPort'"/>
+                <xsl:with-param name="dataType" select="'double'"/>
+                <xsl:with-param name="environment" select = "'DNHA'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+
+        <xsl:for-each select="BooleanVariable">
+            <xsl:call-template name="variable">
+                <xsl:with-param name="portType" select="'ptolemy.actor.TypedIOPort'"/>
+                <xsl:with-param name="dataType" select="'boolean'"/>
                 <xsl:with-param name="environment" select = "'DNHA'"/>
             </xsl:call-template>
         </xsl:for-each>
@@ -86,7 +104,7 @@
         <!-- Make the relations based on I/O ports block diagram of network of Hybrid Automata-->
         <xsl:for-each select="HybridAutomaton">
             <xsl:variable name="prefix"><xsl:value-of select="@name"/></xsl:variable>
-            <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
+            <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable|triggerInput|triggerOutput">
                 <xsl:element name="relation">
                     <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                     <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
@@ -97,7 +115,7 @@
         <!-- Link the relations and the I/O ports of block diagram of network of Hybrid Automata -->
         <xsl:for-each select="HybridAutomaton">
             <xsl:variable name="prefix"><xsl:value-of select="@name"/></xsl:variable>
-            <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
+            <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable|triggerInput|triggerOutput">
                 <xsl:element name="link">
                     <xsl:attribute name="port"><xsl:value-of select="concat($prefix, '.', @name)"/></xsl:attribute>
                     <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
@@ -105,14 +123,6 @@
             </xsl:for-each>
         </xsl:for-each>
 
-<!--
-        FIXME: Channels should be considered more carefully.
-        <xsl:apply-templates select="Channel">
-        </xsl:apply-templates>
-
-        <xsl:apply-templates select="GlobalConstraint">
-        </xsl:apply-templates>
--->
     </xsl:element>
 </xsl:template>   
 
@@ -143,11 +153,49 @@
         </xsl:for-each>
 
         <!-- I/O ports -->
-        <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
+        <xsl:for-each select="IntegerVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="dataType" select="'int'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
+        </xsl:for-each>
+
+        <xsl:for-each select="RealVariable">
+            <xsl:call-template name="variable">
+                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="dataType" select="'double'"/>
+                <xsl:with-param name="environment" select = "'HA'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+
+        <xsl:for-each select="BooleanVariable">
+            <xsl:call-template name="variable">
+                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="dataType" select="'boolean'"/>
+                <xsl:with-param name="environment" select = "'HA'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+
+        <!-- trigger I/O ports -->
+        <xsl:for-each select="triggerInput|triggerOutput">
+            <xsl:element name="port">
+                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                <xsl:attribute name="class"><xsl:value-of select="'ptolemy.vergil.fsm.modal.ModalPort'"/></xsl:attribute>
+                <xsl:element name="property">    
+                    <xsl:attribute name="name"><xsl:value-of select="@type"/></xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">    
+                    <xsl:attribute name="name"><xsl:value-of select="'signalType'"/></xsl:attribute>
+                    <xsl:attribute name="class"><xsl:value-of select="'ptolemy.data.expr.Parameter'"/></xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="'&quot;DISCRETE&quot;'"/></xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">_type</xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="'general'"/></xsl:attribute>
+                </xsl:element>
+            </xsl:element>
         </xsl:for-each>
 
         <!-- _Controller -->
@@ -163,7 +211,7 @@
         <xsl:apply-templates select="DiscreteState" mode="refinement"/>
 
         <!-- link _Controller, Refinements -->
-        <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
+        <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable|triggerInput|triggerOutput">
             <xsl:call-template name="relation">
                 <xsl:with-param name="variableName" select="@name"/>
             </xsl:call-template>
@@ -263,11 +311,52 @@
     </xsl:element>
 
     <!-- I/O ports (RefinementPort in _Controller) -->
-    <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
+    <xsl:for-each select="IntegerVariable">
         <xsl:call-template name="variable">
             <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="dataType" select="'int'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
+    </xsl:for-each>
+
+    <xsl:for-each select="RealVariable">
+        <xsl:call-template name="variable">
+            <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="dataType" select="'double'"/>
+            <xsl:with-param name="environment" select = "'controller'"/>
+        </xsl:call-template>
+    </xsl:for-each>
+
+    <xsl:for-each select="BooleanVariable">
+        <xsl:call-template name="variable">
+            <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="dataType" select="'boolean'"/>
+            <xsl:with-param name="environment" select = "'controller'"/>
+        </xsl:call-template>
+    </xsl:for-each>
+
+    <!-- trigger I/O ports -->
+    <xsl:for-each select="triggerInput|triggerOutput">
+        <xsl:element name="port">
+            <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+            <xsl:attribute name="class"><xsl:value-of select="'ptolemy.vergil.fsm.modal.RefinementPort'"/></xsl:attribute>
+            <xsl:element name="property">  
+                <xsl:attribute name="name">
+                    <xsl:value-of select="@type"/>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="property">  
+                <xsl:variable name="type" select="@type"/>
+                <xsl:attribute name="name">
+                    <xsl:if test="$type='output'"><xsl:value-of select="'input'"/></xsl:if>
+                </xsl:attribute>
+            </xsl:element>
+            <xsl:element name="property">
+                <xsl:attribute name="name">_type</xsl:attribute>
+                <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                <xsl:attribute name="value"><xsl:value-of select="'general'"/></xsl:attribute>
+            </xsl:element>
+        </xsl:element>
     </xsl:for-each>
 
     <!-- Discrete States -->
@@ -305,6 +394,8 @@
 
 <!-- Transition information -->
 <xsl:template match="Transition" mode="info">
+    <xsl:variable name="nextStateID" select="dst_end"/>
+    <xsl:variable name="nextState" select="key('nid',$nextStateID)/@name"/>
     <xsl:element name="relation">
         <!-- attributes of relation -->
         <xsl:attribute name="name"><xsl:value-of select="@_id"/></xsl:attribute>
@@ -313,13 +404,21 @@
         <xsl:element name="property">
             <xsl:attribute name="name">guardExpression</xsl:attribute>
             <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
-            <xsl:attribute name="value"><xsl:apply-templates select="Expr" mode="expr"/></xsl:attribute>
+            <xsl:attribute name="value"><xsl:apply-templates select="Expr" mode="expr"/>
+                <xsl:variable name="event" select="@trigger"/>
+                <xsl:if test="$event!=''">
+                    <xsl:variable name="trigger" select="key('nid', $event)/@name"/>
+                    <xsl:value-of select="concat(' || ', $trigger, 'Input_isPresent')"/>
+                </xsl:if>
+            </xsl:attribute>
         </xsl:element>
         <!-- attributes of Output Action -->
         <xsl:element name="property">
             <xsl:attribute name="name">outputActions</xsl:attribute>
             <xsl:attribute name="class">ptolemy.domains.fsm.kernel.OutputActionsAttribute</xsl:attribute>
-            <xsl:attribute name="value"></xsl:attribute>
+            <xsl:attribute name="value">
+                <xsl:apply-templates select="SendAction"/>
+            </xsl:attribute>
         </xsl:element>
         <!-- attributes of Set Action -->
         <xsl:element name="property">
@@ -390,11 +489,49 @@
         </xsl:element>
 
         <!-- I/O port (RefinementPort) -->
-        <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable">
+        <xsl:for-each select="../IntegerVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="dataType" select="'int'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
+        </xsl:for-each>
+
+        <xsl:for-each select="../RealVariable">
+            <xsl:call-template name="variable">
+                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="dataType" select="'double'"/>
+                <xsl:with-param name="environment" select = "'FSM'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+
+        <xsl:for-each select="../BooleanVariable">
+            <xsl:call-template name="variable">
+                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="dataType" select="'boolean'"/>
+                <xsl:with-param name="environment" select = "'FSM'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+
+        <!-- trigger I/O ports -->
+        <xsl:for-each select="../triggerInput|../triggerOutput">
+            <xsl:element name="port">
+                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                <xsl:attribute name="class"><xsl:value-of select="'ptolemy.vergil.fsm.modal.RefinementPort'"/></xsl:attribute>
+                <xsl:element name="property">    
+                    <xsl:attribute name="name"><xsl:value-of select="@type"/></xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">    
+                    <xsl:attribute name="name"><xsl:value-of select="'signalType'"/></xsl:attribute>
+                    <xsl:attribute name="class"><xsl:value-of select="'ptolemy.data.expr.Parameter'"/></xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="'&quot;DISCRETE&quot;'"/></xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">_type</xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="'general'"/></xsl:attribute>
+                </xsl:element>
+            </xsl:element>
         </xsl:for-each>
 
         <!-- Invariants -->
@@ -406,7 +543,7 @@
         </xsl:for-each>
 
         <!-- Make and link the relations based on I/O ports -->
-        <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable">
+        <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable|../triggerInput|../triggerOutput">
             <xsl:element name="relation">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
                 <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
@@ -507,6 +644,7 @@
 <xsl:template name="variable">
     <xsl:param name="portType" select="'Default PortType'"/>
     <xsl:param name="environment" select = "'Default Environment'"/>
+    <xsl:param name="dataType" select = "'Default DataType'"/>
     <xsl:choose>
         <!--xsl:when test="@kind='Controlled'"-->
         <xsl:when test="@kind='Output'">
@@ -522,6 +660,12 @@
                     <xsl:attribute name="name">output</xsl:attribute>
                 </xsl:element>
                 <xsl:call-template name="value"/>
+                <!--property name="_type" class="ptolemy.actor.TypeAttribute" value="double"-->
+                <xsl:element name="property">
+                    <xsl:attribute name="name">_type</xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="$dataType"/></xsl:attribute>
+                </xsl:element>
             </xsl:element>
         </xsl:when>
         <xsl:when test="@kind='Input'">
@@ -530,6 +674,11 @@
                 <xsl:attribute name="class"><xsl:value-of select="$portType"/></xsl:attribute>
                 <xsl:element name="property">    
                     <xsl:attribute name="name">input</xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">_type</xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="$dataType"/></xsl:attribute>
                 </xsl:element>
                 <xsl:call-template name="value"/>
             </xsl:element>
@@ -598,7 +747,7 @@
 </xsl:template>
 
 <!-- ========================================================== -->
-<!-- Expressions, Invariants, DiffEquations, UpdateActions -->
+<!-- Expressions, Invariants, DiffEquations, UpdateActions, SendActions -->
 <!-- ========================================================== -->
 <!-- Expression -->
 
@@ -723,6 +872,13 @@
     </xsl:for-each>
 </xsl:template>
 
+<!-- SendActions -->
+<xsl:template match="SendAction">
+    <xsl:variable name="dst" select="@dst"/>
+    <xsl:variable name="trigger" select="key('nid', $dst)/@name"/>
+    <xsl:value-of select="concat($trigger, 'Output', '=1')"/>
+</xsl:template>
+
 <!-- DiffEquation -->
 <xsl:template name="DiffEquation">
     <!-- integrator(s) -->
@@ -763,6 +919,11 @@
                 <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
                 <xsl:element name="property">
                     <xsl:attribute name="name">output</xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">_type</xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="'double'"/></xsl:attribute>
                 </xsl:element>
             </xsl:element>
     

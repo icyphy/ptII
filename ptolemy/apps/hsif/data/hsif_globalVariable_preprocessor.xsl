@@ -53,13 +53,10 @@
             <xsl:apply-templates select="IntegerVariable|RealVariable|BooleanVariable"/>
     
             <xsl:comment>Parameters</xsl:comment>
-            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter" mode="general"/>
+            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter|Channel" mode="general"/>
 
             <xsl:comment>Hybrid Automaton</xsl:comment>
             <xsl:apply-templates select="HybridAutomaton"/>
-
-            <xsl:comment>General Copy</xsl:comment>
-            <xsl:apply-templates select="Channel" mode="general"/>
 
         </xsl:copy>
     </xsl:template>
@@ -105,10 +102,15 @@
 
     <!-- Hybrid Automaton -->
     <xsl:template match="HybridAutomaton">
+
+        <xsl:variable name="HAID" select="@name"/>
+
         <xsl:copy>
             <xsl:for-each select="@*">
                 <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
             </xsl:for-each>
+    
+
             <xsl:for-each select="descendant::UpdateAction/Var|descendant::DiffEquation/Var">
                 <xsl:variable name="name" select="@name"/>
                 <xsl:for-each select="//DNHA/IntegerVariable|//DNHA/RealVariable|//DNHA/BooleanVariable">
@@ -128,6 +130,7 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:for-each>
+            
             <xsl:for-each select="descendant::Expr/descendant::Var|descendant::Expr/descendant::Var">
                 <xsl:variable name="name" select="@name"/>
                 <xsl:for-each select="//DNHA/IntegerVariable|//DNHA/RealVariable|//DNHA/BooleanVariable">
@@ -147,6 +150,24 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:for-each>
+
+            <xsl:for-each select="../Channel">
+                <xsl:variable name="triggerId" select="@_id"/>
+                <xsl:variable name="name" select="@name"/>    
+                <xsl:variable name="triggerOutputs" select="count(//DNHA/HybridAutomaton[@name=$HAID]/descendant::SendAction[@dst=$triggerId])"/>
+                <xsl:variable name="triggerInputs" select="count(//DNHA/HybridAutomaton[@name=$HAID]/descendant::Transition[@trigger=$triggerId])"/>
+                <xsl:if test="$triggerOutputs!=0">
+                    <triggerOutput type="output">
+                        <xsl:attribute name="name"><xsl:value-of select="concat($name, 'Output')"/></xsl:attribute>
+                    </triggerOutput>
+                </xsl:if>                    
+                <xsl:if test="$triggerInputs!=0">
+                    <triggerInput type="input">
+                        <xsl:attribute name="name"><xsl:value-of select="concat($name, 'Input')"/></xsl:attribute>
+                    </triggerInput>
+                </xsl:if>                    
+            </xsl:for-each>
+            
             <xsl:apply-templates select="*" mode="general"/>
         </xsl:copy>
     </xsl:template>

@@ -63,40 +63,28 @@
         </xsl:copy>
     </xsl:template>
 
-    <!-- Hybrid Automaton -->
-    <xsl:template match="HybridAutomaton">
-        <xsl:copy>
-            <xsl:for-each select="@*">
-                <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
-            </xsl:for-each>
+    <xsl:template match="IntegerVariable|RealVariable|BooleanVariable">
+        <xsl:variable name="name" select="@name"/>
+        <xsl:if test="not(preceding-sibling::IntegerVariable[@name=$name]|preceding-sibling::RealVariable[@name=$name]|preceding-sibling::BooleanVariable[@name=$name])">
+            <xsl:copy>
+                <xsl:for-each select="@*">
+                    <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:for-each>
+                <xsl:apply-templates select="*"/>
+            </xsl:copy>
+        </xsl:if>
+    </xsl:template>
 
-            <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
-                <xsl:variable name="name" select="@name"/>
-                <xsl:if test="not(preceding-sibling::IntegerVariable[@name=$name]|preceding-sibling::RealVariable[@name=$name]|preceding-sibling::BooleanVariable[@name=$name])">
-                    <xsl:copy>
-                        <xsl:for-each select="@*">
-                            <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
-                        </xsl:for-each>
-                        <xsl:apply-templates select="*"/>
-                    </xsl:copy>
-                </xsl:if>
-            </xsl:for-each>
-
-            <xsl:for-each select="IntegerParameter|RealParameter|BooleanParameter">
-                <xsl:variable name="name" select="@name"/>
-                <xsl:if test="not(preceding-sibling::IntegerParameter[@name=$name]|preceding-sibling::RealParameter[@name=$name]|preceding-sibling::BooleanParameter[@name=$name])">
-                    <xsl:copy>
-                        <xsl:for-each select="@*">
-                            <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
-                        </xsl:for-each>
-                        <xsl:apply-templates select="*"/>
-                    </xsl:copy>
-                </xsl:if>
-            </xsl:for-each>
-
-            <xsl:apply-templates select="DiscreteState|Transition"/>
-
-        </xsl:copy>
+    <xsl:template match="IntegerParameter|RealParameter|BooleanParameter">
+        <xsl:variable name="name" select="@name"/>
+        <xsl:if test="not(preceding-sibling::IntegerParameter[@name=$name]|preceding-sibling::RealParameter[@name=$name]|preceding-sibling::BooleanParameter[@name=$name])">
+            <xsl:copy>
+                <xsl:for-each select="@*">
+                    <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
+                </xsl:for-each>
+                <xsl:apply-templates select="*"/>
+            </xsl:copy>
+        </xsl:if>
     </xsl:template>
 
 </xsl:transform>	

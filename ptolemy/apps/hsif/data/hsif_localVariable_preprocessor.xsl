@@ -49,43 +49,38 @@
                 <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
             </xsl:for-each>
             
-            <xsl:comment>Hybrid Automaton</xsl:comment>
-            <xsl:apply-templates select="HybridAutomaton"/>
+            <xsl:apply-templates select="*"/>
 
-            <xsl:comment>General Copy</xsl:comment>
-            <xsl:apply-templates select="Channel" mode="general"/>
-
-            <xsl:comment>Variables</xsl:comment>
+            <!--xsl:comment>Variables</xsl:comment>
             <xsl:apply-templates select="IntegerVariable|RealVariable|BooleanVariable" mode="general"/>
     
             <xsl:comment>Parameters</xsl:comment>
-            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter" mode="general"/>
+            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter" mode="general"/-->
         </xsl:copy>
     </xsl:template>
 
     <!-- General Copy -->
-    <xsl:template match="*" mode="general">
+    <xsl:template match="*">
         <xsl:copy>
             <xsl:for-each select="@*">
                 <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
             </xsl:for-each>
-            <xsl:apply-templates select="*" mode="general"/>
+            <xsl:apply-templates select="*"/>
         </xsl:copy>
     </xsl:template>
 
     <!-- Hybrid Automaton -->
     <xsl:template match="HybridAutomaton">
-        <xsl:variable name="HAID" select="@name"/>
         <xsl:copy>
             
             <xsl:for-each select="@*">
                 <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
             </xsl:for-each>
 
-            <xsl:apply-templates select="IntegerVariable[@kind='Input']|IntegerVariable[@kind='Output']" mode="general"/>
-            <xsl:apply-templates select="RealVariable[@kind='Input']|RealVariable[@kind='Output']" mode="general"/>
-            <xsl:apply-templates select="BooleanVariable[@kind='Input']|BooleanVariable[@kind='Output']" mode="general"/>
-            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter" mode="general"/>
+            <xsl:apply-templates select="IntegerVariable[@kind='Input']|IntegerVariable[@kind='Output']"/>
+            <xsl:apply-templates select="RealVariable[@kind='Input']|RealVariable[@kind='Output']"/>
+            <xsl:apply-templates select="BooleanVariable[@kind='Input']|BooleanVariable[@kind='Output']"/>
+            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter"/>
 
             <xsl:for-each select="IntegerVariable[@kind='Controlled']|IntegerVariable[@kind='Observable']">
                 <xsl:variable name="name" select="@name"/>
@@ -117,9 +112,6 @@
             <xsl:for-each select="RealVariable[@kind='Controlled']|RealVariable[@kind='Observable']">
                 <xsl:variable name="name" select="@name"/>
                 <xsl:variable name="counts"  select="count(..//DiffEquation/Var[@name=$name])"/>
-                <AAAA/>
-                <xsl:value-of select="$counts"/>
-                <BBBB/>
                 <xsl:if test="$counts=0">
                     <xsl:comment> This variable is actually a parameter. </xsl:comment>
                     <xsl:element name="RealParameter">
@@ -170,7 +162,7 @@
                 </xsl:if>
             </xsl:for-each>
             
-            <xsl:apply-templates select="DiscreteState|Transition" mode="general"/>
+            <xsl:apply-templates select="Transition|DiscreteState|triggerInput|triggerOutput"/>
 
         </xsl:copy>
     </xsl:template>
