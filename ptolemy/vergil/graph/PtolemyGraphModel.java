@@ -88,103 +88,6 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public PtolemyGraphModel(CompositeEntity toplevel) {
 	_root = toplevel;
 	_visualObjectMap = new HashMap();
-
-	// First create icons for entities that don't have one.
-	Iterator entities = toplevel.entityList().iterator();
-	while(entities.hasNext()) {
-	    Entity entity = (Entity)entities.next();
-	    Icon icon = (Icon)entity.getAttribute("_icon");
-	    if(icon == null) {
-		// FIXME this is pretty minimal
-		try {
-		    icon = new EditorIcon(entity, "_icon");
-		}
-		catch (Exception e) {
-		    throw new InternalErrorException("Failed to create " +
-			"icon, even though one does not exist:" +
-						     e.getMessage());
-		}
-	    }
-	}
-	
-	// Create Links or Vertexes for relations that don't have them.
-	Iterator relations = toplevel.relationList().iterator();
-	while(relations.hasNext()) {
-	    ComponentRelation relation = (ComponentRelation)relations.next();
-	    Iterator vertexes =
-		relation.attributeList(Vertex.class).iterator();
-	    // get the Root vertex.
-	    Vertex rootVertex = null;
-	    while(vertexes.hasNext()) {
-		Vertex v = (Vertex)vertexes.next();
-		if(v.getLinkedVertex() == null) {
-		    rootVertex = v;
-		}
-	    }
-
-	    // Count the linked ports.
-	    int count = 0;
-	    Enumeration links = relation.linkedPorts();
-	    while(links.hasMoreElements()) {
-		links.nextElement();
-		count++;
-	    }
-	    
-	    // If there are no vertecies, and the relation has
-	    // two connections, then create a direct link.
-	    if(rootVertex == null && count == 2) {
-		links = relation.linkedPorts();
-		Port port1 = (Port)links.nextElement();
-		Port port2 = (Port)links.nextElement();
-		Link link;
-		try {
-		    link = new Link(toplevel, toplevel.uniqueName("link"));
-		} 
-		catch (Exception e) {
-		    throw new InternalErrorException(
-				"Failed to create " +
-			        "new link, even though one does not " +
-			        "already exist:" + e.getMessage());
-		}
-		link.setRelation(relation);
-		link.setHead(port1);
-		link.setTail(port2);
-	    } else {		  
-		// A regular relation with a diamond.
-		// Create a vertex if one is not found
-		if(rootVertex == null) {
-		    try {
-			rootVertex = new Vertex(relation, 
-				     relation.uniqueName("vertex"));
-		    }
-		    catch (Exception e) {
-			throw new InternalErrorException(
-				"Failed to create " +
-			        "new vertex, even though one does not " +
-			        "already exist:" + e.getMessage());
-		    }
-		}
-		// Connect all the links for that relation.
-		links = relation.linkedPorts();
-		while(links.hasMoreElements()) {
-		    Port port = (Port)links.nextElement();
-		    Link link;
-		    try {
-			link = new Link(toplevel, 
-					     toplevel.uniqueName("link"));
-		    }
-		    catch (Exception e) {
-			throw new InternalErrorException(
-				"Failed to create " +
-			        "new link, even though one does not " +
-			        "already exist:" + e.getMessage());
-		    }
-		    link.setRelation(relation);
-		    link.setHead(port);
-		    link.setTail(rootVertex);
-		}
-	    }
-	}
     }
     	
     /**
@@ -612,14 +515,16 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * returned.
      */
     public Iterator inEdges(Object node) {
-	if(node instanceof Port || node instanceof Vertex) {
-	    return inEdges((NamedObj)node);
+	if(node instanceof Port) {
+	    return inEdges((Port)node);
+	} else if(node instanceof Vertex) {
+	    return inEdges((Vertex)node);
 	} else if(node instanceof Icon) {
 	    return new NullIterator();
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model does not recognize the " +
-		    "given graph objects. icon = " + node);
+		    "given graph object. object = " + node);
 	}       
     }
     
@@ -629,20 +534,61 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * If there are no in-edges, an iterator with no elements is
      * returned.
      */
-    public Iterator inEdges(NamedObj object) {
+    public Iterator inEdges(Port object) {
+	// make sure that the links to relations that we are connected to
+	// are up to date.
+	// FIXME inefficient if we are conneted to the same relation more
+	// than once.
+	List relationList = object.linkedRelationList();
+	Iterator relations = relationList.iterator();
+	while(relations.hasNext()) {
+	    ComponentRelation relation = (ComponentRelation)relations.next();
+	    _updateLinks(relation);
+	}
+
+	// Go through all the links, creating a list of those we are connected
+	// to.
+	List portLinkList = new LinkedList();
 	List linkList = _root.attributeList(Link.class);
-	// filter out the links that aren't attached to this port.
-	List portLinks = new LinkedList();
 	Iterator links = linkList.iterator();
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    Object head = link.getHead();
 	    if(head != null && head.equals(object)) {
-		portLinks.add(link);
+		//System.out.println("OutEdges(" + object +
+		//		   ") includes " + link);
+		portLinkList.add(link);
 	    }
 	}
-	return portLinks.iterator();
-    }
+
+	return portLinkList.iterator();
+    }	
+
+    /**
+     * Return an iterator over the <i>out</i> edges of this
+     * node.  This iterator does not support removal operations.
+     * If there are no out-edges, an iterator with no elements is
+     * returned.
+     */
+    public Iterator inEdges(Vertex object) {
+	ComponentRelation relation = (ComponentRelation)object.getContainer();
+	_updateLinks(relation);
+
+	// Go through all the links, creating a list of those we are connected
+	// to.
+	List vertexLinkList = new LinkedList();
+	List linkList = _root.attributeList(Link.class);
+	Iterator links = linkList.iterator();
+	while(links.hasNext()) {
+	    Link link = (Link)links.next();
+	    Object head = link.getHead();
+	    if(head != null && head.equals(object)) {
+		vertexLinkList.add(link);
+	    }
+	}
+	
+	return vertexLinkList.iterator();
+    }	
 
     /**
      * Return whether or not this edge is directed.
@@ -718,6 +664,16 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    List icons = entity.attributeList(Icon.class);
 	    if(icons.size() > 0) {
 		nodes.add(icons.get(0));
+	    } else {
+		// FIXME this is pretty minimal
+		try {
+		    Icon icon = new EditorIcon(entity, "_icon");
+		}
+		catch (Exception e) {
+		    throw new InternalErrorException("Failed to create " +
+			"icon, even though one does not exist:" +
+						     e.getMessage());
+		}
 	    }
 	}
 
@@ -730,9 +686,33 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	Iterator relations = toplevel.relationList().iterator();
 	while(relations.hasNext()) {
 	    ComponentRelation relation = (ComponentRelation)relations.next();
-	    List vertexes = relation.attributeList(Vertex.class);
-	    if(vertexes.size() > 0) {
-		nodes.add(vertexes.get(0));
+	    List vertexList = relation.attributeList(Vertex.class);
+	    
+	    if(vertexList.size() != 0) {		
+		// Add in all the vertexes.
+		Iterator vertexes = vertexList.iterator();
+		while(vertexes.hasNext()) {
+		    Vertex v = (Vertex)vertexes.next();
+		    nodes.add(v);
+		}
+	    } else {
+		// See if we need to create a vertex.
+		// Count the linked ports.
+		int count = relation.linkedPortList().size();
+		if(count != 2) {
+		    // Then there must be a vertex, so create one.
+		    try {
+			Vertex vertex = new Vertex(relation, 
+						relation.uniqueName("vertex"));
+			nodes.add(vertex);
+		    }
+		    catch (Exception e) {
+			throw new InternalErrorException(
+			"Failed to create " +
+			"new vertex, even though one does not " +
+			"already exist:" + e.getMessage());
+		    }
+		}
 	    }
 	}
 	return nodes.iterator();
@@ -746,14 +726,16 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * returned.
      */
     public Iterator outEdges(Object node) {
-	if(node instanceof Port || node instanceof Vertex) {
-	    return outEdges((NamedObj)node);
+	if(node instanceof Port) {
+	    return outEdges((Port)node);
+	} else if(node instanceof Vertex) {
+	    return outEdges((Vertex)node);
 	} else if(node instanceof Icon) {
 	    return new NullIterator();
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model does not recognize the " +
-		    "given graph objects. icon = " + node);
+		    "given graph object. object = " + node);
 	}       
     }
 
@@ -763,19 +745,60 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * If there are no out-edges, an iterator with no elements is
      * returned.
      */
-    public Iterator outEdges(NamedObj object) {
+    public Iterator outEdges(Port object) {
+	// make sure that the links to relations that we are connected to
+	// are up to date.
+	// FIXME inefficient if we are conneted to the same relation more
+	// than once.
+	List relationList = object.linkedRelationList();
+	Iterator relations = relationList.iterator();
+	while(relations.hasNext()) {
+	    ComponentRelation relation = (ComponentRelation)relations.next();
+	    _updateLinks(relation);
+	}
+
+	// Go through all the links, creating a list of those we are connected
+	// to.
+	List portLinkList = new LinkedList();
 	List linkList = _root.attributeList(Link.class);
-	// filter out the links that aren't attached to this port.
-	List portLinks = new LinkedList();
 	Iterator links = linkList.iterator();
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    Object tail = link.getTail();
 	    if(tail != null && tail.equals(object)) {
-		portLinks.add(link);
+		//System.out.println("OutEdges(" + object + 
+		//		   ") includes " + link);
+		portLinkList.add(link);
 	    }
 	}
-	return portLinks.iterator();
+
+	return portLinkList.iterator();
+    }	
+
+    /**
+     * Return an iterator over the <i>out</i> edges of this
+     * node.  This iterator does not support removal operations.
+     * If there are no out-edges, an iterator with no elements is
+     * returned.
+     */
+    public Iterator outEdges(Vertex object) {
+	ComponentRelation relation = (ComponentRelation)object.getContainer();
+	_updateLinks(relation);
+
+	// Go through all the links, creating a list of those we are connected
+	// to.
+	List vertexLinkList = new LinkedList();
+	List linkList = _root.attributeList(Link.class);
+	Iterator links = linkList.iterator();
+	while(links.hasNext()) {
+	    Link link = (Link)links.next();
+	    Object tail = link.getTail();
+	    if(tail != null && tail.equals(object)) {
+		vertexLinkList.add(link);
+	    }
+	}
+	
+	return vertexLinkList.iterator();
     }	
 
     /**
@@ -963,6 +986,107 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	for(Iterator edges = inEdges(port); edges.hasNext(); ) {
 	    Object edge = edges.next();
 	    disconnectEdge(eventSource, edge);
+	}
+    }
+
+    // Check to make sure that there is a Link object representing every
+    // link connected to the given relation.  In some cases, it may
+    // be necessary to create a vertex to represent the relation as well.
+    private void _updateLinks(ComponentRelation relation) {
+	List linkedPortList = relation.linkedPortList();
+	int allPortCount = linkedPortList.size();
+
+	// Go through all the links that currently exist, and remove ports
+	// from the linkedPortList that already have a Link object.
+	// FIXME this could get expensive 
+	List linkList = _root.attributeList(Link.class);
+	Iterator links = linkList.iterator();
+	while(links.hasNext()) {
+	    Link link = (Link)links.next();
+	    // only consider links that are associated with this relation.
+	    if(link.getRelation() != relation) continue;
+	    // remove any ports that this link is linked to.  We don't need
+	    // to manufacture those links.
+	    Object tail = link.getTail();
+	    if(tail != null && linkedPortList.contains(tail) ) {
+		linkedPortList.remove(tail);
+	    }
+	    Object head = link.getHead();
+	    if(head != null && linkedPortList.contains(head)) {
+		linkedPortList.remove(head);
+	    }
+	}
+
+	// Count the linked ports.
+	int unlinkedPortCount = linkedPortList.size();
+	
+	// If there are no links left to create, then just return.
+	if(unlinkedPortCount == 0) return;
+
+	Iterator vertexes =
+	    relation.attributeList(Vertex.class).iterator();
+	// get the Root vertex.  This is where we will manufacture links.
+	Vertex rootVertex = null;
+	while(vertexes.hasNext()) {
+	    Vertex v = (Vertex)vertexes.next();
+	    if(v.getLinkedVertex() == null) {
+		rootVertex = v;
+	    }
+	}
+	
+	// If there are no vertecies, and the relation has exactly
+	// two connections, neither of which has been made yet, then 
+	// create a link without a vertex for the relation.
+	if(rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
+	    Port port1 = (Port)linkedPortList.get(0);
+	    Port port2 = (Port)linkedPortList.get(1);
+	    Link link;
+	    try {
+		link = new Link(_root, _root.uniqueName("link"));
+	    } 
+	    catch (Exception e) {
+		throw new InternalErrorException(
+		    "Failed to create " +
+		    "new link, even though one does not " +
+		    "already exist:" + e.getMessage());
+	    }
+	    link.setRelation(relation);
+	    link.setHead(port1);
+	    link.setTail(port2);
+	} else {		  
+	    // A regular relation with a diamond.
+	    // Create a vertex if one is not found
+	    if(rootVertex == null) {
+		try {
+		    rootVertex = new Vertex(relation, 
+					    relation.uniqueName("vertex"));
+		}
+		catch (Exception e) {
+		    throw new InternalErrorException(
+			"Failed to create " +
+			"new vertex, even though one does not " +
+			"already exist:" + e.getMessage());
+		}
+	    }
+	    // Connect all the links for that relation.
+	    Iterator ports = linkedPortList.iterator();
+	    while(ports.hasNext()) {
+		Port port = (Port)ports.next();
+		Link link;
+		try {
+		    link = new Link(_root, 
+				    _root.uniqueName("link"));
+		}
+		catch (Exception e) {
+		    throw new InternalErrorException(
+			    "Failed to create " +
+			    "new Link, even though one does not " +
+			    "already exist:" + e.getMessage());
+		}
+		link.setRelation(relation);
+		link.setHead(port);
+		link.setTail(rootVertex);
+	    }
 	}
     }
 

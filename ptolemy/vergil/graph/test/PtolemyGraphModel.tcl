@@ -149,7 +149,7 @@ proc listContainedNodes {model node} {
 
 test PtolemyGraphModel-2.3.0 {nodes, getNodeCount} {
     listContainedNodes $m2 [$m2 getRoot]
-} {4 {.E0.R7.vertex0 1 .E0.E10._icon 1 .E0.E3._icon 1 .E0.E7._icon 0}}
+} {4 {.E0.E3._icon 1 .E0.E7._icon 1 .E0.E10._icon 1 .E0.R7.vertex0 0}}
 
 test PtolemyGraphModel-2.3.1 {nodes, getNodeCount} {
     listContainedNodes $m2 $n1

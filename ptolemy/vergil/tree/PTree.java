@@ -108,7 +108,7 @@ public class PTree extends JTree {
 		if(object instanceof NamedObj) {
 		    PtolemyTransferable transferable =
 			new PtolemyTransferable();
-                    transferable.add((NamedObj)object);
+                    transferable.addObject((NamedObj)object);
 		    //initial cursor, transferable, dsource listener
 		    e.startDrag(DragSource.DefaultCopyNoDrop,
 				transferable, dsl);

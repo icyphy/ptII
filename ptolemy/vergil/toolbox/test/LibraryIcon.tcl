@@ -131,12 +131,12 @@ test LibraryIcon-2.6 {test contained graphics} {
 
 #----------------------------------------------------------------------
 test LibraryIcon-3.1 {test setIconName, getIconName methods} {
-    set str1 [$icon getIconName]
-    $icon setIconName "generic.transformer"
-    set str2 [$icon getIconName]
+    set str1 [$icon getPatternName]
+    $icon setPatternName "generic.transformer"
+    set str2 [$icon getPatternName]
     set str3 [java::isnull [$icon getPattern]]
-    $icon setIconName "bogus"
-    set str4 [$icon getIconName]
+    $icon setPatternName "bogus"
+    set str4 [$icon getPatternName]
     list $str1 $str2 $str3 $str4
 } {{} generic.transformer 0 generic.transformer}
 

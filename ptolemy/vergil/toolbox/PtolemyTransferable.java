@@ -61,8 +61,15 @@ public class PtolemyTransferable implements Transferable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void add(NamedObj object) {
-        _objectList.add(object);
+    /** 
+     * Add the given named object to the objects contained in this
+     * transferable.  If the object already exists in this transferable,
+     * then do not add it again.
+     */
+    public void addObject(NamedObj object) {
+	if(!_objectList.contains(object)) {
+	    _objectList.add(object);
+	}
     }
 
     /**
@@ -109,6 +116,16 @@ public class PtolemyTransferable implements Transferable {
 	    return _getMoML();
 	}
 	throw new UnsupportedFlavorException(flavor);
+    }
+
+    /**
+     * Remove the given object from this transferable. 
+     * If the object does not exist in the transferable, then do nothing.
+     */
+    public void removeObject(NamedObj object) {
+	if(_objectList.contains(object)) {
+	    _objectList.remove(object);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

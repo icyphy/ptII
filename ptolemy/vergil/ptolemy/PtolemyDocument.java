@@ -60,12 +60,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PageFormat;
 import java.util.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 
 import javax.swing.JComponent;
@@ -129,8 +124,7 @@ public class PtolemyDocument extends AbstractDocument
     }
 
     /** Get the currently selected objects from this document, if any,
-     * and place them on the given clipboard.  If the document does not
-     * support such an operation, then do nothing. 
+     * and place them on the given clipboard. 
      */
     public void copy (Clipboard c) {
 	System.out.println("copy");
@@ -139,62 +133,47 @@ public class PtolemyDocument extends AbstractDocument
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
 	SelectionModel model = controller.getSelectionModel();
+	GraphModel graphModel = controller.getGraphModel();
 	Object selection[] = model.getSelectionAsArray();
-	PtolemyTransferable transferable = new PtolemyTransferable();
+	HashSet objectSet = new HashSet();
 	for(int i = 0; i < selection.length; i++) {
 	    if(selection[i] instanceof Figure) {
 		Object userObject = ((Figure)selection[i]).getUserObject();
 		NamedObj object = (NamedObj)userObject;
-		if(object instanceof Icon) {
-		    // add the entity, not the icon.
-		    NamedObj actual = (NamedObj)object.getContainer();
-		    try {
-			NamedObj clone = (NamedObj)actual.clone();
-			System.out.println("adding " + actual);
-			transferable.add(clone);
-		    } catch (CloneNotSupportedException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    }		
-		} else if(object instanceof Vertex) {
-		    // add the relation, not the vertex
-		    NamedObj actual = (NamedObj)object.getContainer();
-		    try {
-			NamedObj clone = (NamedObj)actual.clone();
-			System.out.println("adding " + actual);
-			transferable.add(clone);
-		    } catch (CloneNotSupportedException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    }
-		} else if(object instanceof Port) {
-		    try {
-			NamedObj clone = (NamedObj)object.clone();
-			System.out.println("adding " + object);
-			transferable.add(clone);
-		    } catch (CloneNotSupportedException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    }
-		} else if(object instanceof Link) {
-		    try {
-			NamedObj clone = (NamedObj)object.clone();
-			System.out.println("adding " + object);
-			transferable.add(clone);
-		    } catch (CloneNotSupportedException ex) {
-			throw new RuntimeException(ex.getMessage());
-		    }
-		} 
+		NamedObj actual = 
+		    (NamedObj)graphModel.getSemanticObject(object);
+		if(objectSet.contains(actual)) continue;
+		objectSet.add(actual);
+		System.out.println("adding " + actual);
 	    }
 	}
-
-	// This should be a PtolemyTransferable.  The below code works around
-	// a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
-	// is that cut and paste through the system clipboard to native
-	// applications doesn't work unless you use string selection.  It
-	// is probably possible to avoid this bug entirely by not using 
-	// PtolemyTransferable at all.
+	
+	StringWriter buffer = new StringWriter();	   
 	try {
-	    c.setContents(new StringSelection(transferable._getMoML()), this);
-	} catch (Exception ex) {	    
+	    buffer.write("<group>\n");
+	    Iterator elements = objectSet.iterator();
+	    while(elements.hasNext()) {
+		NamedObj element = (NamedObj) elements.next();
+		// first level to avoid obnoxiousness with 
+		// toplevel translations.
+		element.exportMoML(buffer, 1);
+	    }
+	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
+	    buffer.write(container.exportLinks(1, objectSet));
+	    buffer.write("</group>\n");
+	 
+	    // The below code works around
+	    // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
+	    // is that cut and paste through the system clipboard to native
+	    // applications doesn't work unless you use string selection.  It
+	    // is probably possible to avoid this bug entirely by not using 
+	    // PtolemyTransferable at all.
+	    c.setContents(new StringSelection(buffer.toString()), this);
 	}
+	catch (Exception ex) {
+	    ex.printStackTrace();
+	}
+
     }
  
     /** Remove the currently selected objects from this document, if any,
@@ -328,6 +307,8 @@ public class PtolemyDocument extends AbstractDocument
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex.getMessage());
 	} 
+	// The model doesn't listen for mutations yet, so we have to 
+	// let it know manually.
 	model.dispatchGraphEvent(new GraphEvent(this, 
 						GraphEvent.STRUCTURE_CHANGED,
 						model.getRoot()));
