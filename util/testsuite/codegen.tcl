@@ -201,13 +201,11 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 
     }
 
-    set command compile${codeGenType}Demo
+    set command compileDemo
     puts "Now running 'make ... $command', this could take 60 seconds or so"
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
-#    set results ""
-    set command compile${codeGenType}Demo
     set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER= $command]
     puts $results
 #    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
