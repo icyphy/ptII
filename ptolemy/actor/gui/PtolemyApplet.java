@@ -124,6 +124,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         _workspace = new Workspace(getClass().getName());
         try {
             _manager = new Manager(_workspace, "manager");
+            _manager.addExecutionListener(this);
             _toplevel = new TypedCompositeActor(_workspace);
             _toplevel.setName("topLevel");
             _toplevel.setManager(_manager);
@@ -143,8 +144,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  stream, followed by the stack trace.
      */
     public void report(Exception ex) {
-        String msg = "Exception thrown by applet.\n"
-                + ex.getMessage() + "\nStack trace:\n";
+        String msg = "Exception thrown by applet.\n" + ex.getMessage();
         System.err.println(msg);
         ex.printStackTrace();
         showStatus("Exception occurred.");
@@ -157,7 +157,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      */
     public void report(String message, Exception ex) {
         String msg = "Exception thrown by applet.\n" + message + "\n"
-                + ex.getMessage() + "\nStack trace:\n";
+                + ex.getMessage();
         System.err.println(msg);
         ex.printStackTrace();
         showStatus("Exception occurred.");
@@ -171,7 +171,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  In this base class, this method calls the protected method
      *  _go(), which executes the model.  If a derived class does not
      *  wish to execute the model each time start() is called, it should
-     *  override this method.
+     *  override this method with a blank method.
      */
     public void start() {
         try {
@@ -255,13 +255,13 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
-    /** The background color as set by the background applet parameter.
+    /** The background color as set by the "background" applet parameter.
      *  This is protected so that derived classes can find out what the
      *  background color is.  The Applet base class does not provide
      *  a getBackground() method.  Derived classes may wish to know the
      *  color so they can match it in some of their components.
      */
-    Color _background;
+    protected Color _background;
 
     /** The workspace that the applet is built in. Each applet has 
      *  it own workspace.
