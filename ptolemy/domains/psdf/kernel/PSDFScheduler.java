@@ -39,12 +39,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.Firing;
-import ptolemy.actor.sched.NotSchedulableException;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.ScheduleElement;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.sched.*;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.BooleanToken;
@@ -200,6 +195,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
         return result;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
     /** Return the parameterized scheduling sequence.
      *  An exception will be thrown if the graph is not schedulable.
      *
@@ -214,29 +212,21 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     protected Schedule _getSchedule()
             throws NotSchedulableException, IllegalActionException {
-        _debug("Starting PSDFScheduler._getSchedule()\n");
         PSDFDirector director = (PSDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
         PSDFGraphReader graphReader = new PSDFGraphReader();
-        PSDFGraph psdfGraph = (PSDFGraph) (graphReader.convert(model));
-        _debug("Finished converting to a PSDF graph\n");
-        _debug(psdfGraph.toString() + "\n");
-        psdfGraph.printEdgeRateExpressions();
-        _debug("Invoking the P-APGAN algorithm\n");
-        PSDFAPGANStrategy scheduler = new PSDFAPGANStrategy(psdfGraph);
-        ptolemy.graph.sched.Schedule graphSchedule = scheduler.schedule();
-        _debug("Returned from P-APGAN; the schedule follows.\n");
-        _debug(graphSchedule.toString() + "\n");
+        PSDFGraph graph = (PSDFGraph)graphReader.convert(model);
+        _debug("PSDF graph = \n" + graph.toString());
+        graph.printEdgeRateExpressions();
+    
+        PSDFAPGANStrategy strategy = new PSDFAPGANStrategy(graph);
+        ptolemy.graph.sched.Schedule graphSchedule = strategy.schedule();
+        _debug("P-APGAN schedule = \n" + graphSchedule.toString());
 
-        SymbolicScheduleElement result =
-            _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(),
-                    scheduler);
-        _debug("Completed PSDFScheduler._getSchedule().\n The "
-                + "schedule follows.\n" + result.toString() + "\n");
-        _debug("Saving buffer sizes\n");
-        _saveBufferSizes(_bufferSizeMap);
-        _debug("Printing buffer sizes\n");
-        _debug(displayBufferSizes() + "\n");
+        SymbolicScheduleElement resultSchedule =
+            _expandAPGAN(graph, strategy.getClusteredGraphRoot(),
+                    strategy);
+        _debug("Final schedule = \n" + resultSchedule.toString());
         if (_debugging) {
             _debug("The buffer size map:\n");
             Iterator relations = _bufferSizeMap.keySet().iterator();
@@ -246,16 +236,21 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         + _bufferSizeMap.get(relation) + "\n");
             }
         }
-        System.out.println("result = " + result);
-        if(result instanceof Schedule) {
-            return (Schedule)result;
+ 
+        _saveBufferSizes(_bufferSizeMap);
+    
+        if(resultSchedule instanceof Schedule) {
+            return (Schedule)resultSchedule;
         } else {
             // Must be ScheduleElement.
             Schedule schedule = new Schedule();
-            schedule.add((ScheduleElement)result);
+            schedule.add((ScheduleElement)resultSchedule);
             return schedule;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Evaluate the given parse tree in the scope of the the model
     // being scheduled, resolving "::" scoping syntax inside the
@@ -394,6 +389,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
         _bufferSizeMap = new HashMap();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          inner classes                    ////
+
     /** An actor firing with an iteration count that is determined by
      *  a symbolic expression.
      */
@@ -515,7 +513,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 return token.intValue();
             } catch (Exception ex) {
                 // FIXME: this isn't very nice.
-                throw new RuntimeException(ex.getMessage());
+                throw new RuntimeException(
+                        "Error evaluating parse tree for expression"
+                        + ": " + expression(), ex);
             }
         }
 
@@ -591,7 +591,6 @@ public class PSDFScheduler extends BaseSDFScheduler {
         public void setIterationCount(String expression);
     }
 
-    /** Scope implementation with local caching. */
     private class ScheduleScope extends ModelScope {
 
         /** Construct a scope consisting of the variables
@@ -664,12 +663,13 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @return The list of variable names within the scope.
          */
         public Set identifierSet() {
+            PSDFDirector director = (PSDFDirector)getContainer();
             NamedObj reference = (CompositeActor)
-                PSDFScheduler.this.getContainer();
+                director.getContainer();
             return getAllScopedVariableNames(null, reference);
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

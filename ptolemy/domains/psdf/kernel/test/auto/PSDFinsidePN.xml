@@ -17,7 +17,7 @@
         </property>
     </property>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 205.0">
         </property>
         <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -35,7 +35,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 60.0">
             </property>
         </property>
-        <property name="rate" class="ptolemy.actor.parameters.PortParameter" value="3">
+        <property name="rate" class="ptolemy.actor.parameters.PortParameter" value="10">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -58,6 +58,10 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 130.0">
             </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -117,21 +121,6 @@
         <link port="DownSample2.input" relation="relation2"/>
         <link port="DownSample2.output" relation="relation3"/>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 3, 4}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 210.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -163,7 +152,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 250.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -178,16 +167,47 @@
             <property name="input"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{5, 14}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 210.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="375.0, 210.0">
+        </vertex>
+    </relation>
     <link port="typed composite actor.rate" relation="relation"/>
     <link port="typed composite actor.port" relation="relation3"/>
     <link port="typed composite actor.port2" relation="relation2"/>
-    <link port="NonStrictTest.input" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation3"/>
+    <link port="Test.input" relation="relation2"/>
+    <link port="Test.output" relation="relation5"/>
+    <link port="Stop.input" relation="relation5"/>
 </entity>

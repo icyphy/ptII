@@ -132,7 +132,7 @@ test PSDFScheduler-5.1 {Scheduling tests} {
     $scheduler setValid false
 
     set schedule [$scheduler getSchedule]
-    $schedule toString
+    [java::cast java.lang.Object $schedule] toString
 } {Execute Symbolic Schedule{
 Execute Symbolic Schedule{
 Fire Actor ptolemy.actor.lib.Ramp {.Toplevel.Ramp}[(UpSample::input::tokenConsumptionRate) / (1)] times
