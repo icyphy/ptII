@@ -257,45 +257,6 @@ public class UtilityFunctions {
         return returnMatrix;
     }
 
-    // FIXME: The following methods should be polymorphic, taking MatrixToken
-    // If they can't be, then the set of methods is far from complete.
-
-    /** Given a matrix token, return an array token that contains
-     *  all of the elements of the matrix, sequentially read out row-wise.
-     *  @param matrix A matrix token.
-     *  @return A new array token containing the elements of the array
-     *   as instance of Token.
-     */
-    public static ArrayToken toArray(IntMatrixToken matrix) {
-        int rows = matrix.getRowCount();
-        int columns = matrix.getColumnCount();
-        ptolemy.data.Token[] result = new ptolemy.data.Token[rows*columns];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                result[i*columns + j] = matrix.getElementAsToken(i, j);
-            }
-        }
-        return new ArrayToken(result);
-    }
-
-    /** Given a matrix token, return an array token that contains
-     *  all of the elements of the matrix, sequentially read out row-wise.
-     *  @param matrix A matrix token.
-     *  @return A new array token containing the elements of the array
-     *   as instance of Token.
-     */
-    public static ArrayToken toArray(DoubleMatrixToken matrix) {
-        int rows = matrix.getRowCount();
-        int columns = matrix.getColumnCount();
-        ptolemy.data.Token[] result = new ptolemy.data.Token[rows*columns];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                result[i*columns + j] = matrix.getElementAsToken(i, j);
-            }
-        }
-        return new ArrayToken(result);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
