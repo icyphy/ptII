@@ -101,6 +101,7 @@ JSRCS = \
 	Reader.java \
 	RecordAssembler.java \
 	RecordDisassembler.java \
+	RecordUpdater.java \
 	Recorder.java \
 	RecursiveLattice.java \
 	Remainder.java \
