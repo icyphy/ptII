@@ -28,7 +28,7 @@
 @AcceptedRating Red
 */
 
-package ptolemy.domains.pn.kernel;
+package ptolemy.domains.pn.kernel.event;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -36,12 +36,12 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessMulticaster
 /**
-A TopologyMulticaster forwards topology change events it
+A PNProcessMulticaster forwards process state change events it
 receives to a list of other listeners. This is typically used
-by classes that provide addTopologyListener() and removeTologyListener()
+by classes that provide addProcessListener() and removeProcessListener()
 methods.
 
-@author John Reekie
+@author John Reekie, Mudit Goel
 @version $Id$
 @see ptolemy.kernel.event.TopologyChangeRequest
 */
@@ -50,16 +50,19 @@ public class PNProcessMulticaster implements PNProcessListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a new topology listener. Any time any of the
+    /** Add a new process listener. Any time any of the
      * event notification methods is called, the call will be forwarded
      * to the added listener.
      *
-     * @param listener An object that listens to topology events
+     * @param listener An object that listens to process state events
      */
     public void addProcessListener(PNProcessListener listener) {
         _listeners.insertLast(listener);
     }
 
+    /** Return true if there are any listeners registered with the multicaster.
+     *  @return true if there are any registered listeners.
+     */
     public boolean anyListeners() {
         return  !(_listeners.isEmpty());
     }
@@ -74,16 +77,20 @@ public class PNProcessMulticaster implements PNProcessListener {
         }
     }
 
+    /** Notify that a process has changed state.
+     *
+     * @param event. The PNProcessEvent
+     */
     public void processStateChanged(PNProcessEvent event) {
         for (Enumeration e = _listeners.elements(); e.hasMoreElements(); ) {
             ((PNProcessListener) e.nextElement()).processStateChanged(event);
         }
     }
 
-    /** Remove a topology listener. The listener will
-     * no longer be notified of topology events. If the
+    /** Remove a process listener. The listener will
+     * no longer be notified of process events. If the
      * given listener has not been previously registered
-     * with addTopologyListener() (or is null), then do
+     * with addProcessListener() (or is null), then do
      * nothing.
      *
      * @param listener An object that listens to topology events

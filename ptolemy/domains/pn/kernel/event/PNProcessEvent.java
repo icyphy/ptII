@@ -28,9 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red
 */
 
-package ptolemy.domains.pn.kernel;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
+package ptolemy.domains.pn.kernel.event;
+import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNProcessEvent
