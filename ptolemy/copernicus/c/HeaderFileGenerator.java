@@ -35,6 +35,7 @@ package ptolemy.copernicus.c;
 
 import soot.Modifier;
 import soot.RefType;
+import soot.Scene;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
@@ -46,18 +47,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-/** A C code generator for generating "header files" (.h files) that implement
- * Java classes.
- *
- * @author Shuvra S. Bhattacharyya
- * @version $Id$
- *
- */
+/* A C code generator for generating "header files" (.h files) that implement
+  Java classes.
+
+  @author Shuvra S. Bhattacharyya
+  @version $Id$
+
+*/
 
 // FIXME: Handle (ignore?) phantom methods and fields.
 
 public class HeaderFileGenerator extends CodeGenerator {
-    
+
     /** Construct a header file generator.
      */
     public HeaderFileGenerator() {
@@ -67,10 +68,10 @@ public class HeaderFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate code for a C header file that implements declarations 
+    /** Generate code for a C header file that implements declarations
      *  associated with a class.
      *  Code for two struct-based type definitions is generated here.
-     *  One type corresponds to the class itself (class variables, 
+     *  One type corresponds to the class itself (class variables,
      *  function pointers to methods, etc.), and the other type
      *  is for instances of the class.
      *  @param source the class.
@@ -86,7 +87,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         // given Java class declaration.
         Iterator membersIter;
 
-        // Extract the unique class name and instance-specific type name to 
+        // Extract the unique class name and instance-specific type name to
         // use for the class
         String className = source.getName();
         String typeName = CNames.instanceNameOf(source);
@@ -96,29 +97,33 @@ public class HeaderFileGenerator extends CodeGenerator {
         headerCode.append("#define _" + typeName + "_h\n\n");
         footerCode.append("\n#endif\n\n");
 
+        // Runtime include files
+        headerCode.append("/* Runtime Include Files */\n");
+        headerCode.append("#include \"array.h\"\n\n");
+        
         // FIXME: generate header code for inner classes (probably here)
 
         // Generate typedef for instance-specific structure. The actual
         // definition of the structure will be placed after the definition
         // of the class-specific structure;
-        bodyCode.append("struct " + typeName + ";\n");
-        bodyCode.append("typedef struct " + typeName + " *" + typeName + ";\n\n");
+
 
         // Generate the type declaration header for the class
         // structure. This structure represents the class as a whole.
         // A second structure will be defined to represent each instance of the
         // class.
-        bodyCode.append("/* Structure that implements Class ");
-        bodyCode.append(className);
-        bodyCode.append(" */\n");
-        bodyCode.append("typedef struct " + CNames.classNameOf(source) + " {\n\n");
+        bodyCode.append(_comment("Structure that implements Class " +
+                className));
+        bodyCode.append("struct " + CNames.classNameOf(source) +
+                "{\n\n");
 
         // Pointer to superclass structure.
         bodyCode.append(_indent(1));
-        if (source.hasSuperclass()) {
+        if (source.hasSuperclass() && !_context.getSingleClassMode()) {
             bodyCode.append(_comment("Pointer to superclass structure"));
             bodyCode.append(_indent(1));
             bodyCode.append(CNames.classNameOf(source.getSuperclass()));
+            bodyCode.append(" ");
         } else {
             bodyCode.append(_comment("Placeholder for pointer to superclass"
                     + " structure"));
@@ -126,9 +131,29 @@ public class HeaderFileGenerator extends CodeGenerator {
             bodyCode.append("void *");
         }
         bodyCode.append(CNames.superclassPointerName() + ";\n\n");
- 
+
+        // Pointer to array class. This is initialized to null here,
+        // and set appropriately when the array class is created at
+        // run-time (array classes are created on demand).
+        // This is declared as a pointer to the struct that implements
+        // java.lang.Object so that access to common members of the
+        // structure (across all classes) is facilitated..
+        // The pointer declaration is commented out if we are in single
+        // class mode.
+        bodyCode.append(_indent(1) + _comment("Pointer to array class"));
+        if (_context.getSingleClassMode()) {
+            bodyCode.append(_indent(1) + _openComment);
+        }
+        bodyCode.append(_indent(1) + CNames.classNameOf(
+                Scene.v().getSootClass("java.lang.Object")) +
+                " array_class;\n");
+        if (_context.getSingleClassMode()) {
+            bodyCode.append(_indent(1) + _closeComment);
+        }
+        bodyCode.append("\n");
+
         // Generate the method table. Constructors are included since they
-        // operate on class instances. 
+        // operate on class instances.
         if (_context.getSingleClassMode()) {
             _context.setDisableImports();
         }
@@ -136,7 +161,7 @@ public class HeaderFileGenerator extends CodeGenerator {
                 MethodListGenerator.getInheritedMethods(source),
                 "Inherited/overridden methods");
         _context.clearDisableImports();
-        String introducedMethods = 
+        String introducedMethods =
                 _generateMethodPointers(
                 MethodListGenerator.getNewMethods(source),
                 "New public and protected methods")
@@ -165,7 +190,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
 
         // Terminator for declared type for the class as a whole.
-        bodyCode.append("\n} *" + CNames.classNameOf(source) + ";\n\n");    
+        bodyCode.append("\n};\n\n");
 
         // Generate the type declaration header for the class instance
         // structure.
@@ -174,11 +199,11 @@ public class HeaderFileGenerator extends CodeGenerator {
         bodyCode.append("struct " + typeName + " {\n");
 
         // Pointer to common, class-specific information.
-        bodyCode.append("\n" + _indent(1) + CNames.classNameOf(source) + 
+        bodyCode.append("\n" + _indent(1) + CNames.classNameOf(source) +
                 " class;\n");
 
         // Extract the non-static fields, and insert them into the struct
-        // that is declared to implement the class. 
+        // that is declared to implement the class.
         Iterator superClasses = _getSuperClasses(source).iterator();
         while (superClasses.hasNext()) {
             SootClass superClass = (SootClass)superClasses.next();
@@ -188,7 +213,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
 
         // Terminator for declared type for class instances.
-        bodyCode.append("\n};\n\n");    
+        bodyCode.append("\n};\n\n");
 
         // Export function prototypes for all public and protected methods.
         Iterator methods = source.getMethods().iterator();
@@ -196,14 +221,16 @@ public class HeaderFileGenerator extends CodeGenerator {
             SootMethod method = (SootMethod)(methods.next());
             if (method.isProtected() || method.isPublic()) {
                 bodyCode.append("\n" + _comment(method.getSubSignature()));
-                bodyCode.append("extern " + _generateMethodHeader(method) + ";\n");
+                bodyCode.append("extern " +
+                        _generateMethodHeader(method) + ";\n");
             }
         }
 
-        // Export the name of the variable that contains class-specific information
-        // for the generated class.
+        // Export the name of the variable that contains class-specific
+        // information for the generated class.
+
         bodyCode.append("\n" + _comment("Class information"));
-        bodyCode.append("extern struct " + CNames.classNameOf(source) + " " 
+        bodyCode.append("extern struct " + CNames.classNameOf(source) + " "
                 + CNames.classStructureNameOf(source) + ";\n");
 
         // Export the name of the function that initializes the class
@@ -214,7 +241,8 @@ public class HeaderFileGenerator extends CodeGenerator {
         // Generate "#include" directives for each required type.
         // We are generating the include file for 'source', so there is
         // no need to import it.
-        _removeRequiredType(source);  
+        _removeRequiredType(source);
+        headerCode.append("#include \""+className.replace('.', '/')+".i.h\"\n");
         headerCode.append(_generateIncludeDirectives());
         headerCode.append("\n");
 
@@ -224,6 +252,40 @@ public class HeaderFileGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // override method in CodeFileGenerator and generate ".i.h" files instead
+    // of .h files.
+
+    protected String _generateIncludeDirectives() {
+        StringBuffer headerCode = new StringBuffer();
+
+        Iterator includeFiles = _context.getIncludeFiles();
+        if (includeFiles.hasNext()) {
+            headerCode.append(_comment("System and runtime include files"));
+        }
+        while (includeFiles.hasNext()) {
+            headerCode.append("#include ");
+            String fileName= new String((String)includeFiles.next());
+            fileName=fileName.substring(0, fileName.length()-2)+".i.h";
+            headerCode.append(fileName);
+            headerCode.append("\n");
+        }
+
+        Iterator requiredTypes = _getRequiredIncludeFiles();
+        if (requiredTypes.hasNext()) {
+            headerCode.append("\n" + _comment("Converted classes"));
+        }
+        while (requiredTypes.hasNext()) {
+            headerCode.append("#include \"");
+            String fileName= new String((String)requiredTypes.next());
+            fileName=fileName.substring(0, fileName.length()-2)+".i.h";
+            headerCode.append(fileName);
+            headerCode.append("\"\n");
+        }
+
+        return headerCode.toString();
+    }
+
 
     // Generate a C declaration that corresponds to a class field.
     private String _generateField(SootField field) {
@@ -236,20 +298,21 @@ public class HeaderFileGenerator extends CodeGenerator {
         return fieldCode.toString();
     }
 
-    // Generate C declarations corresponding to all non-static fields of the class
-    // that we are presently generating code for. The public and protected
-    // fields are declared first, followed by the private fields.
+    // Generate C declarations corresponding to all non-static fields of
+    // the class that we are presently generating code for. The public
+    // and protected fields are declared first, followed by the private fields.
     private String _generateFields(SootClass source) {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = source.getFields().iterator();
         int insertedFields = 0;
-        String header = "\n" + _indent(1) + "/* Public and protected fields defined in " 
+        String header = "\n" + _indent(1)
+                + "/* Public and protected fields defined in "
                 + source.getName() + " */\n";
 
-        // Generate public and protected fields 
+        // Generate public and protected fields
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
-            if ((field.isPublic() || field.isProtected()) && 
+            if ((field.isPublic() || field.isProtected()) &&
                     !(Modifier.isStatic(field.getModifiers()))) {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));
@@ -257,11 +320,12 @@ public class HeaderFileGenerator extends CodeGenerator {
             }
         }
 
-        // Generate private fields 
+        // Generate private fields
         fields = source.getFields().iterator();
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
-            if (field.isPrivate() && !(Modifier.isStatic(field.getModifiers()))) {
+            if (field.isPrivate() &&!(Modifier.isStatic(field.getModifiers())))
+            {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));
                 insertedFields++;
@@ -271,18 +335,18 @@ public class HeaderFileGenerator extends CodeGenerator {
         return fieldCode.toString();
     }
 
-    // Generate C declarations corresponding to all non-static fields inherited from
-    // a given superclass.
+    // Generate C declarations corresponding to all non-static fields inherited
+    // from a given superclass.
     private String _generateInheritedFields(SootClass superClass) {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
-        String header = "\n" + _indent(1) + 
+        String header = "\n" + _indent(1) +
                 _comment("Fields inherited from " + superClass.getName());
 
         while (fields.hasNext()) {
             SootField field = (SootField)(fields.next());
-            if ((field.isPublic() || field.isProtected()) && 
+            if ((field.isPublic() || field.isProtected()) &&
                     !(Modifier.isStatic(field.getModifiers()))) {
                 if (insertedFields == 0) fieldCode.append(header);
                 fieldCode.append(_generateField(field));
@@ -292,15 +356,16 @@ public class HeaderFileGenerator extends CodeGenerator {
         return fieldCode.toString();
     }
 
-    /** Given a list of Java methods, generate code that declares function 
+    /** Given a list of Java methods, generate code that declares function
      *  pointers corresponding to the non-static methods in the list.
      *  The format of a method pointer declaration is as follows:
      *  Do not generate pointers for static methods.
      *
      *  functionReturnType (*functionName)(paramOneType, paramTwoType, ...);
      *
-     *  is inserted at the beginning, before the methods are declared. The comment
-     *  is omitted if no code is produced by this method (i.e., there are no
+     *  is inserted at the beginning, before the methods are declared.
+     *  The comment is omitted if no code is produced by this method
+     *  (i.e., there are no
      *  non-static methods to generate pointers for).
      *  @param methodList The list of methods.
      *  @param comment A comment to insert in the generated code. This comment
@@ -319,7 +384,7 @@ public class HeaderFileGenerator extends CodeGenerator {
                     // If importing of referenced include files in disabled,
                     // then place the method table in comments.
                     if (_context.getDisableImports()) {
-                        methodCode.append(_openComment);
+                        methodCode.append(_indent(2) + _openComment);
                     }
                 }
                 methodCode.append(indent);
@@ -333,8 +398,8 @@ public class HeaderFileGenerator extends CodeGenerator {
                 insertedMethods++;
             }
         }
-        if ((insertedMethods > 0) && _context.getDisableImports()) 
-            methodCode.append(_closeComment);
+        if ((insertedMethods > 0) && _context.getDisableImports())
+            methodCode.append(_indent(2) + _closeComment);
         return methodCode.toString();
     }
 
@@ -354,10 +419,10 @@ public class HeaderFileGenerator extends CodeGenerator {
         }
         return fieldCode.toString();
     }
-    
+
     // Return the superclasses of a class as a linked list.
     // The list entries are ordered in decreasing (parents before children)
-    // hierarchy order. 
+    // hierarchy order.
     private LinkedList _getSuperClasses(SootClass source) {
         LinkedList classes = (LinkedList)(_superClasses.get(source));
         if (classes  == null) {
@@ -370,23 +435,23 @@ public class HeaderFileGenerator extends CodeGenerator {
                 _superClasses.put(source, classes = new LinkedList());
             }
         }
-        return classes; 
+        return classes;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The end of a comment for generated code that is to be 
+    // The end of a comment for generated code that is to be
     // commented-out.
-    private static final String _closeComment = 
+    private static final String _closeComment =
             "***********************************/\n";
 
-    // The beginning of a comment for generated code that is to be 
+    // The beginning of a comment for generated code that is to be
     // commented-out.
-    private static final String _openComment = 
+    private static final String _openComment =
             "/***********************************\n";
 
     // Mapping from classes into lists of superclasses as computed by
-    // {@link #_getSuperClasses(SootClass)}. 
+    // {@link #_getSuperClasses(SootClass)}.
     private static HashMap _superClasses = new HashMap();
 }

@@ -84,18 +84,34 @@ public class JavaToC {
         Scene.v().setSootClassPath(classPath);
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
+        InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
+        
         if (generateSingleClass) {
             cGenerator.setSingleClassMode();
             hGenerator.setSingleClassMode();
         }
+        
         Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
         CNames.setup();
 
-        // Generate the .h file.
-        String code = hGenerator.generate(sootClass);
+        //generate the .i file
+        String code = iGenerator.generate(sootClass);
         PrintWriter out;
        
+        try { 
+            out = new PrintWriter(new FileOutputStream(className + ".i.h"));
+        } catch (Exception exception) {
+            throw new IOException("Could not create .i.h file.\n"
+                    + exception.getMessage());
+        }
+        out.println(code.toString());
+        out.close();
+
+        
+        // Generate the .h file.
+        code = hGenerator.generate(sootClass);
+            
         try { 
             out = new PrintWriter(new FileOutputStream(className + ".h"));
         } catch (Exception exception) {
@@ -108,9 +124,15 @@ public class JavaToC {
         // Generate the .c file.
         code = cGenerator.generate(sootClass);
         if ((out = new PrintWriter(new FileOutputStream(className + ".c"))) == null) 
-            throw new IOException("Could not create .c file.");
+            throw new IOException("Could not create .c file.\n");
         out.println(code.toString());
         out.close();
+
+        //generate other required .c and .h files
+        if (!generateSingleClass)
+        {
+            RequiredFileGenerator.generateTransitiveClosureOf(classPath,className);
+        }
     }
 
     /** Entry point for the JavaToC application. See {@link JavaToC} for

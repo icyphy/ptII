@@ -144,11 +144,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     //// public methods that implement the ConstantSwitch interface  ////
 
     public void caseDoubleConstant(DoubleConstant v) {
-        defaultCase(v);
+        _push("((double)" + v.toString() +")");
     }
 
     public void caseFloatConstant(FloatConstant v) {
-        defaultCase(v);
+        _push("((float)" + v.toString() +")");
     }
 
     /** Push the value of an integer constant onto the code stack.
@@ -238,7 +238,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + "'instanceof'");    
         }
         v.getOp().apply(this);
-        _push("PCCG_instanceof(" + _pop() + ", &"
+        _push(CNames.instanceOfFunction + "(" + _pop() + ", &"
                 + CNames.classStructureNameOf(((RefType)type).getSootClass()) 
                 + ")");
     }
@@ -251,8 +251,14 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         _generateBinaryOperation(v, "<=");
     }
 
+    /** Generate code for an array length expression. This
+     *  is performed by inserting a call to a length computation
+     *  macro from the pccg run-time library.
+     *  @param v the length expression.
+     */
     public void caseLengthExpr(LengthExpr v) {
-        defaultCase(v);
+        v.getOp().apply(this);
+        _push(CNames.arrayLengthFunction + "(" + _pop() + ")");
     }
 
     public void caseLtExpr(LtExpr v) {
@@ -272,7 +278,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseNewArrayExpr(NewArrayExpr v) {
-        defaultCase(v);
+        v.getSize().apply(this);
+        String sizeCode = _pop().toString();
+        _push(_generateArrayAllocation(v.getBaseType(), 1, sizeCode));
     }
 
     public void caseNewExpr(NewExpr v) {
@@ -289,7 +297,19 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseNewMultiArrayExpr(NewMultiArrayExpr v) {
-        defaultCase(v);
+        if (_debug) {  
+            System.out.println("NewMultiArrayExpr: " + v.getSizeCount() + 
+            "/" + v.getSizes().size() + v.getBaseType().getClass().getName()); 
+        }
+        String sizeCode = new String();
+        Iterator sizes = v.getSizes().iterator();
+        while (sizes.hasNext()) {
+            ((Value)sizes.next()).apply(this);
+            sizeCode += _pop();
+            if (sizes.hasNext()) sizeCode += ", ";
+        }
+        _push(_generateArrayAllocation(v.getBaseType(), v.getSizeCount(), 
+                sizeCode));
     }
 
     public void caseOrExpr(OrExpr v) {
@@ -297,7 +317,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseRemExpr(RemExpr v) {
-        defaultCase(v);
+        _generateBinaryOperation(v, "%");
     }
 
     public void caseShlExpr(ShlExpr v) {
@@ -344,7 +364,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 v.getBase().apply(this);
                 StringBuffer baseCode = _pop();
                 _push(CNames.classStructureNameOf(methodClass) + ".methods." +
-                        CNames.methodNameOf(method) + "(" + baseCode
+                        CNames.methodNameOf(method) + "((" + CNames.instanceNameOf(methodClass) + ")"+ baseCode
                         + _generateArguments(v, 1) + ")");
             }
         }
@@ -385,12 +405,34 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     ///////////////////////////////////////////////////////////////////
     //// public methods that implement the RefSwitch interface    ////
 
+    /** Generate code for an array reference. This is done by
+     *  generating a call to a macro from the run time library
+     *  with the given base (array) and index expression.
+     *  @param v the array reference whose code is to be generated.
+     */
     public void caseArrayRef(ArrayRef v) {
-        defaultCase(v);
+        v.getBase().apply(this);
+        StringBuffer baseCode = _pop();
+        v.getIndex().apply(this);
+        StringBuffer indexCode = _pop();
+        _push(CNames.arrayReferenceFunction + "(" + baseCode + ", "
+                + indexCode + ")");
     }
 
     public void caseCaughtExceptionRef(CaughtExceptionRef v) {
+        
+        /*
+        System.out.println("Caught exception ref of type: " + 
+                v.getType().toString());
+        Iterator useBoxes = v.getUseBoxes().iterator();
+        while (useBoxes.hasNext()) {
+            Object box = useBoxes.next();
+            System.out.println("use box of type " + box.getClass().getName());
+        }
         defaultCase(v);
+        */
+        
+        _push("exception_type");
     }
 
     public void caseInstanceFieldRef(InstanceFieldRef v) {
@@ -495,7 +537,11 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     }
 
     public void caseThrowStmt(ThrowStmt stmt) {
-        defaultCase(stmt);
+        //defaultCase(stmt);
+        
+        _push("exception_type = "+stmt.toString().substring(7)+";\n");
+        _push("        longjump(env,epc)");
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -528,7 +574,43 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
         return code.toString();
     }
- 
+
+    protected String _generateArrayAllocation(Type elementType,
+            int dimensionsToFill, String sizeCode) { 
+        if (!((elementType instanceof BaseType) || 
+                (elementType instanceof ArrayType))) {
+            _unexpectedCase(elementType, "unsupported array element type");
+            return "";
+        } else {
+            // Determine the name of the run-time variable that 
+            // represents the array element class.
+            String elementClass;
+            String elementSizeType = "void*"; 
+            int emptyDimensions = 0; 
+            if (elementType instanceof RefType) {
+                elementClass = CNames.typeNameOf(elementType);
+            }
+            else if (elementType instanceof ArrayType) {
+                BaseType baseType = ((ArrayType)elementType).baseType;
+                elementClass = CNames.typeNameOf(baseType);
+                emptyDimensions = ((ArrayType)elementType).numDimensions;
+            } else {
+                elementClass = CNames.arrayClassPrefix + 
+                        CNames.typeNameOf(elementType) + "_elem";
+                elementSizeType = CNames.typeNameOf(elementType);
+            }
+
+            // Generate code for a call to a run-time function that
+            // will allocate an array. This code should be completed
+            // by the calling method with the appropriate dimension 
+            // and size.
+            return CNames.arrayAllocateFunction + "(" +
+                    elementClass + ", sizeof(" + elementSizeType + "), " +
+                    dimensionsToFill + ", " + emptyDimensions + ", " +
+                    sizeCode + ")"; 
+        }
+    }
+
     /** Generate code for a binary operation expression.
      *  @param expression the expression.
      *  @param operator the string representation of the binary operator.
@@ -630,8 +712,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     // The number of branch targets encountered so far in the current method.
     private int _targetCount;
 
-    // Map from units in a method into labels (for goto statements in the generated
-    // code).
+    // Map from units in a method into labels (for goto statements in the 
+    // generated code).
     private HashMap _targetMap;
 
     // The name of the local in the current method that represents the current 

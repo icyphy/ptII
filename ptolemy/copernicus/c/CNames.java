@@ -56,8 +56,8 @@ public class CNames {
      *  implements a Soot class. The class-specific structure has
      *  type "struct {@link #classNameOf(SootClass)}". Additionally,
      *  the identifier {@link #classNameOf(SootClass)} (i.e., without
-     *  the struct qualifier) is defined in the generated code to be a pointer type 
-     *  that points to the class-specific structure. 
+     *  the struct qualifier) is defined in the generated code to be a 
+     *  pointer type that points to the class-specific structure. 
      *  @param source The class.
      *  @return The C name for the class-specific structure type. 
      */
@@ -228,8 +228,11 @@ public class CNames {
         String name = null;
         if (type instanceof RefType) 
             name = instanceNameOf(((RefType)type).getSootClass());
-        else if (type instanceof ArrayType) 
-            name = typeNameOf(((ArrayType)type).baseType) + "[]";
+        else if (type instanceof ArrayType) {
+            // FIXME: remove commented old code:
+            // typeNameOf(((ArrayType)type).baseType) + "[]";
+            name = arrayInstanceTypeName;
+        }
         if (type instanceof BooleanType) name = "int"; 
         else if (type instanceof ByteType) name = "char"; 
         else if (type instanceof CharType) name = "char"; 
@@ -244,6 +247,41 @@ public class CNames {
                 + type.getClass().getName() + "'");
         return name;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public constants                  ////
+
+    /** The name of the runtime function or macro to be used for
+     *  allocating an array.
+     */    
+    public static final String arrayAllocateFunction = "pccg_array_allocate";
+
+    /** The prefix of array class descriptors that correspond
+     *  to primitive types. For example, if we concatenate "int"
+     *  to this prefix, we get the run-time struct that represents
+     *  the class of arrays of integers.
+     */    
+    public static final String arrayClassPrefix = "PCCG_ARRAY_";
+
+    /** The name of the type in the run-time code that represents
+     *  a pointers to an instance of an array object.
+     */
+    public static final String arrayInstanceTypeName = "PCCG_ARRAY_INSTANCE";
+
+    /** The name of the runtime function or macro to be used for
+     *  determining the length of an array.
+     */    
+    public static final String arrayLengthFunction = "PCCG_ARRAY_LENGTH";
+
+    /** The name of the runtime function or macro to be used for
+     *  computing array references.
+     */    
+    public static final String arrayReferenceFunction = "PCCG_ARRAY_ACCESS";
+
+    /** The name of the runtime function or macro to be used for
+     *  implementing the Java instanceof operator.
+     */    
+    public static final String instanceOfFunction = "PCCG_instanceof";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

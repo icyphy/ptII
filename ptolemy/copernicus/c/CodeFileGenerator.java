@@ -205,8 +205,9 @@ public class CodeFileGenerator extends CodeGenerator {
         // Set up the superclass pointer.
         code.append("\n" + _indent(1) + argumentReference + 
                 CNames.superclassPointerName() + " = ");
-        if (source.hasSuperclass()) {
-            code.append("&" + CNames.classStructureNameOf(source.getSuperclass()));
+        if (!_context.getSingleClassMode() && source.hasSuperclass()) {
+            code.append("&" + CNames.classStructureNameOf(
+                    source.getSuperclass()));
             _updateRequiredTypes(source.getSuperclass().getType());
         } else {
             code.append("NULL");
@@ -274,6 +275,10 @@ public class CodeFileGenerator extends CodeGenerator {
                 }
             }
 
+            //for catching exceptions
+            ExceptionTracker tracker = new ExceptionTracker();
+            tracker.init(body);
+            
             // Construct labels for branch targets
             Iterator units = body.getUnits().iterator();
             while (units.hasNext()) {
@@ -283,27 +288,97 @@ public class CodeFileGenerator extends CodeGenerator {
                     target = ((GotoStmt)unit).getTarget();                    
                 } else if (unit instanceof IfStmt) {
                     target = ((IfStmt)unit).getTarget();                    
+                } else if (tracker.isHandlerUnit(unit)){
+                    target = unit;
                 }
                 if (target != null) {
                     visitor.addTarget(target);
                 }
+                
+
+                
             } 
 
             // Generate the method body.
             if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
             units = body.getUnits().iterator();
+            
+            
+            if (tracker.trapsExist())
+            {   code.append("\n");
+                code.append(_indent(1)+"jump_buf env;\n");
+                code.append(_indent(1)+"int epc;\n");
+                code.append(_indent(1)+"int exception_type;\n");
+                code.append(_indent(1)+"epc = setjump(env);\n");
+                code.append(_indent(1)+"if(epc==0)\n");
+                code.append(_indent(1)+"{\n");
+            }
+            
             while (units.hasNext()) {
                 Unit unit = (Unit)(units.next());
                 if (visitor.isTarget(unit)) {
                     code.append(visitor.getLabel(unit) + ":\n");
                 }
+                
+                //code for beginUnit in exceptions
+                if (tracker.trapsExist()&&tracker.isBeginUnit(unit))
+                {
+                    tracker.beginUnitEncountered(unit);
+                    code.append(_indent(2)+"epc = "+ tracker.getCurrentEpc()+";\n");
+                    code.append(_indent(2)+"/*Trap " +tracker.beginIndexOf(unit) 
+                                +" begins. */\n");
+                }
+                
+                                    
+                //actual unit code
                 unit.apply(visitor);
                 StringBuffer newCode = visitor.getCode();
                 if (newCode.length() > 0) {
-                    code.append(_indent(1)).append(newCode).append(";\n");
+                    code.append(_indent(2)).append(newCode).append(";\n");
                 }
+                
+                //code for end unit in exceptions
+                if(tracker.trapsExist()&&tracker.isEndUnit(unit))
+                {
+                    code.append(_indent(2)+"/* That was end unit for trap "+
+                                tracker.endIndexOf(unit)+" */\n");
+                    tracker.endUnitEncountered();
+                    code.append(_indent(2)+"epc = "+tracker.getCurrentEpc()+";\n");
+                    
+                }
+                
+                //code for handler unit in exceptions
+                if(tracker.trapsExist()&&tracker.isHandlerUnit(unit))
+                {
+                    code.append(_indent(2)+"/* Handler Unit for Trap "+
+                                tracker.handlerIndexOf(unit)+" */\n");
+                }
+                     
             }
-
+            
+            //code for mapping an exception to its handler    
+            if (tracker.trapsExist())
+            { 
+                code.append(_indent(1)+"}\n");
+                
+                code.append(_indent(1)+"else\n");
+                code.append(_indent(1)+"{\n");
+                code.append(_indent(2)+"switch (epc)\n");
+                code.append(_indent(2)+"{\n");
+                
+                for(int i=0;i<=(tracker.numberOfTraps()-1);i++)
+                {
+                    code.append(_indent(3)+"case "+(i+1)+":\n");
+                    code.append(_indent(4)+"goto "+
+                                visitor.getLabel(tracker.getHandlerUnit(i)));
+                    code.append(";\n");
+                }
+                        
+                code.append(_indent(2)+"}\n");
+                code.append(_indent(1)+"}\n");
+            }
+    
+            
             // Trailer code
             code.append("} ");
             code.append(_comment(description));
