@@ -200,7 +200,7 @@ public class IOPort extends ComponentPort {
         newobj._insideinputversion = -1;
         newobj._insideoutputversion = -1;
         newobj._width = 0;
-        newobj._widthversion = -1;
+        newobj._widthVersion = -1;
         newobj._farReceivers = null;
         newobj._farReceiversVersion = -1;
         newobj._localReceivers = null;
@@ -839,8 +839,8 @@ public class IOPort extends ComponentPort {
     public int getWidth() {
         try {
             workspace().getReadAccess();
-            if(_widthversion != workspace().getVersion()) {
-                _widthversion = workspace().getVersion();
+            if(_widthVersion != workspace().getVersion()) {
+                _widthVersion = workspace().getVersion();
                 int sum = 0;
                 Enumeration relations = linkedRelations();
                 while(relations.hasMoreElements()) {
@@ -1540,7 +1540,7 @@ public class IOPort extends ComponentPort {
     private transient int _width = 0;
     // The workspace version number on the last update of the _width.
     // 'transient' means that the variable will not be serialized.
-    private transient long _widthversion = -1;
+    private transient long _widthVersion = -1;
 
     // A cache of the deeply connected Receivers, and the versions.
     // 'transient' means that the variable will not be serialized.
