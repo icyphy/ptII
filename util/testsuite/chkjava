@@ -76,7 +76,8 @@ do
 		    # If this is a constructor, then do not complain  
 		    split($2,f,"(")
 		    # Skip over comments that start with //
-		    if (f[1] != filenm && $0 !~ /^[ 	]*\/\//) {
+		    # or start with a non whitespace character
+   		    if (f[1] != filenm && $0 !~ /^[ 	]*\/\// && $0 !~/^[ 	]*/) {
 		        if (printedheader == 0) {
 			    print filenm".java: private does not have a leading _"
 			    printedheader = 1
@@ -158,7 +159,7 @@ do
 
 	# Check that all commas have spaces
 	# A line that contains ", is ok
-	results=`egrep '[^"],[^v ]' $file`
+	results=`egrep '[^"],[^v" ]' $file`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: comma without out trailing space:"
 	    echo "$results"
@@ -207,7 +208,7 @@ do
 	    echo "$file: does not have an @AcceptedRating doc tag"
 	fi
 
-	results=`egrep '(public|private|protected) .* .*\(' $file | egrep ' \(|\( '`
+	results=`egrep '(public|private|protected) .* .*\(' $file | egrep ' \(|\( ' | grep -v ') throws ` 
 	if [ "x$results" != "x" ]; then
 	    echo "$file: has extra spaces around '(' in decl (should be foo(int a)"
 	    echo "$results"
