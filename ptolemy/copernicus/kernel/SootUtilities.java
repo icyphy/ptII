@@ -43,9 +43,27 @@ import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.NullType;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.VoidType;
 
 import soot.jimple.CastExpr;
+import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
+import soot.jimple.InterfaceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
@@ -54,6 +72,12 @@ import soot.jimple.ParameterRef;
 import soot.jimple.Stmt;
 import soot.jimple.ThisRef;
 import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.jimple.toolkits.scalar.Evaluator;
+
+import soot.toolkits.graph.Block;
+import soot.toolkits.graph.BlockGraph;
+import soot.toolkits.graph.CompleteBlockGraph;
+
 import soot.util.Chain;
 
 import java.util.ArrayList;
@@ -80,7 +104,116 @@ public class SootUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Copy a class */
+    /** Make the given field final.  Anywhere where the the given
+     *  field is used in the given class, inline the reference with
+     *  the given value.  Anywhere where the given field is illegally
+     *  defined in the given class, inline the definition to throw an
+     *  exception.  This happens unless the given class is the
+     *  defining class for the given field and the definition occurs
+     *  within an initializer (for instance fields) or a static
+     *  initializer (for static fields).  Note that this is rather
+     *  limited, since it is only really useful for constant values.
+     *  In would be nice to specify a more complex expression to
+     *  inline, but I'm not sure how to do it.
+     */
+    public static void assertFinalField(SootClass theClass,
+            SootField theField, Value newValue) {
+        // First make the field final.
+        theField.setModifiers(theField.getModifiers() | Modifier.FINAL);
+
+        // Find any assignment to the field in the class and convert
+        // them to Exceptions, unless they are in constructors,
+        // in which case remove them.
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            Chain units = body.getUnits();
+
+            for(Iterator stmts = units.snapshotIterator();
+                stmts.hasNext();) {
+                Stmt stmt = (Stmt)stmts.next();
+                // Remove all the definitions.
+                for(Iterator boxes = stmt.getDefBoxes().iterator();
+                    boxes.hasNext();) {
+                    ValueBox box = (ValueBox)boxes.next();
+                    Value value = box.getValue();
+                    if(value instanceof FieldRef) {
+                        FieldRef ref = (FieldRef)value;
+                        if(ref.getField() == theField) {
+                            System.out.println("removing stmt = " + stmt);
+                            units.remove(stmt);
+                        }
+                    }
+                }
+                // Inline all the uses.
+                if(Evaluator.isValueConstantValued(newValue)) {
+                    for(Iterator boxes = stmt.getUseBoxes().iterator();
+                        boxes.hasNext();) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        Value value = box.getValue();
+                        if(value instanceof FieldRef) {
+                            FieldRef ref = (FieldRef)value;
+                            if(ref.getField() == theField) {
+                                System.out.println("inlining stmt = " + stmt);
+
+                                box.setValue(Evaluator
+                                        .getConstantValueOf(newValue));
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+        if(Modifier.isStatic(theField.getModifiers())) {
+            SootMethod method;
+            // create a class initializer if one does not already exist.
+            if(theClass.declaresMethodByName("<clinit>")) {
+                method = theClass.getMethodByName("<clinit>");
+            } else {
+                method = new SootMethod("<clinit>", new LinkedList(),
+                        NullType.v(), Modifier.PUBLIC);
+                theClass.getMethods().add(method);
+            }
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            Chain units = body.getUnits();
+            Stmt insertPoint = (Stmt)units.getLast();
+            Local local = Jimple.v().newLocal("_CGTemp" + theField.getName(),
+                    theField.getType());
+            body.getLocals().add(local);
+            units.insertBefore(Jimple.v().newAssignStmt(local, newValue),
+                    insertPoint);
+            FieldRef fieldRef = Jimple.v().newStaticFieldRef(theField);
+            units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
+                    insertPoint);
+        } else {
+            for(Iterator methods = theClass.getMethods().iterator();
+                methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+                // ignore things that aren't initializers.
+                if(!method.getName().equals("<init>"))
+                    continue;
+
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                Chain units = body.getUnits();
+                Stmt insertPoint = (Stmt)units.getLast();
+                Local local = Jimple.v().newLocal("_CGTemp" +
+                        theField.getName(),
+                        theField.getType());
+                body.getLocals().add(local);
+                units.insertBefore(Jimple.v().newAssignStmt(local, newValue),
+                        insertPoint);
+                FieldRef fieldRef =
+                    Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                            theField);
+                units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
+                        insertPoint);
+            }
+        }
+    }
+
+   /** Copy a class */
     public static SootClass copyClass(SootClass oldClass,
             String newClassName) {
 	//System.out.println("SootClass.copyClass(" + oldClass + ", "
@@ -457,6 +590,219 @@ public class SootUtilities {
         }
         throw new RuntimeException("Method " + name + " not found in class "
                 + theClass);
+    }
+
+
+    /** Anywhere where the iterator of the given field is referenced
+     *  in the given class, unroll the iterator as if it contained the
+     *  objects referenced by the given fields.
+     */
+    public static void unrollIteratorInstances(SootClass theClass, 
+            SootField field, List fieldList) {
+        SootClass iteratorClass = Scene.v().getSootClass("java.util.Iterator");
+        SootMethod iteratorNextMethod =
+            iteratorClass.getMethod("java.lang.Object next()");
+        SootMethod iteratorHasNextMethod =
+            iteratorClass.getMethod("boolean hasNext()");
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+
+            BlockGraph graph = new CompleteBlockGraph(body);
+            for(Iterator blocks = graph.iterator();
+                blocks.hasNext();) {
+                Block block = (Block)blocks.next();
+                System.out.println("body = " + block);
+                // filter out anything that doesn't look like a loop body.
+                if ((block.getPreds().size() != 1) ||
+                        (block.getSuccs().size() != 1)) {
+                    continue;
+                }
+                // filter out anything that isn't attached to something
+                // that looks like a conditional jump.
+                Block whileCond = (Block)block.getSuccs().get(0);
+                System.out.println("cond = " + whileCond);
+                if(whileCond != block.getPreds().get(0) ||
+                        whileCond.getPreds().size() != 2 ||
+                        whileCond.getSuccs().size() != 2) {
+                    continue;
+                }
+
+                // filter out anything that doesn't start with a call
+                // to hasNext().
+                if(!(whileCond.getHead() instanceof DefinitionStmt)) {
+                    continue;
+                }
+                DefinitionStmt stmt =
+                    (DefinitionStmt)whileCond.getHead();
+                if(!(stmt.getRightOp() instanceof InterfaceInvokeExpr)) {
+                    continue;
+                }
+                InterfaceInvokeExpr expr =
+                    (InterfaceInvokeExpr)stmt.getRightOp();
+                if(expr.getMethod() != iteratorHasNextMethod) {
+                    continue;
+                }
+                // At this point we know we have a while(hasNext()) loop.
+                // Now go check for iterator is defined...  it should be just
+                // above
+
+                Local iteratorLocal = (Local)expr.getBase();
+                Block whilePredecessor = (Block)whileCond.getPreds().get(0);
+                if(whilePredecessor == block) {
+                    whilePredecessor = (Block)whileCond.getPreds().get(1);
+                }
+
+                System.out.println("whilePredecessor = " + whilePredecessor);
+                Unit unit = whilePredecessor.getTail();
+                boolean found = false;
+                // walk backwards until we find a definition of the iterator.
+                while(unit != whilePredecessor.getHead() && !found) {
+                    if(unit instanceof DefinitionStmt &&
+                            ((DefinitionStmt)unit).getLeftOp()
+                            .equals(iteratorLocal)) {
+                        found = true;
+                    } else {
+                        unit = whilePredecessor.getPredOf(unit);
+                    }
+                }
+
+                System.out.println("iterator def = " + unit);
+                DefinitionStmt iteratorDefinition = ((DefinitionStmt)unit);
+
+                if(!(iteratorDefinition.getRightOp()
+                        instanceof InterfaceInvokeExpr) ||
+                        !((InterfaceInvokeExpr)iteratorDefinition
+                                .getRightOp()).getMethod().getName()
+                        .equals("iterator")) {
+                    continue;
+                }
+                Local collectionLocal =
+                    (Local) ((InterfaceInvokeExpr)iteratorDefinition
+                            .getRightOp()).getBase();
+                System.out.println("collection Local = " + collectionLocal);
+                found = false;
+
+                // Walk backward again until we reach the definition
+                // of the collection.
+                while(unit != whilePredecessor.getHead() && !found) {
+                    if(unit instanceof DefinitionStmt &&
+                            ((DefinitionStmt)unit).getLeftOp()
+                            .equals(collectionLocal)) {
+                        found = true;
+                    } else {
+                        unit = whilePredecessor.getPredOf(unit);
+                    }
+                }
+                System.out.println("collection def = " + unit);
+                System.out.println("field = " + field);
+                DefinitionStmt collectionDefinition = ((DefinitionStmt)unit);
+                if(!(collectionDefinition.getRightOp() instanceof FieldRef) ||
+                        ((FieldRef)collectionDefinition.getRightOp())
+                        .getField() != field) {
+                    continue;
+                }
+                // FINALLY we know we've found something we can unroll... :)
+                System.out.println("is unrollable...");
+
+                // There should be a jump from the predecessor to the
+                // condition.  Redirect this jump to the body.
+
+                whileCond.getHead().redirectJumpsToThisTo(block.getHead());
+
+                Local thisLocal = body.getThisLocal();
+                Chain units = body.getUnits();
+                List blockStmtList = new LinkedList();
+                // pull the statements that we are inlining out of the block
+                // so that we can copy them.  Note that this also removes 
+                // them from the method body.
+                Unit insertPoint = (Unit)units.getSuccOf(block.getTail());
+                for(Iterator blockStmts = block.iterator();
+                    blockStmts.hasNext();) {
+                    Stmt original = (Stmt)blockStmts.next();
+                    blockStmtList.add(original);
+                    blockStmts.remove();
+                }
+
+                // Loop through and unroll the loop body once for 
+                // every element of the field list.
+                for(Iterator fields = fieldList.iterator();
+                    fields.hasNext();) {
+                    SootField insertField = 
+                        (SootField)fields.next();
+                    for(Iterator blockStmts = blockStmtList.iterator();
+                        blockStmts.hasNext();) {
+                        // clone each statement
+                        Stmt original = (Stmt)blockStmts.next();
+                        Stmt clone = (Stmt)original.clone();
+                        // If the statement is a call to the next() method,
+                        // then inline it with the next value of the iterator.
+                        for(Iterator boxes = clone.getUseBoxes().iterator();
+                            boxes.hasNext();) {
+                            ValueBox box = (ValueBox)boxes.next();
+                            Value value = box.getValue();
+                            if(value instanceof InvokeExpr) {
+                                InvokeExpr r = (InvokeExpr)value;
+                                if(r.getMethod() == iteratorNextMethod) {
+                                    box.setValue(Jimple.v()
+                                            .newInstanceFieldRef(thisLocal,
+                                                    insertField));
+                                }
+                            }
+                        }
+                        units.insertBefore(clone, insertPoint);
+                    }
+                }
+
+                // remove the conditional
+                for(Iterator blockStmts = whileCond.iterator();
+                    blockStmts.hasNext();) {
+                    Stmt original = (Stmt)blockStmts.next();
+                    blockStmts.remove();
+                }
+
+
+                // Find while loops.
+                // This code modified from WhileMatcher.
+
+                /*
+                  List successorList = block.getSuccs();
+
+                  if(successorList.size() == 2) {
+                  Block whileBody, whileSucc;
+                  boolean found = false;
+
+                  whileBody = whileSucc = block;
+                  whileBody = (Block) successorList.get(0);
+                  whileSucc = (Block) successorList.get(1);
+
+                  if ((whileBody.getPreds().size() == 1) &&
+                  (whileBody.getSuccs().size() == 1) &&
+                  (whileBody.getSuccs().get(0) == block))
+                  found = true;
+                  if(!found) {
+                  Block bt;
+                  bt = whileSucc;
+                  whileSucc = whileBody;
+                  whileBody = bt;
+
+                  if ((whileBody.getPreds().size() == 1) &&
+                  (whileBody.getSuccs().size() == 1) &&
+                  (whileBody.getSuccs().get(0) == block))
+                  found = true;
+                  }
+
+                  if(found) {
+                  if(con
+                  System.out.println("found while Loop:");
+                  System.out.println("body = " + whileBody);
+                  System.out.println("cond = " + block);
+                  System.out.println("successor = " + whileSucc);
+                  }
+                  }      */
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -76,14 +76,14 @@ demo: shallowDemo deepDemo
 shallowDemo: compileShallowDemo runShallowDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
-SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
-DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).ToplevelModel
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).ToplevelModel
-
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom 
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+
+DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
+SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow
+DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
+SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(MODEL)
 
 JVM_SIZE = -Xmx132m
 
@@ -119,6 +119,7 @@ compileDeepDemo: $(JCLASS)
 	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
@@ -127,10 +128,8 @@ runDeepDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
-	ptolemy.actor.gui.CompositeActorApplication \
-	-iterations 50 \
-	-class $(DEEPTARGETCLASS)
-	#$(DEEPTARGETPACKAGE).Main
+	$(DEEPTARGETPACKAGE).Main 
+# -iterations 50
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
