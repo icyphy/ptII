@@ -1156,11 +1156,11 @@ public class Query extends JPanel {
      */
     protected Color _background = null;
 
-    /** Layout control. */
-    protected GridBagLayout _grid;
-
     /** Standard constraints for use with _grid. */
     protected GridBagConstraints _constraints;
+
+    /** Layout control. */
+    protected GridBagLayout _grid;
 
     /** List of registered listeners. */
     protected Vector _listeners;
