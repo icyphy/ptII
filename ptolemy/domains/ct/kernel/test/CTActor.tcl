@@ -89,6 +89,40 @@ test CTActor-2.1 {Create a CTParameter} {
     list [[$par getToken] doubleValue]
 } {0.0}
 
+test CTActor-2.2 {Change a CTParameter} {
+    # Note: Use the above setup
+    set one [java::new {ptolemy.data.DoubleToken double} 1.0]
+    $par setToken $one
+    list [$a1 isParamChanged]
+} {1}
+
+test CTActor-2.3 {update a CTParameter} {
+    # Note: Use the above setup
+    $a1 prefire
+    list [$a1 isParamChanged]
+} {0}
 ######################################################################
 ####
 #
+test CTActor-3.1 {passing tokens} {
+    set ca [java::new ptolemy.actor.TypedCompositeActor]
+    $ca setName CA
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector Dir]
+    $ca setDirector $dir
+    set a1 [java::new ptolemy.domains.ct.kernel.test.CTDummySource $ca A1]
+    set a2 [java::new ptolemy.domains.ct.kernel.test.CTDummySink $ca A2]
+    set p1o [$a1 getPort output]
+    set p2i [$a2 getPort input]
+    set r1 [$ca connect $p1o $p2i]
+    $a2 createReceivers
+    $p1o broadcast $zero
+    list [[$p2i get 0] doubleValue]
+} {0.0}
+
+test CTActor-3.2 {overwriting tokens} {
+    #Note: use above setup.
+    $p1o broadcast $zero
+    $p1o broadcast $one
+    list [[$p2i get 0] doubleValue]
+} {1.0}
+    

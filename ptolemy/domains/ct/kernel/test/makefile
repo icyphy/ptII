@@ -52,12 +52,14 @@ JSRCS = \
 	CTDummySSControlActor.java \
 	CTDummySink.java \
 	CTDummySource.java \
-	CTDummyStatefulActor.java
+	CTDummyStatefulActor.java \
+	CTTestValueSink.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 		CTActor.tcl \
-		CTScheduler.tcl
+		CTScheduler.tcl \
+		CTSingleSolverDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
