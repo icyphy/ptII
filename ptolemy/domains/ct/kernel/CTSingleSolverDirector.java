@@ -146,7 +146,7 @@ public class CTSingleSolverDirector extends CTDirector {
         // set time
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
-        fireAfterDelay(null, getStopTime()-getStartTime());
+        fireAt(null, getStopTime());
         sch.setValid(false);
         _first = true;
         if (VERBOSE) {
@@ -252,7 +252,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public boolean postfire() throws IllegalActionException {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
-            fireAfterDelay(null, getStopTime()-getCurrentTime());
+            fireAt(null, getStopTime());
         }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
             updateStates(); // call postfire on all actors

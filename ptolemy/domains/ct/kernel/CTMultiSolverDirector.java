@@ -237,7 +237,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public boolean postfire() throws IllegalActionException {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
-            fireAfterDelay(null, getStopTime()-getCurrentTime());
+            fireAt(null, getStopTime());
         }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
             updateStates(); // call postfire on all actors
@@ -392,7 +392,7 @@ public class CTMultiSolverDirector extends CTDirector {
         if(bps != null) {
             bps.clear();
         }
-        fireAfterDelay(null, 0.0);
+        fireAt(null, getCurrentTime());
         setScheduleValid(false);
         _first = true;
         if (VERBOSE) {

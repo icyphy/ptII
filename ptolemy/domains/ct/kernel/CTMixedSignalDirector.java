@@ -128,8 +128,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             // this is an embedded director.
             // synchronize the start time and request a fire at the start time.
             Director exe = ca.getExecutiveDirector();
-            setStartTime(exe.getCurrentTime());
-            exe.fireAfterDelay(ca, 0.0);
+            double tnow = exe.getCurrentTime();
+            setStartTime(tnow);
+            exe.fireAt(ca, tnow);
         }
         if (VERBOSE) {
             System.out.println("Director.super initialize.");
@@ -186,7 +187,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
             if((runlength != 0.0)&& (runlength < timeAcc)) {
-                exe.fireAfterDelay(ca, runlength);
+                exe.fireAt(ca, nextIterTime);
                 if(DEBUG) {
                     System.out.println("Next iteration is too near" +
                         " (but not sync). Request a refire at:"+nextIterTime);
@@ -216,8 +217,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
             runlength = Math.min(runlength, _runAheadLength);
             setFireEndTime(_outsideTime + runlength);
-            fireAfterDelay(null,_outsideTime - getCurrentTime());
-            fireAfterDelay(null,getFireEndTime()-getCurrentTime());
+            fireAt(null,_outsideTime);
+            fireAt(null,getFireEndTime());
             if(DEBUG) {
                 System.out.println("Fire end time="+getFireEndTime());
             }
@@ -364,7 +365,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 // If this is the stop time, request a refire.
                 if(Math.abs(getCurrentTime()-getFireEndTime()) < timeAcc) {
                     exe = ca.getExecutiveDirector();
-                    exe.fireAfterDelay(ca, getCurrentTime()-_outsideTime);
+                    exe.fireAt(ca, getCurrentTime());
                     if(DEBUG) {
                         System.out.println("Ask for refire at " +
                             getCurrentTime());
@@ -392,7 +393,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 " stop time is less than the current time.");
             }
             if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
-                fireAfterDelay(null, getStopTime()-getCurrentTime());
+                fireAt(null, getStopTime());
             }
         }
 

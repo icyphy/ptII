@@ -231,14 +231,24 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Register a break point in the future. This request the
      *  Director to fire exactly at the each registered time.
-     *  Override the fireAfterDelay() method in Director.
+     *  Override the fireAt() method in Director.
+     *  @param actor The actor that requested the fire
+     *  @param time The fire time
+     *  @exception IllegalActionException If the time if before
+     *  the current time
      */
-    public void fireAfterDelay(Actor actor, double delay) {
+    public void fireAt(Actor actor, double time) 
+            throws IllegalActionException{
         if(_breakPoints == null) {
             _breakPoints = new TotallyOrderedSet(new DoubleComparator());
         }
-        Double bp = new Double(delay+getCurrentTime());
-        _breakPoints.insert(bp);
+        // check if the time is before the current time;
+        if(time < getCurrentTime()) {
+            throw new IllegalActionException((Nameable)actor, 
+                    "Requested an Fire time that is earlier than" +
+                    " the current time.");
+        }
+        _breakPoints.insert(new Double(time));
     }
 
     /** If parameter changed, queue the event
