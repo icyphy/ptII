@@ -84,20 +84,6 @@ public class ApplicationUtility {
         System.out.println(msg);
     }
 
-    /** Print a warning to standard error if enableWarnings is true. If
-     *  errorOnWarning is true, call error() with the argument message.
-     */
-    public static final void warn(String msg) {
-        if (enableWarnings) {
-            System.err.println("Warning: " + msg);
-            warnings++;
-
-            if (errorOnWarning) {
-                error("Error on warning");
-            }
-        }
-    }
-
     /** Print a trace message to standard out if enableTrace is true. Append
      *  the separator string after the message.
      */
@@ -112,6 +98,21 @@ public class ApplicationUtility {
             System.out.println("Trace: " + msg);
         }
     }
+
+    /** Print a warning to standard error if enableWarnings is true. If
+     *  errorOnWarning is true, call error() with the argument message.
+     */
+    public static final void warn(String msg) {
+        if (enableWarnings) {
+            System.err.println("Warning: " + msg);
+            warnings++;
+
+            if (errorOnWarning) {
+                error("Error on warning");
+            }
+        }
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
