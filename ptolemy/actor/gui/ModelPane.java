@@ -202,7 +202,7 @@ public class ModelPane extends JPanel {
                 // Use a dark blue for the text color.
                 pTitle.setForeground(new Color(0, 0, 128));
                 _controlPanel.add(pTitle);
-                _controlPanel.add(Box.createRigidArea(new Dimension(0,8)));
+                _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
                 _paramQuery = new PtolemyQuery();
                 _paramQuery.setAlignmentX(LEFT_ALIGNMENT);
                 _paramQuery.setBackground(getBackground());
@@ -215,7 +215,7 @@ public class ModelPane extends JPanel {
                     _paramQuery.attachParameter(param, name);
                 }
                 _controlPanel.add(_paramQuery);
-                _controlPanel.add(Box.createRigidArea(new Dimension(0,15)));
+                _controlPanel.add(Box.createRigidArea(new Dimension(0, 15)));
             }
 
             // Director parameters.
@@ -227,7 +227,8 @@ public class ModelPane extends JPanel {
                     // Use a dark blue for the text color.
                     pTitle.setForeground(new Color(0, 0, 128));
                     _controlPanel.add(pTitle);
-                    _controlPanel.add(Box.createRigidArea(new Dimension(0,8)));
+                    _controlPanel.add(
+                            Box.createRigidArea(new Dimension(0, 8)));
                     _directorQuery = new PtolemyQuery();
                     _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
                     _directorQuery.setBackground(getBackground());
