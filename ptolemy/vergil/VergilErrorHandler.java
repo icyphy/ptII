@@ -107,7 +107,7 @@ public class VergilErrorHandler implements ErrorHandler {
         Object[] messageArray = new Object[1];
         messageArray[0] =
             StringUtilities.ellipsis(message,
-                StringUtilities.ELLIPSIS_LENGTH_LONG);
+                    StringUtilities.ELLIPSIS_LENGTH_LONG);
 
         if (context == null) {
             // Top-level object, so continuing is not an option.
@@ -244,7 +244,7 @@ public class VergilErrorHandler implements ErrorHandler {
         }
         message[0] = 
             StringUtilities.ellipsis(string,
-                StringUtilities.ELLIPSIS_LENGTH_SHORT);
+                    StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
         message[1] = scrollPane;
 

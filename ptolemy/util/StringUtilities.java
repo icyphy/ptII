@@ -375,7 +375,7 @@ public class StringUtilities {
                     i += 79;
                 } else {
                     results.append(token.substring(i,
-                                           i + lastSpaceIndex) + "\n");
+                            i + lastSpaceIndex) + "\n");
                     i += lastSpaceIndex + 1;
                 }
             }
