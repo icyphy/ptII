@@ -1,9 +1,9 @@
+@echo off
 rem
 rem Script to run the FIR demo
 rem @author Shuvra S. Bhattacharyya 
 rem @version $Id$
 rem
-@echo off
 echo Generating the class file ...
 javac FIR.java
 echo Translating the class file to C ...
