@@ -110,16 +110,10 @@ public class FixToDouble extends Transformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            FixToDouble newobj = (FixToDouble)super.clone(ws);
-            newobj.precision = (Parameter)newobj.getAttribute("precision");
-            newobj.quantizer = (Parameter)newobj.getAttribute("quantizer");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        FixToDouble newobj = (FixToDouble)super.clone(ws);
+        newobj.precision = (Parameter)newobj.getAttribute("precision");
+        newobj.quantizer = (Parameter)newobj.getAttribute("quantizer");
+        return newobj;
     }
 
     /** Read at most one token from each input and convert the FixToken

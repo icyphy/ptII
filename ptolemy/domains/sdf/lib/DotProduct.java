@@ -105,17 +105,11 @@ public class DotProduct extends SDFAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            DotProduct newobj = (DotProduct) super.clone(ws);
-            newobj.input1 = (SDFIOPort) newobj.getPort("input1");
-            newobj.input2 = (SDFIOPort) newobj.getPort("input2");
-            newobj.output = (SDFIOPort) newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        DotProduct newobj = (DotProduct) super.clone(ws);
+        newobj.input1 = (SDFIOPort) newobj.getPort("input1");
+        newobj.input2 = (SDFIOPort) newobj.getPort("input2");
+        newobj.output = (SDFIOPort) newobj.getPort("output");
+        return newobj;
     }
 
     /** Read a token each of the input ports, converting them into

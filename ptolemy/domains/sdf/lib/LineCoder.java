@@ -118,19 +118,14 @@ public class LineCoder extends SDFAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            LineCoder newobj = (LineCoder)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.table = (Parameter)newobj.getAttribute("table");
-            newobj.wordlength = (Parameter)newobj.getAttribute("wordlength");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        LineCoder newobj = (LineCoder)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        newobj.table = (Parameter)newobj.getAttribute("table");
+        newobj.wordlength = (Parameter)newobj.getAttribute("wordlength");
+        return newobj;
     }
 
     /** Consume the inputs and produce the corresponding symbol.

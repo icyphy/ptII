@@ -99,19 +99,14 @@ public class FFT extends TypedAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            FFT newobj = (FFT)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.order =
-                (Parameter)newobj.getAttribute("order");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        FFT newobj = (FFT)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        newobj.order =
+            (Parameter)newobj.getAttribute("order");
+        return newobj;
     }
 
     /** Consume the inputs and produce the outputs of the FFT filter.

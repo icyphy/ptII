@@ -180,24 +180,19 @@ public class FIR extends SDFAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            FIR newobj = (FIR)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
-            newobj.decimation =
-                (Parameter)newobj.getAttribute("decimation");
-            newobj.decimationPhase =
-                (Parameter)newobj.getAttribute("decimationPhase");
-            newobj.interpolation =
-                (Parameter)newobj.getAttribute("interpolation");
-            newobj.taps = (Parameter)newobj.getAttribute("taps");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+            throws CloneNotSupportedException {
+        FIR newobj = (FIR)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
+        newobj.decimation =
+            (Parameter)newobj.getAttribute("decimation");
+        newobj.decimationPhase =
+            (Parameter)newobj.getAttribute("decimationPhase");
+        newobj.interpolation =
+            (Parameter)newobj.getAttribute("interpolation");
+        newobj.taps = (Parameter)newobj.getAttribute("taps");
+        return newobj;
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.

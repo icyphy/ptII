@@ -104,17 +104,11 @@ public class Multiplexor extends SDFAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            Multiplexor newobj = (Multiplexor) super.clone(ws);
-            newobj.input = (SDFIOPort) newobj.getPort("input");
-            newobj.output = (SDFIOPort) newobj.getPort("output");
-            newobj.select = (SDFIOPort) newobj.getPort("select");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Multiplexor newobj = (Multiplexor) super.clone(ws);
+        newobj.input = (SDFIOPort) newobj.getPort("input");
+        newobj.output = (SDFIOPort) newobj.getPort("output");
+        newobj.select = (SDFIOPort) newobj.getPort("select");
+        return newobj;
     }
 
     /** Read a token from the select port and each channel of the input port,

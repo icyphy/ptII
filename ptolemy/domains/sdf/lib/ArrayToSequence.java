@@ -108,26 +108,20 @@ public class ArrayToSequence extends SDFAtomicActor {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @throw CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            ArrayToSequence newobj = (ArrayToSequence)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
+        ArrayToSequence newobj = (ArrayToSequence)(super.clone(ws));
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.output = (SDFIOPort)newobj.getPort("output");
 
-	    // set the type constraints
-	    ArrayType inputType = (ArrayType)newobj.input.getType();
-	    InequalityTerm elemTerm = inputType.getElementTypeTerm();
-	    newobj.output.setTypeAtLeast(elemTerm);
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        // set the type constraints
+        ArrayType inputType = (ArrayType)newobj.input.getType();
+        InequalityTerm elemTerm = inputType.getElementTypeTerm();
+        newobj.output.setTypeAtLeast(elemTerm);
+        return newobj;
     }
 
     /** Consume the input ArrayToken and produce the outputs.
