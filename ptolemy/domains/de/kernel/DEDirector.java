@@ -546,12 +546,13 @@ public class DEDirector extends Director {
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
      *
+     *  @return True if data are transfered.
      *  @param port The input port from which tokens are transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, or if the current time of the executive director
      *   is in the past.
      */
-    public void transferInputs(IOPort port) throws IllegalActionException {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         Actor container = (Actor)getContainer();
         double outsideCurrTime =
             container.getExecutiveDirector().getCurrentTime();
@@ -561,7 +562,7 @@ public class DEDirector extends Director {
                     + "an opaque composite actor boundary.");
         }
         setCurrentTime(outsideCurrTime);
-        super.transferInputs(port);
+        return super.transferInputs(port);
     }
 
     ///////////////////////////////////////////////////////////////////
