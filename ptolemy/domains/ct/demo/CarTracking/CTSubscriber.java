@@ -85,6 +85,7 @@ public class CTSubscriber extends Source
         entryName = new Parameter(this, "entryName", 
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -258,9 +259,10 @@ public class CTSubscriber extends Source
                     if(entry == null) {
                         System.out.println(getName() + 
                                 " read null from space");
+                    } else {
+                        _notifiedToken = (Token)entry.token;
+                        _hasNewToken = true;
                     }
-                    _notifiedToken = (Token)entry.token;
-                    _hasNewToken = true;
                 }
             }
         }

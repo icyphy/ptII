@@ -187,7 +187,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
         while(!ready) { 
             try {
                 entry = (TokenEntry)_space.readIfExists(
-                        entryTemplate, null, Long.MAX_VALUE);
+                        entryTemplate, null, 1000);
             }catch (Exception e) {
                 throw new IllegalActionException(this,
                         "error reading space." +
@@ -204,8 +204,25 @@ public class CarInformationSubscriber extends TypedAtomicActor
             } else {
                 ready = true;
                 _lastData = (ArrayToken)entry.token;
+                // set container's parameter so they could be used by other 
+                // actors.
+                TypedCompositeActor container = 
+                    (TypedCompositeActor)getContainer();
+                Parameter initialVelocity = 
+                    (Parameter)container.getAttribute("initialVelocity");
+                if(initialVelocity != null) {
+                    initialVelocity.setToken(_lastData.getElement(2));
+                }
+                Parameter initialPosition = 
+                    (Parameter)container.getAttribute("initialPosition");
+                if(initialPosition != null) {
+                    initialPosition.setToken(new DoubleToken(-20.0 + 
+                            ((DoubleToken)
+                                    (_lastData.getElement(3))).doubleValue()));
+                }
             }
         }
+        
         // request for notification
         try {
             _eventReg = _space.notify(
@@ -378,9 +395,10 @@ public class CarInformationSubscriber extends TypedAtomicActor
                     if(entry == null) {
                         System.out.println(getName() + 
                                 " read null from space");
+                    } else {
+                        _currentData = (ArrayToken)entry.token;
+                        _hasNewData = true;
                     }
-                    _currentData = (ArrayToken)entry.token;
-                    _hasNewData = true;
                 }
             }
         }

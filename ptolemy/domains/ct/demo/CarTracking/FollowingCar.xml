@@ -5,6 +5,10 @@
     <doc>CT model for the following car, with a controller.</doc>
     <property name="SamplingPeriod" value="1.0" 
         class="ptolemy.data.expr.Parameter"></property>
+    <property name="initialVelocity" value="0.0" 
+        class="ptolemy.data.expr.Parameter"></property>
+    <property name="initialPosition" value="0.0" 
+        class="ptolemy.data.expr.Parameter"></property>
     <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">
         </property>
@@ -22,10 +26,11 @@
 	<port name="position"></port>
     </entity>
     <entity name="controller" 
-        class="ptolemy.domains.ct.demo.CarTracking.ModalController">
+        class="ptolemy.domains.ct.demo.CarTracking.SimpleModalController">
 	<port name="correctness"></port>
         <port name="leadingPosition"></port>
 	<port name="followingPosition"></port>
+	<port name="incomingForce"></port>
 	<port name="drivingForce"></port>
     </entity>
 
@@ -54,12 +59,12 @@
         <port name="output"></port>
     </entity> 
     <entity name="velocity" class="ptolemy.domains.ct.lib.Integrator">
-	<property name="initialState" value="0.0"></property>
+	<property name="initialState" value="initialVelocity"></property>
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
     <entity name="position" class="ptolemy.domains.ct.lib.Integrator">
-	<property name="initialState" value="0.0"></property>
+	<property name="initialState" value="initialPosition"></property>
 	<port name="input"></port>
         <port name="output"></port>
     </entity>
@@ -113,6 +118,9 @@
   	<link port="controller.leadingPosition" relation="r2"/>  
     <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="controller.drivingForce" relation="r3"/>   
+    <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
+	<link port="observer.force" relation="r4"/>
+  	<link port="controller.incomingForce" relation="r4"/>   
     <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
 	<link port="ssamp.input" relation="r8"/>
 	<link port="controller.followingPosition" relation="r8"/>

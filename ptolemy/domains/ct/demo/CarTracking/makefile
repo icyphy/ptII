@@ -50,11 +50,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 TCL_SRCS = 
 
 JSRCS = \
+	BangBangController.java \
 	CarInformationPublisher.java \
 	CarInformationSubscriber.java \
 	CTSubscriber.java \
 	DERealTimeSubscriber.java \
-	ModalController.java \
+	SimpleModalController.java \
 	RealTimePublisher.java \
 	TrackingAlarm.java
 

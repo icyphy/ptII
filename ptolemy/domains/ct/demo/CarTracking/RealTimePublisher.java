@@ -172,10 +172,11 @@ public class RealTimePublisher extends Sink
             Long serialNumber = new Long(System.currentTimeMillis());
             Token token = input.get(0);
             //System.out.println(getName() + " has token for the space: " 
-            //        + getDirector().getCurrentTime() + " " + token);
+            //        + getDirector().getCurrentTime() + " "
+            //        + name + " " + token);
             TokenEntry template = new TokenEntry(name, null, null);
             try {
-                _space.takeIfExists(template, null, 100);
+                _space.takeIfExists(template, null, 1000);
                 TokenEntry entry = new TokenEntry(name,
                         serialNumber, token);
                 _space.write(entry, null, Lease.FOREVER);

@@ -168,8 +168,6 @@ public class DERealTimeSubscriber extends Source
         }
     }
         
-        
-    
     /** Fork a new thread to handle the notify event.
      */
     public void notify(RemoteEvent event) {
@@ -236,7 +234,7 @@ public class DERealTimeSubscriber extends Source
             if (_event.getSource().equals(_eventReg.getSource()) &&
                     _event.getID() == _eventReg.getID() && 
                     _event.getSequenceNumber() > _notificationSeq) {
-                // grab a lock and read all new entries.
+                // grab a lock and read new entry.
                 synchronized(_tokenList) {
                     TokenEntry entryTemplate = new TokenEntry(_entryName, 
                             null, null);
@@ -250,7 +248,7 @@ public class DERealTimeSubscriber extends Source
                                 e.getMessage());
                     }
                     if(entry == null) {
-                        System.out.println(getName() + 
+                        System.err.println(getName() + 
                                 " read null from space");
                     } else {
                         //System.out.println(getName() + 
@@ -265,8 +263,10 @@ public class DERealTimeSubscriber extends Source
                                     "can't register fireAt with the director."
                                     + ex.getMessage());
                         }
+                        _tokenList.notifyAll();
                     }
                 }
+                 Thread.currentThread().yield();
             }
         }
         
