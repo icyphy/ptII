@@ -1,4 +1,4 @@
-/* Java implementation of the pxgraph plotting program
+/* Java implementation of the X11 pxgraph plotting program
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -46,15 +46,6 @@ import java.lang.InterruptedException;
 
 import java.net.URL;
 import java.net.MalformedURLException;
-
-/* A class thrown by Pxgraph */
-class CmdLineArgException extends Throwable {
-
-  public CmdLineArgException() { super(); }
-  public CmdLineArgException(String s) { super(s); }
- 
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
@@ -121,7 +112,7 @@ public class Pxgraph extends Frame {
       * If you have the <code>pxgraph</code> shell script, then 
       * type <code>pxgraph -help</code> for the complete set of arguments.
       */
-    public static void main(String arg[]) {
+    public static void main(String args[]) {
         int argsread = 0, i;
 	Plot plotApplet = new Plot();
 	Pxgraph pxgraph = new Pxgraph();
@@ -130,7 +121,10 @@ public class Pxgraph extends Frame {
 	pxgraph.add(plotApplet);
 
 	try {
-	    argsread = pxgraph._parseArgs(plotApplet, arg);
+	    // First we parse the args for things like -help or -version
+	    // then we have the Plot applet parse them
+	    pxgraph._parseArgs(args);
+	    argsread = plotApplet.parseArgs(args);
 	} catch (CmdLineArgException e) {
 	    System.err.println("Failed to parse command line arguments: "
 			       + e);
@@ -140,15 +134,15 @@ public class Pxgraph extends Frame {
         pxgraph.show();
 	plotApplet.init();
 
-        for(i = argsread+1; i < arg.length; i++) {
-            if (_debug) System.out.println(arg[i]);
-            plotApplet.parseFile(arg[i]);
+        for(i = argsread+1; i < args.length; i++) {
+            if (_debug > 0) System.out.println(args[i]);
+            plotApplet.parseFile(args[i]);
         }
         
 	plotApplet.start();
 
 	if (_test) {
-	    if (_debug) System.out.println("Sleeping for 2 seconds");
+	    if (_debug > 4) System.out.println("Sleeping for 2 seconds");
 	    try {
 		Thread.currentThread().sleep(2000);
 	    }
@@ -240,18 +234,11 @@ public class Pxgraph extends Frame {
 
     /* Parse the arguments and make calls to the plotApplet accordingly.
      */	
-    private int _parseArgs(Plot plotApplet, String args[])
-	throws CmdLineArgException
+    private int _parseArgs(String args[])
 	{
         int i = 0, j, argsread;
         String arg;
-	String unsupportedOptions[] = {
-	    "-bd", "-bg", "-brb", "-bw", "-fg", "-gw", "-lf", "-lw",
-	    "-tf", "-zg", "-zw"
-	};
-	String unsupportedFlags[] = {
-	    "-bb", "-lnx", "-lny", "-rv"
-	};
+
 	// Default URL to be opened
 	String dataurl = "";
 
@@ -263,132 +250,28 @@ public class Pxgraph extends Frame {
         while (i < args.length && (args[i].startsWith("-") || 
             args[i].startsWith("=")) ) {
             arg = args[i++];
-	    if (_debug) System.out.print("arg = " + arg + "\n");
+	    if (_debug > 2) System.out.print("Pxgraph: arg = " + arg + "\n");
 
 	    if (arg.startsWith("-")) {
-		// Search for unsupported options that take arguments
-		boolean badarg = false;
-		for(j = 0; j < unsupportedOptions.length; j++) {
-		    if (arg.equals(unsupportedOptions[j])) {
-			System.err.println("pxgraph: " + arg +
-					   " is not yet supported");
-			i++;
-			badarg = true;
-		    }
-		}
-		if (badarg) continue;
-		// Search for unsupported boolean flags
-		for(j = 0; j < unsupportedFlags.length; j++) {
-		    if (arg.equals(unsupportedFlags[j])) {
-			System.err.println("pxgraph: " + arg +
-					   " is not yet supported");
-			badarg = true;
-		    }
-
-		}
-		if (badarg) continue;
-
-		if (arg.equals("-brw")) {
-		    // -brw <width> BarWidth Bars: 
-		    if (!plotApplet.parseLine("Bars: " + args[i++])) {
-			throw new 
-			    CmdLineArgException("Failed to parse `"+arg+"'");
-		    }
-		    continue;
-		} else if (arg.equals("-lx")) {
-		    // -lx <xl,xh> XLowLimit, XHighLimit  XRange: 
-		    if (!plotApplet.parseLine("XRange: " + args[i++])) {
-			throw new 
-			    CmdLineArgException("Failed to parse `"+arg+"'");
-		    }
-		    continue;
-		} else if (arg.equals("-ly")) {
-		    // -ly <yl,yh> YLowLimit, YHighLimit  YRange: 
-		    if (!plotApplet.parseLine("YRange: " + args[i++])) {
-			throw new 
-			    CmdLineArgException("Failed to parse `"+arg+"'");
-		    }
-		    continue;
-		} else if (arg.equals("-t")) {
-		    // -t <title> TitleText "An X Graph"
-		    title =  args[i++];
-		    continue;
-		} else if (arg.equals("-x")) {
-		    // -x <unitName> XUnitText XLabel:
-		    plotApplet.setXLabel(args[i++]); 
-		    continue;
-		} else if (arg.equals("-y")) {
-		    // -y <unitName> YUnitText YLabel:
-		    plotApplet.setYLabel(args[i++]); 
-		    continue;		    
-		} else if (arg.equals("-bar")) {
-		    //-bar BarGraph Bars: on Marks: none Lines: off
-		    plotApplet.setBars(true); 
-		    plotApplet.setMarksStyle("none");
-		    plotApplet.setConnected(false);
-		    continue;
-		} else if (arg.equals("-binary")) {
-		    plotApplet.setBinary(true);
-		    continue;
-		} else if (arg.equals("-db")) {
-		    _debug = true;
-		    continue;
-		} else if (arg.equals("-debug")) {
-		    // -debug is not in the original X11 pxgraph.
-		    _debug = true;
+		if (arg.equals("-db") || arg.equals("-debug")) {
+		    _debug = (int)Integer.valueOf(args[i++]).intValue();
 		    continue;
 		} else if (arg.equals("-help")) {
 		    // -help is not in the original X11 pxgraph.
 		    _help();
 		    continue;
-		} else if (arg.equals("-m")) {
-		    // -m Markers Marks: various
-		    plotApplet.setMarksStyle("various");
-		    continue;
-		} else if (arg.equals("-M")) {
-		    // -M StyleMarkers Marks: various
-		    plotApplet.setMarksStyle("various");
-		    continue;
-		} else if (arg.equals("-nl")) {
-		    // -nl NoLines Lines: off
-		    plotApplet.setConnected(false);
-		    continue;
-		} else if (arg.equals("-p")) {
-		    // -p PixelMarkers Marks: points
-		    plotApplet.setMarksStyle("points");
-		    continue;
-		} else if (arg.equals("-P")) {
-		    // -P LargePixel Marks: dots\n 
-		    plotApplet.setMarksStyle("dots");
-		    continue;
 		} else if (arg.equals("-test")) {
 		    // -test is not in the original X11 pxgraph.
 		    _test = true;
 		    continue;
-		} else if (arg.equals("-tk")) {
-		    plotApplet.setGrid(false);
+		} else if (arg.equals("-t")) {
+		    // -t <title> TitleText "An X Graph"
+		    title =  args[i++];
 		    continue;
 		} else if (arg.equals("-v") || arg.equals("-version")) {
 		    // -version is not in the original X11 pxgraph.
 		    _version();
 		    continue;
-		} else if (arg.equals("-m")) {
-
-		} if (arg.length() > 1  && arg.charAt(0) == '-') {
-		    // Process '-<digit> <datasetname>'
-		    try {
-			Integer datasetnumberint = new
-			    Integer(arg.substring(1));
-			int datasetnumber = datasetnumberint.intValue();
-			if (datasetnumber >= 0 &&
-			    datasetnumber <= plotApplet.getMaxDataSets()) {
-                                if (_debug) System.out.println("addLegend "
-                                                +datasetnumber + " " + args[i]);
-                                plotApplet.addLegend(datasetnumber, args[i++]);
-                                continue;
-			}
-		    } catch (NumberFormatException e) {
-		    }
 		}
 	    } else if (arg.startsWith("=")) {
 		// Process =WxH+X+Y
@@ -410,18 +293,7 @@ public class Pxgraph extends Frame {
 		continue;
 
             }
-	    // If we got to here, then we failed to parse the arg 
-	    throw new 
-		CmdLineArgException("Failed to parse `" + arg + "'");
 	}
-        if (i < args.length) {
-            dataurl=args[i];
-	}
-        argsread = i++;
-	// Now we call methods in the Plot applet and the Frame
-	// according to the defaults and the values that over rode them
-	plotApplet.setDataurl(dataurl); // Set the dataurl in PlotBox
-	plotApplet.setTitle(title);
 
 	// Set up the frame
 	resize(width,height); 	// FIXME: resize is deprecated in 1.1,
@@ -429,10 +301,17 @@ public class Pxgraph extends Frame {
 				// but setsize is not in JDK1.0.2
 	setTitle(title);
 
-        if (_debug) {
-	    System.err.println("dataurl = " + dataurl);
-	    System.err.println("title= " + title);
-	    System.err.println("width = " + width + " height = " + height);
+        if (i < args.length) {
+            dataurl=args[i];
+	}
+        argsread = i++;
+
+        if (_debug > 2) {
+	    System.err.println("Pxgraph: dataurl = " + dataurl);
+	    System.err.println("Pxgraph: title = " + title);
+	    System.err.println("Pxgraph: width = " + width + 
+			       " height = " + height +
+			       " _debug = " + _debug);
 	}
         return argsread;
     }
@@ -454,7 +333,7 @@ public class Pxgraph extends Frame {
     private Button _exitButton;
 
     // For debugging, call with -db or -debug.
-    private static boolean _debug = false;
+    private static int _debug = 0;
 
     // If true, then auto exit after a few seconds.
     private static boolean _test = false;

@@ -145,8 +145,8 @@ public class PlotBox extends Applet {
      * before calling this method.
      */
     public void addLegend(int dataset, String legend) {
-        if (_debug) System.out.println("PlotBox addLegend: " + dataset + " " +
-                                       legend);
+        if (_debug > 8) System.out.println("PlotBox addLegend: " +
+					   dataset + " " + legend);
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
@@ -567,9 +567,11 @@ public class PlotBox extends Applet {
      */
     public String[][] getParameterInfo () {
         String pinfo[][] = {
-            {"dataurl",   "url",     "the URL of the data to plot"}
+            {"dataurl",   "url",     "the URL of the data to plot"},
+            {"pxgraphargs",   "args",    
+	     "pxgraph style command line arguments"}
         };
-	    return pinfo;
+	return pinfo;
     }
     
     /**
@@ -588,7 +590,7 @@ public class PlotBox extends Applet {
         _yticks = null;
         _yticklabels = null;
 
-        graphics = this.getGraphics();
+        graphics = getGraphics();
 
 	if (graphics == null) {
 	    System.out.println("PlotBox::init(): Internal error: " +
@@ -789,7 +791,7 @@ public class PlotBox extends Applet {
       */
     public void parseFile(String dataurl) {
 	DataInputStream in;
-        if (_debug) System.out.println("PlotBox parseFile "+ dataurl);
+        if (_debug > 2) System.out.println("PlotBox: parseFile "+ dataurl);
 	if (dataurl == null || dataurl.length() == 0) {
 	    // Open up stdin
 	    in = new DataInputStream(System.in);
@@ -833,7 +835,7 @@ public class PlotBox extends Applet {
  		// deprecated in JDK1.1, but we need to compile under
 		//1.0.2 for netscape3.x compatibilty.
 		while (line != null) {
-		    parseLine(line);
+		    _parseLine(line);
 		    line = in.readLine(); // readLine() is deprecated.
 		}
 	    }
@@ -851,104 +853,11 @@ public class PlotBox extends Applet {
         
     } 
   
-    /**
-     * Parse a line that gives plotting information.  In this base
-     * class, only lines pertaining to the title and labels are processed.
-     * Everything else is ignored. Return true if the line is recognized.
-     */
-    public boolean parseLine (String line) {
-        // Parse commands in the input file, ignoring lines with
-        // syntax errors or unrecognized commands.
-
-	// We convert the line to lower case so that the command
-	// names are case insensitive.
-	String lcLine = new String(line.toLowerCase());
-        if (lcLine.startsWith("#")) {
-            // comment character
-            return true;
-        }
-        if (lcLine.startsWith("titletext:")) {
-            setTitle((line.substring(10)).trim());
-            return true;
-        }
-        if (lcLine.startsWith("xlabel:")) {
-            setXLabel((line.substring(7)).trim());
-            return true;
-        }
-        if (lcLine.startsWith("ylabel:")) {
-            setYLabel((line.substring(7)).trim());
-            return true;
-        }
-        if (lcLine.startsWith("xrange:")) {
-        	int comma = line.indexOf(",", 7);
-        	if (comma > 0) {
-        	    String min = (line.substring(7,comma)).trim();
-        	    String max = (line.substring(comma+1)).trim();
-        	    try {
-        	        Double dmin = new Double(min);
-        	        Double dmax = new Double(max);
-        	        setXRange(dmin.doubleValue(), dmax.doubleValue());
-        	    } catch (NumberFormatException e) {
-        	        // ignore if format is bogus.
-        	    }
-        	}
-        	return true;
-        }
-        if (lcLine.startsWith("yrange:")) {
-        	int comma = line.indexOf(",", 7);
-        	if (comma > 0) {
-        	    String min = (line.substring(7,comma)).trim();
-        	    String max = (line.substring(comma+1)).trim();
-        	    try {
-        	        Double dmin = new Double(min);
-        	        Double dmax = new Double(max);
-        	        setYRange(dmin.doubleValue(), dmax.doubleValue());
-        	    } catch (NumberFormatException e) {
-        	        // ignore if format is bogus.
-        	    }
-        	}
-        	return true;
-        }
-        if (lcLine.startsWith("xticks:")) {
-            // example:
-            // XTicks "label" 0, "label" 1, "label" 3
-            boolean cont = true;
-            _parsePairs(line.substring(7), true);
-        	return true;
-        }
-        if (lcLine.startsWith("yticks:")) {
-            // example:
-            // YTicks "label" 0, "label" 1, "label" 3
-            boolean cont = true;
-            _parsePairs(line.substring(7), false);
-        	return true;
-        }
-        
-        if (lcLine.startsWith("grid:")) {
-            if (lcLine.indexOf("off",5) >= 0) {
-                _grid = false;
-            } else {
-                _grid = true;
-            }
-            return true;
-        }
-        if (lcLine.startsWith("color:")) {
-            if (lcLine.indexOf("off",6) >= 0) {
-                _usecolor = false;
-            } else {
-                _usecolor = true;
-            }
-            return true;
-        }
-        return false;
-    }
-
-
     /** Set the binary flag to true if we are reading pxgraph format binar
      * data.
      */
     public void setBinary (boolean binary) {
-	this._binary = binary;
+	_binary = binary;
     }
 
     /** Set the dataurl.  This method is used by Applications, applets
@@ -956,7 +865,7 @@ public class PlotBox extends Applet {
      * &lt;param name="dataurl" value="data.plt"&gt;
      */
     public void setDataurl (String dataurl) {
-	this._dataurl = dataurl;
+	_dataurl = dataurl;
     }
 
     /**
@@ -1063,6 +972,97 @@ public class PlotBox extends Applet {
 					"baseclass");
     }
 
+    /**
+     * Parse a line that gives plotting information.  In this base
+     * class, only lines pertaining to the title and labels are processed.
+     * Everything else is ignored. Return true if the line is recognized.
+     */
+    protected boolean _parseLine (String line) {
+        // Parse commands in the input file, ignoring lines with
+        // syntax errors or unrecognized commands.
+        if (_debug > 20) System.out.println("PlotBox: parseLine "+ line);
+	// We convert the line to lower case so that the command
+	// names are case insensitive.
+	String lcLine = new String(line.toLowerCase());
+        if (lcLine.startsWith("#")) {
+            // comment character
+            return true;
+        }
+        if (lcLine.startsWith("titletext:")) {
+            setTitle((line.substring(10)).trim());
+            return true;
+        }
+        if (lcLine.startsWith("xlabel:")) {
+            setXLabel((line.substring(7)).trim());
+            return true;
+        }
+        if (lcLine.startsWith("ylabel:")) {
+            setYLabel((line.substring(7)).trim());
+            return true;
+        }
+        if (lcLine.startsWith("xrange:")) {
+        	int comma = line.indexOf(",", 7);
+        	if (comma > 0) {
+        	    String min = (line.substring(7,comma)).trim();
+        	    String max = (line.substring(comma+1)).trim();
+        	    try {
+        	        Double dmin = new Double(min);
+        	        Double dmax = new Double(max);
+        	        setXRange(dmin.doubleValue(), dmax.doubleValue());
+        	    } catch (NumberFormatException e) {
+        	        // ignore if format is bogus.
+        	    }
+        	}
+        	return true;
+        }
+        if (lcLine.startsWith("yrange:")) {
+        	int comma = line.indexOf(",", 7);
+        	if (comma > 0) {
+        	    String min = (line.substring(7,comma)).trim();
+        	    String max = (line.substring(comma+1)).trim();
+        	    try {
+        	        Double dmin = new Double(min);
+        	        Double dmax = new Double(max);
+        	        setYRange(dmin.doubleValue(), dmax.doubleValue());
+        	    } catch (NumberFormatException e) {
+        	        // ignore if format is bogus.
+        	    }
+        	}
+        	return true;
+        }
+        if (lcLine.startsWith("xticks:")) {
+            // example:
+            // XTicks "label" 0, "label" 1, "label" 3
+            boolean cont = true;
+            _parsePairs(line.substring(7), true);
+        	return true;
+        }
+        if (lcLine.startsWith("yticks:")) {
+            // example:
+            // YTicks "label" 0, "label" 1, "label" 3
+            boolean cont = true;
+            _parsePairs(line.substring(7), false);
+        	return true;
+        }
+        
+        if (lcLine.startsWith("grid:")) {
+            if (lcLine.indexOf("off",5) >= 0) {
+                _grid = false;
+            } else {
+                _grid = true;
+            }
+            return true;
+        }
+        if (lcLine.startsWith("color:")) {
+            if (lcLine.indexOf("off",6) >= 0) {
+                _usecolor = false;
+            } else {
+                _usecolor = true;
+            }
+            return true;
+        }
+        return false;
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
@@ -1278,7 +1278,7 @@ public class PlotBox extends Applet {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private boolean _debug = false;
+    protected int _debug = 0;
     
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().

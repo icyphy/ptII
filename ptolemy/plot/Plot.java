@@ -158,6 +158,8 @@ public class Plot extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
 				      boolean connected) {
+	if (_debug > 100) System.out.println("Plot: addPoint " + dataset + " "
+					     +x+" "+y+" "+connected);
         if (dataset >= _numsets || dataset < 0) return;
         
         // For auto-ranging, keep track of min and max.
@@ -252,6 +254,20 @@ public class Plot extends PlotBox {
     public synchronized void init() {
         setNumSets(_numsets);
         _currentdataset = -1;
+
+        // Check to see if pxgraphargs has been given. 
+        // Need the catch here because applets used as components have
+        // no parameters. 
+	String pxgraphargs = null;
+        try {
+            pxgraphargs = getParameter("pxgraphargs");
+	    _parsePxgraphargs(pxgraphargs);
+        } catch (NullPointerException e) {
+	} catch (CmdLineArgException e) {
+	    System.out.println("Plot: failed to parse `"+pxgraphargs+
+			       "': " +e);
+	}
+
         super.init();
     }
 
@@ -262,118 +278,179 @@ public class Plot extends PlotBox {
 	    drawPlot(true);
     }
 
-    /**
-     * Parse a line that gives plotting information. Return true if
-     * the line is recognized.  Lines with syntax errors are ignored.
-     */
-    public boolean parseLine (String line) {
-        boolean connected = false;
-        if (_debug> 8) System.out.println("Plot parseLine " + line);
-        if (_connected) connected = true;
-        // parse only if the super class does not recognize the line.
-        if (super.parseLine(line)) {
-	    return true;
-	} else {
-	    // We convert the line to lower case so that the command
-	    // names are case insensitive
-	    String lcLine = new String(line.toLowerCase());
-            int start = 0;
-            if (lcLine.startsWith("marks:")) {
-                String style = (line.substring(6)).trim();
-                setMarksStyle(style);
-                return true;
-            } else if (lcLine.startsWith("numsets:")) {
-                String num = (line.substring(8)).trim();
-                try {
-                    setNumSets(Integer.parseInt(num));
-                }
-                catch (NumberFormatException e) {
-                    // ignore bogons
-                }
-                return true;
-            } else if (lcLine.startsWith("dataset:")) {
-                // new data set
-                _firstinset = true;
-                _sawfirstdataset = true;
-                _currentdataset++;
-                if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
-                String legend = (line.substring(8)).trim();
-                addLegend(_currentdataset, legend);
-                return true;
-            } else if (lcLine.startsWith("lines:")) {
-                if (lcLine.indexOf("off",6) >= 0) {
-                    setConnected(false);
-                } else {
-                    setConnected(true);
-                }
-                return true;
-            } else if (lcLine.startsWith("impulses:")) {
-                if (lcLine.indexOf("off",9) >= 0) {
-                    setImpulses(false);
-                } else {
-                    setImpulses(true);
-                }
-                return true;
-            } else if (lcLine.startsWith("bars:")) {
-                if (lcLine.indexOf("off",5) >= 0) {
-                    setBars(false);
-                } else {
-                    setBars(true);
-         	        int comma = line.indexOf(",", 5);
-         	        String barwidth;
-         	        String baroffset = null;
-        	        if (comma > 0) {
-                        barwidth = (line.substring(5, comma)).trim();
-                        baroffset = (line.substring(comma+1)).trim();
-                    } else {
-                        barwidth = (line.substring(5)).trim();
-                    }
-        	        try {
-        	            Double bwidth = new Double(barwidth);
-        	            double boffset = _baroffset;
-        	            if (baroffset != null) {
-        	                boffset = (new Double(baroffset)).
-				    doubleValue();
-        	            }
-        	            setBars(bwidth.doubleValue(), boffset);
-        	        } catch (NumberFormatException e) {
-        	            // ignore if format is bogus.
-        	        }
-                }
-                return true;
-            } else if (line.startsWith("move:")) {
-                // a disconnected point
-                connected = false;
-                start = 5;
-            } else if (line.startsWith("draw:")) {
-                // a connected point, if connect is enabled.
-                start = 5;
-            }
-            // See if an x,y or x<Space>y x<Taby> point is given
-         	int fieldsplit = line.indexOf(",", start);
-        	if (fieldsplit == -1) {
-		    fieldsplit = line.indexOf(" ", start);
-		}
-        	if (fieldsplit == -1) {
-		    fieldsplit = line.indexOf("	", start);  // a tab
-		}
+    /** Parse pxgraph style command line arguments.
+     * This method only for backward compatibility with the X11 pxgraph
+     * program 
+     */	
+    public int parseArgs(String args[])
+	throws CmdLineArgException
+	{
+        int i = 0, j, argsread;
+        String arg;
+	String unsupportedOptions[] = {
+	    "-bd", "-bg", "-brb", "-bw", "-fg", "-gw", "-lf", "-lw",
+	    "-tf", "-zg", "-zw"
+	};
+	String unsupportedFlags[] = {
+	    "-bb", "-lnx", "-lny", "-rv"
+	};
+	// Default URL to be opened
+	String dataurl = "";
 
-        	if (fieldsplit > 0) {
-                    String x = (line.substring(start, fieldsplit)).trim();
-                    String y = (line.substring(fieldsplit+1)).trim();
-        	    try {
-        	        Double xpt = new Double(x);
-        	        Double ypt = new Double(y);
-                        connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, xpt.doubleValue(),
-				 ypt.doubleValue(), connected);
-        	        return true;
-        	    } catch (NumberFormatException e) {
-        	        // ignore if format is bogus.
-        	    }
-        	}
-        }
-        return false;
+	String title = "A plot";
+
+        while (i < args.length && (args[i].startsWith("-") || 
+            args[i].startsWith("=")) ) {
+            arg = args[i++];
+	    if (_debug > 2) System.out.print("Plot: arg = " + arg + "\n");
+
+	    if (arg.startsWith("-")) {
+		// Search for unsupported options that take arguments
+		boolean badarg = false;
+		for(j = 0; j < unsupportedOptions.length; j++) {
+		    if (arg.equals(unsupportedOptions[j])) {
+			System.err.println("pxgraph: " + arg +
+					   " is not yet supported");
+			i++;
+			badarg = true;
+		    }
+		}
+		if (badarg) continue;
+		// Search for unsupported boolean flags
+		for(j = 0; j < unsupportedFlags.length; j++) {
+		    if (arg.equals(unsupportedFlags[j])) {
+			System.err.println("pxgraph: " + arg +
+					   " is not yet supported");
+			badarg = true;
+		    }
+
+		}
+		if (badarg) continue;
+
+		if (arg.equals("-brw")) {
+		    // -brw <width> BarWidth Bars: 
+		    if (!_parseLine("Bars: " + args[i++])) {
+			throw new 
+			    CmdLineArgException("Failed to parse `"+arg+"'");
+		    }
+		    continue;
+		} else if (arg.equals("-lx")) {
+		    // -lx <xl,xh> XLowLimit, XHighLimit  XRange: 
+		    if (!_parseLine("XRange: " + args[i++])) {
+			throw new 
+			    CmdLineArgException("Failed to parse `"+arg+"'");
+		    }
+		    continue;
+		} else if (arg.equals("-ly")) {
+		    // -ly <yl,yh> YLowLimit, YHighLimit  YRange: 
+		    if (!_parseLine("YRange: " + args[i++])) {
+			throw new 
+			    CmdLineArgException("Failed to parse `"+arg+"'");
+		    }
+		    continue;
+		} else if (arg.equals("-t")) {
+		    // -t <title> TitleText "An X Graph"
+		    title =  args[i++];
+		    continue;
+		} else if (arg.equals("-x")) {
+		    // -x <unitName> XUnitText XLabel:
+		    setXLabel(args[i++]); 
+		    continue;
+		} else if (arg.equals("-y")) {
+		    // -y <unitName> YUnitText YLabel:
+		    setYLabel(args[i++]); 
+		    continue;		    
+		} else if (arg.equals("-bar")) {
+		    //-bar BarGraph Bars: on Marks: none Lines: off
+		    setBars(true); 
+		    setMarksStyle("none");
+		    setConnected(false);
+		    continue;
+		} else if (arg.equals("-binary")) {
+		    setBinary(true);
+		    continue;
+		} else if (arg.equals("-db")) {
+		    _debug = 6;
+		    continue;
+		} else if (arg.equals("-debug")) {
+		    // -debug is not in the original X11 pxgraph.
+		    _debug = (int)Integer.valueOf(args[i++]).intValue();
+		    continue;
+		} else if (arg.equals("-help")) {
+		    // -help is not in the original X11 pxgraph.
+		    //_help();
+		    continue;
+		} else if (arg.equals("-m")) {
+		    // -m Markers Marks: various
+		    setMarksStyle("various");
+		    continue;
+		} else if (arg.equals("-M")) {
+		    // -M StyleMarkers Marks: various
+		    setMarksStyle("various");
+		    continue;
+		} else if (arg.equals("-nl")) {
+		    // -nl NoLines Lines: off
+		    setConnected(false);
+		    continue;
+		} else if (arg.equals("-p")) {
+		    // -p PixelMarkers Marks: points
+		    setMarksStyle("points");
+		    continue;
+		} else if (arg.equals("-P")) {
+		    // -P LargePixel Marks: dots\n 
+		    setMarksStyle("dots");
+		    continue;
+		} else if (arg.equals("-test")) {
+		    // -test is not in the original X11 pxgraph.
+		    //_test = true;
+		    continue;
+		} else if (arg.equals("-tk")) {
+		    setGrid(false);
+		    continue;
+		} else if (arg.equals("-v") || arg.equals("-version")) {
+		    // -version is not in the original X11 pxgraph.
+		    //_version();
+		    continue;
+		} else if (arg.equals("-m")) {
+
+		} if (arg.length() > 1  && arg.charAt(0) == '-') {
+		    // Process '-<digit> <datasetname>'
+		    try {
+			Integer datasetnumberint = new
+			    Integer(arg.substring(1));
+			int datasetnumber = datasetnumberint.intValue();
+			if (datasetnumber >= 0 &&
+			    datasetnumber <= getMaxDataSets()) {
+                                if (_debug > 8) System.out.println("addLegend "
+                                                +datasetnumber + " " + args[i]);
+                                addLegend(datasetnumber, args[i++]);
+                                continue;
+			}
+		    } catch (NumberFormatException e) {
+		    }
+		}
+	    } else if (arg.startsWith("=")) {
+ 		// Process =WxH+X+Y
+		// FIXME: need to handle 
+            }
+	    // If we got to here, then we failed to parse the arg 
+	    throw new 
+		CmdLineArgException("Failed to parse `" + arg + "'");
+	}
+        if (i < args.length) {
+            dataurl=args[i];
+	}
+        argsread = i++;
+	// Now we call methods in the Plot applet and the Frame
+	// according to the defaults and the values that over rode them
+	setDataurl(dataurl); // Set the dataurl in PlotBox
+	setTitle(title);
+
+        if (_debug>0) {
+	    System.err.println("Plot: dataurl = " + dataurl);
+	    System.err.println("Plot: title= " + title);
+	}
+        return argsread;
     }
 
     /**
@@ -505,74 +582,6 @@ public class Plot extends PlotBox {
     //////////////////////////////////////////////////////////////////////////
     ////                          protected methods                       ////
     
-    /**
-     * Read in a pxgraph format binary file.
-     * @exception PlotDataException if there is a serious data format problem.
-     * @exception java.io.IOException if an I/O error occurs.
-     */	
-    protected void _parseBinaryStream(DataInputStream in) 
-    throws PlotDataException,  IOException
-    {
-        // This method is similar to parseLine() above, except it parses
-        // an entire file at a time.
-        int c;
-        boolean connected = false;
-        if (_debug> 8)
-        System.out.println("Plot _parseBinaryStream _connected = " +_connected);
-	try {
-	    while (true) {
-                if (_connected) connected = true;
-		// Here, we read pxgraph binary format data.
-		// For speed reasons, the Ptolemy group extended 
-		// pxgraph to read binary format data.
-		// The format consists of a command character,
-		// followed by optional arguments
-		// d <4byte float> <4byte float> - Draw a X,Y point
-		// e                             - End of a data set
-		// n <chars> \n                  - New set name, ends in \n
-		// m                             - Move to a point
-		c = in.readByte();
-		switch (c) {
-		case 'd':
-		    {
-			// Data point.
-			float x = in.readFloat();
-			float y = in.readFloat();
-                        connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, x, y, connected);
-		    }
-		    break;
-		case 'e':
-		    // End of set name.
-                    connected = false;
-		    break;
-		case 'n':
-		    {
-			StringBuffer datasetname = new StringBuffer();
-                        _firstinset = true;
-                        _sawfirstdataset = true;
-                        _currentdataset++;
-                        if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
-			// New set name, ends in \n.
-			while (c != '\n')
-			    datasetname.append(in.readChar());
-			addLegend(_currentdataset, datasetname.toString());
-			setConnected(true);
-		    }
-		    break;
-		case 'm':
-                    // a disconnected point
-                    connected = false;
-		    break;
-		default:
-		    throw new PlotDataException("Don't understand `" + c + 
-						"'character in binary data");
-		}
-	    } 
-	} catch (EOFException e) {}	    
-	setConnected(false);
-    }
-
     /**
      * Put a mark corresponding to the specified dataset at the
      * specified x and y position. If the fourth argument is true,
@@ -823,6 +832,189 @@ public class Plot extends PlotBox {
         _sawfirstdataset = false;
     }   
 
+    /**
+     * Read in a pxgraph format binary file.
+     * @exception PlotDataException if there is a serious data format problem.
+     * @exception java.io.IOException if an I/O error occurs.
+     */	
+    protected void _parseBinaryStream(DataInputStream in) 
+    throws PlotDataException,  IOException
+    {
+        // This method is similar to _parseLine() below, except it parses
+        // an entire file at a time.
+        int c;
+        boolean connected = false;
+        if (_debug > 8)
+	    System.out.println("Plot: _parseBinaryStream _connected = " + 
+			       _connected);
+	try {
+	    while (true) {
+                if (_connected) connected = true;
+		// Here, we read pxgraph binary format data.
+		// For speed reasons, the Ptolemy group extended 
+		// pxgraph to read binary format data.
+		// The format consists of a command character,
+		// followed by optional arguments
+		// d <4byte float> <4byte float> - Draw a X,Y point
+		// e                             - End of a data set
+		// n <chars> \n                  - New set name, ends in \n
+		// m                             - Move to a point
+		c = in.readByte();
+		switch (c) {
+		case 'd':
+		    {
+			// Data point.
+			float x = in.readFloat();
+			float y = in.readFloat();
+                        connected = _addLegendIfNecessary(connected);
+                        addPoint(_currentdataset, x, y, connected);
+		    }
+		    break;
+		case 'e':
+		    // End of set name.
+                    connected = false;
+		    break;
+		case 'n':
+		    {
+			StringBuffer datasetname = new StringBuffer();
+                        _firstinset = true;
+                        _sawfirstdataset = true;
+                        _currentdataset++;
+                        if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
+			// New set name, ends in \n.
+			while (c != '\n')
+			    datasetname.append(in.readChar());
+			addLegend(_currentdataset, datasetname.toString());
+			setConnected(true);
+		    }
+		    break;
+		case 'm':
+                    // a disconnected point
+                    connected = false;
+		    break;
+		default:
+		    throw new PlotDataException("Don't understand `" + c + 
+						"'character in binary data");
+		}
+	    } 
+	} catch (EOFException e) {}	    
+	setConnected(false);
+    }
+
+    /**
+     * Parse a line that gives plotting information. Return true if
+     * the line is recognized.  Lines with syntax errors are ignored.
+     */
+    protected boolean _parseLine (String line) {
+        boolean connected = false;
+        if (_debug> 8) System.out.println("Plot: _parseLine " + line);
+        if (_connected) connected = true;
+        // parse only if the super class does not recognize the line.
+        if (super._parseLine(line)) {
+	    return true;
+	} else {
+	    // We convert the line to lower case so that the command
+	    // names are case insensitive
+	    String lcLine = new String(line.toLowerCase());
+            int start = 0;
+            if (lcLine.startsWith("marks:")) {
+                String style = (line.substring(6)).trim();
+                setMarksStyle(style);
+                return true;
+            } else if (lcLine.startsWith("numsets:")) {
+                String num = (line.substring(8)).trim();
+                try {
+                    setNumSets(Integer.parseInt(num));
+                }
+                catch (NumberFormatException e) {
+                    // ignore bogons
+                }
+                return true;
+            } else if (lcLine.startsWith("dataset:")) {
+                // new data set
+                _firstinset = true;
+                _sawfirstdataset = true;
+                _currentdataset++;
+                if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
+                String legend = (line.substring(8)).trim();
+                addLegend(_currentdataset, legend);
+                return true;
+            } else if (lcLine.startsWith("lines:")) {
+                if (lcLine.indexOf("off",6) >= 0) {
+                    setConnected(false);
+                } else {
+                    setConnected(true);
+                }
+                return true;
+            } else if (lcLine.startsWith("impulses:")) {
+                if (lcLine.indexOf("off",9) >= 0) {
+                    setImpulses(false);
+                } else {
+                    setImpulses(true);
+                }
+                return true;
+            } else if (lcLine.startsWith("bars:")) {
+                if (lcLine.indexOf("off",5) >= 0) {
+                    setBars(false);
+                } else {
+                    setBars(true);
+         	        int comma = line.indexOf(",", 5);
+         	        String barwidth;
+         	        String baroffset = null;
+        	        if (comma > 0) {
+                        barwidth = (line.substring(5, comma)).trim();
+                        baroffset = (line.substring(comma+1)).trim();
+                    } else {
+                        barwidth = (line.substring(5)).trim();
+                    }
+        	        try {
+        	            Double bwidth = new Double(barwidth);
+        	            double boffset = _baroffset;
+        	            if (baroffset != null) {
+        	                boffset = (new Double(baroffset)).
+				    doubleValue();
+        	            }
+        	            setBars(bwidth.doubleValue(), boffset);
+        	        } catch (NumberFormatException e) {
+        	            // ignore if format is bogus.
+        	        }
+                }
+                return true;
+            } else if (line.startsWith("move:")) {
+                // a disconnected point
+                connected = false;
+                start = 5;
+            } else if (line.startsWith("draw:")) {
+                // a connected point, if connect is enabled.
+                start = 5;
+            }
+            // See if an x,y or x<Space>y x<Taby> point is given
+         	int fieldsplit = line.indexOf(",", start);
+        	if (fieldsplit == -1) {
+		    fieldsplit = line.indexOf(" ", start);
+		}
+        	if (fieldsplit == -1) {
+		    fieldsplit = line.indexOf("	", start);  // a tab
+		}
+
+        	if (fieldsplit > 0) {
+                    String x = (line.substring(start, fieldsplit)).trim();
+                    String y = (line.substring(fieldsplit+1)).trim();
+        	    try {
+        	        Double xpt = new Double(x);
+        	        Double ypt = new Double(y);
+                        connected = _addLegendIfNecessary(connected);
+                        addPoint(_currentdataset, xpt.doubleValue(),
+				 ypt.doubleValue(), connected);
+        	        return true;
+        	    } catch (NumberFormatException e) {
+        	        // ignore if format is bogus.
+        	    }
+        	}
+        }
+        return false;
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                       protected variables                        ////
     
@@ -832,7 +1024,7 @@ public class Plot extends PlotBox {
     // A vector of datasets.
     protected Vector[] _points;
 
-    // An indicator of the marks style.  See parseLine method for
+    // An indicator of the marks style.  See _parseLine method for
     // interpretation.
     protected int _marks;
     
@@ -881,11 +1073,84 @@ public class Plot extends PlotBox {
         _drawPoint(dataset, xpos, ypos, pt.connected, true);
     }
     
+    /* Split pxgraphargs up into an array and call _parseArgs
+     */       
+    private int _parsePxgraphargs(String pxgraphargs) 
+    throws CmdLineArgException  {
+        // We convert the String to a Stream and then use a StreamTokenizer
+	// to parse the arguments into a Vector and then copy
+	// the vector into an array of Strings.  We use a Vector
+	// so that we can handle an arbitrary number of arguments
+	if (_debug > 3) System.out.println("Plot: _parsePxgraphargs " +
+					   pxgraphargs);
+
+	Vector argvector = new Vector();
+	boolean prependdash = false; // true if we need to add a -
+
+	
+	StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs); // StringBufferInput is deprecated, but StringReader is not in 1.0.2
+
+	//StringReader inp = new StringReader(pxgraphargs);
+
+	try {
+            StreamTokenizer stoken = new StreamTokenizer(inp);
+
+	    // We don't want to parse numbers specially, so we reset
+	    // the syntax and then add back what we want.
+	    stoken.resetSyntax();
+            stoken.whitespaceChars(0, ' ');
+	    stoken.wordChars('(','~');
+	    stoken.quoteChar('"');
+            int c;
+
+         out:
+            while (true) {
+                c = stoken.nextToken();
+		//System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" "); 
+                switch (stoken.ttype) {        // same as value of 'c'
+                case StreamTokenizer.TT_EOF:
+                    break out;
+                case StreamTokenizer.TT_WORD:
+                    //System.out.println("Word: " + stoken.sval);
+		    if (prependdash) {
+			prependdash = false;
+			argvector.addElement(new String("-"+stoken.sval));
+		    } else {
+			argvector.addElement(new String(stoken.sval));
+		    }
+
+                    break;
+		case '-':
+		    prependdash = true;
+		    break;
+		case '"':
+                    //System.out.println("String: " + stoken.sval);
+		    argvector.addElement(new String(stoken.sval));
+		    break;
+                default:
+                    throw new IOException("Failed to parse: "+ (char)c +
+					  " in `"+pxgraphargs+"'");
+                }
+            }
+	 } catch (IOException e) {
+            e.printStackTrace();
+	 }
+
+
+	 // Create a array 
+	 String args[] = new String[argvector.size()];
+	 for(int i = 0; i<argvector.size(); i++) {
+	     args[i] = (String)argvector.elementAt(i);
+	     if (_debug > 2) System.out.print("<"+args[i]+ "> ");
+	 }
+	 if (_debug > 2) System.out.println(" ");
+
+	 return parseArgs(args);
+     }
+
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
     
-    private int _debug = 0;
-
     private int _pointsPersistence = 0;
     private int _sweepsPersistence = 0;
     private boolean _bars = false;
@@ -897,8 +1162,6 @@ public class Plot extends PlotBox {
     private int _filecount = 0;         // Number of files read in.
     // Have we seen a DataSet line in the current data file?
     private boolean _sawfirstdataset = false;
-    
-
     
     // Give both radius and diameter of a point for efficiency.
     private int _radius = 3;
