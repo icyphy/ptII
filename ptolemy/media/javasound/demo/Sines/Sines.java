@@ -58,7 +58,7 @@ public class Sines {
 	// Amount of data to read or write from/to the internal buffer
 	// at a time. This should be set smaller than the internal buffer
 	// size!
-	int getSamplesSize = 256; 
+	int getSamplesSize = 25; 
 
 	int putSamplesSize = getSamplesSize;
 

@@ -473,9 +473,9 @@ public class SoundPlayback {
             // Open line and suggest a buffer size (in bytes) to use or
 	    // the internal audio buffer.
 	    _sourceLine.open(format, _bufferSize*_frameSizeInBytes);
-	    System.out.println("SoundPlayback: internal audio buffer size = " +
-                    _sourceLine.getBufferSize()/_frameSizeInBytes +
-                    " samples.");
+	    //System.out.println("SoundPlayback: internal audio buffer size = " +
+	    //      _sourceLine.getBufferSize()/_frameSizeInBytes +
+	    //      " samples.");
 
 	} catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +

@@ -552,10 +552,10 @@ public class SoundCapture {
                         "real-time audio capture: " + ex);
         }
 
-        System.out.println("SoundCapture: internal audio " +
-                "buffer size = " +
-                _targetLine.getBufferSize()/_frameSizeInBytes +
-		" samples.");
+        //System.out.println("SoundCapture: internal audio " +
+	//      "buffer size = " +
+	//      _targetLine.getBufferSize()/_frameSizeInBytes +
+	//" samples.");
 
         int targetBufferLengthInBytes = _productionRate *
             _frameSizeInBytes;
