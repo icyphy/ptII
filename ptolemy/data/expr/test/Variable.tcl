@@ -419,3 +419,15 @@ test Variable-11.0 {Check reach of scope} {
     $p2 setExpression {P1}
     [$p2 getToken] stringValue
 } {a}
+
+#################################
+####
+test Variable-12.0 {Check type changes} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set t [java::new ptolemy.data.DoubleToken 1.0]
+    set p1 [java::new ptolemy.data.expr.Variable $e1 P1 $t]
+    set ti [java::new ptolemy.data.IntToken 2]
+    $p1 setToken $ti
+    [java::cast ptolemy.data.DoubleToken [$p1 getToken]] stringValue
+} {2.0}
