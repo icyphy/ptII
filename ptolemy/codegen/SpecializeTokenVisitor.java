@@ -85,6 +85,14 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     public static Map specializeTokens(List nodeList,
             ActorCodeGeneratorInfo actorInfo, PtolemyTypeVisitor typeVisitor) {
 
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.specializeTokens(): "
+			       + "Start:" 
+			       + "\n nodeList.size(): " + nodeList.size()
+			       + "\n actorInfo: " + actorInfo
+			       + "\n typeVisitor: " + typeVisitor
+			       );
+	}
         Iterator nodeItr = nodeList.iterator();
 
         InequalitySolver solver = new InequalitySolver(_cpo);
@@ -99,22 +107,34 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         while (nodeItr.hasNext()) {
             CompileUnitNode unitNode = (CompileUnitNode) nodeItr.next();
-
             unitNode.accept(specializeVisitor, null);
         }
 
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.specializeTokens(): "
+			       + "\n solver:" + solver
+			       + "\n _cpo:" + _cpo.description()
+			       + "\n declToTermMap:\n"
+			       + _declToTermMapDescription(declToTermMap)
+			       + "\n solver:\n"
+			       + solver.description()
+			       );
+	}
         boolean ok = solver.solveLeast();
 
         if (!ok) {
-            System.err.println("Warning: unable to solve for Token types");
+            System.err.println("Warning: "
+			       + "SpecializedTokenVisitor.specializeTokens(): "
+			       + "unable to solve for Token types.");
 
             Iterator unsatisfiedItr = solver.unsatisfiedInequalities();
 
-            System.err.println("Warning: unsatisfied inequalities:");
+            System.err.println("SpecializedTokenVisitor.specializeTokens(): "
+			       + "Warning: unsatisfied inequalities:");
 
             while (unsatisfiedItr.hasNext()) {
-                System.err.println("Warning: " +
-                        unsatisfiedItr.next().toString());
+                System.err.println("Warning: " 
+				   + unsatisfiedItr.next().toString());
             }
             System.err.println("Warning: end of unsatisfied inequalities");
         }
@@ -126,7 +146,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         while (termItr.hasNext()) {
             InequalityTerm term = (InequalityTerm) termItr.next();
 
-            //System.out.println(term.toString());
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor.specializeTokens(): "
+				   + "term = " + term.toString());
+	    }
 
             ClassDecl value = (ClassDecl) term.getValue();
 
@@ -135,19 +158,21 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             if ((value == PtolemyTypeIdentifier.DUMMY_LOWER_BOUND) ||
                     (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
+                    (value == PtolemyTypeIdentifier.ARRAY_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-                System.err.println("Warning: SpecializeTokenVisitor"
-                        + ".specializeTokens(): "
-                        + "could not solve for specific "
-                        + "token type for declaration '"
-                        + typedDecl.getName()
-                        + "' in "
-                        + actorInfo.actor.getName()
-                        + ".\n term = " + value
-                        + " which is unsupported. \n"
-                        + "Try setting the type with something like"
-                        + "\n'fileWriter.input.setTypeEquals"
-                        + "(BaseType.INT);'");
+                System.err.println("Warning: "
+				   + "SpecializedTokenVisitor"
+				   + ".specializeTokens(): "
+				   + "could not solve for specific "
+				   + "token type for declaration '"
+				   + typedDecl.getName()
+				   + "' in "
+				   + actorInfo.actor.getName()
+				   + ".\n term = " + value
+				   + " which is unsupported. \n"
+				   + "Try setting the type with something like"
+				   + "\n'fileWriter.input.setTypeEquals"
+				   + "(BaseType.INT);'");
 
                 // Replace the declaration type with "Token" as an indication
                 // for later passes.
@@ -176,6 +201,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.visitArrayTypeNode()"
+			       + node);
+	}
         return null;
     }
 
@@ -240,8 +269,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         // make sure we process the parameters first
         TNLManip.traverseList(this, null, node.getParams());
 
-        node.getBody().accept(this, null);
-
+        try {
+	    node.getBody().accept(this, null);
+	} catch (Exception e) {
+	    throw new RuntimeException("SpecializedTokenVisitor.visitConstructorDeclNode()" + node + " ");
+	}
         return null;
     }
 
@@ -268,12 +300,24 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         return null;
     }
 
+
+    public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.visitArrayAccessNode():" +
+			       node);
+	}
+        return _visitExprNode(node);
+    }
+
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
         return _visitVariableNode(node);
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node,
             LinkedList args) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor.visitObjectFieldAccessNode:");
+	}
         return _visitVariableNode(node);
     }
 
@@ -295,8 +339,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
 
         TypeNode returnType = _typeVisitor.type(node);
+
         InequalityTerm retval =
             (InequalityTerm) _makeConstantTerm(returnType, null);
+
+	if (_debug) {
+	    System.err.println("SpecializeTokenVisitor.visitMethodCallNode(): "
+			       + " returnType: " + returnType + "\n  node: "
+			       + node + "\n node.getArgs(): " + node.getArgs());
+	}
 
         List argTerms = TNLManip.traverseList(this, null, node.getArgs());
 
@@ -350,6 +401,23 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             case 1:
                 {
                     InequalityTerm firstArgTerm = null;
+		    if (argTerms.get(0) == ptolemy.lang.NullValue.instance) {
+			System.err.println("SpecializeTokenVisitor."
+					   + "visitMethodCallNode(): "
+					   + " argTerms.get(0) == NullValue"
+                                + "\n methodName = " + methodName
+                                + "\n this = " + this
+                                + "\n node = " + node
+                                + "\n node.getArgs() = "
+                                + node.getArgs()
+                                + "\n args = " + args
+                                + "\n argTerms = " + argTerms
+                                + "\n argTerms.get(0) = "
+                                + (( argTerms == null) ?
+                                        "null" : argTerms.get(0))
+					   );
+			return retval;
+		    } 
 		    try {
 			firstArgTerm = (InequalityTerm) argTerms.get(0);
 		    } catch (ClassCastException e) {
@@ -371,6 +439,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     if (!variableAccessedTerm &&
                             (firstArgTerm instanceof _VariableTerm)) {
                         retval = _makeVariableTerm(returnType, null);
+			if (retval == null ) {
+			    System.err.println("SpecializeTokenVisitor."
+					       + "visitMethodCallNode(): "
+					       + "2 mvt->null");
+			}
+			return retval;
                     }
 
                     if (methodName.equals("add") ||
@@ -421,13 +495,14 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 return null;
             }
 
-            //             System.out.println("SpecializeTokenVisitor."
-            //                     + "visitMethodCallNode(): #1 methodName ="
-            //                     + methodName);
-
-            TypeNameNode portTypeNode =
-                _typeID.typeNodeForTokenType(port.getType());
-
+            TypeNameNode portTypeNode;
+	    try {
+		portTypeNode =
+		    _typeID.typeNodeForTokenType(port.getType());
+	    } catch (Exception e) {
+		throw new RuntimeException("SpecializedTokenVisitor.visitMethodCallNode(): methodName: '" + methodName + "' port.getType(): '" + port.getType() + "' varName: '" + varName + "' accessedObj: '" + accessedObj + "' typeDecl:"
+ + typedDecl);
+	    }
             if (methodName.equals("broadcast")) {
                 // first argument is a token, constrain it
                 InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
@@ -440,15 +515,66 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 if (argTerms.size() == 3) {
                     // FIXME: iterate() uses a three arg send(), we should
                     // consider dealing with that.
-                    System.err.println("SpecializeTokenVisitor: warning " +
-                            "found 3 argument send call in " + node);
+                    System.err.println("Warning: "
+				       + "SpecializedTokenVisitor"
+				       + ".specializeTokens(): "
+				       + "found 3 argument send call. "
+				       + " We are ignoring the 3rd arg (count)"
+				       + " Node was: "
+				       + node
+				       + "\n node.getArgs() = "
+				       + node.getArgs()
+				       + "\n args = " + args
+				       + "\n argTerms = " + argTerms
+				       + "\n argTerms.get(0) = "
+				       + (( argTerms == null) ?
+					  "null" : argTerms.get(0))
+				       + "\n argTerms.get(1) = "
+				       + (( argTerms == null) ?
+					  "null" : argTerms.get(1))
+				       );
+                    // Second argument is a token, constrain it.
+		    if (argTerms.get(1) == ptolemy.lang.NullValue.instance) {
+			System.err.println("Warning"
+					   + "SpecializeTokenVisitor."
+					   + "visitMethodCallNode(): "
+					   + " argTerms.get(1) == NullValue"
+					   + "\n methodName = " + methodName
+					   + "\n this = " + this
+					   + "\n node = " + node
+					   );
+		    } else {
+			// Second arg is a Token[]
+			// Really, we want to get the BaseType?
+			// There is a implicit dereference here
+			InequalityTerm secondArgTerm =
+			    (InequalityTerm) argTerms.get(1);
+			
+			_solver.addInequality(new Inequality(secondArgTerm,
+				     _makeVariableTerm(portTypeNode, null)));
+		    }
+		    return null; // return type is void
                 } else {
+		    if (_debug) {
+			System.out.println("SpecializeTokenVisitor."
+					   + "visitMethodCallNode(): "
+					   + "2 arg send: " 
+					   + "argTerms.get(1): "
+					   + argTerms.get(1)
+                                + "\n node = " + node
+                                + "\n node.getArgs() = "
+                                + node.getArgs()
+                                + "\n args = " + args
+                                + "\n argTerms = " + argTerms
+					   );
+		    }
                     // Second argument is a token, constrain it.
                     InequalityTerm secondArgTerm =
                         (InequalityTerm) argTerms.get(1);
                     _solver.addInequality(new Inequality(secondArgTerm,
                             _makeConstantTerm(portTypeNode, null)));
-                    return null; // return type is void
+
+		    return null; // return type is void
                 }
             } // support getArray ...
 
@@ -465,18 +591,19 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (Token) _actorInfo.parameterNameToTokenMap.get(varName);
 
                 if (token == null) {
-                    System.err.println("Warning: getToken() called on" +
-                            " parameter that is not a field of the actor");
+                    System.err.println("Warning: "
+				       + "SpecializedTokenVisitor"
+				       + ".specializeTokens(): "
+				       + "getToken() called on "
+				       + "parameter that is not a field "
+				       + "of the actor");
                     return null;
                 }
 
-                //                 System.out.println("SpecializeTokenVisitor."
-                //                         + "visitMethodCallNode(): #2 methodName ="
-                //                         + methodName);
                 TypeNameNode tokenTypeNode =
                     _typeID.typeNodeForTokenType(token.getType());
 
-                return _makeConstantTerm(tokenTypeNode, null);
+		return _makeConstantTerm(tokenTypeNode, null);
             }
         }
 
@@ -528,10 +655,48 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
      */
     private _VariableTerm _makeVariableTerm(TypeNode type, TypedDecl decl) {
         int kind = _typeID.kind(type);
+	if (_debug) {
+	    System.err.println("SpecializedTokenVisitor._makeVariableTerm():"
+			       + "Entering . . . " 
+			       + "\n type: " + type
+			       + "\n decl: " + decl);
+	}
         if (!_typeID.isSupportedTokenKind(kind)) {
-            return null;
-        }
+	    // FIXME: What about Matrices?
+	    // type.classID() will return an integer from nodetypes.NodeClassID.
+	    if (type.classID() != ARRAYTYPENODE_ID || 
+		!((NameNode)(((ArrayTypeNode)type).getBaseType().getChild(0))).getIdent().equals("Token")) {
+		System.err.println("SpecializedTokenVisitor._makeVariableTerm:"
+			       + " Token " + kind + " not supported");
+		return null;
+	    } else {
+		if (_debug) {
+		    System.err.println("SpecializedTokenVisitor._makeVariableTerm:"
+				       + " we have a Token");
+		}
+		System.out.println("Warning: "
+				   + "SpecializedTokenVisitor._makeVariableTerm:"
+				   + " defaulting to int array");
+		TypeNode tmpType = PtolemyTypeIdentifier.INT_ARRAY_TOKEN_TYPE;
+		if (_debug) {
+		    System.err.println("SpecializedTokenVisitor._makeVariableTerm:"
+				       + "\n type: " + type
+				       + "\n tmpType: " + tmpType
+				       + "\n baseType: "
+				       + ((ArrayTypeNode)type).getBaseType()
+				       );
+		}
+		type = tmpType;
+	    }
+		
+	}
 
+	if (_debug) {
+	    System.err.println("SpecializedTokenVisitor._makeVariableTerm:"
+			       + "\n JavaDecl.getDecl((NamedNode) type): "
+			       + JavaDecl.getDecl((NamedNode) type)
+			       + "Leaving . . .");
+	}
         return new _VariableTerm((ClassDecl)
                 JavaDecl.getDecl((NamedNode) type), decl);
     }
@@ -543,13 +708,39 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     private _ConstantTerm _makeConstantTerm(TypeNode type, TypedDecl decl) {
         int kind = _typeID.kind(type);
         if (!_typeID.isSupportedTokenKind(kind)) {
-            //              System.err.println("SpecializedTokenVisitor._makeConstantTerm("
-            //                      + "type= " + type
-            //                      + ", decl = " + decl + ") _typeId: "
-            //                      + _typeID + " is not a supported Token kind, kind = "
-            //                      + kind);
-            return null;
+	    // FIXME: What about Matrices?
+	    // type.classID() will return an integer from nodetypes.NodeClassID.
+	    if (type.classID() != ARRAYTYPENODE_ID ||
+		!((NameNode)(((ArrayTypeNode)type).getBaseType().getChild(0))).getIdent().equals("Token")) {
+		System.err.println("SpecializedTokenVisitor._makeConstantTerm("
+			       + "type= " + type
+			       + ", decl = " + decl + ") _typeId: "
+			       + _typeID + " is not a supported Token kind, kind = "
+			       + kind + " "
+			       + ((kind > TypeIdentifier.TYPE_KINDS)
+			       ?  _typeID.typeNodeForKind(kind)
+			       .getName().getIdent()
+			       : "unknown"));
+		return null;
+	    } else {
+		if (_debug) {
+		    System.err.println("SpecializedTokenVisitor._makeConstantTerm:"
+				       + " we have a Token");
+		}
+		System.out.println("SpecializedTokenVisitor._makeConstantTerm:"
+				   + "Warning: defaulting to int array");
+		TypeNode tmpType = PtolemyTypeIdentifier.INT_ARRAY_TOKEN_TYPE;
+
+		if (_debug) {
+		    System.err.println("SpecializedTokenVisitor._makeConstantTerm:"
+				       + "\n type: " + type
+				       + "\n tmpType: " + tmpType
+				       + "\n baseType: " + ((ArrayTypeNode)type).getBaseType());
+		}
+		type = tmpType;
+	    }
         }
+
 
         return new _ConstantTerm((ClassDecl)
                 JavaDecl.getDecl((NamedNode) type), decl);
@@ -567,6 +758,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         InequalityTerm term =
             (InequalityTerm) _declToTermMap.get(typedDecl); // may be null
+
         return term;
     }
 
@@ -578,6 +770,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         InequalityTerm initExprTerm =
             (InequalityTerm) node.getInitExpr().accept(this, null);
 
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor._visitVarInitDeclNode: "
+			       + "\n node" + node
+			       + "\n term: " + term
+			       + "\n type: " + type
+			       + "\n typedDecl: " + typedDecl
+			       + "\n initExprTerm: " + initExprTerm
+			       );
+	}
         if (term != null) {
             // add to the map from decls to inequality terms
             _declToTermMap.put(typedDecl, term);
@@ -609,7 +810,16 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     private static final DirectedAcyclicGraph _cpo;
     private InequalitySolver _solver;
 
-
+    /** Return a description of declToTermMap. */
+    private static String _declToTermMapDescription(HashMap declToTermMap) {
+        Iterator termItr = declToTermMap.values().iterator();
+	StringBuffer results = new StringBuffer() ;
+        while (termItr.hasNext()) {
+            InequalityTerm term = (InequalityTerm) termItr.next();
+	    results.append(term.toString() + "\n");
+	}
+	return results.toString();
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -649,8 +859,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
 
         public String toString() {
-            return "_ConstantTerm: value = " + _classDecl.getName() +
-                ", _decl = " + _decl;
+            return "{_ConstantTerm: _decl = " + _decl + ", _classDecl = " +
+		((_classDecl == null) ?
+		 "null" : _classDecl.getName()
+		 + "}");
         }
 
         public void unfixValue() {}
@@ -693,8 +905,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         }
 
         public String toString() {
-            return "_VariableTerm: decl = " + _decl + ", value = " +
-                _classDecl.getName();
+            return "{_VariableTerm: _decl = " + _decl + ", _classDecl = " +
+		((_classDecl == null) ?
+		 "null" : _classDecl.getName()
+		 + "}");
         }
 
         public void unfixValue() { _fixed = false; }
@@ -707,7 +921,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     static {
         System.out.println("SpecializedTokenVisitor<static>");
         // construct the type lattice
-        _cpo = new DirectedAcyclicGraph(18);
+        _cpo = new DirectedAcyclicGraph(21);
         _cpo.add(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND);
         _cpo.add(PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
@@ -726,6 +940,11 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         _cpo.add(PtolemyTypeIdentifier.SCALAR_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.STRING_TOKEN_DECL);
         _cpo.add(PtolemyTypeIdentifier.TOKEN_DECL);
+
+	// We need the rest of the array tokens
+        _cpo.add(PtolemyTypeIdentifier.ARRAY_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.DOUBLE_ARRAY_TOKEN_DECL);
+        _cpo.add(PtolemyTypeIdentifier.INT_ARRAY_TOKEN_DECL);
 
         _cpo.addEdge(PtolemyTypeIdentifier.OBJECT_TOKEN_DECL,
                 PtolemyTypeIdentifier.TOKEN_DECL);
@@ -770,6 +989,28 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         _cpo.addEdge(PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL,
                 PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL);
 
+	// FIXME: is this right?
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_TOKEN_DECL,
+		     PtolemyTypeIdentifier.INT_ARRAY_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL,
+		     PtolemyTypeIdentifier.DOUBLE_ARRAY_TOKEN_DECL);
+
+        _cpo.addEdge(PtolemyTypeIdentifier.INT_ARRAY_TOKEN_DECL,
+                PtolemyTypeIdentifier.DOUBLE_ARRAY_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DOUBLE_ARRAY_TOKEN_DECL,
+                PtolemyTypeIdentifier.ARRAY_TOKEN_DECL);
+
+        _cpo.addEdge(PtolemyTypeIdentifier.ARRAY_TOKEN_DECL,
+               PtolemyTypeIdentifier.STRING_TOKEN_DECL);
+        _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+                PtolemyTypeIdentifier.INT_ARRAY_TOKEN_DECL);
+
+
+        //_cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
+        //        PtolemyTypeIdentifier.ARRAY_TOKEN_DECL);
+        //_cpo.addEdge(PtolemyTypeIdentifier.ARRAY_TOKEN_DECL,
+        //        PtolemyTypeIdentifier.INT_ARRAY_TOKEN_DECL);
+
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
                 PtolemyTypeIdentifier.OBJECT_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
@@ -783,6 +1024,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
                 PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);
+	// Shouldn't this be INT, INT_MATRIX like data.type.TypeLattice?
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
                 PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND,
@@ -793,4 +1035,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     "type hierarchy is not a lattice.");
         }
     }
+
+    protected static final boolean _debug = false;
 }
