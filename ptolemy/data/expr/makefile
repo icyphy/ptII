@@ -41,7 +41,8 @@ DIRS = 		test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(JAVACC_DIR)/JavaCC.zip
+# We include JavaCC.zip twice here so as to handle JavaCC1.1 and JavaCC2.1
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(JAVACC_DIR)/JavaCC.zip$(CLASSPATHSEPARATOR)$(JAVACC_DIR)/bin/lib/JavaCC.zip
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
