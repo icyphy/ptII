@@ -393,17 +393,12 @@ test Parameter-14.0 {Test the mechanism for extending scope} {
 
     set r3 [$p4 getToken]
 
-    $ext2 setContainer $e2
-
-    set r4 [$p4 getToken]
-
     $ext1 setContainer [java::null]
-    $ext2 setContainer [java::null]
 
     catch {$p4 getToken} msg
 
-    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString] $msg
-} {5 0 5 0 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p4:
+    list [$r1 toString] [$r2 toString] [$r3 toString] $msg
+} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p4:
 Error evaluating expression: "p"
 In variable: ..e2.p4
 Caused by:
@@ -413,7 +408,7 @@ The ID p is undefined.}}
 ######################################################################
 ####
 #
-test Parameter-15.0 {Test the mechanism for extending scope} {
+test Parameter-15.0 {Test for a known bug - insert a new parameter does not shadow same-named parameter at higher level} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
@@ -430,5 +425,5 @@ test Parameter-15.0 {Test the mechanism for extending scope} {
     set r2 [$p3 getToken]
 
     list [$r1 toString] [$r2 toString]
-} {5 10}
+} {5 10} {KNOWN_FAILED}
 

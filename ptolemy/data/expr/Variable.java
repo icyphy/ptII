@@ -482,9 +482,7 @@ public class Variable extends Attribute
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
         if (_isTokenUnknown) throw new UnknownResultException(this);
-        if (_needsEvaluation || _currentExpression != null &&
-                _parseTreeVersion != workspace().getVersion())
-            _evaluate();
+        if (_needsEvaluation) _evaluate();
         return _token;
     }
 
@@ -1428,6 +1426,7 @@ public class Variable extends Attribute
         boolean oldNoTokenYet = _noTokenYet;
         String oldInitialExpression = _initialExpression;
         Token oldInitialToken = _initialToken;
+
 
         try {
             _setToken(newToken);
