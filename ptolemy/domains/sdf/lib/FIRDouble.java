@@ -118,18 +118,11 @@ public class FIRDouble extends FIR {
      */
     public void initialize() throws IllegalActionException {
 
-        IntToken interptoken = (IntToken)(interpolation.getToken());
-        _interp = interptoken.intValue();
-
-        // FIXME: Support multirate.  Get values from parameters.
-        _dec = 1;
-        _decPhase = 0;
-
-        // FIXME: Need error checking of parameter.
-        DoubleMatrixToken tapstoken = (DoubleMatrixToken)(taps.getToken());
+	// Case the tapsToken matrix because it will be 
+	// a matrix with doubles.
         _taps = new double[tapstoken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = tapstoken.getElementAt(0, i);
+            _taps[i] = ((DoubleMatrixToken)tapstoken).getElementAt(0, i);
         }
         _phaseLength = (int)(_taps.length / _interp);
         if ((_taps.length % _interp) != 0) _phaseLength++;
@@ -142,12 +135,10 @@ public class FIRDouble extends FIR {
 
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Local cache of these parameter values.
-    private int _dec, _interp, _decPhase;
     private double[] _taps;
     private double[] _data;
     private int _mostRecent;

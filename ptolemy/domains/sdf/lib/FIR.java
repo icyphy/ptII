@@ -70,8 +70,7 @@ If the interpolation ratio is <i>i < /i>, then <i>f</i>/2 is a fraction
 1/2<i>i < /i> of the sample rate at which you must design your filter.
 <p>
 The <i>decimationPhase</i> parameter is somewhat subtle.
-It is exactly equivalent the phase parameter of the DownSample star.
-Its interpretation is as follows; when decimating,
+It is exactly equivalent the phase parameter of the DownSample star.Its interpretation is as follows; when decimating,
 samples are conceptually discarded (although a polyphase structure
 does not actually compute the discarded samples).
 If you are decimating by a factor of three, then you will select
@@ -148,23 +147,19 @@ public class FIR extends SDFAtomicActor {
     public void attributeTypeChanged(Attribute attribute) 
             throws IllegalActionException {
         if (attribute == taps) {
-            if ( taps.getType() == BaseType.FIX_MATRIX ) {
-                _zero = new FixToken( 0,16,2 );
-                input.setTypeEquals(BaseType.FIX);
-                output.setTypeEquals(BaseType.FIX);
-            }
 
-            if ( taps.getType() == BaseType.COMPLEX_MATRIX ) {
-                _zero = new ComplexToken();
-                input.setTypeEquals(BaseType.COMPLEX);
-                output.setTypeEquals(BaseType.COMPLEX);
-            }
+	    // Get the first token from the Matrix
+	    // Used this tokne to extract its type.
+	    Token tmpToken = 
+		    ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
 
-            if ( taps.getType() == BaseType.DOUBLE_MATRIX ) {
-                _zero = new DoubleToken();
-                input.setTypeEquals(BaseType.DOUBLE);
-                output.setTypeEquals(BaseType.DOUBLE);
-            }
+	    // Get a token representing zero in the requested type.
+	    // _zero = tmpToken.zero();
+	    
+	    // Set the type to the input and output port.
+	    input.setTypeEquals( tmpToken.getType() );
+	    output.setTypeEquals( tmpToken.getType() );
+
         } else {
             super.attributeTypeChanged(attribute);
         }
@@ -229,6 +224,7 @@ public class FIR extends SDFAtomicActor {
                         _outToken = _outToken.add( _dataItem );
                     }
                 }
+
                 output.send(0, _outToken);
                 phase += _dec;
             }
@@ -256,12 +252,17 @@ public class FIR extends SDFAtomicActor {
         if (_decPhase >= _dec) {
             throw new IllegalActionException(this,"decimationPhase too large");
         }
+	
+	// Get the taps now to allows for type resolution before initialize
+        tapstoken = (MatrixToken)(taps.getToken());
 
+        // Get a token representing zero in the appropriate type.
+	_zero = tapstoken.getElementAsToken(0,0).zero();
     }
 
     public void initialize() throws  IllegalActionException {
-        // FIXME: Need error checking of parameter.
-        MatrixToken tapstoken = (MatrixToken)(taps.getToken());
+	super.initialize();
+	
         _taps = new Token[tapstoken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
             _taps[i] = tapstoken.getElementAsToken(0, i);
@@ -289,20 +290,29 @@ public class FIR extends SDFAtomicActor {
      */
     protected int _phaseLength;
 
+    /** Control variables for the FIR main loop. */ 
+    protected int _dec, _interp, _decPhase;
+
+    /** The MatrixToken containing the taps of the FIR. */
+    protected MatrixToken tapstoken;
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Local cache of these parameter values.
-    private int _dec, _interp, _decPhase;
     private Token[] _taps;
     private Token[] _data;
     private int _mostRecent;
 
-
+    // The tokens needed in FIR
     private Token _outToken;
     private Token _tapItem;
     private Token _dataItem;
 
+    // Cache of the zero token.
     private Token _zero;
+
 }
+
+
 
