@@ -74,10 +74,15 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR)
 
-JCLASS = $(JSRCS:%.java=%.class) \
+STUB_JCLASS = \
 	CarInformationSubscriber_Stub.class \
 	CTSubscriber_Stub.class \
 	DERealTimeSubscriber_Stub.class
+
+.PRECIOUS: $(STUB_JCLASS)
+
+JCLASS = $(JSRCS:%.java=%.class) $(STUB_JCLASS)
+
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
@@ -89,16 +94,18 @@ install: all
 depend:
 	@echo "no dependencies in this directory"
 
+# The -d $(ROOT) is necessary for the rmic that ships with JDK1.3
+
 CarInformationSubscriber_Stub.class: CarInformationSubscriber.java
-	$(RMIC) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
 		ptolemy.domains.ct.demo.$(PTPACKAGE).CarInformationSubscriber
 
 CTSubscriber_Stub.class: CTSubscriber.java
-	$(RMIC) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
 		ptolemy.domains.ct.demo.$(PTPACKAGE).CTSubscriber
 
 DERealTimeSubscriber_Stub.class: DERealTimeSubscriber.java
-	$(RMIC) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
 		ptolemy.domains.ct.demo.$(PTPACKAGE).DERealTimeSubscriber
 
 demo:
