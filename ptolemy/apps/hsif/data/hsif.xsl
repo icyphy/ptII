@@ -856,12 +856,18 @@
             <xsl:if test="$temp!=''"><xsl:value-of select="$temp"/></xsl:if>
             <xsl:if test="$temp=''">invariant</xsl:if>
         </xsl:attribute>
-        <xsl:attribute name="class">ptolemy.actor.lib.Assertion</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.actor.lib.CTAssertion</xsl:attribute>
         <xsl:element name="property">
             <xsl:attribute name="name">assertion</xsl:attribute>
             <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
             <xsl:attribute name="value"><xsl:apply-templates select="." mode="expr"/></xsl:attribute>
         </xsl:element>
+
+        <!--xsl:element name="property">
+            <xsl:attribute name="name">threshold</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute>
+            <xsl:attribute name="value"><xsl:apply-templates select="LExpr/RExpr"/></xsl:attribute>
+        </xsl:element-->
 
         <xsl:for-each select="descendant::Var">
             <xsl:variable name="varName" select="@name"/>
