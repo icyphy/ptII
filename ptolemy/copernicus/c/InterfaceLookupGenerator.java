@@ -116,7 +116,7 @@ public class InterfaceLookupGenerator {
 
 
     /** Returns the list of all methods that may need to be looked up.
-     * Provides a mapping from the interface's mathod to the correponding
+     * Provides a mapping from the interface's mathod to the corresponding
      * method in the class that implements it
      * @param source The class for which this set is to be generated.
      * @return The set of all methods that may need to be looked up.

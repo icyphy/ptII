@@ -338,7 +338,7 @@ public class ViterbiDecoder extends Transformer {
             }
 
             // update the buffers for minimum distance and its
-            // correponding possible input sequence.
+            // corresponding possible input sequence.
             _distance[state] = minDistance;
             for (int i = 0; i < _flag; i ++) {
                 _path[state][i] = _tempPath[minState][i];
