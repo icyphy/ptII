@@ -768,6 +768,9 @@ public class PtolemyUtilities {
     public static SootField intTypeField;
     public static SootField intMatrixTypeField;
     
+    // SootMethod representing ptolemy.actor.Director.invalidateResolvedTypes()
+    public static SootMethod invalidateResolvedTypesMethod;
+    
     // Soot Class representing the ptolemy.actor.TypedIOPort class.
     public static SootClass ioportClass;
 
@@ -924,6 +927,9 @@ public class PtolemyUtilities {
         actorType = RefType.v(actorClass);
         getDirectorMethod = 
             Scene.v().getMethod("<ptolemy.actor.Actor: ptolemy.actor.Director getDirector()>");
+
+        invalidateResolvedTypesMethod =
+            Scene.v().getMethod("<ptolemy.actor.Director: void invalidateResolvedTypes()>");
 
         compositeActorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
