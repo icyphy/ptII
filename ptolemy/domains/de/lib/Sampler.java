@@ -85,7 +85,6 @@ public class Sampler extends DETransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
-        input.delayTo(output);
         output.setMultiport(true);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -115,11 +114,6 @@ public class Sampler extends DETransformer {
             throws CloneNotSupportedException {
         Sampler newObject = (Sampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
-        try {
-            newObject.input.delayTo(newObject.output);
-        } catch (IllegalActionException ex) {
-            // Ignore.
-        }
         return newObject;
     }
 
