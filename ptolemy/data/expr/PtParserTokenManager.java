@@ -35,10 +35,6 @@ package ptolemy.data.expr;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.math.Complex;
-import java.util.Hashtable;
-import collections.LinkedList;
-import java.io.*;
 
 public class PtParserTokenManager implements PtParserConstants
 {
