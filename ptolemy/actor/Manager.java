@@ -470,21 +470,38 @@ public class Manager extends NamedObj implements Runnable {
      *  that are involved in an execution as a mechanism for reporting
      *  errors.  As an example, in a threaded domain, each thread
      *  should catch all exceptions and report them using this method.
-     *  @param ex The exception.
+     *  This method is merely calls
+     *  {@link notifyListenersOfThrowable(Throwable).
+     *  @param exception The exception.
      */
-    public void notifyListenersOfException(Exception ex) {
-        String errorMessage = "Exception occurred: " + ex.getClass()
-            + "(" + ex.getMessage() + ")";
+    public void notifyListenersOfException(Exception exception) {
+	notifyListenersOfThrowable(exception);
+    }
+
+    /** Notify all the execution listeners of a Throwable
+     *  If there are no listeners, then print the throwable information
+     *  to the standard error stream. This is intended to be used by threads
+     *  that are involved in an execution as a mechanism for reporting
+     *  errors.  As an example, in a threaded domain, each thread
+     *  should catch all exceptions and report them using this method.
+     *  @param exception The exception.
+     */
+    public void notifyListenersOfThrowable(Throwable throwable) {
+	// We use Throwables instead of Exceptions so that we can catch
+	// Errors like java.lang.UnsatisfiedLink. 
+        String errorMessage = shortDescription(throwable) 
+	    + " occurred: " + throwable.getClass()
+            + "(" + throwable.getMessage() + ")";
         _debug(errorMessage);
         if (_executionListeners == null) {
             System.err.println(errorMessage);
-            ex.printStackTrace();
+            throwable.printStackTrace();
         } else {
             Iterator listeners = _executionListeners.iterator();
             while (listeners.hasNext()) {
                 ExecutionListener listener =
                     (ExecutionListener) listeners.next();
-                listener.executionError(this, ex);
+                listener.executionError(this, throwable);
             }
         }
     }
@@ -743,12 +760,33 @@ public class Manager extends NamedObj implements Runnable {
     public void run() {
         try {
             execute();
-        } catch (Exception ex) {
-            // Notify listeners.
-            notifyListenersOfException(ex);
+        } catch (Throwable throwable) {
+	    // If running tried to load in some native code using JNI
+	    // then we may get an Error here
+            notifyListenersOfThrowable(throwable);
         } finally {
             _thread = null;
         }
+    }
+
+    /** Return a short description of the throwable.
+     *  @param throwable The throwable
+     *  @return If the throwable is an Exception, return "Exception",
+     *  if it is an Error, return "Error", if it is a Throwable, return
+     *  "Throwable".
+     */
+    public static String shortDescription(Throwable throwable) {
+	// FIXME: This code is a duplicate of MessageHandler.shortDescription()
+	// but we don't want to import ptolemy.actor.gui.MessageHandler here.
+	String throwableType = null;
+	if (throwable instanceof Exception) {
+	    throwableType = "Exception";
+	} else if (throwable instanceof Error) {
+	    throwableType = "Error";
+	} else {
+	    throwableType = "Throwable";
+	}
+	return throwableType;
     }
 
     /** Start an execution in another thread and return.  Any exceptions
