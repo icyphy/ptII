@@ -11,8 +11,7 @@
       <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector"/>
       <!-- HDE is not shipping in 4.0 -->
       <!-- property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/-->
-      <!-- HDF is not shipping in 4.0 -->
-      <!--property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector"/-->
+      <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector"/>
       <!--property name="HDFFSM Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector"/-->
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
