@@ -57,11 +57,9 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
 all: jclass
-install: jclass $(PTCLASSJAR)
 
+install: jclass $(PTCLASSJAR)
 
 depend:
 	@echo "no dependencies in this directory"
