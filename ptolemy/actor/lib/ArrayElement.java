@@ -109,6 +109,7 @@ public class ArrayElement extends Transformer {
         // NOTE: This has be outside the if because we need to ensure
         // that if an index token is provided that it is consumed even
         // if there is no input token.
+        index.update();
         int indexValue = ((IntToken)index.getToken()).intValue();
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)input.get(0);
