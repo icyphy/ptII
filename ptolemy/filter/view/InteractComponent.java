@@ -1,4 +1,4 @@
-/* Interact Component, components allow user to drag and drop. 
+/* Interact Component, components allow user to do "drag and drop". 
 
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
@@ -22,7 +22,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$
 
 */
 
@@ -34,55 +33,134 @@ import java.awt.*;
 //////////////////////////////////////////////////////////////////////////
 //// InteractComponent 
 /**
- *  A graphical component that allow user to drag and drop
- *  its location.  This is an abstract class, since it includes
- *  an abstract method that know how to draw itself, since there
- *  is no default component, thus the abstract modifier.  The location
- *  is expressed in variable <bold> x, y </bode>, corresponding
- *  actual value is stored in <bold> xv, yv </bode>.  A bounding
- *  box is used for selecting the component.  The movement of the
- *  component is limited variables <b> degFreedom </b>, orientation of
- *  the component is specify by <b> orientation </b>.  
- *
- *  Author: William Wu
- *  Version:
- *  Date: 3/2/98
+   A graphical component that allow user to do "drag and drop" operation
+   to change its location.  It include many basic shapes, and provide
+   method to draw these shape.  The location of the component reference to 
+   the plot is stored in variable <i> _x, _y </i>, corresponding
+   actual value is stored in <i> _xv, _yv </i>.  The relation between the two
+   sets of data is related to the current plot parameters, like xMax, xMin,
+   etc.  Since this class can not get these data values,  it is upto the
+   the plot object to keep (x,y) and (xv, yv) in synch.  A bounding
+   box is used to determine if the cursor is on the component for selecting.  
+   The movement of the component is limited variables <i> degFreedom </i>, 
+   Orientation of the component is specify by <i> orientation </i>. i
+   <p>
+   FIXME: <p>
+   Another useful parameter could be an area that the interact component is 
+   allowed to be drag around. 
+   <p> 
+   @author: William Wu (wbwu@eecs.berkeley.edu)
+   @version: %W% %G%
+   @date: 3/2/98
  */
 
  
 public class InteractComponent {
 
+
+    /**
+     * Constructor. Set name and shape of the component.  Initial value
+     * is set at this time.  The location is set by the plot when the component
+     * is drawn. 
+     * @param name name of this interact component
+     * @param shape enumeration integer indicate the shape
+     * @param x initial x-coordinate value 
+     * @param y initial y-coordinate value 
+     */
+    public InteractComponent(String name, int shape, double x, double y){
+        _type = shape;
+        _name = name;
+        _xv = x;
+        _yv = y;
+    }     
+
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
     /**
-     * Constructor, set name and shape of the component
-     */
-    public InteractComponent(String name, int shape){
-        _type = shape;
-        _name = name;
-    }     
+     * Change the value of this interact component.  The degree of freedom
+     * is checked before the value is assigned.
+     * <p> 
+     * @param newxv new x-axis value
+     * @param newyv new y-axis value
+     */ 
+    public void changeValue(double newxv, double newyv){
+        // check degree of freedom 
+        if (getDegFreedom() == InteractComponent.XAXISDEGFREE){
+            _xv = newxv;
+        } else if (getDegFreedom() == InteractComponent.YAXISDEGFREE){
+            _yv = newyv;
+        } else if (getDegFreedom() == InteractComponent.ALLDEGFREE){
+            _xv = newxv;
+            _yv = newyv;
+        }
+    }
 
     /**
-     * Specifies which data set and data point index this component belongs
+     * Set the position of this interact component.  The degree of freedom
+     * <b> NOT </b> checked.  Which means the given location is still 
+     * corresponding to the data value.  (Change in location but still
+     * staying at the same value happens during zoom-in or zoom-out.)
+     * <p> 
+     * @param newx new location in x axis 
+     * @param newy new location in y axis 
      */
+    public void setNewPosition(int newx, int newy){
+        _x = newx;
+        _y = newy;
+    }
 
     /**
-     * Get the dataset number
+     * Move the position of the interact component to a new position
+     * with the given offsets.  Degree of freedom is checked.
+     * Change to the position only occur on the axis(es) with right
+     * permission.  This method is called when user is dragging 
+     * the object.<p>
+     * @param xdiff x-axis location offset  
+     * @param ydiff y-axis location offset  
+     */    
+    public void movePosition(int xdiff, int ydiff){
+        // check degree of freedom 
+        if (getDegFreedom() == InteractComponent.XAXISDEGFREE){
+            _x = _x + xdiff;
+        } else if (getDegFreedom() == InteractComponent.YAXISDEGFREE){
+            _y = _y + ydiff;
+        } else if (getDegFreedom() == InteractComponent.ALLDEGFREE){
+            _x = _x + xdiff;
+            _y = _y + ydiff;
+        }
+    }
+
+    /**
+     * Get the dataset number. <p>
+     * @return the dataset number of  this object.
      */
     public int getDataSetNum(){
            return _dataset;
     }     
 
     /**
-     * Get the data index number
+     * Get the data index number. <p>
+     * @return the data index number of this object in the dataset.
      */
     public int getDataIndexNum(){
            return _dataindex;
     }     
 
     /**
-     * Set default parameters for drawing 
+     * Set default drawing parameters.  Set the parameters for the 
+     * appearences of this interact object.  They will be used
+     * when the object is drawn.  Bounding box is also set in this
+     * class.<p>  
+     * @param color default color of this object.  It is not advised
+     *        to set the color yellow, since it is used when the object
+     *        is selected.  (or white, it is used when the object is high
+     *        lighted. 
+     * @param width width of the object ( or length for lines)
+     * @param filled boolean indicate if the object should be filled with color
+     *        or empty. 
+     * @param ori orientation of the object.  It should be one of the enum
+     *        on orientation given in this class    
      */
     public void setDrawingParam(Color color, int width, boolean filled, int ori){
         _color = color;
@@ -91,8 +169,8 @@ public class InteractComponent {
         _width = width;
         _orientation = ori;
  
-        if (_type == Line){
-            if (_orientation == HorizontalOri){
+        if (_type == LINE){
+            if (_orientation == HORIZONTALORI){
                 _setboundingbox(_width/2, 10); 
             } else {
                 _setboundingbox(10, _width/2); 
@@ -104,7 +182,8 @@ public class InteractComponent {
 
 
     /**
-     * Get the name of the component  
+     * Get the name of the component.
+     * @return name of the component.  
      */
     public String getName(){
         return _name;
@@ -112,14 +191,21 @@ public class InteractComponent {
 
     /**
      * Get the width of the component  
+     * @return width of the component.  
      */
     public int getWidth(){
-
         return _width;
     }
 
     /**
-     * Set the parameters needed for user interaction.
+     * Set the parameters needed for user interaction.  These parameters
+     * will be seen when user interacts with the component (like moving
+     * or changing value). <p> 
+     * @param xlab x-axis label 
+     * @param ylab y-axis label 
+     * @param degFreedom degree of freedom the user can interact with the
+     * object.  It should be one of the enum describing degree of freedom
+     * in this file.
      */
     public void setInteractParam(String xlab, String ylab, int degFreedom){
         _xlabelName = xlab;
@@ -128,39 +214,52 @@ public class InteractComponent {
     }
 
     /**
-     * Get the label name of x-axis.
+     * Get the label name of x-axis. <p>
+     * @return x-axis label.
      */
     public String getxlabelName(){
         return _xlabelName;
     }
 
     /**
-     * Get the label name of y-axis.
+     * Get the label name of y-axis.<p>
+     * @return y-axis label.
      */
     public String getylabelName(){
         return _ylabelName;
     }
 
     /**
-     * Get the degree of freedom of this component 
+     * Get the degree of freedom of this component.<p> 
+     * @return degree of freedom of this component. 
      */
     public int getDegFreedom(){
         return _degFreedom;
     }
  
     /**
-     *  Check if the given coordinate falls into the bounding box. 
-     *  If it does, then return true.
+     * Check if the given coordinate falls into the bounding box. 
+     * If it does, then return true, else return false.
+     * @param xpos given x-axis coordinate 
+     * @param ypos given y-axis coordinate 
+     * @return boolean value indicate if the given coordinate is inside
+     * the bounding box. 
      */ 
     public boolean ifEntered(int xpos, int ypos){
-       if ((xpos > x - _boundingwidth) 
-        && (xpos < x + _boundingwidth)
-        && (ypos > y - _boundingheight) 
-        && (ypos < y + _boundingheight))
+       if ((xpos > (_x - _boundingwidth)) 
+        && (xpos < (_x + _boundingwidth))
+        && (ypos > (_y - _boundingheight)) 
+        && (ypos < (_y + _boundingheight)))
             return true;
        else return false;
     } 
 
+    /**
+     * Set the selected flag of this object.  Drawing color will changed
+     * to yellow, if the flag is true.  If not true, then the original
+     * color is restored.<p>    
+     * @param select select flag value
+     */ 
     public void setSelected(boolean select){
        this._selected = select;
        if (select == true){
@@ -171,12 +270,18 @@ public class InteractComponent {
        }
     }
 
+    /**
+     * Get the select flag value. <p>
+     * @return select flag value
+     */
     public boolean getSelected(){
        return _selected;
     }
 
     /**
-     *  Draw the interact component.
+     *  Draw the interact component.  Interact component is drawn according
+     *  to the drawing parameters and shape with the given graphics. <p>
+     *  @param g Graphics object to be used for drawing 
      */
     public void drawSelf(Graphics g){
        
@@ -184,29 +289,29 @@ public class InteractComponent {
 
        g.setColor(_color);
        switch (_type) {
-       case Circle:
+       case CIRCLE:
            {
               // circle
               if (_filled == true){
-                  g.fillOval(x-_width/2, y-_width/2, _width, _width);
+                  g.fillOval(_x-_width/2, _y-_width/2, _width, _width);
               } else {  
-                  g.drawOval(x-_width/2, y-_width/2, _width, _width);
+                  g.drawOval(_x-_width/2, _y-_width/2, _width, _width);
               }
               break;
            }
-       case Cross:
+       case CROSS:
            {
               // cross
               int hwidth = _width/2;
-              g.drawLine(x-hwidth, y+hwidth, x+hwidth, y-hwidth);
-              g.drawLine(x-hwidth, y-hwidth, x+hwidth, y+hwidth);
+              g.drawLine(_x-hwidth, _y+hwidth, _x+hwidth, _y-hwidth);
+              g.drawLine(_x-hwidth, _y-hwidth, _x+hwidth, _y+hwidth);
               break;
            }
-       case Triangle:
+       case TRIANGLE:
            {
               // triangle
-              int vertx[]={x, x-_width/2, x+_width/2 };
-              int verty[]={y-_width/2, y+_width/2, y+_width/2 };
+              int vertx[]={_x, _x-_width/2, _x+_width/2 };
+              int verty[]={_y-_width/2, _y+_width/2, _y+_width/2 };
               if (_filled == true){
                   g.fillPolygon(vertx, verty, 3);
               } else {  
@@ -214,31 +319,31 @@ public class InteractComponent {
               }
               break;
            }
-       case Square:
+       case SQUARE:
            {
               // square
               if (_filled == true){
-                  g.fillRect(x-_width/2, y-_width/2, _width, _width);
+                  g.fillRect(_x-_width/2, _y-_width/2, _width, _width);
               } else {
-                  g.drawRect(x-_width/2, y-_width/2, _width, _width);
+                  g.drawRect(_x-_width/2, _y-_width/2, _width, _width);
               }
               break;
            }
-       case Plus:
+       case PLUS:
            {  
               // plus
-              g.drawLine(x-_width/2, y, x+_width/2, y);
-              g.drawLine(x, y-_width/2, x, y+_width/2);
+              g.drawLine(_x-_width/2, _y, _x+_width/2, _y);
+              g.drawLine(_x, _y-_width/2, _x, _y+_width/2);
               break;
            } 
-       case Line:
+       case LINE:
            {
               // line
               int hwidth = _width/2; 
-              if (_orientation == HorizontalOri){
-                   g.drawLine(x-hwidth, y, x+hwidth, y);
-              } else if (_orientation == VerticalOri){
-                   g.drawLine(x, y-hwidth, x, y+hwidth);
+              if (_orientation == HORIZONTALORI){
+                   g.drawLine(_x-hwidth, _y, _x+hwidth, _y);
+              } else if (_orientation == VERTICALORI){
+                   g.drawLine(_x, _y-hwidth, _x, _y+hwidth);
               }
               break;
             }
@@ -249,75 +354,131 @@ public class InteractComponent {
     }
 
 
-   /** 
-    * Set the link of the interact components
-    */
-    public void setLink(InteractComponent pair, int type){
+    /**
+     * Draw the value of this object.  Given the Graphics object, desired
+     * location and max number digits of precision after the decimal point,
+     * the value will be drawn with these specifications. <p>
+     * @param g Graphics object used for drawing.
+     * @param x desired location x-axis coordinate, where the value 
+     *          will be printed. 
+     * @param y desired location x-axis coordinate, where the value 
+     *          will be printed. 
+     * @param prec number of digit after decimal point the value will be
+     *        displaying.
+     */
+    public void drawValue(Graphics g, int x, int y, int prec){
 
-          _pairlink = pair;
-          _pairtype = type; 
+          String xv = String.valueOf(_xv);
+          String yv = String.valueOf(_yv);
+          String xvchop, yvchop; 
+
+          // chop the text of the value to the desired precision
+          int pt = xv.indexOf(".");
+          if ((pt != -1) && (xv.length() > prec+2)){
+               xvchop = (xv.substring(0,pt+(prec+1))).trim();
+          } else {
+               xvchop = xv;
+          }
+
+          // chop the text of the value to the desired precision
+          pt = yv.indexOf(".");
+          if ((pt != -1) && (yv.length() > prec+2)){
+               yvchop = (yv.substring(0,pt+(prec+1))).trim();
+          } else {
+               yvchop = yv;
+          }
+          String str = new String(getxlabelName()+":  "+xvchop+"  "+getylabelName()+":  "+yvchop);
+// System.out.println("drawing the value now: "+str); 
+          g.setColor(Color.white);
+          g.drawString(str, x, y);
+ 
+    } 
+
+    /**
+     * Get component value at x-coordinate.
+     * @return component value at x-coordinate.
+     */ 
+    public double getXValue(){
+       return _xv;
     }
 
-    public InteractComponent getPairIC(){
-         return _pairlink;
+    /**
+     * Get component value at y-coordinate.
+     * @return component value at y-coordinate.
+     */ 
+    public double getYValue(){
+       return _yv;
     }
 
-    public int getPairICType(){
-         return _pairtype;
+    /**
+     * Get component position at x-coordinate.
+     * @return component position at x-coordinate.
+     */ 
+    public int getXPosition(){
+       return _x;
+    }
+
+    /**
+     * Get component position at y-coordinate.
+     * @return component position at y-coordinate.
+     */ 
+    public int getYPosition(){
+       return _y;
     }
 
     /**
      * Set the dataset and data index this interact component is corresponding 
-     * to.  The dataset number and index number is corrsponding to the dataset
-     * and data index in Plot. 
+     * to.  The dataset number and index number is similiar to the dataset
+     * and data index in Plot.
+     * <p>
+     * @param datas data set number.
+     * @param ind data index number.
      */ 
     public void setDatasetIndex(int datas, int ind){
        _dataindex = ind;
        _dataset = datas;
     } 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-  
-    /**
-     * Set the bounding box for selection.
-     */ 
-    protected void _setboundingbox(int x, int y) {
-       _boundingwidth = x;
-       _boundingheight = y;
-    }
 
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public variable                          ////
 
     // Constants that describe the shape 
-    public final static int Circle = 1;   
-    public final static int Cross = 2;   
-    public final static int Triangle = 3;   
-    public final static int Square = 4;   
-    public final static int Plus = 5;   
-    public final static int Line = 6;  
+    public final static int CIRCLE = 1;   
+    public final static int CROSS = 2;   
+    public final static int TRIANGLE = 3;   
+    public final static int SQUARE = 4;   
+    public final static int PLUS = 5;   
+    public final static int LINE = 6;  
 
     // Constants that desicribe the _orientation
-    public final static int SymmetricOri = 0; 
-    public final static int HorizontalOri = 1; 
-    public final static int VerticalOri = 2; 
+    public final static int SYMMETRICORI = 0; 
+    public final static int HORIZONTALORI = 1; 
+    public final static int VERTICALORI =  2; 
 
     // Constants that desicribe the degree of freedom
-    public final static int NoneDegFree = 0; 
-    public final static int XaxisDegFree = 1; 
-    public final static int YaxisDegFree = 2; 
-    public final static int AllDegFree = 3; 
+    public final static int NONEDEGFREE = 0; 
+    public final static int XAXISDEGFREE = 1; 
+    public final static int YAXISDEGFREE = 2; 
+    public final static int ALLDEGFREE = 3; 
 
-    public final static int YaxisMirrorXaxisSynch = 1; 
- 
-    public double xv, yv;    // holds value this interactcomponent represent
-    public int x, y;  // holds the location of this interact component.
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+  
+     //
+     // Set the bounding box for selection.
+     // 
+    private void _setboundingbox(int x, int y) {
+       _boundingwidth = x;
+       _boundingheight = y;
+    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variable                          ////
 
+    private double _xv, _yv;    // holds value this interactcomponent represent
+    private int _x, _y;  // holds the location of this interact component.
     private int _dataset;  // tells which group of data this component belongs
     private int _dataindex;
     private boolean _selected; // set this flag if the component is seleted
@@ -328,17 +489,13 @@ public class InteractComponent {
     private Color _color = Color.black;
     private Color _savedcolor = Color.black;
 
-    private int _type = Circle ; 
+    private int _type = CIRCLE ; 
     private String _name; 
     private boolean _filled = false;  
     private Vector _vertexes = null;
     private int _width = 10;
-    private int _orientation = SymmetricOri; 
-    private int _degFreedom = AllDegFree; 
+    private int _orientation = SYMMETRICORI; 
+    private int _degFreedom = ALLDEGFREE; 
 
     private int _boundingwidth, _boundingheight;
-
-    // Variables for pairing interact components together 
-    private InteractComponent _pairlink = null;
-    private int _pairtype = -1;
 }
