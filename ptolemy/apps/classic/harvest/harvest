@@ -39,23 +39,37 @@ do
   dirname=`dirname $dirname`
   basedir=`basename $dirname`
   if [ "$basedir" = "dsp" ]; then
-      if [ ! -d "$destination/dsp/stars" ]; then
-	  mkdir -p "$destination/dsp/stars"
+      if [ ! -d "$destination/dsp/lib" ]; then
+	  mkdir -p "$destination/dsp/lib"
       fi	  
-      cp ${basestar}.java $destination/dsp/stars
+      cp ${basestar}.java $destination/dsp/lib
   else
-      if [ ! -d "$destination/stars" ] ; then
-	  mkdir -p "$destination/stars"
+      if [ ! -d "$destination/lib" ] ; then
+	  mkdir -p "$destination/lib"
       fi	  
-      cp ${basestar}.java $destination/stars
+      cp ${basestar}.java $destination/lib
   fi
 done
 
-# Create makefiles
-dirs="stars dsp/stars"
+cat > $PTII/$destinationSubdir/cgc.xml <<EOF4
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SDF CGC Actors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>SDF CGC Actors</doc>
+
+EOF4
+
+# Create README.txt, package.html makefiles
+dirs="lib dsp/lib"
 for dir in $dirs
 do
     destinationDirectory=$PTII/$destinationSubdir/$dir
+
+    echo "	    <input source=\"$destinationSubdir/$dir/index.xml\"/>" >> $PTII/$destinationSubdir/cgc.xml
 
     # README.txt
 cat > $destinationDirectory/README.txt <<EOF2
@@ -83,12 +97,12 @@ EoF1
 
 
     # makefile
-   subdir=`echo $dir | sed 's@/*stars@ @'`
+   subdir=`echo $dir | sed 's@/*lib@ @'`
    if [ "$subdir" = " " ]; then
        subdir="";
    fi       
 
-   root=`echo $destinationSubdir/$dir | sed 's@[^/]*/@\.\./@g' | sed 's@/stars@/..@'`
+   root=`echo $destinationSubdir/$dir | sed 's@[^/]*/@\.\./@g' | sed 's@/lib@/..@'`
 
    javafiles=`(cd $destinationDirectory; ls -1 *.java | awk '{printf("%s \\\\\n"), $1}')`
 
@@ -142,7 +156,7 @@ CONFIG =        \$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     stars
+PTPACKAGE =     lib
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
@@ -150,7 +164,7 @@ JSRCS = \
        $javafiles
 
 OTHER_FILES_TO_BE_JARED = \
-	stars.xml
+	lib.xml
 
 EXTRA_SRCS =	\$(JSRCS) \$(OTHER_FILES_TO_BE_JARED)
 
@@ -177,3 +191,11 @@ EOF
     # Run make
     (cd $destinationDirectory; make)
 done
+
+cat >> $PTII/$destinationSubdir/cgc.xml <<EOF5
+      </group>
+    ?>
+  </configure>
+</entity>
+
+EOF5
