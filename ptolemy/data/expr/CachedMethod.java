@@ -152,7 +152,7 @@ public class CachedMethod {
      *  constructor to create a cached method.
      *
      *  @param methodName The name of the encapsulated method.
-     *  @param argTypes An array of token types that can be passed to
+     *  @param argumentTypes An array of token types that can be passed to
      *  the method, subject to the given set of conversions.  For a
      *  FUNCTION, the number of argument types must be the same as the
      *  number of arguments to the given method.  For a METHOD, there
@@ -164,17 +164,17 @@ public class CachedMethod {
      *  @param conversions An array of conversions that will convert
      *  arguments of the corresponding argument types to arguments
      *  that the method will accept.  If the method accepts Token
-     *  arguments, then this array will contain IDENTITY conversions.
+     *  arguments, then this array will contain IDENTITY_CONVERSION conversions.
      *  This array must be the same size as the number of arguments to
      *  the method.
      *  @param type The type of the method.
      */
-    protected CachedMethod(String methodName, Type[] argTypes,
+    protected CachedMethod(String methodName, Type[] argumentTypes,
             Method method, ArgumentConversion[] conversions,
             int type) {
         // Note clones for safety...
         _methodName = methodName;
-        _argTypes = (Type[]) argTypes.clone();
+        _argumentTypes = (Type[]) argumentTypes.clone();
         _method = method;
         if (conversions != null) {
             _conversions = (ArgumentConversion[]) conversions.clone();
@@ -186,8 +186,8 @@ public class CachedMethod {
         // Compute the hashcode, based on the method name and argument
         // types.
         _hashcode = methodName.hashCode();
-        for (int i = 0; i < argTypes.length; i++) {
-            _hashcode += argTypes[i].hashCode();
+        for (int i = 0; i < argumentTypes.length; i++) {
+            _hashcode += argumentTypes[i].hashCode();
         }
     }
     
@@ -224,11 +224,11 @@ public class CachedMethod {
                 (cachedMethod._type & (FUNCTION+METHOD))) {
             return false;
         }
-        if (_argTypes.length != cachedMethod._argTypes.length) {
+        if (_argumentTypes.length != cachedMethod._argumentTypes.length) {
             return false;
         }
-        for (int i = 0; i < _argTypes.length; i++) {
-            if (!_argTypes[i].equals(cachedMethod._argTypes[i])) {
+        for (int i = 0; i < _argumentTypes.length; i++) {
+            if (!_argumentTypes[i].equals(cachedMethod._argumentTypes[i])) {
                 return false;
             }
         }
@@ -254,18 +254,18 @@ public class CachedMethod {
      *  are scalars or a function signature match is found.
      *
      *  @param methodName The method or function name.
-     *  @param argTypes The argument types, including as the first element
+     *  @param argumentTypes The argument types, including as the first element
      *   the type of object on which the method is invoked, if this is a
      *   method invocation.
      *  @param type FUNCTION or METHOD.
      *  @return A cached method that is valid if a matching method was found.
      */
     public static CachedMethod findMethod(String methodName,
-            Type[] argTypes, int type) throws IllegalActionException {
+            Type[] argumentTypes, int type) throws IllegalActionException {
                 
         // Check to see if there is a cache already.
         CachedMethod cachedMethod = _getCachedMethod(
-                methodName, argTypes, type);
+                methodName, argumentTypes, type);
         if (cachedMethod != null) {
             //    System.out.println("in cache");
             return cachedMethod;
@@ -274,9 +274,9 @@ public class CachedMethod {
 
         // First look for the method or function in the normal place.  
         if (type == METHOD) {
-            cachedMethod = _findMETHOD(methodName, argTypes);
+            cachedMethod = _findMETHOD(methodName, argumentTypes);
         } else if (type == FUNCTION) {
-            cachedMethod = _findFUNCTION(methodName, argTypes);
+            cachedMethod = _findFUNCTION(methodName, argumentTypes);
         } else {
             throw new IllegalActionException("Attempted to find a method " +
                     "with an invalid type = " + type);
@@ -290,17 +290,17 @@ public class CachedMethod {
             // Go Look for an ArrayMapped method, instead.
             // Check if any arguments are of array type.
             boolean hasArray = false;
-            boolean[] isArrayArg = new boolean[argTypes.length];
-            Type[] newArgTypes = new Type[argTypes.length];
-            for (int i = 0; i < argTypes.length; i++) {
+            boolean[] isArrayArg = new boolean[argumentTypes.length];
+            Type[] newArgTypes = new Type[argumentTypes.length];
+            for (int i = 0; i < argumentTypes.length; i++) {
                 // System.out.println("argType[" + i + "] = "
-                //         + argTypes[i].getClass());
-                if (argTypes[i] instanceof ArrayType) {
+                //         + argumentTypes[i].getClass());
+                if (argumentTypes[i] instanceof ArrayType) {
                     hasArray = true;
-                    newArgTypes[i] = ((ArrayType)argTypes[i]).getElementType();
+                    newArgTypes[i] = ((ArrayType)argumentTypes[i]).getElementType();
                     isArrayArg[i] = true;
                 } else {
-                    newArgTypes[i] = argTypes[i];
+                    newArgTypes[i] = argumentTypes[i];
                     isArrayArg[i] = false;
                 }
             }
@@ -309,7 +309,7 @@ public class CachedMethod {
                     findMethod(methodName, newArgTypes, type);
                 if (mapCachedMethod.isValid()) {
                     cachedMethod = new ArrayMapCachedMethod(
-                            methodName, argTypes, type,
+                            methodName, argumentTypes, type,
                             mapCachedMethod, isArrayArg);
                 }
             }
@@ -320,18 +320,18 @@ public class CachedMethod {
             // Go Look for a MatrixMapped method, instead.
             // Check if any arguments are of matrix type.
             boolean hasArray = false;
-            boolean[] isArrayArg = new boolean[argTypes.length];
-            Type[] newArgTypes = new Type[argTypes.length];
-            for (int i = 0; i < argTypes.length; i++) {
+            boolean[] isArrayArg = new boolean[argumentTypes.length];
+            Type[] newArgTypes = new Type[argumentTypes.length];
+            for (int i = 0; i < argumentTypes.length; i++) {
                 // System.out.println("argType[" + i + "] = "
-                //        + argTypes[i].getClass());
-                if (argTypes[i] instanceof UnsizedMatrixType) {
+                //        + argumentTypes[i].getClass());
+                if (argumentTypes[i] instanceof UnsizedMatrixType) {
                     hasArray = true;
-                    newArgTypes[i] = ((UnsizedMatrixType)argTypes[i])
+                    newArgTypes[i] = ((UnsizedMatrixType)argumentTypes[i])
                         .getElementType();
                     isArrayArg[i] = true;
                 } else {
-                    newArgTypes[i] = argTypes[i];
+                    newArgTypes[i] = argumentTypes[i];
                     isArrayArg[i] = false;
                 }
             }
@@ -341,7 +341,7 @@ public class CachedMethod {
                     findMethod(methodName, newArgTypes, type);
                 if (mapCachedMethod.isValid()) {
                     cachedMethod = new MatrixMapCachedMethod(
-                            methodName, argTypes, type,
+                            methodName, argumentTypes, type,
                             mapCachedMethod, isArrayArg);
                 }
             }
@@ -352,7 +352,7 @@ public class CachedMethod {
             // If we haven't found anything by this point, then give
             // up...  Store an invalid cached method, so we don't try 
             // the same search any more.
-            cachedMethod = new CachedMethod(methodName, argTypes,
+            cachedMethod = new CachedMethod(methodName, argumentTypes,
                     null, null, type);
         }
         
@@ -541,16 +541,16 @@ public class CachedMethod {
         StringBuffer buffer = new StringBuffer();
         if (isMethod()) {
             initialArg = 1;
-            buffer.append(_argTypes[0].toString());
+            buffer.append(_argumentTypes[0].toString());
             buffer.append(".");
         }
         buffer.append(_methodName);
         buffer.append("(");
-        for (int i = initialArg; i < _argTypes.length; i++) {
+        for (int i = initialArg; i < _argumentTypes.length; i++) {
             if (i == initialArg) {
-                buffer.append(_argTypes[i].toString());
+                buffer.append(_argumentTypes[i].toString());
             } else {
-                buffer.append(", " + _argTypes[i].toString());
+                buffer.append(", " + _argumentTypes[i].toString());
             }
         }
         buffer.append(")");
@@ -566,16 +566,17 @@ public class CachedMethod {
     /** Indicator of a method (vs. function). */
     public static final int METHOD = 16;
 
-    // Note that conversions are ordered by preference..  IMPOSSIBLE is the
-    // least preferable conversion, and has type of zero.
+    // Note that conversions are ordered by preference..
+    // IMPOSSIBLE_CONVERSION is the least preferable conversion, and
+    // has type of zero.
 
     /** Impossible argument conversion. */
     public static final ArgumentConversion
-    IMPOSSIBLE = new ArgumentConversion(0);
+    IMPOSSIBLE_CONVERSION = new ArgumentConversion(0);
 
     /** Conversion from an ArrayToken to a Token array (Token[]). */
     public static final ArgumentConversion
-    ARRAYTOKEN = new ArgumentConversion(1) {
+    ARRAYTOKEN_CONVERSION = new ArgumentConversion(1) {
             public Object convert(ptolemy.data.Token input)
                     throws IllegalActionException {
                 // Convert ArrayToken to Token[]
@@ -585,7 +586,7 @@ public class CachedMethod {
 
     /** Conversion from tokens to Java native types. */
     public static final ArgumentConversion
-    NATIVE = new ArgumentConversion(2) {
+    NATIVE_CONVERSION = new ArgumentConversion(2) {
             public Object convert(ptolemy.data.Token input)
                     throws IllegalActionException {
                 // Convert tokens to native types.
@@ -595,7 +596,7 @@ public class CachedMethod {
     
     /** Identity conversion.  Does nothing. */
     public static final ArgumentConversion
-    IDENTITY = new ArgumentConversion(3) {
+    IDENTITY_CONVERSION = new ArgumentConversion(3) {
             public Object convert(ptolemy.data.Token input)
                     throws IllegalActionException {
                 // The do nothing conversion.
@@ -669,26 +670,26 @@ public class CachedMethod {
 
     /** Return a conversion to convert the second argument into the class
      *  given by the first argument. 
-     *  @return The best correct conversion, or IMPOSSIBLE if no such
-     *  conversion exists.
+     *  @return The best correct conversion, or IMPOSSIBLE_CONVERSION
+     *  if no such conversion exists.
      */
     protected static ArgumentConversion _getConversion(
             Class formal, Type actual) {
         // No conversion necessary.
         if (formal.isAssignableFrom(actual.getTokenClass()))
-            return IDENTITY;
+            return IDENTITY_CONVERSION;
 
         // ArrayTokens can be converted to Token[]
         if (actual instanceof ArrayType &&
                 formal.isArray() &&
                 formal.getComponentType().isAssignableFrom(
                         ptolemy.data.Token.class))
-            return ARRAYTOKEN;
+            return ARRAYTOKEN_CONVERSION;
         try {
             // Tokens can be converted to native types.
             if (formal.isAssignableFrom(
                      ConversionUtilities.convertTokenTypeToJavaType(actual))) {
-                return NATIVE;
+                return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
             // Ignore..
@@ -703,14 +704,14 @@ public class CachedMethod {
                     ConversionUtilities.convertJavaTypeToTokenType(formal);
                 if (ptolemy.graph.CPO.LOWER ==
                         TypeLattice.compare(actual, type)) {
-                    return NATIVE;
+                    return NATIVE_CONVERSION;
                 }
             }
         } catch (IllegalActionException ex) {
             // Ignore..
             //          ex.printStackTrace();
         }
-        return IMPOSSIBLE;
+        return IMPOSSIBLE_CONVERSION;
     }
 
     /** Return the first method in the specified class that has the
@@ -723,13 +724,13 @@ public class CachedMethod {
      *  types.  It returns null if there is no match.  
      *  @param library A class to be searched.
      *  @param methodName The name of the method.
-     *  @param argTypes The types of the arguments.
-     *  @param conversions An array of the same length as <i>argTypes</i>
+     *  @param argumentTypes The types of the arguments.
+     *  @param conversions An array of the same length as <i>argumentTypes</i>
      *   that will be populated by this method with the conversions to
      *   use for the arguments.
      */
     protected static Method _polymorphicGetMethod(Class library,
-            String methodName, Type[] argTypes,
+            String methodName, Type[] argumentTypes,
             ArgumentConversion[] conversions) {
         // This method might appear to duplicate the operation of the
         // getMethod() method in java.lang.Class.  However, that class
@@ -760,10 +761,10 @@ public class CachedMethod {
 
                 Class[] arguments = methods[i].getParameterTypes();
                 int actualArgCount;
-                if (argTypes == null) {
+                if (argumentTypes == null) {
                     actualArgCount = 0;
                 } else {
-                    actualArgCount = argTypes.length;
+                    actualArgCount = argumentTypes.length;
                 }
                 // Check the number of arguments.
                 if (arguments.length != actualArgCount) continue;
@@ -774,12 +775,12 @@ public class CachedMethod {
                 boolean match = true;
                 for (int j = 0; j < arguments.length && match; j++) {
                     ArgumentConversion conversion =
-                        _getConversion(arguments[j], argTypes[j]);
+                        _getConversion(arguments[j], argumentTypes[j]);
                     // System.out.println("formalType is "
                     //       + arguments[j] + " " + arguments[j].getName());
-                    // System.out.println("actualType is " + argTypes[j]
-                    //       + " " + argTypes[j].getClass().getName());
-                    match = match && (conversion != IMPOSSIBLE);
+                    // System.out.println("actualType is " + argumentTypes[j]
+                    //       + " " + argumentTypes[j].getClass().getName());
+                    match = match && (conversion != IMPOSSIBLE_CONVERSION);
                     conversions[j] = conversion;
                 }
                 // If there was a previous match, then check to see
@@ -819,24 +820,24 @@ public class CachedMethod {
     }
     
     // Find a CachedMethod of type METHOD, in a class that extends
-    // from the type indicated by argTypes[0], that accepts arguments
-    // argTypes[1..length].  Return null if no method can be found.
+    // from the type indicated by argumentTypes[0], that accepts arguments
+    // argumentTypes[1..length].  Return null if no method can be found.
     private static CachedMethod _findMETHOD(
-            String methodName, Type[] argTypes)        
+            String methodName, Type[] argumentTypes)        
             throws IllegalActionException {
         CachedMethod cachedMethod = null;
         // Try to reflect the method.
-        int num = argTypes.length;
+        int num = argumentTypes.length;
         ArgumentConversion[] conversions = new ArgumentConversion[num - 1];
         
-        Class destTokenClass = argTypes[0].getTokenClass();
+        Class destTokenClass = argumentTypes[0].getTokenClass();
         Type[] methodArgTypes;
         if (num == 1) {
             methodArgTypes = null;
         } else {
             methodArgTypes = new Type[num - 1];
             for (int i = 1; i < num; i++) {
-                methodArgTypes[i-1] = argTypes[i];
+                methodArgTypes[i-1] = argumentTypes[i];
             }
         }
         
@@ -844,7 +845,7 @@ public class CachedMethod {
             Method method = _polymorphicGetMethod(destTokenClass,
                     methodName, methodArgTypes, conversions);
             if (method != null) {
-                cachedMethod = new CachedMethod(methodName, argTypes,
+                cachedMethod = new CachedMethod(methodName, argumentTypes,
                         method, conversions, METHOD);
             }
         } catch (SecurityException security) {
@@ -858,27 +859,28 @@ public class CachedMethod {
             // Native convert the base class.
             // System.out.println("Checking for base conversion");
             destTokenClass = ConversionUtilities
-                .convertTokenTypeToJavaType(argTypes[0]);
+                .convertTokenTypeToJavaType(argumentTypes[0]);
             
             Method method = _polymorphicGetMethod(destTokenClass,
                     methodName, methodArgTypes, conversions);
             if (method != null) {
                 cachedMethod = new BaseConvertCachedMethod(
-                        methodName, argTypes, method, NATIVE, conversions);
+                        methodName, argumentTypes, method, 
+                        NATIVE_CONVERSION, conversions);
             }
         }
         return cachedMethod;
     }
 
     // Find a CachedMethod of type FUNCTION, in a registered class,
-    // that accepts arguments argTypes[0..length].  Return null if no
+    // that accepts arguments argumentTypes[0..length].  Return null if no
     // method can be found.
     private static CachedMethod _findFUNCTION(
-            String methodName, Type[] argTypes)
+            String methodName, Type[] argumentTypes)
             throws IllegalActionException {
         CachedMethod cachedMethod = null;
         ArgumentConversion[] conversions =
-            new ArgumentConversion[argTypes.length];
+            new ArgumentConversion[argumentTypes.length];
         // Search the registered function classes
         Iterator allClasses =
             PtParser.getRegisteredClasses().iterator();
@@ -892,7 +894,7 @@ public class CachedMethod {
             //                     + nextClass);
             try {
                 Method method = _polymorphicGetMethod
-                    (nextClass, methodName, argTypes, conversions);
+                    (nextClass, methodName, argumentTypes, conversions);
                 if (method != null) {
                     // System.out.println("Found match: " + method);
                     // Compare to previous match, if there has
@@ -923,19 +925,19 @@ public class CachedMethod {
             //        + preferredMethod);
             // System.out.println("*** Chosen conversions: "
             //        + preferredConversions[0]);
-            cachedMethod = new CachedMethod(methodName, argTypes,
+            cachedMethod = new CachedMethod(methodName, argumentTypes,
                     preferredMethod, preferredConversions, FUNCTION);
         }
         return cachedMethod;
     }
     
     /** Return the CachedMethod that corresponds to methodName and
-     *  argTypes if it had been cached previously.
+     *  argumentTypes if it had been cached previously.
      */
     private static CachedMethod _getCachedMethod(
-            String methodName, Type[] argTypes, int type) {
+            String methodName, Type[] argumentTypes, int type) {
         CachedMethod key = new CachedMethod(
-                methodName, argTypes, null, null, type);
+                methodName, argumentTypes, null, null, type);
         // System.out.println("findMethod:" + key);
         CachedMethod method = (CachedMethod)_cachedMethods.get(key);
         return method;
@@ -947,7 +949,7 @@ public class CachedMethod {
     // The method name.
     private String _methodName;
     // The token types of the arguments.
-    private Type[] _argTypes;
+    private Type[] _argumentTypes;
     // The Java method to be invoked.
     private Method _method;
     // Conversions that convert the types of the arguments to types
@@ -1034,10 +1036,10 @@ public class CachedMethod {
     public static class BaseConvertCachedMethod extends CachedMethod {
 
         private BaseConvertCachedMethod(
-                String methodName, Type[] argTypes,
+                String methodName, Type[] argumentTypes,
                 Method method, ArgumentConversion baseConversion,
                 ArgumentConversion[] conversions) {
-            super(methodName, argTypes, method, conversions, METHOD);
+            super(methodName, argumentTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;
         }
         /** Return the conversion that is applied to the object
@@ -1064,9 +1066,9 @@ public class CachedMethod {
     public static class ArrayMapCachedMethod extends CachedMethod {
 
         public ArrayMapCachedMethod(
-                String methodName, Type[] argTypes, int type,
+                String methodName, Type[] argumentTypes, int type,
                 CachedMethod cachedMethod, boolean[] reducedArgs) {
-            super(methodName, argTypes, null, null, type);
+            super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
         }
@@ -1159,9 +1161,9 @@ public class CachedMethod {
      */
     public static class MatrixMapCachedMethod extends CachedMethod {
         public MatrixMapCachedMethod(
-                String methodName, Type[] argTypes, int type,
+                String methodName, Type[] argumentTypes, int type,
                 CachedMethod cachedMethod, boolean[] reducedArgs) {
-            super(methodName, argTypes, null, null, type);
+            super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
         }
