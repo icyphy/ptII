@@ -437,7 +437,12 @@ public class Configuration extends CompositeEntity {
             throws IllegalActionException, NameDuplicationException {
 
         // If the entity defers its MoML definition to another,
-        // then open that other, unless this is a class extending another.
+        // then open that other, unless this is a class extending another,
+        // and also unless this is an object that contains a TableauFactory.
+        // I.e., by default, when you open an instance of a class, what
+        // is opened is the class definition, not the instance, unless
+        // the instance contains a TableauFactory, in which case, we defer
+        // to that TableauFactory.
         Prototype deferredTo = null;
         boolean isClass = false;
         if (entity instanceof Prototype) {
@@ -445,6 +450,7 @@ public class Configuration extends CompositeEntity {
             isClass = ((Prototype)entity).isClassDefinition();
         }
         String elementName = entity.getElementName();
+        List factoryList = entity.attributeList(TableauFactory.class);
         if (deferredTo != null && !isClass) {
             entity = deferredTo;
         }
