@@ -46,11 +46,17 @@ import soot.Type;
 import soot.ValueBox;
 
 //////////////////////////////////////////////////////////////////////////
-//// CompoundBooleanExpression
+//// AbstractCompoundExpression
 /**
- * 
+ * This class extends the CompoundBooleanExpression class and implements
+ * a number of interfaces to be compatible with soot (i.e. Expr and
+ * ToBriefString).
  *
-
+ * This class is very similar to the soot.jimple.internal.AbstractBinopExpr
+ * class.
+ *
+ * TODO: figure out how to combine this class with CompoundBooleanExpression
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0

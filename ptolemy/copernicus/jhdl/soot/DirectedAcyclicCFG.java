@@ -175,7 +175,8 @@ public class DirectedAcyclicCFG extends DirectedGraph {
     }
 
     public static DirectedAcyclicCFG _main(String args[]) {
-	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
+	soot.SootMethod testMethod = 
+	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 	DirectedAcyclicCFG _cfg=null;
 	try {
 	    ConditionalControlCompactor.compact(testMethod);

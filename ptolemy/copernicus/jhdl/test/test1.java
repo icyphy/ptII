@@ -76,10 +76,14 @@ public class test1 extends TypedAtomicActor {
     public int g(int a) { return a+4; }
 
     /**
-     * ControlFlow
-     * - none
-     * DataFlow
-     * - UnopExpr 
+     * Summary of test methods:
+     *
+     * method1: Negate operation
+     *
+     **/
+
+    /**
+     * Integer Negate Operation (UnopExpr)
      **/
     public void method1(int b) {
 	int a = -b;
@@ -330,10 +334,50 @@ public class test1 extends TypedAtomicActor {
 	d += a + 5;
 	return d;
     }
+    /** Serial combining (one fork) with limited dataflow **/
     public int method35_1(int a) {
 	int d=0;
 	if (a > 5) {
 	    d += a;
+	}
+	d += 5;
+	return d;
+    }
+
+    /** Serial combining (two forks). Value defined in
+     * both branches. **/
+    public int method35_2(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	} else {
+	    d -= a;
+	}
+	d += 5;
+	return d;
+    }
+
+    /** Serial combining (two forks). Value defined in
+     * true branch only. **/
+    public int method35_3(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	} else {
+	    a += 3;
+	}
+	d += 5;
+	return d;
+    }
+
+    /** Serial combining (two forks). Value defined in
+     * false branch only. **/
+    public int method35_4(int a) {
+	int d=0;
+	if (a > 5) {
+	    a += 3;
+	} else {
+	    d += 4;
 	}
 	d += 5;
 	return d;

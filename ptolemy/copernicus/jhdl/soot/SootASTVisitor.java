@@ -646,54 +646,17 @@ public class SootASTVisitor {
 
     public static boolean DEBUG = false; 
 
-    public static soot.SootMethod getSootMethod(String args[]) {
-	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
-	String methodname = "method1";
-	if (args.length > 0)
-	    classname = args[0];
-	if (args.length > 1)
-	    methodname = args[1];
-	
-	soot.SootClass testClass = 
-	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
-	if (testClass == null) {
-	    System.err.println("Class "+classname+" not found");
-	    System.exit(1);
-	}
-	System.out.println("Loading class "+classname+" method "+methodname);
-	if (!testClass.declaresMethodByName(methodname)) {
-	    System.err.println("Method "+methodname+" not found");
-	    System.exit(1);
-	}
-
-	return testClass.getMethodByName(methodname);
-    }
-
-    public static soot.Body getSootBody(String args[]) {
-	soot.SootMethod testMethod = getSootMethod(args);
-	return testMethod.retrieveActiveBody();
-    }
-
     /**
-     * This method returns an array of BlockDataFlowGraph objects for
-     * a given Method from a class. The method/class name are speciefied
-     * as command line arguments.
+     * This test main method is used to test the AST implemented
+     * by this method. This method will process each basic block
+     * of the given method through the AST. Since this base class
+     * doesn't do anything, nothing will be printed to STDOUT unless
+     * there is an error.
      **/
-    public static Block[] getBlocks(String args[]) {
-
-	soot.SootMethod testMethod = getSootMethod(args);
-	soot.Body body = testMethod.retrieveActiveBody();
-	
-	BriefBlockGraph bbgraph = new BriefBlockGraph(body);
-	BlockGraphToDotty.writeDotFile("cfg",bbgraph);
-	List l = bbgraph.getBlocks();
-	Block[] b = new Block[l.size()];
-	return (Block[]) l.toArray(b);
-    }
-
     public static void main(String args[]) {
 	SootASTVisitor.DEBUG = true;
-	Block blocks[] = getBlocks(args);
+	Block blocks[] = 
+	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
 	for (int i = 0 ; i < blocks.length; i++) {
 	    try {
 		SootASTVisitor s = new SootASTVisitor(blocks[i]);

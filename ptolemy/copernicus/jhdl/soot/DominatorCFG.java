@@ -122,20 +122,43 @@ public class DominatorCFG extends DirectedAcyclicCFG {
 	_postDominators = new DominatorHashMap(this,true);
     }
 
+    /**
+     * This method will create a DominatorCFG object for the
+     * Class and Method specified by the String arguments.
+     * Before creating the CFG, this method will apply the
+     * Conditional control compaction transformation
+     * ({@link ConditionalControlCompactor#compact(SootMethod)})
+     * and the Boolean NOT compaction transformation
+     * ({@link BooleanNotCompactor#compact(SootMethod)}).
+     *
+     * @param args Specifies the Classname (args[0]) and the 
+     * Methodname (args[1]).
+     * @param writeGraphs If set true, this method will create
+     * ".dot" file graphs for intermediate results.
+     * Specifically,
+     * this method will create a file called "<method name>.dot"
+     * that represents the CFG of the method after the transformations
+     * have taken place.
+     *
+     * @see DominatorCFG#createDominatorCFG(String[],boolean)
+     **/
     public static DominatorCFG createDominatorCFG(String args[],
 						  boolean writeGraphs) {
-	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
+	soot.SootMethod testMethod = 
+	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 	DominatorCFG _cfg=null;
 	try {
 	    ConditionalControlCompactor.compact(testMethod);
 	    BooleanNotCompactor.compact(testMethod);
 	    soot.Body body = testMethod.retrieveActiveBody();
 	    BriefBlockGraph bbgraph = new BriefBlockGraph(body);
+	    /*
 	    if (writeGraphs) {
 		ptolemy.copernicus.jhdl.util.BlockGraphToDotty.writeDotFile("bbgraph",bbgraph);
 		BlockDataFlowGraph graphs[] = 
 		    BlockDataFlowGraph.getBlockDataFlowGraphs(args);
 	    }
+	    */
 	    _cfg = new DominatorCFG(bbgraph);
 	    if (writeGraphs)
 		ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile(testMethod.getName(),_cfg);

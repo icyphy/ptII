@@ -34,14 +34,18 @@ import soot.Value;
 import soot.jimple.Jimple;
 
 //////////////////////////////////////////////////////////////////////////
-//// CompoundBooleanExpression
+//// CompoundOrExpression
 /**
- * 
+ * Represents the "OR" compound Boolean expression.
  *
-
-@author Mike Wirthlin
-@version $Id$
-@since Ptolemy II 2.0
+ * The inverse of this expression is a CompoundAndExpression with each
+ * of the operands inverted (i.e. application of DeMorgan's theorem).
+ *
+ * @see ptolemy.copernicus.jhdl.soot.CompoundAndExpression
+ *
+ * @author Mike Wirthlin
+ * @version $Id$
+ * @since Ptolemy II 2.0
 */
 
 public class CompoundOrExpression extends AbstractCompoundExpression  {

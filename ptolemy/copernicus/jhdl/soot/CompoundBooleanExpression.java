@@ -50,17 +50,26 @@ import soot.jimple.NeExpr;
 //////////////////////////////////////////////////////////////////////////
 //// CompoundBooleanExpression
 /**
- * This class represents a CompoundBooleanExpression that can be created
- * from a series of successive IfStmt objects. This class provides the
- * ability to invert a Value (specifically a ConditionExpr) that is
- * needed to perform the logic construction of the cascading IfStmts.
+ * This abstract class represents a CompoundBooleanExpression within Soot.
+ * Note that this class is an extension to Soot by providing a
+ * way to represent compound Boolean expressions within a single
+ * class (there is no corresponding semantic object in Java).
  *
- * @see ptolemy.copernicus.jhdl.ConditionalControlCompactor
+ * This class was creaed to represent compound Boolean expressions that
+ * are represented in Soot (and correspondingly in Java Byte codes)
+ * as a series of successive IfStmt objects. It is often difficult to
+ * manipulate the compound expressions in the IfStmt form in which
+ * they are traditionally represented in Java.
+ *
+ * This class provides a method for "inverting" a Value (specifically a
+ * ConditionExpr) that is needed to perform the logic construction of
+ * the cascading IfStmts.
+ *
+ * @see ptolemy.copernicus.jhdl.soot.ConditionalControlCompactor
  *
  * @author Mike Wirthlin
  * @version $Id$
- * @since Ptolemy II 2.0
-*/
+ * @since Ptolemy II 2.0 */
 
 public abstract class CompoundBooleanExpression implements Value, ConditionExpr {
 
@@ -69,6 +78,24 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
     public abstract Value getOp1();
     public abstract Value getOp2();
 
+    /**
+     * This method will "invert" the Value passed as an argument. The
+     * Value must be of type ConditionExpr (an IllegalActionException
+     * will be thrown if a different type is passed). This method will
+     * create a new ConditionExpr that is the inverse of the
+     * ConditionExpr Value in the argument. 
+     *
+     * The following mapping is used:
+     *
+     * <ul>
+     * <li> EqExpr -> NeExpr
+     * <li> GeExpr -> LtExpr
+     * <li> GtExpr -> LeExpr
+     * <li> LeExpr -> GtExpr
+     * <li> LtExpr -> GeExpr
+     * <li> NeExpr -> EqExpr
+     * </ul>
+     **/
     public static Value invertValue(Value inValue) throws IllegalActionException {
 	Value newValue=null;
 	if (inValue instanceof ConditionExpr) {

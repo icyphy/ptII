@@ -40,7 +40,7 @@ import ptolemy.graph.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+//// SootDFGBuilder
 /**
 @author Mike Wirthlin
 @version $Id$
@@ -49,11 +49,20 @@ import java.util.*;
 
 public class SootDFGBuilder extends SootASTVisitor {
 
-    public SootDFGBuilder(Block block, SootBlockDirectedGraph g) 
+    public SootDFGBuilder(SootBlockDirectedGraph g) 
 	throws SootASTException {
 	_graph = g;
 	_valueMap = _graph.getValueMap();
-	processBlock(block);
+	processBlock(_graph.getBlock());
+    }
+
+    public static SootBlockDirectedGraph createGraph(Block block) 
+	throws SootASTException {
+
+	SootBlockDirectedGraph graph = 
+	    new SootBlockDirectedGraph(block);
+	new SootDFGBuilder(graph);
+	return graph;
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt, 
@@ -74,7 +83,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 	if (!left)
 	    _valueMap.getOrAddValueNode(val); // make sure it is added
 	else
-	    _valueMap.addValueNode(val);	
+	    _valueMap.addValueNode(val,left);	
 
 	Value v = super.processValue(val,left);
 	return v;
@@ -96,11 +105,14 @@ public class SootDFGBuilder extends SootASTVisitor {
 	return expr;
     }
 
-    public Stmt processReturnVoidStmt(ReturnVoidStmt stmt) { return stmt; }
+    public Stmt processReturnVoidStmt(ReturnVoidStmt stmt) { 
+	return stmt; 
+    }
     public Stmt processReturnStmt(ReturnStmt stmt, Value returnVal) { 
 	Node returnedValue = _valueMap.getValueNode(returnVal);
-	Node returnNode = _graph.addNodeWeight(stmt);
-	_graph.addEdge(returnedValue,returnNode);
+	// TODO: I need to mark the given Value with a "return" flag
+	//Node returnNode = _graph.addNodeWeight(stmt);
+	//_graph.addEdge(returnedValue,returnNode);
 	return stmt; 
     }
     public Stmt processInvokeStmt(InvokeStmt stmt, InvokeExpr ie) { 
@@ -131,11 +143,11 @@ public class SootDFGBuilder extends SootASTVisitor {
 	Edge baseEdge=null;
 	for (Iterator i=_graph.inputEdges(ifrNode).iterator();i.hasNext();) {
 	    Edge e = (Edge) i.next();
-	    if (e.hasWeight() && e.getWeight().equals(_graph.BASE_WEIGHT))
+	    if (e.hasWeight() && e.getWeight().equals(BASE_WEIGHT))
 		baseEdge = e;
 	}
 	if (baseEdge == null)
-	    _graph.addEdge(baseNode,ifrNode,_graph.BASE_WEIGHT);
+	    _graph.addEdge(baseNode,ifrNode,BASE_WEIGHT);
 	
 	/*
 	if (dupIfr == null) {
@@ -173,16 +185,45 @@ public class SootDFGBuilder extends SootASTVisitor {
 	return ie;
     }
 
+    /**
+     * This static method will create an array of SootBlockDirectedGraph
+     * objects from a Class file specified by the String array arguments.
+     *
+     * @param args Specifies the Classname (args[0]) and the 
+     * Methodname (args[1]).
+     *
+     **/
+    public static SootBlockDirectedGraph[] createDataFlowGraphs(String args[], 
+								boolean writeGraphs) {
+
+	//SootASTVisitor.DEBUG = true;
+	Block blocks[] = 
+	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
+	SootBlockDirectedGraph graphs[] = 
+	    new SootBlockDirectedGraph[blocks.length];	
+	for (int i = 0 ; i < blocks.length; i++) {
+	    try {
+		graphs[i] = createGraph(blocks[i]);
+		PtDirectedGraphToDotty.writeDotFile("bbgraph"+i,
+						    graphs[i]);
+	    } catch (SootASTException e) {
+		//System.err.println(e);
+		e.printStackTrace();
+		System.exit(1);
+	    }
+	} 
+	return graphs;
+    }
+
     public static void main(String args[]) {
 	SootASTVisitor.DEBUG = true;
-	Block blocks[] = getBlocks(args);
+	Block blocks[] = 
+	    ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
 	SootBlockDirectedGraph graphs[] = 
 	    new SootBlockDirectedGraph[blocks.length];
 	for (int i = 0 ; i < blocks.length; i++) {
-	    graphs[i] = new SootBlockDirectedGraph(blocks[i]);
 	    try {
-		SootDFGBuilder s = new SootDFGBuilder(blocks[i],
-						      graphs[i]);
+		graphs[i] = createGraph(blocks[i]);
 		PtDirectedGraphToDotty.writeDotFile("bgraph"+i,graphs[i]);
 	    } catch (SootASTException e) {
 		//System.err.println(e);
@@ -191,6 +232,12 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    }
 	} 
     }
+
+    /**
+     * This String is used as the weight object associated with
+     * edges corresponding to base references for referenced objects.
+     **/
+    public static final String BASE_WEIGHT = "base";
 
     protected SootBlockDirectedGraph _graph;
 

@@ -47,7 +47,15 @@ public class HashListMap extends HashMap implements MapList {
 
     public HashListMap() { super(); }
     public HashListMap(int i) { super(i); }
-    public HashListMap(HashListMap hlm) { super(hlm); }
+    public HashListMap(HashListMap hlm) { 
+	this(hlm.size());
+	for (Iterator i=hlm.keySet().iterator();i.hasNext();) {
+	    Object o = i.next();
+	    Vector l = (Vector) hlm.get(o);
+	    Vector copyl = (Vector) l.clone();
+	    setList(o,copyl);
+	}
+    }
 
     public void add(Object key, Object value) {	
 	List l = getCreateList(key);
@@ -55,7 +63,7 @@ public class HashListMap extends HashMap implements MapList {
     }
 
     public List getCreateList(Object key) {
-	List l = (List) get(key);
+	List l = getList(key);
 	if (l == null) {
 	    l = new Vector();
 	    put(key,l);
@@ -105,22 +113,16 @@ public class HashListMap extends HashMap implements MapList {
     }
 
     public Object clone() {
-	HashListMap hlm = new HashListMap(size());
-	for (Iterator i=keySet().iterator();i.hasNext();) {
-	    Object o = i.next();
-	    Vector vl = (Vector) ((Vector) get(o)).clone();
-	    hlm.put(o,vl);
-	}
-	return hlm;
+	return new HashListMap(this);
     }
 
     public String toString() {
 	StringBuffer sb = new StringBuffer();
 	for (Iterator i=keySet().iterator();i.hasNext();) {
 	    Object o = i.next();
-	    sb.append(o+":");
+	    sb.append(o+" MAPS TO: ");
 	    for (Iterator j=getList(o).iterator();j.hasNext();) {
-		sb.append(j.next());
+		sb.append(j.next()+" ");
 	    }
 	    sb.append("\n");
 	}

@@ -43,7 +43,7 @@ import ptolemy.graph.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+//// ControlSootDFGBuilder
 /**
 @author Mike Wirthlin
 @version $Id$
@@ -52,9 +52,18 @@ import java.util.*;
 
 public class ControlSootDFGBuilder extends SootDFGBuilder {
 
-    public ControlSootDFGBuilder(Block block, SootBlockDirectedGraph g) 
+    public ControlSootDFGBuilder(SootBlockDirectedGraph g) 
 	throws SootASTException {
-	super(block,g);
+	super(g);
+    }
+
+    public static SootBlockDirectedGraph createGraph(Block block) 
+	throws SootASTException {
+
+	SootBlockDirectedGraph graph = 
+	    new SootBlockDirectedGraph(block);
+	new ControlSootDFGBuilder(graph);
+	return graph;
     }
 
     public Value processConditionExpr(ConditionExpr ce) 
@@ -107,37 +116,9 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 	//return null;
     }
 
-    public static SootBlockDirectedGraph[] getGraphs(String args[]) {
-	//SootASTVisitor.DEBUG = true;
-	Block blocks[] = getBlocks(args);
-	SootBlockDirectedGraph graphs[] = 
-	    new SootBlockDirectedGraph[blocks.length];	
-	for (int i = 0 ; i < blocks.length; i++) {
-	    graphs[i] = new SootBlockDirectedGraph(blocks[i]);
-	    try {
-		ControlSootDFGBuilder s = 
-		    new ControlSootDFGBuilder(blocks[i],
-					      graphs[i]);
-	    } catch (SootASTException e) {
-		//System.err.println(e);
-		e.printStackTrace();
-		System.exit(1);
-	    }
-	} 
-	return graphs;
-    }
 
     public static void main(String args[]) {
-	SootBlockDirectedGraph[] g=getGraphs(args);
-	for (int i = 0;i<g.length;i++) {
-	    PtDirectedGraphToDotty.writeDotFile("bgraph"+i,g[i]);
-//  	    System.out.print("Sources=");
-//  	    Iterator j=g[i].requiredDefinitions().iterator();
-//  	    while (j.hasNext()) {
-//  		System.out.print(j.next() + " ");
-//  	    }
-	    System.out.println();
-	}
+	SootBlockDirectedGraph[] g = createDataFlowGraphs(args,true);
     }
 
 }

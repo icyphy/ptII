@@ -61,10 +61,13 @@ import ptolemy.graph.Node;
 import ptolemy.graph.Edge;
 
 //////////////////////////////////////////////////////////////////////////
-//// SootASTVisitor
+//// IntervalDFG
 /**
  * The graph that is manipuated is the graph associated with
  * the root.
+@author Mike Wirthlin
+@version $Id$
+@since Ptolemy II 2.0
  **/
 public class IntervalDFG extends BlockDataFlowGraph {
 

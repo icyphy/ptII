@@ -73,31 +73,24 @@ import soot.toolkits.graph.Block;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// ConditionalControlCompactor
+//// BooleanNotCompactor
 /**
- * This class contains a method that takes a SootMethod object and
- * compacts the control-flow representation by merging successive
- * conditional statements. Simple Boolean statements are implemented in
- * Byte codes as a series of conditional branches and unnecessarily complicate
- * the Control flow. This class will analyze the byte codes and create
- * Boolean statements in place of a series of conditional statements.
- * This significantly simplifies subsequent control-flow anaylsis.
+ * 
+ * A Not expression in Java (i.e. the ! operator) is implemented as
+ * an IfStmt in which constant Boolean values are assigned to the
+ * corresponding value. This method will scan through the chain
+ * of units and convert such Not expressions into JHDLNotExpr
+ * objects. This simplifies the control-flow analysis by removing
+ * this control flow construct with a dataflow expression.
  *
-
-@author Mike Wirthlin
-@version $Id$
-@since Ptolemy II 2.0
+ * @see ptolemy.copernicus.jhdl.soot.JHDLNotExpr
+ *
+ * @author Mike Wirthlin
+ * @version $Id$
+ * @since Ptolemy II 2.0
 */
 public class BooleanNotCompactor {
     
-    /**
-     * This static method takes a SootMethod and compacts successive
-     * Control-flow statements. The result is a modified SootMethod
-     * that includes CompoundBooleanExpression Nodes in place of
-     * multiple ConditionalExpression statements. Note that this
-     * modified SootMethod cannot be used to generate byte codes as
-     * several new Expression nodes unique to this package are used.
-     **/
     public static void compact(SootMethod method) 
 	throws IllegalActionException {
 	Body mbody = method.retrieveActiveBody();
@@ -114,6 +107,17 @@ public class BooleanNotCompactor {
 	}
     }
 
+    /**
+     * Search for the following pattern:
+     * - IfStmt Value
+     * - Successor must be an assignment statement
+     * - Target must be an assignment statement
+     * - Assignment statements must be to the same value
+     * - Values being assigned must be constant
+     *   (false assignment statement constant must = 1)
+     *   (true assignment statement constant must = 0)
+     * - Assignment statements must converge to same statement
+     **/
     protected static Unit mergeBooleanAssign(PatchingChain chain,
 					     Unit root) {
 
@@ -193,7 +197,8 @@ public class BooleanNotCompactor {
 
     public static void main(String args[]) {
 
-	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
+	soot.SootMethod testMethod = 
+	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 
 	soot.Body body = testMethod.retrieveActiveBody();
 	soot.toolkits.graph.CompleteUnitGraph unitGraph = 

@@ -52,21 +52,11 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 	super();
 	_block = block;
 	_valueMap = new ValueMap(this);
-	//	_requiredDefsAnalysis = new SootDFGRequiredDefinitionsAnalysis(this);
     }
 
     public ValueMap getValueMap() { return _valueMap; }
 
-//      public Collection requiredDefinitions() {	
-//  	return (Collection) _requiredDefsAnalysis.result();
-//      }
-
-
-    /**
-     * This String is used as the weight object associated with
-     * edges corresponding to base references for referenced objects.
-     **/
-    public static final String BASE_WEIGHT = "base";
+    public Block getBlock() { return _block; }
 
     protected ValueMap _valueMap;
 
@@ -74,12 +64,7 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 
     public static void main(String args[]) {
 	SootBlockDirectedGraph graphs[] = 
-	    ControlSootDFGBuilder.getGraphs(args);
-	for (int i = 0;i<graphs.length;i++) {
-	    PtDirectedGraphToDotty.writeDotFile("bgraph"+i,graphs[i]);
-	    //graphs[i].mergeInstanceFieldRefs();
-	    PtDirectedGraphToDotty.writeDotFile("mgraph"+i,graphs[i]);
-	}
+	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
     }
 
 }

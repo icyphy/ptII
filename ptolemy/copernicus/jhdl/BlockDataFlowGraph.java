@@ -651,43 +651,13 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
 
     /**
-     * This method returns a Soot method using an array of String 
-     * arguments. The first string (args[0]) is the fully qualified
-     * class name and the second string (args[1]) is the method name
-     * in that class.
-     *
-     * TODO: I should indicate arguments as well.
-     **/
-    public static soot.SootMethod getSootMethod(String args[]) {
-	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
-	String methodname = "method1";
-	if (args.length > 0)
-	    classname = args[0];
-	if (args.length > 1)
-	    methodname = args[1];
-	
-	soot.SootClass testClass = 
-	    ptolemy.copernicus.jhdl.test.Test.getApplicationClass(classname);
-	if (testClass == null) {
-	    System.err.println("Class "+classname+" not found");
-	    System.exit(1);
-	}
-	System.out.println("Loading class "+classname+" method "+methodname);
-	if (!testClass.declaresMethodByName(methodname)) {
-	    System.err.println("Method "+methodname+" not found");
-	    System.exit(1);
-	}
-
-	return testClass.getMethodByName(methodname);
-    }
-
-    /**
      * This method returns an array of BlockDataFlowGraph objects for
      * a given Method from a class. The method/class name are speciefied
      * as command line arguments.
      **/
     public static BlockDataFlowGraph[] getBlockDataFlowGraphs(String args[]) {
-	soot.SootMethod testMethod = getSootMethod(args);
+	soot.SootMethod testMethod = 
+	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 	soot.Body body = testMethod.retrieveActiveBody();
 	
 	BriefBlockGraph bbgraph = new BriefBlockGraph(body);

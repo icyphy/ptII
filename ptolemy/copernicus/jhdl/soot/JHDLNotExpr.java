@@ -34,7 +34,25 @@ import soot.jimple.*;
 import soot.util.*;
 import soot.jimple.internal.*;
 
-//public class JHDLNotExpr extends AbstractUnopExpr {
+//////////////////////////////////////////////////////////////////////////
+//// JHDLNotExpr
+/**
+ * 
+ * A Not expression in Java (i.e. the ! operator) is implemented as
+ * an IfStmt in which constant Boolean values are assigned to the
+ * corresponding value. This method will scan through the chain
+ * of units and convert such Not expressions into JHDLNotExpr
+ * objects. This simplifies the control-flow analysis by removing
+ * this control flow construct with a dataflow expression.
+ *
+ * This class looks a lot like soot.jimple.internal.AbstractNegExpr
+ * 
+ * @see ptolemy.copernicus.jhdl.soot.BooleanNotCompactor
+ *
+ * @author Mike Wirthlin
+ * @version $Id$
+ * @since Ptolemy II 2.0
+*/
 public class JHDLNotExpr implements UnopExpr {
 
     /*

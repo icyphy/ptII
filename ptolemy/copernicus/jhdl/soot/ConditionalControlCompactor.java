@@ -81,7 +81,8 @@ import soot.toolkits.graph.Block;
  * Boolean statements in place of a series of conditional statements.
  * This significantly simplifies subsequent control-flow anaylsis.
  *
-
+ * @see ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression
+ * 
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
@@ -283,7 +284,8 @@ public class ConditionalControlCompactor {
 
     public static void main(String args[]) {
 
-	soot.SootMethod testMethod = BlockDataFlowGraph.getSootMethod(args);
+	soot.SootMethod testMethod = 
+	    ptolemy.copernicus.jhdl.test.Test.getSootMethod(args);
 
 	soot.Body body = testMethod.retrieveActiveBody();
 	soot.toolkits.graph.CompleteUnitGraph unitGraph = 

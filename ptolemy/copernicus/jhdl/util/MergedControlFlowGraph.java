@@ -157,8 +157,10 @@ public class MergedControlFlowGraph extends DirectedGraph {
     }
 
     public static void main(String args[]) {
-	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;
-	String methodname = "method1";
+	String classname = 
+	    ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTCLASS;
+	String methodname = 
+	    ptolemy.copernicus.jhdl.test.Test.DEFAULT_TESTMETHOD;
 	if (args.length > 0)
 	    classname = args[0];
 	if (args.length > 1)
