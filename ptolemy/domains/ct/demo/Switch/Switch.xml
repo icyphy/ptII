@@ -131,6 +131,12 @@ CTDirector to schedule and execute the model correctly.
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="362.0, 192.0">
         </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -143,6 +149,12 @@ CTDirector to schedule and execute the model correctly.
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.moml.Location" value="70.0, 129.0">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
