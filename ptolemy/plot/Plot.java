@@ -1814,7 +1814,14 @@ public class Plot extends PlotBox {
             int dataset, int index) {
         if (_pointsPersistence > 0 || _xPersistence > 0.0) {
             // To allow erasing to work by just redrawing the points.
-            graphics.setXORMode(_background);
+	    if (_background == null) {
+		// java.awt.Component.setBackground(color) says that
+		// if the color "parameter is null then this component
+		// will inherit the  background color of its parent."
+		graphics.setXORMode(getBackground());
+	    } else {
+		graphics.setXORMode(_background);
+	    }
         }
         // Set the color
         if (_usecolor) {
@@ -1889,7 +1896,11 @@ public class Plot extends PlotBox {
             // Set the color
             if (_pointsPersistence > 0 || _xPersistence > 0.0) {
                 // To allow erasing to work by just redrawing the points.
-                graphics.setXORMode(_background);
+		if (_background == null) {
+		    graphics.setXORMode(getBackground());
+		} else {
+		    graphics.setXORMode(_background);
+		}
             }
             if (_usecolor) {
                 int color = dataset % _colors.length;
