@@ -66,7 +66,6 @@ import caltrop.interpreter.ast.Actor;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
    @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
-   @see PtolemyPlatform
 */
 public class CalInterpreter extends AbstractCalInterpreter {
 
