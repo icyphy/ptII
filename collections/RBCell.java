@@ -397,7 +397,7 @@ public class RBCell extends Cell implements ImplementationCheckable  {
 
     static RBCell swapPosition(RBCell x, RBCell y, RBCell root) {
 
-        /* Too messy. TODO: find sequence of assigments that are always OK */
+        /* Too messy. TODO: find sequence of assignments that are always OK */
 
         RBCell px = x.parent_; 
         boolean xpl = px != null && x == px.left_;
