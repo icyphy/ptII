@@ -189,7 +189,8 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                     setCurrentODESolver(_breakpointSolver);
                     setCurrentStepSize(getMinStepSize());
                     if(DEBUG) {
-                        System.out.println("IN BREAKPOINT iteration.");
+                        System.out.println(getFullName() + 
+                                "IN BREAKPOINT iteration.");
                     }
                     _setIsBPIteration(true);
                     break;

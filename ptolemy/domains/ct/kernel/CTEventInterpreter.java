@@ -31,6 +31,7 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEventInterpreter
@@ -49,8 +50,9 @@ public interface CTEventInterpreter extends Actor{
 
     /** Consume the discrete event that happens at the current time. If there
      *  are no such events, do nothing.
+     *  @exception IllgalActionException May be need by the derived classes.
      */
-    public void consumeCurrentEvents();
+    public void consumeCurrentEvents() throws IllegalActionException;
 
     /** FIXME: Consider a method that tells if there's unconsumed event 
      *  at current time.

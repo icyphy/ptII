@@ -48,7 +48,7 @@ Don't need to run ahead of time and don't need to rollback.
 @see classname
 @see full-classname
 */
-public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
+public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         implements CTEmbeddedDirector{
         /** Construct a CTEmbeddedNRDirector with no name and no Container.
      *  All parameters take their default values. The scheduler is a
@@ -91,8 +91,8 @@ public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public double getIterBeginTime() {
-        return _iterBeginTime;
+    public double getIterEndTime() {
+        return _iterEndTime;
     }
 
     /** can only be a embeded director, so check it here.
@@ -127,80 +127,35 @@ public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
         // don't need fireAt to run ahead of time.
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
-        //System.out.println(this.getFullName() + 
-        //        "Outside Current Time for INIT time" + tnow);
-        setCurrentTime(tnow);
         setStartTime(tnow);
-        fireAt(null, tnow);
-         if (VERBOSE) {
+        if (VERBOSE) {
             System.out.println("Director.super initialize.");
         }
         _initialize();
-        //System.out.println(this.getFullName() + " Current Time after INIT " +
-        //        getCurrentTime()) ;
     }
 
     /** fire
      */
     public void fire() throws IllegalActionException {
-        if (_first) {
-            _first = false;
-            _eventPhaseExecution();
+        if (_first && (getCurrentTime() == getStartTime())) {
             produceOutput();
             updateStates();
-            //System.out.println(this.getFullName() + 
-            //        " THe first step after init.");
-            //return;
+            return;
         }
-        if (_firstFireInIter) {
-            _eventPhaseExecution();
-            _firstFireInIter = false;
-            _setIterBeginTime(getCurrentTime());
-            _markStates();
+        _eventPhaseExecution();
+        _prefireSystem();
+        ODESolver solver = getCurrentODESolver();
+        if(!solver.resolveStates()) {
+            _stateAcceptable = false;
+            System.out.println(getFullName() + "resolve state failed.");
         }
-        _setFireBeginTime(getCurrentTime());
-        setCurrentTime(getIterBeginTime());
-        setCurrentStepSize(getSuggestedNextStepSize());
-        //System.out.println(this.getFullName() +
-        //        " Fire from "+getCurrentTime() +
-        //        " to " + getFireEndTime());
-        while(true) {
-            _processBreakpoints();
-            if(DEBUG) {
-                System.out.println("Resolved stepsize: "+getCurrentStepSize() +
-                                   " One itertion from " + getCurrentTime());
-            }
-            _fireOneIteration();
-            if(Math.abs(getCurrentTime()-getFireEndTime()) <
-                    getTimeResolution()) {
-                _isFireSuccessful = true;
-                return;
-            } else if ((getCurrentTime() < getFireEndTime()) &&
-                    (_stopByEvent())) {
-                //System.out.println( this.getFullName() + 
-                //        " stop by event.");
-                _isFireSuccessful = false;
-                _refinedStep = getCurrentTime() - getIterBeginTime();
-                return;
-            }
-            /*
-            if(_isFireSuccessful) {
-                if (_stopByEvent()) {
-                    //System.out.println( this.getFullName() + 
-                    //        " stop by event.");
-                    _isFireSuccessful = false;
-                    _refinedStep = getCurrentTime() - getIterBeginTime();
-                    return;
-                } else {
-                    _isFireSuccessful = true;
-                    return;
-                }
-            } else {
-                _isFireSuccessful = true;
-                return;
-            }
-            */
+        
+        if(DEBUG) {
+            System.out.println(getFullName() + " current time after" +
+                    " solver.resolveStates() is " + getCurrentTime());
         }
+        //setCurrentTime(getIterEndTime());
+        produceOutput();
     }
     /** Return true if this is an embedded director and the current fire
      *  is successful. The success is determined by asking all the 
@@ -209,8 +164,28 @@ public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
      *  @return True if the current step is successful.
      */
     public boolean isThisStepSuccessful() {
-        return _isFireSuccessful;
-    }       
+        try {
+            if (!_isStateAcceptable()) {
+                System.out.println(getFullName() + 
+                        " current step not successful because of STATE."); 
+                _stateAcceptable = false;
+                return false;
+            } else if(!_isOutputAcceptable()) {
+                System.out.println(getFullName() + 
+                        " current step not successful because of OUTPUT."); 
+                _outputAcceptable = false;
+                return false;
+            } else {
+                _stateAcceptable = true;
+                _outputAcceptable = true;
+                return true;
+            }
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException ( 
+                    "Nothing to schedule with out make schedule invalid." +
+                    ex.getMessage());
+        }
+    }
 
     /** If this is a top-level director, returns true if the current time
      *  is less than the stop time, otherwise, return true always.
@@ -222,25 +197,46 @@ public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
      */
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
-        //System.out.println(this.getFullName() +
-        //        "postfire...................");
-        _firstFireInIter= true;
+        _first = false;
+        System.out.println(this.getFullName() +
+                "postfire...................");
         _eventPhaseExecution();
+        updateStates();
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        if(breakPoints != null) {
+            while (!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
+                if(bp < getCurrentTime() - getTimeResolution()) {
+                    breakPoints.removeFirst();
+                } else { // break point in the future, register to the outside.
+                    CompositeActor ca = (CompositeActor)getContainer();
+                    Director exe = ca.getExecutiveDirector();
+                    exe.fireAt(ca, bp);
+                    break;
+                }
+            }
+        }    
         return true;
     }
 
     /** Return the suggested next step size.
      */
     public double predictedStepSize() {
-        return getSuggestedNextStepSize();
+        try {
+            return _predictNextStepSize();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException ( 
+                    "Nothing to schedule with out make schedule invalid." +
+                    ex.getMessage());
+        }
     }
 
     /** prefire, 
      */
     public boolean prefire() throws IllegalActionException {
         if (VERBOSE) {
-            System.out.println(this.getFullName() + " prefire. " + 
-                    " And Current Time is " + getCurrentTime()); 
+            System.out.println(this.getFullName() + "prefire.");
         }
         if(STAT) {
             NSTEP++;
@@ -268,36 +264,35 @@ public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
         if(DEBUG) {
             System.out.println("Next Iter Time =" + nextIterTime);
         }
-        if(DEBUG) {
-            System.out.println("Currnet Time =" + getCurrentTime());
+        /**
+        if(_outsideTime < getCurrentTime()-timeAcc) {
+            throw new IllegalActionException(exe, this,
+                    " time collapse. The outside time is " +
+                    _outsideTime + ", but the local time is " +
+                    getCurrentTime());
         }
-        if(_outsideTime < getCurrentTime()) {
-            _rollback();
-        }
-        _setFireEndTime(nextIterTime);
-        fireAt(null, nextIterTime);
-        _outsideStepSize = nextIterTime - _outsideTime;
-        setSuggestedNextStepSize(_outsideStepSize);
-        _firstFireInIter= true;
-        // remove the first breakpoint since there's no break.
-        //if (!_first) {
-            double bp;
-            TotallyOrderedSet breakPoints = getBreakPoints();
-            if(breakPoints != null) {
-                while (!breakPoints.isEmpty()) {
-                    bp = ((Double)breakPoints.first()).doubleValue();
-                    if(bp < (_outsideTime-getTimeResolution())) {
-                        // break point in the past or at now.
-                        breakPoints.removeFirst();
-                    } else if(Math.abs(bp-_outsideTime) < getTimeResolution()){
-                        // break point now!
-                        breakPoints.removeFirst();
-                    } else {
-                        break;
-                    }
+        */
+       
+        // if break point now, change solver.
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        if(breakPoints != null) {
+            while (!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
+                if(Math.abs(bp - getCurrentTime()) < getTimeResolution()) {
+                    setCurrentODESolver(getBreakpointSolver());
+                    System.out.println(getFullName() + 
+                            " Change to break point solver " + 
+                            getCurrentODESolver().getFullName());
+                    break;
+                } else {
+                    break;
                 }
-            } 
-            //}
+            }
+        }    
+        setCurrentTime(_outsideTime);
+        _outsideStepSize = nextIterTime - _outsideTime;
+        setCurrentStepSize(_outsideStepSize);
         return true;
     }
 
@@ -305,89 +300,43 @@ public class CTEmbeddedNRDirector  extends CTMixedSignalDirector
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        if(!_isFireSuccessful) {
-            return _refinedStep;
-        } else {
-            return Double.MAX_VALUE;
+        try {
+            if(!_stateAcceptable) {
+                return _refinedStepWRTState();
+            } else if(!_outputAcceptable){
+                return _refinedStepWRTOutput();
+            } else {
+                return Double.MAX_VALUE;
+            }
+        } catch( IllegalActionException ex) {
+            throw new InternalErrorException ( 
+                    "Nothing to schedule with out make schedule invalid." +
+                    ex.getMessage());
         }
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Set the stop time for this iteration. 
-     *  For a director that is not at the top-level, set the fire end time
-     *  to be the current time  will result 
-     *  in that the local director
-     *  release the control to the executive director.
-     *  @param The fire end time.
-     *
-    protected void _setFireEndTime(double time ) {
-        if(time < getCurrentTime()) {
-            throw new InvalidStateException(this,
-                " Fire end time" + time + " is less than" +
-                " the current time." + getCurrentTime());
-        }
-        _fireEndTime = time;
-    }
-    */
     /**
      */
-    protected void _setIterBeginTime(double beginTime) {
-        _iterBeginTime = beginTime;
+    protected void _setIterEndTime(double endTime) {
+        _iterEndTime = endTime;
     }
 
-    /**
-     */
-    protected boolean _stopByEvent() {
-        if(Math.abs(getCurrentTime()-getFireEndTime())<getTimeResolution()) {
-            return false;
-        }
-        // detected events
-        CTScheduler sched = (CTScheduler)getScheduler();
-        Enumeration evgens = sched.eventGenerators();
-        while(evgens.hasMoreElements()) {
-            CTEventGenerator evg = (CTEventGenerator) evgens.nextElement();
-            if(evg.hasCurrentEvent()) {
-                return true;
-            }
-        }
-        // expected events
-        /*
-        double bp;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        double tnow = getCurrentTime();
-        if(breakPoints != null) {
-            while (!breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                if(bp < (tnow-getTimeResolution())) {
-                    // break point in the past or at now.
-                    breakPoints.removeFirst();
-                } else if(Math.abs(bp-tnow) < getTimeResolution() && 
-                          bp < getFireEndTime()){
-                    // break point now!
-                    return true;
-                } else {
-                    break;
-                }
-            }
-        }
-        */
-        return false;
-    }
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private double _outsideStepSize;
 
-    private double _iterBeginTime;
+    private boolean _outputAcceptable;
     
-    private boolean _firstFireInIter;
+    private boolean _stateAcceptable;
     
     private double _outsideTime;
     
-    private double _fireEndTime;
+    private double _iterEndTime;
 
     // whether in the emit event phase;
     private boolean _eventPhase = false;

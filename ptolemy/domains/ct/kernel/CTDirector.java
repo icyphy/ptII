@@ -333,6 +333,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
             return;
         }
         */
+        System.out.println(this.getFullName() + "Registing breakpoint at "+ 
+                time);
         // check if the time is before the current time;
         if(time < getCurrentTime()-getTimeResolution()) {
             throw new IllegalActionException((Nameable)actor, 

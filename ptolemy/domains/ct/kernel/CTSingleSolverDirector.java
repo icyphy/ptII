@@ -545,7 +545,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _predictNextStepSize() throws IllegalActionException {
-        double predictedstep = 2.0*getCurrentStepSize();
+        double predictedstep = getMaxStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
