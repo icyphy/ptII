@@ -32,12 +32,13 @@
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		java/ptolemy/domains/pn/guidemo
+ME =		ptolemy/domains/pn/guidemo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 #JAVAHOME =      /opt/jdk1.2latest
+JAVA_HOME = C:/jdk1.2
 
 DIRS = 		# demo test doc
 
@@ -49,9 +50,11 @@ JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
 PTCLASSJAR = 	$(JPACKAGE).jar
 
+
 CLASSPATH = $(ROOT)/diva/diva.jar$(CLASSPATHSEPARATOR)$(ROOT)
 
-JSRCS = ThreadDemo.java
+JSRCS = ThreadDemo.java \
+	RLEDiva.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -59,17 +62,32 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS) # doc #test
 
+PTAUXJAR =	RLEDivaApplet.jar
+
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	RLEDivaApplet.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass RLEDivaApplet.jar
 
 install: jclass javadocs
 docs: javadocs
+
+# 'make clean' removes everything in KRUFT
+KRUFT = RLEDivaApplet.jar
+
+# Jar file consisting of classes used by an applet.  Basically,
+# everything but Message and Pxgraph.
+RLEDivaApplet.jar: $(JSRCS) $(JCLASS)
+		(cd $(ROOT); \
+                $(JAR) cf \
+                $(ME)/$@ \
+		$(ME)/*.class) 
+
 
 depend:
 	@echo "no dependencies in this directory"
