@@ -134,25 +134,25 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         try {
             port.workspace().getReadAccess();
             if (!port.isInput()) {
-                throw new IllegalActionException(port, "ConditionalRec: " +
+                throw new IllegalActionException(port, "ConditionalReceive: " +
                         "tokens only received from an input port.");
             }
             if (channel >= port.getWidth() || channel < 0) {
-                throw new IllegalActionException(port, "ConditionalRec: " +
+                throw new IllegalActionException(port, "ConditionalReceive: " +
                         "channel index out of range.");
             }
             receivers = port.getReceivers();
             if (receivers == null || receivers[channel] == null) {
-                throw new IllegalActionException(port, "ConditionalRec: " +
+                throw new IllegalActionException(port, "ConditionalReceive: " +
                         "Trying to rendezvous with a null receiver");
             }
             if (receivers[channel].length != 1) {
-                throw new IllegalActionException(port, "ConditionalRec: " +
+                throw new IllegalActionException(port, "ConditionalReceive: " +
                         "channel " + channel + " does not have exactly " +
                         "one receiver");
             }
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
-                throw new IllegalActionException(port, "ConditionalRec: " +
+                throw new IllegalActionException(port, "ConditionalReceive: " +
                         "channel " + channel + " does not have a receiver" +
                         " of type CSPReceiver.");
             }
