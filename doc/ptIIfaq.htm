@@ -46,17 +46,23 @@ This FAQ can be found at:
 	platforms does Ptolemy II run under?</b></a>
 
 	<li> <a href="#ptolemy II installation, what do I need"><b>2.3 What do I need to Install Ptolemy II?</b></a>
-	<li> <a href="#ptolemy II installation, how do I invoke Ptolemy II?"><b>2.4 How do I invoke Ptolemy II?</b></a>
 	</menu> 
-<li> <a href="#ptolemy II faq: extending"><b>3. Extending Ptolemy II</b></a>
+
+<li> <a href="#ptolemy II faq: using Ptolemy II"><b>3. Using Ptolemy II</b></a>
 	<menu>
-	<li> <a href="#Adding actors"><b>3.1 How do I add an actor?</b></a>
+	<li> <a href="#invoking Ptolemy II?"><b>3.1 How do I invoke Ptolemy II?</b></a>
+	<li> <a href="#reading data from files?"><b>3.2 How do I read data from a file?</b></a>
+	</menu>
 
-	<li> <a href="#Interfacing to C/C++"><b>3.1 How do I interface to C/C++</b></a>
+<li> <a href="#ptolemy II faq: extending"><b>4. Extending Ptolemy II</b></a>
+	<menu>
+	<li> <a href="#Adding actors"><b>4.1 How do I add an actor?</b></a>
 
-	<li> <a href="#Customizing the GUI"><b>3.3 How do I customize the GUI?</b></a>
-	<li> <a href="#MoML"><b>3.4 What file format are the models stored in?</b></a>
-	<li> <a href="#Scripting"><b>3.5 Is there a scripting interface to Ptolemy II ?</b></a>
+	<li> <a href="#Interfacing to C/C++"><b>4.1 How do I interface to C/C++</b></a>
+
+	<li> <a href="#Customizing the GUI"><b>4.3 How do I customize the GUI?</b></a>
+	<li> <a href="#MoML"><b>4.4 What file format are the models stored in?</b></a>
+	<li> <a href="#Scripting"><b>4.5 Is there a scripting interface to Ptolemy II ?</b></a>
 	</menu>
 
 </menu>
@@ -221,7 +227,12 @@ For details, see the installation pages at
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><code></code></a>
 
-<dt> <a name="ptolemy II installation, how do I invoke Ptolemy II?"><b>2.4 How do I invoke Ptolemy II?</b></a>
+</dl>
+
+
+<h2><a name="ptolemy II faq: using Ptolemy II"><b>3. Using Ptolemy II</b></a>
+
+<dt> <a name="invoking Ptolemy II?"><b>3.1 How do I invoke Ptolemy II?</b></a>
 <dd> 
 If you install Ptolemy II using the Windows installer, then
 menu choices should be added to <CODE>Start</CODE> -&gt; 
@@ -244,15 +255,48 @@ for the nightly test suite.
   <dd> will run the model.  The model need not be graphical.
   </dl>
 
+<dt> <a href="#reading data from files?"><b>3.2 How do I read data from a file?</b></a>
+<dd> 
+
+How we read in values from files needs to be revamped, we could do
+more with interpreting the file contents as expressions or as
+serialized data.
+
+ <p>Actors that read and write data are visible in Vergil under 
+<CODE>actor library</CODE> -&gt; <CODE>io</CODE>.
+
+ <p>When an actor takes a URL as an argument, use
+<CODE>file:./<I>filename</I></CODE>.  For details, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/DoubleReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/DoubleReader.html</CODE></a>
+
+ <p>There is also the <CODE>readFile</CODE>, <CODE>findFile</CODE> and
+<CODE>readMatrix</CODE> expression operators, see
+<a
+href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/expressions.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/expressions.htm"></CODE></a>
+and
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/data/expr/UtilityFunctions.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/data/expr/UtilityFunctions.html</CODE></a>
+
+ <p>The way to use readFile is as an expression:
+<pre>
+eval(readFile("foo.txt"))
+</pre>
+where foo.txt contains a single line that gets parsed as a Ptolemy
+expression.  For example, if foo.txt contained
+<pre>
+{1.0, 2.0}
+</pre>
+Then the expression would resolve to an array of two elements, 1.0 and
+2.0.
+
 </dl>
 
-<h2><a name="ptolemy II faq: extending"><b>3. Extending Ptolemy II</b></a></h2>
+<h2><a name="ptolemy II faq: extending"><b>4. Extending Ptolemy II</b></a></h2>
 <dl>
-<dt> <a name="Adding actors"><b>3.1 How do I add an actor?</b></a>
+<dt> <a name="Adding actors"><b>4.1 How do I add an actor?</b></a>
 <dd> See the <code>Add Actor</code> link in
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
 
-<dt> <a name="Interfacing to C/C++"><b>3.1 How do I interface to C/C++</b></a>
+<dt> <a name="Interfacing to C/C++"><b>4.1 How do I interface to C/C++</b></a>
 <dd>
 Ptolemy II is written in Java, and Java has the Java Native Interface
 (JNI), see
@@ -269,7 +313,7 @@ code will work on multiple platforms.  For example, the Ptolemy II/Matlab interf
 
 
 
-<dt> <a name="Customizing the GUI"><b>3.3 How do I customize the GUI?</b></a>
+<dt> <a name="Customizing the GUI"><b>4.3 How do I customize the GUI?</b></a>
 <dd> 
 Ptolemy II uses Diva to display block diagram editors.
  <br>Information about Diva can be found at
@@ -292,14 +336,14 @@ adds this feature with this line:
 </pre>
 
 
-<dt> <a name="MoML"><b>3.4 What file format are the models stored in?</b></a>
+<dt> <a name="MoML"><b>4.4 What file format are the models stored in?</b></a>
 <dd> Ptolemy II stores models in an XML format called MoML.
 The design doc covers MoML in detail.
  <p>The beauty of using a human readable (though verbose) file
 format is that we can use standard tools like XSLT and sed to 
 transform models.
 	
-<dt> <a name="Scripting"><b>3.5 Is there a scripting interface to Ptolemy II ?</b></a>
+<dt> <a name="Scripting"><b>4.5 Is there a scripting interface to Ptolemy II ?</b></a>
 
 <dd> The Ptolemy II test suite uses Jacl, a Java implementation of Tcl
 as a scripting language.  With Jacl, we can build and run models
