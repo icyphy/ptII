@@ -89,6 +89,8 @@ OPTIONAL_FILES = \
 	'BaseType$$8.class' \
 	'BaseType$$9.class' \
 	'BaseType$$ConvertOperator.class' \
+	'RecordType$$1.class' \
+	'RecordType$$FieldType.class' \
 	'TypeLattice$$1.class' \
 	'TypeLattice$$TheTypeLattice.class
 
