@@ -88,7 +88,6 @@ want the associated port to appear.
 
 @author Edward A. Lee
 @version $Id$
-@see AttributePort
 */
 public class PortParameter extends Parameter {
 
