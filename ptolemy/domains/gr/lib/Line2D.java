@@ -137,10 +137,10 @@ public class Line2D extends GRActor2D {
                     || attribute == xEnd || attribute == yEnd)
                 && _viewScreen != null) {
             _figure.setPrototypeShape(new java.awt.geom.Line2D.Double(
-                                              ((DoubleToken)xStart.getToken()).doubleValue(),
-                                              ((DoubleToken)yStart.getToken()).doubleValue(),
-                                              ((DoubleToken)xEnd.getToken()).doubleValue(),
-                                              ((DoubleToken)xEnd.getToken()).doubleValue()));
+                    ((DoubleToken)xStart.getToken()).doubleValue(),
+                    ((DoubleToken)yStart.getToken()).doubleValue(),
+                    ((DoubleToken)xEnd.getToken()).doubleValue(),
+                    ((DoubleToken)xEnd.getToken()).doubleValue()));
         } else if ((attribute == rgbColor || attribute == lineWidth) &&
                 _viewScreen != null) {
             _setAppearance(_figure);
@@ -183,10 +183,10 @@ public class Line2D extends GRActor2D {
     protected BasicFigure _createFigure() throws IllegalActionException {
         BasicFigure figure =
             new BasicFigure(new java.awt.geom.Line2D.Double(
-                                    ((DoubleToken)xStart.getToken()).doubleValue(),
-                                    ((DoubleToken)yStart.getToken()).doubleValue(),
-                                    ((DoubleToken)xEnd.getToken()).doubleValue(),
-                                    ((DoubleToken)yEnd.getToken()).doubleValue()));
+                    ((DoubleToken)xStart.getToken()).doubleValue(),
+                    ((DoubleToken)yStart.getToken()).doubleValue(),
+                    ((DoubleToken)xEnd.getToken()).doubleValue(),
+                    ((DoubleToken)yEnd.getToken()).doubleValue()));
         _setAppearance(figure);
         return figure;
     }
