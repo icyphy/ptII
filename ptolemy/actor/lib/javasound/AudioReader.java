@@ -70,7 +70,7 @@ should be set to "file:../test.wav". To reference the file
 test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
 should be set to "file:///tmp/test.wav" The default value is
 <code>property("ptolemy.ptII.dirAsURL")
- + "/ptolemy/actor/lib/javasound/test/voice.wav"
+ + "/ptolemy/actor/lib/javasound/voice.wav"
 </code>
 Under Windows, to reference a file ":\WINNT\Media\chord.wav, use
 "file:///c:/WINNT/Media/chord.wav".  Note that URLS by definition
@@ -114,9 +114,13 @@ public class AudioReader extends URLReader {
         super(container, name);
         // The property() method is defined in
         // ptolemy.data.expr.UtilityFunctions.java
+
+	// We use voice.wav so that we can include the voice.wav file
+	// in the jar file for use under Web Start.
+
 	sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
-                + "+ \"ptolemy/actor/lib/javasound/"
-                + "test/voice.wav\"");
+			+ "+ \"ptolemy/actor/lib/javasound/voice.wav\"")
+
     }
 
     ///////////////////////////////////////////////////////////////////
