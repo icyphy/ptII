@@ -328,6 +328,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  <p>
      *   H(p) = - sum (p[x] * log<sup>2</sup>(p[x]))
      *  </p> 
+     *  The entropy is always non-negative.
      *  Throw an IllegalArgumentException if the length of the array is 0,
      *  or a negative probability is encountered.
      *  @param p An array of doubles representing the pmf.
@@ -360,7 +361,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  probability.
      *  The function computed is :
      *  <p>
-     *   H(p) = - sum (p[x] * log<sup>2</sup>(p[x]/q[x]))
+     *   D(p||q) = - sum (p[x] * log<sup>2</sup>(p[x]/q[x]))
      *  </p> 
      *  Throw an IllegalArgumentException if either array has length 0. 
      *  If the two arrays do not have the same length, throw an 
@@ -369,7 +370,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param q An array of doubles representing the second pmf.
      *  @return A double representing the relative entropy of the
      *  random variable.
-     *  @see entropy
+     *  @see DoubleArrayStat.entropy
      */
     public static final double relativeEntropy(double[] p, double[] q) {
 
@@ -415,13 +416,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  is given by N.
      *  This algorithm is from [1]. Note this takes an random, unbounded
      *  amount of time!
-     *  @param mean A double.
-     *  @param stdDev A double.
-     *  @param N An int indicating how many elements to generate.
-     *  @return A new array of doubles.
      */
-    public static final double[] randomGaussian(double mean, double stdDev, 
-     int N) {
+    public static final double[] randomGaussian(double mean, 
+     double standardDeviation, int N) {
         double t;
         double x, v1, v2, r;
         Random random = new Random();
@@ -450,9 +447,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  probabability of success p. On success, the random variable has
      *  value 1.0; on failure the random variable has value 0.0.
      *  The number of elements to allocate is given by N.
-     *  @param p A double indicating the probability of success.
-     *  @param N An int indicating how many elements to generate.
-     *  @return A new array of doubles.
      */
     public static final double[] randomBernoulli(double p, int N) {
         Random random = new Random();
@@ -467,10 +461,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return a new array of exponentially distributed doubles with parameter
      *  lambda. The number of elements to allocate is given by N.
      *  Note lambda may not be 0!
-     *  @param mean A double.
-     *  @param variance A double.
-     *  @param N An int indicating how many elements to generate.
-     *  @return A new array of doubles.
      */
     public static final double[] randomExponential(double lambda, int N) {
         Random random = new Random();
@@ -489,8 +479,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return a new array of Poisson random variables (as doubles) with 
      *  a given mean. The number of elements to allocate is given by N.
-     *  This algorithm is from [1]. Note this takes an random, unbounded
-     *  amount of time!
+     *  This algorithm is from [1]. 
      *  @param mean A double.
      *  @param N An int indicating how many elements to generate.
      *  @return A new array of doubles.

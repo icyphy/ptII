@@ -51,6 +51,7 @@ JSRCS = ArrayStringFormat.java \
 	Complex.java \
 	ExtendedMath.java \
 	Fraction.java \
+        SampleGenerator.java \
 	SignalProcessing.java \
         DoubleArrayMath.java \
         ComplexArrayMath.java \
