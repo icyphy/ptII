@@ -715,7 +715,7 @@ public class Director extends NamedObj implements Executable {
 
     /** Return true if this director requires write access
      *  on the workspace during execution. Most director functions
-     *  during execution do not need write access on the workpace.
+     *  during execution do not need write access on the workspace.
      *  A director will generally only need write access on the workspace if
      *  it performs mutations locally, instead of queueing them with the
      *  manager.
