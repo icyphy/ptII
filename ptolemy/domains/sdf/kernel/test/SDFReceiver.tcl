@@ -49,8 +49,8 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test SDFReceiver-1.1 {Check put and hasToken} {
-    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+proc _testReceiver {receiver} {
+   
     # Check that hasToken returns false when the receiver is empty
     # and returns true after a token has been put in the
     # receiver.
@@ -72,7 +72,17 @@ test SDFReceiver-1.1 {Check put and hasToken} {
     set result3 [$receiver hasToken 2]
 
     list $result1 $result2 $result3
-} {0 1 0}
+} 
+
+test SDFReceiver-1.1 {Check put and hasToken} {
+    set r1 [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+    set r2 [java::new {ptolemy.domains.sdf.kernel.SDFReceiver int} 2]
+    set p3 [java::new ptolemy.actor.IOPort]
+    set r3 [java::new {ptolemy.domains.sdf.kernel.SDFReceiver ptolemy.actor.IOPort} $p3]
+    set p4 [java::new ptolemy.actor.IOPort]
+    set r4 [java::new ptolemy.domains.sdf.kernel.SDFReceiver $p4 1]
+    list [_testReceiver $r1] [_testReceiver $r2] [_testReceiver $r3] [_testReceiver $r4]
+} {{0 1 0} {0 1 0} {0 1 0} {0 1 0}}
 
 ######################################################################
 ####
@@ -158,8 +168,18 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
     # the receiver.
     set result4 [$receiver hasToken 1]
 
-    list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString]
-} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"}}
+    catch {$receiver hasToken 0} result5
+
+    list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5
+} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0}}
+
+test SDFReceiver-2.3 {Check noTokenException} {
+    # uses previous setup.
+    catch {$receiver get} result1
+    catch {$receiver {getArray int} 2} result2
+    list $result1 $result2
+} {{ptolemy.actor.NoTokenException: :
+Attempt to get token from an empty QueueReceiver.} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!}}
 
 ######################################################################
 ####
@@ -248,17 +268,17 @@ test SDFReceiver-5.1 {Check hasRoom} {
     # Should return true, since there should be room.
     set result3 [$receiver hasRoom 2]
 
-    list $result1 $result2 $result3
-} {1 1 1}
+    catch {$receiver hasRoom 0} result4
+    
+    list $result1 $result2 $result3 $result4
+} {1 1 1 {ptolemy.kernel.util.IllegalActionException: The number of tokens must be greater than 0}}
 
-######################################################################
-####
-#
-test SDFReceiver-5.1 {Check setCapacity} {
+test SDFReceiver-5.2 {Check setCapacity} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
-    # Check that hasToken returns false when the receiver is empty
-    # and returns true after a token has been put in the
+    # Check that hasRoom returns true when the receiver is empty
+    # and returns false after a token has been put in the
     # receiver.
+    $receiver setCapacity 1
 
     # Should return true, since there should be room.
     set result1 [$receiver hasRoom]
@@ -266,10 +286,8 @@ test SDFReceiver-5.1 {Check setCapacity} {
     # Should return true, since there should be room.
     set result2 [$receiver hasRoom 1]
 
-    # Should return true, since there should be room.
+    # Should return false, since there should not be room.
     set result3 [$receiver hasRoom 2]
-
-    $receiver setCapacity 1
 
     # token to put
     set token [java::new ptolemy.data.StringToken foo]
@@ -286,5 +304,11 @@ test SDFReceiver-5.1 {Check setCapacity} {
     # Should return false, since there should not be room.
     set result6 [$receiver hasRoom 2]
 
-    list $result1 $result2 $result3 $result4 $result5 $result6
-} {1 1 1 0 0 0}
+    list [$receiver getCapacity] $result1 $result2 $result3 $result4 $result5 $result6
+} {1 1 1 0 0 0 0}
+
+test SDFReceiver-5.3 {Check noRoomException} {
+    catch {$receiver {put ptolemy.data.Token} $token} result1
+    catch {$receiver {putArray ptolemy.data.Token[] int} $tokenArray 2} result2
+    list $result1 $result2
+} {{ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot put a token.} {ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot put a token.}}

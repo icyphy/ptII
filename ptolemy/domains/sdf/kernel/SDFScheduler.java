@@ -736,6 +736,8 @@ public class SDFScheduler extends Scheduler {
     private LinkedList _scheduleConnectedActors(
             LinkedList actorList)
             throws NotSchedulableException {
+        // FIXME: This code ignores external ports, which might allow things
+        // to be connected that wouldn't be otherwise.
 
         // A linked list containing all the actors that have no inputs
         LinkedList readyToScheduleActorList = new LinkedList();
@@ -997,6 +999,9 @@ public class SDFScheduler extends Scheduler {
             List connectedOutputPortList = new LinkedList();
             while(connectedports.hasNext()) {
                 IOPort cport = (IOPort) connectedports.next();
+                // FIXME: This connected port might also be an external port,
+                // in which case the code below won't work and 
+                // NullPointerException is thrown.
                 if(cport.isInput()) {
                     connectedInputPortList.add(cport);
                 }
@@ -1330,6 +1335,8 @@ public class SDFScheduler extends Scheduler {
             firings.put(e, Fraction.ZERO);
         }
 
+        // FIXME: this doesn't work if there are no actors (i.e. a tunneling
+        // actor in a hierarchical model)
         try {
             // Pick an actor as a reference
             Actor a = (Actor) remainingActors.removeFirst();
@@ -1365,7 +1372,6 @@ public class SDFScheduler extends Scheduler {
                 ((ComponentEntity) currentActor).portList().iterator();
             while(AllPorts.hasNext()) {
                 IOPort currentPort = (IOPort) AllPorts.next();
-
                 if(currentPort.isInput())
                     _propagateInputPort(currentPort, firings,
                             remainingActors, pendingActors);

@@ -206,15 +206,15 @@ public class SDFReceiver extends AbstractReceiver {
      *  than one.
      */
     public boolean hasRoom(int tokens) throws IllegalActionException {
+	if(tokens < 1)
+	    throw new IllegalActionException("The number of " +
+                    "tokens must be greater than 0");
 	if (_queue.getCapacity() == INFINITE_CAPACITY) {
 	    // queue has infinite capacity, so it can accept any
 	    // finite number of tokens.
 	    return true;
 	}
-	if(tokens < 1)
-	    throw new IllegalActionException("The number of " +
-                    "tokens must be greater than 0");
-	return (_queue.size() + tokens) < _queue.getCapacity();
+	return (_queue.size() + tokens) <= _queue.getCapacity();
     }
 
     /** Return true if get() will succeed in returning a token.
