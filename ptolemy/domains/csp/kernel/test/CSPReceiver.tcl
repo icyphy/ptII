@@ -73,13 +73,13 @@ test CSPReceiver-3.1 {get(), put(), No tokens - deadlock!} {
     $topLevel setDirector $dir
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 0] 
-    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 1] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 1] 
 
     set input [java::new ptolemy.data.Token]
     
     set portA [java::field $actorA outputPort]
     #set portA [$actorA getPort "output"]
-    set portB [java::field $actorB inputPort]
+    set portB [$actorB getPort "input"]
     # set portB [$actorB getPort "input"]
 
     set rel [$topLevel connect $portB $portA "rel"]
@@ -102,13 +102,13 @@ test CSPReceiver-3.2 {get(), put(), One token} {
     $topLevel setDirector $dir
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 1] 
-    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 1] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 1] 
 
     set input [java::new ptolemy.data.Token]
     $actorA setToken $input 0
     
     set portA [java::field $actorA outputPort]
-    set portB [java::field $actorB inputPort]
+    set portB [$actorB getPort "input"]
 
     set rel [$topLevel connect $portB $portA "rel"]
 
@@ -130,7 +130,7 @@ test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
     $topLevel setDirector $dir
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 2] 
-    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 3] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 3] 
 
     set input1 [java::new ptolemy.data.Token]
     set input2 [java::new ptolemy.data.Token]
@@ -138,7 +138,7 @@ test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
     $actorA setToken $input2 1
     
     set portA [java::field $actorA outputPort]
-    set portB [java::field $actorB inputPort]
+    set portB [$actorB getPort "input"]
 
     set rel [$topLevel connect $portB $portA "rel"]
 
@@ -162,7 +162,7 @@ test CSPReceiver-3.4 {hasToken()} {
     $topLevel setDirector $dir
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 2] 
-    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPHasToken $topLevel "actorB" 0] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPHasToken $topLevel "actorB"] 
 
     set input1 [java::new ptolemy.data.Token]
     set input2 [java::new ptolemy.data.Token]
@@ -191,7 +191,7 @@ test CSPReceiver-3.5 {hasRoom()} {
     $topLevel setDirector $dir
     $topLevel setManager $manager
     set actorA [java::new ptolemy.domains.csp.kernel.test.CSPHasRoom $topLevel "actorA" 0] 
-    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGet $topLevel "actorB" 2] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 2] 
 
     set portA [$actorA getPort "output"]
     set portB [$actorB getPort "input"]
