@@ -66,7 +66,8 @@ test FBDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
-    $dir setCompletionTime 26.0
+    set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
+    $dirStopTime setToken [java::new ptolemy.data.DoubleToken 26.0]
     
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
@@ -125,7 +126,8 @@ test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
-    $dir setCompletionTime 20.0
+    set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
+    $dirStopTime setToken [java::new ptolemy.data.DoubleToken 20.0]
     
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
@@ -189,7 +191,8 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
-    $dir setCompletionTime 26.0
+    set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
+    $dirStopTime setToken [java::new ptolemy.data.DoubleToken 26.0]
     
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
@@ -272,7 +275,8 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
-    $dir setCompletionTime 27.0
+    set dirStopTime [java::cast ptolemy.data.expr.Parameter [$dir getAttribute stopTime]]
+    $dirStopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
     
     set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
