@@ -43,6 +43,19 @@ if [ $# -lt 1 ]; then
     exit 2
 fi
 
+release=`uname -r` 
+if [ "$release" = "5.8" ]; then
+    echo "----------------------------------------"
+    echo "----------------------------------------"
+    echo "----------------------------------------"
+    echo "$0: WARNING: on the Ptolemy cluster, mkreview does not yet"
+    echo "work under Solaris 8.  Try running it on a Solaris 2.5.1
+    echo "machine like andrews."
+    echo "----------------------------------------"
+    echo "----------------------------------------"
+    echo "----------------------------------------"
+fi
+
 # It generates PostScript and PDF versions of the source file
 
 # The name of the directory that the review materials will reside in
