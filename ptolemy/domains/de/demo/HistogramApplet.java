@@ -207,7 +207,6 @@ public class HistogramApplet extends Applet implements Runnable {
      */
     public void run() {
 
-        System.out.println("HistogramApplet.run()");
         String timespec = _stopTimeBox.getText();
         try {
             Double spec = Double.valueOf(timespec);
@@ -220,25 +219,19 @@ public class HistogramApplet extends Applet implements Runnable {
         try {
                 Checkbox selected = _cbg.getSelectedCheckbox();
 
-                System.out.println("Selected = " + selected);
-
                 if (selected == _clockCheckbox) {
-                    System.out.println("Inside clock selection");
                     _meanInterval = (Parameter)_clock.getAttribute("interval");
                     // Use DEClock for the bus arrival
                     if (_bus != _clock) {
-                        System.out.println("Updating it to clock");
                         _poisson.output.unlink(r1);
                         _clock.output.link(r1);
                         _bus = _clock;
                         _meanInterval = (Parameter)_clock.getAttribute("interval");
                     }
                 } else {
-                    System.out.println("Inside poisson selection");
                     _meanInterval = (Parameter)_poisson.getAttribute("lambda");
                     // Use DEPoisson for the bus arrival
                     if (_bus != _poisson) {
-                        System.out.println("Updating it to poisson");
                         _clock.output.unlink(r1);
                         _poisson.output.link(r1);
                         _bus = _poisson;
@@ -345,8 +338,9 @@ public class HistogramApplet extends Applet implements Runnable {
                     simulationThread.start();
                 }
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
+                throw new InternalErrorException("Error in GoButton" + 
+                       "Listener class : " + e.getMessage()); 
             }
 
         }
@@ -358,7 +352,6 @@ public class HistogramApplet extends Applet implements Runnable {
             int value = e.getValue();
             _meanIntervalLabel.setText("Mean interarrival time = " + value);
             if (_meanInterval != null) {
-                System.out.println("Setting mean interarrival time");
                 _meanInterval.setToken(new DoubleToken((double)value));
             }
         }

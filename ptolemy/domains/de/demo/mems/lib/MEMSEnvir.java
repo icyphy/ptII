@@ -86,10 +86,11 @@ public class MEMSEnvir extends MEMSActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MEMSEnvir(TypedCompositeActor container, String name, MEMSDevice mems,
-		     double x, double y, double z, double temperature,
-		     MEMSPlot plot)
-      throws IllegalActionException, NameDuplicationException  {
+    public MEMSEnvir(TypedCompositeActor container, String name, 
+            MEMSDevice mems,
+            double x, double y, double z, double temperature,
+            MEMSPlot plot)
+            throws IllegalActionException, NameDuplicationException  {
         super(container, name+mems.getID());
 
 	// jtc: plot object
@@ -120,7 +121,6 @@ public class MEMSEnvir extends MEMSActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Schedules the next enviroment value change event and 
      *  processes pending tokens at the msgIO port
      *
@@ -149,50 +149,56 @@ public class MEMSEnvir extends MEMSActor {
             _sendProbe(new thermoProbeMsg(temperature));
             _isProbeSent = true;
         }
-      curTime = getCurrentTime();
+        curTime = getCurrentTime();
 
-      /* fire due events */
-      fireDueEvents();
+        /* fire due events */
+        fireDueEvents();
 
-      /* check for sensor inputs */
-      //      try {
-      //	ObjectToken sensorToken = (ObjectToken) sysIO.get(0);
-      //	processProbe((Probe) sensorToken.getValue());
-      //      } catch (NoTokenException e) {
+        /* check for sensor inputs */
+        //      try {
+        //	ObjectToken sensorToken = (ObjectToken) sysIO.get(0);
+        //	processProbe((Probe) sensorToken.getValue());
+        //      } catch (NoTokenException e) {
 	/* no state value update, ignore */
-      //      }
+        //      }
 
-      /* check for message inputs from other MEMSEnvir Actors */
-      try {
-	ObjectToken msgToken = (ObjectToken) carrierMsgIO.get(0);
-	Debug.log(1, this, "message from other MEMSEnvir received");
-	processCarrierMessage((MEMSEnvirMsg) msgToken.getValue());
-      } catch (NoTokenException e) {
-	// No MEMS message received ... do nothing
-      }
+        /* check for message inputs from other MEMSEnvir Actors */
+        try {
+            ObjectToken msgToken = (ObjectToken) carrierMsgIO.get(0);
+            Debug.log(1, this, "message from other MEMSEnvir received");
+            processCarrierMessage((MEMSEnvirMsg) msgToken.getValue());
+        } catch (NoTokenException e) {
+            // No MEMS message received ... do nothing
+        }
 
-      /* check for message inputs from the associated MEMSDevice Actor 
-       * and send it out to the carrier (ie a "hub" relation) 
-       */
-      try {
-	ObjectToken msgToken = (ObjectToken) deviceMsgIO.get(0);
-	Debug.log(1, this, "message from MEMSDevice" + 
-		  getID() + " received");
-	_transmitMsgToCarrier((MEMSMsg) msgToken.getValue());
-      } catch (NoTokenException e) {
-	// No MEMS message received ... do nothing
-      }
+        /* check for message inputs from the associated MEMSDevice Actor 
+         * and send it out to the carrier (ie a "hub" relation) 
+         */
+        try {
+            ObjectToken msgToken = (ObjectToken) deviceMsgIO.get(0);
+            Debug.log(1, this, "message from MEMSDevice" + 
+                    getID() + " received");
+            _transmitMsgToCarrier((MEMSMsg) msgToken.getValue());
+        } catch (NoTokenException e) {
+            // No MEMS message received ... do nothing
+        }
 
-      /* to make sure that the fire method gets invoked in every 
-       * clock cycle 
-       */
-      fireAfterDelay(_memsAttrib.getClockPeriod());
+        // to make sure that the fire method gets invoked in every 
+        // clock cycle 
+        //
+        fireAfterDelay(_memsAttrib.getClockPeriod());
     }
 
     public void initialize() throws IllegalActionException {
-      super.initialize();
-      _isProbeSent = false;
+        super.initialize();
+        _isProbeSent = false;
     }      
+    
+    /** Set the coordinate to the specified value.
+     */
+    public void setCoordinate(double x, double y, double z) {
+        coord = new Coord(x,y,z);
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -210,14 +216,14 @@ public class MEMSEnvir extends MEMSActor {
      *  changeTemperature()
      */
     protected void fireDueEvents() throws IllegalActionException {
-      /* logic to prevent handlers being called twice at the current time */
-      if(prevFireTime < curTime) {
-	prevFireTime = curTime;
-	_processPendingRecvMsg();
-	_processPendingMsgXmit();
-	/* register handlers below */
-	changeTemperature();
-      }
+        /* logic to prevent handlers being called twice at the current time */
+        if(prevFireTime < curTime) {
+            prevFireTime = curTime;
+            _processPendingRecvMsg();
+            _processPendingMsgXmit();
+            /* register handlers below */
+            changeTemperature();
+        }
     }
 
     /** Test the if the incoming message is within range.  If so,
@@ -226,23 +232,23 @@ public class MEMSEnvir extends MEMSActor {
      *  @param message - message to be processed
      */
     protected void processCarrierMessage(MEMSEnvirMsg message) throws 
-      IllegalActionException {
-      if (coord.dist(message.coord) <= _memsAttrib.getRange()) {
-	/* FIXME: transmit message only when message.counter == 0 */
-	//	_transmitMsgToDevice(message.content);
-	_registerCarrierMsg(message);
-	Debug.log(1, this,  
-		  "passed message id=" + message.content.getID() + 
-		  " ASID=" + message.content.ASID +
-		  " SID=" + message.content.SID +
-		  " DID=" + message.content.DID);
-      } else {
-	Debug.log(1, this,
-		  "discarded message id=" + message.content.getID() + 
-			   " ASID=" + message.content.ASID +
-			   " SID=" + message.content.SID +
-			   " DID=" + message.content.DID);
-      }
+            IllegalActionException {
+        if (coord.dist(message.coord) <= _memsAttrib.getRange()) {
+            /* FIXME: transmit message only when message.counter == 0 */
+            //	_transmitMsgToDevice(message.content);
+            _registerCarrierMsg(message);
+            Debug.log(1, this,  
+                    "passed message id=" + message.content.getID() + 
+                    " ASID=" + message.content.ASID +
+                    " SID=" + message.content.SID +
+                    " DID=" + message.content.DID);
+        } else {
+            Debug.log(1, this,
+                    "discarded message id=" + message.content.getID() + 
+                    " ASID=" + message.content.ASID +
+                    " SID=" + message.content.SID +
+                    " DID=" + message.content.DID);
+        }
     }
 
     /** Registers incoming message from other MEMSDevice.  This method
@@ -279,72 +285,72 @@ public class MEMSEnvir extends MEMSActor {
      * @param message - message to be registered
      */
     private void _registerCarrierMsg(MEMSEnvirMsg message)
-      throws IllegalActionException {
+            throws IllegalActionException {
 	
 
-      // FIXME: might want to put the messages into the vector
-      //        for supporting a special way of data garbling
-      //      pendingMsg.add(message);
-      /* Data is garbled if transmit and recv happens at the same time. */
+        // FIXME: might want to put the messages into the vector
+        //        for supporting a special way of data garbling
+        //      pendingMsg.add(message);
+        /* Data is garbled if transmit and recv happens at the same time. */
       
-      /* FIXME: Remove the (_xferTimeRemaining == 0) clause to 
-	 allow simultaneous reception and transmission */
+        /* FIXME: Remove the (_xferTimeRemaining == 0) clause to 
+           allow simultaneous reception and transmission */
 
-      /* _PendingRecvMsgLength == 0 implies _recvTimeRemaining == 0 */
-      if ((_pendingRecvMsgLength == 0) && (_xferTimeRemaining == 0)) {
-	/* assumes message has at least xferTimeCount > 0 */
+        /* _PendingRecvMsgLength == 0 implies _recvTimeRemaining == 0 */
+        if ((_pendingRecvMsgLength == 0) && (_xferTimeRemaining == 0)) {
+            /* assumes message has at least xferTimeCount > 0 */
 
-	/*jtc draw line here*/
-	plot.connect(message.coord, this.coord, 2);
+            /*jtc draw line here*/
+            plot.connect(message.coord, this.coord, 2);
 	
-	//FIXME: since _pendingRecvMessage is already the message, there
-	//       is no need for the other variables...
-	_pendingRecvMessage = message;
-	_pendingRecvMsgLength = message.xferTimeCount;
-	_recvTimeRemaining = message.xferTimeCount;
-	Debug.log(0, this, "registering new message, pMsgLength = " +
-		  _pendingRecvMsgLength + " recvTR = " +
-		  _recvTimeRemaining);
-	_sendProbe(new messageProbeMsg(message.xferTimeCount));
+            //FIXME: since _pendingRecvMessage is already the message, there
+            //       is no need for the other variables...
+            _pendingRecvMessage = message;
+            _pendingRecvMsgLength = message.xferTimeCount;
+            _recvTimeRemaining = message.xferTimeCount;
+            Debug.log(0, this, "registering new message, pMsgLength = " +
+                    _pendingRecvMsgLength + " recvTR = " +
+                    _recvTimeRemaining);
+            _sendProbe(new messageProbeMsg(message.xferTimeCount));
 
-      } else {
-	/*jtc draw line here*/
-	plot.connect(message.coord, coord, 4);
-	_garbledPendingRecvMsg = true;
-	if (message.xferTimeCount > _recvTimeRemaining) {
-	  _pendingRecvMsgLength += message.xferTimeCount - _recvTimeRemaining;
-	  _recvTimeRemaining = message.xferTimeCount;
-	} 
-	Debug.log(0, this, "pending receive message garbled, pMsgLength = " +
-		  _pendingRecvMsgLength + " recvTR = " +
-		  _recvTimeRemaining);
+        } else {
+            /*jtc draw line here*/
+            plot.connect(message.coord, coord, 4);
+            _garbledPendingRecvMsg = true;
+            if (message.xferTimeCount > _recvTimeRemaining) {
+                _pendingRecvMsgLength += message.xferTimeCount - _recvTimeRemaining;
+                _recvTimeRemaining = message.xferTimeCount;
+            } 
+            Debug.log(0, this, "pending receive message garbled, pMsgLength = " +
+                    _pendingRecvMsgLength + " recvTR = " +
+                    _recvTimeRemaining);
 	
-      }
+        }
     }
 
     private void _processPendingRecvMsg() 
-      throws IllegalActionException {
-      if (_pendingRecvMessage != null) {
-	_recvTimeRemaining--;
-	if (_recvTimeRemaining == 0) {
-	  if (_garbledPendingRecvMsg) {
-	    _transmitMsgToDevice(new garbledMsg(_pendingRecvMsgLength));
-	  } else {
-	    /* gui */
-	    plot.connect(_pendingRecvMessage.coord, coord, 1);	 	
-	    _transmitMsgToDevice(_pendingRecvMessage.content);
-	  }
-	  _garbledPendingRecvMsg = false;
-	  _pendingRecvMessage = null;
-	  _pendingRecvMsgLength = 0;
-	}
-      }
+            throws IllegalActionException {
+        if (_pendingRecvMessage != null) {
+            _recvTimeRemaining--;
+            if (_recvTimeRemaining == 0) {
+                if (_garbledPendingRecvMsg) {
+                    _transmitMsgToDevice(new garbledMsg(_pendingRecvMsgLength));
+                } else {
+                    /* gui */
+                    plot.connect(_pendingRecvMessage.coord, coord, 1);	 	
+                    _transmitMsgToDevice(_pendingRecvMessage.content);
+                }
+                _garbledPendingRecvMsg = false;
+                _pendingRecvMessage = null;
+                _pendingRecvMsgLength = 0;
+            }
+        }
     }
 
     private void _processPendingMsgXmit() {
-      if (_xferTimeRemaining != 0) {
-	_xferTimeRemaining--;
-      }
+        if (_xferTimeRemaining != 0) {
+            _xferTimeRemaining--;
+        }
     }
 
 
@@ -354,16 +360,16 @@ public class MEMSEnvir extends MEMSActor {
     /*-----------------------------------------------------------------*/
 
     protected void changeTemperature() throws IllegalActionException {
-      double newTemp;
-      newTemp = getNewTemp();
-      if (newTemp != temperature) {
-	temperature = newTemp;
-	_sendProbe(new thermoProbeMsg(temperature));
-      }
+        double newTemp;
+        newTemp = getNewTemp();
+        if (newTemp != temperature) {
+            temperature = newTemp;
+            _sendProbe(new thermoProbeMsg(temperature));
+        }
     }
 
     protected double getNewTemp() {
-      return temperature;
+        return temperature;
     }
     
     /*----------------- Helper/Misc Methods --------------------------*/
@@ -376,32 +382,32 @@ public class MEMSEnvir extends MEMSActor {
      *  @param message - message to be transmitted
      */
     protected void _transmitMsgToCarrier(MEMSMsg message) 
-      throws IllegalActionException {
+            throws IllegalActionException {
 
-      MEMSEnvirMsg outmsg = new MEMSEnvirMsg(coord,message);
+        MEMSEnvirMsg outmsg = new MEMSEnvirMsg(coord,message);
 
-      /* Data is garbled if transmit and recv happens at the same time. */           /* Need this to arbitrate the case where the reception and
-	 transmission occurs at the same time -- the following 
-	 gives higher priority to transmission than reception, ie, the
-	 reception always gets garbled if the execution ever reaches here.
-	 FIXME: Right now, the transmission will garble any 
-	 pendingRecvMessage, even when the reception has started first.
-      */
-      if (_pendingRecvMessage != null) {
-	_garbledPendingRecvMsg = true;
-	Debug.log(0, this, "pending receive message garbled by start of a simultaneous transmission");
-      }
+        /* Data is garbled if transmit and recv happens at the same time. */           /* Need this to arbitrate the case where the reception and
+           transmission occurs at the same time -- the following 
+           gives higher priority to transmission than reception, ie, the
+           reception always gets garbled if the execution ever reaches here.
+           FIXME: Right now, the transmission will garble any 
+           pendingRecvMessage, even when the reception has started first.
+                                                                                       */
+        if (_pendingRecvMessage != null) {
+            _garbledPendingRecvMsg = true;
+            Debug.log(0, this, "pending receive message garbled by start of a simultaneous transmission");
+        }
       
-      if(_xferTimeRemaining == 0) {
-	_xferTimeRemaining = outmsg.xferTimeCount;
-      } else {
-	Debug.log(Debug.ERR,this, "Two different messages being transmitted at the same time");
-	System.exit(1);
-      }
+        if(_xferTimeRemaining == 0) {
+            _xferTimeRemaining = outmsg.xferTimeCount;
+        } else {
+            Debug.log(Debug.ERR,this, "Two different messages being transmitted at the same time");
+            System.exit(1);
+        }
 
-      carrierMsgIO.broadcast(new ObjectToken(outmsg));
+        carrierMsgIO.broadcast(new ObjectToken(outmsg));
       
-      Debug.log(1, this, "message from MEMSDevice" + 
+        Debug.log(1, this, "message from MEMSDevice" + 
 		getID() + " sent to envir hub");
     }
 
@@ -411,10 +417,10 @@ public class MEMSEnvir extends MEMSActor {
      *  @param message - message to be transmitted
      */
     protected void _transmitMsgToDevice(MEMSMsg message) 
-      throws IllegalActionException {
+            throws IllegalActionException {
       
-      deviceMsgIO.broadcast(new ObjectToken(message));
-      Debug.log(1, this,
+        deviceMsgIO.broadcast(new ObjectToken(message));
+        Debug.log(1, this,
 		"message sent to MEMSDevice" + getID());
     }
 
@@ -424,9 +430,9 @@ public class MEMSEnvir extends MEMSActor {
      *  @param probe - probe to be transmitted
      */
     protected void _sendProbe(ProbeMsg probe) throws IllegalActionException {
-      deviceMsgIO.broadcast(new ObjectToken(probe));
-      //      sysIO.broadcast(new ObjectToken(probe));
-      Debug.log(1, this,
+        deviceMsgIO.broadcast(new ObjectToken(probe));
+        //      sysIO.broadcast(new ObjectToken(probe));
+        Debug.log(1, this,
 		"probe sent to MEMSDevice" + getID());
     }
     

@@ -1,5 +1,4 @@
-/* 
-A data object that represents an environment state value.  
+/* A data object that represents an environment state value.  
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -57,50 +56,50 @@ getTemp() in MEMSEnvir and keeps a copy of the value it returns.
 */
 abstract class ProbeMsg {
 
-  /** Constucts a Probe object and initializes its _value to 0
-   */
+    /** Constucts a Probe object and initializes its _value to 0
+     */
   
-  public ProbeMsg() {
+    public ProbeMsg() {
 
-    /* OLD */ /*_value = 0.0; */
-  }
+        /* OLD */ /*_value = 0.0; */
+    }
 
-  ///////////////////////////////////////////////////////////////////
-  ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-  /** Calls MEMSEnvir's getXXXXXX() and keeps a copy of the return
-   *  value in _value
-   *
-   *  Must be overridden by a subclass to specify which getXXXXXX()
-   *  to invoke.
-   *
-   *  @param envir The MEMSEnvir that called this method.
-   *
-   */
-  /* OLD */
-  //  public void probe(MEMSEnvir envir);
+    /** Calls MEMSEnvir's getXXXXXX() and keeps a copy of the return
+     *  value in _value
+     *
+     *  Must be overridden by a subclass to specify which getXXXXXX()
+     *  to invoke.
+     *
+     *  @param envir The MEMSEnvir that called this method.
+     *
+     */
+    /* OLD */
+    //  public void probe(MEMSEnvir envir);
 
-  /** Returns the probe value.
-   */
-  /* OLD */
-  /*
-  public double getValue() {
-    return _value;
-  }
-  */
+    /** Returns the probe value.
+     */
+    /* OLD */
+    /*
+      public double getValue() {
+      return _value;
+      }
+    */
 
-  /** Returns true if this object is of a type thermoProbe. */
-  public boolean isThermoProbeMsg() { return thermoProbe; }
-  /** Returns true if this object is of a type messageProbe. */
-  public boolean isMessageProbeMsg() { return messageProbe; }
+    /** Returns true if this object is of a type thermoProbe. */
+    public boolean isThermoProbeMsg() { return thermoProbe; }
+    /** Returns true if this object is of a type messageProbe. */
+    public boolean isMessageProbeMsg() { return messageProbe; }
 
-  ///////////////////////////////////////////////////////////////////
-  ////                         protected variables               ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-  /* OLD */ /* protected double _value; */
-  /* List of booleans indicating the message type */ 
-  protected boolean thermoProbe = false;
-  protected boolean messageProbe = false;
+    /* OLD */ /* protected double _value; */
+    /* List of booleans indicating the message type */ 
+    protected boolean thermoProbe = false;
+    protected boolean messageProbe = false;
 }
 
 

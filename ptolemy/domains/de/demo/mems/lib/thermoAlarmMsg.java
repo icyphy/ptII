@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+
 */
 
 package ptolemy.domains.de.demo.mems.lib;
@@ -30,24 +33,24 @@ package ptolemy.domains.de.demo.mems.lib;
 //////////////////////////////////////////////////////////////////////////
 //// thermoAlarmMsg
 /**
-   A MEMSMsg subclass that represents a Thermo Alarm message.
+A MEMSMsg subclass that represents a Thermo Alarm message.
 
 @author Allen Miu
 @version $Id$
 */
 public class thermoAlarmMsg extends MEMSMsg {
 
-  /** Constructs a thermoAlarmMsg object with a null content
-   *
-   * @param ASID = adjacent source id
-   * @param SID  = source id
-   * @param DID  = destination id
-   */
-  public thermoAlarmMsg(int ASID, int SID, int DID) {
-    super(ASID,SID,DID,null);
-    thermoAlarmMsg = true;
-    size = 3;
-  }
+    /** Constructs a thermoAlarmMsg object with a null content
+     *
+     * @param ASID = adjacent source id
+     * @param SID  = source id
+     * @param DID  = destination id
+     */
+    public thermoAlarmMsg(int ASID, int SID, int DID) {
+        super(ASID,SID,DID,null);
+        thermoAlarmMsg = true;
+        size = 3;
+    }
 
 }
 

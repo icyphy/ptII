@@ -1,13 +1,5 @@
-/*
-A data object that informs the MEMSDevice actor that a message is
-arriving.  It contains a time value (in terms of cycle) indicating
-the remaining time left before the message completes its transmission
-at the receiver.
-
-;;;;;;; OLD
- An probe object that invokes the getTemp() method in the MEMSEnvir
-   actor and keeps a copy of the value returned by getTemp().
-;;;;;;; OLD
+/* A data object that informs the MEMSDevice actor that a message is
+arriving.  
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -32,6 +24,7 @@ at the receiver.
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo.mems.lib;
@@ -45,10 +38,17 @@ package ptolemy.domains.de.demo.mems.lib;
 
 //////////////////////////////////////////////////////////////////////////
 //// messageProbeMsg
-/**
+/** 
 
 A data object that informs the MEMSDevice actor that a message is
-arriving.
+arriving. It contains a time value (in terms of cycle) indicating
+the remaining time left before the message completes its transmission
+at the receiver.
+
+;;;;;;; OLD
+ An probe object that invokes the getTemp() method in the MEMSEnvir
+   actor and keeps a copy of the value returned by getTemp().
+;;;;;;; OLD
 
 @author Allen Miu
 @version $Id$
@@ -75,9 +75,3 @@ public class messageProbeMsg extends ProbeMsg {
   ////                         private methods                   ////
   private int _xferTimeRemaining;
 }
-
-
-
-
-
-
