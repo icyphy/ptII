@@ -40,6 +40,7 @@ EXTRA_SRCS =	\
 	changes.html \
 	index.html \
 	ptplotfaq.html \
+	thirdparty.html \
 	troubleshooting.html
 
 MISC_FILES =
