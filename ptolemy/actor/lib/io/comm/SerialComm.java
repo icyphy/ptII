@@ -269,19 +269,22 @@ public class SerialComm extends TypedAtomicActor
             // change one's own baud rate so as to catch the reply at the
             // new rate.
         } else if (attribute == minimumOutputSize) {
-            _minimumOutputSize = ((IntToken)minimumOutputSize.getToken()).intValue();
+            _minimumOutputSize
+                = ((IntToken)minimumOutputSize.getToken()).intValue();
             if (_minimumOutputSize < 1) {
                 throw new IllegalActionException(this,
                 "minimumOutputSize is required to be strictly positive.");
             }
         } else if (attribute == maximumOutputSize) {
-            _maximumOutputSize = ((IntToken)maximumOutputSize.getToken()).intValue();
+            _maximumOutputSize
+                = ((IntToken)maximumOutputSize.getToken()).intValue();
             if (_maximumOutputSize < 1) {
                 throw new IllegalActionException(this,
                 "maximumOutputSize is required to be strictly positive.");
             }
         } else if (attribute == discardOldData) {
-            _discardOldData = ((BooleanToken)discardOldData.getToken()).booleanValue();
+            _discardOldData
+                = ((BooleanToken)discardOldData.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -428,9 +431,9 @@ public class SerialComm extends TypedAtomicActor
             }
         } catch (Exception ex) {
             // This will only occur if the model is not running.
-            throw new KernelRuntimeException(this, null,
-                    ex,
-                    "Failure calling fireAtCurrentTime() from the event listener.");
+            throw new KernelRuntimeException(this, null, ex,
+                    "Failure calling fireAtCurrentTime() "
+                    + "from the event listener.");
         }
     }
 
