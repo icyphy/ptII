@@ -121,7 +121,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
                 //System.out.println(getContainer().getFullName()+" Reading block");
-                director._informOfReadBlock();
+
+                //Only for listeners. Keep it before informRB
+                _readblockedactor = (Actor)getContainer().getContainer();
+                director._informOfReadBlock(this);
                 //System.out.println("After the readblocking.. I am "+getContainer().getFullName());
                 _readpending = true;
                 while (_readpending && !_terminate) {
@@ -139,6 +142,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 if (_writepending) {
                     //System.out.println(getContainer().getFullName()+" being unblocked");
                     director._informOfWriteUnblock(this);
+                    //FIXME: For listeners alone. Keep it after informOfWriteU
+                    _writeblockedactor = null;
+
                     _writepending = false;
                     notifyAll(); //Wake up threads waiting on a write;
                 }
@@ -151,6 +157,20 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             }
             return result;
         }
+    }
+
+    public Actor getReadBlockedActor() {
+        if (_readblockedactor == null) {
+            System.out.println("*********************************");
+        }
+        return _readblockedactor;
+    }
+
+    public Actor getWriteBlockedActor() {
+        if (_writeblockedactor == null) {
+            System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        }
+        return _writeblockedactor;
     }
     
     /** Return true since a channel in the Kahn process networks
@@ -210,6 +230,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (!super.hasRoom()) {
                 _writepending = true;
                 //System.out.println(getContainer().getFullName()+" being writeblocked");
+
+                //FIXME: Only for listeners!!
+                _writeblockedactor = 
+                    ((ProcessThread)Thread.currentThread()).getActor();
+
                 director._informOfWriteBlock(this);
                 while (!_terminate && !super.hasRoom()) {
                     //System.out.println(getContainer().getFullName()+" waiting on write");
@@ -219,13 +244,15 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 }
             }
             if (_terminate) {
-                throw new ptolemy.actor.process.TerminateProcessException("");
+                throw new TerminateProcessException("");
             } else {
                 //token can be put in the queue;
                 super.put(token);
                 //Check if pending write to the Queue;
                 if (_readpending) {
-                    director._informOfReadUnblock();
+                    director._informOfReadUnblock(this);
+                    //FIXME: Only for listeners. Please keep it after informU
+                    _readblockedactor = null;
                     _readpending = false;
                     notifyAll();
                     //Wake up all threads waiting on a write to this receiver;
@@ -286,6 +313,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private Actor _readblockedactor = null;
+    private Actor _writeblockedactor = null;
     private boolean _readpending = false;
     private boolean _writepending = false;
     private boolean _pause = false;
