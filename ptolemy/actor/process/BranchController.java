@@ -185,16 +185,21 @@ public class BranchController implements Runnable {
 	Receiver[][] prodRcvrs = null;
 	Receiver[][] consRcvrs = null;
 
+	// System.out.println("Port Width = " + port.getWidth());
 	for( int i=0; i < port.getWidth(); i++ ) {
 	    if( port.isInput() ) {
 		prodRcvrs = port.getReceivers();
 		consRcvrs = port.deepGetReceivers();
 	    } else if( port.isOutput() ) {
-		prodRcvrs = port.getReceivers();
+		prodRcvrs = port.getInsideReceivers();
 		consRcvrs = port.getRemoteReceivers();
 	    } else {
 		throw new IllegalActionException("Bad news");
 	    }
+	    /*
+	    String name = ((Nameable)port).getName();
+	    System.out.println("Port name: " + name + " get prod/cons receivers");
+	    */
 	    prodRcvr = (BoundaryReceiver)prodRcvrs[i][0];
 	    consRcvr = (BoundaryReceiver)consRcvrs[i][0];
 

@@ -47,7 +47,8 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test Branch-2.1 {Test constructors, reset() and initial state} {
+test Branch-2.1 {Test BranchController constructors, reset() and 
+pre-activation state} {
    
     # Instantiate Directors and Composite Actors
     set topLevel [java::new ptolemy.actor.CompositeActor]
@@ -72,37 +73,76 @@ test Branch-2.1 {Test constructors, reset() and initial state} {
     # Make Connections
     $topLevel connect $act1OutPort $compInPort
     $compAct connect $compInPort $act2InPort
-    $compAct connect $act2OutPort $compOutPort
+    $compAct connect $compOutPort $act2OutPort
     $topLevel connect $compOutPort $act3InPort
     
     # Create Receivers
     $topLevel preinitialize
-#     $topLevel initialize
-#    
-#     set cntlr [$innerDir getInputController]
-#    
-#     set cntlr [java::new ptolemy.actor.process.BranchController $topLevel]
-#     set consRcvr [java::new ptolemy.actor.process.MailboxBoundaryReceiver]
-#     set prodRcvr [java::new ptolemy.actor.process.MailboxBoundaryReceiver]
+    $topLevel initialize
+    
+    set cntlrIn [$innerDir getInputController]
     
     set val 1
-#     if { [$cntlr hasBranches] != 1 } {
-#         set val 0
-#     }
+    if { [$cntlrIn hasBranches] != 1 } {
+	set val 0
+    }
+    if { [$cntlrIn isIterationOver] != 1 } {
+    	set val 0
+    }
+    if { [$cntlrIn isBlocked] != 0 } {
+    	set val 0
+    }
+    if { [$cntlrIn isActive] != 0 } {
+    	set val 0
+    }
+    if { [$cntlrIn getParent] != $compAct } {
+    	set val 0
+    }
     
-#     set branch [java::new ptolemy.actor.process.Branch $prodRcvr $consRcvr $cntlr]
+    set cntlrOut [$innerDir getOutputController]
+    
+    if { [$cntlrOut hasBranches] != 1 } {
+	set val 0
+    }
+    if { [$cntlrOut isIterationOver] != 1 } {
+    	set val 0
+    }
+    if { [$cntlrOut isBlocked] != 0 } {
+    	set val 0
+    }
+    if { [$cntlrOut isActive] != 0 } {
+    	set val 0
+    }
+    if { [$cntlrOut getParent] != $compAct } {
+    	set val 0
+    }
+    
+   list $val
+
+} {1}
+
+######################################################################
+#### Continued from above
+#
+test Branch-2.2 {Test Branch constructors, reset() and pre-activation state} {
+   
+    set branchList [$cntlrIn getBranchList]
+    set branch [java::cast ptolemy.actor.process.Branch [$branchList get 0]]
+
+    set val 1
+    if { [$branch isActive] != 0 } {
+     	set val 0
+    }
+    if { [$branch isBranchPermitted] != 0 } {
+    	set val 0
+    }
+    
 #    
 #     if { [$branch numberOfCompletedEngagements] != 0 } {
-#     	$val = 0
-#     }
-#     if { [$branch isActive] != 0 } {
-#     	$val = 0
-#     }
-#     if { [$branch isIterationOver] != 0 } {
-#     	$val = 0
+#     	set val 0
 #     }
 #     if { [$branch isBranchPermitted] != 0 } {
-#     	$val = 0
+#     	set val 0
 #     }
     
 #     $branch reset

@@ -89,8 +89,9 @@ public class Branch {
 	_prodRcvr = prodRcvr;
         
         if( !consRcvr.isConsumerReceiver() ) {
-            throw new IllegalActionException("Not consumer "
-            	    + "receiver");
+	    String name = ((Nameable)consRcvr.getContainer()).getName();
+            throw new IllegalActionException("Receiver: " + name + 
+		    " Not consumer receiver");
         }
 	_consRcvr = consRcvr;
     }

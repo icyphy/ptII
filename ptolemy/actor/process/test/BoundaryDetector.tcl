@@ -133,7 +133,7 @@ test BoundaryDetector-2.1 {Check is...Boundary() for single layer boundary} {
     set vala [$detector isInsideBoundary]
     set valb [$detector isConnectedToBoundary]
     set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 0 && $valc == 0 } {
+    if { $vala == 0  && $valb == 1 && $valc == 0 } {
         set val3 1
     } else {
         set val3 0
@@ -286,6 +286,19 @@ test BoundaryDetector-2.2 {Check is...Boundary() for multilayered boundaries} {
         set val4 0
     }
 
-    list $val1 $val2 $val3 $val4
+    set a2InIOPort [java::cast ptolemy.actor.TypedIOPort $a2InPort]
+    set rcvrs [$a2InIOPort  getReceivers]
+    set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
+    set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
+    set vala [$detector isInsideBoundary]
+    set valb [$detector isConnectedToBoundary]
+    set valc [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 1 && $valc == 0 } {
+        set val5 1
+    } else {
+        set val5 0
+    }
 
-} {1 1 1 1}
+    list $val1 $val2 $val3 $val4 $val5
+
+} {1 1 1 1 1}
