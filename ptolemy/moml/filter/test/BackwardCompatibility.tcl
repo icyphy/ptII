@@ -286,7 +286,7 @@ set htvqEncodeMoml  "$header
         </property>
         <property name=\"blockHeight\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">
         </property>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"244.0, 124.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"244.0, 124.0\">
         </property>
         <port name=\"input\" class=\"ptolemy.domains.sdf.kernel.SDFIOPort\">
             <property name=\"input\"/>
@@ -367,7 +367,7 @@ set expressionMoml  "$header
         </property>
         <property name=\"vectorizationFactor\" class=\"ptolemy.data.expr.Parameter\" value=\"1\">
         </property>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"73.0, 25.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"73.0, 25.0\">
         </property>
     </property>
     <entity name=\"slow\" class=\"ptolemy.actor.lib.Ramp\">
@@ -377,7 +377,7 @@ set expressionMoml  "$header
         </property>
         <property name=\"step\" class=\"ptolemy.data.expr.Parameter\" value=\"PI/100.0\">
         </property>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"63.0, 113.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"63.0, 113.0\">
         </property>
         <port name=\"output\" class=\"ptolemy.actor.TypedIOPort\">
             <property name=\"output\"/>
@@ -397,7 +397,7 @@ set expressionMoml  "$header
         </property>
         <property name=\"step\" class=\"ptolemy.data.expr.Parameter\" value=\"PI/10.0\">
         </property>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"63.0, 200.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"63.0, 200.0\">
         </property>
         <port name=\"output\" class=\"ptolemy.actor.TypedIOPort\">
             <property name=\"output\"/>
@@ -413,7 +413,7 @@ set expressionMoml  "$header
     <entity name=\"Expression\" class=\"ptolemy.actor.lib.Expression\">
         <property name=\"expression\" class=\"ptolemy.data.expr.Parameter\" value=\"cos(slow) + cos(fast)\">
         </property>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"202.0, 191.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"202.0, 191.0\">
         </property>
         <port name=\"output\" class=\"ptolemy.actor.TypedIOPort\">
             <property name=\"output\"/>
@@ -429,7 +429,7 @@ set expressionMoml  "$header
         <property name=\"filename\" class=\"ptolemy.data.expr.Parameter\" value=\"&quot;&quot;\">
         </property>
         <doc>Write to a file</doc>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"428.0, 205.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"428.0, 205.0\">
         </property>
         <port name=\"input\" class=\"ptolemy.actor.TypedIOPort\">
             <property name=\"input\"/>
@@ -571,7 +571,7 @@ set editorFactoryMoml  "$header
       </svg>
     </configure>
         </property>
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"355.0, 200.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"355.0, 200.0\">
         </property>
     </property>
 </entity>"
@@ -612,7 +612,7 @@ test BackwardCompatibility-8.1 {Is a parameter, does not have _editorFactory} {
 set annotationMoml  "$header 
 <entity name=\"BackwardCompatibilityEditorFactor\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"0:annotation1\" class=\"ptolemy.kernel.util.Attribute\">
-        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"426.0, 80.0\">
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"426.0, 80.0\">
         </property>
         <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
             <configure>
@@ -682,7 +682,7 @@ The affected actors are:
 	ptolemy.actor.lib.Expression
 } {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
-	ptolemy.kernel.util.Location	 -> ptolemy.kernel.util.Location} {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
+	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location} {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 } {ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
 renamed.
@@ -753,7 +753,7 @@ The affected actors are:
 
 ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
-	ptolemy.kernel.util.Location	 -> ptolemy.kernel.util.Location
+	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
 ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 
