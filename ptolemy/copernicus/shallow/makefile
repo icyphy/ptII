@@ -51,7 +51,12 @@ JSRCS = \
 	Main.java \
 	ShallowModelTransformer.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	compileCommandTemplate.txt \
+	runCommandTemplate.txt
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,12 +79,12 @@ demo: compileDemo runDemo
 
 # OrthogonalCom - There is no .xml file for this model
 MODEL =			OrthogonalCom
-SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 
 # Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
-#   make MODEL=IIR SOURCECLASS=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 
+#   make MODEL=IIR MODELPATH=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 
 # To run on ArrayAppend:
-#   make MODEL=ArrayAppend SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml compileDemo runDemo 
+#   make MODEL=ArrayAppend MODELPATH=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml compileDemo runDemo 
 
 # Location where we create code that we are generating
 TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg.$(MODEL)
@@ -90,28 +95,37 @@ DECOMPILERTARGETPACKAGE =	$(TARGETPACKAGE)
 # Directory that the decompiler creates classes in
 DECOMPILERTARGETPATH =		$(ROOT)/$(TARGETPATH)
 
-JVM_SIZE = 		-Xmx256m
+JVMSIZE = 		-Xmx256m
 
 # Soot command line arguments for the user.  To list all the arguments, use
-# make SOOT_USER_ARGS=-h
-SOOT_USER_ARGS =
+# make COMPILEOPTIONS=-h
+COMPILEOPTIONS =
 
 # Time that we should let code generation run before exiting in ms.
-WATCH_DOG_TIMEOUT = 	100000
+WATCHDOGTIMEOUT = 	100000
 
 # The tests and the UI use the compileDemo rule, so if you
 # change this rule, be sure to run make tests
 compileDemo: $(JCLASS)
-	@echo "generate shallow code for '$(SOURCECLASS)'"
-	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)" \
-	-Dptolemy.ptII.dir=$(PTII) \
-	ptolemy.copernicus.shallow.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
-		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
-		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.writeJimple1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
-		-p wjtp.writeJimple2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
-		$(SOOT_USER_ARGS)
+	@echo "generate shallow code for '$(MODELPATH)'"
+	$(JAVA) \
+		-classpath "$(ROOT)" \
+		ptolemy.copernicus.kernel.Copernicus \
+		-verbose \
+		-codeGenerator   '"shallow"' \
+		-compile	 true \
+		-iterations      '"$(ITERATIONS)"' \
+		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
+		-java            '"$(JAVA)"' \
+		-jvmSize         '"$(JVMSIZE)"' \
+		-modelPath       '"$(MODELPATH)"' \
+		-run		 false \
+		-root            '"$(PTII)"' \
+		-targetPackage   '"$(TARGETPACKAGE)"' \
+		-targetPath      '"$(TARGETPATH)"' \
+		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
+		-compileOptions  '"$(COMPILEOPTIONS)"'
+
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
 

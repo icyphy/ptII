@@ -133,9 +133,9 @@ public class Main extends KernelMain {
                         CommandLineTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot1", ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot1", ClassWriter.v()));
 
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
@@ -151,9 +151,9 @@ public class Main extends KernelMain {
                         FieldsForPortsTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot2", ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot2", ClassWriter.v()));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
@@ -179,9 +179,10 @@ public class Main extends KernelMain {
                         new TransformerAdapter(CopyPropagator.v())));
 
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot3", ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot3", ClassWriter.v()));
+
 
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
@@ -244,28 +245,16 @@ public class Main extends KernelMain {
         //        StaticInliner.v()));
 
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot5", ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot5", ClassWriter.v()));
 
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
 
-        // Simplify to speed up instance equality elimination
-        // FIXME: This has bugs...
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-        // Remove tests of object equality that can be statically
-        // determined.  The generated code ends up with a lot of
-        // these that are really just dead code (usually from
-        // inlining the attributeChanged method).
-        // A general analysis is expensive...  Let's see if we can get away
-        // with a cheaper analysis.
-        //        Scene.v().getPack("wjtp").add(
-        //        new Transform("wjtp.iee", InstanceEqualityEliminator.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
@@ -308,13 +297,13 @@ public class Main extends KernelMain {
 
         // Remove unnecessary assignments using alias analysis.
         // This catches assignments to fields which other assignments miss.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.aae",
-                        new TransformerAdapter(
-                                AliasAssignmentEliminator.v())));
+        //  Scene.v().getPack("wjtp").add(
+//                 new Transform("wjtp.aae",
+//                         new TransformerAdapter(
+//                                 AliasAssignmentEliminator.v())));
+         
 
         // Remove other useless getFoo() methods.
-        // FIXME: This has bugs...
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.smr",
                         SideEffectFreeInvocationRemover.v()));
@@ -324,25 +313,34 @@ public class Main extends KernelMain {
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
+        // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
+        // so that we don't have to pick between multiple constructors, if
+        // there are more than one.  I'm lazy and instead of trying to pick
+        // one, lets use the only one that is reachable. 
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
         // Remove references to named objects.
-        /*Scene.v().getPack("wjtp").add(
-          new Transform("wjtp.ee",
-          ExceptionEliminator.v(_toplevel)));
-          Scene.v().getPack("wjtp").add(
-          new Transform("wjtp.noe",
-          NamedObjEliminator.v(_toplevel)));*/
-
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ee",
+                        ExceptionEliminator.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.noe",
+                        NamedObjEliminator.v(_toplevel)));
+        
         // We REALLY need to cleanup here or the code is not correct..
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
+        // Remove Unreachable methods.
+        // FIXME: This has bugs...
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6",
-                        ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.snapshot6",
-                        JimpleWriter.v()));
+                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot6", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot6", ClassWriter.v()));
+ 
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
         //         TypeSpecializer.v(_toplevel)));
         //        Scene.v().getPack("wjtp").add(

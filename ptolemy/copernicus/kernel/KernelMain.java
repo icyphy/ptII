@@ -45,6 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.FilterOutGraphicalClasses;
+import ptolemy.moml.FilterBackwardCompatibility;
 
 import com.microstar.xml.XmlException;
 
@@ -84,10 +86,12 @@ public class Main extends KernelMain {
 }
 </pre>
 
+Soot usually takes many command line arguments, see {@link Copernicus}
+for a more convenient driver
+
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
-*/
+@since Ptolemy II 2.0 */
 public class KernelMain {
 
     /** Set up code generation arguments.
@@ -97,6 +101,27 @@ public class KernelMain {
      */
     public KernelMain(String momlClassName) {
 	_momlClassName = momlClassName;
+        _parser = new MoMLParser();
+
+	// Handle Backward Compatibility.
+	_parser.addMoMLFilter(new FilterBackwardCompatibility());
+
+	// Add any _icons.
+	//_parser.addMoMLFilter(new FilterAddIcons());
+        
+	// Filter out any graphical classes and the GeneratorAttribute
+	// itself.  If we don't filter out GeneratorAttribute, then
+	// we get quite a few attributes in the generated code, which
+	// causes problems at runtime because sometimes the parameters
+	// are out of order, so there are dependency issues, or,
+	// in the case of the applet generator, the parameters depend
+	// on the value of Java system properties like ptolemy.ptII.directory
+	// which is not accessible because of security concerns.
+	FilterOutGraphicalClasses filterOutGraphicalClasses =
+	    new FilterOutGraphicalClasses();
+	filterOutGraphicalClasses
+	    .put("ptolemy.copernicus.kernel.GeneratorAttribute", null);
+	_parser.addMoMLFilter(filterOutGraphicalClasses);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -224,7 +249,7 @@ public class KernelMain {
         CompositeActor modelClass = null;
 	try {
 	    modelClass = (CompositeActor)
-                _parser._searchForClass(_momlClassName,
+                _parser.searchForClass(_momlClassName,
                         _toplevel.getMoMLInfo().source);
 	} catch (XmlException xml) {
             throw new
@@ -410,7 +435,7 @@ public class KernelMain {
 
     /** The MoMLParser for parsing models.
      */
-    protected MoMLParser _parser = new MoMLParser();
+    protected MoMLParser _parser = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

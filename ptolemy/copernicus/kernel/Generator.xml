@@ -20,14 +20,6 @@ $Id$
 		             class="ptolemy.kernel.util.StringAttribute"
 			     value="&quot;applet&quot;">
                    </property>
-                   <property name="c"
-		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;c&quot;">
-                   </property>
-                   <property name="jhdl"
-		             class="ptolemy.kernel.util.StringAttribute"
-			     value="&quot;jhdl&quot;">
-                   </property>
                    <property name="shallow"
 		             class="ptolemy.kernel.util.StringAttribute"
 			     value="&quot;shallow&quot;">

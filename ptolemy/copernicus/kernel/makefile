@@ -52,10 +52,12 @@ JSRCS = \
 	AliasAssignmentEliminator.java \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
+	Copernicus.java \
 	EntitySootClass.java \
 	FastForwardFlowAnalysis.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
+	GeneratorAttribute.java \
 	JimpleWriter.java \
 	KernelMain.java \
 	MaybeAliasAnalysis.java \
@@ -68,7 +70,10 @@ JSRCS = \
 	TransformerAdapter.java \
 	WatchDogTimer.java 
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	Generator.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

@@ -32,6 +32,7 @@ package ptolemy.copernicus.applet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringUtilities;
 
@@ -93,61 +94,7 @@ public class AppletWriter extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage templateDirectory";
-    }
-
-    /** Given a string and a Map containing String key/value pairs,
-     *  substitute any keys found in the input with the corresponding
-     *  values.
-     *
-     *  @param input The input string that contains substrings
-     *  like "@codeBase@".
-     *  @param substituteMap The Map of String keys like "@codeBase@"
-     *  and String values like "../../..".
-     *  @return  A string with the keys properly substituted with
-     *  their corresponding values.
-     */
-    public static String substitute(String input,
-            Map substituteMap) {
-
-	// At first glance it would appear that we could use StringTokenizer
-	// however, the token is really the String @codeBase@, not
-	// the @ character.  StringTokenizer has problems with
-	// "@codebase", which reports as having one token, but
-	// should not be substituted since it is not "@codebase@"
-
-	Iterator keys = substituteMap.keySet().iterator();
-
-	while (keys.hasNext()) {
-	    String key = (String)keys.next();
-	    input = StringUtilities.substitute(input, key,
-                    (String)substituteMap.get(key));
-	}
-	return input;
-    }
-
-    /** Read in the contents of inputFileName, and replace each matching
-     *	String key found in substituteMap with the corresponding String value.
-     *
-     *  @param inputFileName  The name of the file to read from.
-     *  @param substituteMap The Map of String keys like "@codeBase@"
-     *  and String values like "../../..".
-     *  @param outputFileName The name of the file to write to.
-     */
-    public static void substitute(String inputFileName,
-            Map substituteMap,
-            String outputFileName)
-            throws FileNotFoundException, IOException {
-	BufferedReader inputFile =
-	    new BufferedReader(new FileReader(inputFileName));
-	PrintWriter outputFile =
-	    new PrintWriter(new BufferedWriter(new FileWriter(outputFileName)));
-	String inputLine;
-	while ( (inputLine = inputFile.readLine()) != null) {
-	    outputFile.println(substitute(inputLine, substituteMap));
- 	}
-	inputFile.close();
-	outputFile.close();
+        return super.getDeclaredOptions() + " targetPackage outDir templateDirectory";
     }
 
 
@@ -172,6 +119,8 @@ public class AppletWriter extends SceneTransformer {
 
         System.out.println("AppletWriter.internalTransform("
                 + phaseName + ", " + options + ")");
+
+	_outputDirectory = Options.getString(options, "outDir");
 
 	// Determine where $PTII is so that we can find the right directory.
 	_ptIIDirectory = null;
@@ -234,18 +183,14 @@ public class AppletWriter extends SceneTransformer {
 
 	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
-	_modelDirectory = _ptIIDirectory + "/"
-	    + StringUtilities.substitute(_targetPackage, ".", "/")
-	    + "/" + _sanitizedModelName + "/";
-
 
 	// Create the directory where we will create the files.
-	File modelDirectoryFile = new File(_modelDirectory);
-	if (modelDirectoryFile.isDirectory()) {
-	    System.out.println(" Warning: '" + modelDirectoryFile
+	File outDirFile = new File(_outputDirectory);
+	if (outDirFile.isDirectory()) {
+	    System.out.println(" Warning: '" + outDirFile
                     + "' already exists.");
 	}
-	modelDirectoryFile.mkdirs();
+	outDirFile.mkdirs();
 
 	// Set up the HashMap we will use when we read in files like
 	// makefile.in and search for strings like @codebase@ and substitute
@@ -253,7 +198,7 @@ public class AppletWriter extends SceneTransformer {
 	_substituteMap = new HashMap();
 	_substituteMap.put("@codeBase@", _codeBase);
 	_substituteMap.put("@domainJar@", _domainJar);
-	_substituteMap.put("@modelDirectory@", _modelDirectory);
+	_substituteMap.put("@outDir@", _outputDirectory);
 	_substituteMap.put("@sanitizedModelName@",
                 _sanitizedModelName);
 	_substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
@@ -268,7 +213,9 @@ public class AppletWriter extends SceneTransformer {
 
 	// Generate the .xml file.
 	String modelFileName =
-	    _modelDirectory + _sanitizedModelName + ".xml";
+	    _outputDirectory + "/" + _sanitizedModelName + ".xml";
+	System.out.println("AppletWriter: about to write '"
+			   + modelFileName + "'");
 	try {
 	    Writer modelFileWriter =
 		new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFileName)));
@@ -279,27 +226,50 @@ public class AppletWriter extends SceneTransformer {
                     + modelFileName + "': " + ex);
 	}
 
+
+	// Check to see if the _outputDirectory has the same root
+	// as the _ptIIDirectory.  _outputDirectory is not under
+	// _ptIIDirectory, then we will need to copy jar files around
+	
+	//try {
+	//    File outputDirectoryFile = new File(_outputDirectory);
+	//    File ptIIDirectoryFile = new File(_ptIIDirectory);
+	//}
+
 	// Read in the templates and generate new files.
 
 	// The directory that contains the templates.
 	// FIXME: this could be a Ptolemy parameter?
-	_templateDirectory =
-	    StringUtilities.substitute(Options.getString(options,
-                    "templateDirectory"),
-                    "$PTII", _ptIIDirectory);
+
+	//_templateDirectory =
+	//    StringUtilities.substitute(Options.getString(options,
+        //            "templateDirectory"),
+        //            "$PTII", _ptIIDirectory);
+	_templateDirectory = Options.getString(options, "templateDirectory");
+
+	System.out.println("AppletWriter: _templateDirectory: '"
+			   + _templateDirectory + "'");
+
 	try {
-	    substitute(_templateDirectory + "makefile.in", _substituteMap,
-                    _modelDirectory + "makefile");
-	    substitute(_templateDirectory + "model.htm.in", _substituteMap,
-                    _modelDirectory + _sanitizedModelName + ".htm");
-	    substitute(_templateDirectory + "modelVergil.htm.in",
-                    _substituteMap,
-                    _modelDirectory + _sanitizedModelName + "Vergil.htm");
+	    Copernicus.substitute(_templateDirectory + "makefile.in",
+				    _substituteMap,
+				    _outputDirectory + "/makefile");
+	    Copernicus.substitute(_templateDirectory + "model.htm.in",
+				    _substituteMap,
+				    _outputDirectory + "/"
+				    + _sanitizedModelName + ".htm");
+	    Copernicus.substitute(_templateDirectory + "modelVergil.htm.in",
+				    _substituteMap,
+				    _outputDirectory + "/"
+				    + _sanitizedModelName
+				    + "Vergil.htm");
 	} catch (IOException ex) {
+	    // This exception tends to get eaten by soot, so we print as well.
+	    System.err.println("Problem writing makefile or html files:" + ex);
+	    ex.printStackTrace();
 	    throw new InternalErrorException("Problem writing the makefile "
                     + "or htm files: " + ex);
 	}
-
     }
 
 
@@ -318,7 +288,7 @@ public class AppletWriter extends SceneTransformer {
     private CompositeActor _model;
 
     // The full path to the directory where we are creating the model
-    private String _modelDirectory;
+    private String _outputDirectory;
 
     // The sanitized modelName
     private String _sanitizedModelName;
@@ -342,7 +312,7 @@ public class AppletWriter extends SceneTransformer {
 
     // Initial default for _templateDirectory;
     private final String TEMPLATE_DIRECTORY_DEFAULT =
-    "$PTII/ptolemy/copernicus/applet/";
+    "ptolemy/copernicus/applet/";
 
 
 }

@@ -549,26 +549,32 @@ public class InlineParameterTransformer extends SceneTransformer {
                             ValueTag tag = (ValueTag)field.getTag("_CGValue");
                             if (tag == null) {
                                 System.out.println("Failed usage: " + useStmt);
-                                // We came to a field store that we did not create... hopefully
-                                // there is one that we created.
-                                //  continue;
-                                //throw new RuntimeException("Could not determine the static value of "
-                                //        + local + " in " + method);
-                                // return null;
+                                // We came to a field store that we
+                                // did not create... hopefully there
+                                // is one that we created.  
+
+                                // continue;
+                                // 
+                                // throw new RuntimeException("Could
+                                // not determine the static value of "
+                                // + local + " in " + method); return
+                                // null;
                             } else {
                                 return (Attribute)tag.getObject();
                             }
                         }
                     }
                 }
-                throw new RuntimeException("Could not determine the static value of "
+                throw new RuntimeException(
+                        "Could not determine the static value of "
                         + local + " in " + method);
             } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
                 return null;
             } else {
-                throw new RuntimeException("Unknown type of value: " + value + " in " + method);
+                throw new RuntimeException(
+                        "Unknown type of value: " + value + " in " + method);
             }
         } else {
             String string = "More than one definition of = " + local + "\n";
