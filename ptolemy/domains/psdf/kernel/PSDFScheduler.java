@@ -224,15 +224,14 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             ptolemy.graph.Node node, PSDFAPGANStrategy apgan) {
         PSDFGraph childGraph = (PSDFGraph)apgan.getSubgraph(node);
 
-        // FIXME: Need to set the iteration counts appropriately.
         try {
-            // atomic node
+            // Atomic node
             if (childGraph == null) {
                 PSDFNodeWeight weight = (PSDFNodeWeight)node.getWeight();
                 SymbolicFiring firing = new SymbolicFiring((Actor)
                         weight.getComputation(), "1");
                 return firing;
-            // super node
+            // Super node
             } else {
                 Schedule schedule = new Schedule();
 
@@ -250,12 +249,24 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
                 // sink clusters.
                 String producedExpression = apgan.producedExpression(edge);
                 String consumedExpression = apgan.consumedExpression(edge);
+
+                // These errors should not occur.
+                if (producedExpression == null) {
+                    throw new RuntimeException("Internal error: null "
+                            + "production rate expression. The offending edge "
+                            + "follows.\n" + edge);
+                } else if (consumedExpression == null) {
+                    throw new RuntimeException("Internal error: null "
+                            + "consumption rate expression. The offending edge "
+                            + "follows.\n" + edge);
+                }
+
                 String denominator = "gcd(" + producedExpression + ", "
                         + consumedExpression + ")";
-                String firstIterations = consumedExpression + "/" 
-                        + denominator;
-                String secondIterations = producedExpression + "/"
-                        + denominator;
+                String firstIterations = "(" + consumedExpression + ") / (" 
+                        + denominator + ")";
+                String secondIterations = "(" + producedExpression + ") / ("
+                        + denominator + ")";
                 first.setIterationCount(firstIterations);
                 second.setIterationCount(secondIterations);
 
@@ -297,6 +308,15 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             return _scheduleElement.actorIterator();
         }
 
+        /** Return the most recent expression that was used to set the
+         *  iteration count of this symbolic firing.
+         *  @return The most recent expression.
+         *  @see setIterationCount(String).
+         */
+        public String expression() {
+            return _expression;
+        }
+
         /** Return the actor invocation sequence in the form of a sequence of
          *  firings.
          *  @return The actor invocation sequence.
@@ -328,6 +348,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
          *  count.
          */
         public void setIterationCount(String expression) {
+            _expression = expression;
             // FIXME: Incorporate better exception handling.
             try {
                 PtParser parser = new PtParser();
@@ -357,6 +378,10 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
          */
         protected ScheduleElement _scheduleElement;
 
+        // The iteration expression. This is stored separately for
+        // diagnostic purposes only.
+        private String _expression;
+
         // The parse tree of the iteration expression.
         private ASTPtRootNode _parseTree;
     }
@@ -384,7 +409,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
         public String toString() {
             String result = "Fire Actor " 
                     + ((Firing)_scheduleElement).getActor().toString();
-            result += "[" +  _parseTree().toString() + "] times";
+            result += "[" +  expression() + "] times";
             return result;
         }
     }
@@ -412,7 +437,7 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             String result = "Execute Symbolic Schedule{\n";
             result += schedule.toString();
             result += "} ";
-            result += "[" + _parseTree().toString() + "] times"; 
+            result += "[" + expression() + "] times"; 
             return result; 
         }
     }
