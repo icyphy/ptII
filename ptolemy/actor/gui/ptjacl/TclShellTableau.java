@@ -113,9 +113,12 @@ public class TclShellTableau extends Tableau
      *  @exception Exception If something goes wrong processing the command.
      */
     public String evaluateCommand(String command) throws Exception {
-        _tclInterp.eval(command);
-	String results = _tclInterp.getResult().toString();
-        return results;
+	try {
+	    _tclInterp.eval(command);
+	    return _tclInterp.getResult().toString();
+	} catch (TclException ex) {
+	    return _tclInterp.getVar("errorInfo", null,0).toString();
+	}
     }
 
     /** Return true if the specified command is complete (ready
