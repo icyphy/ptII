@@ -86,7 +86,7 @@ public class DDEGetToken extends DDEGet {
      */
     public void fire() throws IllegalActionException {
 	int aCntr = 0;
-	Receiver[][] theRcvrs = inputPort.getReceivers();
+	Receiver[][] theRcvrs = input.getReceivers();
 	for( int i = 0; i < theRcvrs.length; i++ ) {
 	    for( int j = 0; j < theRcvrs[i].length; j++ ) {
 		aCntr++;
@@ -95,7 +95,7 @@ public class DDEGetToken extends DDEGet {
 	System.out.println("There are "+aCntr+" receivers in "+getName());
 	int cnt = 0;
 	while(cnt < _numTokens) {
-	    Receiver[][] rcvrs = inputPort.getReceivers();
+	    Receiver[][] rcvrs = input.getReceivers();
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];

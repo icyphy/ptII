@@ -58,9 +58,9 @@ public class DDEGet extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-         inputPort = new TypedIOPort(this, "input", true, false);
-	 inputPort.setMultiport(true);
-	 inputPort.setTypeEquals(Token.class);
+         input = new TypedIOPort(this, "input", true, false);
+	 input.setMultiport(true);
+	 input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,5 +75,5 @@ public class DDEGet extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    public TypedIOPort inputPort;
+    public TypedIOPort input;
 }

@@ -105,8 +105,8 @@ public class DDEGetNToken extends DDEGet {
             Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-		_beforeTimes[cnt] = timeKeeper.getCurrentTime();
-		Receiver[][] rcvrs = inputPort.getReceivers();
+		_beforeTimes[cnt] = timeKeeper.getCurrentTime(); 
+		Receiver[][] rcvrs = input.getReceivers();
 		for( int i = 0; i < rcvrs.length; i++ ) {
 		    for( int j = 0; j < rcvrs[i].length; j++ ) {
 			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
