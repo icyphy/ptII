@@ -131,7 +131,7 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
-                ptolemy/domains/gr/lib/quicktime/quicktime-license.html");
+                "ptolemy/domains/gr/lib/quicktime/quicktime-license.html");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.matlab.Expression",
