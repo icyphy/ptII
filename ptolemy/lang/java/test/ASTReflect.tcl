@@ -1,10 +1,10 @@
-# Tests for the NamedObj class
+# Tests for the ASTReflect class
 #
-# @Author: Christopher Hylands, Edward A. Lee
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -79,6 +79,9 @@ test ASTReflect-2.1 {check out constructor in Object} {
 END ConstructorDeclNode
 }}}
 
+######################################################################
+####
+#
 test ASTReflect-2.2 {check out constructors} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect constructorsASTList $class]
@@ -152,6 +155,9 @@ END ConstructorDeclNode
 END ConstructorDeclNode
 }}}
 
+######################################################################
+####
+#
 test ASTReflect-3.1 {check out fields} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestFields"]
     set astList [java::call ptolemy.lang.java.ASTReflect fieldsASTList $class]
@@ -342,6 +348,9 @@ END FieldDeclNode
 END FieldDeclNode
 }}}
 
+######################################################################
+####
+#
 test ASTReflect-4.1 {check out innerclasses} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect innerClassesASTList $class]
@@ -436,6 +445,9 @@ test ASTReflect-4.1 {check out innerclasses} {
 END ClassDeclNode
 }}}
 
+######################################################################
+####
+#
 test ASTReflect-5.1 {check out methods} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
@@ -529,6 +541,9 @@ END MethodDeclNode
 END MethodDeclNode
 }}}
 
+######################################################################
+####
+#
 test ASTReflect-6.1 {Check out CompileUnitNode after we try out the methods that CompileUnitNode calls} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestInterface"]
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
@@ -577,8 +592,9 @@ END CompileUnitNode
 }}
 
 
-
-
+######################################################################
+####
+#
 test ASTReflect-6.2 {ASTCompileUnitNode on a complete class} {
     set class [ java::call Class forName "ptolemy.lang.java.Skeleton"]
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
