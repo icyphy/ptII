@@ -33,6 +33,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 
 import java.io.File;
 import java.io.IOException;
@@ -183,6 +185,9 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  is set to the name of the model.  If setModel() has not yet
      *  been called, then the initial filename to
      *  <code>model.xml</code>.
+     *  If the model is not idle or paused, we first pause it before
+     *  calling the parent _saveAs() method and then resume when
+     *  we return from the parent _saveAs() method.
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
@@ -191,6 +196,26 @@ public abstract class PtolemyFrame extends TableauFrame {
         } else {
             // We are not sanitizing the name here . . .
             _initialSaveAsFileName = _model.getName() + ".xml";
+        }
+
+        // If the model is not idle or paused, then pause it while saving
+        // This solves bug where if we have Const -> MonitorValue with
+        // SDFDirector with default parameters and run it and then do
+        // SaveAs, we got strange behaviour.
+        if (_model instanceof CompositeActor) {
+            Manager manager = ((CompositeActor)_model).getManager();
+            if (manager != null) {
+                Manager.State state = manager.getState();
+                if (state == Manager.IDLE
+                        && state == Manager.PAUSED) {
+                    return super._saveAs();
+                } else {                
+                    manager.pause();
+                    boolean returnValue = super._saveAs(); 
+                    manager.resume();
+                    return returnValue;
+                }
+            }
         }
         return super._saveAs();
     }
