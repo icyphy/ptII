@@ -1215,7 +1215,6 @@ public class IOPort extends ComponentPort {
             Receiver[][] farReceivers = new Receiver[width][0];
             Iterator relations = linkedRelationList().iterator();
             int index = 0;
-            boolean foundRemoteInput = false;
             while (relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
                 // A null link (supported since indexed links) might
@@ -1226,7 +1225,6 @@ public class IOPort extends ComponentPort {
                         for (int i = 0; i < deepReceivers.length; i++) {
                             farReceivers[index] = deepReceivers[i];
                             index++;
-                            foundRemoteInput = true;
                         }
                     } else {
                         // create a number of null entries in farReceivers
