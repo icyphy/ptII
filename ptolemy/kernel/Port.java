@@ -119,7 +119,7 @@ public class Port extends NamedObj {
 
     /** Return the Entity which owns this Port. */
     public Entity getEntity() {
-	return _entity;
+	return _parent;
     }
 
 
@@ -146,7 +146,7 @@ public class Port extends NamedObj {
             GraphException, NameDuplicationException {
 	NamedObjList list = entity.getPorts();
 	list.append( this );
-	_entity = entity;
+	_parent = entity;
     }
 
     
@@ -154,7 +154,7 @@ public class Port extends NamedObj {
     ////                         private variables                        ////
 
     // The Entity which owns this port.
-    private Entity _entity = null;
+    private Entity _parent = null;
 
     // The list of relations for this port.
     private CrossRefList _relationsList;
