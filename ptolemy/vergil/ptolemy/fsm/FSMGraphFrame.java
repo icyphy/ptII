@@ -46,6 +46,7 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.vergil.ptolemy.GraphFrame;
 
@@ -176,12 +177,12 @@ public class FSMGraphFrame extends GraphFrame {
                             textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
                 } else if (actionCommand.equals("Animate")
-                        && _listeningTo == null)) {
+                        && _listeningTo == null) {
                     // To support animation.
                     _listeningTo = getModel();
                     _listeningTo.addDebugListener(_controller);
-                } else if (actionCommand.equals("Stop Animating")) {
-                        && _listeningTo != null)) {
+                } else if (actionCommand.equals("Stop Animating")
+                        && _listeningTo != null) {
                     _listeningTo.removeDebugListener(_controller);
                     _controller.clearAnimation();
                     _listeningTo = null;
