@@ -54,12 +54,12 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ODFActor.tcl \
+	ODFReceiver.tcl \
+	ODFThread.tcl \
 	TimeKeeper.tcl \
 	TimedQueueReceiver.tcl \
-	ODFReceiver.tcl \
 	RcvrTimeTriple.tcl 
-	#ODFActor.tcl \
-	#ODFThread.tcl \
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
