@@ -197,13 +197,15 @@ DIVAPACKAGES = \
 	diva.util.xml
 
 # Experimental packages that are not shipped
-EXPERIMENTALPACKAGES = \
-			ptolemy.domains.hdf.kernel \
-			ptolemy.domains.hdf.lib \
-			ptolemy.domains.nc.kernel \
-			ptolemy.domains.nc.lib \
-			ptolemy.domains.rtp.kernel \
-			ptolemy.domains.rtp.lib
+EXPERIMENTALPACKAGES =
+
+# Commented out experimental packages for release
+#			ptolemy.domains.hdf.kernel
+#			ptolemy.domains.hdf.lib
+#			ptolemy.domains.nc.kernel
+#			ptolemy.domains.nc.lib
+#			ptolemy.domains.rtp.kernel
+#			ptolemy.domains.rtp.lib
 
 
 # Packages used by HyVisual
