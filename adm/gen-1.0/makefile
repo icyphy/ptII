@@ -35,7 +35,7 @@ VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
-PTII_SRC =		pt
+#PTII_SRC =		pt
 
 # Location of utilities
 # Don't use /usr/sww/bin/gtar sun4 binaries if you are building on a sol2
