@@ -38,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 
 /**
    A type polymorphic select with boolean valued control. In the first 
@@ -95,6 +96,11 @@ public class DDFBooleanSelect extends TypedAtomicActor {
                 new Parameter(control, "tokenConsumptionRate");
         controlTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         controlTokenConsumptionRate.setTypeEquals(BaseType.INT);
+        
+        // Put the control input on the bottom of the actor.
+        StringAttribute controlCardinal
+                = new StringAttribute(control, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
     }
 
     ///////////////////////////////////////////////////////////////////
