@@ -72,12 +72,18 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         // use a checkbox on screen.
 	
 	// Start of code generators.
-	// sootShallow first, then alphabetical
+	// sootShallow first, then alphabetical.
 	sootShallow = new Parameter(this, "sootShallow",
 			     new BooleanToken(true));
 	new CheckBoxStyle(sootShallow, "style");
         Documentation doc = new Documentation(sootShallow, "tooltip");
         doc.setValue("Shallow code generation using Soot");
+
+	sootDeep = new Parameter(this, "sootDeep",
+			     new BooleanToken(false));
+	new CheckBoxStyle(sootDeep, "style");
+        doc = new Documentation(sootDeep, "tooltip");
+        doc.setValue("Deep code generation using Soot");
 
 	generateC = new Parameter(this, "generateC",
 			     new BooleanToken(false));
@@ -229,8 +235,13 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
      */
     public Parameter show;
 
-    /** If true, generate Java code using Soot. This has type boolean and
-     *  defaults to true.
+    /** If true, generate deep Java code using Soot. This has type boolean and
+     *  defaults to false
+     */
+    public Parameter sootDeep;
+
+    /** If true, generate shallow Java code using Soot. This has type
+     *  boolean and defaults to true.
      */
     public Parameter sootShallow;
 
@@ -298,6 +309,8 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("runOptions");
         newObject.show = (Parameter)
             newObject.getAttribute("show");
+        newObject.sootDeep = (Parameter)
+            newObject.getAttribute("sootDeep");
         newObject.sootShallow = (Parameter)
             newObject.getAttribute("sootShallow");
         newObject.ssbShallow = (Parameter)

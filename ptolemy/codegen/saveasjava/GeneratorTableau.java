@@ -306,9 +306,10 @@ public class GeneratorTableau extends Tableau {
 				// it in a separate process.
 				try {
 				    execCommands
-					.add(_generateJavaCommand(model,
-								  directoryName,
-								  packageNameString));
+					.add(_generateSootJavaCommand(model,
+								      directoryName,
+								      packageNameString,
+								      true /* Generate shallow code */));
 				} catch (Exception exception) {
 				    throw new IllegalActionException(exception
 								     .toString());
@@ -319,6 +320,24 @@ public class GeneratorTableau extends Tableau {
 				//		   directoryName);
 
 				disassemble = true;
+			    } else if (((BooleanToken)options
+				 .sootDeep.getToken())
+				.booleanValue()) {
+
+				// Soot is a memory pig, so we run
+				// it in a separate process.
+				try {
+				    execCommands
+					.add(_generateSootJavaCommand(model,
+								      directoryName,
+								      packageNameString,
+								      false /* Generate deep code. */));
+
+				disassemble = true;
+				} catch (Exception exception) {
+				    throw new IllegalActionException(exception
+								     .toString());
+				}
 			    } else if (((BooleanToken)options
 				 .generateC.getToken())
 				.booleanValue()) {
@@ -487,11 +506,19 @@ public class GeneratorTableau extends Tableau {
 	}
     }
 
-    // Return a command string that will generate Java for model
-    // in the directoryName directory
-    private String _generateJavaCommand(CompositeEntity model,
-					String directoryName,
-					String targetPackage)
+    // Return a command string that will generate shallow or deep
+    // Java for model in the directoryName directory.
+    //
+    // @param model The model to generate code for.
+    // @param directoryName The name of the directory to generate code in
+    // @param targetPackage The java package that the generated code
+    // will reside in.  Usually the targetPackage is relative to $PTII
+    // @param generateShallowJavaCode True if we generate code shallowly.
+    // If false, then generate deeply.
+    private String _generateSootJavaCommand(CompositeEntity model,
+					    String directoryName,
+					    String targetPackage,
+					    boolean generateShallowJavaCode)
 	throws IllegalArgumentException, InternalErrorException
     {
 	// This method is only called in one place, but the method
@@ -580,12 +607,21 @@ public class GeneratorTableau extends Tableau {
 //    	    throw internalError;
 //  	}
 
-	return "make -C \"" + makefileDirectory
-	    + "\" MODEL=\"" + model.getName()
-	    + "\" SOURCECLASS=\"" + temporaryMoMLURL
-	    //	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
-	    + "\" SHALLOWTARGETPACKAGE=\"" + targetPackage
-	    + "\" compileShallowDemo";
+	if (generateShallowJavaCode) {
+	    return "make -C \"" + makefileDirectory
+		+ "\" MODEL=\"" + model.getName()
+		+ "\" SOURCECLASS=\"" + temporaryMoMLURL
+		//	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
+		+ "\" SHALLOWTARGETPACKAGE=\"" + targetPackage
+		+ "\" compileShallowDemo";
+	} else {
+	    return "make -C \"" + makefileDirectory
+		+ "\" MODEL=\"" + model.getName()
+		+ "\" DEEPSOURCECLASS=\"" + temporaryMoMLURL
+		//	    + "\" SOURCECLASS=\"" + temporaryMoMLCanonicalPath
+		+ "\" DEEPTARGETPACKAGE=\"" + targetPackage
+		+ "\" compileDeepDemo";
+	}
     }
 }
 
