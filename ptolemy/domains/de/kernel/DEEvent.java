@@ -41,32 +41,32 @@ import java.lang.Comparable;
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent
 
-/** This class implements the structure of events in Ptolemy II DE domain.
- *  Conceptually, an event in the Ptolemy II DE domain contains
- *  a token and a tag.  In addition, the event has a destination,
- *  which is an actor and possibly a receiver (for non-pure events).
- *  A pure event has no destination receiver and no token, so methods
- *  for accessing those return null.
- *  The tag consists of a time stamp, a microstep, and a depth.
- *  The microstep represents the phase of execution
- *  when processing simultaneous events in directed loops, or when an
- *  actor schedules itself for firing later at the current time
- *  (using fireAt()).
- *  The depth is the index of the destination actor in a topological
- *  sort.  A larger value of depth represents a lower priority when
- *  processing events.
- *  <p>
- *  This class implements the Comparable interface.  The time stamp,
- *  microstep, and depth are compared in that order by the compareTo()
- *  method.
- *  <p>
- *  @author Lukito Muliadi, Edward A. Lee
- *  @version $Id$
- *  @see DEReceiver
- *  @see ptolemy.actor.util.CalendarQueue
- *  @see DEDirector
- */
-
+/**
+This class implements the structure of events in Ptolemy II DE domain.
+Conceptually, an event in the Ptolemy II DE domain contains
+a token and a tag.  In addition, the event has a destination,
+which is an actor and possibly a receiver (for non-pure events).
+A pure event has no destination receiver and no token, so methods
+for accessing those return null.
+The tag consists of a time stamp, a microstep, and a depth.
+The microstep represents the phase of execution
+when processing simultaneous events in directed loops, or when an
+actor schedules itself for firing later at the current time
+(using fireAt()).
+The depth is the index of the destination actor in a topological
+sort.  A larger value of depth represents a lower priority when
+processing events.
+<p>
+This class implements the Comparable interface.  The time stamp,
+microstep, and depth are compared in that order by the compareTo()
+method.
+<p>
+@author Lukito Muliadi, Edward A. Lee
+@version $Id$
+@see DEReceiver
+@see ptolemy.actor.util.CalendarQueue
+@see DEDirector
+*/
 public final class DEEvent implements Comparable {
 
     /** Construct an event with the specified destination receiver,

@@ -38,25 +38,26 @@ import ptolemy.actor.util.CalendarQueue;
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue
 
-/** A calendar queue implementation of the DE event queue. This stores DE
- *  events in the order of their time stamps, microstep and the depth
- *  of the destination actor. One DEEvent is said to be earlier than
- *  another if it has
- *  a smaller time stamp, or when the time stamps are identical and
- *  it has a smaller microstep, or when both time stamps and
- *  microsteps are identical and it has a smaller depth.
- *  <P>
- *  Its complexity is
- *  theoretically O(1) for both enqueue and dequeue operations, assuming
- *  a reasonable distribution of time stamps.
- *
- *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
- *  @version $Id$
- *  @see DEReceiver
- *  @see ptolemy.actor.util.CalendarQueue
- *  @see DEEventQueue
- *  @see DEDirector
- */
+/**
+A calendar queue implementation of the DE event queue. This stores DE
+events in the order of their time stamps, microstep and the depth
+of the destination actor. One DEEvent is said to be earlier than
+another if it has
+a smaller time stamp, or when the time stamps are identical and
+it has a smaller microstep, or when both time stamps and
+microsteps are identical and it has a smaller depth.
+<P>
+Its complexity is
+theoretically O(1) for both enqueue and dequeue operations, assuming
+a reasonable distribution of time stamps.
+
+@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@version $Id$
+@see DEReceiver
+@see ptolemy.actor.util.CalendarQueue
+@see DEEventQueue
+@see DEDirector
+*/
 public class DECQEventQueue implements DEEventQueue {
 
     /** Construct an empty event queue.  The calendar queue takes its

@@ -36,22 +36,23 @@ import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEventQueue
-/** This interface defines the global event queue used by DE directors
- *  to sort and manage events. Events are sorted according to their time
- *  stamps, microstep and the depth of the destination actor.
- *  One DEEvent is said to be earlier than another, if it has
- *  a smaller time stamp, or when the time stamps are identical,
- *  it has a smaller microstep, or when both time stamps and
- *  microsteps are identical, it has a smaller depth.
- *  If all three entries are identical, the events are stored in
- *  a FIFO way.
- *
- *  @author Lukito Muliadi, Jie Liu
- *  @version $Id$
- *  @see DEReceiver
- *  @see ptolemy.actor.util.CalendarQueue
- *  @see DEDirector
- */
+/**
+This interface defines the global event queue used by DE directors
+to sort and manage events. Events are sorted according to their time
+stamps, microstep and the depth of the destination actor.
+One DEEvent is said to be earlier than another, if it has
+a smaller time stamp, or when the time stamps are identical,
+it has a smaller microstep, or when both time stamps and
+microsteps are identical, it has a smaller depth.
+If all three entries are identical, the events are stored in
+a FIFO way.
+
+@author Lukito Muliadi, Jie Liu
+@version $Id$
+@see DEReceiver
+@see ptolemy.actor.util.CalendarQueue
+@see DEDirector
+*/
 public interface DEEventQueue extends Debuggable {
 
     ///////////////////////////////////////////////////////////////////

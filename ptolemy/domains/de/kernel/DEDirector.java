@@ -66,128 +66,129 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DEDirector
 
-/** This director implements the discrete-event model of computation (MoC).
- *  It should be used as the local director of a CompositeActor that is
- *  to be executed according to this MoC. This director maintain a notion
- *  of current time, and processes events chronologically in this time.
- *  An <i>event</i> is a token with a time stamp.  Much of the sophistication
- *  in this director is aimed at handling simultaneous events intelligently,
- *  so that deterministic behavior can be achieved.
- *  <p>
- *  The bottleneck in a typical DE simulator is in the maintenance of the
- *  global event queue. By default, a DE director uses the calendar queue
- *  as the global event queue. This is an efficient algorithm
- *  with O(1) time complexity in both enqueue and dequeue operations.
- *  <p>
- *  Sorting in the CalendarQueue class is done according to the order
- *  defined by the DEEvent class, which implements the java.lang.Comparable
- *  interface. A DE event has a time stamp, a microstep, and a depth.
- *  The time stamp indicates the time when the event occurs.
- *  The microstep represents the phase of execution
- *  when processing simultaneous events in directed loops, or when an
- *  actor schedules itself for firing later at the current time
- *  (using fireAt()).
- *  The depth is the index of the destination actor in a topological
- *  sort.  A larger value of depth represents a lower priority when
- *  processing events.  The depth is determined by topologically
- *  sorting the actors according to data dependencies over which there
- *  is no time delay. Note that the zero-delay data dependencies are
- *  determined on a per port basis.
- *  <p>
- *  Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
- *  should be used whenever an actor introduces time delays between the
- *  inputs and the outputs. When an ordinary IOPort is used, the director
- *  assumes, for the purpose of calculating priorities, that the delay
- *  across the actor is zero. On the other hand, when DEIOPort is used,
- *  the delay across the actor can be declared to be non-zero by calling
- *  the delayTo() method on output ports.
- *  <p>
- *  Directed loops with no delay actors are not permitted; they would make it
- *  impossible to assign priorities.  Such a loop can be broken by inserting
- *  an instance of the Delay actor.  If zero delay around the loop is
- *  truly required, then simply set the <i>delay</i> parameter of that
- *  actor to zero.
- *  <p>
- *  Input ports in a DE model contain instances of DEReceiver.
- *  When a token is put into a DEReceiver, that receiver enqueues the
- *  event to the director  by calling the _enqueueEvent() method of
- *  this director.
- *  This director sorts all such events in a global event queue
- *  (a priority queue).
- *  <p>
- *  An iteration, in the DE domain, is defined as processing all
- *  the events whose time stamp equals to the current time of the director.
- *  At the beginning of the fire() method, this director dequeues
- *  a subset of the oldest events (the ones with smallest time
- *  stamp, microstep, and depth) from the global event queue,
- *  and puts those events into
- *  their destination receivers. The actor(s) to which these
- *  events are destined are the ones to be fired.  The depth of
- *  an event is the depth of the actor to which it is destined.
- *  The depth of an actor is its position in a topological sort of the graph.
- *  The microstep is usually zero, but is incremented when a pure event
- *  is queued with time stamp equal to the current time.
- *  <p>
- *  The actor that is fired must consume tokens from
- *  its input port(s), and will usually produce new events on its output
- *  port(s). These new events will be enqueued in the global event queue
- *  until their time stamps equal the current time.  It is important that
- *  the actor actually consume tokens from its inputs, even if the tokens are
- *  solely used to trigger reactions. This is how polymorphic actors are
- *  used in the DE domain. The actor will
- *  be fired repeatedly until there are no more tokens in its input
- *  ports with the current time stamp.  Alternatively, if the actor
- *  returns false in prefire(), then it will not be invoked again
- *  in the same iteration even if there are events in its receivers.
- *  <p>
- *  A model starts from the time specified by <i>startTime</i>, which
- *  has default value 0.0
- *  <P>
- *  The stop time of the execution can be set using the
- *  <i>stopTime</i> parameter. The parameter has default value
- *  Double.MAX_VALUE, which means the execution stops
- *  only when the model time reaches that (rather large) number.
- *  <P>
- *  Execution of a DE model ends when the time stamp of the oldest events
- *  exceeds a preset stop time. This stopping condition is checked inside
- *  the prefire() method of this director. By default, execution also ends
- *  when the global event queue becomes empty. Sometimes, the desired
- *  behaviour is for the director to wait on an empty queue until another
- *  thread makes new events available.  For example, a DE actor may produce
- *  events when a user hits a button on the screen. To prevent ending the
- *  execution when there are no more events, set the
- *  <i>stopWhenQueueIsEmpty</i> parameter to <code>false</code>.
- *  <p>
- *  Parameters, <i>isCQAdaptive</i>, <i>minBinCount</i>, and
- *  <i>binCountFactor</i>, are
- *  used to configure the calendar queue. Changes to these parameters
- *  are ignored when the model is running.
- *  <p>
- *  If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
- *  then the director not process events until the real time elapsed
- *  since the model started matches the time stamp of the event.
- *  This ensures that the director does not get ahead of real time,
- *  but, of course, it does not ensure that the director keeps up with
- *  real time.
- *  <p>
- *  This director tolerates changes to the model during execution.
- *  The change should be queued with a component in the hierarchy using
- *  requestChange().  While invoking those changes, the method
- *  invalidateSchedule() is expected to be called, notifying the director
- *  that the topology it used to calculate the priorities of the actors
- *  is no longer valid.  This will result in the priorities being
- *  recalculated the next time prefire() is invoked.
- *  <p>
- *  However, there is one subtlety.  If an actor produces events in the
- *  future via DEIOPort, then the destination actor will be fired even
- *  if it has been removed from the topology by the time the execution
- *  reaches that future time.  This may not always be the expected behavior.
- *  The Delay actor in the DE library behaves this way.
- *
- *  @author Lukito Muliadi, Edward A. Lee, Jie Liu
- *  @version $Id$
- *  @see DEReceiver
- *  @see ptolemy.actor.util.CalendarQueue
+/**
+This director implements the discrete-event model of computation (MoC).
+It should be used as the local director of a CompositeActor that is
+to be executed according to this MoC. This director maintain a notion
+of current time, and processes events chronologically in this time.
+An <i>event</i> is a token with a time stamp.  Much of the sophistication
+in this director is aimed at handling simultaneous events intelligently,
+so that deterministic behavior can be achieved.
+<p>
+The bottleneck in a typical DE simulator is in the maintenance of the
+global event queue. By default, a DE director uses the calendar queue
+as the global event queue. This is an efficient algorithm
+with O(1) time complexity in both enqueue and dequeue operations.
+<p>
+Sorting in the CalendarQueue class is done according to the order
+defined by the DEEvent class, which implements the java.lang.Comparable
+interface. A DE event has a time stamp, a microstep, and a depth.
+The time stamp indicates the time when the event occurs.
+The microstep represents the phase of execution
+when processing simultaneous events in directed loops, or when an
+actor schedules itself for firing later at the current time
+(using fireAt()).
+The depth is the index of the destination actor in a topological
+sort.  A larger value of depth represents a lower priority when
+processing events.  The depth is determined by topologically
+sorting the actors according to data dependencies over which there
+is no time delay. Note that the zero-delay data dependencies are
+determined on a per port basis.
+<p>
+Ports in the DE domain may be instances of DEIOPort. The DEIOPort class
+should be used whenever an actor introduces time delays between the
+inputs and the outputs. When an ordinary IOPort is used, the director
+assumes, for the purpose of calculating priorities, that the delay
+across the actor is zero. On the other hand, when DEIOPort is used,
+the delay across the actor can be declared to be non-zero by calling
+the delayTo() method on output ports.
+<p>
+Directed loops with no delay actors are not permitted; they would make it
+impossible to assign priorities.  Such a loop can be broken by inserting
+an instance of the Delay actor.  If zero delay around the loop is
+truly required, then simply set the <i>delay</i> parameter of that
+actor to zero.
+<p>
+Input ports in a DE model contain instances of DEReceiver.
+When a token is put into a DEReceiver, that receiver enqueues the
+event to the director  by calling the _enqueueEvent() method of
+this director.
+This director sorts all such events in a global event queue
+(a priority queue).
+<p>
+An iteration, in the DE domain, is defined as processing all
+the events whose time stamp equals to the current time of the director.
+At the beginning of the fire() method, this director dequeues
+a subset of the oldest events (the ones with smallest time
+stamp, microstep, and depth) from the global event queue,
+and puts those events into
+their destination receivers. The actor(s) to which these
+events are destined are the ones to be fired.  The depth of
+an event is the depth of the actor to which it is destined.
+The depth of an actor is its position in a topological sort of the graph.
+The microstep is usually zero, but is incremented when a pure event
+is queued with time stamp equal to the current time.
+<p>
+The actor that is fired must consume tokens from
+its input port(s), and will usually produce new events on its output
+port(s). These new events will be enqueued in the global event queue
+until their time stamps equal the current time.  It is important that
+the actor actually consume tokens from its inputs, even if the tokens are
+solely used to trigger reactions. This is how polymorphic actors are
+used in the DE domain. The actor will
+be fired repeatedly until there are no more tokens in its input
+ports with the current time stamp.  Alternatively, if the actor
+returns false in prefire(), then it will not be invoked again
+in the same iteration even if there are events in its receivers.
+<p>
+A model starts from the time specified by <i>startTime</i>, which
+has default value 0.0
+<P>
+The stop time of the execution can be set using the
+<i>stopTime</i> parameter. The parameter has default value
+Double.MAX_VALUE, which means the execution stops
+only when the model time reaches that (rather large) number.
+<P>
+Execution of a DE model ends when the time stamp of the oldest events
+exceeds a preset stop time. This stopping condition is checked inside
+the prefire() method of this director. By default, execution also ends
+when the global event queue becomes empty. Sometimes, the desired
+behaviour is for the director to wait on an empty queue until another
+thread makes new events available.  For example, a DE actor may produce
+events when a user hits a button on the screen. To prevent ending the
+execution when there are no more events, set the
+<i>stopWhenQueueIsEmpty</i> parameter to <code>false</code>.
+<p>
+Parameters, <i>isCQAdaptive</i>, <i>minBinCount</i>, and
+<i>binCountFactor</i>, are
+used to configure the calendar queue. Changes to these parameters
+are ignored when the model is running.
+<p>
+If the parameter <i>synchronizeToRealTime</i> is set to <code>true</code>,
+then the director not process events until the real time elapsed
+since the model started matches the time stamp of the event.
+This ensures that the director does not get ahead of real time,
+but, of course, it does not ensure that the director keeps up with
+real time.
+<p>
+This director tolerates changes to the model during execution.
+The change should be queued with a component in the hierarchy using
+requestChange().  While invoking those changes, the method
+invalidateSchedule() is expected to be called, notifying the director
+that the topology it used to calculate the priorities of the actors
+is no longer valid.  This will result in the priorities being
+recalculated the next time prefire() is invoked.
+<p>
+However, there is one subtlety.  If an actor produces events in the
+future via DEIOPort, then the destination actor will be fired even
+if it has been removed from the topology by the time the execution
+reaches that future time.  This may not always be the expected behavior.
+The Delay actor in the DE library behaves this way.
+
+@author Lukito Muliadi, Edward A. Lee, Jie Liu
+@version $Id$
+@see DEReceiver
+@see ptolemy.actor.util.CalendarQueue
  */
 public class DEDirector extends Director {
 
