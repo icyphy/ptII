@@ -1,4 +1,4 @@
-/* Plotter apllication that is capable of reading pxgraph files.
+/* Plotter application that is capable of reading pxgraph files.
 
 @Author: Edward A. Lee and Christopher Hylands
 
