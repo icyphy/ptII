@@ -98,11 +98,16 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$ZoomInAction.class' \
 	'BasicGraphFrame$$ZoomOutAction.class' \
 	'BasicGraphFrame$$ZoomResetAction.class' \
+	'BasicGraphFrame$$2.class' \
+	'BasicGraphFrame$$CreateHierarchyAction.class' \
+	'BasicGraphFrame$$RedoAction.class' \
+	'BasicGraphFrame$$UndoAction.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$2.class' \
 	'EditorDropTarget$$3.class' \
 	'EditorDropTarget$$4.class' \
 	'EditorDropTarget$$DTListener.class' \
+	'ExtendedGraphFrame$$FullScreenAction.class'
 	'IconController$$IconRenderer.class' \
 	'NamedObjController$$GetDocumentationAction.class' \
 	'ParameterizedNodeController$$1.class' \

@@ -77,11 +77,14 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ActorController$$1.class' \
+	'ActorController$$2.class' \
 	'ActorController$$DebugListenerAction.class' \
 	'ActorController$$EntityLayout.class' \
 	'ActorController$$ListenToActorAction.class' \
 	'ActorController$$LookInsideAction.class' \
+	'ActorController$$SaveInLibraryAction.class' \
 	'ActorEditorGraphController$$1.class' \
+	'ActorEditorGraphController$$ListenToActorFactory.class' \
 	'ActorEditorGraphController$$LinkCreator.class' \
 	'ActorEditorGraphController$$NewRelationAction.class' \
 	'ActorEditorGraphController$$RelationCreator.class' \

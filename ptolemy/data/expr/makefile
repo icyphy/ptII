@@ -141,6 +141,15 @@ OPTIONAL_FILES =  \
 	doc \
 	$(OPTIONAL_JSRCS) \
 	message.txt \
+	'CachedMethod$$1.class' \
+	'CachedMethod$$2.class' \
+	'CachedMethod$$3.class' \
+	'CachedMethod$$ArgumentConversion.class' \
+	'CachedMethod$$ArrayMapCachedMethod.class' \
+	'CachedMethod$$BaseConvertCachedMethod.class' \
+	'CachedMethod$$MatrixMapCachedMethod.class' \
+	'CachedMethod$$TypeArgumentConversion.class' \
+	'ParseTreeTypeInference$$1.class' \
 	JJPtParserCalls.class \
 	PtParser.java \
 	PtParser.jj \
