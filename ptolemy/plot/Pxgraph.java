@@ -434,9 +434,6 @@ public class Pxgraph extends Frame {
 	} else if (target == _aboutButton) {
 	    _about();
 	    return true;
-    	} else if (target == _aboutCloseButton) {
-	    System.exit(1);
-	    return true;
 	} else {
 	    return super.action (e, arg);
 	}
@@ -703,51 +700,35 @@ public class Pxgraph extends Frame {
 	message.setTitle("About Pxgraph");
 	message.pack();
 	message.show();
-
-// 	Frame aboutframe = new Frame();
-// 	Dialog aboutdialog = new Dialog(aboutframe,"About Pxgraph",true);
-// 	aboutdialog.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); 
-// 	TextArea abouttext = new TextArea(
-// 			   "Pxgraph - (Java implementation) by\n" +
-// 			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-// 			   "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-// 			   "($Id$)\n\n"+
-// 			   "For help, type 'pxgraph -help', or see \n" +
-// 			   "the Pxgraph class documentation.\n" +
-// 			   "For more information, see\n" +
-// 			   "http://ptolemy.eecs.berkeley.edu/java/plot\n",
-// 			   9,40,TextArea.SCROLLBARS_NONE);
-// 	aboutdialog.add(abouttext);
-// 	_aboutCloseButton = new Button("Close");
-// 	aboutdialog.add(_aboutCloseButton);
-
-// 	aboutdialog.pack();
-// 	aboutdialog.show();
-// 	aboutframe.dispose();
-
-
-//  	if (_debug > 4) System.out.println("Sleeping for 4 seconds");
-// 	try {
-// 	    Thread.currentThread().sleep(4000);
-// 	}
-//	catch (InterruptedException e) {
-//	System.exit(0);
-//	} 
-
     }
 
-    /* Spawn a browser so that the user can print
+    /* Spawn a browser and run the applet Plot class so that the
+     * user can print.
      */	
-
     private void _browser () {
+	// FIXME: we need to generate a temporary file name here.
+	System.out.println("Pxgraph: _browser: FIXME: hardwired path");
+	String tmpfile = "/tmp/t.html";
+
+	// File the temporary file with an applet
+
+	// Read the command line args, if any.
+
+	// Run netscape on the temporary file.
+	// FIXME: we should offer the user a choice.
+	try {
+	    Runtime runtime = Runtime.getRuntime();
+	    Process browser = runtime.exec("netscape "+tmpfile);
+	} catch (SecurityException e) {
+	} catch (IOException e) {
+	}
     }
 
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private Button _exitButton, _browserButton, _aboutButton,
-	_aboutCloseButton;
+    private Button _exitButton, _browserButton, _aboutButton;
 
     // For debugging, call with -db or -debug.
     private static int _debug = 0;
