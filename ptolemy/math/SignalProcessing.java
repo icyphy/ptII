@@ -255,7 +255,7 @@ public class SignalProcessing {
      *  where L is the size of the input array.
      */
     public static final double[] downsample(double[] x, int n,
-     int startIndex) {
+            int startIndex) {
         if (x.length <= 0) {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.downsample(): " +
@@ -817,7 +817,7 @@ public class SignalProcessing {
      *  @see ptolemy.math.DoubleUnaryOperation
      */
     public static final double[] sampleWave(int length,
-     double startTime, double interval, DoubleUnaryOperation sampleGen) {
+            double startTime, double interval, DoubleUnaryOperation sampleGen) {
         double time = startTime;
 
         double[] retval = new double[length];
@@ -1259,9 +1259,9 @@ public class SignalProcessing {
         public PolynomialSampleGenerator(double[] coefficients,
                 int direction) {
             if ((direction != 1) && (direction != -1)) {
-               throw new IllegalArgumentException(
-               "ptolemy.math.SignalProcessing.LineSampleGenerator :  " +
-               "direction must be either 1 or -1");
+                throw new IllegalArgumentException(
+                        "ptolemy.math.SignalProcessing.LineSampleGenerator :  " +
+                        "direction must be either 1 or -1");
             }
 
             _coeffLength = coefficients.length;
@@ -1281,9 +1281,9 @@ public class SignalProcessing {
 
             for (int i = 1; i < _coeffLength; i++) {
                 if (_direction == 1) {
-                   sum += _coefficients[i] * tn;
+                    sum += _coefficients[i] * tn;
                 } else {
-                   sum += _coefficients[i] / tn;
+                    sum += _coefficients[i] / tn;
                 }
                 tn *= time;
             }
@@ -1568,7 +1568,7 @@ public class SignalProcessing {
     // _checkTransformInput() and _checkTransformOrder(). Return an
     // appropriately padded array on which to perform the transform.
     private static double[] _checkTransformArgs(double[] x, int order,
-     boolean inverse) {
+            boolean inverse) {
         _checkTransformOrder(order);
 
         int size = 1 << order;
@@ -1576,8 +1576,8 @@ public class SignalProcessing {
         // Zero pad the array if necessary
 
         if (x.length < size) {
-           x = inverse ? DoubleArrayMath.padMiddle(x, size) :
-                         DoubleArrayMath.resize(x, size);
+            x = inverse ? DoubleArrayMath.padMiddle(x, size) :
+                DoubleArrayMath.resize(x, size);
         }
         return x;
     }
@@ -1586,16 +1586,16 @@ public class SignalProcessing {
     // _checkTransformInput() and _checkTransformOrder(). Return an
     // appropriately padded array on which to perform the transform.
     private static Complex[] _checkTransformArgs(Complex[] x, int order,
-     boolean inverse) {
+            boolean inverse) {
         _checkTransformOrder(order);
 
         int size = 1 << order;
 
         // Zero pad the array if necessary
         if (x.length < size) {
-           x = (inverse == _INVERSE_TRANSFORM) ?
-               ComplexArrayMath.padMiddle(x, size) :
-               ComplexArrayMath.resize(x, size);
+            x = (inverse == _INVERSE_TRANSFORM) ?
+                ComplexArrayMath.padMiddle(x, size) :
+                ComplexArrayMath.resize(x, size);
         }
 
         return x;
@@ -1813,7 +1813,7 @@ public class SignalProcessing {
 
     // Table of scalefactors for the IDCT.
     private static final Complex _IDCTfactors[][][] =
-     new Complex[DCT_TYPES][32][];
+    new Complex[DCT_TYPES][32][];
 
     // Various constants
     private static final double _LOG10SCALE = 1.0 / Math.log(10.0);
