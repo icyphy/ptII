@@ -51,17 +51,19 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test Event-2.1 {Check for correct event time} {
+    # How do we deal with inner classes???
     set t [java::new ptolemy.data.Token]
-    set e1 [java::new ptolemy.domains.odf.kernel.Event $t 5.0]
+    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    set e1 [$rcvr1 Event $t 5.0]
     list [$e1 getTime] 
 } {5.0}
-
+  
 ######################################################################
 ####
 #
 test Event-2.2 {Check for correct event token} {
     set t1 [java::new ptolemy.data.Token]
-    set e1 [java::new ptolemy.domains.odf.kernel.Event $t1 5.0]
+    set e1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver.Event $t1 5.0]
     set t2 [$e1 getToken]
     list [expr { $t1 == [$e1 getToken] } ]
 } {1}
@@ -72,6 +74,6 @@ test Event-2.2 {Check for correct event token} {
 test Event-2.3 {Check for correct event time, token and receiver} {
     set t1 [java::new ptolemy.data.Token]
     set r1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set e1 [java::new ptolemy.domains.odf.kernel.Event $t1 7.5 $r1]
+    set e1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver.Event $t1 7.5 $r1]
     list [expr { $t1 == [$e1 getToken] } ] [$e1 getTime] [expr { $r1 == [$e1 getReceiver] } ]
 } {1 7.5 1}
