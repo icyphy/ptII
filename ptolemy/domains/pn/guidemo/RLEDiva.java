@@ -69,7 +69,6 @@ copatible browser or requires a jdk1.2 plugin.
 
 public class RLEDiva extends PNApplet implements Runnable {
 
-
     /** The mapping from Ptolemy actors to graph nodes
      */
     private HashMap nodeMap = new HashMap();
@@ -101,16 +100,21 @@ public class RLEDiva extends PNApplet implements Runnable {
     ImageDisplay a7;
     ImageDisplay a8;
 
-    Manager manager;
+    //Manager manager;
 
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String pinfo[][] = {
-            {"background",    "#RRGGBB",    "color of the background"},
+        String basepinfo[][] = super.getParameterInfo();
+        String[][] pinfo = new String[basepinfo.length + 1][];
+        for (int i = 0; i < basepinfo.length; i++) {
+            pinfo[i] = basepinfo[i];
+        }
+        String newinfo[][] = {
             {"imageurl", "url", "the URL of the ppm image to process"}
         };
+        pinfo[basepinfo.length] = newinfo[0];
         return pinfo;
     }
 
@@ -120,26 +124,9 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         // Process the background parameter.
         super.init();
-	manager = _manager;
 
 	setLayout(new BorderLayout(15, 15));
-	Panel controlPanel = new Panel();
-
-	Button layout = new Button("Layout");
-	controlPanel.add(layout);
-	layout.addActionListener(new LayoutListener());
-
-	//Add a control panel in the main panel.
-	_goButton = new Button("Go");
-	controlPanel.add(_goButton);
-	_goButton.addActionListener(new GoButtonListener());
-	
-	Button stop = new Button("Stop");
-	controlPanel.add(stop);
-	stop.addActionListener(new StopListener());
-
-
-	add(controlPanel, BorderLayout.NORTH);
+	add(_createRunControls(3), BorderLayout.NORTH);
 
         Panel displayPanel = new Panel();
         displayPanel.setLayout(new BorderLayout(15, 15));
@@ -414,7 +401,7 @@ public class RLEDiva extends PNApplet implements Runnable {
     }
 
     /**
-     * Construct the trace display.
+     *  Construct the trace display.
      */
     public void displayTrace(TraceModel traceModel) {
         tracePane = new TracePane();
@@ -424,19 +411,64 @@ public class RLEDiva extends PNApplet implements Runnable {
 
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
-	//final TraceModel mod = traceModel;
-
 	traceView.setTimeScale(0.02);
 	traceView.setLayout(10,10,500,20,15);
 	traceView.setTraceModel(traceModel);
     }
 
 
+    /** Run the simulation.
+     */
+    public void run() {
+        try {
+            _manager.run();
+            System.out.println("Bye World\n");
+            return;
+        } catch (Exception ex) {
+            System.err.println("Run failed: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }   
+
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** In addition to creating the buttons provided by the base class,
+     *  if the number of iterations has not been specified, then create
+     *  a dialog box for that number to be entered.  The panel containing
+     *  the buttons and the entry box is returned.
+     *  @param numbuttons The number of buttons to create.
+     */
+    protected Panel _createRunControls(int numbuttons) {
+        Panel controlPanel = super._createRunControls(numbuttons);
+
+        if (numbuttons > 2) {
+            Button layout = new Button("Layout");
+            controlPanel.add(layout);
+            layout.addActionListener(new LayoutListener());
+        }
+
+        return controlPanel;
+    }
+
+    /** Execute the system.
+     */
+    protected void _go() {
+        if (_isSimulationRunning) {
+            System.out.println("Simulation still running.. hold on..");
+            return;
+        }
+        
+        RLEDiva.this.listener.setStartTime(System.currentTimeMillis());
+        super._go();
+    }
+
     /** Stop the simulation of the system
      */
-    public void stop() {
-	_manager.terminate();
+    public void _stop() {
 	_isSimulationRunning = false;	
+        _manager.terminate();
     }
 
     
@@ -672,134 +704,16 @@ public class RLEDiva extends PNApplet implements Runnable {
 
 
 
-
-    /** Run the simulation.
-     */
-    public void run() {
-
-        try {
-            //manager.startRun();
-            _manager.run();
-            System.out.println("Bye World\n");
-            return;
-        } catch (Exception ex) {
-            System.err.println("Run failed: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }   
-
-    /*private*/ boolean _isSimulationRunning = false;
-    Thread simulationThread;
-    int _SIZE = 150;
-    Picture _imgin;
-    Picture _imgout;
-    Button _goButton;
-
-    ///////////////////////////////////////////////////////////////////
-    //// GoButtonListener
-
-    public class GoButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            
-            if (_isSimulationRunning) {
-                System.out.println("Simulation still running.. hold on..");
-                return;
-            }
-
-            try {
-                if (simulationThread == null) {
-                    simulationThread = new Thread(RLEDiva.this);
-                }
-                if (!(simulationThread.isAlive())) {
-                    simulationThread = new Thread(RLEDiva.this);
-                    // start() will eventually call the run() method.
-		    RLEDiva.this.listener.setStartTime(
-			    System.currentTimeMillis());
-                    simulationThread.start();
-		    _isSimulationRunning = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new InternalErrorException("Error in GoButton" + 
-                       "Listener class : " + e.getMessage()); 
-            }
-
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// PauseListener
-
-
-    public class PauseListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            if (!_isSimulationRunning) {
-                System.out.println("Simulation not running.. cannot pause..");
-                return;
-            }
-            try {
-		RLEDiva.this._director.pause();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new InternalErrorException("Error in Pause" + 
-                       "Listener class : " + e.getMessage()); 
-            }
-
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// ResumeListener
-
-
-    public class ResumeListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            try {
-		RLEDiva.this._director.resume();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new InternalErrorException("Error in Resume" + 
-                       "Listener class : " + e.getMessage()); 
-            }
-
-        }
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
-    //// StopListener
-
-
-    public class StopListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            if (!_isSimulationRunning) {
-                System.out.println("Simulation not running.. cannot pause..");
-                return;
-            }
-            try {
-		RLEDiva.this.stop();
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new InternalErrorException("Error in Stop" + 
-                       "Listener class : " + e.getMessage() + " and " + 
-			" Exception = " + e.toString()); 
-            }
-
-        }
-    }
-
-
-
     ///////////////////////////////////////////////////////////////////
     //// ExecutionListener
 
-    private class MyExecutionListener extends DefaultExecutionListener {
-        public void executionFinished(ExecutionEvent e) {
-            super.executionFinished(e);
-            _isSimulationRunning = false;
-        }
+//     private class MyExecutionListener extends DefaultExecutionListener {
+//         public void executionFinished(ExecutionEvent e) {
+//             super.executionFinished(e);
+//             _isSimulationRunning = false;
+//         }
 
-    }
+//     }
 
 
     ///////////////////////////////////////////////////////////////////
