@@ -110,7 +110,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         initialStates = new Parameter(this, "initialStates", 
                 new DoubleMatrixToken(zero));
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        
+        getMoMLInfo().className = "ptolemy.domains.ct.lib.LinearStateSpace";
+
         // icon
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "

@@ -103,6 +103,9 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                 new DoubleMatrixToken(b));
         denominator.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
+        getMoMLInfo().className = 
+            "ptolemy.domains.ct.lib.ContinuousTransferFunction";
+
         // icon
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
@@ -214,6 +217,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  .
      */
     public void preinitialize() throws IllegalActionException {
+        System.out.println("preinitializing " + getName());
         // Check parameters.
         double[] bRow =
             ((DoubleMatrixToken)numerator.getToken()).doubleMatrix()[0];

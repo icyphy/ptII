@@ -106,7 +106,7 @@ public class ThresholdMonitor extends TypedAtomicActor
 
     /** The parameter for the center of the threshold.
      */
-    public  Parameter thresholdCenter;
+    public Parameter thresholdCenter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
