@@ -1,4 +1,4 @@
-# Makefile for PtolemyII Giotto Domain
+# Makefile for PtolemyII real-time processes model of computation
 #
 # @Version: $Id$
 # @Author: Christopher Hylands
