@@ -44,8 +44,8 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	QueryApplet.java
-
+	QueryApplet.java \
+	ShowRawDocumentApplet.java
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
