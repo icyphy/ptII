@@ -71,7 +71,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A composite demo with a Giotto model embedded in a DE model.
-The Giotto model is driven by two seperate events according 
+The Giotto model is driven by two separate events according 
 to the DE semantics.
 </text></svg></configure>
         </property>
