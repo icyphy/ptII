@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy Discrete Event domain kernel
+# Makefile for the Component Interaction domain kernel
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2002 The Regents of the University of California.
+# @Copyright (c) 2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
