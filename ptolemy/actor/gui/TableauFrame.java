@@ -52,6 +52,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import java.net.URL;
+import java.awt.Image;
+import java.awt.Toolkit;
+
 //////////////////////////////////////////////////////////////////////////
 //// TableauFrame
 /**
@@ -74,6 +78,7 @@ public abstract class TableauFrame extends Top {
      */
     public TableauFrame() {
         super();
+        setIconImage(_getDefaultIconImage());
     }
 
     /** Construct an empty top-level frame managed by the specified
@@ -84,6 +89,7 @@ public abstract class TableauFrame extends Top {
     public TableauFrame(Tableau tableau) {
         super();
         setTableau(tableau);
+        setIconImage(_getDefaultIconImage());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -378,6 +384,26 @@ public abstract class TableauFrame extends Top {
         }
     }
 
+    /** Return the default icon image, or null if there is none.
+     *  Note that Frame.setIconImage(null) will set the image to the
+     *  default platform dependent image for us.
+     */
+    protected Image _getDefaultIconImage() {
+	if(_defaultIconImage == null) {
+	    // Note that PtolemyIISmallIcon.gif is also in doc/img.
+	    // We place a duplicate copy here to make it easy to ship
+	    // jar files that contain all the appropriate images.
+	    URL url =
+		getClass().getResource("/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+	    if (url == null) {
+		return null;
+	    }
+	    Toolkit tk = Toolkit.getDefaultToolkit();
+            _defaultIconImage = tk.createImage(url);
+	}
+	return _defaultIconImage;
+    }
+
     /** Get the name of this object, which in this class is the URL
      *  associated with the effigy, or the string "Unnamed" is none.
      *  @return The name.
@@ -636,6 +662,9 @@ public abstract class TableauFrame extends Top {
 
     // The tableau that created this frame.
     private Tableau _tableau = null;
+
+    // The singleton icon image used for all ptolemy frames.
+    private static Image _defaultIconImage = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
