@@ -285,7 +285,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -307,7 +307,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>

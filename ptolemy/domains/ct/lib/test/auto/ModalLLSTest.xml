@@ -191,7 +191,7 @@ create refinements for the states. Then delete this annotation.</text>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>

@@ -142,7 +142,7 @@ after the model is closed.  The threads die when Ptolemy II is exited.</text></s
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+            <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
             </property>
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
@@ -164,7 +164,7 @@ after the model is closed.  The threads die when Ptolemy II is exited.</text></s
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+            <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
             </property>
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>
@@ -186,7 +186,7 @@ after the model is closed.  The threads die when Ptolemy II is exited.</text></s
             </property>
             <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+            <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
             </property>
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
             </property>

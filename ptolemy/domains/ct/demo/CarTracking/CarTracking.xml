@@ -1158,7 +1158,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -1180,7 +1180,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -1357,7 +1357,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -1379,7 +1379,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -1401,7 +1401,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>

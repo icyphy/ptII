@@ -232,11 +232,11 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
@@ -256,11 +256,11 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
@@ -280,11 +280,11 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
@@ -304,11 +304,11 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
@@ -328,11 +328,11 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
@@ -352,7 +352,7 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
