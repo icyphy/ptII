@@ -45,8 +45,8 @@ test Ramp-1.1 {test with the default output values} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set test [java::new ptolemy.actor.lib.Test $e0 test]
     $e0 connect \
-            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $test] input]
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $test] input]
     set trainingMode [getParameter $test trainingMode]
     $trainingMode setExpression "true" 
     puts " The next command will produce a warning about training mode,"
@@ -54,7 +54,9 @@ test Ramp-1.1 {test with the default output values} {
     [$e0 getManager] execute
     set trainingMode [getParameter $test trainingMode]
     $trainingMode setExpression "false" 
-} {}
+    set correctValues [getParameter $test correctValues]
+    list [$correctValues getExpression]
+} {{{0, 1, 2, 3, 4}}}
 
 ######################################################################
 #### 
@@ -174,3 +176,37 @@ test Ramp-1.4 {Export} {
     <link port="test.input" relation="_R"/>
 </entity>
 }}
+
+
+######################################################################
+#### 
+#
+test Ramp-2.1 {Test the Test actor in an SDF model with two ramps} {
+    set e1 [sdfModel 5]
+    set ramp1 [java::new ptolemy.actor.lib.Ramp $e1 ramp1]
+    set ramp2 [java::new ptolemy.actor.lib.Ramp $e1 ramp2]
+    set test [java::new ptolemy.actor.lib.Test $e1 test]
+    $e1 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp1] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $test] input]
+
+    $e1 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $test] input]
+
+    set step2 [getParameter $ramp2 step]
+    $step2 setToken [java::new ptolemy.data.DoubleToken 2.0]
+
+    set trainingMode [getParameter $test trainingMode]
+    $trainingMode setExpression "true" 
+
+    puts " The next command will produce a warning about training mode,"
+    puts "   which may be ignored."
+    [$e1 getManager] execute
+
+    set trainingMode [getParameter $test trainingMode]
+    $trainingMode setExpression "false" 
+
+    set correctValues [getParameter $test correctValues]
+    list [$correctValues getExpression]
+} {{{{0.0, 0.0}, {1.0, 2.0}, {2.0, 4.0}, {3.0, 6.0}, {4.0, 8.0}}}}
