@@ -88,6 +88,16 @@ which then causes an exception to be thrown.</text></svg></configure>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.53125, 201.28625}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor throws an exception&#10;if there is a man in the middle&#10;attack.">
+        </property>
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="1ub">
         </property>
@@ -135,13 +145,13 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/security/demo/Signature/ptKeystore">
         </property>
         <doc>Read a key public or private key from a key store&#10;	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 250.0}">
         </property>
     </entity>
     <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="arraySize">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 135.0]">
         </property>
     </entity>
     <entity name="SignatureSigner" class="ptolemy.actor.lib.security.SignatureSigner">
@@ -155,7 +165,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and&#10;          uses it to encrypt a data input based on a given asymmetric&#10;          algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 210.0]">
         </property>
     </entity>
     <entity name="Man in the middle" class="ptolemy.actor.TypedCompositeActor">
@@ -302,7 +312,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {650, 286, 292, 222}, maximized = false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 150.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
