@@ -72,8 +72,11 @@ sets are separated by a blank line. A new data set is also
 assumed at the start of each input file. A data set consists
 of an ordered list of points of the form <code><i>directive</i>
 X Y</code>.
-The directive is either <code>draw</code> or <code>move</code> and can be
-omitted. If the directive is <code>draw</code>, a line will be drawn
+
+The directive is either <code>draw</code> or <code>move</code> and can
+be omitted (Note that with binary data files, you must have a directive,
+the above statement only applies to ascii format data files). If the
+directive is <code>draw</code>, a line will be drawn
 between the previous point and the current point (if a line
 graph is chosen). Specifying a <code>move</code> directive tells
 xgraph not to draw a line between the points. If the directive
