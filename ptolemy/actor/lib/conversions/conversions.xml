@@ -87,12 +87,12 @@
           class="ptolemy.actor.lib.conversions.LongToDouble">
   </entity>
 
-  <entity name="PolarToComplex"
-          class="ptolemy.actor.lib.conversions.PolarToComplex">
-  </entity>
-
   <entity name="PolarToCartesian"
           class="ptolemy.actor.lib.conversions.PolarToCartesian">
+  </entity>
+
+  <entity name="PolarToComplex"
+          class="ptolemy.actor.lib.conversions.PolarToComplex">
   </entity>
 
   <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
