@@ -77,7 +77,7 @@ public class ModelDirectory extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ModelDirectory(Configuration container, String name)
+    public ModelDirectory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
