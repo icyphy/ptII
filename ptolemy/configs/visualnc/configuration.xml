@@ -1,0 +1,89 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <doc>Configuration for VisualNC</doc>
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.kernel.attributes.FileAttribute"
+            value="$CLASSPATH/ptolemy/configs/visualnc/about.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.kernel.attributes.FileAttribute"
+            value="$CLASSPATH/ptolemy/configs/visualnc/help.htm"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Use a custom graph editor with a CT director already in it. -->
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="NCCodeGenerator" class="ptolemy.domains.nc.kernel.NCCodeGenerator">
+          <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 25.0">
+          </property>
+        </property>
+      </entity>
+    </entity>
+
+    <!-- Import HTML viewer, text editor, etc. -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main actor library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Custom utilities library. -->
+    <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/annotation.xml"/>
+            <input source="ptolemy/configs/utilityParameter.xml"/>
+            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Custom actor library. -->
+    <entity name="module library" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+
+<!-- Sources list is custom. -->
+<input source="ptolemy/domains/nc/lib/lib.xml"/>
+
+          </group>
+        ?>
+      </configure>
+    </entity>
+  </entity>
+
+</entity>

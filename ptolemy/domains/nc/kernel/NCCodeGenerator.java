@@ -1,4 +1,4 @@
-/* An attribute that manages generation of Giotto code.
+/* An attribute that manages generation of NC code.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -46,31 +46,30 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// TinyGALSCodeGenerator
+//// NCCodeGenerator
 /**
 This attribute is a visible attribute that when configured (by double
 clicking on it or by invoking Configure in the context menu) it generates
-Giotto code and displays it a text editor.  It is up to the user to save
-the Giotto code in an appropriate file, if necessary.
+NC code and displays it a text editor.  It is up to the user to save
+the NC code in an appropriate file, if necessary.
 
-@author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng
+@author Yang Zhao and Edward A. Lee
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 */
 
 public class NCCodeGenerator extends Attribute {
 
-    /** Construct a factory with the specified container and name.
+    /** Construct a code generator with the specified container and name.
      *  @param container The container.
-     *  @param name The name of the factory.
-     *  @exception IllegalActionException If the factory is not of an
+     *  @param name The name of the code generator.
+     *  @exception IllegalActionException If the code generator is not of an
      *   acceptable attribute for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
@@ -86,70 +85,58 @@ public class NCCodeGenerator extends Attribute {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
         new SingletonAttribute(this, "_hideName");
-        new TinyGALSEditorFactory(this, "_editorFactory");
-
+        new CodeDisplayerFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate TinyGALS code for the given model.
-     *  @return The TinyGALS code.
+    /** Generate NC code for the given model.
+     *  @return The NC code.
      */
     public static String generateCode(TypedCompositeActor model)
             throws IllegalActionException {
-        String generatedCode = "";
+        StringBuffer generatedCode = new StringBuffer();
 
-        try {
+        String containerName = model.getName();
+        generatedCode.append(
+                "configuration " + containerName + " {" + _endLine);
+        generatedCode.append(_interfaceProvides(model));
+        generatedCode.append(_interfaceUses(model));
+        generatedCode.append("}" + _endLine);
+        generatedCode.append("implementation {" + _endLine);
+        generatedCode.append(_includeModule(model));
+        generatedCode.append(_includeConnection(model));
+        generatedCode.append( "}" + _endLine);
 
-            String containerName = model.getName();
-            generatedCode += "configuration "
-                             + containerName
-                             + " {";
-            generatedCode += _endLine;
-            generatedCode += _interfaceProvides(model);
-            generatedCode += _interfaceUses(model);
-            generatedCode += "}"
-                            + _endLine;
-            generatedCode += "implementaion {"
-                            + _endLine;
-            generatedCode += _includeModule(model);
-            generatedCode += _includeConnection(model);
-
-            generatedCode +=  "}"
-                + _endLine;
-        } catch (KernelException ex) {
-            System.out.println(ex.getMessage());
-            throw new IllegalActionException(ex.getMessage());
-        }
-
-        return generatedCode;
+        return generatedCode.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
-    /** Generate interface the model provides.
-     *  @return The code.
+    ////                         private methods                   ////
+    
+    /** Generate NC code describing the input ports.  Input ports are
+     *  described in NC as interfaces "provided" by this module.
+     *  @return The code describing the input ports.
      */
     private static String _interfaceProvides(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
+        StringBuffer codeString = new StringBuffer();
 
         Iterator inPorts = model.inputPortList().iterator();
         while (inPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)inPorts.next();
-            // FIXME: Assuming ports are either
-            // input or output and not both.
-            //String portID = port.getName();
-            codeString +=  "provides interface "
+            if (port.isOutput()) {
+                throw new IllegalActionException(port,
+                "Ports that are both inputs and outputs are not allowed.");
+            }
+            codeString.append("provides interface "
                 + port.getName()
                 + ";"
-                + _endLine;
+                + _endLine);
         }
-
-        return codeString;
-
+        return codeString.toString();
     }
     
     /** Generate interface the model uses.
@@ -158,21 +145,22 @@ public class NCCodeGenerator extends Attribute {
     private static String _interfaceUses(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
+        StringBuffer codeString = new StringBuffer();
 
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)outPorts.next();
-            // FIXME: Assuming ports are either
-            // input or output and not both.
-            //String portID = port.getName();
-            codeString +=  "uses interface "
+            if (port.isInput()) {
+                throw new IllegalActionException(port,
+                "Ports that are both inputs and outputs are not allowed.");
+            }
+            codeString.append("uses interface "
                 + port.getName()
                 + ";"
-                + _endLine;
+                + _endLine);
         }
 
-        return codeString;
+        return codeString.toString();
 
     }
 
@@ -182,26 +170,24 @@ public class NCCodeGenerator extends Attribute {
     private static String _includeModule(TypedCompositeActor model)
             throws IllegalActionException {
 
-        String codeString = "";
+        StringBuffer codeString = new StringBuffer();
 
-        // include components.
+        // Include components.
         Iterator actors = model.entityList().iterator();
-        Actor actor;
         boolean isFirst = true;
         while (actors.hasNext()) {
-            actor = (Actor) actors.next();
+            Actor actor = (Actor) actors.next();
             String actorName = StringUtilities.sanitizeName(
                     ((NamedObj)actor).getName());
             if (isFirst) {
-                codeString += "components " + actorName;
+                codeString.append("components " + actorName);
                 isFirst = false;
             } else {
-                codeString = codeString + ", " + actorName;
+                codeString.append(", " + actorName);
             }
         }
-        codeString += ";";
-        codeString += _endLine;
-        return codeString;
+        codeString.append(";" + _endLine);
+        return codeString.toString();
      }
      
     /** Generate code for the connections.
@@ -333,9 +319,9 @@ public class NCCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    private class TinyGALSEditorFactory extends EditorFactory {
+    private class CodeDisplayerFactory extends EditorFactory {
 
-        public TinyGALSEditorFactory(NamedObj container, String name)
+        public CodeDisplayerFactory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }

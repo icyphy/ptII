@@ -1,4 +1,4 @@
-# Makefile for the NC domain kernel
+# Makefile for the NC domain lib
 #
 # @Authors: Christopher Hylands
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/nc/kernel
+ME =		ptolemy/domains/nc/lib
 
 DIRS = 		test
 
@@ -48,9 +48,12 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	NCCodeGenerator.java
+	NCActor.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	lib.xml \
+	NCActor.nc \
+	NCActorClass.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
