@@ -45,6 +45,9 @@ import ptolemy.actor.lib.TimedActor;
 This actor periodically sample the input signal and generate events
 which has the value of the input signal. The sampling rate is given by
 parameter "samplePeriod", which has default value 0.1.
+The actor has a multi-inputport and a multi-outputport. Singals in
+each input channel are sampled and produced to corresponding output
+channel.
 @author Jie Liu
 @version $Id$
 */
@@ -70,12 +73,12 @@ public class CTPeriodicSampler extends TypedAtomicActor
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input");
-        input.setMultiport(false);
+        input.setMultiport(true);
         input.setInput(true);
         input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
-        output.setMultiport(false);
+        output.setMultiport(true);
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -89,11 +92,11 @@ public class CTPeriodicSampler extends TypedAtomicActor
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
-    /** The single input port with type double.
+    /** The multi-input port with type double.
      */
     public TypedIOPort input;
 
-    /** The single output port with type double.
+    /** The multi-output port with type double.
      */
     public TypedIOPort output;
 
@@ -126,10 +129,13 @@ public class CTPeriodicSampler extends TypedAtomicActor
     public void emitCurrentEvents() {
         if(_hasCurrentEvent) {
             try {
-                if(input.hasToken(0)) {
-                    output.broadcast(input.get(0));
-                    _hasCurrentEvent = false;
+                for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
+                     i++) {
+                    if(input.hasToken(i)) {
+                        output.send(i, input.get(i));
+                    }
                 }
+                _hasCurrentEvent = false;
             }catch (IllegalActionException e) {
                 throw new InternalErrorException("Token mismatch.");
             }
