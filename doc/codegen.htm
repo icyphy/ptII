@@ -9,56 +9,113 @@
 <h1>Code Generation</h1>
 <p>
 Ptolemy II includes the very beginnings a code generation framework.
-Currently, there are three types of code generation, shallow, deep and applet.
+Currently, there are four types of code generators:
 
- <p>
-Shallow code generation converts a model that has been specified in
-MoML (typically using Vergil) into a Java class definition.  This class
-definition can be used in an applet, which results in faster download
-times because less of the Ptolemy II infrastructure is required
-to execute it. Shallow code generation uses components built into
-the Ptolemy II tree.  
-We primarily use shallow code generation as a test bed
-for the code generation facility itself.
+<dl>
+<dt> <a href="#deep">deep</a>
+<dd> Reads in a .xml model and generates optimized .class files that
+have few dependencies on the Ptolemy II packages.
 
-<p>
-Deep code generation parses the component definitions (which are
-written in Java), and produces optimized code that does not require
-code from the Ptolemy II tree.  Deep code generation has the following
-limitations:
-<menu>
-<li> Deep code generation only works on flat SDF models.  Composite SDF
-models and domains other than SDF are not supported.
-<li> Deep code generation consumes quite a bit of memory.  We usually exec
-the deep code generator as a separate process with the 
-<CODE>-Xmx256</CODE> java command line argument, which sets the
-initial heap size to 256Mb.  Deep code generation may not work on 
-a on memory-limited platforms.
-</menu>
+<dt> <a href="#shallow">shallow</a>
+<dd> Reads in a .xml file and generates a single
+unoptimized .class file that has many dependencies on the Ptolemy II
+packages.
 
-The Applet code generator takes a model and creates HTML files for 
-use as a web based applet.  The applet code generator is discussed
-<a href="#applet">below</a>
+<dt> <a href="#applet">applet</a>
+<dd> Reads in a .xml file and generates files suitable for
+putting a model up on a web page as an applet.
+
+<dt> <a href="#interpreted">interpreted</a>
+<dd> Reads in a .xml file and writes out the .xml file.
+The interpreted code generator does very little code generation
+and is used primary to compare the other code generators with
+the standard Ptolemy II interpreted mode that is used when
+the user does <code>View</code> -&gt; <code>Run</code>.
+</dl>
 
 <p>
 The implementation here should be viewed as highly preliminary.
 <font color="red">It is likely to fail on all but a few simple test
 cases.</font>  It is at the stage of being a concept demonstration
 only.  We expect it to mature considerably in the near future.
-
+<p>The following <a name="limitations">limitations</a>
+apply to all of the code generators:
+<menu>
+<li> The code generators uses <a href="#soot">Soot</a> to analyze a
+model and generate a set of Java .class files.  Soot will not
+work with JDK1.4, it requires JDK1.3
+<li> The primary interface to the code generator is through
+the makefiles and the 
+<a href="codeDoc/ptolemy/copernicus/kernel/Copernicus.html"><code>$PTII/ptolemy/copernicus/kernel/Copernicus.java</code></a> class.  The
+user interface is highly preliminary, and its limitations
+are discussed in
+the <a href="#userInterfaceLimitations">User Interface Limitations</a>
+section.
+<li> The limitations for the individual code generators are 
+discussed below:
+  <menu>
+  <li> <a href="#deepLimitations">Deep Limitations</a>
+  <li> <a href="#shallowLimitations">Shallow Limitations</a>
+  <li> <a href="#appletLimitations">Applet Limitations</a>
+  <li> <a href="#interpretedLimitations">Interpreted Limitations</a>
+  </menu>
+</menu>
 
 <h2><a name="deep">Deep Code Generation Demonstration</a></h2>
 Deep code generation is by the most interesting of the code generators
-so we cover it first.
+so we cover it first.  Stephen Neuendorffer is the primary author of
+the deep code generator.
 
-The deep code generator uses <a href="#soot">Soot</a> to analyze a
+ <p>The Ptolemy II code generation system parses Ptolemy II actor
+code, generates an Abstract Syntax Tree (AST), optimizes the tree
+using standard and custom compiler optimization techniques and then
+generates .class files that use very few of the Ptolemy II java
+classes.  This approach is different from the Ptolemy Classic code
+generation approach, where each actor contains target specific code.
+
+<p>Most of the code generator uses <a href="#soot">Soot</a> to analyze a
 model and generate a set of Java .class files.
 
+<p>Our current deep code generator generates Java .class files, so the
+user interface refers to the deep code generator as the
+<code>java</code> code generator.  The deep code generator is
+implemented in the <code>$PTII/ptolemy/copernicus/<b>java</b></code>
+directory.  Other deep code generators could generate code in
+different backend languages.
+
+<p>Professor Shuvra S. Bhattacharyya of the University of Maryland is
+working on C code generation for Ptolemy II Models using Soot, but
+his work is still under development and not being released at this time.
+For details about the status of the C code generation effort, see
+the reports on the Ptolemy II website at
+<a href="http://ptolemy.eecs.berkeley.edu/projects"><code>http://ptolemy.eecs.berkeley.edu/projects</code></a>
+
+<p><a name="deepLimitations">Deep code generation has the following
+limitations:</a>
+<menu>
+<li> Deep code generation still requires the <code>ptolemy.math</code>
+and <code>ptolemy.data</code> packages.
+
+Our hope is to eventually implement token unboxing so that the only
+the <code>ptolemy.math</code> package is required at runtime.
+
+<li> Deep code generation only works on flat SDF models.  Composite SDF
+models and domains other than SDF are not supported.
+
+<li> Deep code generation consumes quite a bit of memory.  We usually exec
+the deep code generator as a separate process with the 
+<CODE>-Xmx256</CODE> java command line argument, which sets the
+initial heap size to 256Mb.  Deep code generation may not work on 
+a on memory-limited platforms.
+ <p>Currently, in Ptolemy II, it is not possible to generate custom code 
+for an individual actor using a codeblock.
+</menu>
+
+
+<p>Below is a simple demonstration:
 <ol>
 <li> Open up the
-<a
-href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF
-Orthogonal Communication Model</a>
+<a href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF Orthogonal Communication Model</a>
 
 <li> Select View -&gt; Code Generator
 
@@ -66,9 +123,48 @@ Orthogonal Communication Model</a>
 
 <li> The code generator will invoke an separate java process that
 generates code in 
-<CODE>$PTII/ptolemy/copernicus/cg/OrthogonalCom</CODE> or in
-<CODE>~/FIXME</CODE> and then run it.  Generating the code usually
-takes around 90 seconds on a fast machinen.
+<CODE>$PTII/ptolemy/copernicus/<b>java</b>/cg/OrthogonalCom</CODE>
+<br>The deep code generator takes about 90 seconds to generate code.
+
+<li> The code generators print out statistics about how long
+the run took and how much memory was consumed.  A typical run will
+look like:
+<pre>
+OrthogonalCom: Stats before execution:    0 ms. Memory: 1984K Free: 1805K (91%)
+0
+1
+0
+<i>etc.</i>
+0
+1
+OrthogonalCom: Execution stats:           280 ms. Memory: 1984K Free: 1741K (88%)
+OrthogonalCom: After Garbage Collection:  1392 ms. Memory: 1984K Free: 1804K (91%)
+OrthogonalCom: construction size:         1984K - 1805K = 179K
+OrthogonalCom: model alloc. while exec. : 1805K - 1804K = 1K
+OrthogonalCom: model alloc. runtime data: 1804K - 1741K = 63K
+280 ms. Memory: 1984K Free: 1741K (88%) Stat: 179K StatRT: 1K DynRT: 63K
+All Done.
+</pre>
+
+The last line is the most significant, it indicates that the run
+
+<menu>
+ <li> took 280 milliseconds
+ <li> Consumed at most 1984K of memory
+ <li> Before garbage collection at the end of the run, there was
+ 1741K or 88% memory free.  That means that before
+ garbage collection, the model consumed 243K (1984K-1741K) of memory.
+ <li> The remaining three numbers are somewhat more subjective:
+  <menu>
+  <li> 179K of Memory was allocated during construction of the model
+  <li> 1K was allocated while the model was running
+  <li> 63K of data that was garbage collected.
+  </menu>
+</menu>
+<li>To run the generated code again, click on the <code>compile</code>
+radio button and turn it off, then hit the <code>Generate</code>
+button.  This will show and run the generated code without rerunning
+the 90 second long generator process.
 
 </ol>
 
@@ -77,35 +173,92 @@ Things to note:
 <li> After a model is run, Ptolemy II prints out the amount of time
 and memory the model consumed.  Usually, this output goes to standard
 out, which could be hidden if Vergil was started by clicking on an
-icon.  
- <p>For 20 iterations, the non code generation environment reports"
+icon.  The <code>interpreted</code> code generator runs a model
+in the usual Ptolemy II interpreted mode, but displays the 
+runtime statistics in the code generator tableau window.  To
+run the interpreted code generator:
+ <ol>
+ <li>Go to the code generator window and change <code>codeGenerator</code>
+ to <code>interpreted</code>
+ <li> Hit the Generate Button
+ </ol>
+ <p>
+For 20 iterations, the interpreted code generator will print out
 <pre>
-661 ms. Memory: 7868K Free: 1569K (20%)  
+OrthogonalCom: Stats before execution:    1722 ms. Memory: 1984K Free: 1104K (56%)
+0
+0
+1
+0
+<i>etc.</i>
+0
+410 ms. Memory: 1984K Free: 1215K (61%)
+OrthogonalCom: Execution stats:           2273 ms. Memory: 1984K Free: 1214K (61%)
+OrthogonalCom: After Garbage Collection:  3425 ms. Memory: 1984K Free: 1519K (77%)
+OrthogonalCom: construction size:         1984K - 1104K = 880K
+OrthogonalCom: model alloc. while exec. : 1104K - 1519K = -415K
+OrthogonalCom: model alloc. runtime data: 1519K - 1214K = 305K
+2273 ms. Memory: 1984K Free: 1214K (61%) Stat: 880K StatRT: -415K DynRT: 305
 </pre>
- <p>The code generator also prints out time and memory stats:
-<pre>
-OrthogonalCom: Execution stats:           80 ms. Memory: 1984K Free: 1740K (88%)
-</pre>
-From the above, we can see that the code generator runs about 8-9
-times faster and in roughly one quarter of the memory.
+The most significant line is the last line.
 
-<li> Increase the number of iterations in the model by going to the
-graph editor and right clicking on the green SDF Director Icon.
-Run the model, you should see times like:
-<pre>
-2023 ms. Memory: 8440K Free: 2655K (31%)
-</pre>
+<p>The 2273 ms. represents the amount of time in milliseconds
+that was required to read in the model, parse it and run it.
 
+<p>The 410 ms. represents the amount of time the model ran for.
 
-Change the iterations from 20 to 2000 and save the model and then do 
+From the above, we can see that for 20 iterations, 
+the deep code generator took 280 ms. overall to run, whereas the
+interpreted version too 2273 ms.  The difference in times
+is primarily consumed by the MoML parser, which is fairly
+complex.
+
+<p>The actual run times, after parsing, were 280 ms. for the deep code
+generation version and 410 ms. for the interpreted version.  
+
+<li> Deep codegen shows a more significant improvement in speed when
+the model is run for a larger number of iterations.
+
+To increase the number of iterations in the model:
+<ol>
+<li>Close the code generator window and go to the
+graph editor
+<li> Click on the green SDF Director Icon and change the number
+of iterations from 20 to 2000.
+<li> Save the model with File -&gt; Save
+<li> Bring up the code generator with
 View -&gt; Code Generator -&gt; Generate.
- <br>You should see stats like:
+<li> Run the model using the interpreted code generator
+by goin to the code generator window and change <code>codeGenerator</code>
+ to <code>interpreted</code>
+<li> Hit the Generate Button
+<li> You should see times like:
 <pre>
-OrthogonalCom: Execution stats:           861 ms. Memory: 1984K Free:
-1524K (77%)
+3254 ms. Memory: 1984K Free: 1412K (71%)
+OrthogonalCom: Execution stats:           5097 ms. Memory: 1984K Free: 1411K (71%)
+OrthogonalCom: After Garbage Collection:  6299 ms. Memory: 1984K Free: 1519K (77%)
+OrthogonalCom: construction size:         1984K - 1104K = 880K
+OrthogonalCom: model alloc. while exec. : 1104K - 1519K = -415K
+OrthogonalCom: model alloc. runtime data: 1519K - 1411K = 108K
+5097 ms. Memory: 1984K Free: 1411K (71%) Stat: 880K StatRT: -415K DynRT: 108
 </pre>
-This indicates that the deep code generation version is roughly 2.3
-times faster than the regular interpreted version.
+
+<li> Change the <code>codeGenerator</code> to <code>java</code>
+<li> Hit the Generate Button
+<li> You should see statistics like
+<pre>
+OrthogonalCom: Execution stats:           941 ms. Memory: 1984K Free: 1494K (75%)
+OrthogonalCom: After Garbage Collection:  2103 ms. Memory: 1984K Free: 1804K (91%)
+OrthogonalCom: construction size:         1984K - 1805K = 179K
+OrthogonalCom: model alloc. while exec. : 1805K - 1804K = 1K
+OrthogonalCom: model alloc. runtime data: 1804K - 1494K = 310K
+941 ms. Memory: 1984K Free: 1494K (75%) Stat: 179K StatRT: 1K DynRT: 310K
+</pre>
+</ol>
+Comparing the run times for 2000 iterations, we can see that the
+interpreted version took 5097 ms. compared with the deep code generation
+version taking 941 ms, so in in this case, deep code generation was
+roughly 5 times faster than the regular interpreted version.
 
 <li> Soot produces .class files, and we can run a disassembler
 convert the .class files back to .java files.  Unfortunately, there
@@ -115,13 +268,76 @@ information about disassemblers.
 
 </menu>
 
-
-
 <h2><a name="shallow">Shallow code generation</a></h2>
 
+Shallow code generation converts a model that has been specified in
+MoML (typically using Vergil) into a Java class definition.  This class
+definition can be used in an applet, which results in faster download
+times because less of the Ptolemy II infrastructure is required
+to execute it. Shallow code generation uses components built into
+the Ptolemy II tree.  
+
+<p>We primarily use shallow code generation as a test bed
+for the code generation facility itself.  
+
+<p>Below is a simple demonstration
+<ol>
+<li> Open up the
+<a
+href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF
+Orthogonal Communication Model</a>
+
+<li> Select View -&gt; Code Generator
+
+<li> Change the <code>CodeGenerator</code> combo box from
+<code>java</code> to <code>shallow</code>
+<li> Hit the Generate Button
+
+<li> The code generator will invoke an separate java process that
+generates code in 
+<CODE>$PTII/ptolemy/copernicus/<b>shallow</b>/cg/OrthogonalCom</CODE>
+<br>If you do not have write permission to the Ptolemy II tree, then
+the generated code will end up in the directory listed in the
+<code>ptIIUserDirectory</code> parameter.
+
+</ol>
+
+Things to note:
+<menu>
+
+<li> When the MoML version Orthogonal Communcation model is run
+through shallow code generation and a .class file is created, then
+the .class file runs faster than the original MoML file because
+the MoML parser is not invoked.  
+<p>For 20 iterations, the shallow code generation print out the following:
+<pre>
+361 ms. Memory: 1984K Free: 1145K (58%)
+</pre>
+Which is almost half the 661 ms. that the interpreted version ran for
+</menu>
+
+<h3><a name="#shallowLimitations">Shallow Limitations</a></h3>
+The shallow code generator does not have any shallow specific limitations.
+
+
 <h2><a name="applet">Applet code generation</a></h2>
-Ptolemy II can generate the files necessary to run a model as an applet.
-If a model is named <CODE>MyModel</CODE>, and the user selects
+<p>The Applet code generator takes a model and creates HTML files for 
+use as a web based applet.  
+
+<p>The applet generator uses the soot framework, though in principle a
+shell script could be used instead.  The applet generator reads
+template files that end in <CODE>.in</CODE> from
+<CODE>$PTII/ptolemy/copernicus/applet</CODE>, substitutes keywords and
+writes out the files in the destination directory.  Users may modify
+the template files to match their local setup
+
+ <p>Making an applet available via the web is somewhat complex because
+the Java Plugin has two sections, one for Netscape, the other for
+Internet Explorer, so changes to the htm files must be replicated in 
+both sections.  The codebase and the location of the jar files also add
+to the problems.
+
+<p>If a model is named <CODE>MyModel</CODE>, and the user selects
 <CODE>foo.bar</CODE> as the package, then saving the model as an
 applet will create a directory called <CODE>$PTII/foo/bar/MyModel</CODE>
 and create the following files for that model:
@@ -142,6 +358,41 @@ display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet 
 
 </dl>
 
+Below is a simple demonstration:
+<ol>
+<li> Open up the
+<a
+href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF
+Orthogonal Communication Model</a>
+
+<li> Select View -&gt; Code Generator
+
+<li> Change the <code>CodeGenerator</code> combo box from
+<code>java</code> to <code>applet</code>
+<li> Hit the Generate Button
+
+<li> The code generator will invoke an separate java process that
+generates code in 
+<CODE>$PTII/ptolemy/copernicus/<b>applet</b>/cg/OrthogonalCom</CODE>
+<li> The co
+</ol>
+
+<h3><a name="#appletLimitations">Applet Limitations</a></h3>
+<menu>
+<li>It would be nice if the applet code generator would bundle
+up the necessary class files in a single jar file so that
+it was easier to install an applet
+</menu>
+
+<h2><a name="interpreted">Interpreted code generation</a></h2>
+The interpreted code generator is really not a code generator at all!
+It reads in a MoML file and writes out a MoML file, with very little
+processing.  The interpreted code generator is used as to compare 
+the performance of the other code generators.
+
+<h3><a name="#interpretedLimitations">Interpreted Limitations</a></h3>
+The interpreted code generator does not have any interpreted specific limitations.
+<p><p><p>
 
 <h2>The code generator user interface</h2>
 Christopher Hylands and Professor Edward A. Lee developed an initial
@@ -206,7 +457,7 @@ We use template files
 so that the code generator can be run without requiring the
 <CODE>make</CODE> program.
 
-<h3>User Interface Limitations</h3>
+<h3><a name="userInterfaceLimitations">User Interface Limitations</a></h3>
 
 Unfortunately, this UI has many design issues:
 <menu>
@@ -225,30 +476,7 @@ parameter evaluated to.
 
 </menu>
  
-<h2>Deep Code Generation History</h2>
-
-Deep code generation parses Java component definitions, and provides
-an API for accessing the abstract syntax tree.  It is possible,
-in principle, to generate implementations in languages other than
-Java from this AST.  Thus, we hope that in the future, we will have
-code generators that produce C code for embedded processors,
-or VHDL code for hardware design.
-<p>
-In 2000, Jeff Tsay created an initial implementation of Deep code
-generation as part of his  his Masters project:
-Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.
-
- <p>There is a shorter summary of Jeff's work at:
- <p>Jeff Tsay, Christopher Hylands and Edward Lee, 
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/javacodegen">"A Code Generation Framework for Java Component-Based Designs,"</a>
- CASES 00, November 17-19, 2000, San Jose, CA.
-
- <p>Jeff's work was a prototype of how we could do code generation in a
-different manner, described in the above references and below.
-Unfortunately, his prototype code was not easy to extend to match
-changes in the Ptolemy type system.  More specfically, the type system
-is Yuhong Xiong's area of research, and Jeff's work was not easy to
-extend to deal with ArrayTokens.
+<h2>Code Generation History</h2>
 
 <h3>Ptolemy Classic code generation</h3>
 
@@ -280,7 +508,7 @@ names, which made switching between the domains difficult.
 
  <p>More information about the ACS domain can be found in
 E. K. Pauer, C. S. Myers, P. D. Fiore, J. M. Smith, C. M. Crawford, E. A. Lee, J. Lundblad and C. Hylands,
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/98/ACSmapping/">Algorithm Analysis and Mapping Environment for Adaptive Computing Systems,"</a>
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/98/ACSmapping/">"Algorithm Analysis and Mapping Environment for Adaptive Computing Systems,"</a>
  Presented at the Second Annual Workshop on High Performance
  Embedded Computing, MIT Labs, Lexington, MA, September, 1998. 
 
@@ -301,33 +529,36 @@ looking at the whole model would yield further performance
 improvements.
 
 
-<h2>Deep Code Generation</h2>
+<h3>Deep Generation History</h3>
 
- <p>The Ptolemy II code generation system parses Ptolemy II actor
-code, generates an Abstract Syntax Tree (AST), optimizes the tree
-using standard and custom compiler optimization techniques and then
-generates .class files that use very few of the Ptolemy II java
-classes .  This approach is different from the Ptolemy Classic code
-generation approach, where each actor contains target specific code.
+Deep code generation parses Java component definitions, and provides
+an API for accessing the abstract syntax tree.  It is possible,
+in principle, to generate implementations in languages other than
+Java from this AST.  Thus, we hope that in the future, we will have
+code generators that produce C code for embedded processors,
+or VHDL code for hardware design.
+<p>
+In 2000, Jeff Tsay created an initial implementation of Deep code
+generation as part of his  his Masters project:
+Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.
 
+ <p>There is a shorter summary of Jeff's work at:
+ <p>Jeff Tsay, Christopher Hylands and Edward Lee, 
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/javacodegen">"A Code Generation Framework for Java Component-Based Designs,"</a>
+ CASES 00, November 17-19, 2000, San Jose, CA.
 
- <p>Currently, in Ptolemy II, it is not possible to generate custom code 
-using a codeblock.
-
+ <p>Jeff's work was a prototype of how we could do code generation in a
+different manner, described in the above references and below.
+Unfortunately, his prototype code was not easy to extend to match
+changes in the Ptolemy type system.  More specfically, the type system
+is Yuhong Xiong's area of research, and Jeff's work was not easy to
+extend to deal with ArrayTokens.
 
 
 <h2><a name="soot">Soot</a></h2>
-Another approach we are trying is to use Soot, which is a 
-Java optimization framework that we hope will have a better AST.
-
- <p>Currently, Steve Neuendorffer is developing a code generation system
-using Soot.  Professor Shuvra S. Bhattacharyya of the University of Maryland
-is working on C code generation using Soot.
-
-
-<menu>
-<li> <a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
-</menu>
+Stephen Neuendorffer developed the framework for the current code generators 
+using Soot, which is a Java optimization framework from
+<a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
 
 <p>Soot operates on class files by applying a series of transformations
 that usually do compiler things like common subexpression elimination
@@ -344,6 +575,41 @@ fully dot qualified name of an object who's base name was 'String'.
 could be done.  We hope that by using Soot, we can generate a stable system
 for use in a production environment.
 
+<h3>Multiprocessors and DSP targets</h3>
+
+Partitioning a model between multiple processors is fairly tricky, and
+was a large area of research in Ptolemy Classic.  Only models with a
+high degree of parallelism are amenable to running on multiple
+processors.  Simply assigning each actor to a processor is not likely
+to yield performance improvements, since the inter-actor communication
+will really bog things down, especially on a high latency system like
+a switched ethernet network.
+
+ <p>Java can take advantage of multiple processors, so in theory, if
+we use the process domains in Ptolemy II without code generation on a
+multi processor machine, we should see that each Java thread will be
+run on a separate processor.  However we have not done much work in
+this area.  We'd like to see someone take the PN domain and work on
+running it on multiple processors and seeing what sort of improvements
+can be made.
+
+ <p>In theory, once we have deep code generation, and we are creating
+an AST and generating .class files, we can generate code for any
+processor by either writing a new back end, or using a native Java
+compiler like gcj.
+
+<h2>Future Plans</h2>
+<menu>
+<li> Deep code generation needs to have the tokens unboxed so
+that it no longer depends on ptolemy.data
+<li> Generating C code from a Ptolemy Model is in progress.
+<li> We have demonstrated that the Ptolemy code generation framework can
+be used to generate FGPA code using
+JHDL from Brigham Young University (<a href="http://www.jhdl.org"><code>http://www.jhdl.org</code></a>
+<menu>
+
+<h2>Resources</h2>
+Below are links to various resources:
 
 <h3><a name="disassemblers">Disassemblers</a></h3>
 Soot works with byte codes.  A Java decompiler or disassembler 
@@ -411,43 +677,6 @@ Other possibilities:
 <li> <a href="http://bcel.sourceforge.net/" target="_top"><CODE>http://bcel.sourceforge.net/</CODE></a>
 </menu>
 
-
-The applet generator uses the soot framework, though in principle a
-shell script could be used instead.  The applet generator reads
-template files that end in <CODE>.in</CODE> from
-<CODE>$PTII/ptolemy/copernicus/applet</CODE>, substitutes keywords and
-writes out the files in the destination directory.  Users may modify
-the template files to match their local setup
-
- <p>Making an applet available via the web is somewhat complex because
-the Java Plugin has two sections, one for Netscape, the other for
-Internet Explorer, so changes to the htm files must be replicated in 
-both sections.  The codebase and the location of the jar files also add
-to the problems.
-
-
-<h2>Multiprocessors and DSP targets</h2>
-
-Partitioning a model between multiple processors is fairly tricky, and
-was a large area of research in Ptolemy Classic.  Only models with a
-high degree of parallelism are amenable to running on multiple
-processors.  Simply assigning each actor to a processor is not likely
-to yield performance improvements, since the inter-actor communication
-will really bog things down, especially on a high latency system like
-a switched ethernet network.
-
- <p>Java can take advantage of multiple processors, so in theory, if
-we use the process domains in Ptolemy II without code generation on a
-multi processor machine, we should see that each Java thread will be
-run on a separate processor.  However we have not done much work in
-this area.  We'd like to see someone take the PN domain and work on
-running it on multiple processors and seeing what sort of improvements
-can be made.
-
- <p>In theory, once we have deep code generation, and we are creating
-an AST and generating .class files, we can generate code for any
-processor by either writing a new back end, or using a native Java
-compiler like gcj.
 
 <h2>Java To C converters</h2>
 <dl>
