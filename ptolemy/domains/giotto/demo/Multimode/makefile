@@ -47,11 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 EXTRA_SRCS = \
-	ctrl.xml \
+	Controller.xml \
 	Multimode.htm \
 	Multimode.xml \
-	one_mode.xml \
-	plotConfigure.xml \
+	OneMode.xml \
 	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
