@@ -352,8 +352,8 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         int modifiers = node.getModifiers();
 
-        if (classDecl.category == CG_CLASS) {
-
+        // FIXME: classDecl.category can be set to CG_CLASS | CG_INTERFACE??
+        if ((classDecl.category & CG_CLASS) !=0) {
             // private methods or methods in private or final classes are final
 	    //
 	    // FIXME: I'm not sure if the above is true, so I've commented
