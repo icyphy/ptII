@@ -38,10 +38,6 @@ import ptolemy.data.type.*;
 /**
 A token that contains a 2-D Complex array.
 
-FIXME: Except add() and addReverse(), other arithmetics operations are
-not implemented yet. Those methods will be added after the corresponding
-operations are added to the math package.
-
 @author Yuhong Xiong
 @version $Id$
 @see ptolemy.math.Complex
