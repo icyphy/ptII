@@ -490,7 +490,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	echo " -profiler Run under cpu sample profiling"
         echo " -q       Do not echo the command being run"
 	echo " -sandbox Run model under tight security, see \$PTII/bin/sandbox.policy" 
-	echo " Note that not all combinations above the above args make sense."
+	echo " Note that not all combinations above the above arguments make sense."
 	# Most commands have their own help built in, but some do not. 
 	if [ "$passHelpArgument" = "no" ]; then
 	    exit
@@ -499,6 +499,16 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	    echo "Now invoking $0 -help for further help and usage information"
 	    echo ""
 	fi    
+
+	# Don't echo the command, it confuses users and scares the horses.
+        quiet=1
+	
+	# We do not shift the -help argument away so that we can pass
+	# it to the exec'd subprocess
+
+	# Since we are not shifting the -help argument, we do not call
+	# continue, we break out down below.
+	# continue
     fi
     if [ "$1" = "-debug" ]; then
 	# If -debug is supplied then allow debugger attaches to java VM.
