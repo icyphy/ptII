@@ -36,6 +36,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
@@ -49,7 +50,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -176,6 +176,10 @@ public class ModelCompiler extends Attribute {
                         + compositeActor.getName());
                 compositeActor.setContainer(newLayer);
                 newLayer.setContainer(container);
+                // Add a new director at the top level.
+                Director directorOfOrigin = compositeActor.getDirector();
+                Director directorOfClone = (Director) directorOfOrigin.clone();
+                directorOfClone.setContainer(newLayer);
                 //subCluster.setContainer(compositeActor);
                 // create subCluster's function dependency graph here.
                 // then get its list of subgraphs.
