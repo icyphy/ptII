@@ -278,7 +278,7 @@ public class PtolemyQuery extends Query
                 _query.addStyledEntry(variable);
             } else {
                 throw new InternalErrorException(
-                       "Expected parameter attached to entry name: "
+                        "Expected parameter attached to entry name: "
                         + entryName);
             }
             _dialog = new ComponentDialog(null, "Error", _query, null);

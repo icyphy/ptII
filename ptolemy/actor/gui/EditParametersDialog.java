@@ -68,7 +68,7 @@ by the user.
 @version $Id$
 */
 public class EditParametersDialog extends ComponentDialog
-         implements ChangeListener {
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  An "OK" and a "Cancel" button are added to the dialog.
@@ -79,9 +79,9 @@ public class EditParametersDialog extends ComponentDialog
      */
     public EditParametersDialog(Frame owner, NamedObj target) {
         super(owner,
-             "Edit parameters for " + target.getName(),
-             new Configurer(target),
-             _moreButtons);
+                "Edit parameters for " + target.getName(),
+                new Configurer(target),
+                _moreButtons);
         // Once we get to here, the dialog has already been dismissed.
         _owner = owner;
         _target = target;
@@ -116,11 +116,11 @@ public class EditParametersDialog extends ComponentDialog
 
             if (dialog.buttonPressed().equals("OK") && !delName.equals("")) {
                 String moml = "<deleteProperty name=\""
-                        + delName
-                        + "\"/>";
-                _target.addChangeListener(this);
-                _target.requestChange(
-                         new MoMLChangeRequest(this, _target, moml));
+                    + delName
+                    + "\"/>";
+                    _target.addChangeListener(this);
+                    _target.requestChange(
+                            new MoMLChangeRequest(this, _target, moml));
             }
         }
     }
@@ -218,15 +218,15 @@ public class EditParametersDialog extends ComponentDialog
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\""
-                    + newName
-                    + "\" value=\""
+                + newName
+                + "\" value=\""
                     + newDefValue.toString()
-                    + "\" class=\""
-                    + _query.stringValue("class")
-                    + "\"/>";
-            _target.addChangeListener(this);
-            _target.requestChange(
-                    new MoMLChangeRequest(this, _target, moml));
+                        + "\" class=\""
+                        + _query.stringValue("class")
+                            + "\"/>";
+                        _target.addChangeListener(this);
+                        _target.requestChange(
+                                new MoMLChangeRequest(this, _target, moml));
         }
         return dialog;
     }

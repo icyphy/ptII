@@ -107,17 +107,17 @@ public class Documentation extends Attribute {
         if (name.equals("_doc_")) {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth)
-                   + "<doc>"
-                   + _value
-                   + "</doc>\n");
+                    + "<doc>"
+                    + _value
+                    + "</doc>\n");
         } else {
             // Name is not the default name.
             output.write(_getIndentPrefix(depth)
-                   + "<doc name=\""
-                   + name
-                   + "\">"
-                   + _value
-                   + "</doc>\n");
+                    + "<doc name=\""
+                    + name
+                    + "\">"
+                    + _value
+                    + "</doc>\n");
         }
     }
 
