@@ -39,7 +39,6 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.gui.StatusBar;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.moml.Documentation;
 
 // Java imports
 import javax.swing.KeyStroke;

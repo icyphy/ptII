@@ -51,7 +51,6 @@ import ptolemy.gui.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet

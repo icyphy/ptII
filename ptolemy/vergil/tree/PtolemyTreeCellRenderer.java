@@ -34,7 +34,6 @@ import ptolemy.kernel.util.Nameable;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.Documentation;
 
 import java.awt.Component;
 import javax.swing.JTree;
