@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
    An event detector that converts continuous signals to discrete events when
    the continuous signal crosses a level threshold.
    <p>
-   When the <i>trigger</i> equals to the level threshold (within the specified
-   <i>errorTolerance</i>), this actor outputs a discrete event with the value as
+   When the <i>trigger</i> equals the level threshold (within the specified
+   <i>errorTolerance</i>), this actor outputs a discrete event with value
    <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the
    actor outputs a discrete event with the value as the level threshold.
    <p>
@@ -162,7 +162,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
             double tolerance = ((DoubleToken) errorTolerance.getToken())
                 .doubleValue();
 
-            if (tolerance <= 0) {
+            if (tolerance <= 0.0) {
                 throw new IllegalActionException(this,
                         "Error tolerance must be greater than 0.");
             }
@@ -278,7 +278,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
     }
 
     /** Return true if there is no event detected during the current step size.
-     *  @return true if there is no event detected in the current iteration.
+     *  @return True if there is no event detected in the current iteration.
      */
     public boolean isOutputAccurate() {
         // FIXME: This basically disables the event detection in the
@@ -371,6 +371,10 @@ public class LevelCrossingDetector extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;
+        // This used to be done only in isOutputAccurate(),
+        // but that results in the first step not being
+        // checked. EAL 3/9/05
+        _levelCrossingDetectionDisabled = false;
         return super.postfire();
     }
 
