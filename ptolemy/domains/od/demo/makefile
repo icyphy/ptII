@@ -77,7 +77,8 @@ debug:
 	CLASSPATH=$(CLASSPATH) gjdb ptolemy.domains.od.demo.ODStringDemo
 	
 run:
-	CLASSPATH=$(CLASSPATH) /usr/java/bin/java ptolemy.domains.od.demo.ODStringDemo
+	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.od.demo.ODStringDemo
+	# CLASSPATH=$(CLASSPATH) /usr/java/bin/java ptolemy.domains.od.demo.ODStringDemo
 
 depend:
 	@echo "no dependencies in this directory"
