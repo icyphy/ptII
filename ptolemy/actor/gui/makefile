@@ -105,6 +105,8 @@ OPTIONAL_FILES = \
 	'Configurer$$1.class' \
 	'DebugListenerTableau$$1.class' \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
+	'HTMLEffigy$$Factory.class' \
+	'HTMLViewerTableau$$Factory.class' \
 	'ModelFrame$$FileMenuListener.class' \
 	'ModelFrame$$HelpMenuListener.class' \
 	'ModelPane$$1.class' \
@@ -120,7 +122,11 @@ OPTIONAL_FILES = \
 	'RunTableau$$Factory.class' \
 	'RunTableau$$RunFrame$$DebugMenuListener.class' \
 	'RunTableau$$RunFrame.class' \
-	'Tableau$$1.class'
+	'Tableau$$1.class' \
+	'TableauFrame$$1.class' \
+	'TableauFrame$$ViewMenuListener.class' \
+	'TextEditorTableau$$Factory.class' \
+	'TextEffigy$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
