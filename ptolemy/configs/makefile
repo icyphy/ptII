@@ -70,11 +70,12 @@ OTHER_FILES_TO_BE_JARED = \
 	fsmTableauFactory.xml \
 	graphEffigyFactory.xml \
 	graphTableauFactory.xml \
+	hybridConfiguration.xml \
+	hybridIntro.htm \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
 	intro.htm \
 	introDSP.htm \
-	introHybrid.htm \
 	introPtiny.htm \
 	ptIIplanet.gif \
 	runConfiguration.xml \
@@ -83,7 +84,6 @@ OTHER_FILES_TO_BE_JARED = \
 	utilitiesLibrary.xml \
 	vergilConfiguration.xml \
 	vergilConfigurationDSP.xml \
-	vergilConfigurationHybrid.xml \
 	vergilConfigurationPtiny.xml \
 	vergilWelcomeWindow.xml
 

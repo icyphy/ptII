@@ -34,6 +34,7 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.*;
 
 import java.awt.Image;
@@ -66,6 +67,14 @@ to the content pane using a line like:
 </pre>
 The base class provides generic features for menubars and toolbars,
 and this class specializes the base class for Ptolemy II.
+<p>
+A help menu is provided with two entries, About and Help. In both
+cases, an HTML file is opened.  The configuration can specify which
+HTML file to open by containing an instance of FileAttribute with
+name "_about" or "_help".  The value of this attribute is a file
+name (which may begin with the keywords $CLASSPATH or $PTII to
+specify that the file is located relative to the CLASSPATH or to
+the Ptolemy II installation directory).
 
 @author Edward A. Lee
 @version $Id$
@@ -207,6 +216,21 @@ public class TableauFrame extends Top {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The name of the default file to open when About is invoked.
+     *  This file should be relative to the home installation directory.
+     *  This file is used if the configuration does not specify an about file.
+     */
+    public String aboutFile = "ptolemy/configs/intro.htm";
+
+    /** The name of the default file to open when Help is invoked.
+     *  This file should be relative to the home installation directory.
+     *  This file is used if the configuration does not specify a help file.
+     */
+    public String helpFile = "ptolemy/configs/doc/basicHelp.htm";
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Override the base class to open the intro.htm splash window,
@@ -217,12 +241,26 @@ public class TableauFrame extends Top {
         // only opened once.
         ModelDirectory directory = getDirectory();
         if (directory != null) {
-            URL doc = getClass().getClassLoader().getResource(
-                    "ptolemy/configs/intro.htm");
-            // Check to see whether the model is already open.
-            Effigy effigy = directory.getEffigy(doc.toExternalForm());
-            if (effigy == null) {
-                try {
+
+            try {
+                Configuration configuration = getConfiguration();
+                FileAttribute aboutAttribute = (FileAttribute)configuration
+                        .getAttribute("_about", FileAttribute.class);
+                URL doc;
+                if (aboutAttribute != null) {
+                    doc = aboutAttribute.asURL();
+                } else {
+                    doc = getClass().getClassLoader().getResource(aboutFile);
+                }
+
+                // The usual mechanism for opening a file is:
+                // configuration.openModel(null, doc, doc.toExternalForm());
+                // However, in this case, we want a smaller size, so we do
+                // something custom.
+
+                // Check to see whether the model is already open.
+                Effigy effigy = directory.getEffigy(doc.toExternalForm());
+                if (effigy == null) {
                     // No main welcome window.  Create one.
                     EffigyFactory effigyFactory = new HTMLEffigyFactory(
                             directory.workspace());
@@ -254,12 +292,12 @@ public class TableauFrame extends Top {
                         // Remove effigy.
                         effigy.setContainer(null);
                     }
-                } catch (Exception ex) {}
-            } else {
-                // Model already exists.
-                effigy.showTableaux();
-                return;
-            }
+                } else {
+                    // Model already exists.
+                    effigy.showTableaux();
+                    return;
+                }
+            } catch (Exception ex) {}
         }
         // Don't report any errors.  Just use the default.
         super._about();
@@ -446,6 +484,31 @@ public class TableauFrame extends Top {
             }
         }
         return "Unnamed";
+    }
+
+    /** Display the help file given by the configuration, or if there is
+     *  none, then the file specified by the public variable helpFile.
+     *  To specify a default help file in the configuration, create
+     *  a FileAttribute named "_help" whose value is the name of the
+     *  file.  If the specified file fails to open, then invoke the
+     *  _about() method.
+     *  @see FileAttribute
+     */
+    protected void _help() {
+        try {
+            Configuration configuration = getConfiguration();
+            FileAttribute helpAttribute = (FileAttribute)configuration
+                    .getAttribute("_help", FileAttribute.class);
+            URL doc;
+            if (helpAttribute != null) {
+                doc = helpAttribute.asURL();
+            } else {
+                doc = getClass().getClassLoader().getResource(helpFile);
+            }
+            configuration.openModel(null, doc, doc.toExternalForm());
+        } catch (Exception ex) {
+            _about();
+        }
     }
 
     /** Read the specified URL.  This delegates to the ModelDirectory

@@ -2,6 +2,17 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.kernel.attributes.FileAttribute"
+            value="$CLASSPATH/ptolemy/configs/doc/hybridCopyright.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.kernel.attributes.FileAttribute"
+            value="$CLASSPATH/ptolemy/configs/doc/hybridHelp.htm"/>
+
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
@@ -23,6 +34,9 @@
           <property name="_location"
                     class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
+          <!-- Set the initStepSize and stopTime to get 100 samples. -->
+          <property name="initStepSize" value="0.01"/>
+          <property name="stopTime" value="1.0"/>
         </property>
       </entity>
     </entity>

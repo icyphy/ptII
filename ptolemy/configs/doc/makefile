@@ -63,9 +63,13 @@ OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
 	basicHelp.htm \
 	completeDemos.htm \
+	completeDemosPtiny.htm \
 	copyright.htm \
 	demos.htm \
 	docs.htm \
+	hybridAbout.htm \
+	hybridCopyright.htm \
+	hybridHelp.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 

@@ -30,6 +30,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 
@@ -50,6 +51,10 @@ line like:
 This extends the base class by associating with it a Ptolemy II model,
 and specifying a model error handler for that model that handles model
 errors by throwing an exception.
+<p>
+If the model contains an instance of FileAttribute named "_help", then
+the file or URL specified by that attribute will be opened when "Help"
+in the Help menu is invoked.
 
 @author Edward A. Lee
 @version $Id$
@@ -139,14 +144,18 @@ public abstract class PtolemyFrame extends TableauFrame {
     }
 
     /** Display more detailed information than given by _about().
+     *  If the model contains an instance of FileAttribute named "_help",
+     *  that the file or URL given by that attribute is opened.  Otherwise,
+     *  a built-in generic help file is opened.
      */
     protected void _help() {
         try {
-            URL doc = getClass().getClassLoader().getResource(
-                    "ptolemy/configs/doc/basicHelp.htm");
+            FileAttribute helpAttribute = (FileAttribute)getModel()
+                    .getAttribute("_help", FileAttribute.class);
+            URL doc = helpAttribute.asURL();
             getConfiguration().openModel(null, doc, doc.toExternalForm());
         } catch (Exception ex) {
-            _about();
+            super._help();
         }
     }
 
