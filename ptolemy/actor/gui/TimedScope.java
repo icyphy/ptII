@@ -77,8 +77,10 @@ public class TimedScope extends TimedPlotter {
 
         // set the parameters
         width = new Parameter(this, "width", new DoubleToken(100.0));
+        width.setTypeEquals(BaseType.DOUBLE);
         persistence = new Parameter(this, "persistence",
                 new DoubleToken(100.0));
+        persistence.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

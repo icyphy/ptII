@@ -40,6 +40,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
 import ptolemy.plot.plotml.PlotMLParser;
@@ -74,8 +75,10 @@ public class Plotter extends TypedAtomicActor
         super(container, name);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
+        fillOnWrapup.setTypeEquals(BaseType.BOOLEAN);
         startingDataset = new Parameter(this, "startingDataset",
                 new IntToken(0));
+        startingDataset.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

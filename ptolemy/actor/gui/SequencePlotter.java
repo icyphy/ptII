@@ -75,7 +75,9 @@ public class SequencePlotter extends Plotter implements SequenceActor {
 
         // set the parameters
         xInit = new Parameter(this, "xInit", new DoubleToken(0.0));
+        xInit.setTypeEquals(BaseType.DOUBLE);
         xUnit = new Parameter(this, "xUnit", new DoubleToken(1.0));
+        xUnit.setTypeEquals(BaseType.DOUBLE);
 
         // initialize the parameters
         attributeChanged(xInit);

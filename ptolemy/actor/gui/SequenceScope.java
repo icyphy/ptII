@@ -76,7 +76,9 @@ public class SequenceScope extends SequencePlotter {
 
         // set the parameters
         width = new Parameter(this, "width", new IntToken(100));
+        width.setTypeEquals(BaseType.INT);
         persistence = new Parameter(this, "persistence", new IntToken(100));
+        persistence.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
