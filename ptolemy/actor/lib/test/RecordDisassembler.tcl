@@ -86,6 +86,7 @@ test RecordDisassembler-2.1 {run with one input port, has label error} {
     list $msg
 } {{ptolemy.kernel.util.InvalidStateException: Can't update variable.
 
+Because:
 Type conflict on port .top.disassembler.input.
 Declared type is {disRampOut=unknown}.
 The connection or type constraints, however, requires type {}}}
