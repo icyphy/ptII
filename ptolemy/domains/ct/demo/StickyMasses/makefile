@@ -49,8 +49,12 @@ JSRCS = \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
+	Controller.gif \
+	Separate.gif \
 	StickyMasses.htm \
 	StickyMasses.xml \
+	StickyMassesVergil.htm \
+	Together.gif \
 	SMdiagram.gif \
 	SMphysics.gif \
 	SMresult.gif
