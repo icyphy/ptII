@@ -595,10 +595,10 @@ else
 fi
 
 #--------------------------------------------------------------------
-#       Cal is an language used to define actors
+#       Caltrop is an language used to define actors
 #	For more information, 
-#       see http://www.gigascale.org/cal
-#       See if there was a command-line option for where Cal is.
+#       see http://embedded.eecs.berkeley.edu/caltrop/
+#       See if there was a command-line option for where Caltrop is.
 #--------------------------------------------------------------------
 
 # PTCALTROP_DIR is set to caltrop and used in
@@ -608,8 +608,8 @@ PTCALTROP_DIR=
 # Directory that contains the ptCal jar file
 CALTROP_DIR='${PTII}/lib'
 
-# We only need to look for on if $PTII/ptolemy/cal exists
-CAL_USER_DIR="$PTII/ptolemy/cal"
+# We only need to look for on if $PTII/ptolemy/caltrop exists
+CAL_USER_DIR="$PTII/ptolemy/caltrop"
 if test ! -d "$CAL_USER_DIR"; then
     AC_MSG_RESULT([$CAL_USER_DIR is not present,
 	so we need not find the Cal, the actor language.])
@@ -636,7 +636,7 @@ else
     You can download java_cup from 
     http://www.cs.princeton.edu/~appel/modern/java/CUP/
     If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/caltrop])
 	       # Note that we don't substitute in the ${PTII} here
 	       CALTROP_DIR='${PTII}/lib/'
 	   fi    
@@ -645,7 +645,7 @@ else
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/caltrop])
 	   # Note that we don't substitute in the ${PTII} here
 	   CALTROP_DIR='${PTII}/lib/'
         fi
@@ -653,17 +653,19 @@ else
         AC_MSG_WARN([Failed to find PTII/lib/ptCal.jar
     ptCal.jar should be present in your distribution.  
     If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal])
+    or run the demonstrations  in ptolemy/caltrop])
 	# Note that we don't substitute in the ${PTII} here
 	CALTROP_DIR='${PTII}/lib/'
     fi
 fi
 
 if test -z "$PTCALTROP_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/caltrop"
 else
+   # Note that jasminclasses.jar in soot also includes java_cup
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/java_cup.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon7.jar\"/> "
 fi 
 
