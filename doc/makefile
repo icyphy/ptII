@@ -55,6 +55,7 @@ ALLJSRCS = 		ptolemy.plot \
 			ptolemy.kernel.event \
 			ptolemy.kernel.util \
 			ptolemy.actor \
+			ptolemy.actor.lib \
 			ptolemy.actor.process \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
@@ -88,6 +89,7 @@ codeDoc/tree.html: 	../ptolemy/plot/*.java \
 			../ptolemy/kernel/event/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
+			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
