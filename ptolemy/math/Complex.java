@@ -536,7 +536,7 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return true if the distance between this complex number and
-     * 	the argument is less than or equal to EPSILON.
+     *         the argument is less than or equal to EPSILON.
      *  @param z The number to compare against.
      *  @return True if the distance to the argument is less
      *   than or equal to EPSILON.
@@ -547,7 +547,7 @@ public class Complex implements Cloneable, Serializable {
     }
 
     /** Return true if the distance between this complex number and
-     * 	the first argument is less than or equal to the second argument. If
+     *         the first argument is less than or equal to the second argument. If
      *  the distance argument is negative, return false.
      *  @param z The number to compare against.
      *  @param distance The distance criterion.

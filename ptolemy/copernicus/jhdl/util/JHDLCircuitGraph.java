@@ -48,21 +48,21 @@ import ptolemy.graph.Node;
 public class JHDLCircuitGraph extends DirectedGraph {
 
     public JHDLCircuitGraph() {
-	super();
-	_inPortNodes = new Vector();
-	_outPortNodes = new Vector();
+        super();
+        _inPortNodes = new Vector();
+        _outPortNodes = new Vector();
     }
 
     public Node addInPortNodeWeight(Object weight) {
-	Node n = addNodeWeight(weight);
-	_inPortNodes.add(n);
-	return n;
+        Node n = addNodeWeight(weight);
+        _inPortNodes.add(n);
+        return n;
     }
 
     public Node addOutPortNodeWeight(Object weight) {
-	Node n = addNodeWeight(weight);	
-	_outPortNodes.add(n);
-	return n;
+        Node n = addNodeWeight(weight);        
+        _outPortNodes.add(n);
+        return n;
     }
 
     List _inPortNodes;

@@ -125,7 +125,7 @@ public class VergilApplication extends MoMLApplication {
         // to work, you should invoke it in event thread.  Otherwise,
         // weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML under Web Start.
-	try {
+        try {
             // NOTE: This is unfortunate... It would be nice
             // if this could be run inside a PtolemyThread, since
             // getting read access the workspace is much more efficient

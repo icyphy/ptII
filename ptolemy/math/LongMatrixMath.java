@@ -362,7 +362,7 @@ public class LongMatrixMath {
 
         return returnValue;
     }
-	
+        
     /** Return a new matrix that is constructed from the argument by
      *  dividing the second argument to every element.
      *  @param matrix A matrix of longs.
@@ -966,7 +966,7 @@ public class LongMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final long[][] matrix1,
             final long[][] matrix2, long distance) {
@@ -995,7 +995,7 @@ public class LongMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final long[][] matrix1,
             final long[][] matrix2, final long[][] errorMatrix) {

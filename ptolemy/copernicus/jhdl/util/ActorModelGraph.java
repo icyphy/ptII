@@ -60,17 +60,17 @@ import soot.jimple.*;
 public class ActorModelGraph extends ModelGraph {
 
     public ActorModelGraph(AtomicActor entity, Map options) {
-	super(entity);
+        super(entity);
 
-	// Get names & Soot objects
-	String className = ModelTransformer.getInstanceClassName(entity,options);
-	String entityClassName = entity.getClass().getName();
+        // Get names & Soot objects
+        String className = ModelTransformer.getInstanceClassName(entity,options);
+        String entityClassName = entity.getClass().getName();
         System.out.println("Creating graph for class "+className+
                 " (entity="+entityClassName+")");
         SootClass entityClass = Scene.v().loadClassAndSupport(className);
         SootMethod method = entityClass.getMethodByName("fire");
 
-	// Get internal graph
+        // Get internal graph
         DirectedGraph fireGraph=null;
         try {
             fireGraph = new IntervalBlockDirectedGraph(method);
@@ -82,14 +82,14 @@ public class ActorModelGraph extends ModelGraph {
         PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "entity", fireGraph);
 
-	// 
-	Map portCallNodes = _getPortCallNodes(entity,fireGraph);
-	dgToDotty = new PtDirectedGraphToDotty();
+        // 
+        Map portCallNodes = _getPortCallNodes(entity,fireGraph);
+        dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "fixed", fireGraph);
 
-	addGraph(fireGraph);
+        addGraph(fireGraph);
 
-	// Add IOPort nodes
+        // Add IOPort nodes
         for (Iterator i=portCallNodes.keySet().iterator(); i.hasNext();) {
             IOPort port = (IOPort) i.next();
             Node topLevelPortNode = addIOPortNode(port);
@@ -108,7 +108,7 @@ public class ActorModelGraph extends ModelGraph {
             }
         }
 
-	dgToDotty = new PtDirectedGraphToDotty();
+        dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "fixedports", this);
 
     }
@@ -120,15 +120,15 @@ public class ActorModelGraph extends ModelGraph {
     protected Map _getPortCallNodes(Actor actor,
             DirectedGraph entityGraph) {
 
-	// Map from an IOPort to a node in the graph. The key in this
-	// Map is a IOPort and the Value is a List of Nodes. (in most
-	// cases, this List has only one entry).
+        // Map from an IOPort to a node in the graph. The key in this
+        // Map is a IOPort and the Value is a List of Nodes. (in most
+        // cases, this List has only one entry).
         Map portNodeMap = new HashMap();
 
         // The following section of code will create a mapping between
-	// the name of each IOPort and the IOPort itself. This will be
-	// used later to match calls to the IOPort in the graph to
-	// actual IOPort objects
+        // the name of each IOPort and the IOPort itself. This will be
+        // used later to match calls to the IOPort in the graph to
+        // actual IOPort objects
         List inputPortList = actor.inputPortList();
         List outputPortList = actor.outputPortList();
         Map stringPortMap = new HashMap(inputPortList.size() +
@@ -146,15 +146,15 @@ public class ActorModelGraph extends ModelGraph {
             //System.out.println("Port="+portName+" is "+port);
         }
 
-	// This code will iterate over each Node in the graph and
-	// search for VirtualInvokeExpr objects (i.e. searching
-	// for get and send calls on the IOPort objects).
-	// If a VirtualInvokeExpr object is found and the methodName
-	// is "getInt" or "sendInt", then find the Nodes associated
-	// with this port call.
-	// Note that there may be more than one Node associated with
-	// this port call (i.e. different control paths). All Nodes
-	// associated with the IOPort call are Mapped to the portNodeMap.
+        // This code will iterate over each Node in the graph and
+        // search for VirtualInvokeExpr objects (i.e. searching
+        // for get and send calls on the IOPort objects).
+        // If a VirtualInvokeExpr object is found and the methodName
+        // is "getInt" or "sendInt", then find the Nodes associated
+        // with this port call.
+        // Note that there may be more than one Node associated with
+        // this port call (i.e. different control paths). All Nodes
+        // associated with the IOPort call are Mapped to the portNodeMap.
         for (Iterator entityNodes = entityGraph.nodes().iterator();
              entityNodes.hasNext();) {
             Node node = (Node) entityNodes.next();
@@ -185,16 +185,16 @@ public class ActorModelGraph extends ModelGraph {
             Node portNode=null;
             if (methodName.equals("getInt")) {
                 // "getInt" method call
-		// In this case, the successor to the getInt call is
-		// identified as the Node associated with this port
-		// call (i.e. input port)
+                // In this case, the successor to the getInt call is
+                // identified as the Node associated with this port
+                // call (i.e. input port)
                 portNode = 
-		    (Node) entityGraph.successors(node).iterator().next();
+                    (Node) entityGraph.successors(node).iterator().next();
             } else {
                 // "sendInt" method call
-		// In this case, the predecessor to this sendInt call
-		// is identified as the Node associated with this port
-		// call (i.e. output port)
+                // In this case, the predecessor to this sendInt call
+                // is identified as the Node associated with this port
+                // call (i.e. output port)
                 for (Iterator i = entityGraph.predecessors(node).iterator();
                      i.hasNext();) {
                     Node n = (Node) i.next();
@@ -297,7 +297,7 @@ public class ActorModelGraph extends ModelGraph {
     }
 
     public AtomicActor getAtomicActor() { 
-	return (AtomicActor) getEntity();
+        return (AtomicActor) getEntity();
     }
 
 }

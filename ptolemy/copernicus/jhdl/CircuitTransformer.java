@@ -123,13 +123,13 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("\nCircuitTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-	DirectedGraph dg = new CompositeModelGraph(_model,options);
-	PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-	toDotty.writeDotFile(".", _model.getName(), dg);
-	//HWSystem hw = new HWSystem();
-	//JHDLTestbench jtb = new JHDLTestbench(hw);
+        DirectedGraph dg = new CompositeModelGraph(_model,options);
+        PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        toDotty.writeDotFile(".", _model.getName(), dg);
+        //HWSystem hw = new HWSystem();
+        //JHDLTestbench jtb = new JHDLTestbench(hw);
 
-	/*
+        /*
           //////////////////////////////////////////////
           // Step 1. Create a DirectedGraph that matches
           //         the topology of the model
@@ -147,7 +147,7 @@ public class CircuitTransformer extends SceneTransformer {
           HWSystem hw = new HWSystem();
           JHDLTestbench _jtb = new JHDLTestbench(hw);
 
-          //	Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
+          //        Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
 
           //////////////////////////////////////////////
           // Step 3. Insert each DFG into the top-level graph
@@ -156,11 +156,11 @@ public class CircuitTransformer extends SceneTransformer {
 
           PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
           toDotty.writeDotFile(".", _model.getName(), combinedGraph);
-	*/
+        */
 
- 	System.out.println("**************************************************");
-	System.out.println("*** END JHDL");
-	System.out.println("**************************************************");
+         System.out.println("**************************************************");
+        System.out.println("*** END JHDL");
+        System.out.println("**************************************************");
     }
 
     /**
@@ -289,7 +289,7 @@ public class CircuitTransformer extends SceneTransformer {
 
         // Get the names of the class and entity
         String className =
-	    ModelTransformer.getInstanceClassName(entity,options);
+            ModelTransformer.getInstanceClassName(entity,options);
         String entityClassName = entity.getClass().getName();
 
         // skip some classes?

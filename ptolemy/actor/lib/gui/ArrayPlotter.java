@@ -145,7 +145,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
             }
         }
     }
-	
+        
     /** If the plot has not already been created, create it.
      *  If configurations specified by a call to configure() have not yet
      *  been processed, process them.  This overrides the base class to
@@ -208,7 +208,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
     public void wrapup() throws IllegalActionException {
         if (_tokens != null) {
             for (int i = _tokens.length - 1; i >= 0; i--) {
-            	double xValue = _xInit;
+                    double xValue = _xInit;
                 if (_tokens[i] != null) {
                     Token[] currentArray = _tokens[i].arrayValue();
                     // NOTE: We assume the superclass ensures this cast is safe.
@@ -234,7 +234,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
     /** Increment of the X axis counter. */
     protected double _xUnit;
-	
+        
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

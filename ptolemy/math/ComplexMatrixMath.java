@@ -1113,9 +1113,9 @@ public class ComplexMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-            	if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError)) {
+                    if (!matrix1[i][j].isCloseTo(matrix2[i][j], maxError)) {
                     return false;
-            	}
+                    }
             }
         }
         return true;

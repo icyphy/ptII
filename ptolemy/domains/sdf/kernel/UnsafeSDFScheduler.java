@@ -491,7 +491,7 @@ public class UnsafeSDFScheduler extends Scheduler {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
           
-	    int tokenRate = getTokenConsumptionRate(inputPort);
+            int tokenRate = getTokenConsumptionRate(inputPort);
 
             // Ignore zero rate ports.. they don't limit the number of times
             // we can fire their actors.
@@ -1129,12 +1129,12 @@ public class UnsafeSDFScheduler extends Scheduler {
         unscheduledActorList.addAll(actorList);
 
         // An association between all the input ports in a simulation and an
-	// array of the number of tokens waiting on each relation of that port.
-	Map sinkPortToSourcePortToWaitingTokens =
+        // array of the number of tokens waiting on each relation of that port.
+        Map sinkPortToSourcePortToWaitingTokens =
             new TreeMap(new NamedObjComparator());
 
         try {
-	    // Initialize sinkPortToSourcePortToWaitingTokens
+            // Initialize sinkPortToSourcePortToWaitingTokens
             // at all the input ports to zero
             for (Iterator actors = allActorList.iterator();
                  actors.hasNext();) {
@@ -1142,7 +1142,7 @@ public class UnsafeSDFScheduler extends Scheduler {
 
                 for (Iterator inputPorts = actor.inputPortList().iterator();
                      inputPorts.hasNext();) {
-		    IOPort inputPort = (IOPort) inputPorts.next();
+                    IOPort inputPort = (IOPort) inputPorts.next();
                     Map sourcePortToWaitingTokens =
                         new TreeMap(new NamedObjComparator());
                     for (Iterator remotePorts =
@@ -1220,10 +1220,10 @@ public class UnsafeSDFScheduler extends Scheduler {
                  actors.hasNext();) {
                 Actor actor = (Actor)actors.next();
 
-		int inputCount = _countUnfulfilledInputs(actor, actorList,
+                int inputCount = _countUnfulfilledInputs(actor, actorList,
                         sinkPortToSourcePortToWaitingTokens);
-		if (inputCount == 0) {
-		    readyToScheduleActorList.addFirst((ComponentEntity) actor);
+                if (inputCount == 0) {
+                    readyToScheduleActorList.addFirst((ComponentEntity) actor);
                 }
 
                 if (_debugging && VERBOSE) {
@@ -1310,7 +1310,7 @@ public class UnsafeSDFScheduler extends Scheduler {
 
                 // Simulate the tokens that are consumed by the actors
                 // input ports.
-		_simulateInputConsumption(currentActor,
+                _simulateInputConsumption(currentActor,
                         sinkPortToSourcePortToWaitingTokens, numberOfFirings);
 
                 // Add it to the schedule numberOfFirings times.
@@ -1376,8 +1376,8 @@ public class UnsafeSDFScheduler extends Scheduler {
                             _countUnfulfilledInputs((Actor)currentActor,
                                     unscheduledActorList,
                                     sinkPortToSourcePortToWaitingTokens);
-			// We've already removed currentActor from
-			// readyToSchedule actors, and presumably
+                        // We've already removed currentActor from
+                        // readyToSchedule actors, and presumably
                         // fired it until it can be fired no more.
                         // This check is here for robustness...
                         // if the actor can still be scheduled
@@ -1652,7 +1652,7 @@ public class UnsafeSDFScheduler extends Scheduler {
             Map minimumBufferSize)
             throws IllegalActionException {
 
-	if (_debugging && VERBOSE) {
+        if (_debugging && VERBOSE) {
             _debug("Simulating external input tokens from "
                     + port.getFullName());
             //          _debug("inside channels = " + receivers.length);
@@ -1750,9 +1750,9 @@ public class UnsafeSDFScheduler extends Scheduler {
 
                 sourcePortToWaitingTokens.put(sourcePort,
                         new Integer(newTokenCount));
-		// keep track of whether or not this actor can fire again
-		// immediately
-		if (newTokenCount < tokenRate) {
+                // keep track of whether or not this actor can fire again
+                // immediately
+                if (newTokenCount < tokenRate) {
                     stillReadyToSchedule = false;
                 }
             }
@@ -1788,7 +1788,7 @@ public class UnsafeSDFScheduler extends Scheduler {
             Map minimumBufferSize)
             throws IllegalActionException {
 
-	if (_debugging && VERBOSE) {
+        if (_debugging && VERBOSE) {
             _debug("Creating " + createdTokens + " tokens on "
                     + outputPort.getFullName());
             //     _debug("source channels = " + receivers.length);

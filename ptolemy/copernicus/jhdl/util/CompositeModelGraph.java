@@ -53,13 +53,13 @@ import ptolemy.kernel.ComponentEntity;
 public class CompositeModelGraph extends ModelGraph {
 
     public CompositeModelGraph(CompositeActor entity, Map options) {
-	super(entity);
-	_options = options;
-	_build();
+        super(entity);
+        _options = options;
+        _build();
     }
 
     public CompositeActor getCompositeActor() {
-	return (CompositeActor) getEntity();
+        return (CompositeActor) getEntity();
     }
 
     protected void _build() {
@@ -70,22 +70,22 @@ public class CompositeModelGraph extends ModelGraph {
         //    - a Node in the graph for each input and output
         //      port of the entity
         //    - appropriate edges between input/output ports and entity
-	for (Iterator i = getCompositeActor().entityList().iterator(); 
-	     i.hasNext();) {
+        for (Iterator i = getCompositeActor().entityList().iterator(); 
+             i.hasNext();) {
 
             ComponentEntity entity = (ComponentEntity)i.next();
 
-	    // Create Node for entity
-	    Object entityWeight = null;	    
-	    if (entity instanceof CompositeActor)
-		entityWeight = new CompositeModelGraph((CompositeActor) entity,_options);
-	    else if (entity instanceof AtomicActor)
-		entityWeight = new ActorModelGraph((AtomicActor) entity,
+            // Create Node for entity
+            Object entityWeight = null;            
+            if (entity instanceof CompositeActor)
+                entityWeight = new CompositeModelGraph((CompositeActor) entity,_options);
+            else if (entity instanceof AtomicActor)
+                entityWeight = new ActorModelGraph((AtomicActor) entity,
                         _options);
-	    else
-		entityWeight = new ModelGraph(entity);
+            else
+                entityWeight = new ModelGraph(entity);
 
-	    Node entityNode = addNodeWeight(entityWeight);
+            Node entityNode = addNodeWeight(entityWeight);
 
 
             // iterate over all outPorts and add Node corresponding
@@ -113,16 +113,16 @@ public class CompositeModelGraph extends ModelGraph {
         for (Iterator outputPorts=getCompositeActor().outputPortList().iterator();
              outputPorts.hasNext();){
             IOPort port = (IOPort)outputPorts.next();
-	    Node n = addIOPortNode(port);
+            Node n = addIOPortNode(port);
         }
 
         // 3. Add top-level inputPorts & associated connections
-	// TODO: Does this catch connections between top-level input
-	// ports and top-level output ports?
+        // TODO: Does this catch connections between top-level input
+        // ports and top-level output ports?
         for (Iterator inputPorts=getCompositeActor().inputPortList().iterator();
              inputPorts.hasNext();){
             IOPort port = (IOPort)inputPorts.next();
-	    Node n = addIOPortNode(port);
+            Node n = addIOPortNode(port);
             for (Iterator insideSinks = port.insideSinkPortList().iterator();
                  insideSinks.hasNext();) {
                 IOPort insideSink = (IOPort)insideSinks.next();

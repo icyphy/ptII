@@ -783,7 +783,7 @@ public class IntegerMatrixMath {
         }
         return sum;
     }
-	
+        
     /** Return a new matrix that is formed by converting the integers
      *  in the argument matrix to complex numbers. Each complex number
      *  has a real part equal to the value in the argument matrix and a
@@ -964,7 +964,7 @@ public class IntegerMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final int[][] matrix1,
             final int[][] matrix2, int distance) {
@@ -993,7 +993,7 @@ public class IntegerMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final int[][] matrix1,
             final int[][] matrix2, final int[][] errorMatrix) {

@@ -1027,7 +1027,7 @@ public class DoubleMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
             final double[][] matrix2, double distance) {
@@ -1058,7 +1058,7 @@ public class DoubleMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final double[][] matrix1,
             final double[][] matrix2, final double[][] errorMatrix) {

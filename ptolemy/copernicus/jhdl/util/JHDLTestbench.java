@@ -53,19 +53,19 @@ import ptolemy.kernel.util.IllegalActionException;
 public class JHDLTestbench extends Logic implements TestBench{
 
     public JHDLTestbench(HWSystem parent) {
-	this(parent,JHDL_TESTBENCH_NAME,DEFAULT_CELL_NAME);
+        this(parent,JHDL_TESTBENCH_NAME,DEFAULT_CELL_NAME);
     }
 
     public JHDLTestbench(HWSystem parent, String cellname) {
- 	this(parent,JHDL_TESTBENCH_NAME,cellname);
+         this(parent,JHDL_TESTBENCH_NAME,cellname);
     }
 
     public JHDLTestbench(HWSystem parent, String testbenchname, 
             String cellname) {
-	super(parent,testbenchname);
-	_inputWires = new Vector();
-	_outputWires = new Vector();
-	_topcell = new Logic(this,cellname);
+        super(parent,testbenchname);
+        _inputWires = new Vector();
+        _outputWires = new Vector();
+        _topcell = new Logic(this,cellname);
     }
 
     public Cell getTopCell() { return _topcell; }

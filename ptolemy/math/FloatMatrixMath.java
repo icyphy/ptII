@@ -812,7 +812,7 @@ public class FloatMatrixMath {
         }
         return sum;
     }
-	
+        
     /** Return a new matrix that is formed by converting the floats
      *  in the argument matrix to complex numbers. Each complex number
      *  has a real part equal to the value in the argument matrix and a
@@ -998,7 +998,7 @@ public class FloatMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final float[][] matrix1,
             final float[][] matrix2, float distance) {
@@ -1026,7 +1026,7 @@ public class FloatMatrixMath {
      *  @return True if the elements of the two matrices are within the
      *   specified distance.
      *  @exception IllegalArgumentException If the matrices do not have the same dimension.
-     * 	 This is a run-time exception, so it need not be declared explicitly.
+     *          This is a run-time exception, so it need not be declared explicitly.
      */
     public static final boolean within(final float[][] matrix1,
             final float[][] matrix2, final float[][] errorMatrix) {

@@ -49,21 +49,21 @@ import ptolemy.kernel.ComponentEntity;
 public class ModelGraph extends DirectedGraph {
 
     public ModelGraph(ComponentEntity entity) {
-	super();
-	_entity = entity;
-	_inputPortNodes = new Vector();
-	_outputPortNodes = new Vector();
+        super();
+        _entity = entity;
+        _inputPortNodes = new Vector();
+        _outputPortNodes = new Vector();
     }
 
     public ComponentEntity getEntity() { return _entity; }
 
     public Node addIOPortNode(IOPort port) {
-	Node n = addNodeWeight(port);
-	if (port.isInput())
-	    _inputPortNodes.add(n);
-	else
-	    _outputPortNodes.add(n);
-	return n;
+        Node n = addNodeWeight(port);
+        if (port.isInput())
+            _inputPortNodes.add(n);
+        else
+            _outputPortNodes.add(n);
+        return n;
     }
 
 
