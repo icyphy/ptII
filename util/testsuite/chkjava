@@ -253,9 +253,9 @@ do
 	fi
 
 	# 13) Check for @throws
-	results=`egrep '@throws' $file`
+	results=`egrep '@throw' $file`
 	if [ "x$results" != "x" ]; then
-	    echo "$file: contains @throws.  Use @exception instead."
+	    echo "$file: contains @throw[s].  Use @exception instead."
 	    echo "$results"
 	fi
 
