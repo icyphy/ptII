@@ -57,7 +57,7 @@ than simply removed. By default, the history capacity is zero.
 
 @author Steve Neuendorffer
 @version $Id$
-@see ptolemy.actor.util.FIFOQueue
+@see ptolemy.actor.util.ArrayFIFOQueue
 */
 public class SDFReceiver extends AbstractReceiver {
 
@@ -108,15 +108,12 @@ public class SDFReceiver extends AbstractReceiver {
      *  @exception NoTokenException If there is no token in the receiver.
      */
     public Token get() {
-        Token t = null;
-        try {
-            t = (Token)_queue.take();
-        } catch (NoSuchElementException ex) {
+        if(_queue.isEmpty()) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
                     "Attempt to get token from an empty QueueReceiver.");
         }
-        return t;
+        return (Token)_queue.take();
     }
 
     /** Return a token in the receiver or its history. If the offset
@@ -284,12 +281,18 @@ public class SDFReceiver extends AbstractReceiver {
      *  the length of the token array.
      *
      *  @param token The token array that contains tokens to be put
-     *   into the receiver.
+     *  into the receiver.
      *  @param count The number of tokens from <i>token</i> to
-     *   put in the receiver.
+     *  put in the receiver.  This should be less than the length
+     *  of <i>token</i>.
      *  @exception NoRoomException If the receiver is full.
+     *  @exception IndexOutOfBoundException If the array does not contain
+     *  at least count elements.
      */
     public void putArray(Token token[], int count) {
+        // Note: There has been a suggestion that this method also be
+        // able to take an offset.  When we figure out how to use this,
+        // we should implement it.
 	if (!_queue.putArray(token, count)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");

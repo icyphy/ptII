@@ -494,8 +494,6 @@ public class SDFScheduler extends Scheduler {
         Schedule result = 
             _scheduleConnectedActors(minimumBufferSize, actorList);
 
-        _setFiringVector(firings);
-        
         if (_debugging) {
             _debug("Firing Vector:");
             _debug(firings.toString());
@@ -588,7 +586,7 @@ public class SDFScheduler extends Scheduler {
                 _debug("Threshold = " + threshold);
             }
 
-	    int[] tokens = (int []) waitingTokens.get(inputPort);
+	    int[] tokens = (int [])waitingTokens.get(inputPort);
 
             // Loop over all the channels.  If one of the channels is
             // not fulfilled, then the port is not fulfilled, so

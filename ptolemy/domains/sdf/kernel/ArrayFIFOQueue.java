@@ -408,17 +408,9 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return An object from the queue.
      *  @exception NoSuchElementException If the queue is empty.
      */
-    public Object take() throws NoSuchElementException {
+    public Object take() {
         Object obj = null;
-        try {
-            if(isEmpty()) throw new NoSuchElementException("Empty Queue");
-            obj = _queueArray[_queueBack];
-            _queueArray[_queueBack] = null;
-            _queueBack++;
-            if(_queueBack >= _queueArray.length)
-                _queueBack = _queueBack % _queueArray.length;
-            _queueSize--;
-        } catch (NoSuchElementException ex) {
+        if(isEmpty()) {
             String str = "";
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
@@ -426,6 +418,14 @@ public final class ArrayFIFOQueue implements Cloneable {
             throw new NoSuchElementException("The FIFOQueue" + str
                     + " is empty!");
         }
+        // Remove it from the buffer.
+        obj = _queueArray[_queueBack];
+        _queueArray[_queueBack] = null;
+        _queueBack++;
+        if(_queueBack >= _queueArray.length)
+            _queueBack = _queueBack % _queueArray.length;
+        _queueSize--;
+        // Add it to the history buffer.
         if (_historyCapacity != 0) {
             if (_historyCapacity == _historyList.size()) {
                 _historyList.removeFirst();;
