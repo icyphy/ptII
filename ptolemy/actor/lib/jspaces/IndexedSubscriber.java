@@ -278,7 +278,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
     }
 
     /** Produce the oldest received token. One for each firing.
-     *  If there's no token available, then the bahavior depends
+     *  If there's no token available, then the behavior depends
      *  on the "blocking" parameter. If blocking is true, the
      *  exexution blocks until there's a token coming in.
      *  Otherwise, the defaultToken is produced.
