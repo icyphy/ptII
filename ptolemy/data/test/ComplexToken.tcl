@@ -67,10 +67,10 @@ test ComplexToken-1.1 {Create a non-empty instance from a Complex} {
 ######################################################################
 ####
 # 
-#test ComplexToken-1.2 {Create a non-empty instance from an String} {
-#    set p [java::new {ptolemy.data.ComplexToken String} "7.77"]
-#    $p toString
-#} {7.77}
+test ComplexToken-1.2 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.ComplexToken String} "1.0+2.0i"]
+    $p toString
+} {1.0 + 2.0i}
 
 ######################################################################
 ####

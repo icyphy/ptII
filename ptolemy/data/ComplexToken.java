@@ -33,6 +33,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexToken
@@ -58,16 +60,16 @@ public class ComplexToken extends ScalarToken {
 	_value = value;
     }
 
-    /* FIXME: It seems that initializing from String should be supported
-       // in the Complex class. This constructor will be supported after
-       // the Complex class supports that.
-       // Construct a ComplexToken from the specified string.
-       // @exception IllegalArgumentException If the Token could not
-       //  be created with the given String.
-
-       public ComplexToken(String init) throws IllegalArgumentException {
-       }
-    */
+    /** Construct a ComplexToken from the specified string.
+     *  @exception IllegalActionException If the string does not represent
+     *   a parsable complex number.
+     */
+    public ComplexToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	ComplexToken token = (ComplexToken)tree.evaluateParseTree();
+        _value = token.complexValue();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
