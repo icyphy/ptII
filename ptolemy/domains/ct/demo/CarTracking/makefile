@@ -35,7 +35,7 @@ ME =		ptolemy/domains/ct/demo/CarTracking
 ROOT =		../../../../../
 
 # JINI_JARS is defined in $PTII/mk/ptII.mk, which is created by $PTII/configure
-CLASSPATH =	$(ROOT)\$(CLASSPATHSEPARATOR)$(JINI_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
