@@ -60,11 +60,6 @@ JSRCS = \
 	ProcessReceiver.java \
 	ProcessThread.java \
 	TerminateProcessException.java 
-	
-#	MultiBranchActor.java \
-#	BranchThread.java 
-#	MailboxBoundaryReceiver.java \
-#	TerminateBranchException.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
