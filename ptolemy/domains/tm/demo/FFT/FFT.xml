@@ -10,10 +10,18 @@
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
         <property name="defaultTaskExecutionTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+        </property>
+        <property name="displaySchedule" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="91.0, 30.0">
         </property>
@@ -130,7 +138,7 @@ executed in a separate thread.</text>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
-                        </configure>        </entity>
+                                    </configure>        </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.moml.Location" value="147.0, 196.0">
             </property>
@@ -230,7 +238,7 @@ executed in a separate thread.</text>
 <xRange min="1.0E-4" max="9.9922875"/>
 <yRange min="-1.7675101890654452" max="2.1545375117972467"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <entity name="atomic composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="243.0, 189.0">
         </property>
@@ -388,7 +396,7 @@ executed in a separate thread.</text>
 <xRange min="90.0" max="9994.0"/>
 <yRange min="-1.7675101890654452" max="2.1545375117972467"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="342.0, 195.0">
         </vertex>
