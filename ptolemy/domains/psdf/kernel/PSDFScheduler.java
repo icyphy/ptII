@@ -51,6 +51,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.*;
+import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -123,7 +124,7 @@ pages 84-89, Paris, France, June 2000.
 @version $Id$
 @since Ptolemy II 0.2
 */
-public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
+public class PSDFScheduler extends BaseSDFScheduler {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler".
@@ -165,6 +166,13 @@ public class PSDFScheduler extends ptolemy.domains.sdf.kernel.SDFScheduler {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
+    }
+
+    /** Declare the rate dependency on any external ports of the model.
+     *  SDF directors should invoke this method once during preinitialize.
+     */
+    public void declareRateDependency() throws IllegalActionException {
+        // FIXME: implement
     }
 
     /** Return a string representation of the buffer sizes of the relations
