@@ -53,7 +53,7 @@ public class SDFdemo {
                
                 Parameter p = (Parameter) d.getAttribute("Iterations");
                 p.setToken(new IntToken(6));
-                m.blockingGo();
+                m.run();
         }
 }    
  
