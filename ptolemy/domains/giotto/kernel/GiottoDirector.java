@@ -201,11 +201,16 @@ public class GiottoDirector extends StaticSchedulingDirector {
         }
 
 
-        Director upperDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
+        Director upperDirector = 
+            ((CompositeActor) getContainer()).getExecutiveDirector();
+        
+        // FIXME: The following code is really bad because it
+        // causes dependencies to CT domain and DE domain. 
 
         if (upperDirector instanceof CTDirector) {
             // If embedded inside a CT model
-            if (Math.abs(getCurrentTime() - _expectedNextIterationTime) < ((CTDirector) upperDirector).getTimeResolution()) {
+            if (Math.abs(getCurrentTime() - _expectedNextIterationTime) 
+                < ((CTDirector) upperDirector).getTimeResolution()) {
                 if (_debugging) {
                     _debug("*** Prefire returned true.");
                 }
@@ -220,6 +225,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
             // This screws up in the face of simultaneous
             // events... It's better without.
+            // FIXME: simultaneous events can happen when
+            // a Giotto model is embedded inside a DE model.
+            // In particular, a pure event and a token event
+            // may happen at the same time.
+            
             // _expectedNextIterationTime = getCurrentTime();
 
             if (getCurrentTime() < _expectedNextIterationTime) {
@@ -228,9 +238,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 }
                 return false;
             }
-            if (_debugging) {
-                _debug("*** Prefire returned true.");
-            }
+
             // if the outside time is beyond the formerly set
             // _expectedNextIterationTime, and if it is the start
             // of a new run,
@@ -243,6 +251,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
                             getCurrentTime());
                 }
                 _expectedNextIterationTime = getCurrentTime();
+            }
+
+            if (_debugging) {
+                _debug("*** Prefire returned true.");
             }
             return true;
         }
