@@ -301,6 +301,9 @@ proc jdkCapture {script varName} {
     set result [uplevel $script]
     java::call System setOut $stdout
     $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
     return $result
 }
 
@@ -325,8 +328,11 @@ test NamedObj-9.2 {Test StreamListener: ByteArrayOutputStream} {
     $a addDebugListener $listener
     $a setName "B"
     $a setName "C"
-    $byteArrayOutputStream toString
-} {Changed name from . to .B
+    # This is necessary so that we get the same results under windows.
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$byteArrayOutputStream toString] "\n" output
+    list $output
+} {{Changed name from . to .B
 Changed name from .B to .C
-}
+}}
 
