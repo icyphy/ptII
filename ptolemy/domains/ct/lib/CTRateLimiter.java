@@ -104,7 +104,7 @@ public class CTRateLimiter extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     /** The rising slew rate.
-     *  The parameter has type doubele and default value 1.0.
+     *  The parameter has type double and default value 1.0.
      */
     public Parameter risingSlewRate;
 
