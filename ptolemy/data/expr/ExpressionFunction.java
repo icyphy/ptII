@@ -71,15 +71,15 @@ public class ExpressionFunction implements FunctionToken.Function {
      *  @exception IllegalActionException If thrown during evaluating
      *   the function.
      */
-    public ptolemy.data.Token apply(List arguments)
+    public ptolemy.data.Token apply(ptolemy.data.Token[] arguments)
             throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
         // construct a NamedConstantsScope that contains mappings from
         // argument names to the given argument values
         Map map = new HashMap();
-        for (int i = 0; i < arguments.size(); ++i) {
+        for (int i = 0; i < arguments.length; ++i) {
             String name = (String)_argumentNames.get(i);
-            ptolemy.data.Token argument = (ptolemy.data.Token)arguments.get(i);
+            ptolemy.data.Token argument = arguments[i];
             map.put(name, argument);
         }
         NamedConstantsScope argumentsScope = new NamedConstantsScope(map);

@@ -501,6 +501,11 @@ public class TypeLattice {
             StructuredType recordRep =
                 (new RecordType(labels, types))._getRepresentative();
 
+            StructuredType functionRep = 
+                new ptolemy.data.type.FunctionType(
+                        new ptolemy.data.type.Type[0], 
+                     ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
+
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
             _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
             _basicLattice.addNodeWeight(BaseType.UNSIGNED_BYTE);
@@ -518,7 +523,7 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(BaseType.UNKNOWN);
             _basicLattice.addNodeWeight(BaseType.NUMERICAL);
             _basicLattice.addNodeWeight(BaseType.OBJECT);
-			_basicLattice.addNodeWeight(BaseType.XMLTOKEN);
+            _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
             _basicLattice.addNodeWeight(BaseType.SCALAR);
             _basicLattice.addNodeWeight(BaseType.STRING);
             _basicLattice.addNodeWeight(BaseType.EVENT);
@@ -526,9 +531,9 @@ public class TypeLattice {
 
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
-
-			_basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
-		    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
+            
+            _basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
             _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
@@ -542,7 +547,8 @@ public class TypeLattice {
                     BaseType.NUMERICAL);
             _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
             _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
-            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
+            _basicLattice.addEdge(BaseType.COMPLEX_MATRIX,
+                    BaseType.NUMERICAL);
 
             _basicLattice.addEdge(BaseType.FIX,
                     BaseType.FIX_MATRIX);
@@ -555,7 +561,8 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
 
-            _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
+            _basicLattice.addEdge(BaseType.INT_MATRIX, 
+                    BaseType.DOUBLE_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
                     BaseType.COMPLEX_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);

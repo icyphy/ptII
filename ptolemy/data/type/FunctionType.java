@@ -516,7 +516,7 @@ public class FunctionType extends StructuredType {
         return new FunctionType(types, returnType);
     }
 
-    /** Return the least Upper bound of this type with the specified
+    /** Return the least upper bound of this type with the specified
      *  type. The specified type must be a FunctionType, otherwise an
      *  exception will be thrown.
      *  @param type a FunctionType.

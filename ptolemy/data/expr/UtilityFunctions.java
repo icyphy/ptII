@@ -358,9 +358,9 @@ public class UtilityFunctions {
             Token iterate = initial;
             result[0] = initial;
             for (int i = 1; i < length; i++) {
-                LinkedList arglist = new LinkedList();
-                arglist.add(iterate);
-                iterate = function.apply(arglist);
+                Token[] args = new Token[1];
+                args[0] = iterate;
+                iterate = function.apply(args);
                 result[i] = iterate;
             }
             return new ArrayToken(result);
@@ -587,10 +587,10 @@ public class UtilityFunctions {
         Token[] result = new Token[array.length()];
         if (arity == 1) {
             for (int i = 0; i < array.length(); i++) {
-                Token args = (Token) array.getElement(i);
-                LinkedList arglist = new LinkedList();
-                arglist.add(args);
-                result[i] = function.apply(arglist);
+                Token arg = (Token) array.getElement(i);
+                Token[] args = new Token[1];
+                args[0] = arg;
+                result[i] = function.apply(args);
             }
         } else if (arity > 1) {
             for (int i = 0; i < array.length(); i++) {
@@ -598,15 +598,15 @@ public class UtilityFunctions {
                 if (!(args instanceof ArrayToken)) {
                     throw new IllegalActionException("Invalid arguments to map(): mismatched arity.");
                 }
-                LinkedList arglist = new LinkedList();
+                Token[] invokeArgs = new Token[arity];
                 ArrayToken castArgs = (ArrayToken) args;
                 if (castArgs.length() != arity) {
                     throw new IllegalActionException("Invalid arguments to map(): mismatched arity.");
                 } else {
                     for (int j = 0; j < arity; j++) {
-                        arglist.add(castArgs.getElement(j));
+                        invokeArgs[j] = castArgs.getElement(j);
                     }
-                    result[i] = function.apply(arglist);
+                    result[i] = function.apply(invokeArgs);
                 }
             }
         } else {

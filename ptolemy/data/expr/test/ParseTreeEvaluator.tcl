@@ -625,3 +625,12 @@ test ParseTreeEvaluator-27.0 {Test Error message} {
     catch {list [evaluate {1.0+im}]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The ID im is undefined.}}
+
+####################################################################
+
+test ParseTreeEvaluator-28.0 {Test zero functions} {
+    list [evaluate {1.zero()}] \
+         [evaluate {(1ub).zero()}] \
+         [evaluate {1l.zero()}]
+} {0 0ub 0L}
+

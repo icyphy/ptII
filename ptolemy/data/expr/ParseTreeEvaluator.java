@@ -261,20 +261,34 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (_scope != null && functionName != null) {
             value = _scope.get(node.getFunctionName());
         }
+        
+        // The first child contains the function name as an id.  It is
+        // ignored, and not evaluated unless necessary.
+        int argCount = node.jjtGetNumChildren() - 1;
+        Type[] argTypes = new Type[argCount];
+        ptolemy.data.Token[] argValues = new ptolemy.data.Token[argCount];
+
+        // First try to find a signature using argument token values.
+        for (int i = 0; i < argCount; i++) {
+            // Save the resulting value.
+            _evaluateChild(node, i + 1);
+            ptolemy.data.Token token = _evaluatedChildToken;
+            argValues[i] = token;
+            argTypes[i] = token.getType();
+        }
 
         if (value != null || functionName == null) {
             // The value of the first child should be either a FunctionToken,
             // an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
-            ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+                        
+            // Evaluate it.
+            value = _evaluateChild(node, 0);
 
-            value = tokens[0];
-
-            int numChildren = node.jjtGetNumChildren();
             if (value instanceof ArrayToken) {
-                if (numChildren == 2) {
+                if (argCount == 1) {
                     result = _evaluateArrayIndex(node, value,
-                            tokens[1]);
+                            argValues[0]);
                 } else {
                     //FIXME need better error message when the first child
                     // is, say, an array expression
@@ -282,9 +296,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                             + "when referencing " + node.getFunctionName());
                 }
             } else if (value instanceof MatrixToken) {
-                if (numChildren == 3) {
+                if (argCount == 2) {
                     result = _evaluateMatrixIndex(node, value,
-                            tokens[1], tokens[2]);
+                            argValues[0], argValues[1]);
                 } else {
                     //FIXME need better error message when the first child
                     // is, say, a matrix expression
@@ -295,17 +309,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 FunctionToken function = (FunctionToken)value;
                 // check number of children against number of arguments of
                 // function
-                if (function.getNumberOfArguments() != numChildren - 1) {
+                if (function.getNumberOfArguments() != argCount) {
                     throw new IllegalActionException("Wrong number of "
                             + "arguments when applying function "
                             + value.toString());
                 }
-                // apply the function token to the arguments
-                ArrayList argList = new ArrayList(numChildren - 1);
-                for (int i = 0; i < numChildren - 1; ++i) {
-                    argList.add(i, tokens[i + 1]);
-                }
-                result = function.apply(argList);
+           
+                result = function.apply(argValues);
             } else {
                 // the value cannot be indexed or applied
                 // throw exception
@@ -318,10 +328,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (node.getFunctionName().compareTo("eval") == 0) {
-            if (node.jjtGetNumChildren() == 2) {
-                _evaluateChild(node, 1);
+            if (argCount == 1) {
                 ptolemy.data.Token token =
-                    _evaluatedChildToken;
+                    argValues[0];
 
                 if (token instanceof StringToken) {
                     // Note that we do not want to store a reference to
@@ -344,18 +353,20 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         if (node.getFunctionName().compareTo("matlab") == 0) {
-            _evaluateChild(node, 1);
-            ptolemy.data.Token token =
-                _evaluatedChildToken;
-            if (token instanceof StringToken) {
-                String expression = ((StringToken)token).stringValue();
-                ParseTreeFreeVariableCollector collector =
-                    new ParseTreeFreeVariableCollector();
-                Set freeVariables =
-                    collector.collectFreeVariables(node, _scope);
-                _evaluatedChildToken =
-                    MatlabUtilities.evaluate(expression, freeVariables,_scope);
-                return;
+            if (argCount == 1) { 
+                ptolemy.data.Token token =
+                argValues[0];
+                if (token instanceof StringToken) {
+                    String expression = ((StringToken)token).stringValue();
+                    ParseTreeFreeVariableCollector collector =
+                        new ParseTreeFreeVariableCollector();
+                    Set freeVariables =
+                        collector.collectFreeVariables(node, _scope);
+                    _evaluatedChildToken =
+                        MatlabUtilities.evaluate(
+                                expression, freeVariables, _scope);
+                    return;
+                } 
             } else {
                 throw new IllegalActionException("The function \"matlab\" is" +
                         " reserved for invoking the matlab engine, and takes" +
@@ -365,22 +376,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        // the first child contains the function name as an id
-        int argCount = node.jjtGetNumChildren() - 1;
-
         // If not a special function, then reflect the name of the function.
-        Type[] argTypes = new Type[argCount];
-        Object[] argValues = new Object[argCount];
-
-        // First try to find a signature using argument token values.
-        for (int i = 0; i < argCount; i++) {
-            // Save the resulting value.
-            _evaluateChild(node, i + 1);
-            ptolemy.data.Token token = _evaluatedChildToken;
-            argValues[i] = token;
-            argTypes[i] = token.getType();
-        }
-
         ptolemy.data.Token result = _functionCall(
                 node.getFunctionName(), argTypes, argValues);
         _evaluatedChildToken = (result);

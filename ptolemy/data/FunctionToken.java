@@ -90,7 +90,7 @@ public class FunctionToken extends Token {
      *  compatible with this function, or an error occurs during
      *  evaluation.
      */
-    public Token apply(List args) throws IllegalActionException {
+    public Token apply(Token[] args) throws IllegalActionException {
         return _function.apply(args);
     }
 
@@ -164,7 +164,7 @@ public class FunctionToken extends Token {
          *  @exception IllegalActionException If thrown during evaluating
          *   the function.
          */
-        public Token apply(List arguments) throws IllegalActionException;
+        public Token apply(Token[] arguments) throws IllegalActionException;
 
         /** Return the number of arguments of the function.
          *  @return The number of arguments of the function.
