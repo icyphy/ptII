@@ -72,9 +72,15 @@ import ptolemy.kernel.util.Workspace;
    be modeled by state transitions of the modal model, in which each state
    refinement infers a set of rate signatures.
    <p>
-   This director recomputes the schedules dynamically, and caches them.
+   This director recomputes the schedules dynamically. Schedules are
+   cached labeled by their corresponding rate signatures, with the most
+   recently used at the end of the queue. When a state is revisited,
+   the schedule identified by its rate signatures in the cache is used.
+   Therefore, we do not need to recompute the schedule. 
    The size of the cache can be set by the <i>scheduleCacheSize</i>
-   parameter. The default value of this parameter is 100.
+   parameter. The default value of this parameter is 100. If the cache
+   is full, the least recently used schedule (at the beginning of the
+   cache) is discareded.
    <p>
    <b>References</b>
    <p>
