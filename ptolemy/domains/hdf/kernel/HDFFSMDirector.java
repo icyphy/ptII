@@ -585,10 +585,17 @@ public class HDFFSMDirector extends FSMDirector {
         // For each channel.
         for (int i = 0; i < port.getWidth(); i++) {
             int rate = SDFUtilities.getTokenConsumptionRate(port);
-            //System.out.println("port width is " + port.getWidth());
-            //System.out.println("rate is: " + rate + " i is " + i);
-            for (int k = 0; k < rate; k++) {
-                try {
+            try {
+                if (insideReceivers != null
+                    && insideReceivers[i] != null) {
+                    //System.out.println("j length " + insideReceivers[i].length);
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+                        if (insideReceivers[i][j].hasToken()) {
+                            insideReceivers[i][j].get();
+                        }
+                    }
+                }
+                for (int k = 0; k < rate; k++) {
                     ptolemy.data.Token t = port.get(i);
                     if (_debugInfo) {
                         System.out.println("input port " + port.getFullName()
@@ -603,13 +610,13 @@ public class HDFFSMDirector extends FSMDirector {
                         // Successfully transferred data, so return true.
                         transferred = true;
                     }
-                } catch (NoTokenException ex) {
-                    // this shouldn't happen.
-                    throw new InternalErrorException(
-                            "Director.transferInputs: Internal error: " + ex);
+                } 
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(
+                    "Director.transferInputs: Internal error: " + ex);
                 }
             }
-        }
         return transferred;
     }
 
