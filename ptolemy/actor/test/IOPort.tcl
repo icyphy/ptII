@@ -690,11 +690,6 @@ ptolemy.actor.IOPort {..E7.P10} receivers {
 }}}
 
 test IOPort-10.7 {Construct a simple system, then call description} {
-    # This test fails with a java.lang.NullPointerException
-    # inside ptolemy.actor.IOPort.getReceivers(Relation)
-    # because _localReceiversTable is null
-    # The problem is that we don't call createReceiverw, so
-    # _localReceiversTable is null
     set container [java::new ptolemy.actor.TypedCompositeActor]
     set source [java::new ptolemy.actor.TypedAtomicActor $container source]
     set dest [java::new ptolemy.actor.TypedAtomicActor $container dest]
@@ -749,7 +744,7 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     } configuration {width 1 fixed}}
 } director {
 } executivedirector {
-}} {KNOWN_FAILURE}
+}}
 
 ######################################################################
 ####
