@@ -66,39 +66,13 @@ public class PNAlternate extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
         Token data;
-        //try {
 	int index = 0;
-	//int i;
-	//for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
 	int width = _output.getWidth();
 	while (true) {
-	    //Enumeration relations = _input.linkedRelations();
-	    //while (relations.hasMoreElements()) {
-	    //IORelation relation = (IORelation)relations.nextElement();
-	    //data = readFrom(_input, relation);
 	    data = _input.get(0);
-	    //for (int j =0; j<data.length; j++) {
-	    //_output.send(index, data[j]);
 	    _output.send(index, data);
 	    index = (index+1)%width;
 	}
-	//}
-	//}
-	//}                
-	//((PNDirector)getDirector()).processStopped();
-        // } catch (NoSuchItemException e) {
-// 	    System.out.println("Terminating "+ this.getName());
-//             return;
-//         } catch (InvalidStateException e) {
-// 	    System.out.println("InvalidStateException "+ e.toString());
-//             return;
-//         } catch (IllegalActionException e) {
-// 	    System.out.println("IllegalActionException "+ e.toString());
-//             return;
-//         } catch (CloneNotSupportedException e) {
-// 	    System.out.println("CloneNotSupportedException :"+ e.toString());
-//             return;
-//         }
     }
     
     ///////////////////////////////////////////////////////////////////
