@@ -76,6 +76,9 @@ public class GRShadedShape extends GRActor {
         
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
         
+        pose = new Parameter(this,"pose",
+               new DoubleMatrixToken(_pose));
+        
         _color = new Color3f(1.0f,1.0f,1.0f);
     }
     
@@ -94,6 +97,10 @@ public class GRShadedShape extends GRActor {
     /** The shininess of the 3D shape
      */
     public Parameter shininess;
+    
+    /** The initial pose of the 3D shape
+     */
+    public Parameter pose;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -156,6 +163,10 @@ public class GRShadedShape extends GRActor {
     protected Appearance _appearance;
     protected Material _material;
     protected float _shine;
+    protected double[][] _pose = new double[][] {{1.0, 0.0, 0.0, 0.0},
+                                                 {0.0, 1.0, 0.0, 0.0},
+                                                 {0.0, 0.0, 1.0, 0.0},
+                                                 {0.0, 0.0, 0.0, 1.0}};
 
     protected static final Color3f whiteColor = new Color3f(1.0f,1.0f,1.0f);
     protected static final Color3f blueColor = new Color3f(0.0f,0.0f,1.0f);

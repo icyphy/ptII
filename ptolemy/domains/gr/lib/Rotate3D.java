@@ -74,13 +74,13 @@ public class Rotate3D extends GRTransform {
 
    	    angle.setTypeEquals(BaseType.DOUBLE);
 	    initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
-	    axisDirectionX = new Parameter(this, "axisDirectionX", new DoubleToken(0.0));
-  	    axisDirectionY = new Parameter(this, "axisDirectionY", new DoubleToken(1.0));
-  	    axisDirectionZ = new Parameter(this, "axisDirectionZ", new DoubleToken(0.0));
-  	    baseX = new Parameter(this, "baseX", new DoubleToken(0.0));
-  	    baseY = new Parameter(this, "baseY", new DoubleToken(0.0));
-  	    baseZ = new Parameter(this, "baseZ", new DoubleToken(0.0));
-  	    
+	    
+	    axisDirection = new Parameter(this, "axis direction",
+                    new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
+	    
+  	    pivotLocation  = new Parameter(this, "pivot location",
+  	                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
+  	      	    
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -97,46 +97,20 @@ public class Rotate3D extends GRTransform {
      *  The default value of this parameter is 0.0.
      */
     public Parameter initialAngle;
-
-    /** The x component of the direction of the axis of rotation
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.0.
-     */
-    public Parameter axisDirectionX;
     
-
-    /** The y component of the direction of the axis of rotation
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 1.0.
-     */
-    public Parameter axisDirectionY;
     
+    /** The direction of the axis of rotation
+     *  The parameter should contain a DoubleMatrixToken
+     *  The default value of this parameter is [0.0, 1.0, 0.0]
+     */
+    public Parameter axisDirection;
 
-    /** The z component of the direction of the axis of rotation
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.0.
+    /** The pivot location of the axis of rotation.
+     *  This parameter should contain a DoubleMatrixToken
+     *  The default value of this parameter is [0.0, 0.0, 0.0]
      */
-    public Parameter axisDirectionZ;
     
-    /** The x component of the pivot of the axis of rotation
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.0.
-     */
-    public Parameter baseX;
-    
-
-    /** The y component of the pivot of the axis of rotation
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.0.
-     */
-    public Parameter baseY;
-    
-
-    /** The z component of the pivot of the axis of rotation
-     *  This parameter should contain a DoubleToken.
-     *  The default value of this parameter is 0.0.
-     */
-    public Parameter baseZ;
+    public Parameter pivotLocation;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -160,12 +134,8 @@ public class Rotate3D extends GRTransform {
         Rotate3D newobj = (Rotate3D)super.clone(workspace);
         newobj.angle = (TypedIOPort) newobj.getPort("angle");
         newobj.initialAngle = (Parameter) newobj.getAttribute("initialAngle");
-        newobj.axisDirectionX = (Parameter) newobj.getAttribute("axisDirectionX");
-        newobj.axisDirectionY = (Parameter) newobj.getAttribute("axisDirectionY");
-        newobj.axisDirectionZ = (Parameter) newobj.getAttribute("axisDirectionZ");
-        newobj.baseX = (Parameter) newobj.getAttribute("baseX");
-        newobj.baseY = (Parameter) newobj.getAttribute("baseY");
-        newobj.baseZ = (Parameter) newobj.getAttribute("baseZ");
+        newobj.axisDirection = (Parameter) newobj.getAttribute("axis direction");
+        newobj.pivotLocation = (Parameter) newobj.getAttribute("pivot location");
         return newobj;
     }
     
@@ -178,10 +148,13 @@ public class Rotate3D extends GRTransform {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken)angle.get(0)).doubleValue();
                 double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
-                _xAxis = ((DoubleToken) axisDirectionX.getToken()).doubleValue();
-                _yAxis = ((DoubleToken) axisDirectionY.getToken()).doubleValue();
-                _zAxis = ((DoubleToken) axisDirectionZ.getToken()).doubleValue();
-        
+                
+                DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
+       
+                _xAxis = (float) axis.getElementAt(0,0);
+                _yAxis = (float) axis.getElementAt(0,1);
+                _zAxis = (float) axis.getElementAt(0,2);
+
                 Quat4d quat = new Quat4d();
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
@@ -209,13 +182,20 @@ public class Rotate3D extends GRTransform {
      *   be obtained
      */
     public void initialize() throws IllegalActionException {
+    
+        DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
+       
+        _xAxis = (float) axis.getElementAt(0,0);
+        _yAxis = (float) axis.getElementAt(0,1);
+        _zAxis = (float) axis.getElementAt(0,2);
+        
+        DoubleMatrixToken pivot = (DoubleMatrixToken) pivotLocation.getToken();
+        
 
-        double _xAxis = ((DoubleToken) axisDirectionX.getToken()).doubleValue();
-        double _yAxis = ((DoubleToken) axisDirectionY.getToken()).doubleValue();
-        double _zAxis = ((DoubleToken) axisDirectionZ.getToken()).doubleValue();
-        double _baseX = ((DoubleToken) baseX.getToken()).doubleValue();
-        double _baseY = ((DoubleToken) baseY.getToken()).doubleValue();
-        double _baseZ = ((DoubleToken) baseZ.getToken()).doubleValue();
+        _baseX = (float) pivot.getElementAt(0,0);
+        _baseY = (float) pivot.getElementAt(0,1);
+        _baseZ = (float) pivot.getElementAt(0,2);
+        
         double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
         
    	    _accumulatedAngle = originalAngle; 
