@@ -61,7 +61,7 @@ JSRCS = \
         CallGraphPruner.java \
         ClassStructureGenerator.java \
 	CNames.java \
-    	CodeFileGenerator.java \
+	CodeFileGenerator.java \
 	CodeGenerator.java \
 	Context.java \
 	CSwitch.java \
@@ -83,10 +83,9 @@ JSRCS = \
 	StubFileGenerator.java \
 	Utilities.java
 
-# Omitted Files \
+# Omitted Files
 
 OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
 	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
