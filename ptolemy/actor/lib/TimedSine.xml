@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="TimedSine" extends="ptolemy.actor.TypedCompositeActor">
     <doc>This composite actor generates a timed sine wave.</doc>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[53, 160]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[92, 102]">
     </property>
     <property name="frequency" class="ptolemy.data.expr.Parameter" value="PI">
     </property>
@@ -16,18 +16,18 @@
     <port name="trigger" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="multiport"/>
-        <property name="_location" class="ptolemy.moml.Location" value="32.5, 164.0">
+        <property name="_location" class="ptolemy.moml.Location" value="25.0, 165.0">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="580.0, 214.0">
+        <property name="_location" class="ptolemy.moml.Location" value="575.0, 215.0">
         </property>
     </port>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="101.5, 164.5">
+        <property name="_location" class="ptolemy.moml.Location" value="100.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -40,7 +40,9 @@
     <entity name="Frequency" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="frequency">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 163.5">
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="190.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -66,7 +68,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="395.0, 214.5">
+        <property name="_location" class="ptolemy.moml.Location" value="395.0, 215.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -79,7 +81,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="phase">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 243.5">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -90,7 +92,7 @@
         </port>
     </entity>
     <entity name="Add" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="312.0, 214.5">
+        <property name="_location" class="ptolemy.moml.Location" value="310.0, 215.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -107,7 +109,9 @@
     <entity name="Magnitude" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="485.0, 213.5">
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="490.0, 215.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

@@ -42,9 +42,9 @@ import ptolemy.graph.Inequality;
 //// CurrentTime
 /**
 Produce an output token on each firing with a value that is
-the current time. The output is of Type Double.
+the current time. The output is of type double.
 
-@author Jie Liu
+@author Jie Liu and Edward A. Lee
 @version $Id$
 */
 
@@ -62,41 +62,45 @@ public class CurrentTime extends TimedSource {
     public CurrentTime(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	    // set the type constraints.
-	    output.setTypeEquals(BaseType.DOUBLE);
+        // set the type constraints.
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send the current value of the state of this actor to the output.
+    /** Send the current time to the output.  If there are trigger inputs,
+     *  then the current time is the minimum of the times of each of the
+     *  input tokens (currently, these can be different only in the DT
+     *  domain).  Otherwise, current time is that reported by the director.
      *  @exception IllegalActionException If send() throws it.
      */
     public void fire() throws IllegalActionException {
-
         // For domain polymorphism getCurrentTime(channel_number) has
-        // to be called before get(channel_number)
-
-	// Interestingly, this method is very different from how
-	// actor.gui.TimedPlotter does some thing very similar.
-
-	// Edward wrote:
-	// "The only domain in which [the] two versions of getCurrentTime
+        // to be called before get(channel_number).  Currently,
+	// the only domain in which the two versions of getCurrentTime
         // are different is in DT... getCurrentTime() on the director
         // returns the "start of iteration" time, whereas getCurrentTime()
         // on the channel returns the time of the current sample.
-        // I think the getCurrentTime() actor should probably be calling
-        // it on the channel..."
-
-        double currentTime;
+        double currentTime = Double.MAX_VALUE;
         if (trigger.getWidth() > 0) {
-            currentTime = trigger.getCurrentTime(0);
-        } else {
+            // Trigger port is connected.
+            for(int i=0; i<trigger.getWidth(); i++) {
+                if (trigger.hasToken(i)) {
+                    currentTime = Math.min(
+                            trigger.getCurrentTime(i), currentTime);
+                    trigger.get(i);
+                }
+            }
+        }
+        // If current time is still the max value, then we were not
+        // successful inferring current time from the inputs. Get
+        // if from the director.
+        if (currentTime == Double.MAX_VALUE) {
             Director director = getDirector();
             currentTime = director.getCurrentTime();
         }
         super.fire();
         output.send(0, new DoubleToken(currentTime));
-
     }
 }
