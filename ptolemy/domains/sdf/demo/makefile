@@ -49,10 +49,7 @@ JSRCS = \
 	HTVQApplet.java \
 	Pulses.java \
 	VideoTest.java \
-	SDFApplet.java \
-	SDFDemo.java \
-	SDFDemo2.java \
-	SDFDemo3.java
+	SDFApplet.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
@@ -72,18 +69,6 @@ all: $(JCLASS) ../lib/*.class ../kernel/*.class
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
-
-VideoDemo: ../lib/vq/*.class ../kernel/*.class
-	set classpath = $(CLASSPATH); jtclsh VideoDemo.tcl
-
-demo: $(JSRCS)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFDemo
-
-demo2: $(JSRCS)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFDemo2
-
-demo3: $(JSRCS)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.SDFDemo3
 
 docs: javadocs
 
