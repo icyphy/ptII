@@ -304,7 +304,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	_copyAction = new CopyAction();
 	_pasteAction = new PasteAction();
 	_layoutAction = new LayoutAction();
-	_saveInLibraryAction = new SaveInLibraryAction();
+	//_saveInLibraryAction = new SaveInLibraryAction();
 	_importLibraryAction = new ImportLibraryAction();
     }
 
@@ -726,8 +726,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	_menubar.add(_graphMenu);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
+	//diva.gui.GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
+	//diva.gui.GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
       	diva.gui.GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
     }
@@ -877,7 +877,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _pasteAction;
     protected JMenu _graphMenu;
     protected Action _layoutAction;
-    protected Action _saveInLibraryAction;
+    //protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
 
     // Flag indicating that the current save action is "save as" rather than
@@ -1319,44 +1319,44 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	}
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// SaveInLibraryAction
+//      ///////////////////////////////////////////////////////////////////
+//      //// SaveInLibraryAction
 
-    // FIXME: The following needs quite a bit of work.
-    // Changes to the library are not persistent.
-    /** An action to save the current model in a library. */
-    private class SaveInLibraryAction extends AbstractAction {
+//      // FIXME: The following needs quite a bit of work.
+//      // Changes to the library are not persistent.
+//      /** An action to save the current model in a library. */
+//      private class SaveInLibraryAction extends AbstractAction {
 
-        /** Create a new action to save a model in a library. */
-	public SaveInLibraryAction() {
-	    super("Save In Library");
-	    putValue("tooltip", "Save as a Component in Library");
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_S));
-	}
+//          /** Create a new action to save a model in a library. */
+//  	public SaveInLibraryAction() {
+//  	    super("Save In Library");
+//  	    putValue("tooltip", "Save as a Component in Library");
+//  	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+//                      new Integer(KeyEvent.VK_S));
+//  	}
 
-        /** Create a new instance of the current model in the
-         *  actor library of the configuration.
-         */
-	public void actionPerformed(ActionEvent e) {
-	    try {
-		PtolemyEffigy effigy =
-		        (PtolemyEffigy)getTableau().getContainer();
-		NamedObj object = effigy.getModel();
-		if (object == null) return;
-		StringWriter buffer = new StringWriter();
-		object.exportMoML(buffer, 1);
-		Configuration configuration = (Configuration)effigy.toplevel();
-		NamedObj library = configuration.getEntity("actor library");
-		if (library == null) return;
-                ChangeRequest request =
-                    new MoMLChangeRequest(this, library, buffer.toString());
-		library.requestChange(request);
-	    } catch (IOException ex) {
-		// Ignore.
-	    }
-	}
-    }
+//          /** Create a new instance of the current model in the
+//           *  actor library of the configuration.
+//           */
+//  	public void actionPerformed(ActionEvent e) {
+//  	    try {
+//  		PtolemyEffigy effigy =
+//  		        (PtolemyEffigy)getTableau().getContainer();
+//  		NamedObj object = effigy.getModel();
+//  		if (object == null) return;
+//  		StringWriter buffer = new StringWriter();
+//  		object.exportMoML(buffer, 1);
+//  		Configuration configuration = (Configuration)effigy.toplevel();
+//  		NamedObj library = configuration.getEntity("actor library");
+//  		if (library == null) return;
+//                  ChangeRequest request =
+//                      new MoMLChangeRequest(this, library, buffer.toString());
+//  		library.requestChange(request);
+//  	    } catch (IOException ex) {
+//  		// Ignore.
+//  	    }
+//  	}
+//      }
 
     ///////////////////////////////////////////////////////////////////
     //// ZoomInAction
