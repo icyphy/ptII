@@ -30,16 +30,43 @@
 
 package ptolemy.domains.sdf.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.sched.*;
-import ptolemy.kernel.util.*;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.*;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
 import ptolemy.moml.MoMLChangeRequest;
-
-import java.util.*;
 
 ///////////////////////////////////////////////////////////
 //// SDFScheduler
