@@ -146,7 +146,7 @@ public class CTPeriodicSampler extends CTActor
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
         dir.fireAt(this, _nextSamplingTime);
-        _debug(getFullName() + ": next sampling time= "
+        _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
     }
 
@@ -169,7 +169,7 @@ public class CTPeriodicSampler extends CTActor
         if(hasjump) {
             dir.fireAt(this, _nextSamplingTime);
         }
-        _debug(getFullName() + ": next sampling time= "
+        _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
         return true;
     }

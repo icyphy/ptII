@@ -240,9 +240,9 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         double timeAcc = getTimeResolution();
         Director exe = ca.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
-        _debug("Outside Time =" + _outsideTime);
+        _debug("Outside Time = " + _outsideTime);
         double nextIterTime = exe.getNextIterationTime();
-        _debug("Next Iter Time =" + nextIterTime);
+        _debug("Next Iter Time = " + nextIterTime);
         /**
            if(_outsideTime < getCurrentTime()-timeAcc) {
            throw new IllegalActionException(exe, this,
