@@ -219,7 +219,7 @@ public class PtParser {
      *  in a ptolemy.data.Token or in one of the data wrapper classes 
      *  in java.lang.
      *  @param name The string name that the parser will recognize.
-     *  @param value An Object conraining the value associated with 
+     *  @param value An Object constraining the value associated with 
      *   the constant.
      *  @exception IllegalArgumentException If the constant could not 
      *   be registered with the parser.

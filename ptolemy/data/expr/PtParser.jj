@@ -215,11 +215,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
     /** Add a constant to the list of constants that the parser recognizes.
      *  It is a static method. It stores the constant in a Hashtable, with 
      *  the corresponding entry for each name being a ptolemy.data.Token 
-     *  of the appropriate type. The value for the constant can be given
+     *  of the appropraite type. The value for the constant can be given
      *  in a ptolemy.data.Token or in one of the data wrapper classes 
      *  in java.lang.
      *  @param name The string name that the parser will recognize.
-     *  @param value An Object conraining the value associated with 
+     *  @param value An Object constraining the value associated with 
      *   the constant.
      *  @exception IllegalArgumentException If the constant could not 
      *   be registered with the parser.

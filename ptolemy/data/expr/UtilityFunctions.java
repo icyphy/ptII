@@ -55,7 +55,7 @@ public class UtilityFunctions {
      *  is returned if the argument environment variable does not exist.
      * @param envName String representing the name of environment
      *   variable we want to obtain.
-     * @return StringToken containing the string refered to by the
+     * @return StringToken containing the string referred to by the
      *   environment variable.
      */
      public static StringToken env(String envName) {

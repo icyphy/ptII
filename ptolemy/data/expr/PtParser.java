@@ -208,7 +208,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  in a ptolemy.data.Token or in one of the data wrapper classes 
      *  in java.lang.
      *  @param name The string name that the parser will recognize.
-     *  @param value An Object conraining the value associated with 
+     *  @param value An Object constraining the value associated with 
      *   the constant.
      *  @exception IllegalArgumentException If the constant could not 
      *   be registered with the parser.
@@ -1157,19 +1157,19 @@ String tidied, x;
             jj_consume_token(ID);
        jjtree.closeNodeScope(jjtn007, true);
        jjtc007 = false;
-        Parameter referedParam = null;
+        Parameter referredParam = null;
         if (_scope != null) {
-           referedParam = (Parameter)_scope.get(token.image);
+           referredParam = (Parameter)_scope.get(token.image);
         }
-        if (referedParam != null) {
+        if (referredParam != null) {
            // The Parameter is stored in the node so that the tree 
            // does not have to be reparsed whenever the Token in 
            // the Parameter changes.
-           jjtn007._param   = referedParam;
+           jjtn007._param   = referredParam;
            // Register the calling parameter as a ParameterListener 
            // of this Parameter this ID references.
            if (_listener != null) {
-                referedParam.addParameterListener(_listener);
+                referredParam.addParameterListener(_listener);
             }
         } else if (_constantsRecognized.containsKey(token.image)) {
             // constant is registered with the parser.

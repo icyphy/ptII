@@ -49,7 +49,7 @@ the parse tree.
 <p>
 A function node is created when a function call is parsed. This node
 will search for the function, using reflection, in the classes
-registered for this purpose with the parser. Thus to add to the lsit
+registered for this purpose with the parser. Thus to add to the list
 of functions available to the expression, it is only necessary to
 create a new class with the functions defined in it and register
 it with the parser. By default only java.lang.Math and
