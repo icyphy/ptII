@@ -53,7 +53,7 @@ models for communication with a host computer:
 <ul>
 <li> "CM11A" serial module (wired)
 <li> "CM17A" serial module (wireless)
-<ul>
+</ul>
 Note that the wireless serial module is unidirectional, only sending
 commands to the X10 network, and not receiving from it.  Thus, the
 Listener, CommandSensor, and LevelSensor actors will not work with it.
