@@ -804,7 +804,7 @@ public class HelicopterApplet extends CTApplet {
                 double ratio = (currenttime/_stopTime)*140.0;
                 int width = (new Double(ratio)).intValue();
                 if((ratio - (double)width) > 0.5) {
-                    width +=1;
+                    width += 1 ;
                 }
                 if(_switched) {
                     _switchTime[_currentState] = width-1;
@@ -902,6 +902,6 @@ public class HelicopterApplet extends CTApplet {
 
         ///////////////////////////////////////////////////////////////////
         ////                    private variables                      ////
-        private int _width= 0;
+        private int _width = 0;
     }
 }
