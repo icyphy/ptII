@@ -55,13 +55,14 @@ incoming arcs and one for outgoing arcs.  More generally, the arcs
 to an entity may be divided into any number of subsets, with one port
 representing each subset.
 <p>
-A Port can link to any instance of Relation.  Derived classes may
-wish to constrain links to a subclass of Relation.  To do this,
-subclasses should override the protected method _checkLink() to throw
-an exception if its argument is a relation that is not of the appropriate
-subclass.  Similarly, if a subclass wishes to constrain the containers
-of the port to be of a subclass of Entity, they should override
-the protected method _checkContainer().
+
+A Port can link to any instance of Relation.  Derived classes may wish
+to constrain links to a subclass of Relation.  To do this, subclasses
+should override the protected method {@link #_checkLink(Relation)} to
+throw an exception if its argument is a relation that is not of the
+appropriate subclass.  Similarly, if a subclass wishes to constrain
+the containers of the port to be of a subclass of Entity, they should
+override the protected method {@link #_checkContainer(Entity)}.
 
 @author Mudit Goel, Edward A. Lee, Jie Liu
 @version $Id$
@@ -367,7 +368,7 @@ public class Port extends NamedObj {
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      *  @see #getContainer()
-     *  @see #_checkContainer(Prototype)
+     *  @see #_checkContainer(Entity)
      */
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
