@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.List;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtSumNode
@@ -46,7 +46,7 @@ The parse tree created from the expression string consists of a
 hierarchy of node objects. This class represents sum(+, -) nodes in
 the parse tree.
 
-@author Neil Smyth
+@author Neil Smyth, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
@@ -69,6 +69,13 @@ public class ASTPtSumNode extends ASTPtRootNode {
         return _lexicalTokens;
     }
 
+    /** Close this node.
+     */
+    public void jjtClose() {
+        super.jjtClose();
+        _lexicalTokens.trimToSize();
+    }
+
     /** Traverse this node with the given visitor.
      */
     public void visit(ParseTreeVisitor visitor)
@@ -76,5 +83,5 @@ public class ASTPtSumNode extends ASTPtRootNode {
         visitor.visitSumNode(this);
     }
 
-    protected List _lexicalTokens = new LinkedList();
+    protected ArrayList _lexicalTokens = new ArrayList();
 }

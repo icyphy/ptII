@@ -55,7 +55,7 @@ test PtParser-2.1 {Construct Parser objects using different constructors} {
     set e [java::new {ptolemy.kernel.Entity String} parent]
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.5]
     set param1 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id1 $tok1]
-    set p2 [java::new {ptolemy.data.expr.PtParser ptolemy.data.expr.Variable} $param1]
+    set p2 [java::new ptolemy.data.expr.PtParser]
 
     set c1 [$p1 getClass]
     set c2 [$p2 getClass]
@@ -247,7 +247,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set param3 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id3 $tok3]
     set param4 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id4 $tok4]
 
-    set parser [java::new {ptolemy.data.expr.PtParser ptolemy.data.expr.Variable} $param1]
+    set parser [java::new ptolemy.data.expr.PtParser]
     $param1 setContainer $e
     $param2 setContainer $e
     $param3 setContainer $e

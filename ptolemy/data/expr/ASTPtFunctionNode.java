@@ -163,13 +163,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         return _funcName;
     }
 
-    /** Return the parser used to parse this tree.  This is used to 
-     *  implement the eval() method.
-     */
-    public PtParser getParser() {
-        return _parser;
-    }
-
     public void jjtClose() {
         super.jjtClose();
         // We cannot assume that the result of a function call is 
@@ -604,6 +597,5 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ////                         protected variables               ////
 
     protected String _funcName;
-    protected PtParser _parser;
 }
 

@@ -280,7 +280,7 @@ public class Variable extends Attribute
             newvar._varType = newvar._declaredType;
         }
         // _typeAtMost is preserved
-        newvar._parser = null;
+        //  newvar._parser = null;
         newvar._parseTree = null;
    
         newvar._constraints = new LinkedList();
@@ -1072,11 +1072,12 @@ public class Variable extends Attribute
 
         try {
             workspace().getReadAccess();
-            if (_parser == null) {
-                _parser = new PtParser(this);
-            }
+           //  if (_parser == null) {
+//                 _parser = new PtParser();
+//             }
             if (_parseTree == null) {
-                _parseTree = _parser.generateParseTree(_currentExpression);
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(_currentExpression);
             }
             if(_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
@@ -1288,7 +1289,7 @@ public class Variable extends Attribute
     private Type _varType = BaseType.UNKNOWN;
 
     // The parser used by this variable to parse expressions.
-    private PtParser _parser;
+    //  private PtParser _parser;
 
     // The instance of VariableScope.
     private ParserScope _parserScope = null;

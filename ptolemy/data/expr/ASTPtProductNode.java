@@ -44,7 +44,7 @@ The parse tree created from the expression string consists of a
 hierarchy of node objects. This class represents product(*,/,%) nodes in
 the parse tree.
 
-@author Neil Smyth, Bart Kienhuis
+@author Neil Smyth, Bart Kienhuis, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
@@ -67,6 +67,13 @@ public class ASTPtProductNode extends ASTPtRootNode {
         return _lexicalTokens;
     }
 
+    /** Close this node.
+     */
+    public void jjtClose() {
+        super.jjtClose();
+        _lexicalTokens.trimToSize();
+    }
+
     /** Traverse this node with the given visitor.
      */
     public void visit(ParseTreeVisitor visitor)
@@ -74,5 +81,5 @@ public class ASTPtProductNode extends ASTPtRootNode {
         visitor.visitProductNode(this);
     }
 
-    protected List _lexicalTokens = new LinkedList();
+    protected ArrayList _lexicalTokens = new ArrayList();
 }

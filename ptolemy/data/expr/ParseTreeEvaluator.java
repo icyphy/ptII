@@ -165,17 +165,14 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
 
         if (node.getFunctionName().compareTo("eval") == 0) {
-	    // Have a recursive call to the parser.
-            PtParser parser = node.getParser();
-	    if (parser == null) {
-		throw new InvalidStateException("ASTPtFunctionNode: " +
-                        " recursive call to null parser.");
-	    }
-	    if (node.jjtGetNumChildren() == 1) {
+            if (node.jjtGetNumChildren() == 1) {
                 _evaluateChild(node, 0);
                 ptolemy.data.Token token = 
                     node.jjtGetChild(0).getToken();
                 if(token instanceof StringToken) {
+                    // Note that we do not want to store a reference to
+                    // the parser, because parsers take up alot of memory.
+                    PtParser parser = new PtParser();
                     ASTPtRootNode tree = parser.generateParseTree(
                             ((StringToken)token).stringValue());
                     // Note that we evaluate the recursed parse tree
