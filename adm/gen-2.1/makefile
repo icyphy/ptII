@@ -28,8 +28,10 @@
 # Programmer:  Christopher Hylands
 
 # Variables
-#  If you change the version number, then edit ptII/adm/bin/ptIInightly-mail
-#  and ptolemy/web/nightly/toc.htm on the website
+#  If you change the version number, then edit 
+#  ptII/adm/bin/ptIInightly-mail
+#  ptII/adm/bin/ptIInightly
+#  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	2.1
 MINOR_VERSION =		devel
 
@@ -442,6 +444,7 @@ remote1distjavadocs:
 # Kernel first, then data, then actor, then alphabetical
 # If you edit JSALLDIRS, then you should probably add the directory to
 # $PTII/doc/makefile in two places so that we automatically generate docs.
+# # data/expr uxes math.ExtendedMath
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
 # de/test should be run after sdf
@@ -459,6 +462,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
 	$(REMOTE1PTIIDIST)/ptolemy/data \
+	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
@@ -498,7 +502,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
-	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
