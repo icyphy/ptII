@@ -232,7 +232,8 @@ public class CompositeEntity extends ComponentEntity {
         while (entities.hasNext()) {
             ComponentEntity entity =
                 (ComponentEntity)entities.next();
-            ComponentEntity newSubentity = (ComponentEntity)entity.clone(workspace);
+            ComponentEntity newSubentity = (ComponentEntity)entity
+                .clone(workspace);
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
             // CloneNotSupportedException.
@@ -521,7 +522,8 @@ public class CompositeEntity extends ComponentEntity {
                 if (filter == null
                         || (filter.contains(relation)
                                 && (filter.contains(port)
-                                        ||  filter.contains(port.getContainer())))) {
+                                        ||  filter
+                                        .contains(port.getContainer())))) {
 
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
@@ -580,7 +582,8 @@ public class CompositeEntity extends ComponentEntity {
                     if (filter == null
                             || (filter.contains(relation)
                                     && (filter.contains(port)
-                                            ||  filter.contains(port.getContainer())))) {
+                                            ||  filter
+                                            .contains(port.getContainer())))) {
 
                         // In order to support level-crossing links,
                         // consider the possibility that the relation
