@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Networked" class="ptolemy.actor.TypedCompositeActor">
     <doc>Multiply a low-frequency sine wave (the signal)
 by a higher frequency one (the carrier).</doc>
     <property name="frequency1" class="ptolemy.data.expr.Parameter" value="PI*0.2">
@@ -166,24 +166,32 @@ http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.0"/>
-<yRange min="-1.0026543082159949" max="1.085040899188929"/>
+<yRange min="-0.9561865612273583" max="1.0538975636881984"/>
 <noGrid/>
 </plot>?>
-                        </configure>    </entity>
+        </configure>
+    </entity>
     <relation name="r2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="182.0, 95.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </relation>
     <relation name="r3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
     </relation>
     <link port="Carrier.output" relation="relation1"/>
     <link port="Remotely Defined Signal Source.output" relation="r2"/>
