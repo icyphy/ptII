@@ -149,10 +149,10 @@ public class Expression extends TypedAtomicActor {
                     // if (attr != null) {
                     //    attr.setContainer(null);
                     //}
-                    PassiveVariable pvar =
+                    PassiveVariable pVar =
                         new PassiveVariable(workspace());
-                    pvar.setName(portName);
-                    _variables.prepend(pvar);
+                    pVar.setName(portName);
+                    _variables.prepend(pVar);
                 } catch (IllegalActionException ex) {
                     // Not expected because a variable can be added to this
                     // container.
