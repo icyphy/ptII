@@ -30,7 +30,7 @@
 
 ME = 		ptolemy/domains/fsm/demo
 
-DIRS =		ABP Blending MultipleRuns
+DIRS =		ABP Blending MultipleRuns systemLevelType
 
 # Root of ptII directory
 ROOT =		../../../..
