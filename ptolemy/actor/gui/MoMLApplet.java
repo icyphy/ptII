@@ -52,6 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
+import ptolemy.moml.FilterOutGraphicalClasses;
 import ptolemy.moml.MoMLParser;
 
 
