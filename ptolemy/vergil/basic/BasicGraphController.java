@@ -296,7 +296,13 @@ public abstract class BasicGraphController extends AbstractGraphController
             // NOTE: Apparently, we need to repaint.
             // FIXME: This is not a very elegant way to do this.
             // It's accessing a protected member of BasicGraphFrame.
-            getFrame()._jgraph.repaint();
+            // FIXME: This is way too slow... It make preinitialize()
+            // take forever, presumably because all these variables
+            // are getting validated.  However, without it, then if
+            // a component moves during a run, e.g. by updating its
+            // _location variable, then it will leave a trail of
+            // cruft on the screen.
+            // getFrame()._jgraph.repaint();
         }
     }
 
