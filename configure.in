@@ -277,6 +277,10 @@ JDOCSIZE=
 case "$JVERSION" in
 	1.2.*)  JDOCSIZE="-J-Xmx132m"
 		AC_MSG_RESULT([yes, use $JDOCSIZE])
+		# The reference version of JDK 1.2 has a -native flag
+		# If we don't use -native, then some of the threading
+		# tests fail.
+		PTJACL_JFLAG=-native
 	;;
 	*) AC_MSG_RESULT([no, not necessary])
 	;;
@@ -498,9 +502,8 @@ fi
 # exists.  If we are shipping ptplot, then this directory might not
 # exist
 PTJACL_JAR=$PTII/lib/ptjacl.jar
-# The reference version of JDK 1.2 has a -native flag
-# If we don't use -native, then some of the threading tests fail
-PTJACL_JFLAG=-native
+# If we are running under JDK1.2.*, then PTJACL_JFLAG is defined
+# above to be -native
 JTCLSH='["$(JAVA)" $(PTJACL_JFLAG) tcl.lang.Shell]'
 
 if test ! -d "$PTII/util/testsuite"; then
