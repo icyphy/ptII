@@ -93,13 +93,6 @@ public class TestApplication implements ChangeListener {
 
         Runtime runtime = Runtime.getRuntime();
 
-        // Get the memory stats before we get the model name
-        // just to be sure that getting the model name does
-        // not skew are data too much
-        long startTime = System.currentTimeMillis();
-        long totalMemory1 = runtime.totalMemory()/1024;
-        long freeMemory1 = runtime.freeMemory()/1024;
-
         try {
             URL url = new URL(null, xmlFilename);
             toplevel = (CompositeActor) parser.parse(url,
@@ -134,6 +127,11 @@ public class TestApplication implements ChangeListener {
 
         String modelName = toplevel.getName();
 
+        long startTime = System.currentTimeMillis();
+        long totalMemory1 = runtime.totalMemory()/1024;
+        long freeMemory1 = runtime.freeMemory()/1024;
+        System.out.println("Spent " + (startTime - _parseStartTime)
+                + " ms. creating the model.");
         System.out.println(modelName +
                 ": Stats before execution:    "
                 + Manager.timeAndMemory(startTime,
@@ -208,6 +206,7 @@ public class TestApplication implements ChangeListener {
      *  @param args The command-line arguments naming the .xml file to run
      */
     public static void main(String args[]) {
+        _parseStartTime = System.currentTimeMillis();
         try {
             TestApplication simpleApplication =
                 new TestApplication(args[0]);
@@ -216,4 +215,7 @@ public class TestApplication implements ChangeListener {
             ex.printStackTrace();
         }
     }
+
+    /** The time that creating the model started */
+    protected static long _parseStartTime;
 }

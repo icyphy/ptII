@@ -216,7 +216,8 @@ runTreeShakeWithoutCodegen:
 	@echo "Note that you can run the original version by hand with"
 	@echo "  java -jar $(TREESHAKE_PREFIX).jar"
 	"$(JAVA)" -classpath $(TREESHAKE_PREFIX).jar \
-			$(TARGETPACKAGE).Main
+		ptolemy.copernicus.java.TestApplication \
+		$(MODELPATH) 
 
 profileTreeShakeWithoutCodegen:
 	@echo "Profile without codegen with treeshake.jar"

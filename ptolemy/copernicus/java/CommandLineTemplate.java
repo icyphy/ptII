@@ -34,7 +34,7 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 
 
 /////////////////////////////////////////////////////////////////
@@ -64,6 +64,7 @@ public class CommandLineTemplate {
      */
     public static void main(String args[]) {
         try {
+            _parseStartTime = System.currentTimeMillis();
             CommandLineTemplate app = new CommandLineTemplate();
             app.processArgs(args);
             app.waitForFinish();
@@ -123,7 +124,9 @@ public class CommandLineTemplate {
             long freeMemory1 = runtime.freeMemory()/1024;
             timeAndMemory(startTime,
                     totalMemory1, freeMemory1, buffer1);
-
+            System.out.println("Spent " + (startTime - _parseStartTime)
+                    + " ms. creating the model.");
+            
             System.out.println(modelName +
                     ": Stats before execution:    "
                     + buffer1);
@@ -258,11 +261,11 @@ public class CommandLineTemplate {
                 manager = model.getManager();
             }
             long startTime = System.currentTimeMillis();
-            manager.startRun();
+            manager.execute();
             System.out.println("Execution stats:");
             System.out.println(timeAndMemory(startTime));
 
-        } catch (IllegalActionException ex) {
+        } catch (KernelException ex) {
             // Model is already running.  Ignore.
             System.out.println("Exception = " + ex);
             ex.printStackTrace();
@@ -334,6 +337,9 @@ public class CommandLineTemplate {
 
     /** Are we testing? */
     protected static boolean _test = false;
+
+    /** The time that creating the model started */
+    protected static long _parseStartTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
