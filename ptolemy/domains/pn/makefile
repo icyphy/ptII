@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/pn
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib demo test
 
 # 		guidemo is not in tree because it require JDK1.2
 
