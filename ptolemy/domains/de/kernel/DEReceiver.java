@@ -179,7 +179,7 @@ public class DEReceiver extends AbstractReceiver {
     /** Return true if there are tokens available to the get() method.
      *  @return True if there are more tokens.
      */
-    public final boolean hasToken() {
+    public  boolean hasToken() {
         return (!_tokens.isEmpty());
     }
 
@@ -187,7 +187,7 @@ public class DEReceiver extends AbstractReceiver {
      *  tokens tokens available to the get() method.
      *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
-    public final boolean hasToken(int numberOfTokens) {
+    public  boolean hasToken(int numberOfTokens) {
         return (_tokens.size() >= numberOfTokens);
     }
 
