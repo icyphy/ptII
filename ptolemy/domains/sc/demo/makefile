@@ -29,20 +29,49 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = ABP
-
 # Root of ptII directory
 ROOT =		../../../..
-
-# $(ME) is used in ptdir.mk
-ME =		ptolemy/domains/sc/demo
-
-# True source directory
-VPATH =		$(ROOT)/$(ME)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Include rules for directories that contain only subdirectories.
-include $(ROOT)/mk/ptdir.mk
+DIRS = ABP
+
+CLASSPATH =     ../../../..
+
+# Used to build zip files
+PTPACKAGE =     ptolemy.domains.sc.demo
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/domains/sc/demo
+PTVERSION =     1.0
+PTDIST =        $(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =            $(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+PTCLASSJAR =    $(PTPACKAGE).jar
+
+JSRCS = \
+        SimpleHS.java
+
+EXTRA_SRCS =    $(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =    $(DIRS) doc test #demo
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+
+all: jclass
+install: jclass javadocs $(PTCLASSJAR)
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
+
