@@ -36,6 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.actor.util.*;
+import ptolemy.domains.pn.kernel.event.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import java.util.Enumeration;

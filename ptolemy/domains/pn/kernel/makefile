@@ -40,7 +40,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		test #doc
+DIRS = 		event test #doc
 
 # Used to build jar files
 PTPACKAGE = 	kernel
@@ -48,15 +48,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = BasePNDirector.java \
-	DefaultPNListener.java \
 	PNApplet.java \
 	PNDirector.java \
 	PNQueueReceiver.java \
-	PNProcessEvent.java \
-        PNProcessListener.java \
-	PNProcessMulticaster.java \
-	ReceiverActionEvent.java \
-	ReceiverListener.java \
 	TimedPNDirector.java
 
 
