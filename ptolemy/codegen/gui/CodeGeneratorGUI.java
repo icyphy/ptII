@@ -117,11 +117,14 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         JButton moreInfoButton = new JButton("More Info");
         moreInfoButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                    Configuration configuration = getConfiguration();
-                    // FIXME: Customize to the particular code generator.
-                    URL infoURL =
-                        getClass().getResource("../../../doc/codegen.htm");
                     try {
+                    	Configuration configuration = getConfiguration();
+                    	// FIXME: Customize to the particular code generator.
+                    	// Use Thread.currentThread() so that this code will
+                        // work under WebStart.
+                        URL infoURL = Thread.currentThread().getContextClassLoader()
+                            .getResource("ptolemy/codegen/README.html");
+                        
                         configuration.openModel(
                                 null, infoURL, infoURL.toExternalForm());
                     } catch (Exception ex) {
