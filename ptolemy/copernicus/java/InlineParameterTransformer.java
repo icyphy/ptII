@@ -108,7 +108,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 attributeToValueFieldMap, debug);
 
         // Loop over all the actor instance classes.
-        for(Iterator entities = _model.entityList().iterator();
+        for(Iterator entities = _model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
@@ -128,7 +128,7 @@ public class InlineParameterTransformer extends SceneTransformer {
             }           
         }
 
-        for(Iterator entities = _model.entityList().iterator();
+        for(Iterator entities = _model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =

@@ -126,7 +126,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
             parameterClass.getMethod("void setToken(ptolemy.data.Token)");
 
         // Loop over all the actor instance classes.
-        for(Iterator i = _model.entityList().iterator();
+        for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = Options.getString(options, "targetPackage")

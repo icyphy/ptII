@@ -212,7 +212,7 @@ public class InlinePortTransformer extends SceneTransformer {
         
         // FIXME toplevel ports?
         // Loop over all the actor instance classes.
-        for(Iterator entities = _model.entityList().iterator();
+        for(Iterator entities = _model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className = 

@@ -48,6 +48,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import soot.util.Chain;
 
 import soot.Body;
+import soot.Hierarchy;
 import soot.Local;
 import soot.Modifier;
 import soot.Options;
@@ -133,7 +134,7 @@ public class ActorTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
      
         // Create an instance class for every actor.
-        for(Iterator i = _model.entityList().iterator();
+        for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = entity.getClass().getName();
@@ -141,6 +142,10 @@ public class ActorTransformer extends SceneTransformer {
             entityClass.setLibraryClass();
 
             String newClassName = getInstanceClassName(entity, options);
+
+            System.out.println("Creating actor class " + newClassName);
+            System.out.println("for actor " + entity.getFullName());
+            System.out.println("based on " + className);
 
             // FIXME the code below should probably copy the class and then
             // add init stuff.  EntitySootClass handles this nicely, but
@@ -247,7 +252,6 @@ public class ActorTransformer extends SceneTransformer {
                 Settable classSettable = (Settable)classEntity.getAttribute(
                         settable.getName());
                 if(classSettable != null) {
-                    System.out.println("classSettable = " + classSettable);
                     try {
                         if(settable instanceof Variable) {
                             
@@ -278,7 +282,6 @@ public class ActorTransformer extends SceneTransformer {
                 ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort)ports.next();
                 if(classEntity.getPort(port.getName()) != null) {
-                    System.out.println("getting port for " + port.getName());
                     // Call the getPort method to get a reference to the port.
                     body.getUnits().add(Jimple.v().newAssignStmt(
                             portLocal,
@@ -287,7 +290,6 @@ public class ActorTransformer extends SceneTransformer {
                                     PtolemyUtilities.getPortMethod,
                                     StringConstant.v(port.getName()))));
                 } else {
-                    System.out.println("creating port for " + port.getName());
                     String portClassName = port.getClass().getName();
                     // If the class does not create the port,
                     // then create a new port with the right name.
@@ -372,6 +374,9 @@ public class ActorTransformer extends SceneTransformer {
             // FIXME: This would be nice to do by inlining instead of
             // special casing.
             _implementExecutableInterface(entityInstanceClass);            
+
+            // Reinitialize the hierarchy, since we've added classes.
+            Scene.v().setActiveHierarchy(new Hierarchy());
 
             // Inline all methods in the class that are called from
             // within the class.

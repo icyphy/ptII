@@ -193,6 +193,8 @@ public class ModelTransformer extends SceneTransformer {
                 modelClass, new HashSet(), options);
 
         units.add(Jimple.v().newReturnVoidStmt());
+
+        Scene.v().setActiveHierarchy(new Hierarchy());
         
         _removeSuperExecutableMethods(modelClass);
 
@@ -200,49 +202,10 @@ public class ModelTransformer extends SceneTransformer {
         LocalSplitter.v().transform(body, phaseName + ".lns");
         LocalNameStandardizer.v().transform(body, phaseName + ".lns");
 
-        Scene.v().setActiveHierarchy(new Hierarchy());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private Local _buildConstantTypeLocal(Body body,
-            ptolemy.data.type.Type type) {
-        Chain units = body.getUnits();
-        if(type instanceof ptolemy.data.type.BaseType) {
-            SootClass typeClass =
-                Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
-            SootMethod typeConstructor =
-                SootUtilities.searchForMethodByName(typeClass, "forName");
-            Local typeLocal = Jimple.v().newLocal("type_" + type.toString(),
-                    RefType.v(typeClass));
-            body.getLocals().add(typeLocal);
-            units.add(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newStaticInvokeExpr(typeConstructor,
-                            StringConstant.v(type.toString()))));
-            return typeLocal;
-        } else if(type instanceof ptolemy.data.type.ArrayType) {
-            // recurse
-            SootClass typeClass =
-                Scene.v().loadClassAndSupport("ptolemy.data.type.ArrayType");
-            SootMethod typeConstructor =
-                SootUtilities.searchForMethodByName(typeClass, "<init>");
-            Local elementTypeLocal = _buildConstantTypeLocal(body,
-                    ((ptolemy.data.type.ArrayType)type).getElementType());
-            Local typeLocal = Jimple.v().newLocal("type_arrayOf" +
-                    elementTypeLocal.getName(),
-                    RefType.v(typeClass));
-            body.getLocals().add(typeLocal);
-            units.add(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newNewExpr(RefType.v(typeClass))));
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newSpecialInvokeExpr(typeLocal,
-                            typeConstructor, elementTypeLocal)));
-            return typeLocal;
-        }
-        throw new RuntimeException("Unidentified type class = " +
-                type.getClass().getName());
-    }
 
     // Write the given composite.
     private void _composite(JimpleBody body, Local containerLocal,
@@ -466,7 +429,7 @@ public class ModelTransformer extends SceneTransformer {
                 RefType.v(PtolemyUtilities.entityClass));
         body.getLocals().add(entityLocal);
 
-	for(Iterator entities = composite.entityList().iterator();
+	for(Iterator entities = composite.deepEntityList().iterator();
 	    entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ModelTransformer: entity: " + entity);
@@ -653,14 +616,15 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Produce the links on ports contained by contained entities.
+    // Note that we have to carefully handle transparent hierarchy.
     private void _linksOnPortsContainedByContainedEntities(
             JimpleBody body, CompositeEntity composite) {
    
-        for(Iterator entities = composite.entityList().iterator();
+        for(Iterator entities = composite.deepEntityList().iterator();
             entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            Iterator ports = entity.portList().iterator();
-            while (ports.hasNext()) {
+            ComponentEntity entity =(ComponentEntity)entities.next();
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
                 ComponentPort port = (ComponentPort)ports.next();
                 
                 Local portLocal;
@@ -672,7 +636,8 @@ public class ModelTransformer extends SceneTransformer {
                     throw new RuntimeException("Found a port: " + port + 
                             " that does not have a local variable!");
                 }
-              
+                
+                List connectedPortList = port.connectedPortList();
                 Iterator relations = port.linkedRelationList().iterator();
                 int index = -1;
                 while (relations.hasNext()) {
@@ -681,11 +646,26 @@ public class ModelTransformer extends SceneTransformer {
                         = (ComponentRelation)relations.next();
                     if (relation == null) {
                         // Gap in the links.  The next link has to use an
-                        // explicit index.
+                        // explicit index.  
                         continue;
                     }
                     Local relationLocal = (Local)
                         _relationLocalMap.get(relation);
+
+                    // FIXME: Special case the transparent
+                    // hierarchy...  find the right relation that IS
+                    // in the relationLocalMap.  I have no idea how to
+                    // do this without reimplementing a bunch of stuff
+                    // that I don't really understand about how the
+                    // kernel handles receivers.  Basically, there is
+                    // no way to traverse the hierarchy without
+                    // getting receivers, and in this case I don't
+                    // want to do that because I actually want to find
+                    // a relation!
+                    if(relationLocal == null) {
+                        throw new RuntimeException("Transparent hierarchy is" +
+                                " not supported...");
+                    }
 
                     // Call the _insertLink method with the current index.
                     body.getUnits().add(Jimple.v().newInvokeStmt(
@@ -694,6 +674,7 @@ public class ModelTransformer extends SceneTransformer {
                                     IntConstant.v(index),
                                     relationLocal)));
                 }
+
             }
         }
     }
@@ -889,7 +870,7 @@ public class ModelTransformer extends SceneTransformer {
         }
         if(object instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity) object;
-            for(Iterator entities = composite.entityList().iterator();
+            for(Iterator entities = composite.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 updateCreatedSet(prefix, context, entity, set);

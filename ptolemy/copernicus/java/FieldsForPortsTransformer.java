@@ -77,7 +77,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
        
         // Loop over all the actor instance classes and get
         // fields for ports.
-        for(Iterator i = _model.entityList().iterator();
+        for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
@@ -89,7 +89,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         }
 
         // Loop over all the classes and replace getPort calls.
-        for(Iterator i = _model.entityList().iterator();
+        for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =

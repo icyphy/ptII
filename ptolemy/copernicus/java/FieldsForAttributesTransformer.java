@@ -111,7 +111,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
        
         // Loop over all the actor instance classes and get the
         // attribute fields.
-        for(Iterator i = _model.entityList().iterator();
+        for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 
@@ -131,7 +131,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         }
 
         // Loop over all the entity classes and replace getAttribute calls.
-       for(Iterator i = _model.entityList().iterator();
+       for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 

@@ -113,7 +113,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
-        for(Iterator i = _model.entityList().iterator();
+        for(Iterator i = _model.deepEntityList().iterator();
             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className = 
@@ -172,7 +172,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local actorLocal = Jimple.v().newLocal("actor",
                     actorType);
             body.getLocals().add(actorLocal);
-            for(Iterator entities = _model.entityList().iterator();
+            for(Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -206,7 +206,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            for(Iterator entities = _model.entityList().iterator();
+            for(Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
@@ -295,7 +295,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            for(Iterator entities = _model.entityList().iterator();
+            for(Iterator entities = _model.deepEntityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
