@@ -54,15 +54,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** An actor that displays a AVI, Quicktime or MPEG video file.
 
 <p>This actor accepts an ObjectToken that contains a DataSource.  This
-is typically obtained from the output of the StreamLoader actor.
-After the model is run, a window will pop up allowing control of
-playing, rate of playback, and volume control.
+is typically obtained from the output of the {@link StreamLoader}
+actor.  After the model is run, a window will pop up allowing control
+of playing, rate of playback, and volume control.
 
 @author James Yeh
 @version $Id$
 @since Ptolemy II 4.0
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
+@see StreamLoader
 */
 
 public class VideoPlayer extends Sink implements ControllerListener {

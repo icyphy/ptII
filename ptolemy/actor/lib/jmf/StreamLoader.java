@@ -44,8 +44,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// StreamLoader
-/**
-   Load a datasource from a URL.
+/** Load a datasource from a URL.
+    <p> This actor generates an ObjectToken that contains a DataSource.
+    <p> This actor is typically connected to a {@link VideoPlayer} actor.
 
    @author James Yeh
    @version $Id$
