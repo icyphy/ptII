@@ -222,7 +222,8 @@ public class DEReceiver implements Receiver {
 
     /** Set the IOPort containing this receiver.
      *  @param port The container.
-     *  @exception Not thrown, since any IOPort can be the container.
+     *  @exception IllegalActionException Not thrown, since any IOPort 
+     *     can be the container.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
         _container = port;

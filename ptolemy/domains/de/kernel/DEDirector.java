@@ -239,7 +239,7 @@ public abstract class DEDirector extends Director {
      *  This flag is set to the appropriate value during the prefire()
      *  or fire() phase of this director.
      *  @return False if _shouldPostfireReturnFalse, true otherwise.
-     *  @exception Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
         if (_shouldPostfireReturnFalse) {

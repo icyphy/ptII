@@ -91,7 +91,7 @@ public class DEActor extends TypedAtomicActor {
 
     /** Get the stop time from the director.
      *  @return The stop time.
-     *  @exception If the director does not exist.
+     *  @exception IllegalActionException If the director does not exist.
      */
     public double getStopTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
