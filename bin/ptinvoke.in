@@ -219,7 +219,7 @@ javaflag="$ALL_JFLAG"
 
 # See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
-USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
+#USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
 
 # Keep these alphabetical
 case `basename "$0"` in
