@@ -31,11 +31,8 @@
 package ptolemy.actor.lib.jspaces.util;
 
 import ptolemy.kernel.util.IllegalActionException;
-
 import java.rmi.*;
-
 import net.jini.space.JavaSpace;
-
 import com.sun.jini.mahout.binder.RefHolder;
 import com.sun.jini.mahout.Locator;
 import com.sun.jini.outrigger.Finder;
@@ -71,16 +68,47 @@ public class SpaceFinder {
                     new RMISecurityManager());
             }
 
+            System.out.println("java.security.policy=" + 
+                    System.getProperty("java.security.policy") + "\n" +
+                    "outrigger.spacename=" + 
+                    System.getProperty("outrigger.spacename") + "\n" +
+                    "com.sun.jini.lookup.groups=" + 
+                    System.getProperty("com.sun.jini.lookup.groups") + "\n" +
+                    "java.rmi.server.codebase=" + 
+                    System.getProperty("java.rmi.server.codebase") + "\n");
+
+
             if (System.getProperty("com.sun.jini.use.registry") == null) {
-                Locator locator =
+                 /**Locator locator =
                     new com.sun.jini.outrigger.DiscoveryLocator();
+                if (locator != null) System.out.println("Found Discovery.");
                 Finder finder =
                     new com.sun.jini.outrigger.LookupFinder();
+                if (finder != null) System.out.println("Found Lookup Finder.");
                 return (JavaSpace)finder.find(locator, name);
+                */
+                ServiceFinder finder = new ServiceFinder(JavaSpace.class);
+                while (true) {
+                    JavaSpace space =  (JavaSpace)finder.getObjects()[0];
+                    if (space == null) {
+                        System.err.println("Can't find JavaSpace. Trying...");
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException ex) {
+                            // ignore...
+                        }
+                    } else {
+                        return space;
+                    }
+                }
             } else {
                 RefHolder rh = (RefHolder)Naming.lookup(name);
                 return (JavaSpace)rh.proxy();
             }
+
+            
+
+
         } catch (Exception ex) {
             throw new IllegalActionException("Cannot find JavaSpace. " +
 			ex.getClass().getName() + " " + ex.getMessage());
