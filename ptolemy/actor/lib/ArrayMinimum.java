@@ -1,4 +1,4 @@
-/* Extract maximum element from an array.
+/* Extract minimum element from an array.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -27,45 +27,39 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Typeable;
-import ptolemy.data.type.Type;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-//////////////////////////////////////////////////////////////////////////
-//// MaximumElement
-/**
-Extract the maximum element from an array.  This actor reads an array
-from the <i>input</i> port and sends the largest of its elements to the
-<i>output</i> port.  The subset of elements that are checked is 
-determined by the <i>indexOffset</i> parameter (or port).  All elements
-of the array whose index is less than indexOffset are not included in the
-comparison.  It is required that 0 &lt;= <i>indexOffset</i> &lt; <i>N</i>,
-where <i>N</i> is the length of the input array, or an exception will be\
-thrown by the fire() method.
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-@author Mark Oliver
-@version $ID: MaximumElement.java,v0.1 2003/05/19
-@since Ptolemy II 3.0-beta
+//////////////////////////////////////////////////////////////////////////
+//// ArrayMinimum
+/**
+Extract the minimum element from an array.  This actor reads an array
+from the <i>input</i> port and sends the largest of its elements to the
+<i>output</i> port.  The index of the smallest element (closest to minus
+infinity) is sent to the <i>index</i> output port. If there is more than
+one entry in the array with the minimum value, then the index of the
+first such entry is what is produced.
+
+@author Mark Oliver and Edward A. Lee
+@version $ID: ArrayMinimum.java,v0.1 2003/05/19
 */
 
-public class MaximumElement extends Transformer {
+public class ArrayMinimum extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -75,7 +69,7 @@ public class MaximumElement extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public MaximumElement(CompositeEntity container, String name)
+    public ArrayMinimum(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -87,11 +81,8 @@ public class MaximumElement extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The offset into the input array to begin searching for the 
-     *  maximum element.  This is an integer that defaults to 0, and
-     *  is required to be less than or equal to the length of the 
-     *  input array. If the port is left unconnected, then the 
-     *  parameter value will be used.
+    /** The port producing the index of the largest element.
+     *  This is port has type int.
      */
     public TypedIOPort index;
 
@@ -99,10 +90,10 @@ public class MaximumElement extends Transformer {
     ////                         public methods                    ////
 
     /** Consume at most one array from the input port and produce
-     *  one of its elements on the output port.  If there is no token
+     *  the minimum of its elements on the <i>output</i> port and the index
+     *  of that element on the <i>index</i> port.  If there is no token
      *  on the input, then no output is produced.
-     *  @exception IllegalActionException If the <i>indexOffset</i>
-     *  parameter (or port value) is out of range.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         int indexValue = 0;

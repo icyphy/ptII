@@ -94,6 +94,8 @@ JSRCS = \
 	ArrayElement.java \
 	ArrayExtract.java \
 	ArrayLength.java \
+	ArrayMaximum.java \
+	ArrayMinimum.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanMultiplexor.java \
@@ -126,7 +128,6 @@ JSRCS = \
 	MathFunction.java \
 	MaxIndex.java \
 	Maximum.java \
-	MaximumElement.java \
 	Minimum.java \
 	MonitorValue.java \
         Multiplexor.java \
