@@ -1,6 +1,6 @@
 /* A Port is the interface of an Entity to any number of Relations.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -114,6 +114,22 @@ public class Port extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Enumerate the connected ports.
+     *  This method is synchronized on the workspace.
+     *  @return An enumeration of Port objects. 
+     */
+    public Enumeration connectedPorts() {
+        synchronized(workspace()) {
+            LinkedList result = new LinkedList();
+            Enumeration relations = linkedRelations();
+            while (relations.hasMoreElements()) {
+                Relation relation = (Relation)relations.nextElement();
+                result.appendElements(relation.linkedPortsExcept(this));
+            }
+            return result.elements();
+        }
+    }
+
     /** Return a description of the object
      *  @param verbosity The level of verbosity.
      */
@@ -124,7 +140,7 @@ public class Port extends NamedObj {
             results = results.concat(toString() + "\n");
             return results;
         case pt.kernel.Nameable.CONNECTIONS:
-            Enumeration enum = getLinkedRelations();
+            Enumeration enum = linkedRelations();
             while (enum.hasMoreElements()) {
                 Relation relation = (Relation)enum.nextElement();
                 results = results.concat(relation.description(verbosity));
@@ -140,23 +156,7 @@ public class Port extends NamedObj {
         default:
             return toString();
         }
-    }
-
-    /** Enumerate the connected ports.
-     *  This method is synchronized on the workspace.
-     *  @return An enumeration of Port objects. 
-     */
-    public Enumeration getConnectedPorts() {
-        synchronized(workspace()) {
-            LinkedList result = new LinkedList();
-            Enumeration relations = getLinkedRelations();
-            while (relations.hasMoreElements()) {
-                Relation relation = (Relation)relations.nextElement();
-                result.appendElements(relation.getLinkedPortsExcept(this));
-            }
-            return result.elements();
-        }
-    }
+    }    
 
     /** Get the container entity.
      *  This method is synchronized on the workspace.
@@ -172,7 +172,7 @@ public class Port extends NamedObj {
      *  This method is synchronized on the workspace.
      *  @return An enumeration of Relation objects. 
      */
-    public Enumeration getLinkedRelations() {
+    public Enumeration linkedRelations() {
         synchronized(workspace()) {
             return _relationsList.getLinks();
         }
