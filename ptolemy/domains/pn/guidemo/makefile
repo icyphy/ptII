@@ -38,7 +38,7 @@ ME =		ptolemy/domains/pn/guidemo
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 #JAVAHOME =      /opt/jdk1.2latest
-JAVA_HOME = C:/jdk1.2
+#JAVAHOME = C:/jdk1.2
 
 DIRS = 		# demo test doc
 
