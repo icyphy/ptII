@@ -538,7 +538,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         _startTime = tstart;
     }
 
-    /** Set the stop time for the simulation.  The stopt time is not
+    /** Set the stop time for the simulation.  The stop time is not
      *  registered as a breakpoint in this method. The extended director
      *  should do it themselves if needed.
      *  @param tstop The stop time for the simulation.
