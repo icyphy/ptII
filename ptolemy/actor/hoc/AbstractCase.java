@@ -47,7 +47,7 @@ import java.util.Iterator;
 
 Abstract base class for a composite actor with several possible refinements.
 
-@author  Jorn Janneck and Edward A. Lee
+@author  Joern Janneck and Edward A. Lee
 @version $Id$
 */
 public abstract class AbstractCase extends TypedCompositeActor {
