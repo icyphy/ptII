@@ -426,7 +426,7 @@ fi
 # jdk1.1.6 under NT and cygwin works properly
 startdir=`pwd`
 cd "$srcdir/config"
-AC_MSG_CHECKING([for java.home prop by compiling a test program ])
+AC_MSG_CHECKING([for java.home property by compiling a test program ])
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if "$JAVAC" JavaHome.java ; then
    AC_MSG_RESULT(ok)
@@ -442,7 +442,7 @@ if "$JAVAC" JavaHome.java ; then
    for use with doclets or the serial communications protocol])
     fi
 fi
-
+cd "$startdir"
 
 #
 # Check that jar can handle the -i argument
@@ -864,7 +864,7 @@ else
     AC_ARG_WITH(DOCLETS, [  --with-tools_jar=DIR    use tools.jar from DIR,
                           defaults to \$PTJAVA_HOME/../lib/tools.jar],
 	TOOLS_JAR=$withval,
-	TOOLS_JAR=$(PTJAVA_HOME}/../lib/tools.jar)
+	TOOLS_JAR=${PTJAVA_HOME}/../lib/tools.jar)
     if test -f "$TOOLS_JAR"; then
 	AC_MSG_RESULT([$TOOLS_JAR])
 	PTDOCLETS_DIR=doclets
@@ -883,7 +883,7 @@ if test -z "$PTDOCLETS_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|doc/doclets/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$TOOLS_JAR"/>"
+    <classpathentry kind=\"lib\" path=\"$TOOLS_JAR\"/>"
 fi 
 
 #--------------------------------------------------------------------
