@@ -418,7 +418,17 @@ public class SDFDirector extends StaticSchedulingDirector {
         return super.postfire();
     }
 
-    /** (non-Javadoc)
+    /** Return an array of suggested ModalModel directors  to use with
+     *  SDFDirector. The default director is HDFFSMDirector, which supports
+     *  multirate actors and only allows state transitions on each iteration.
+     *  This is the most safe director to use with SDF models.
+     *  MultirateFSMDirector supports multirate actors and allows state
+     *  transitions on each firing of the modal model. MultirateFSMDirector
+     *  can be used with SDF if rate signatures for all the states in the
+     *  modal model are same. If rate signatures change during an iteration,
+     *  the SDFDirector will throw an exception.
+     *  FSMDirector can be used with SDFDirector only when rate signatures
+     *  for modal model are all 1. 
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {

@@ -139,14 +139,6 @@ public class NonStrictFSMDirector extends FSMDirector {
             if (_outputActionReferredInputPorts.contains(port)
                     && !_guardReferredInputPorts.contains(port)) {
                 Receiver[][] insideReceivers = (Receiver[][]) port.getReceivers();
-
-                for (int k = 0; k < insideReceivers.length; k++) {
-                    for (int j = 0; j < insideReceivers[k].length; j++) {
-                        //((PeekReceiver)insideReceivers[k][j])
-                        //  .setToConsume(_consumeToken);
-                    }
-                }
-
                 super.transferInputs(port);
                 controller._readInputs();
             }
@@ -163,7 +155,6 @@ public class NonStrictFSMDirector extends FSMDirector {
      */
     public void getGuardReferredInputPorts(State currentState)
             throws IllegalActionException {
-        //System.out.println("currentState" + currentState.getName());
         _guardReferredInputPorts.clear();
 
         Iterator transitions = currentState.nonpreemptiveTransitionList()
@@ -171,8 +162,6 @@ public class NonStrictFSMDirector extends FSMDirector {
 
         while (transitions.hasNext()) {
             Transition transition = (Transition) transitions.next();
-
-            //System.out.println("transition = " + transition.getName());
             String string = transition.getGuardExpression();
 
             if (string == "") {
@@ -198,7 +187,6 @@ public class NonStrictFSMDirector extends FSMDirector {
      */
     public void getOutputActionsReferredInputPorts(Transition transition)
             throws IllegalActionException {
-        //System.out.println("get output action referred ports:");
         _outputActionReferredInputPorts.clear();
 
         String string = transition.outputActions.getExpression();
@@ -215,7 +203,6 @@ public class NonStrictFSMDirector extends FSMDirector {
             for (Iterator names = map.keySet().iterator(); names.hasNext();) {
                 String name = (String) names.next();
 
-                //System.out.println("contained ports is " + name);
                 ASTPtAssignmentNode node = (ASTPtAssignmentNode) map.get(name);
                 parseTree = node.getExpressionTree();
                 set = variableCollector.collectFreeVariables(parseTree, scope);
@@ -238,9 +225,6 @@ public class NonStrictFSMDirector extends FSMDirector {
 
             if (set.contains(inputPort.getName())) {
                 referredList.add(inputPort);
-
-                //System.out.println("referred input port is " +
-                //inputPort.getName());
             }
         }
     }
@@ -256,17 +240,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
         FSMActor controller = getController();
 
-        //System.out.println(controller.getInitialState().getName());
         getGuardReferredInputPorts(controller.getInitialState());
-    }
-
-    /** Return a peek receiver that is a one-place buffer.
-     *  @return A peek receiver that is a one-place buffer.
-     */
-    public Receiver newReceiver() {
-        return super.newReceiver();
-
-        //return new PeekReceiver();
     }
 
     /** Get the referred input ports in the guard expressions
@@ -288,20 +262,8 @@ public class NonStrictFSMDirector extends FSMDirector {
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (_guardReferredInputPorts.contains(port)) {
-            //System.out.println("This part should not be called");
-            //System.out.println("portName = " + port.getName());
-            Receiver[][] insideReceivers = (Receiver[][]) port.getReceivers();
-
-            for (int i = 0; i < insideReceivers.length; i++) {
-                for (int j = 0; j < insideReceivers[i].length; j++) {
-                    //((PeekReceiver)insideReceivers[i][j])
-                    //  .setToConsume(_consumeToken);
-                }
-            }
-
             return super.transferInputs(port);
         } else {
-            //System.out.println("transferInputs always return true");
             return true;
         }
     }
