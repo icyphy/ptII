@@ -93,7 +93,9 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) \
 initialize_key:
 	rm -f auto/foo.keystore
 	@echo "creating auto/foo.keystore"
-	$(ROOT)/bin/ptinvoke ptolemy.actor.gui.MoMLSimpleApplication auto/KeyWriter.xml 
+	CLASSPATH=$(AUXCLASSPATH) \
+		$(ROOT)/bin/ptinvoke \
+		ptolemy.actor.gui.MoMLSimpleApplication auto/KeyWriter.xml 
 	@echo "Note that the key is of type JCEKS, which is not the default"
 	keytool -list -keystore auto/foo.keystore \
 		-storepass this.is.not.secure,it.is.for.testing.only \
