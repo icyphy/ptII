@@ -310,10 +310,6 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
         </property>
     </property>
@@ -344,7 +340,7 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
 </entity>
 }
 
-test UndoDeleteEntity-1.3a {Delete an entity in a composite actor: Now call undo} {
+test UndoDeleteEntity-1.3b {Delete an entity in a composite actor: Now call undo} {
     # Now create the MoMLUndoChangeRequest which will undo the change
     set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
 
@@ -369,10 +365,6 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor: Now call undo
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
         </property>
@@ -421,6 +413,7 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor: Now call undo
 </entity>
 }
 
+
 if {[info procs jdkCapture] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
@@ -447,12 +440,10 @@ test UndoDeleteEntity-1.4a {Call undo on a TypedCompositeActor that has not yet 
     list [string range $message 0 500 ]
 } {{Exception occurred executing change request:
 ptolemy.kernel.util.InternalErrorException: There was no _parser attribute found. FIXME: Undo request on a model with no associated parser.
-This might be caused by clicking undo many times until there is nothing left to undo.
+This might be caused if an entity was created using File -> New, and the entity does not have a _parser attribute because it has not yet been saved. See PtolemyEffigy.createEffigy
  UndoChange was:
 Request to undo/redo most recent MoML change
  Source was:
 ptolemy.actor.TypedCompositeActor {.}
  _context was:
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "ht}}
+<?xml ve}}
