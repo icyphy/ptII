@@ -295,7 +295,7 @@ update_ptii_ftp:
 		messier:$(PTII_FTP)
 untar:
 	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -zxf $(PTII_FULL)"
+	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -zxf ptII$(VERSION).tar.$(SUFFIX)"
 
 # Make the distribution, run htmlchek
 htmlchek:
