@@ -194,7 +194,7 @@ public class EditorIcon extends Attribute {
      *  an error occurs or the subclass has not been properly initialized.
      *  @return A figure representing a rectangular white box.
      */
-    protected static Figure _createDefaultBackgroundFigure() {
+    protected Figure _createDefaultBackgroundFigure() {
         // NOTE: center at the origin.
 	return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
     }
