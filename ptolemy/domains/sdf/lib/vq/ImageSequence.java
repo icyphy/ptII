@@ -57,12 +57,6 @@ public final class ImageSequence extends SDFAtomicActor {
         setTokenProductionRate(outputport, 1);
         outputport.setTypeEquals(IntMatrixToken.class);
 
-        /*        Parameter p = new Parameter(this, "imageUrlTemplate",
-                new StringToken("http://ptolemy.eecs.berkeley.edu/"+
-                        "~ptdesign/java/ptdesign-java/"+
-                        "ptolemy/domains/sdf/lib/vq" +
-                        "/data/seq/missa/missa***.qcf"));
-        */
         Parameter p = new Parameter(this, "imageUrlTemplate",
                 new StringToken("ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
@@ -113,11 +107,9 @@ public final class ImageSequence extends SDFAtomicActor {
                 if (filename != null) {
                     if(_baseurl != null) {
                         try {
-                            // showStatus("Reading data");
                             URL dataurl = new URL(_baseurl, filename);
                             System.out.println("dataurl = " + dataurl);
                             source = dataurl.openStream();
-                            //showStatus("Done");
                         } catch (MalformedURLException e) {
                             System.err.println(e.toString());
                         } catch (FileNotFoundException e) {
@@ -169,7 +161,6 @@ public final class ImageSequence extends SDFAtomicActor {
 
     public void fire() throws IllegalActionException {
         int i, j, n;
-        //        workspace().setReadOnly(true);
 
         System.out.println("frame " + framenumber);
         // This is necessary to convert from bytes to ints
@@ -183,10 +174,6 @@ public final class ImageSequence extends SDFAtomicActor {
 
         framenumber++;
         if(framenumber >= numframes) framenumber = 0;
-    }
-
-    public void wrapup() throws IllegalActionException {
-        //        workspace().setReadOnly(false);
     }
 
     int _fullread(InputStream s, byte b[]) throws IOException {
