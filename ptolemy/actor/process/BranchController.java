@@ -111,26 +111,23 @@ public class BranchController implements Runnable {
             if( !hasBranches() ) {
                 return;
             }
-            restart();
             setActive(true);
-            LinkedList threadList = new LinkedList();
-            BranchThread bThread = null;
+            // LinkedList threadList = new LinkedList();
             Branch branch = null;
             for( int i=0; i < _branches.size(); i++ ) {
                 branch = (Branch)_branches.get(i);
-                bThread = new BranchThread( branch );
-                threadList.add(bThread);
+                branch.run();
+                // threadList.add(branch);
                 // FIXME: should we optimize for a single branch?
             }
                 
+            /*
             Iterator threads = threadList.iterator();
             while( threads.hasNext() ) {
-                bThread = (BranchThread)threads.next();
-                branch = bThread.getBranch();
-                branch.reset();
-                branch.newIteration();
-                bThread.start();
+                branch = (Branch)threads.next();
+                branch.run();
             }
+            */
         }
     }
     
@@ -227,95 +224,6 @@ public class BranchController implements Runnable {
         System.out.println(_parentName+": branch controller ending deactivate()");
     }
 
-    /** Release the status of the calling branch as the first branch
-     *  to be ready to rendezvous. This method is only called when both
-     *  sides of a communication at a receiver are conditional. In
-     *  this case, both of the branches have to be the first branches,
-     *  for their respective actors, for the rendezvous to go ahead. If
-     *  one branch registers as being first, for its actor, but the
-     *  other branch cannot, then the status of the first branch needs
-     *  to be released to allow other branches the possibility of succeeding.
-     *  @param branchNumber The ID assigned to the branch upon creation.
-     */
-    public void disengageBranch(Branch branch) {
-        synchronized(this) {
-            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
-                return;
-            }
-            if( _engagements.contains(branch) ) {
-                if( branch.numberOfCompletedEngagements() == 0 ) {
-                    _engagements.remove(branch);
-                }
-            }
-        }
-    }
-
-    /** End the current iteration of this branch controller. Clear
-     *  all engagements that were successful for the iteration that
-     *  is ending.
-     */
-    public synchronized void endIteration() {
-        _iterationIsOverCache = true;
-        _engagements.clear();
-        notifyAll();
-    }
-    
-    /** Register the branch passed as an argument as having 
-     *  successfully completed an engagement. If the number
-     *  of engagements permitted during an iteration of this
-     *  branch controller is bounded, then increment the
-     *  number of completed engagements for the branch. If
-     *  the number of engagements per iteration is unbounded
-     *  then or this controller is not active, then simply 
-     *  return.
-     * @param branch The Branch with a successful engagement.
-     * @exception TerminateBranchException If this controller
-     *  is inactive, its iteration is over or the branch is
-     *  not currently engaged.
-     */
-    public void engagementSucceeded(Branch branch) throws 
-            TerminateBranchException {
-        synchronized(this) {
-            if( !isActive() || _iterationIsOverCache ) {
-                throw new TerminateBranchException("Branch "
-                        + "can not succeed while controller "
-                        + "is not active or iteration is over");
-            }
-            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
-                return;
-            }
-            
-            if( !_engagements.contains(branch) ) {
-                throw new TerminateBranchException("Branch "
-                        + "can not succeed if not previously "
-                        + "engaged to controller.");
-            }
-            
-            if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
-                branch.completeEngagement();
-            } else {
-                throw new TerminateBranchException("Branch "
-                        + "can not succeed if it already has "
-                        + "more successful engagements than "
-                        + "permitted.");
-            }
-            notifyAll();
-        }
-    }
-
-    /** Return the list of currently engaged branches controlled by 
-     *  this controller.
-     * @return The list of currently engaged branches controlled by 
-     *  this controller.
-     */
-    public LinkedList getEngagedBranchList() {
-        if( _maxEngagers < 0 ) {
-            return _branches;
-        } else {
-            return _engagements;
-        }
-    }
-    
     /** Return the list of branches controlled by this controller.
      *  @return The list of branches controlled by this controller.
      */
@@ -369,76 +277,10 @@ public class BranchController implements Runnable {
         return false;
     }
     
-    /** Called by ConditionalSend and ConditionalReceive to check if
-     *  the calling branch is the first branch to be ready to rendezvous.
-     *  If it is, it sets a private variable to its branch ID so that
-     *  subsequent calls to this method by other branches know that they
-     *  are not first.
-     *  @param branchNumber The ID assigned to the calling branch
-     *   upon creation.
-     *  @return True if the calling branch is the first branch to try
-     *   to rendezvous, otherwise false.
-     */
-    public boolean isEngagementEnabled(Branch branch) {
-        synchronized(this) {
-	    if( _iterationIsOverCache || !isActive() ) {
-		return false;
-	    }
-            if( _maxEngagements < 0 && _maxEngagers < 0 ) {
-                branch.beginEngagement();
-                return true;
-            }
-            
-            if( _engagements.contains(branch) ) {
-                if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
-                    branch.beginEngagement();
-                    return true;
-                } 
-                return false;
-            } else if( _engagements.size() < _maxEngagers ) {
-                if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
-            	    _engagements.add( branch );
-                    branch.beginEngagement();
-                    return true;
-                } 
-                return false ;
-            }
-            return false;
-        }
-    }
-
-    /** Return true if this controller is not in the midst of an
-     *  iteration. This controller is not in an iteration if it
-     *  is not active or if all engagement attempts are complete.
-     * @return True if this controller is not active or if all
-     *  engagements are complete.
-     */
-    public synchronized boolean isIterationOver() {
-	if( !isActive() ) {
-	    return true;
-	} else if( _iterationIsOverCache ) {
-	    return true;
-        }
-	if( _engagements.size() == _maxEngagers ) {
-	    Iterator engagements = _engagements.iterator();
-	    Branch branch = null;
-	    while( engagements.hasNext() ) {
-		branch = (Branch)engagements.next();
-		if( branch.numberOfCompletedEngagements() 
-			< _maxEngagements ) {
-		    return false;
-		}
-	    }
-	    return true;
-	}
-	return false;
-    }
-
     /** Restart this controller by resetting the branches that
      *  it controls and setting flags so engagements can take
      *  place. This method is synchronized and will notify any 
      *  threads that are synchronized to this object.
-     */
     public synchronized void restart() {
 	// _iterationIsOverCache = true;
 
@@ -455,6 +297,7 @@ public class BranchController implements Runnable {
 
 	notifyAll();
     }
+     */
 
     /**
      */
@@ -478,66 +321,11 @@ public class BranchController implements Runnable {
         }
     }
     
-    
-//     /**
-//      */
-//     public void run() {
-// 	synchronized(this) {
-// 	    try {
-// 		activateBranches();
-// 		while( isActive() ) {
-// 		    while( !isIterationOver() ) {
-//                         System.out.println("BranchCnlr calling first wait inside run()");
-// 			wait();
-
-// 			if( isBlocked() && !isIterationOver() ) {
-// 			    while( isBlocked() && 
-// 				    !isIterationOver() ) {
-// 				_getDirector()._controllerBlocked(this);
-//                                 System.out.println("BranchCnlr about to wait");
-// 				wait();
-//                                 System.out.println("BranchCnlr awakened");
-// 			    }
-//                             System.out.println("BranchCnlr about to call director "
-//                             + "_controllerUnBlocked.");
-// 			    _getDirector()._controllerUnBlocked(this);
-//                             System.out.println("BranchCnlr finished calling director " + "_controllerUnBlocked.");
-// 			}
-// 		    }
-
-// 		    if( isIterationOver() && isActive() ) {
-//                         System.out.println("BranchCnlr inside isIterationOver() and "
-//                         + "isActive() if-statement.");
-// 			while( isIterationOver() && isActive() ) {
-// 			    _getDirector()._controllerBlocked(this);
-// 			    wait();
-// 			}
-// 			_getDirector()._controllerUnBlocked(this);
-// 		    }
-// 		}
-// 	    } catch( InterruptedException e ) {
-// 		// Do something
-// 	    }
-// 	}
-//     }
-
     /**
      */
     public void setActive(boolean active) {
 	_isActive = active;
     }
-
-    /**
-    public void setMaximumEngagements(int maxEngagements) {
-	_maxEngagements = maxEngagements;
-    }
-     */
-
-    /**
-    public void setMaximumEngagers(int maxEngagers) {
-	_maxEngagers = maxEngagers;
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -575,9 +363,9 @@ public class BranchController implements Runnable {
 
     /** Get the director that controlls the execution of its parent actor.
      */
-    private ProcessDirector _getDirector() {
+    private CompositeProcessDirector _getDirector() {
         try {
-	    return  (ProcessDirector)_parentActor.getDirector();
+	    return  (CompositeProcessDirector)_parentActor.getDirector();
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
@@ -624,13 +412,8 @@ public class BranchController implements Runnable {
 
     private LinkedList _branches = new LinkedList(); 
     private LinkedList _ports = new LinkedList();
-    // private LinkedList _engagements = new LinkedList();
     private LinkedList _blockedReceivers = new LinkedList();
     
-    // private int _maxEngagements = -1;
-    // private int _maxEngagers = -1;
-
-    // private boolean _iterationIsOverCache = true;
     private boolean _isActive = false;
     
     
