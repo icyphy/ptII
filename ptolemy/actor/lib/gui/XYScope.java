@@ -110,7 +110,8 @@ public class XYScope extends XYPlotter {
         if (attribute == persistence && plot != null) {
             int persValue =
                 ((IntToken)persistence.getToken()).intValue();
-            plot.setPointsPersistence(persValue);
+            // NOTE: We assume the superclass ensures this cast is safe.
+            ((Plot)plot).setPointsPersistence(persValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -122,11 +123,12 @@ public class XYScope extends XYPlotter {
     public void initialize() throws IllegalActionException {
         super.initialize();
         int persValue = ((IntToken)persistence.getToken()).intValue();
-        plot.setPointsPersistence(persValue);
+        // NOTE: We assume the superclass ensures this cast is safe.
+        ((Plot)plot).setPointsPersistence(persValue);
         plot.repaint();
         // Override the default so that there are not gaps in the lines.
-        if (plot.getMarksStyle().equals("none")) {
-            plot.setMarksStyle("pixels");
+        if (((Plot)plot).getMarksStyle().equals("none")) {
+            ((Plot)plot).setMarksStyle("pixels");
         }
     }
 

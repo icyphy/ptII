@@ -158,7 +158,8 @@ public class XYPlotter extends Plotter {
                 hasY = true;
             }
             if (hasX && hasY) {
-                plot.addPoint(i + offset, xValue, yValue, true);
+                // NOTE: We assume the superclass ensures this cast is safe.
+                ((Plot)plot).addPoint(i + offset, xValue, yValue, true);
             }
         }
         return super.postfire();

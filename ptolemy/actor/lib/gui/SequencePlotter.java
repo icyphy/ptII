@@ -149,7 +149,8 @@ public class SequencePlotter extends Plotter implements SequenceActor {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
-                plot.addPoint(i + offset, _xValue, curValue, true);
+                // NOTE: We assume the superclass ensures this cast is safe.
+                ((Plot)plot).addPoint(i + offset, _xValue, curValue, true);
             }
         }
         _xValue += _xUnit;

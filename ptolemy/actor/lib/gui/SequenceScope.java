@@ -112,7 +112,8 @@ public class SequenceScope extends SequencePlotter {
             plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
         } else if (attribute == persistence && plot != null) {
             int persValue = ((IntToken)persistence.getToken()).intValue();
-            plot.setPointsPersistence(persValue);
+            // NOTE: We assume the superclass ensures this cast is safe.
+            ((Plot)plot).setPointsPersistence(persValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -128,10 +129,12 @@ public class SequenceScope extends SequencePlotter {
         plot.setXRange(_xInit, _xUnit * widthValue + _xInit);
         plot.setWrap(true);
         int persValue = ((IntToken)persistence.getToken()).intValue();
-        plot.setPointsPersistence(persValue);
+        // NOTE: We assume the superclass ensures this cast is safe.
+        ((Plot)plot).setPointsPersistence(persValue);
         // Override the default so that there are not gaps in the lines.
-        if (plot.getMarksStyle().equals("none")) {
-            plot.setMarksStyle("pixels");
+        // NOTE: We assume the superclass ensures this cast is safe.
+        if (((Plot)plot).getMarksStyle().equals("none")) {
+            ((Plot)plot).setMarksStyle("pixels");
         }
         plot.repaint();
     }

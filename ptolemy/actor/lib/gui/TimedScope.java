@@ -112,7 +112,9 @@ public class TimedScope extends TimedPlotter {
         } else if (attribute == persistence && plot != null) {
             double persValue =
                 ((DoubleToken)persistence.getToken()).doubleValue();
-            plot.setXPersistence(persValue);
+
+            // NOTE: We assume the superclass ensures this cast is safe.
+            ((Plot)plot).setXPersistence(persValue);
         } else {
             super.attributeChanged(attribute);
         }
@@ -126,13 +128,14 @@ public class TimedScope extends TimedPlotter {
         super.initialize();
         double widthValue = ((DoubleToken)width.getToken()).doubleValue();
         plot.setXRange(0.0, widthValue);
-        plot.setWrap(true);
+        // NOTE: We assume the superclass ensures this cast is safe.
+        ((Plot)plot).setWrap(true);
         double persValue = ((DoubleToken)persistence.getToken()).doubleValue();
-        plot.setXPersistence(persValue);
+        ((Plot)plot).setXPersistence(persValue);
         plot.repaint();
         // Override the default so that there are not gaps in the lines.
-        if (plot.getMarksStyle().equals("none")) {
-            plot.setMarksStyle("pixels");
+        if (((Plot)plot).getMarksStyle().equals("none")) {
+            ((Plot)plot).setMarksStyle("pixels");
         }
     }
 

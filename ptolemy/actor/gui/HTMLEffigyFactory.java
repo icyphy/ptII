@@ -1,4 +1,4 @@
-/* A factor for representatives of an HTML file.
+/* A factory for representatives of an HTML file.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.

@@ -37,6 +37,7 @@ import ptolemy.plot.PlotBox;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotEffigy
@@ -101,4 +102,68 @@ public class PlotEffigy extends Effigy {
 
     // The plot associated with this effigy.
     private PlotBox _plot;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A factory for creating new effigies.
+     */
+    public static class Factory extends EffigyFactory {
+
+	/** Create a factory with the given name and container.
+	 *  @param container The container.
+	 *  @param name The name.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this entity.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an entity already in the container.
+	 */
+	public Factory(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+        /** Return false, indicating that this effigy factory is not
+         *  capable of creating an effigy without a URL being specified.
+         *  @return False.
+         */
+        public boolean canCreateBlankEffigy() {
+            return false;
+        }
+
+        /** Create a new effigy in the given container by reading the
+         *  specified URL. If the specified URL is null, or
+         *  if the URL does not end with extension ".plt" or ".plot", then
+         *  return null.  Note that as of this writing, the plotter
+         *  parses any file you give it without complaint, so we cannot
+         *  rely on the plotter to report that this file is not a plot
+         *  file.  Thus, we assume that if the extension matches,
+         *  then it is.
+         *  @param container The container for the effigy.
+         *  @param base The base for relative file references, or null if
+         *   there are no relative file references.  This is ignored in this
+         *   class.
+         *  @param input The input URL.
+         *  @return A new instance of PlotEffigy, or null if the URL
+         *   does not have a recognized extension.
+         *  @exception Exception If the URL cannot be read.
+         */
+        public Effigy createEffigy(
+                CompositeEntity container, URL base, URL input)
+                throws Exception {
+            if (input != null) {
+                String extension = getExtension(input);
+                if (extension.equals("plt") || extension.equals("plot")) {
+                    PlotEffigy effigy = new PlotEffigy(container,
+                            container.uniqueName("effigy"));
+                    effigy.url.setURL(input);
+                    return effigy;
+                }
+            }
+            return null;
+        }
+    }
 }

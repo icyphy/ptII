@@ -194,16 +194,17 @@ public class SigmaDelta extends TypedCompositeActor {
          clk.values.setExpression("{true}");
 
          TimedPlotter dePlot = new TimedPlotter(this, "DEPlot");
-         dePlot.plot = new Plot();
-         dePlot.plot.setGrid(true);
-         dePlot.plot.setXRange(0.0, stopT);
-         dePlot.plot.setYRange(-1.0, 1.0);
-         dePlot.plot.setSize(500, 180);
-         dePlot.plot.setConnected(false);
-         dePlot.plot.setImpulses(true);
-         dePlot.plot.setMarksStyle("dots");
-         dePlot.plot.addLegend(0, "Accum");
-         dePlot.plot.addLegend(1, "Quantize");
+         Plot newPlot = new Plot();
+         dePlot.plot = newPlot;
+         newPlot.setGrid(true);
+         newPlot.setXRange(0.0, stopT);
+         newPlot.setYRange(-1.0, 1.0);
+         newPlot.setSize(500, 180);
+         newPlot.setConnected(false);
+         newPlot.setImpulses(true);
+         newPlot.setMarksStyle("dots");
+         newPlot.addLegend(0, "Accum");
+         newPlot.addLegend(1, "Quantize");
 
          FIR mav = new FIR(this, "MAV");
          mav.taps.setExpression(

@@ -81,15 +81,15 @@ public class TextEditor extends TableauFrame {
      *  @param document The document containing text, or null if none.
      */
     public TextEditor(String title, Document document) {
-        super();
+        // NOTE: Create with no status bar, since we have no use for it now.
+        super(null, null);
         setTitle(title);
 
         text = new JTextArea(document);
         _scrollPane = new JScrollPane(text);
 
         getContentPane().add(_scrollPane, BorderLayout.CENTER);
-
-        // FIXME: Need to do something with the progress bar in the status bar.
+        _initialSaveAsFileName = "data.txt";
     }
 
     ///////////////////////////////////////////////////////////////////

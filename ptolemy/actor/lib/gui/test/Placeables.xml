@@ -92,11 +92,11 @@ these tests.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={638, 224, 273, 269}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[265, 219]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={637, 259, 378, 250}}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[370, 200]">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -125,7 +125,7 @@ these tests.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 2, 504, 250}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={636, 0, 292, 224}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 135.0">
         </property>
@@ -137,15 +137,15 @@ these tests.</text></svg></configure>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.5">
-        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={639, 510, 384, 255}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={638, 492, 316, 278}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[376, 205]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[308, 228]">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 330.0">
         </property>
@@ -158,10 +158,10 @@ these tests.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>HistogramPlotter</title>
-<xRange min="0.5" max="80.0"/>
-<yRange min="0.0" max="1.0"/>
+<xRange min="5.0" max="80.0"/>
+<yRange min="0.0" max="10.0"/>
 <barGraph width="0.5" offset="0.15"/>
-<bin width="1.0" offset="0.5"/>
+<bin width="10.0" offset="5.0"/>
 </plot>?>
         </configure>
     </entity>

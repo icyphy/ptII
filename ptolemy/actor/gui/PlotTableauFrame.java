@@ -101,12 +101,13 @@ public class PlotTableauFrame extends TableauFrame {
      *   an instance of Plot.
      */
     public PlotTableauFrame(Tableau tableau, PlotBox plotArg) {
-        super(tableau);
+        super(tableau, null);
         plot = plotArg;
 
         // Background color is a light grey.
         plot.setBackground(new Color(0xe5e5e5));
         getContentPane().add(plot, BorderLayout.CENTER);
+        _initialSaveAsFileName = "plot.plt";
     }
 
     ///////////////////////////////////////////////////////////////////

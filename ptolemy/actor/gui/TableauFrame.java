@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.*;
 
@@ -75,18 +76,28 @@ public abstract class TableauFrame extends Top {
      *  It may also be desirable to call centerOnScreen().
      */
     public TableauFrame() {
-        super();
-        setIconImage(_getDefaultIconImage());
+        this(null);
     }
 
     /** Construct an empty top-level frame managed by the specified
-     *  tableau. After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
+     *  tableau and the default status bar. After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame appear.
      *  It may also be desirable to call centerOnScreen().
      *  @param tableau The managing tableau.
      */
     public TableauFrame(Tableau tableau) {
-        super();
+        this(tableau, new StatusBar());
+    }
+
+    /** Construct an empty top-level frame managed by the specified
+     *  tableau with the specified status bar. After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
+     *  @param tableau The managing tableau.
+     *  @param statusBar The status bar, or null to not include one.
+     */
+    public TableauFrame(Tableau tableau, StatusBar statusBar) {
+        super(statusBar);
         setTableau(tableau);
         setIconImage(_getDefaultIconImage());
     }

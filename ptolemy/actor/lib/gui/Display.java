@@ -168,7 +168,7 @@ public class Display extends Sink implements Placeable {
                 if (textArea != null) {
                     textArea.setRows(numRows);
                     if (_frame != null) {
-                        _frame.pack();
+                        _frame.show();
                     }
                 }
             }
@@ -184,7 +184,7 @@ public class Display extends Sink implements Placeable {
                 if (textArea != null) {
                     textArea.setColumns(numColumns);
                     if (_frame != null) {
-                        _frame.pack();
+                        _frame.show();
                     }
                 }
             }
@@ -252,9 +252,8 @@ public class Display extends Sink implements Placeable {
             // Erase previous text.
             textArea.setText(null);
         }
-        if (_frame != null && !_frame.isVisible()) {
-            _frame.pack();
-            _frame.setVisible(true);
+        if (_frame != null) {
+            _frame.show();
         }
         /*
           int tab = ((IntToken)tabSize.getToken()).intValue();

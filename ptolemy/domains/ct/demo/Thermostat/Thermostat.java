@@ -92,16 +92,17 @@ public class Thermostat extends TypedCompositeActor{
 
         // the plot
         TimedPlotter responsePlot = new TimedPlotter(this, "plot");
-        responsePlot.plot = new Plot();
-        responsePlot.plot.setGrid(true);
-        responsePlot.plot.setTitle("Thermostat");
-        responsePlot.plot.addLegend(0, "Temperature");
-        responsePlot.plot.setConnected(true);
-        responsePlot.plot.setImpulses(false);
-        //responsePlot.plot.addLegend(1, "Trigger");
-        responsePlot.plot.setXRange(0.0, 5.0);
-        responsePlot.plot.setYRange(0.0, 0.2);
-        responsePlot.plot.setSize(500, 300);
+        Plot newPlot = new Plot();
+        responsePlot.plot = newPlot;
+        newPlot.setGrid(true);
+        newPlot.setTitle("Thermostat");
+        newPlot.addLegend(0, "Temperature");
+        newPlot.setConnected(true);
+        newPlot.setImpulses(false);
+        //newPlot.addLegend(1, "Trigger");
+        newPlot.setXRange(0.0, 5.0);
+        newPlot.setYRange(0.0, 0.2);
+        newPlot.setSize(500, 300);
 
         CTCompositeActor hs = new CTCompositeActor(this, "HS");
         // the ports

@@ -146,21 +146,11 @@ public class BarGraph extends Plotter implements SequenceActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _iteration = 0;
-    }
-
-    /** Specify the container into which this plot should be placed.
-     *  This method needs to be called before the first call to initialize().
-     *  Otherwise, the plot will be placed in its own frame.
-     *  The plot is also placed in its own frame if this method
-     *  is called with a null argument. This method overrides the base
-     *  class to set the plot style so that a bar graph is what we get.
-     *  @param container The container into which to place the plot.
-     */
-    public void place(Container container) {
-        super.place(container);
-        plot.setBars(true);
-        plot.setConnected(false);
+        // NOTE: We assume the superclass ensures this cast is safe.
+        ((Plot)plot).setBars(true);
+        ((Plot)plot).setConnected(false);
     }
 
     /** Read at most one token from each input channel and plot it as
@@ -184,11 +174,13 @@ public class BarGraph extends Plotter implements SequenceActor {
                 _tokens[i] = (ArrayToken)input.get(i);
                 if (_iteration == 0) {
                     Token[] currentArray = _tokens[i].arrayValue();
-                    plot.clear(i + _offset);
+                    // NOTE: We assume the superclass ensures this cast is safe.
+                    ((Plot)plot).clear(i + _offset);
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue =
                             ((DoubleToken)currentArray[j]).doubleValue();
-                        plot.addPoint(i + _offset, j, currentValue, true);
+                        ((Plot)plot).addPoint(
+                               i + _offset, j, currentValue, true);
                     }
                 }
             }
@@ -204,17 +196,20 @@ public class BarGraph extends Plotter implements SequenceActor {
     /** Update the plot with the most recently read data.
      *  If the <i>fillOnWrapup</i> parameter is true, rescale the
      *  plot so that all the data is visible.
+     *  @exception IllegalActionException If the superclass throws it.
      */
-    public void wrapup() {
+    public void wrapup() throws IllegalActionException {
         if (_tokens != null) {
             for (int i = _tokens.length - 1; i >= 0; i--) {
                 if (_tokens[i] != null) {
                     Token[] currentArray = _tokens[i].arrayValue();
-                    plot.clear(i + _offset);
+                    // NOTE: We assume the superclass ensures this cast is safe.
+                    ((Plot)plot).clear(i + _offset);
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue =
                             ((DoubleToken)currentArray[j]).doubleValue();
-                        plot.addPoint(i + _offset, j, currentValue, true);
+                        ((Plot)plot).addPoint(
+                                i + _offset, j, currentValue, true);
                     }
                 }
             }

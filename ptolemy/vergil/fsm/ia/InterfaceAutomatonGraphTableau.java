@@ -67,7 +67,11 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
     public void createGraphFrame(CompositeEntity model) {
 	InterfaceAutomatonGraphFrame frame =
             new InterfaceAutomatonGraphFrame(model, this);
-	setFrame(frame);
+        try {
+            setFrame(frame);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
 	frame.setBackground(BACKGROUND_COLOR);
 	frame.pack();
 	frame.centerOnScreen();

@@ -263,8 +263,10 @@ public class Tableau extends CompositeEntity {
 
     /** Set the top-level window associated with this tableau.
      *  @param frame The top-level window associated with the tableau.
+     *  @throws IllegalActionException If the frame is not acceptable
+     *   (not thrown in this base class).
      */
-    public void setFrame(JFrame frame) {
+    public void setFrame(JFrame frame) throws IllegalActionException {
         _frame = frame;
 
         if (_frame != null) {
@@ -317,8 +319,7 @@ public class Tableau extends CompositeEntity {
     }
 
     /** Make this tableau visible by calling setVisible(true), and
-     *  raising or deiconifying its window.  If the frame has not previously
-     *  been made visible, then center it on the screen.
+     *  raising or deiconifying its window.
      *  If no frame has been set, then do nothing.
      */
     public void show() {

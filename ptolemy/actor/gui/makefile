@@ -94,6 +94,7 @@ JSRCS = \
 	MoMLSimpleStatisticalApplication.java \
 	Placeable.java \
 	PlotEffigy.java \
+	PlotTableau.java \
 	PlotTableauFrame.java \
 	PortConfigurer.java \
 	PortConfigurerDialog.java \

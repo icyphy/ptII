@@ -111,7 +111,9 @@ public class RealTimePlotter extends Plotter {
             if (input.hasToken(i)) {
                 DoubleToken currentToken = (DoubleToken)input.get(i);
                 double currentValue = currentToken.doubleValue();
-                plot.addPoint(i + offset, currentTime, currentValue, true);
+                // NOTE: We assume the superclass ensures this cast is safe.
+                ((Plot)plot).addPoint(
+                        i + offset, currentTime, currentValue, true);
             }
         }
         return super.postfire();

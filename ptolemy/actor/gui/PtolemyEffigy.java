@@ -231,9 +231,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             return true;
         }
 
-        /** Create a new effigy in the given container by reading the specified
-         *  (input) URL. If the specified URL (<i>input</i>
-         *  is null, then create a blank effigy.
+        /** Create a new effigy in the given container by reading the
+         *  <i>input</i> URL. If the <i>input</i> URL is null, then
+         *  create a blank effigy.
          *  The blank effigy will have a new model associated with it.
          *  If this effigy factory contains an entity named "blank", then
          *  the new model will be a clone of that entity.  Otherwise,

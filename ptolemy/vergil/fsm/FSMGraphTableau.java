@@ -83,7 +83,11 @@ public class FSMGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model) {
 	FSMGraphFrame frame = new FSMGraphFrame(model, this);
-	setFrame(frame);
+        try {
+            setFrame(frame);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
 	frame.setBackground(BACKGROUND_COLOR);
 	frame.pack();
 	frame.centerOnScreen();

@@ -30,38 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.actor.Manager;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.actor.lib.Sink;
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
-import ptolemy.plot.PlotFrame;
 import ptolemy.plot.plotml.HistogramMLParser;
 
 import java.awt.Container;
 import java.io.InputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramPlotter
@@ -95,7 +80,8 @@ is not enforced.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class HistogramPlotter extends Sink implements Configurable, Placeable {
+public class HistogramPlotter extends PlotterBase
+        implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -108,19 +94,18 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
     public HistogramPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+    	input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
-        fillOnWrapup = new Parameter(this, "fillOnWrapup",
-                new BooleanToken(true));
+
         binWidth = new Parameter(this, "binWidth",
                 new DoubleToken(1.0));
+        binWidth.setTypeEquals(BaseType.DOUBLE);
+
         binOffset = new Parameter(this, "binOffset",
                 new DoubleToken(0.5));
-        legend = new StringAttribute(this, "legend");
-
-        _windowProperties = new WindowPropertiesAttribute(
-                this, "_windowProperties");
-
-        _plotSize = new SizeAttribute(this, "_plotSize");
+        binOffset.setTypeEquals(BaseType.DOUBLE);
 
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
@@ -153,11 +138,6 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** If true, fill the histogram when wrapup is called.
-     *  This parameter has type boolean and default value true.
-     */
-    public Parameter fillOnWrapup;
-
     /** The width of the bin of the histogram.
      *  This parameter has type double, with default value 1.0.
      */
@@ -168,13 +148,8 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      */
     public Parameter binOffset;
 
-    /** A comma-separated list of labels to attach to each data set.
-     *  This is always a string, with no enclosing quotation marks.
-     */
-    public StringAttribute legend;
-
-    /** The histogram object. */
-    public transient Histogram histogram;
+    /** The input port, which is a multiport. */
+    public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -194,49 +169,20 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
                throw new IllegalActionException(this,
                        "Invalid bin width (must be positive): " + width);
            }
-           if (histogram != null) {
-               histogram.setBinWidth(width);
+           if (plot instanceof Histogram) {
+               ((Histogram)plot).setBinWidth(width);
            }
        } else if (attribute == binOffset) {
            double offset = ((DoubleToken)binOffset.getToken()).doubleValue();
-           if (histogram != null) {
-               histogram.setBinOffset(offset);
+           if (plot instanceof Histogram) {
+               ((Histogram)plot).setBinOffset(offset);
            }
-       } else if (attribute == legend) {
-            if (histogram != null) {
-                histogram.clearLegends();
-                String value = legend.getExpression();
-                if (value != null && !value.trim().equals("")) {
-                    StringTokenizer tokenizer = new StringTokenizer(value, ",");
-                    int channel = 0;
-                    while (tokenizer.hasMoreTokens()) {
-                        histogram.addLegend(channel++,
-                               tokenizer.nextToken().trim());
-                    }
-                }
-            }
        } else {
            super.attributeChanged(attribute);
        }
    }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the public variables.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has an
-     *   attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        HistogramPlotter newObject = (HistogramPlotter)super.clone(workspace);
-        newObject.histogram = null;
-        newObject._container = null;
-        newObject._frame = null;
-        return newObject;
-    }
-
-    /** Configure the histogram with data from the specified input source
+    /** Configure the plot with data from the specified input source
      *  (a URL) and/or textual data, assumed to be in PlotML format.
      *  If this is called before the histogram has been created
      *  (by calling place() or initialize()), then reading of the input
@@ -250,9 +196,9 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      */
     public void configure(URL base, String source, String text)
             throws Exception {
-        if (histogram != null) {
-            HistogramMLParser parser = new HistogramMLParser(histogram);
-            if (source != null && !source.equals("")) {
+        if (plot instanceof Histogram) {
+            HistogramMLParser parser = new HistogramMLParser((Histogram)plot);
+            if (source != null && !source.trim().equals("")) {
                 URL xmlFile = new URL(base, source);
                 InputStream stream = xmlFile.openStream();
                 parser.parse(base, stream);
@@ -277,15 +223,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
                 }
             }
         } else {
-            // Defer until histogram has been placed.
-            if (_configureBases == null) {
-                _configureBases = new LinkedList();
-                _configureSources = new LinkedList();
-                _configureTexts = new LinkedList();
-            }
-            _configureBases.add(base);
-            _configureSources.add(source);
-            _configureTexts.add(text);
+            super.configure(base, source, text);
         }
     }
 
@@ -297,31 +235,6 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         return null;
     }
 
-    /** Return the text string that represents the current configuration of
-     *  this object.  Note that any configuration that was previously
-     *  specified using the source attribute need not be returned here.
-     */
-    public String getText() {
-        if (histogram == null) {
-            // FIXME
-            return "";
-        } else {
-            // NOTE: Cannot include xml spec in the header because processing
-            // instructions cannot be nested in XML (lame, isn't it?).
-            String header
-            = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(header);
-            buffer.append("\n<plot>\n");
-	    PrintWriter print = new PrintWriter(new StringWriter());
-	    // The second (null) argument indicates that PlotML PUBLIC DTD
-	    // should be referenced.
-	    histogram.writeFormat(print);
-            buffer.append(print.toString());
-            return buffer.toString();
-        }
-    }
-
     /** If the histogram has not already been created, create it using
      *  place().
      *  If configurations specified by a call to configure() have not yet
@@ -330,12 +243,35 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (histogram == null) {
+        if (plot == null) {
             // Place the histogram in its own frame.
-            histogram = new Histogram();
-            histogram.setTitle(getName());
-            histogram.setButtons(true);
-            _frame = new HistogramPlotFrame(getFullName(), histogram);
+            plot = new Histogram();
+            plot.setTitle(getName());
+            plot.setButtons(true);
+
+            // Need an effigy and a tableau so that menu ops work properly.
+            Effigy containerEffigy = Configuration.findEffigy(toplevel());
+            if (containerEffigy == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
+            }
+            try {
+                PlotEffigy plotEffigy = new PlotEffigy(
+                        containerEffigy, containerEffigy.uniqueName("plot"));
+                // The default identifier is "Unnamed", which is no good for
+                // two reasons: Wrong title bar label, and it causes a save-as
+                // to destroy the original window.
+                plotEffigy.identifier.setExpression(getFullName());
+
+                PlotWindowTableau tableau = new PlotWindowTableau(
+                        plotEffigy, "tableau");
+                _frame = tableau.frame;
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, null, ex,
+                        "Error creating effigy and tableau");
+            }
+
             _windowProperties.setProperties(_frame);
             _implementDeferredConfigurations();
 
@@ -346,16 +282,15 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             // Plot from the size of the Frame, which is specified
             // by the WindowPropertiesAttribute.
             if (_plotSize != null) {
-                _plotSize.setSize(histogram);
+                _plotSize.setSize(plot);
             }
         } else {
             // Clear the histogram without clearing the axes.
-            histogram.clear(false);
-            histogram.repaint();
+            plot.clear(false);
+            plot.repaint();
         }
-        if (_frame != null && !_frame.isVisible()) {
-            _frame.pack();
-	    _frame.setVisible(true);
+        if (_frame != null) {
+            _frame.show();
         }
     }
 
@@ -376,29 +311,22 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      *  @param container The container into which to place the histogram.
      */
     public void place(Container container) {
-        _container = container;
-        if (_container == null) {
-            // Dissociate with any container.
-            if (_frame != null) _frame.dispose();
-            _frame = null;
-            histogram = null;
+        if (container == null || container instanceof PlotBox) {
+            super.place(container);
             return;
         }
-        if (_container instanceof Histogram) {
-            histogram = (Histogram)_container;
-        } else {
-            if (histogram == null) {
-                histogram = new Histogram();
-                histogram.setTitle(getName());
-                histogram.setButtons(true);
-            }
-            _container.add(histogram);
-            // java.awt.Component.setBackground(color) says that
-            // if the color "parameter is null then this component
-            // will inherit the  background color of its parent."
-            //histogram.setBackground(_container.getBackground());
-            histogram.setBackground(null);
+        _container = container;
+        if (plot == null) {
+            plot = new Histogram();
+            plot.setTitle(getName());
+            plot.setButtons(true);
         }
+        _container.add(plot);
+        // java.awt.Component.setBackground(color) says that
+        // if the color "parameter is null then this component
+        // will inherit the  background color of its parent."
+        plot.setBackground(null);
+
         // If configurations have been deferred, implement them now.
         _implementDeferredConfigurations();
     }
@@ -414,215 +342,29 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
-                histogram.addPoint(i, curValue);
+                // NOTE: Should we test before this cast?
+                ((Histogram)plot).addPoint(i, curValue);
             }
         }
         return super.postfire();
     }
 
-    /** Override the base class to remove the plot from its graphical
-     *  container if the argument is null.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the base class throws it.
-     *  @exception NameDuplicationException If the base class throws it.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        super.setContainer(container);
-        if (container == null) {
-            _remove();
-        }
-    }
-
-    /** If the <i>fillOnWrapup</i> parameter is true, rescale the
-     *  plot so that all the data is visible.
-     *
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        if (((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
-            if (histogram != null) {
-                histogram.fillPlot();
-            }
-        }
-        super.wrapup();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Write a MoML description of the contents of this object, which
-     *  in this class is the configuration information. This method is called
-     *  by exportMoML().  Each description is indented according to the
-     *  specified depth and terminated with a newline character.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        // Make sure that the current position of the frame, if any,
-        // is up to date.
-        if (_frame != null) {
-            _windowProperties.recordProperties(_frame);
-        }
-        if (histogram != null) {
-            _plotSize.recordSize(histogram);
-        }
-        super._exportMoMLContents(output, depth);
-        // NOTE: Cannot include xml spec in the header because processing
-        // instructions cannot be nested in XML (lame, isn't it?).
-        String header
-            = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
-	if (histogram != null) {
-	    output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml "
-                    + header + "\n<plot>\n");
-	    PrintWriter print = new PrintWriter(output);
-	    // The second (null) argument indicates that PlotML PUBLIC DTD
-	    // should be referenced.
-	    histogram.writeFormat(print);
-	    output.write("</plot>?>\n"
-                    + _getIndentPrefix(depth) + "</configure>\n");
-        } else if (_configureSources != null) {
-            // Configuration has been specified, but not yet evaluated.
-            // Save the configuration just as specified.
-            // Note that the bases are lost, since those are presumably
-            // the URL of the file containing the XML.
-            Iterator sources = _configureSources.iterator();
-            Iterator texts = _configureTexts.iterator();
-            while (sources.hasNext()) {
-                String source = (String)sources.next();
-                String text = (String)texts.next();
-                if (source != null && !source.trim().equals("")) {
-                    output.write(_getIndentPrefix(depth)
-                            + "<configure source=\""
-                            + source
-                            + "\">");
-		    if (text != null) {
-			output.write("<![CDATA[\n");
-		    }
-                } else {
-                    output.write(_getIndentPrefix(depth) + "<configure>\n");
-                }
-                if (text != null) {
-		    output.write(text.trim() + "\n");
-		    if (source != null && !source.trim().equals("")) {
-			output.write(_getIndentPrefix(depth) + "]]>\n");
-		    }
-		}
-                output.write(_getIndentPrefix(depth) + "</configure>\n");
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected members                 ////
-
-    /** A specification of the size of the plot if it's in its own window. */
-    protected SizeAttribute _plotSize;
-
-    /** A specification for the window properties of the frame.
-     */
-    protected WindowPropertiesAttribute _windowProperties;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Remove the histogram from the current container, if there is one.
-     */
-    private void _remove() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (histogram != null) {
-                    if (_container != null) {
-                        _container.remove(histogram);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
-                    }
-                }
-            }
-        });
-    }
 
     /** If configurations have been deferred, implement them now.
      *  Also, configure the histogram parameters, if appropriate.
      */
-    private void _implementDeferredConfigurations() {
-        if (_configureSources != null) {
-            Iterator sources = _configureSources.iterator();
-            Iterator texts = _configureTexts.iterator();
-            Iterator bases = _configureBases.iterator();
-            while (sources.hasNext()) {
-                URL base = (URL)bases.next();
-                String source = (String)sources.next();
-                String text = (String)texts.next();
-                try {
-                    configure(base, source, text);
-                } catch (Exception ex) {
-                    getManager().notifyListenersOfException(ex);
-                }
-            }
-            _configureSources = null;
-            _configureTexts = null;
-            _configureBases = null;
-        }
+    protected void _implementDeferredConfigurations() {
+        super._implementDeferredConfigurations();
         // Configure the new histogram with parameter values, possibly
         // overriding those set in evaluating the deferred configure.
         try {
             attributeChanged(binWidth);
             attributeChanged(binOffset);
-            attributeChanged(legend);
         } catch (IllegalActionException ex) {
             // Safe to ignore because user would
             // have already been alerted.
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    /** Container into which this histogram should be placed */
-    private transient Container _container;
-
-    // Frame into which plot is placed, if any.
-    private transient PlotFrame _frame;
-
-    // The bases and input streams given to the configure() method.
-    private List _configureBases = null;
-    private List _configureSources = null;
-    private List _configureTexts = null;
-
-    /** Version of Plot class that removes its association with the
-     *  plot upon closing, and also records the size of the plot window.
-     */
-    private class HistogramPlotFrame extends PlotFrame {
-
-        /** Construct a plot frame with the specified title and the specified
-         *  instance of PlotBox.  After constructing this, it is necessary
-         *  to call setVisible(true) to make the plot appear.
-         *  @param title The title to put on the window.
-         *  @param plotArg the plot object to put in the frame,
-         *   or null to createan instance of Plot.
-         */
-        public HistogramPlotFrame(String title, PlotBox plotArg) {
-            super(title, plotArg);
-        }
-
-        /** Close the window.  This overrides the base class to remove
-         *  the association with the Display and to record window properties.
-         */
-        protected void _close() {
-            // Record the window properties before closing.
-            if (_frame != null) {
-                _windowProperties.setProperties(_frame);
-            }
-            if (HistogramPlotter.this.histogram != null) {
-                _plotSize.recordSize(HistogramPlotter.this.histogram);
-            }
-            super._close();
-            place(null);
         }
     }
 }
