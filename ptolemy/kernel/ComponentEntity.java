@@ -65,6 +65,7 @@ public class ComponentEntity extends Entity {
      */
     public ComponentEntity() {
 	super();
+	_addIcon();
     }
 
     /** Construct an entity in the specified workspace with an empty
@@ -76,6 +77,7 @@ public class ComponentEntity extends Entity {
      */
     public ComponentEntity(Workspace workspace) {
 	super(workspace);
+	_addIcon();
     }
 
     /** Construct an entity with the given name contained by the specified
@@ -96,6 +98,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
+	_addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -303,6 +306,24 @@ public class ComponentEntity extends Entity {
      */
     protected void _checkContainer(CompositeEntity container)
              throws IllegalActionException {}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    private void _addIcon() {
+	ProcessedString icon;
+	try {
+	    icon = new NonpersistentProcessedString(this, "iconDescription");
+	} catch (KernelException ex) {
+	    throw new InternalErrorException("Error creating icon for " + 
+					     getFullName());
+	}
+	icon.setInstruction("graphml");
+	icon.setString("<xmlgraphic>\n" + 
+		"<rectangle coords=\"0 0 60 40\" fill=\"white\"/>\n" +
+		"<polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/>\n" + 
+		"</xmlgraphic>\n");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
