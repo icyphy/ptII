@@ -31,7 +31,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
  * public version of java.lang.Object.clone
  * All Collections implement clone. But this is a protected method.
  * Duplicate allows public access.
- * @see #clone
+ * @see java.lang.Object#clone
 **/
 
  public Collection duplicate();
