@@ -201,47 +201,95 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return node;
     }
 
-    public Object visitStaticInitNode(StaticInitNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitInstanceInitNode(InstanceInitNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
     public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitParameterNode(ParameterNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        // do not transform interfaces
+        return node;
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        List retList = TNLManip.traverseList(this, node, args, node.getStmts());        
-        
-        node.setStmts(_makeStmtList(retList));                        
+        node.setStmts(_makeStmtList(
+         TNLManip.traverseList(this, node, args, node.getStmts())));
         
         return node;
     }
-                   
-    public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
-        Object exprRetval = node.getExpr().accept(this, args);  
-                        
-        return _makeStmt(exprRetval);
+
+    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
+        node.setStmt(_makeStmt(node.getStmt().accept(this, args)));
+        
+        return node;
+    }
+
+    public Object visitIfStmtNode(IfStmtNode node, LinkedList args) {
+        node.setCondition((ExprNode) node.getCondition().accept(this, args));
+    
+        node.setThenPart(_makeStmt(node.getThenPart().accept(this, args)));
+        
+        if (node.getElsePart() != AbsentTreeNode.instance) {         
+           node.setElsePart(
+            (TreeNode) _makeStmt(node.getElsePart().accept(this, args)));        
+        }
+        
+        return node;
+    }
+
+    public Object visitSwitchBranchNode(SwitchBranchNode node, LinkedList args) {
+        node.setStmts(_makeStmtList(
+         TNLManip.traverseList(this, node, args, node.getStmts())));
+    
+        return node;
+    }
+
+    public Object visitLoopNode(LoopNode node, LinkedList args) {
+        node.setTest((ExprNode) node.getTest().accept(this, args));
+        
+        if (node.getForeStmt() == AbsentTreeNode.instance) {
+           node.setAftStmt((TreeNode) 
+            _makeStmt(node.getAftStmt().accept(this, args)));
+        } else {
+           node.setForeStmt((TreeNode) 
+            _makeStmt(node.getForeStmt().accept(this, args)));        
+        }
+        return node;
+    
+    }
+
+    public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {                        
+        return _makeStmt(node.getExpr().accept(this, args));
     } 
 
-    // try and catch were here
-      
+    public Object visitForNode(ForNode node, LinkedList args) {
+        node.setInit(
+         TNLManip.traverseList(this, node, args, node.getInit()));
+         
+        node.setTest((ExprNode) node.getTest().accept(this, args));
+         
+        node.setUpdate(
+         TNLManip.traverseList(this, node, args, node.getUpdate()));
+                 
+        node.setStmt(_makeStmt(node.getStmt().accept(this, args)));
+        
+        return node;                
+    }
+
+    public Object visitThrowNode(ThrowNode node, LinkedList args) {
+        return _defaultVisit(node, args);
+    }
+
+    public Object visitSynchronizedNode(SynchronizedNode node, LinkedList args) {
+        node.setStmt((TreeNode) _makeStmt(node.getStmt().accept(this, args)));
+        
+        return node;
+    }
+
+    public Object visitCatchNode(CatchNode node, LinkedList args) {
+        return _defaultVisit(node, args);
+    }
+
+    public Object visitTryNode(TryNode node, LinkedList args) {
+        return _defaultVisit(node, args);
+    }
+                         
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
 
@@ -359,37 +407,13 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            } else if (methodName.equals("convert")) {
               return new CastNode(_typeID.typeNodeForKind(accessedObjKind), firstArg);
            } else if (methodName.equals("zero")) {
-              if (accessedObjIsBoolean) {
-                 return new BoolLitNode("false");
-              } else if (accessedObjIsScalar) {
-                 return new IntLitNode("0");    
-              } else if (accessedObjIsMatrix) {
-                 return new MethodCallNode(
-                  new TypeFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "zero"),
-                   new TypeNameNode(
-                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                  TNLManip.cons(accessedObj));                                                                     
-              } else if (accessedObjIsString) {
-                 return new StringLitNode("");
-              } 
+              return _zeroValue(accessedObjKind, accessedObj);
            } else if (methodName.equals("one")) {
-              if (accessedObjIsBoolean) {
-                 return new BoolLitNode("true");
-              } else if (accessedObjIsScalar) {
-                 return new IntLitNode("1");    
-              } else if (accessedObjIsMatrix) {
-                 return new MethodCallNode(
-                  new TypeFieldAccessNode(
-                   new NameNode(AbsentTreeNode.instance, "one"),
-                   new TypeNameNode(
-                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
-                  TNLManip.cons(accessedObj));                                                                     
-              }                                                               
-           } else if (methodName.equals("one")) {
+              return _oneValue(accessedObjKind, accessedObj);
+           } else if (methodName.equals("oneRight")) {
               return new MethodCallNode(
                new TypeFieldAccessNode(
-                new NameNode(AbsentTreeNode.instance, "one"),
+                new NameNode(AbsentTreeNode.instance, "oneRight"),
                  new TypeNameNode(
                   new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
                TNLManip.cons(accessedObj));                                                                                                                                                  
@@ -1238,6 +1262,54 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return newStmtList;
     }
        
+    protected ExprNode _oneValue(int accessedObjKind, ExprNode accessedObj) {
+        switch (accessedObjKind) {
+          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:      
+          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+          return new IntLitNode("1");
+                                        
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+          return new BoolLitNode("true");
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+          return new DoubleLitNode("1.0");
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+          return new LongLitNode("1L");
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+          return new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance, "ONE"),
+           (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
+                                            
+          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:          
+          ApplicationUtility.error("found one() method call on unsupported token kind " +
+           accessedObjKind);
+          return null;                                 
+                    
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:              
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN: 
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+          return new MethodCallNode(new TypeFieldAccessNode(
+                  new NameNode(AbsentTreeNode.instance, "one"),
+                   new TypeNameNode(
+                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                  TNLManip.cons(accessedObj));                                
+                  
+          default:
+          ApplicationUtility.error("found zero() method call on unknown token kind " +
+           accessedObjKind);
+          return null;           
+        }                
+    }
+       
+       
     protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
         // by default, get rid of the port field declaration 
         return NullValue.instance;              
@@ -1301,10 +1373,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            } else {
               return new BoolLitNode("false");
            }
-        } else if (methodName.equals("send")) {
-           // dummy behavior, do nothing
-           return NullValue.instance;
-        } else if (methodName.equals("setInput") || 
+        } else if (methodName.equals("send") ||
+                   methodName.equals("setInput") || 
                    methodName.equals("setMultiport") || 
                    methodName.equals("setOutput") || 
                    methodName.equals("setTokenConsumptionRate") || 
@@ -1362,7 +1432,55 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                                 
         return _defaultVisit(node, args);    
     }
-                 
+
+    protected ExprNode _zeroValue(int accessedObjKind, ExprNode accessedObj) {
+        switch (accessedObjKind) {
+          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:      
+          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+          return new IntLitNode("0");
+                                        
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+          return new BoolLitNode("false");
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+          return new DoubleLitNode("0.0");
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+          return new LongLitNode("0L");
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
+          return new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance, "ZERO"),
+           (TypeNameNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone());
+                                            
+          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+          ApplicationUtility.error("found zero() method call on ObjectToken");
+          return null;                                 
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:
+          return new StringLitNode("");                  
+          
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:             
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN: 
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+          return new MethodCallNode(new TypeFieldAccessNode(
+                  new NameNode(AbsentTreeNode.instance, "zero"),
+                   new TypeNameNode(
+                    new NameNode(AbsentTreeNode.instance, "CodeGenUtility"))),
+                  TNLManip.cons(accessedObj));                                
+                  
+          default:
+          ApplicationUtility.error("found zero() method call on unknown token kind " +
+           accessedObjKind);
+          return null;           
+        }                
+    }
+                                   
     protected ActorCodeGeneratorInfo _actorInfo = null;    
     
     protected PtolemyTypeVisitor _typeVisitor = null;
@@ -1380,5 +1498,5 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     /** A flag indicating that the actor class inherits from object, so 
      *  super.XXX() method calls must be eliminated.
      */      
-    protected boolean _isBaseClass = false;                                 
+    protected boolean _isBaseClass = false;                                     
 }

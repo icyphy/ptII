@@ -355,14 +355,20 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
            TypeNameNode portTypeNode = 
             _typeID.typeNodeForTokenType(port.getType()); 
                  
-           if (methodName.equals("get")) {                                                   
+           if (methodName.equals("broadcast")) {
+              // first argument is a token, constrain it
+              InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
+              _solver.addInequality(new Inequality(firstArgTerm,
+               _makeConstantTerm(portTypeNode, null)));
+              return null; // return type is void                       
+           } else if (methodName.equals("get")) {                                                   
               return _makeConstantTerm(portTypeNode, null);
            } else if (methodName.equals("send")) {
               // second argument is a token, constrain it
-              InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(1);
-              _solver.addInequality(new Inequality(firstArgTerm,
+              InequalityTerm secondArgTerm = (InequalityTerm) argTerms.get(1);
+              _solver.addInequality(new Inequality(secondArgTerm,
                _makeConstantTerm(portTypeNode, null)));
-              return null; // return type is null             
+              return null; // return type is void             
            } // support getArray ...                                                                  
                                 
         } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
@@ -398,10 +404,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         // assume that all casts succeed
                 
         InequalityTerm term = (InequalityTerm) node.getExpr().accept(this, null);
-        
-        //InequalityTerm retval = _makeVariableTerm(node.getDtype(), null);
-        //InequalityTerm retval = _makeConstantTerm(node.getDtype(), null);
-        
+                
         if (term != null) {
            _solver.addInequality(new Inequality(term, 
             _makeConstantTerm(node.getDtype(), null)));                           
@@ -423,7 +426,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
     protected InequalityTerm _visitExprNode(ExprNode node) {
         _defaultVisit(node, null);
-        //return _makeVariableTerm(_typeVisitor.type(node), null);
         return _makeConstantTerm(_typeVisitor.type(node), null);
     }
     
@@ -647,34 +649,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL);                
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL);        
         _cpo.addEdge(PtolemyTypeIdentifier.DUMMY_LOWER_BOUND, PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL);
-        
-        /*                        
-        TypeNameNode[] nodes = new TypeNameNode[] 
-        { PtolemyTypeIdentifier.BOOLEAN_TOKEN_DECL, PtolemyTypeIdentifier.BOOLEAN_MATRIX_TOKEN_DECL,
-	      PtolemyTypeIdentifier.COMPLEX_TOKEN_DECL, PtolemyTypeIdentifier.COMPLEX_MATRIX_TOKEN_DECL,
-	      PtolemyTypeIdentifier.DOUBLE_TOKEN_DECL, PtolemyTypeIdentifier.DOUBLE_MATRIX_TOKEN_DECL,	      
-	      PtolemyTypeIdentifier.FIX_TOKEN_DECL, PtolemyTypeIdentifier.FIX_MATRIX_TOKEN_DECL,
-	      PtolemyTypeIdentifier.INT_TOKEN_DECL, PtolemyTypeIdentifier.INT_MATRIX_TOKEN_DECL,
-	      PtolemyTypeIdentifier.LONG_TOKEN_DECL, PtolemyTypeIdentifier.LONG_MATRIX_TOKEN_DECL, 
-   	      PtolemyTypeIdentifier.MATRIX_TOKEN_DECL, PtolemyTypeIdentifier.OBJECT_TOKEN_DECL,
-   	      PtolemyTypeIdentifier.SCALAR_TOKEN_DECL, PtolemyTypeIdentifier.STRING_TOKEN_DECL,
-	      PtolemyTypeIdentifier.TOKEN_DECL };
-	    
-	    
-	    for (int i = 0; i < nodes.length; i++) {
-	        for (int j = i + 1; j < nodes.length; j++) {	        
-	            System.out.println("GLB for " + nodes[i].getName() +
-	             " and " + nodes[j].getName() + " is " +
-	            _cpo.greatestLowerBound(nodes[i], nodes[j]));
-	            
-                System.out.println("LUB for " + nodes[i].getName() +
-	             " and " + nodes[j].getName() + " is " +
-	            _cpo.leastUpperBound(nodes[i], nodes[j]));
-	            
-	        }
-	    } 
-        */
-                                                                                       	    	    	    	    
+                                                                                               	    	    	    	    
 	    if (!_cpo.isLattice()) {	    
   		   throw new RuntimeException("SpecializeTokenVisitor: The " +
 			  "type hierarchy is not a lattice.");
