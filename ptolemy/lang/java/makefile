@@ -88,8 +88,6 @@ JSRCS = \
 	SkeletonVisitor.java \
 	StaticResolution.java \
 	StmtLblDecl.java \
-	TestVisitor.java \
-	TestTree.java \
 	TypeDecl.java \
 	TypeIdentifier.java \
 	TypePolicy.java \
