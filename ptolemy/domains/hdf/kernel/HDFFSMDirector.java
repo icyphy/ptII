@@ -275,11 +275,11 @@ public class HDFFSMDirector extends FSMDirector {
             FSMActor controller = getController();
             controller.setNewIteration(_sendRequest);
             State initialState = controller.getInitialState();
-            TypedCompositeActor curRefinement =
-                // FIXME
-                //(TypedCompositeActor)initialState.getRefinement();
-                (TypedCompositeActor)(initialState.getRefinement())[0];
-            if (curRefinement != null) {
+            TypedActor[] curRefinements = initialState.getRefinement();
+            if (curRefinements != null) {
+                TypedCompositeActor curRefinement =
+                    // FIXME
+                    (TypedCompositeActor)(curRefinements[0]);
                 Director refinementDir = curRefinement.getDirector();
                 if (refinementDir instanceof HDFFSMDirector) {
                     refinementDir.initialize();
@@ -364,20 +364,22 @@ public class HDFFSMDirector extends FSMDirector {
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
         CompositeActor container = (CompositeActor)getContainer();
-        // FIXME
-        //TypedActor currentRefinement =
-        //TypedActor[] currentRefinement = curState.getRefinement();
         Transition lastChosenTr = _getLastChosenTransition();
         TypedCompositeActor actor;
         Director refinementDir;
         boolean superPostfire;
         if (lastChosenTr  == null) {
             // No transition enabled. Remain in the current state.
-            // FIXME
-            //actor = (TypedCompositeActor)curState.getRefinement();
-            actor = (TypedCompositeActor)(curState.getRefinement())[0];
-            refinementDir = actor.getDirector();
-            superPostfire = super.postfire();
+            TypedActor[] actors = curState.getRefinement();
+            if (actors != null) {
+                // FIXME
+                actor = (TypedCompositeActor)(actors[0]);
+                refinementDir = actor.getDirector();
+                superPostfire = super.postfire();
+            } else {
+                throw new IllegalActionException(this,
+                    "State refinement cannot be null in HDF or SDF");
+            }
         } else {
             // Make a state transition.
             State newState = lastChosenTr.destinationState();
@@ -385,10 +387,15 @@ public class HDFFSMDirector extends FSMDirector {
 
             superPostfire = super.postfire();
             curState = newState;
-            // Get the new current refinement actor.
-            // FIXME
-            // actor = (TypedCompositeActor)curState.getRefinement();
-            actor = (TypedCompositeActor)(curState.getRefinement())[0];
+            // Get the new current refinment actor.
+            TypedActor[] actors = curState.getRefinement();
+            if (actors != null) {
+                // FIXME
+                actor = (TypedCompositeActor)(actors[0]);
+            } else {
+                throw new IllegalActionException(this,
+                    "State refinement cannot be null in HDF or SDF");
+            }
             refinementDir = actor.getDirector();
             if (refinementDir instanceof HDFFSMDirector) {
                 refinementDir.postfire();
@@ -502,11 +509,11 @@ public class HDFFSMDirector extends FSMDirector {
         State initialState = ctrl.getInitialState();
         _setCurrentState(initialState);
         // Get the current refinement.
-        TypedCompositeActor curRefinement =
+        TypedActor[] curRefinements = initialState.getRefinement();
+        if (curRefinements != null) {
             // FIXME
-            //(TypedCompositeActor)initialState.getRefinement();
-            (TypedCompositeActor)(initialState.getRefinement())[0];
-        if (curRefinement != null) {
+            TypedCompositeActor curRefinement
+                = (TypedCompositeActor)(curRefinements[0]);
             Director refinementDir = curRefinement.getDirector();
 
             if (!(refinementDir instanceof HDFFSMDirector)
@@ -745,10 +752,6 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor refineInPortContainer =
             (CompositeActor) actor.getContainer();
         Transition lastChosenTr = _getLastChosenTransition();
-        if (lastChosenTr != null) {
-            //trRefinement =
-              //  (TypedCompositeActor)(lastChosenTr.getRefinement())[0];
-        }
         
         // Get all of the input ports of the container of this director.
         List containerPortList = refineInPortContainer.inputPortList();
@@ -809,20 +812,24 @@ public class HDFFSMDirector extends FSMDirector {
                             TypedActor[] trRefinements
                                 = (transition.getRefinement());
                             if (trRefinements != null){
-                                TypedCompositeActor trRefinement
-                                    = (TypedCompositeActor)
-                                    (trRefinements[0]);
-                                String trRefinementName 
-                                    = trRefinement.getFullName();
-                                if (thisPortContainer.getFullName()
-                                    == trRefinementName) {
-                                    int portRateToSet = SDFUtilities
-                                        .getTokenConsumptionRate
-                                        (refineInPort);
-                                    SDFUtilities.
-                                        setTokenConsumptionRate
-                                        (inputPortOutside,
-                                        portRateToSet);   
+                                for (int i = 0;
+                                    i < trRefinements.length; i ++) {
+                                    TypedCompositeActor trRefinement
+                                        = (TypedCompositeActor)
+                                          (trRefinements[i]);
+                                    String trRefinementName 
+                                        = trRefinement.getFullName();
+                                    if (thisPortContainer.getFullName()
+                                        == trRefinementName) {
+                                        int portRateToSet =
+                                            SDFUtilities
+                                            .getTokenConsumptionRate
+                                            (refineInPort);
+                                        SDFUtilities.
+                                            setTokenConsumptionRate
+                                            (inputPortOutside,
+                                            portRateToSet);   
+                                    }
                                 }
                             }
                         }    
