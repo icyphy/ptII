@@ -234,7 +234,7 @@ public class ByteToken extends ScalarToken {
      *  @param byte The byte to convert.
      *  @return An integer between 0 and 255.
      */
-    public int unsignedConvert(byte value) {
+    public static int unsignedConvert(byte value) {
         int intValue = value;
         if (intValue < 0) {
             intValue += 256;
