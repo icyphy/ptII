@@ -529,6 +529,7 @@ test MoMLParser-1.11 {test instantiation of a class} {
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
+<property name="xxx"/>
 </entity>
 }
 
@@ -555,7 +556,7 @@ test MoMLParser-1.12 {test instantiation of a class} {
 ####
 #
 set body {
-<entity name="top" class="ptolemy.kernel.CompositeEntity">
+<entity name="yyy" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
     <entity name="c" class="ptolemy.moml.test.testClass2"/>
 </entity>
@@ -565,10 +566,10 @@ set moml "$header $body"
 
 test MoMLParser-1.12.1 {test instantiation of a class} {
     $parser reset
-    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+    set foo [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
-    set b [$toplevel getEntity b]
-    set c [$toplevel getEntity c]
+    set b [$foo getEntity b]
+    set c [$foo getEntity c]
     list [$b exportMoML] [$c exportMoML]
 } {{<entity name="b" class="ptolemy.moml.test.testClass">
     <property name="prop" class="ptolemy.data.expr.Parameter">

@@ -599,13 +599,15 @@ public class MoMLParser extends HandlerBase {
      */
     public void reset() {
         _attributes = new HashMap();
-        _containers = new Stack();
-        _namespaces = new Stack();
-        _toplevel = null;
-        _current = null;
-        _namespace = DEFAULT_NAMESPACE;
         _configureNesting = 0;
+        _containers = new Stack();
+        _current = null;
         _docNesting = 0;
+        _externalEntities = new Stack();
+        _namespace = DEFAULT_NAMESPACE;
+        _namespaces = new Stack();
+        _skipRendition = false;
+        _toplevel = null;
     }
 
     /** Resolve an external entity.  If the first argument is the
@@ -661,7 +663,7 @@ public class MoMLParser extends HandlerBase {
     /** Start a document.  This method is called just before the parser
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
-     *  In this implementation, this method does nothing.
+     *  In this implementation, this method resets some private variables.
      */
     public void startDocument() {
         _paramsToParse.clear();
@@ -682,7 +684,6 @@ public class MoMLParser extends HandlerBase {
     public void startElement(String elementName) throws XmlException {
         // FIXME: Instead of doing all these string comparisons, do
         // a hash lookup.
-        _currentElement = elementName;
         try {
             if (_configureNesting > 0 || _docNesting > 0) {
                 // Inside a configure or doc tag.  First, check to see
@@ -747,6 +748,10 @@ public class MoMLParser extends HandlerBase {
                     _toplevel = newEntity.toplevel();
                 }
                 newEntity.getMoMLInfo().elementName = "class";
+
+                // Adjust the classname and superclass of the object.
+                newEntity.getMoMLInfo().className = newEntity.getFullName();
+                newEntity.getMoMLInfo().superclass = className;
 
                 _current = newEntity;
                 _namespace = DEFAULT_NAMESPACE;
@@ -1618,6 +1623,10 @@ public class MoMLParser extends HandlerBase {
                         reference.clone(container.workspace());
             }
 
+            // Set up the new object to defer its MoML definition
+            // to the original class.
+            newEntity.setDeferMoMLDefinitionTo(reference);
+
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
             // name conflict here.  If we were to set the name after
@@ -2257,14 +2266,14 @@ public class MoMLParser extends HandlerBase {
     // The name of the currently active doc element.
     private String _currentDocName;
 
-    // The latest element seen by startElement.
-    private String _currentElement;
-
     // The default namespace.
     private static String DEFAULT_NAMESPACE = "";
 
     // Count of doc tags so that they can nest.
     private int _docNesting = 0;
+
+    // The external entities being parsed.
+    private Stack _externalEntities = new Stack();
 
     // ErrorHandler that handles parse errors.
     private ErrorHandler _handler = null;
@@ -2296,7 +2305,4 @@ public class MoMLParser extends HandlerBase {
 
     // The workspace for this model.
     private Workspace _workspace;
-
-    // The external entities being parsed.
-    private Stack _externalEntities = new Stack();
 }
