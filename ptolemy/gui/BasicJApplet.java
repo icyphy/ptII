@@ -116,8 +116,7 @@ public class BasicJApplet extends JApplet {
      *  only the error message associated with the exception.
      */
     public void report(Exception ex) {
-        MessageHandler.error("Exception thrown by applet.", ex);
-        showStatus("exception occurred.");
+	report("Exception thrown by applet.", ex);
     }
 
     /** Report a message to the user.
@@ -134,6 +133,9 @@ public class BasicJApplet extends JApplet {
      *  exception.
      */
     public void report(String message, Exception ex) {
+	// In JDK1.3.1, we can't copy the contents of the window that the
+	// applet pops up, so be sure to print the stack trace to stderr. 
+	ex.printStackTrace();
         MessageHandler.error(message, ex);
         showStatus("exception occurred.");
     }
