@@ -235,3 +235,46 @@ test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
 } {{ptolemy.actor.sched.NotSchedulableException: ramp is a SequenceActor, which cannot be a source actor in the CT domain.}}
 
 
+######################################################################
+#### Lots of actors
+#
+
+# Create a model with lots of Scale actors and run it
+proc manyScales {numberOfScaleActors} {
+    set e0 [sdfModel 5]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set scale [java::new ptolemy.actor.lib.Scale $e0 "scale-0"]
+    $e0 connect \
+	    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
+
+    for {set i 1} { $i < $numberOfScaleActors} {incr i} {
+	set newScale [java::new ptolemy.actor.lib.Scale $e0 "scale-$i"]
+	set factor [getParameter $newScale factor]
+	$factor setExpression "1.1"
+
+        $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $newScale] input]
+        set scale $newScale
+    }
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    return [enumToTokenValues [$rec getRecord 0]]
+}
+
+test Ramp-4.1 {Test with 5 actors} {
+    manyScales 5
+} {0.0 1.4641 2.9282 4.3923 5.8564}
+
+test Ramp-4.2 {Test with 50 actors} {
+    manyScales 50
+} {0.0 106.7189571633598 213.4379143267195 320.1568714900794 426.875828653439}
+
+#test Ramp-4.3 {Test with 500 actors} {
+#    manyScales 500
+#} {}
