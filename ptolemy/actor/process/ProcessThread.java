@@ -105,8 +105,7 @@ public class ProcessThread extends PtolemyThread {
                 // FIXME:
             }
             _director.decreaseActiveCount();
-            System.out.println(getName() + ": DDYYYYYEEEEIIINNNGGGGG....");
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,10 +115,8 @@ public class ProcessThread extends PtolemyThread {
     private boolean _iterate() 
 	    throws NameDuplicationException, IllegalActionException {
 	if (((Entity)_actor).getContainer()!=null && _actor.prefire()) {
-	    System.out.println(((Entity)_actor).getName()+" firing");
-	    _actor.fire();
-            System.out.println(((Nameable)_actor).getName() + ": xxxxx about to postfire.");
-	    return _actor.postfire();
+            _actor.fire();
+     	    return _actor.postfire();
 	}
 	return false;
     }
