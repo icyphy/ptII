@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.demo.ABP;
@@ -85,7 +88,8 @@ public class DEChannel extends TypedAtomicActor {
         DEDirector dir = (DEDirector)getDirector();
         double now = dir.getCurrentTime();
         if (input.hasToken(0)) {
-            if (Math.random() < ((DoubleToken)_dropRate.getToken()).doubleValue()) {
+            if (Math.random() < 
+                    ((DoubleToken)_dropRate.getToken()).doubleValue()) {
                 // drop the message
                 input.get(0);
             } else {
@@ -93,9 +97,12 @@ public class DEChannel extends TypedAtomicActor {
                 _msgs.add(input.get(0));
                 if (_msgs.size() == 1) {
                     // schedule output time
-                    double minDelay = ((DoubleToken)_minDelay.getToken()).doubleValue();
-                    double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue();
-                    double delay = minDelay + (maxDelay - minDelay)*Math.random();
+                    double minDelay =
+                        ((DoubleToken)_minDelay.getToken()).doubleValue();
+                    double maxDelay =
+                        ((DoubleToken)_maxDelay.getToken()).doubleValue();
+                    double delay = minDelay +
+                        (maxDelay - minDelay)*Math.random();
                     _nextOutTime = now + delay;
                     dir.fireAt(this, now + delay);
                 }
@@ -116,9 +123,11 @@ public class DEChannel extends TypedAtomicActor {
 
             if (_msgs.size() > 0) {
                 // schedule output time
-                double minDelay = ((DoubleToken)_minDelay.getToken()).doubleValue(
+                double minDelay =
+                    ((DoubleToken)_minDelay.getToken()).doubleValue(
 );
-                double maxDelay = ((DoubleToken)_maxDelay.getToken()).doubleValue(
+                double maxDelay =
+                    ((DoubleToken)_maxDelay.getToken()).doubleValue(
 );
                 double delay = minDelay + (maxDelay - minDelay)*Math.random();
                 _nextOutTime = now + delay;

@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.demo.ABP;
@@ -94,7 +97,7 @@ public class ABPPlot extends DEActor {
     ////                         public methods                    ////
 
     /** Clear the plot window.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -119,12 +122,14 @@ public class ABPPlot extends DEActor {
             int index = 0;
             _legends = new String[stokens.countTokens()];
             while(stokens.hasMoreTokens()) {
-                _legends[index++]= stokens.nextToken();
+                _legends[index++] = stokens.nextToken();
             }
         }
 
 	for (int i = 0; i < input.getWidth(); i++) {
-            if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
+            if (_legends != null &&
+                    i < _legends.length &&
+                    legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
             } else {
                 _plot.addLegend(i, "Data " + i);
@@ -141,7 +146,7 @@ public class ABPPlot extends DEActor {
     }
 
     /** Add new input data to the plot.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException{
         DEDirector dir = (DEDirector) getDirector();

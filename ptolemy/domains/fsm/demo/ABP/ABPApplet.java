@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.demo.ABP;
@@ -89,7 +92,7 @@ public class ABPApplet extends Applet {
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(1,1));
+        appletPanel.setLayout(new GridLayout(1, 1));
         add(appletPanel, "Center");
 
         // _la is the drawing panel for DELogicAnalyzer actor.
@@ -103,7 +106,7 @@ public class ABPApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,2));
+        simulationParam.setLayout(new GridLayout(2, 2));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 

@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (liuxj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.demo.ABP;
@@ -84,17 +87,19 @@ public class DEMessageSource extends TypedAtomicActor {
         _msgNum = 0;
         _nextMsgTime = -1.0;
 
-        //System.out.println("DEChannel "+getFullName()+" initializing at time "+
-        //        getCurrentTime());
+        //System.out.println("DEChannel " + getFullName() + 
+        //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
         double now = dir.getCurrentTime();
         dir.fireAt(this, now +
-                ((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
+                ((DoubleToken)_maxDelay.getToken()).doubleValue() * 
+                Math.random());
     }
 
-    /** If this is the first fire, output the request token. Otherwise, if current
-     *  time agrees with the scheduled message output time, output the message. If
-     *  there is a token in port next, then schedule the next message output time.
+    /** If this is the first fire, output the request
+     *  token. Otherwise, if current time agrees with the scheduled
+     *  message output time, output the message. If there is a token
+     *  in port next, then schedule the next message output time.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -114,7 +119,7 @@ public class DEMessageSource extends TypedAtomicActor {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
-                double delay = maxDelay*Math.random();
+                double delay = maxDelay * Math.random();
 	        dir.fireAt(this, now + delay);
                 _nextMsgTime = now + delay;
             }
