@@ -684,9 +684,10 @@ public class FSMActor extends CompositeEntity
     //    _firingsPerIteration = firings;
     //}
 
-    /** Set the number of firings so far in the current iteration.
-     *  @param firings The number of firings that the modal model
-     *  has fired in the current iteration. 
+    /** Set the flag indicating whether we are at the start of
+     *  a new iteration (firing).  Normally, the flag is set to true.
+     *  It is only set to false in HDF. 
+     *  @param newIteration
      */
     public void setNewIteration(boolean newIteration) {
         //_firingsSoFar = firings;
