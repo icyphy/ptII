@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sc/lib
+ME =            ptolemy/domains/sc/lib
 
 DIRS = 		#test doc
 
@@ -42,8 +42,13 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
+DIRS = 		#test #doc
+
+# Used to build zip files
 PTPACKAGE = 	lib
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/domains/sc/lib
+PTVERSION =	1.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
