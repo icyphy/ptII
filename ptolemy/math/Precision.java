@@ -90,17 +90,17 @@ public class Precision {
 	if ( n.indexOf('/', 0) != -1 ) {
 	    done = true;
 	    type = 1;
-	    st = new StringTokenizer(n,"/()");
+	    st = new StringTokenizer(n,"/()\"");
 	}
 	if ( n.indexOf('.', 0) != -1 ) {
 	    done = true;
 	    type = 2;
-	    st = new StringTokenizer(n,".()");
+	    st = new StringTokenizer(n,".()\"");
 	}
 	if ( n.indexOf('^', 0) != -1 ) {
 	    done = true;
 	    type = 3;
-	    st = new StringTokenizer(n,"^()");
+	    st = new StringTokenizer(n,"^()\"");
 	}
 
 	// throw an exception
