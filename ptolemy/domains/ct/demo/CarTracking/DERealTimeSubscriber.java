@@ -259,7 +259,7 @@ public class DERealTimeSubscriber extends Source
                         _tokenList.addLast(entry.token); 
                         try {
                             _container.getDirector().fireAt(_container, 
-                                    (double)System.currentTimeMillis());
+                                    (double)System.currentTimeMillis()/1000.0);
                         } catch (IllegalActionException ex) {
                             throw new InvalidStateException(_container,
                                     "can't register fireAt with the director."

@@ -167,7 +167,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
         _entryName = ((StringToken)entryName.getToken()).toString();
         _space = SpaceFinder.getSpace(
                 ((StringToken)jspaceName.getToken()).toString());
-        System.out.println("Found Space.");
+
         // export this object so that the space can call back
         try {
             UnicastRemoteObject.exportObject(this);
@@ -196,7 +196,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
             if(entry == null) {
                 System.err.println("The publisher is not ready. Try again...");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch(InterruptedException ex) {
                     throw new IllegalActionException(this,
                             "sleep interrupted. " + ex.getMessage());
@@ -231,6 +231,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
      *  The new data only takes effect after postfire.
      */
     public void fire() throws IllegalActionException {
+        //System.out.println("Correct = " + _correct);
         correct.send(0, new BooleanToken(_correct));
         force.send(0, _lastData.getElement(1));
         velocity.send(0, _lastData.getElement(2));
@@ -242,42 +243,61 @@ public class CarInformationSubscriber extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
         if(_hasNewData) {
+            //System.out.println("check for correctness");
             // grab a lock so that the the set of data is consistent.
             double lastTimeStamp =
                 ((DoubleToken)_lastData.getElement(0)).doubleValue();
+            //System.out.println("last time stamp " + lastTimeStamp);
             double lastF = 
                 ((DoubleToken)_lastData.getElement(1)).doubleValue();
+            //System.out.println("last force " + lastF);
             double lastV = 
                 ((DoubleToken)_lastData.getElement(2)).doubleValue();
+            //System.out.println("last velocity " + lastV);
             double lastP = 
                 ((DoubleToken)_lastData.getElement(3)).doubleValue();
+            //System.out.println("last position " + lastP);
             
             synchronized(_lock) {
                 // do the sanity check.
-                double currentTimeStamp = 
-                    ((DoubleToken)_currentData.getElement(0)).doubleValue();
-                double timeInterval = currentTimeStamp - lastTimeStamp;
-                double fovermiu = lastF/_miu;
-                double expt = Math.exp((-1.0) * _miu * timeInterval);
-                double computedVelocity = 
-                    (lastV - fovermiu) * expt + fovermiu;
-                double computedPosition = lastP +
-                    (1.0/_miu)*(lastV - fovermiu) * (1.0 - expt) +
-                    fovermiu * timeInterval;
-                double currentVelocity = 
-                    ((DoubleToken)_currentData.getElement(2)).doubleValue();
                 double currentPosition =
                     ((DoubleToken)_currentData.getElement(3)).doubleValue();
-                if(Math.abs(currentVelocity - computedVelocity) < _eps &&
-                        Math.abs(currentPosition - computedPosition) < _eps) {
-                    _correct = true;
+                if (currentPosition >= lastP) {
+                    double currentTimeStamp = 
+                        ((DoubleToken)_currentData.getElement(0)).doubleValue();
+                    double timeInterval = currentTimeStamp - lastTimeStamp;
+                    //System.out.println("time interval: " + timeInterval);
+                    double fovermiu = lastF/_miu;
+                    double expt = Math.exp((-1.0) * _miu * timeInterval);
+                    double computedVelocity = 
+                        (lastV - fovermiu) * expt + fovermiu;
+                    //System.out.println("computed v: " + computedVelocity);
+                    double computedPosition = lastP +
+                        (1.0/_miu)*(lastV - fovermiu) * (1.0 - expt) +
+                        fovermiu * timeInterval;
+                    //System.out.println("computed p: " + computedPosition);
+                    double currentVelocity = 
+                        ((DoubleToken)_currentData.getElement(2)).doubleValue();
+                    //System.out.println("read velocity: " +currentVelocity);
+                    
+                    //System.out.println("read position: " +currentPosition);
+                    if(Math.abs(currentVelocity - computedVelocity) < _eps &&
+                            Math.abs(currentPosition - computedPosition) <
+                            _eps) {
+                        _correct = true;
+                    } else {
+                        _correct = false;
+                    }
+                    _lastData = _currentData;
+                    _hasNewData = false;
                 } else {
+                    // New data are definitely wrong. Don't even update them.
                     _correct = false;
+                    _hasNewData = false;
                 }
-                _lastData = _currentData;
-                _hasNewData = false;
             }
         }
+        //System.out.println("CORRECT" + _correct); 
         correct.send(0, new BooleanToken(_correct));
         return true;
     }                    
@@ -296,7 +316,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
     
     // The correctness of the current outputs, which are the last set of 
     // subscribed data.
-    private boolean _correct;
+    private boolean _correct = true;
 
     // The lock that the access of local variables are synchronized on.
     private Object _lock = new Object();
@@ -318,7 +338,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
     private final double _miu = 0.5;
     
     // error tolerance.
-    private final double _eps = 1e-4;
+    private final double _eps = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

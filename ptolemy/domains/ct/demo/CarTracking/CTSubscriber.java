@@ -187,7 +187,14 @@ public class CTSubscriber extends Source
     public void notify(RemoteEvent event) {
         NotifyHandler nh = new NotifyHandler(this, event);
         new Thread(nh).start();
-    }             
+    }    
+
+    /** If the token is not emitted in the last iteration, just forget it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _hasNewToken = false;
+        return true;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -202,10 +209,10 @@ public class CTSubscriber extends Source
     private boolean _hasNewToken = false;
 
     // The lock that the access of local variables are synchronized on.
-    private Object _lock;
+    private Object _lock = new Object();
 
     // Current set of data.
-    private ArrayToken _notifiedToken;
+    private Token _notifiedToken;
 
     // Used to identify the event registration
     private EventRegistration _eventReg;
@@ -252,7 +259,7 @@ public class CTSubscriber extends Source
                         System.out.println(getName() + 
                                 " read null from space");
                     }
-                    _notifiedToken = (ArrayToken)entry.token;
+                    _notifiedToken = (Token)entry.token;
                     _hasNewToken = true;
                 }
             }

@@ -250,12 +250,12 @@ public class CarInformationPublisher extends TypedAtomicActor
                     tokens[1] = force.get(0);
                     tokens[2] = velocity.get(0);
                     tokens[3] = position.get(0);
-                    System.out.println("Malfunctioning = false");
+                    //System.out.println("Malfunctioning = false");
                 } else {
                     for(int i = 0; i < 4; i++) {
                         tokens[i] = new DoubleToken(Math.random());
                     }
-                    System.out.println("Malfunctioning = true");
+                    //System.out.println("Malfunctioning = true");
                 }
                 ArrayToken array = new ArrayToken(tokens);
                 TokenEntry template = new TokenEntry(name, null, null);

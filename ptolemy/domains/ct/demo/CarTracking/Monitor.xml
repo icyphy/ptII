@@ -21,8 +21,25 @@
 	</property>
       	<port name="output"></port>
     </entity>
-
-
+    <entity name="alarm" 
+        class="ptolemy.domains.ct.demo.CarTracking.TrackingAlarm">
+	<port name="leaderPosition"></port>
+      	<port name="followerPosition"></port>
+	<port name="tooClose"></port>
+	<port name="tooClose"></port>
+    </entity>
+    <entity name="closePublisher" 
+        class="ptolemy.domains.ct.demo.CarTracking.RealTimePublisher">
+	<property name="entryName" 
+	    value="&quot;TooClose&quot;"></property>
+	<port name="input"></port>
+    </entity>
+    <entity name="farPublisher" 
+        class="ptolemy.domains.ct.demo.CarTracking.RealTimePublisher">
+	<property name="entryName" 
+	    value="&quot;TooFar&quot;"></property>
+	<port name="input"></port>
+    </entity>
     <entity name="display" class="ptolemy.actor.gui.TimedPlotter">
     	<port name="input"></port>
     	<!-- Configure provided in both a referenced file and local data -->
@@ -39,8 +56,16 @@
     <!-- Make the connections -->
     <relation name="r0" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="leadingCar.output" relation="r0"/>
+	<link port="alarm.leaderPosition" relation="r0"/>
   	<link port="display.input" relation="r0"/>
     <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="followingCar.output" relation="r1"/>
+	<link port="alarm.followerPosition" relation="r1"/>
   	<link port="display.input" relation="r1"/>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+	<link port="alarm.tooClose" relation="r2"/>
+  	<link port="closePublisher.input" relation="r2"/>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
+	<link port="alarm.tooFar" relation="r3"/>
+  	<link port="farPublisher.input" relation="r3"/>
 </model>

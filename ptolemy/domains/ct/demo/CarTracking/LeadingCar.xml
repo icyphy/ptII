@@ -7,9 +7,9 @@
         class="ptolemy.data.expr.Parameter"></property>
     <property name="Malfunctioning" value="false"
         class="ptolemy.data.expr.Parameter">
-            <!--property name="style0" 
-	        class="ptolemy.actor.gui.style.CheckBoxStyle"-->
-            <!--/property-->
+            <property name="style0" 
+	        class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
 	</property>
     <director class="ptolemy.domains.ct.kernel.CTRealTimeDirector">
         <property name="stopTime" value="240">

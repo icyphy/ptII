@@ -12,7 +12,7 @@
     
     <!-- Define the actors -->
     <!-- replace this actor with the controller -->
-    <entity name="controller" 
+    <entity name="observer" 
         class="ptolemy.domains.ct.demo.CarTracking.CarInformationSubscriber">
 	<property name="entryName" value="&quot;LeadingCar&quot;">
         </property>
@@ -21,6 +21,14 @@
         <port name="velocity"></port>
 	<port name="position"></port>
     </entity>
+    <entity name="controller" 
+        class="ptolemy.domains.ct.demo.CarTracking.ModalController">
+	<port name="correctness"></port>
+        <port name="leadingPosition"></port>
+	<port name="followingPosition"></port>
+	<port name="drivingForce"></port>
+    </entity>
+
     <!-- REPLACE THE FOLLOWING WITH carmodel.xml, WHEN the IOPort is fixed.-->
     <doc>
      import source="carmodel.xml"/
@@ -97,10 +105,17 @@
     </entity>
     <!-- Make the connections -->
     
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+	<link port="observer.correct" relation="r1"/>  
+  	<link port="controller.correctness" relation="r1"/>   
+    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
+	<link port="observer.position" relation="r2"/>  
+  	<link port="controller.leadingPosition" relation="r2"/>  
     <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="controller.force" relation="r3"/>   
+  	<link port="controller.drivingForce" relation="r3"/>   
     <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
 	<link port="ssamp.input" relation="r8"/>
+	<link port="controller.followingPosition" relation="r8"/>
     <relation name="r9" class="ptolemy.actor.TypedIORelation"></relation>
   	<link port="ssamp.output" relation="r9"/>
 	<link port="toMonitor.input" relation="r9"/>
