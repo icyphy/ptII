@@ -81,7 +81,7 @@ capability.
 @version $Id$
 @author Christopher Hylands
  */
-public class ASTReflect {
+public final class ASTReflect {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -90,7 +90,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The ClassDeclNode of that class. 
      */
-    public final static ClassDeclNode ASTClassDeclNode(Class myClass) {
+    public static ClassDeclNode ASTClassDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
@@ -102,21 +102,8 @@ public class ASTReflect {
                     fullClassName.substring(1 +
                             fullClassName.lastIndexOf('.')));
 
-	// Unfortunately, we can't use Arrays.asList() here since
-	// what getParameterTypes returns of type Class[], and
-	// what we want is a list of InterfaceDeclNodes
-	List interfaceList = new LinkedList();
-	Class interfaceClasses[] = myClass.getInterfaces();
-	for(int i = 0; i < interfaceClasses.length; i++) {
-	    int interfaceModifiers =
-		Modifier.convertModifiers(interfaceClasses[i].getModifiers());
 
-	    NameNode interfaceName =
-	    	(NameNode) _makeNameNode(interfaceClasses[i].getName());
-
-	    TypeNode interfaceDeclNode = new TypeNameNode(interfaceName);
-	    interfaceList.add(interfaceDeclNode);
-	}
+	List interfaceList = _typeNodeList(myClass.getInterfaces());
 
 	LinkedList memberList = new LinkedList();
 
@@ -135,8 +122,8 @@ public class ASTReflect {
 	TypeNameNode superClass = null;
         if (myClass.getSuperclass() == null ) {
             // JDK1.2.2 getSuperclass can return null
-            // FIXME: should this be java.lang.Object?
-            superClass = new TypeNameNode((NameNode)_makeNameNode("Object"));
+            superClass =
+                new TypeNameNode((NameNode)_makeNameNode("java.lang.Object"));
         } else {
             superClass =
 		new TypeNameNode((NameNode)_makeNameNode(
@@ -160,7 +147,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The CompileUnitNode of that class. 
      */
-    public final static CompileUnitNode ASTCompileUnitNode(Class myClass) {
+    public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
 
         NameNode packageName = null;
         if (myClass.getPackage() == null ) {
@@ -202,7 +189,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The List of constructors for the class.
      */
-    public final static List constructorsASTList(Class myClass) {
+    public static List constructorsASTList(Class myClass) {
 	List constructorList = new LinkedList();
 	Constructor constructors[] = myClass.getDeclaredConstructors();
 	Constructor constructor = null;
@@ -219,8 +206,7 @@ public class ASTReflect {
 
 	    List paramList = _paramList(constructor.getParameterTypes());
 
-	    // Constructors don't throw exceptions, so this list is empty.
-	    List throwsList = new LinkedList();
+	    List throwsList = _typeNodeList(constructor.getExceptionTypes());
 
 	    ConstructorDeclNode constructorDeclNode =
 		new ConstructorDeclNode(modifiers,
@@ -242,7 +228,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The List of fields for the class.
      */
-    public final static List fieldsASTList(Class myClass) {
+    public static List fieldsASTList(Class myClass) {
 	List fieldList = new LinkedList();
 	Field fields[] = myClass.getDeclaredFields();
 	for(int i = 0; i < fields.length; i++) {
@@ -273,7 +259,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The List of ClassDeclNodes for the inner classes of the class.
      */
-    public final static List innerClassesASTList(Class myClass) {
+    public static List innerClassesASTList(Class myClass) {
 	List innerClassList = new LinkedList();
 	// Handle inner classes
 	Class classes[] = myClass.getDeclaredClasses();
@@ -287,7 +273,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The InterfaceDeclNode of the class.
      */
-    public final static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
+    public static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
 
@@ -300,23 +286,7 @@ public class ASTReflect {
                     fullClassName.substring(1 +
                             fullClassName.lastIndexOf('.')));
 
-	// Unfortunately, we can't use Arrays.asList() here since
-	// what getParameterTypes returns of type Class[], and
-	// what we want is a list of InterfaceDeclNodes
-	List interfaceList = new LinkedList();
-	Class interfaceClasses[] = myClass.getInterfaces();
-	for(int i = 0; i < interfaceClasses.length; i++) {
-	    int interfaceModifiers =
-		Modifier.convertModifiers(interfaceClasses[i].getModifiers());
-
-	    NameNode interfaceName =
-	    	(NameNode) _makeNameNode(interfaceClasses[i].getName());
-
-	    TypeNode interfaceDeclNode =
-                new TypeNameNode(interfaceName);
-
-	    interfaceList.add(interfaceDeclNode);
-	}
+	List interfaceList = _typeNodeList(myClass.getInterfaces());
 
 	LinkedList memberList = new LinkedList();
 
@@ -344,7 +314,7 @@ public class ASTReflect {
      *  @param loadedAST The CompileUnitNode of the class
      *  @return The full package name of the class
      */
-    public final static String getPackageName(CompileUnitNode loadedAST) {
+    public static String getPackageName(CompileUnitNode loadedAST) {
 	// FIXME: This get(0) worries me.
         StringBuffer packageBuffer =
 	    new StringBuffer(((UserTypeDeclNode) loadedAST.
@@ -369,7 +339,7 @@ public class ASTReflect {
      *  @return The Class object.
      *  @see SearchPath
      */
-    public final static Class lookupClass(String className) {
+    public static Class lookupClass(String className) {
         try {
             // The classname was something like java.lang.Object
             return Class.forName(className);
@@ -427,7 +397,7 @@ public class ASTReflect {
      *  @param className The name of the class.
      *  @return The ClassDeclNode that represents the class.
      */
-    public final static ClassDeclNode lookupClassDeclNode(String className) {
+    public static ClassDeclNode lookupClassDeclNode(String className) {
             return ASTClassDeclNode(lookupClass(className));
     }
 
@@ -436,7 +406,7 @@ public class ASTReflect {
      *  @param myClass The class to be analyzed.
      *  @return The List of methods for the class.
      */
-    public final static List methodsASTList(Class myClass) {
+    public static List methodsASTList(Class myClass) {
 	List methodList = new LinkedList();
 	Method methods[] = myClass.getDeclaredMethods();
 	Method method = null;
@@ -457,8 +427,7 @@ public class ASTReflect {
 
 	    List paramList = _paramList(method.getParameterTypes());
 
-	    // FIXME: call method.getExceptionTypes and convert it to a list.
-	    List throwsList = new LinkedList();
+	    List throwsList = _typeNodeList(method.getExceptionTypes());
 
 	    TypeNode returnType = _definedType(method.getReturnType());
 
@@ -487,7 +456,7 @@ public class ASTReflect {
      *  with an optional suffix.
      *  @return The Class object that represents the class.
      */
-    public final static Class pathNameToClass(String pathName) {
+    public static Class pathNameToClass(String pathName) {
         try {
             return Class.forName(new String(pathName));
         } catch (Exception e) {}
@@ -534,7 +503,7 @@ public class ASTReflect {
     }
 
     /** Print the AST of the command line argument for testing purposes. */
-    public final static void main(String[] args) {
+    public static void main(String[] args) {
 	try {
 	    System.out.println("ast: " +
                     ASTCompileUnitNode(lookupClass(args[0])));
@@ -550,7 +519,7 @@ public class ASTReflect {
     // Return a TypeNode containing the type of a class.
     // _definedType is used for method return types, method parameters
     // and fields.
-    private final static TypeNode _definedType(Class myClass) {
+    private static TypeNode _definedType(Class myClass) {
 	TypeNode defType = null;
 	String fullClassName = null;
 	if (myClass.isArray()) {
@@ -593,7 +562,7 @@ public class ASTReflect {
     // all the java.lang packages.
     // Create a TreeNode that contains the qualifiedName split
     // into separate nodes.
-    private static final TreeNode _makeNameNode(String qualifiedName) {
+    private static TreeNode _makeNameNode(String qualifiedName) {
         TreeNode retval = AbsentTreeNode.instance;
 
         int firstDotPosition;
@@ -601,8 +570,6 @@ public class ASTReflect {
         do {
             firstDotPosition = qualifiedName.indexOf('.');
 
-	    // FIXME: should we not further qualify things in java.lang
-	    // since they will be found anyway?
             if (firstDotPosition > 0) {
                 String ident = qualifiedName.substring(0, firstDotPosition);
 
@@ -672,5 +639,21 @@ public class ASTReflect {
 	    defType = VoidTypeNode.instance;
 	}
 	return defType;
+    }
+
+    // Given an an Array of classes, return a List of TypeNodes that
+    // contain the names of the classes.
+    private static List _typeNodeList(Class [] classes) {
+	// Unfortunately, we can't use Arrays.asList() here since
+	// what getParameterTypes returns of type Class[], and
+	// what we want is a list of TypeNodes
+        List classNameList = new LinkedList();
+	for(int i = 0; i < classes.length; i++) {
+	    NameNode className =
+	    	(NameNode) _makeNameNode(classes[i].getName());
+	    TypeNode classDeclNode = new TypeNameNode(className);
+	    classNameList.add(classDeclNode);
+	}
+	return classNameList;
     }
 }
