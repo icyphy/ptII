@@ -79,8 +79,8 @@ An FSMActor contains a set of states and transitions. A transition has
 a guard expression and a trigger expression. A transition is enabled and
 can be taken when its guard is true. A transition is triggered and must be
 taken when its trigger is true. A transition can contain a set of actions.
-<p>
-When an FSMActor is fired, the outgoing transitions of the current state
+
+<p> When an FSMActor is fired, the outgoing transitions of the current state
 are examined. An IllegalActionException is thrown if there is more than one
 enabled transition. If there is exactly one enabled transition then it is
 chosen and the choice actions contained by the transition are executed.
@@ -90,34 +90,46 @@ is postfired, the chosen transition of the latest firing of the actor is
 committed. The commit actions contained by the transition are executed and
 the current state of the actor is set to the destination state of the
 transition.
-<p>
-An FSMActor enters its initial state during initialization. The name of the
-initial state is specified by the <i>initialStateName</i> string attribute.
-<p>
-An FSMActor contains a set of variables for the input ports that can be
-referenced in the guard and trigger expressions of transitions. If an input
-port is a single port, three variables are created: one is an input status
-variable with name "<i>portName</i>_isPresent"; the second is input value 
-variable with name "<i>portName</i>"; the third is input array variable
-with name "<i>portName</i>Array".
-The input status variable always contains 
-a BooleanToken. When this actor is fired, the status variable is set to true
-if the port has token(s), false otherwise. The input value variable always
-contains the latest token received from the port. The input array variable
-contains an ArrayToken, which contains an array of tokens if the port rate 
-is greater than one. By default, its last token is the latest token, and 
-hence is the same token in input value variable.
-If the given port is a multiport, a status variable, a value variable and
-a array variable are created for each channel. The status variable is named
-"<i>portName</i>_<i>channelIndex</i>_isPresent". The value variable is named
-"<i>portName</i>_<i>channelIndex</i>". The array variable is named
-"<i>portName</i>_<i>channelIndex</i>Array".
-<p>
-An FSMActor can be used in a modal model to represent the mode control logic.
-A state can have a TypedActor refinement. A transition in an FSMActor can be
-preemptive or non-preemptive. When a preemptive transition is chosen, the
-refinement of its source state is not fired. A non-preemptive transition can
-only be chosen after the refinement of its source state is fired.
+
+<p> An FSMActor enters its initial state during initialization. The
+name of the initial state is specified by the <i>initialStateName</i>
+string attribute.  When the actor reaches a final state, then the
+postfire method will return false, indicating that the actor does not
+wish to be fired again.  The <i>finalStateNames</i> string attribute
+is a comma-separated list of the names of final states.
+
+<p> The guards and actions of FSM transitions are specified using
+expressions.  These expressions are evaluated in the scope returned by
+getPortScope.  This scope binds identifiers for FSM ports as defined
+in the following paragraph.  These identifiers are in the scope of
+guard and action expressions prior to any variables, and may shadow
+variables with appropriately chosen names.  Given appropriately chosen
+port names, there may be conflicts between these various identifiers.
+These conflicts are detected and an exception is thrown during
+execution.
+
+<p> For every input port, the identifier
+"<i>portName</i>_<i>channelIndex</i>" refers to the last input
+received from the port on the given channel.  The type of this
+identifier is the same as the type of the port.  This token may have
+been consumed in the current firing or in a previous firing.  The
+identifier "<i>portName</i>_<i>channelIndex</i>_isPresent" is true if
+the port consumed an input on the given channel in the current firing
+of the FSM.  The type of this identifier is always boolean.  Lastly,
+the identifier "<i>portName</i>_<i>channelIndex</i>Array" refers the
+array of all tokens consumed from the port in the last firing.  This
+identifier has an array type whose element type is the type of the
+corresponding input port.  Additionally, for conciseness when
+referencing single ports, the first channel may be referred to without
+the channel index, i.e. by the identifiers "<i>portName</i>",
+"<i>portName</i>_<i>isPresent</i>", and "<i>portName</i>Array".
+
+<p> An FSMActor can be used in a modal model to represent the mode
+control logic.  A state can have a TypedActor refinement. A transition
+in an FSMActor can be preemptive or non-preemptive. When a preemptive
+transition is chosen, the refinement of its source state is not
+fired. A non-preemptive transition can only be chosen after the
+refinement of its source state is fired.
 
 @author Xiaojun Liu
 @version $Id$
@@ -201,7 +213,7 @@ public class FSMActor extends CompositeEntity
         if (attribute == initialStateName) {
             _initialStateVersion = -1;
         } else if (attribute == finalStateNames) {
-            _checkFinalStates(finalStateNames.getExpression());
+            _parseFinalStates(finalStateNames.getExpression());
         } else {
             super.attributeChanged(attribute);
         }
@@ -224,28 +236,9 @@ public class FSMActor extends CompositeEntity
         newObject._connectionMaps = null;
         newObject._initialStateVersion = -1;
         newObject._inputTokenMap = new HashMap();
-        newObject._inputVariableVersion = -1;
         newObject._identifierToPort = new HashMap();
         return newObject;
     }
-
-    /** React to notification that the links to the specified port have
-     *  been altered.  This method overrides the base class so that if
-     *  the specified port is an input port, it deletes any previously
-     *  created shadow variables, and then recreates them.
-     *  @param port The port to which connections have changed.
-     */
-//     public void connectionsChanged(Port port) {
-//         IOPort castPort = (IOPort)port;
-//         if (castPort.isInput()) {
-//             _removeInputVariables(castPort);
-//             try {
-//                 _createInputVariables(castPort);
-//             } catch (IllegalActionException ex) {
-//                 throw new InternalErrorException(ex);
-//             }
-//         }
-//     }
 
     /** Return the current state of this actor.
      *  @return The current state of this actor.
@@ -263,7 +256,7 @@ public class FSMActor extends CompositeEntity
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
-        _setInputVariables();
+        _readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(transitionList);
     }
@@ -364,7 +357,8 @@ public class FSMActor extends CompositeEntity
 
     /** Return a list of variables that this entity modifies.  The
      * variables are assumed to have a change context of the given
-     * entity.
+     * entity.  This method returns the destinations of all choice and
+     * commit identifiers.
      * @return A list of variables.
      */
     public List getModifiedVariables() throws IllegalActionException {
@@ -420,6 +414,7 @@ public class FSMActor extends CompositeEntity
      *  guard expressions and set and output actions.
      */
     public ParserScope getPortScope() {
+        // FIXME: this could be cached.
         return new PortScope();
     }
 
@@ -640,23 +635,6 @@ public class FSMActor extends CompositeEntity
 //                    "Unable to create IODepedence attribute.");
 //        }
 
-        // NOTE: We used to have a strategy of removing the input
-        // variables and then recreating them here.  But this is a
-        // fairly brute force approach, so we have moved this to the
-        // connectionsChanged() method.
-        // This has the advantage that mutations during execution
-        // are supported.  EAL 5/21/02.
-        //         Iterator inputPorts = inputPortList().iterator();
-        //         while (inputPorts.hasNext()) {
-        //             IOPort inPort = (IOPort)inputPorts.next();
-        //              _removeInputVariables(inPort);
-        //         }
-        //         inputPorts.reset();
-        //         while (inputPorts.hasNext()) {
-        //             IOPort inPort = (IOPort)inputPorts.next();
-        //              _createInputVariables(inPort);
-        //         }
-
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
         for(Iterator inputPorts = inputPortList().iterator();
@@ -675,17 +653,20 @@ public class FSMActor extends CompositeEntity
         _inputTokenMap.clear();
         // Note: reset() (gotoInitialState()) is called from
         // initialize() now (zk 2002/09/11)`
-
     }
 
-    /** Reset current state to the initial state. Throw an
-     *  IllegalActionException if this actor does not contain a state with
-     *  name specified by the <i>initialStateName</i> attribute.
-     *  @exception IllegalActionException If this actor does not contain a
-     *   state with name specified by the <i>initialStateName</i> attribute.
+    /** Reset current state to the initial state. The name of the initial
+     *  state is specified by the <i>initialStateName</i> attribute.
+     *  @exception IllegalActionException If this actor does not
+     *  contain a state with name specified by the
+     *  <i>initialStateName</i> attribute.
      */
     public void reset() throws IllegalActionException {
-        _gotoInitialState();
+        _currentState = getInitialState();
+        if (_debugging) {
+            _debug(new StateEvent(this, _currentState));
+        }
+        _setCurrentConnectionMap();
     }
 
     /** Set the HDFFSMActor flag.
@@ -696,22 +677,12 @@ public class FSMActor extends CompositeEntity
         _HDFFSMActor = flag;
     }
 
-    /** Set the total number of firings of the modal model in the
-     *  current iteration.
-     *  @param firings The number of firings of the modal model in
-     *  the current iteration.
-     */
-    //public void setFiringsPerIteration(int firings) {
-    //    _firingsPerIteration = firings;
-    //}
-
     /** Set the flag indicating whether we are at the start of
      *  a new iteration (firing).  Normally, the flag is set to true.
      *  It is only set to false in HDF. 
      *  @param newIteration
      */
     public void setNewIteration(boolean newIteration) {
-        //_firingsSoFar = firings;
         _newIteration = newIteration;
     }
 
@@ -754,23 +725,6 @@ public class FSMActor extends CompositeEntity
             _workspace.getReadAccess();
 
             List result = new LinkedList();
-         //    Iterator inPorts = inputPortList().iterator();
-//             while (inPorts.hasNext()) {
-//                 TypedIOPort inPort = (TypedIOPort)inPorts.next();
-//                 // Note that we must constrain the types of shadow
-//                 // variables properly so that output types can be
-//                 // inferred.
-//                 Variable[][] shadowVariables =
-//                     (Variable[][])_inputVariableMap.get(inPort);
-//                 if(shadowVariables != null) {
-//                     for(int i = 0; i < shadowVariables.length; i++) {
-//                         Inequality ineq = new Inequality(
-//                                 inPort.getTypeTerm(),
-//                                 shadowVariables[i][1].getTypeTerm());
-//                         result.add(ineq);
-//                     }
-//                 }
-//             }
 
             // Collect constraints from contained Typeables.
             Iterator ports = portList().iterator();
@@ -973,136 +927,6 @@ public class FSMActor extends CompositeEntity
         }
         _setCurrentConnectionMap();
     }
-
-    /** Create shadow variables for the port, if it is an input port,
-     *  and otherwise do nothing. The shadow variables are contained
-     *  by this actor and can be referenced in the guard and trigger
-     *  expressions of transitions.  The shadow variables are lazy
-     *  so that they are not evaluated until their values are needed,
-     *  so the guard and trigger transitions should also be lazy.
-     *  <p>
-     *  If the given port is not a multiport, but is connected to
-     *  something, then three variables are created:
-     *  one is input status variable with name "<i>portName</i>_isPresent";
-     *  the second is input value variable with name "<i>portName</i>";
-     *  The third is input array variable with name "<i>portName</i>Array".
-     *  The input status variable always contains a BooleanToken. When this
-     *  actor is fired, the status variable is set to <i>true</i> if the port
-     *  has a token, and to <i>false</i> otherwise. The input value variable
-     *  always contains the latest token received from the port. The input
-     *  array variable contains an ArrayToken, which contains an array of
-     *  tokens when the port rate is greater than one. By default, its last
-     *  token is the latest token, and  hence is the same token in input 
-     *  value variable.
-     *  <p>
-     *  If the given port is a multiport, a status variable, a value
-     *  variable, and an array variable are created for each channel. 
-     *  The status variable is named 
-     *  "<i>portName</i>_<i>channelIndex</i>_isPresent".
-     *  The value variable is named "<i>portName</i>_<i>channelIndex</i>".
-     *  The array variable is named "<i>portName</i>_<i>channelIndex</i>Array".
-     *  <p>
-     *  If a variable to be created has the same name as an attribute
-     *  already contained by this actor, that attribute will be removed
-     *  from this actor by setting its container to null.
-     *  @param port The port for which to create a shadow variable.
-     *  @exception IllegalActionException If the port is not contained
-     *   by this FSMActor.
-     
-    protected void _createInputVariables(IOPort port)
-            throws IllegalActionException {
-        if (port.getContainer() != this) {
-            throw new IllegalActionException(this, port,
-                    "Cannot create input variables for port "
-                    + "not contained by this FSMActor.");
-        }
-        if (!port.isInput()) {
-            return;
-        }
-        // If there are input variables already created for the port,
-        // remove them.
-        if (_inputVariableMap.get(port) != null) {
-            _removeInputVariables(port);
-        }
-        int width = port.getWidth();
-        if (width == 0) {
-            return;
-        }
-        
-        // Array in which to store the shadow variables.
-        //Variable[][] shadowVariables = new Variable[width][2];
-        Variable[][] shadowVariables = new Variable[width][3];
-        
-        String portName = port.getName();
-        for (int channelIndex = 0; channelIndex < width; ++channelIndex) {
-            // NOTE: The following check results in a bug because the
-            // _stopRequested flag remains true after a model execution
-            // has halted.  Hence, after a run, changes to connections
-            // fail to result in variables being created.  EAL 7/22/02.
-            // if (_stopRequested) break;
-            String shadowName = null;
-            // NOTE: This used to add the channel index only if the width
-            // was greater than 1.  This doesn't match the documentation,
-            // and seems inconsistent. So I changed it.  EAL 5/23/02
-            if (port.isMultiport()) {
-                shadowName = portName + "_" + channelIndex;
-            } else {
-                shadowName = portName;
-            }
-            String predicateName = shadowName + "_isPresent";
-            Attribute previousAttribute = getAttribute(predicateName);
-            try {
-                if (previousAttribute != null) {
-                    previousAttribute.setContainer(null);
-                }
-                shadowVariables[channelIndex][0]
-                    = new Variable(this, predicateName);
-                // Make the variable lazy since it will often have
-                // an expression that cannot be evaluated.
-                shadowVariables[channelIndex][0].setLazy(true);
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(getName() + ": "
-                        + "Error creating shadow variables for port "
-                        + portName + ".\n"
-                        + ex.getMessage());
-            }
-            previousAttribute = getAttribute(shadowName);
-            try {
-                if (previousAttribute != null) {
-                    previousAttribute.setContainer(null);
-                }
-                shadowVariables[channelIndex][1]
-                    = new Variable(this, shadowName);
-                // Make the variable lazy since it will often have
-                // an expression that cannot be evaluated.
-                shadowVariables[channelIndex][1].setLazy(true);
-                
-            } catch (NameDuplicationException ex) {
-                throw new InvalidStateException(this,
-                        "Error creating input variables for port.\n"
-                        + ex.getMessage());
-            }
-            String shadowArrayName = shadowName + "Array";
-            previousAttribute = getAttribute(shadowArrayName);
-            try {
-                if (previousAttribute != null) {
-                    previousAttribute.setContainer(null);
-                }
-                shadowVariables[channelIndex][2]
-                    = new Variable(this, shadowArrayName);
-                // Make the variable lazy since it will often have
-                // an expression that cannot be evaluated.
-                shadowVariables[channelIndex][2].setLazy(true);
-            } catch (NameDuplicationException ex) {
-                throw new InvalidStateException(this,
-                    "Error creating input variables for port.\n"
-                    + ex.getMessage());
-            }
-            
-        }
-        _inputVariableMap.put(port, shadowVariables);
-        _inputVariableVersion = _workspace.getVersion();
-    }
     
     /** Return true if the channel of the port is connected to an output
      *  port of the refinement of current state. If the current state
@@ -1127,48 +951,6 @@ public class FSMActor extends CompositeEntity
         return flags[channel];
     }
 
-    /** Remove any shadow variables that have been created for the
-     *  specified port.  Note that this will not normally trigger
-     *  expression evaluation errors in dependent variables because
-     *  those are lazy.
-     *  @see #_createInputVariables(IOPort port)
-     *  @param port The port to remove shadow variables for.
-     
-    protected void _removeInputVariables(IOPort port) {
-        Variable[][] shadowVariables =
-            (Variable[][])_inputVariableMap.get(port);
-        if (shadowVariables == null) {
-            return;
-        }
-        for (int index = 0; index < shadowVariables.length; ++index) {
-            try {
-                Variable v = shadowVariables[index][0];
-                if (v != null) {
-                    v.setContainer(null);
-                }
-                v = shadowVariables[index][1];
-                if (v != null) {
-                    v.setContainer(null);
-                }
-                v =  shadowVariables[index][2];
-                if (v!= null) {
-                    v.setContainer(null);
-                }
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(getName() + ": "
-                        + "Error removing input variables for port "
-                        + port.getName() + ".\n"
-                        + ex.getMessage());
-            } catch (IllegalActionException ex) {
-                // Shouldn't occur because dependent variables are lazy.
-                throw new InternalErrorException(getName() + ": "
-                        + "Error removing input variables for port "
-                        + port.getName() + ".\n"
-                        + ex.getMessage());
-            }
-        }
-    }
-
     /*  Set the map from input ports to boolean flags indicating whether a
      *  channel is connected to an output port of the refinement of the
      *  current state.
@@ -1186,26 +968,16 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a shadow variable cannot take
      *   the token read from its corresponding channel (should not occur).
      */
-    protected void _setInputVariables() throws IllegalActionException {
-        // If the workspace version is different from when the last input
-        // variables were created, possibly due to changing the name of a
-        // port, update the input variables to reflect the name change.
-//         if (_workspace.getVersion() != _inputVariableVersion) {
-//             _updateInputVariables();
-//         }
+    protected void _readInputs() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getDirector();
-        //if (director instanceof HDFFSMDirector) {
-        //    _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
-        //    _firingsPerScheduleIteration = 
-        //        ((HDFFSMDirector)director).getFiringsPerIteration();
-        //}
+
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
-                _setInputVariables(p, channel);
+                _readInputs(p, channel);
             }
         }
     }
@@ -1219,7 +991,7 @@ public class FSMActor extends CompositeEntity
      *   this actor, or if the shadow variable cannot take the token
      *   read from the channel (should not occur).
      */
-    protected void _setInputVariables(IOPort port, int channel)
+    protected void _readInputs(IOPort port, int channel)
             throws IllegalActionException {
         String portName = port.getName();
         String portChannelName = portName + "_" + channel;
@@ -1232,73 +1004,49 @@ public class FSMActor extends CompositeEntity
             return;
         }
         int width = port.getWidth();
-      //   Variable[][] shadowVariables
-//             = (Variable[][])_inputVariableMap.get(port);
-//         if (shadowVariables == null) {
-//             throw new InternalErrorException(getName() + ": "
-//                     + "Cannot find input variables for port "
-//                     + port.getName() + ".\n");
-//         }
         
         if (port.isKnown(channel)) {
             int portRate = SDFUtilities.getTokenConsumptionRate(port);
             if (_debugging) {
                 _debug(port.getFullName() + " port rate = " + portRate);
             }
+            
+            // If we're in a new iteration, reallocate arrays to keep
+            // track of hdf data.
             if (_newIteration && channel == 0) {
-                //Token[][] a_of_p = new Token[width][portRate * _firingsPerIteration];
-                //_hdfArrays.put(port, a_of_p);
-                List[] l_of_p = new LinkedList[width];
+                List[] tokenListArray = new LinkedList[width];
                 for (int i = 0; i < width; i ++) {
-                    l_of_p[i] = new LinkedList();
+                    tokenListArray[i] = new LinkedList();
                 }
-                //List l_of_p = new LinkedList();
-                _hdfArrays.put(port, l_of_p);
+                _hdfArrays.put(port, tokenListArray);
             }
-            //int index = portRate * _firingsSoFar;
-            // Update the value variable if there is/are token(s) in the channel.
-            // FIXME: What if there are not enough tokens?
-            // In HDF(SDF) this shouldn't happen.
+            
+            // Get the list of tokens for the given port.
+            List[] tokenListArray = (LinkedList[])_hdfArrays.get(port);
+      
+            // Update the value variable if there is/are token(s) in
+            // the channel.  FIXME: What if there are not enough
+            // tokens?  In HDF(SDF) this shouldn't happen.
             int flag = 0;
             while (port.hasToken(channel)) {
                 Token token = port.get(channel);
                 if (_debugging) {
-                    _debug("---", port.getName(),"("+channel+
+                    _debug("---", port.getName(),"(" + channel +
                     ") has ", token.toString());
                 }
-                // List[] l_of_p = (linkedList)_hdfArrays.get(port);
-                List[] l_of_p = (LinkedList[])_hdfArrays.get(port);
-                //l_of_p[channel].add(0, token);
-                l_of_p[channel].add(0, token);
-                //flag ++;
-                //if (index < portRate * (_firingsSoFar + 1)) {
-                    // Set the value of tokens here.
-                  //  Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
-                    //a_of_p[channel][index] = token;
-                    //if (_debugging) {
-                        //_debug("hdfArray index = " + index + 
-                          //  " value = " + a_of_p[channel][index].toString());
-                    //}
-                    //index ++;
-                //}
+                tokenListArray[channel].add(0, token);
             }
             if (_debugging) {
                 _debug("total tokens available at port: "
                     + port.getFullName() + "  ");
             }
 
-            // The "portName_isPresent" is true only if there are 
-            // enough tokens. FIXME.
-            //if (index == portRate * _firingsPerIteration && index > 0) {
-              //  Token[][] a_of_p = (Token[][])_hdfArrays.get(port);
-              //List[] l_of_p = (LinkedList[])_hadArrays.get(port);
-            List[] l_of_p = (LinkedList[])_hdfArrays.get(port);
-            //int length = l_of_p[channel].size();
-            int length = l_of_p[channel].size();
+            // FIXME: The "portName_isPresent" should be true only if
+            // there are enough tokens.
+            int length = tokenListArray[channel].size();
             if (length > 0) {
                 Token[] tokens = new Token[length];
-                //a= (Token[])(l_of_p.toArray());
-                l_of_p[channel].toArray(tokens);    
+                tokenListArray[channel].toArray(tokens);    
                 
                 _setInputTokenMap(portName + 
                         "_isPresent", port, BooleanToken.TRUE);
@@ -1314,10 +1062,6 @@ public class FSMActor extends CompositeEntity
                         BooleanToken.FALSE);
                 _setInputTokenMap(portChannelName + "_isPresent", port,
                         BooleanToken.FALSE);
-//                 _setInputTokenMap(portName, null);
-//                 _setInputTokenMap(portChannelName, null);
-//                 _setInputTokenMap(portName + "Array", null);
-//                 _setInputTokenMap(portChannelName + "Array", null);
                 if (_debugging) {
                     _debug("---", port.getName(), "("+channel+
                         ") has no token.");
@@ -1336,7 +1080,7 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a value variable cannot take
      *   the token read from its corresponding channel.
      */
-    protected void _setInputsFromRefinement()
+    protected void _readOutputsFromRefinement()
             throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
@@ -1344,7 +1088,7 @@ public class FSMActor extends CompositeEntity
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
                 if (_isRefinementOutput(p, channel)) {
-                    _setInputVariables(p, channel);
+                    _readInputs(p, channel);
                 }
             }
         }
@@ -1357,7 +1101,6 @@ public class FSMActor extends CompositeEntity
     protected State _currentState = null;
 
     // A map from ports to corresponding input variables.
-    // protected Map _inputVariableMap = new HashMap();
     protected Map _inputTokenMap = new HashMap();
 
     // The last chosen transition.
@@ -1432,7 +1175,7 @@ public class FSMActor extends CompositeEntity
     }
 
     // Check that the comma-separated list of state names is valid.
-    private void _checkFinalStates(String names)
+    private void _parseFinalStates(String names)
             throws IllegalActionException {
         HashSet stateNames = new HashSet();
         StringTokenizer nameTokens =
@@ -1454,21 +1197,6 @@ public class FSMActor extends CompositeEntity
             IOPort inPort = (IOPort)inputPorts.next();
             inPort.createReceivers();
         }
-    }
-
-    /*  Set the current state to the initial state. The name of the initial
-     *  state is specified by the <i>initialStateName</i> attribute. An
-     *  exception is thrown if this actor does not contain a state with
-     *  the specified name.
-     *  @exception IllegalActionException If this actor does not contain
-     *   a state with the specified name.
-     */
-    private void _gotoInitialState() throws IllegalActionException {
-        _currentState = getInitialState();
-        if (_debugging) {
-            _debug(new StateEvent(this, _currentState));
-        }
-        _setCurrentConnectionMap();
     }
 
     /*  Initialize the actor.
@@ -1535,35 +1263,6 @@ public class FSMActor extends CompositeEntity
         }
         _identifierToPort.put(name, inputPort);
     }
-
-    // Check whether the names of the input variables match the names of the
-    // input ports. If a mismatch is found, create new input variables for
-    // the port.
-    /* private void _updateInputVariables() throws IllegalActionException {
-        Iterator inPorts = inputPortList().iterator();
-        while (inPorts.hasNext() && !_stopRequested) {
-            IOPort port = (IOPort)inPorts.next();
-            if (port.getWidth() == 0) {
-                continue;
-            } 
-            Variable[][] shadowVariables
-                    = (Variable[][])_inputVariableMap.get(port);
-            if (shadowVariables == null) {
-                _createInputVariables(port);
-                continue;
-            }
-            // NOTE: this shadow name is the name of the input variable 
-            // that stores the last token read from channel 0 of the port.
-            // See _createInputVariables().
-            String shadowName = port.getName();
-            if (port.isMultiport()) {
-                shadowName += "_" + 0;
-            }
-            if (shadowVariables[0][0].getName() != shadowName) {
-                _createInputVariables(port);
-            }
-        }
-       }*/
 
     /** This class implements a scope, which is used to evaluate the 
      *  parsed expressions.  This class is currently rather simple, 
@@ -1681,6 +1380,9 @@ public class FSMActor extends CompositeEntity
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
     
+    // A map that associates each identifier with the unique port that
+    // that identifier describes.  This map is used to detect port
+    // names that result in ambiguous identifier bindings.
     private HashMap _identifierToPort;
 
     // Version of the workspace when the last input variables were created.
@@ -1696,18 +1398,11 @@ public class FSMActor extends CompositeEntity
     // is under an HDFFSMDirector.
     private boolean _HDFFSMActor = false;
     
-    // Firing counts for HDF/SDF. 
-    // For other domains, _firingsPerScheduleIteration will always be 1
-    // and _firingsSoFar will always be 0.
-    
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.
     // It is only set to false in HDF. 
     private boolean _newIteration = true;
-    
-    //private int _firingsSoFar = 0;
-    //private int _firingsPerIteration = 1;
-    
+     
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.

@@ -444,18 +444,10 @@ public abstract class AbstractActionsAttribute extends Action
                 for (Iterator elements = set.iterator();
                      elements.hasNext();) {
                     String name = (String)elements.next();
-                    termList.add(_scope.getTypeTerm(name));   
-                   //     Variable result = ModelScope.getScopedVariable(
-//                             null, AbstractActionsAttribute.this, name);
-//                     if (result != null) {
-                  
-                      //   InequalityTerm[] terms =
-//                             result.getTypeTerm().getVariables();
-//                         for (int i = 0; i < terms.length; i++) {
-//                             termList.add(terms[i]);
-//                         }
-//                         continue;
-                       //    }
+                    InequalityTerm term = _scope.getTypeTerm(name);
+                    if(term.isSettable()) {
+                        termList.add(term);
+                    }
                 }
                 return (InequalityTerm[])termList.toArray(
                         new InequalityTerm[termList.size()]);
