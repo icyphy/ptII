@@ -131,13 +131,13 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         // synchronized.
         try {
             workspace.add(this);
+            setName(name);
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
                     "Internal error in NamedObj constructor!"
                     + ex.getMessage());
         }
-        setName(name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -356,8 +356,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
+     *  @exception IllegalActionException Never thrown in this base
+     *        class. May needed by derived class for name duplication.
      */
-    public void setName(String name) {
+    public void setName(String name) throws IllegalActionException {
         if (name == null) {
             name = new String("");
         }

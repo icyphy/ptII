@@ -168,6 +168,23 @@ public class Attribute extends NamedObj {
         }
     }
 
+    /** Set the name of the attribute. If there is already an attribute
+     *  of the container with the name, then throw a 
+     *  NameDuplicationException. 
+     *  
+     *  @exception IllegalActionException If there's already an 
+     *       attribute has this name in the container.
+     */
+    public void setName(String name) throws IllegalActionException {
+        if (name == null) name = new String("");
+        NamedObj container = (NamedObj) getContainer();
+        if((container != null) && (container.getAttribute(name) != null)) {
+            throw new IllegalActionException(container, 
+                "already contains an attribute with the name "+name+".");
+        } 
+        super.setName(name);
+    }
+
     /** Update the attribute value, resolving any dependencies on other
      *  attributes.  In this base class, no such dependencies can occur,
      *  but in derived classes, they do occur.  This method is called by
