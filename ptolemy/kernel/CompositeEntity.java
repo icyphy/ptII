@@ -83,7 +83,6 @@ public class CompositeEntity extends ComponentEntity {
      *  Increment the version of the workspace.
      *  @param container The parent entity.
      *  @param name The name of the entity.
-     *  @exception IllegalActionException Name argument is null.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */	
