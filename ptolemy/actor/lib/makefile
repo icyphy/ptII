@@ -100,7 +100,6 @@ JSRCS = \
 	SequenceActor.java \
 	SequenceSource.java \
 	Scale.java \
-	Sine.java \
 	Sink.java \
 	Source.java \
 	SquareRoot.java \

@@ -72,7 +72,6 @@ JSIMPLE_TESTS = \
 	RecordAssembler.tcl \
 	RecordDisassembler.tcl \
 	Scale.tcl \
-	Sine.tcl \
 	SquareRoot.tcl \
 	VariableClock.tcl
 
