@@ -1,0 +1,5 @@
+/* Initialize .scale */
+.scale.Scale2_input = .scale.Scale3_input = 1 * .scale.Scale_input; 
+.scale.Scale3_output = 3 * .scale.Scale3_input; 
+.scale.Scale2_output = 2 * .scale.Scale2_input; 
+/* Wrapup .scale */
