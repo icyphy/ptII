@@ -1189,7 +1189,7 @@ public class PortConfigurerDialog
         } else if (button.equals("Add")) {
             _portTableModel.addNewPort();
         } else if (
-                // FIXME this depends on button name string.
+                // FIXME this depends on button name string length.
             (button.length() > 5)
                 && (button.substring(0, 6).equals("Remove"))) {
             _portTableModel.removePort();
@@ -1556,8 +1556,10 @@ public class PortConfigurerDialog
             _removeButton.setText("Remove");
             _removeButton.setEnabled(false);
         } else {
-            String portName =
-                ((String) ((Object[]) (_ports.elementAt(row)))[0]);
+            Hashtable portInfo = (Hashtable) _ports.elementAt(row);
+            String portName = (String) portInfo.get(ColumnNames.COL_NAME);
+
+            // FIXME this depends on button name string length.
             if (portName.length() < 10) {
                 portName += "          ";
                 portName = portName.substring(0, 9);
