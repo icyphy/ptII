@@ -84,21 +84,22 @@ public class Customer extends CSPActor {
             int count = 0;
             double interval = 0;
             while (count < 100 ) {
-                double rate = ((DoubleToken)_rate.getToken()).doubleValue();
+	      //double rate = ((DoubleToken)_rate.getToken()).doubleValue();
+	      double rate = 1.0;
                 // exponential distribution parameterised by rate.
                 interval = Math.exp(-(rand.nextDouble())*rate);
                 interval = (int)(interval*1000);
-                delay(interval/1000);
-                Token t = new IntToken(count);
+		delay(interval/1000);
+		Token t = new IntToken(count);
                 _output.send(0,t);
-                System.out.println(getName() + " sent: " +
+		System.out.println(getName() + " sent: " +
                         t.toString());
                 count++;
             }
             return;
         } catch (IllegalActionException ex) {
 	    throw new TerminateProcessException(getName() + ": invalid put.");
-	}
+	} 
     }
 
     /** Return false to terminate the process.

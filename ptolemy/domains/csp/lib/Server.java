@@ -82,8 +82,9 @@ public class Server extends CSPActor {
         try {
             while (count < 10 ) {
                 Token t = _input.get(0);
-                double rate = ((DoubleToken)_rate.getToken()).doubleValue();
-                // exponential distribution parameterised by rate.
+                //double rate = ((DoubleToken)_rate.getToken()).doubleValue();
+                double rate = 1.0;
+		// exponential distribution parameterised by rate.
                 interval = Math.exp(-(rand.nextDouble())*rate);
                 interval = (int)(interval*1000);
                 delay(interval/1000);
