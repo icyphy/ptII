@@ -89,7 +89,7 @@ public class Argument extends Attribute implements Settable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         String value = getExpression();
@@ -444,6 +444,8 @@ public class Argument extends Attribute implements Settable {
                     "TRT error! Bad expression for Argument "
                     + getName(), e);
         }
+        // Make sure the new value is exported in MoML.  EAL 12/03.
+        setClassElement(false);
     }
 
     /** Set the expression of the argument from its attributes

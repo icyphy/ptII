@@ -153,8 +153,13 @@ public class ModalModel extends CTCompositeActor {
             FSMDirector director = (FSMDirector)getDirector();
             Class newDirectorClass = null;
             try {
-                if (director != null)
-                    director.setContainer(null); // delete old director
+                if (director != null) {
+                    // Delete the old director.
+                    // In case this is a class, in order to be able to
+                    // delete the director, we have to do this.
+                    director.setClassElement(false);
+                    director.setContainer(null);
+                }
                 newDirectorClass =
                     Class.forName
                     (((StringAttribute)attribute).getExpression());

@@ -342,7 +342,9 @@ public class Port extends NamedObj {
      *  in the container.  If the container already contains
      *  a port with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
-     *  workspace as this port, throw an exception.
+     *  workspace as this port, throw an exception. If the port is
+     *  a class element and the proposed container does not match
+     *  the current container, then also throw an exception.
      *  If the port is already contained by the entity, do nothing.
      *  If the port already has a container, remove
      *  this port from its port list first.  Otherwise, remove it from
@@ -360,15 +362,29 @@ public class Port extends NamedObj {
      *   expected class for the container, or it has no name,
      *   or the port and container are not in the same workspace, or if
      *   a contained Settable becomes invalid and the error handler
-     *   throws it.
+     *   throws it, or if this port is a class element and the argument
+     *   does not match the current container.
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
+     *  @see #isClassElement()
      */
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
         if (entity != null && _workspace != entity.workspace()) {
             throw new IllegalActionException(this, entity,
                     "Cannot set container because workspaces are different.");
+        }
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 12/03.
+        if (isClassElement() && entity != _container) {
+            // To give more meaningful error messages, check whether
+            // the object is being removed.
+            if (entity == null) {
+                throw new IllegalActionException(this,
+                "Cannot delete a class element.");
+            }
+            throw new IllegalActionException(this,
+            "Cannot change the container of a class element.");
         }
         try {
             _workspace.getWriteAccess();
@@ -390,6 +406,11 @@ public class Port extends NamedObj {
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
+                // We have successfully set a new container for this
+                // object. Ensure that the container is now marked as
+                // not being a class element, and hence will export MoML.
+                // EAL 12/03
+                entity.setClassElement(false);
             }
             if (previousContainer != null) {
                 previousContainer._removePort(this);

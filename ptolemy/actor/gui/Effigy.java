@@ -340,6 +340,9 @@ public class Effigy extends CompositeEntity {
      *  @param modified True if the data has been modified.
      */
     public void setModified(boolean modified) {
+        // NOTE: To see who is setting this true, uncomment this:
+        // if (modified == true) (new Exception()).printStackTrace();
+
         topEffigy()._modified = modified;
     }
 

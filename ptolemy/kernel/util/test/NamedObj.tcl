@@ -396,7 +396,8 @@ test NamedObj-11.1 {Test exportMoML} {
 test NamedObj-11.1.1 {Test exportMoML(String)} {
     set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
-    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    # Use a StringAttribute here so that this gets exported in test 11.2
+    set a1 [java::new ptolemy.kernel.util.StringAttribute $a "A1"]
     set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
     $a exportMoML "NewName"
 } {<?xml version="1.0" standalone="no"?>
@@ -405,7 +406,7 @@ test NamedObj-11.1.1 {Test exportMoML(String)} {
 <entity name="NewName" class="ptolemy.kernel.util.NamedObj">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="A1" class="ptolemy.kernel.util.Attribute">
+    <property name="A1" class="ptolemy.kernel.util.StringAttribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
         </property>
     </property>
@@ -429,7 +430,7 @@ test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="A" extends=".A">
-    <property name="A1" class="ptolemy.kernel.util.Attribute">
+    <property name="A1" class="ptolemy.kernel.util.StringAttribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
         </property>
     </property>

@@ -90,6 +90,10 @@ public class Units extends Attribute implements Settable {
       */
     public void exportMoML(Writer output, int depth, String name)
         throws IOException {
+            
+        if (!isPersistent() || isClassElement()) {
+            return;
+        }
         String value = getExpression();
         String valueTerm = "";
         if (value != null && !value.equals("")) {
@@ -173,6 +177,8 @@ public class Units extends Attribute implements Settable {
                     Integer.parseInt(token);
             }
         }
+        // Make sure the new value is exported in MoML.  EAL 12/03.
+        setClassElement(false);
     }
 
     /** Set the visibility of this attribute.  The argument should be one

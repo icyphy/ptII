@@ -704,6 +704,9 @@ public class Variable extends Attribute
             // set to null, this may result in errors in variables
             // for which this is no longer in scope.  The error handling
             // mechanism has to handle this.
+            // NOTE: This is too early for attributeChanged() to be called
+            // since typically the public variable referring to an attribute
+            // has not been set yet.
             validate();
         }
     }
@@ -739,9 +742,16 @@ public class Variable extends Attribute
         } else {
             _needsEvaluation = true;
         }
+        boolean changed = (expr != null && !expr.equals(_currentExpression));
         _currentExpression = expr;
         _parseTree = null;
         _parseTreeValid = false;
+        
+        // Make sure the new value is exported in MoML.  EAL 12/03.
+        if (changed) {
+            setClassElement(false);
+        }
+
         _notifyValueListeners();
     }
 
@@ -836,6 +846,10 @@ public class Variable extends Attribute
         // Override any expression that may have been previously given.
         if (_currentExpression != null) {
             _currentExpression = null;
+            
+            // Make sure the new value is exported in MoML.  EAL 12/03.
+            setClassElement(false);
+
             _parseTree = null;
             _parseTreeValid = false;
         }

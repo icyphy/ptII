@@ -25,6 +25,15 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
+FIXME: Need review of _classElement related changes.  Look
+for comments with:
+     EAL 12/03
+     Corresponding changes are made in:
+     kernel.Port
+     kernel.ComponentEntity
+     kernel.Relation
+     (all in their setContainer() methods)
+     moml.MoMLParser
 FIXME: Need review of:
      isDeferChangeRequests()
      requestChange()
@@ -401,6 +410,11 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
             newObject._attributes = null;
+            
+            // Make sure the new object is not marked as a class.
+            // It may have been cloned from a class.
+            newObject._isClassElement = false;
+            
             if(workspace == null) {
                 newObject._workspace = _DEFAULT_WORKSPACE;
             } else {
@@ -446,7 +460,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 // So we have to add the clone to the list of objects
                 // in the object deferred to.
                 if (_MoMLInfo.deferTo != null) {
-                    _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(newObject);
+                    _MoMLInfo.deferTo._MoMLInfo.getDeferredFrom().add(
+                            new WeakReference(newObject));
                 }
 
                 // NOTE: The value for the classname and superclass isn't
@@ -623,13 +638,14 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     
     /** Get a MoML description of this object.  This might be an empty string
      *  if there is no MoML description of this object or if this object is
-     *  not persistent.  This uses the
+     *  not persistent or if this object is a class element.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
      *  @return A MoML description, or an empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
+     *  @see #isClassElement()
      */
     public final String exportMoML() {
         try {
@@ -648,18 +664,19 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** Get a MoML description of this object with its name replaced by
      *  the specified name.  The description might be an empty string
      *  if there is no MoML description of this object or if this object
-     *  is not persistent.  This uses the
+     *  is not persistent, or this object a class element.  This uses the
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
      *  @return A MoML description, or the empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
+     *  @see #isClassElement()
      */
     public final String exportMoML(String name) {
         try {
             // If the object is not persistent, return null.
-            if (!isPersistent()) {
+            if (!isPersistent() || isClassElement()) {
                 return "";
             }
             StringWriter buffer = new StringWriter();
@@ -673,8 +690,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
 
     /** Write a MoML description of this object using the specified
      *  Writer.  If there is no MoML description, or if the object
-     *  is not persistent, then nothing is written.
-     *  To write to standard out, do
+     *  is not persistent, or if this object is a class element,
+     *  then nothing is written. To write to standard out, do
      *  <pre>
      *      exportMoML(new OutputStreamWriter(System.out))
      *  </pre>
@@ -686,10 +703,11 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
+     *  @see #isClassElement()
      */
     public final void exportMoML(Writer output) throws IOException {
         // If the object is not persistent, do nothing.
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         exportMoML(output, 0);
@@ -701,17 +719,18 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  This method is final to ensure that
      *  derived classes only override the three-argument method to change
      *  the MoML description.
-     *  If the ojbect is not persistent or if there is no MoML description,
-     *  write nothing.
+     *  If the ojbect is not persistent, or if there is no MoML description,
+     *  or if this object is a class instance, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
+     *  @see #isClassElement()
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         // If the object is not persistent, do nothing.
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         exportMoML(output, depth, getName());
@@ -771,8 +790,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
      *  <p>
-     *  If this ojbect is not persistent or if there is no MoML description
-     *  of this object, then write nothing.
+     *  If this ojbect is not persistent, or if there is no MoML description
+     *  of this object, or if this object is a class instance, then write nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -780,11 +799,12 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @see #clone(Workspace)
      *  @see #getMoMLInfo()
      *  @see #isPersistent()
+     *  @see #isClassElement()
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         // If the object is not persistent, do nothing.
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         String momlElement = getMoMLInfo().elementName;
@@ -822,18 +842,15 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             output.write(">\n");
         }
 
-        if (getMoMLInfo().deferTo == null) {
-            _exportMoMLContents(output, depth + 1);
-        } else {
-            // Describe only the attributes.
-            if (_attributes != null) {
-                Iterator attributes = _attributes.elementList().iterator();
-                while (attributes.hasNext()) {
-                    Attribute attribute = (Attribute)attributes.next();
-                    attribute.exportMoML(output, depth + 1);
-                }
-            }
-        }
+        // NOTE: This used to export MoML contents only if
+        // getMoMLInfo().deferTo was null.  This wasn't right
+        // because a deeply contained object might have been
+        // modified, thus becoming an instance variable.
+        // Now, we rely on _classElement == true suppressing
+        // export of MoML.  EAL 12/03
+        _exportMoMLContents(output, depth + 1);
+
+        // Write the close of the element.
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");
     }
@@ -1061,15 +1078,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             _workspace.doneReading();
         }
     }
-    
-    /** Return true if setDeferChangeRequests() has been called
-     *  to specify that change requests should be deferred.
-     *  @return True if change requests are being deferred.
-     *  @see #setDeferChangeRequests(boolean)
-     */
-    public boolean isDeferChangeRequests() {
-        return _deferChangeRequests;
-    }
 
     /** Handle a model error. If a model error handler has been registered
      *  with setModelErrorHandler(), then handling is delegated to that
@@ -1110,6 +1118,28 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             return container.handleModelError(context, exception);
         }
         return false;
+    }
+
+    /** Return true if this object is a class element.  An object
+     *  is a class instance if it contained by an instance, but is
+     *  defined in the class of the container.  If this returns true,
+     *  then MoML will not be  exported for the object, and changing
+     *  the name or container will trigger an exception.
+     *  @return True if the object is a class element.
+     *  @see #setPersistent(boolean)
+     */
+    public boolean isClassElement() {
+        // NOTE: New method added. EAL 12/03
+        return _isClassElement;
+    }
+    
+    /** Return true if setDeferChangeRequests() has been called
+     *  to specify that change requests should be deferred.
+     *  @return True if change requests are being deferred.
+     *  @see #setDeferChangeRequests(boolean)
+     */
+    public boolean isDeferChangeRequests() {
+        return _deferChangeRequests;
     }
 
     /** Return true if this object is persistent.
@@ -1220,6 +1250,21 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
     }
     
+    /** Set whether this object is a class element.  If an object
+     *  is a class element, then it exports no MoML and cannot have
+     *  its name or container changed.
+     *  By default, instances of NamedObj are not class elements.
+     *  If this method is called with a <i>false</i> argument, then
+     *  it will call setClassElement(false) on the container as
+     *  well, making all containers above in the hierarchy not
+     *  class elements.
+     *  @param classElement True to mark this object as a class element.
+     *  @see #isClassElement()
+     */
+    public void setClassElement(boolean classElement) {
+        _isClassElement = classElement;
+    }
+
     /** Specify whether change requests made by calls to requestChange()
      *  should be executed immediately. If there is a container, then
      *  this request is delegated to the container. Otherwise,
@@ -1258,12 +1303,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  into the "class" or "extends" attribute of the MoML element
      *  defining this object.  This method is called when this object
      *  is constructed by cloning another object that identifies itself
-     *  as a MoML "class".  In addition, calling this method
-     *  suppresses description of the contents
-     *  of this named object (_exportMoMLContents() is not called).
-     *  Only the attributes are described in the body of the element.
-     *  To re-enabled detailed descriptions, call this method with
-     *  a null argument.  This method is write synchronized on
+     *  as a MoML "class". This method is write synchronized on
      *  the workspace because it modifies the object that is the
      *  argument to refer back to this one.
      *  @param deferTo The object to defer to.
@@ -1282,8 +1322,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             }
             _MoMLInfo.deferTo = deferTo;
             if (deferTo != null) {
-                // FIXME: These should be weak references.
-                deferTo._MoMLInfo.getDeferredFrom().add(this);
+                // NOTE: These need to be weak references.
+                deferTo._MoMLInfo.getDeferredFrom().add(new WeakReference(this));
             }
         } finally {
             _workspace.doneWriting();
@@ -1303,10 +1343,13 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
-     *  @exception IllegalActionException If the name contains a period.
+     *  @exception IllegalActionException If the name contains a period
+     *   or if the object is a class element and the name argument does
+     *   not match the current name.
      *  @exception NameDuplicationException Not thrown in this base class.
-     *  May be thrown by derived classes if the container already contains
-     *  an object with this name.
+     *   May be thrown by derived classes if the container already contains
+     *   an object with this name.
+     *  @see #isClassElement()
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
@@ -1316,6 +1359,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         }
         if (name == null) {
             name = new String("");
+        }
+        if (name.equals(_name)) {
+            // Nothing to do.
+            return;
+        }
+        // If this object is a class element, then its name cannot
+        // be changed.  EAL 12/03.
+        if (isClassElement()) {
+            throw new IllegalActionException(this,
+            "Cannot change the name of a class element.");
         }
         int period = name.indexOf(".");
         if (period >= 0) {
@@ -1329,7 +1382,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             _workspace.doneWriting();
         }
         if (_debugging) {
-            _debug("Changed name from", oldName, "to", getFullName());
+            _debug("Changed name from " + oldName + " to " + getFullName());
         }
     }
 
@@ -1390,7 +1443,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** Validate attributes deeply contained by this object if they
      *  implement the Settable interface by calling their validate() method.
      *  Errors that are triggered by this validation are handled by calling
-     *  handleModelError().
+     *  handleModelError().  Normally this should be called after constructing
+     *  a model or after making changes to it.  It is called, for example,
+     *  by the MoMLParser.
      *  @see #handleModelError(NamedObj context, IllegalActionException exception)
      */
     public void validateSettables() throws IllegalActionException {
@@ -1556,8 +1611,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                         String name = ((NamedObj) object).getName(this);
                         fields[i].set(newObject,
                                 newObject.getAttribute(name));
-//                         System.out.println("setting field " + fields[i].getName()); 
-//                         System.out.println("to point to " + fields[i].get(newObject));
                     }
                 }
             } catch (IllegalAccessException e) {
@@ -1882,6 +1935,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
 
+    // Boolean variable to indicate whether this is a class element.
+    // By default, instances of NamedObj are not class elements.
+    private boolean _isClassElement = false;
+
     // Boolean variable to indicate the persistence of the object.
     // By default, instances of NamedObj are persistent.
     private boolean _isPersistent = true;
@@ -1923,9 +1980,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
          *  class name of the enclosing class.*/
         public String className;
 
-        /** @serial A list of objects that defer their MoML
-         *  definitions to the owner of this MoMLInfo object.  Note
-         *  that this might be null.  To ensure that it is not null,
+        /** @serial A list of weak references to objects that defer
+         *  their MoML definitions to the owner of this MoMLInfo object.
+         *  Note that this might be null.  To ensure that it is not null,
          *  access it using getDeferredFrom().
          */
         public List deferredFrom;
@@ -1952,9 +2009,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
 
-        /** Return a list of objects that defer their MoML definitions to
-         *  the owner of this MoMLInfo object.  This might be an empty list,
-         *  but the returned value is never null.
+        /** Return a list of weak references to objects that defer their
+         *  MoML definitions to the owner of this MoMLInfo object.
+         *  This might be an empty list, but the returned value is
+         *  never null.
          *  @return A list of instances of NamedObj.
          */
         public List getDeferredFrom() {

@@ -1134,8 +1134,13 @@ public class CompositeEntity extends ComponentEntity {
                 = (ComponentRelation)relations.next();
             relation.exportMoML(output, depth);
         }
-        // Next write the links.
-        output.write(exportLinks(depth, null));
+        // Next write the links, but only if this is not an
+        // instance of a class.  If it is an instance of a class,
+        // then we assume that any diffs in the links are represented
+        // in a contained MoMLAttribute.
+        if (getMoMLInfo().deferTo == null) {
+            output.write(exportLinks(depth, null));
+        }
     }
 
     /** Remove the specified entity. This method should not be used

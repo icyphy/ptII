@@ -143,6 +143,18 @@ public class Attribute extends NamedObj {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 12/03.
+        if (isClassElement() && container != _container) {
+            // To give more meaningful error messages, check whether
+            // the object is being removed.
+            if (container == null) {
+                throw new IllegalActionException(this,
+                "Cannot delete a class element.");
+            }
+            throw new IllegalActionException(this,
+            "Cannot change the container of a class element.");
+        }
         try {
             _workspace.getWriteAccess();
             if (deepContains(container)) {
@@ -159,6 +171,11 @@ public class Attribute extends NamedObj {
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
+                // We have successfully set a new container for this
+                // object. Ensure that the container is now marked as
+                // not being a class element, and hence will export MoML.
+                // EAL 12/03
+                container.setClassElement(false);
             }
             _container = container;
             if (previousContainer != null) {

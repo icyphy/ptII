@@ -376,7 +376,7 @@ public class PtolemyQuery extends Query
         if (change == null || change.getSource() != this) {
             return;
         }
-
+        
         // Restore the parser error handler.
         if (_savedErrorHandler != null) {
             MoMLParser.setErrorHandler(_savedErrorHandler);

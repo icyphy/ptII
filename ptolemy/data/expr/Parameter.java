@@ -181,7 +181,7 @@ public class Parameter extends Variable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent()) {
+        if (!isPersistent() || isClassElement()) {
             return;
         }
         String value = getExpression();

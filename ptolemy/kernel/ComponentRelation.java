@@ -194,7 +194,9 @@ public class ComponentRelation extends Relation {
      *  of relations in the container.  If the container already contains
      *  a relation with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
-     *  workspace as this relation, throw an exception.
+     *  workspace as this relation, throw an exception. If the relation is
+     *  a class element and the proposed container does not match
+     *  the current container, then also throw an exception.
      *  If the relation is already contained by the container, do nothing.
      *  If this relation already has a container, remove it
      *  from that container first.  Otherwise, remove it from
@@ -222,11 +224,23 @@ public class ComponentRelation extends Relation {
             throw new IllegalActionException(this, container,
                     "Cannot set container because workspaces are different.");
         }
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 12/03.
+        if (isClassElement() && container != _container) {
+            // To give more meaningful error messages, check whether
+            // the object is being removed.
+            if (container == null) {
+                throw new IllegalActionException(this,
+                "Cannot delete a class element.");
+            }
+            throw new IllegalActionException(this,
+            "Cannot change the container of a class element.");
+        }
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);
             CompositeEntity previousContainer
-                = (CompositeEntity)getContainer();
+                    = (CompositeEntity)getContainer();
             if (previousContainer == container) return;
             // Do this first, because it may throw an exception.
             if (container != null) {
@@ -241,6 +255,12 @@ public class ComponentRelation extends Relation {
             }
             if (container == null) {
                 unlinkAll();
+            } else {
+                // We have successfully set a new container for this
+                // object. Ensure that the container is now marked as
+                // not being a class element, and hence will export MoML.
+                // EAL 12/03
+                container.setClassElement(false);
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.

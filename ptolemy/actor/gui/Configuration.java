@@ -430,9 +430,12 @@ public class Configuration extends CompositeEntity {
         throws IllegalActionException, NameDuplicationException {
 
         // If the entity defers its MoML definition to another,
-        // then open that other.
+        // then open that other, unless this is a class extending another.
+        // FIXME: Need a way to represent a base class in what is opened!
         NamedObj deferredTo = entity.getMoMLInfo().deferTo;
-        if (deferredTo != null) {
+        String elementName = entity.getMoMLInfo().elementName;        
+        if (deferredTo != null
+                && (elementName == null || !elementName.equals("class"))) {
             entity = deferredTo;
         }
 

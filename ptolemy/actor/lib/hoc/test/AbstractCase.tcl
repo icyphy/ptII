@@ -73,15 +73,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 36.0">
         </property>
@@ -103,39 +95,13 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[182, 190]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 35.0">
                 </property>
             </property>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="init" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
-                </property>
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 162.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
                 <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -143,10 +109,6 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <doc>Write out tokens to a file or stdout</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 157.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
@@ -161,22 +123,10 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
-                <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="69.0, 35.0">
                 </property>
             </property>
             <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-                <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
                 <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
                 </property>
                 <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
@@ -184,16 +134,6 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <doc>Create a sequence of tokens with increasing value</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="151.0, 161.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                    <property name="input"/>
-                </port>
             </entity>
             <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
                 <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
@@ -201,10 +141,6 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
                 <doc>Write out tokens to a file or stdout</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 157.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
