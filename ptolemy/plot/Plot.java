@@ -94,7 +94,12 @@ import java.net.*;
  * is specified, then unique marks are used for the first ten data sets,
  * and then recycled.
  * Using no marks is useful when lines connect the points in a plot,
- * which is done by default.  To disable connecting lines, use:
+ * which is done by default. 
+ * If the above directive appears before any DataSet directive, then it
+ * specifies the default for all data sets.  If if appears after a DataSet
+ * directive, then it applies only to that data set.
+ * <p>
+ * To disable connecting lines, use:
  * <pre>
  * Lines: off
  * </pre>
@@ -113,6 +118,9 @@ import java.net.*;
  * <pre>
  * Impulses: off
  * </pre>
+ * If that command appears before any DataSet directive, then the command
+ * applies to all data sets.  Otherwise, it applies only to the current data
+ * set.
  * To create a bar graph, turn off lines and use any of the following commands:
  * <pre>
  * Bars: on
@@ -168,11 +176,6 @@ import java.net.*;
  * <p>
  * This plotter has some <A NAME="ptplot limitations">limitations</a>:
  * <ul>
- * <li> Marks, impulses, and bars are assumed to apply to the entire
- *      plot, i.e. to all data sets.  Although it is possible to change
- *      these styles for different data sets, the graph will not be
- *      correctly redrawn when it gets redrawn due to zooming in or out
- *      or due to a window exposure event.
  * <li> If you zoom in far enough, the plot becomes unreliable.
  *      In particular, if the total extent of the plot is more than
  *      2<sup>32</sup> times extent of the visible area, quantization
@@ -304,6 +307,7 @@ public class Plot extends PlotBox {
 
         if (format) {
             // Reset format controls
+            _formats = new Vector();
             _marks = 0;
             _pointsPersistence = 0;
             _sweepsPersistence = 0;
@@ -1031,6 +1035,20 @@ public class Plot extends PlotBox {
         _impulses = on;
     }
 
+    /** If the first argument is true, then a line will be drawn from any
+     *  plotted point in the specified dataset down to the x axis.
+     *  Otherwise, this feature is
+     *  disabled.  A plot with such lines is also known as a stem plot.
+     *  @param on If true, draw a stem plot.
+     *  @param dataset The dataset to which this should apply.
+     */
+    public void setImpulses (boolean on, int dataset) {
+        _checkDatasetIndex(dataset);
+        Format fmt = (Format)_formats.elementAt(dataset);
+        fmt.impulses = on;
+        fmt.impulsesUseDefault = false;
+    }
+
     /** Set the marks style to "none", "points", "dots", or "various".
      *  In the last case, unique marks are used for the first ten data
      *  sets, then recycled.
@@ -1046,6 +1064,28 @@ public class Plot extends PlotBox {
         } else if (style.equalsIgnoreCase("various")) {
             _marks = 3;
         }
+    }
+
+    /** Set the marks style to "none", "points", "dots", or "various"
+     *  for the specified dataset.
+     *  In the last case, unique marks are used for the first ten data
+     *  sets, then recycled.
+     *  @param style A string specifying the style for points.
+     *  @param dataset The dataset to which this should apply.
+     */
+    public void setMarksStyle (String style, int dataset) {
+        _checkDatasetIndex(dataset);
+        Format fmt = (Format)_formats.elementAt(dataset);
+        if (style.equalsIgnoreCase("none")) {
+            fmt.marks = 0;
+        } else if (style.equalsIgnoreCase("points")) {
+            fmt.marks = 1;
+        } else if (style.equalsIgnoreCase("dots")) {
+            fmt.marks = 2;
+        } else if (style.equalsIgnoreCase("various")) {
+            fmt.marks = 3;
+        }
+        fmt.marksUseDefault = false;
     }
 
     /** Specify the number of data sets to be plotted together.
@@ -1066,10 +1106,12 @@ public class Plot extends PlotBox {
         }
         _currentdataset = -1;
         _points.removeAllElements();
+        _formats.removeAllElements();
         _prevx.removeAllElements();
         _prevy.removeAllElements();
         for (int i = 0; i<numsets; i++) {
             _points.addElement(new Vector());
+            _formats.addElement(new Format());
             _prevx.addElement(new Long(0));
             _prevy.addElement(new Long(0));
         }
@@ -1117,7 +1159,8 @@ public class Plot extends PlotBox {
      *  If it is less than zero, throw an IllegalArgumentException (which
      *  is a runtime exception).  If it does not refer to an existing
      *  data set, then fill out the _points Vector so that it does refer
-     *  to an existing data set.
+     *  to an existing data set. All other dataset-related vectors are
+     *  similarly filled out.
      *  @param dataset The data set index.
      */
     protected void _checkDatasetIndex(int dataset) {
@@ -1127,6 +1170,7 @@ public class Plot extends PlotBox {
         }
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
+            _formats.addElement(new Format());
             _prevx.addElement(new Long(0));
             _prevy.addElement(new Long(0));
         }
@@ -1377,7 +1421,13 @@ public class Plot extends PlotBox {
                 xpos <= _lrx && xpos >= _ulx)) {
             int xposi = (int)xpos;
             int yposi = (int)ypos;
-            switch (_marks) {
+
+            // Check to see whether the dataset has a marks directive
+            Format fmt = (Format)_formats.elementAt(dataset);
+            int marks = _marks;
+            if (!fmt.marksUseDefault) marks = fmt.marks;
+
+            switch (marks) {
             case 0:
                 // If no mark style is given, draw a filled rectangle.
                 // This is used, for example, to draw the legend.
@@ -1501,8 +1551,14 @@ public class Plot extends PlotBox {
             // names are case insensitive
             String lcLine = new String(line.toLowerCase());
             if (lcLine.startsWith("marks:")) {
+                // If we have seen a dataset directive, then apply the
+                // request to the current dataset only.
                 String style = (line.substring(6)).trim();
-                setMarksStyle(style);
+                if (_sawfirstdataset) {
+                    setMarksStyle(style, _currentdataset);
+                } else {
+                    setMarksStyle(style);
+                }
                 _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("numsets:")) {
@@ -1558,10 +1614,21 @@ public class Plot extends PlotBox {
                 _pxgraphBlankLineMode = false;
                 return true;
             } else if (lcLine.startsWith("impulses:")) {
-                if (lcLine.indexOf("off", 9) >= 0) {
-                    setImpulses(false);
+                // If we have not yet seen a dataset, then this is interpreted
+                // as the global default.  Otherwise, it is assumed to apply
+                // only to the current dataset.
+                if (_sawfirstdataset) {
+                    if (lcLine.indexOf("off", 9) >= 0) {
+                        setImpulses(false, _currentdataset);
+                    } else {
+                        setImpulses(true, _currentdataset);
+                    }
                 } else {
-                    setImpulses(true);
+                    if (lcLine.indexOf("off", 9) >= 0) {
+                        setImpulses(false);
+                    } else {
+                        setImpulses(true);
+                    }
                 }
                 _pxgraphBlankLineMode = false;
                 return true;
@@ -1705,6 +1772,14 @@ public class Plot extends PlotBox {
     protected void _write(PrintWriter output) {
         super._write(output);
 
+        // NOTE: NumSets is obsolete, so we don't write it.
+
+        if (_reusedatasets) output.println("ReuseDatasets: on");
+        if (!_connected) output.println("Lines: off");
+        if (_bars) output.println("Bars: " + _barwidth + ", " + _baroffset);
+
+        // Write the defaults for formats that can be controlled by dataset
+        if (_impulses) output.println("Impulses: on");
         switch(_marks) {
         case 1:
             output.println("Marks: points");
@@ -1713,19 +1788,34 @@ public class Plot extends PlotBox {
         case 3:
             output.println("Marks: various");
         }
-        // NOTE: NumSets is obsolete, so we don't write it.
-        if (_reusedatasets) output.println("ReuseDatasets: on");
-        if (!_connected) output.println("Lines: off");
-        if (_impulses) output.println("Impulses: on");
-        if (_bars) output.println("Bars: " + _barwidth + ", " + _baroffset);
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
+            // Write the dataset directive
             String legend = getLegend(dataset);
             if (legend != null) {
                 output.println("DataSet: " + getLegend(dataset));
             } else {
                 output.println("DataSet:");
             }
+            // Write dataset-specific format information
+            Format fmt = (Format)_formats.elementAt(dataset);
+            if (!fmt.impulsesUseDefault) {
+                if (fmt.impulses) output.println("Impulses: on");
+                else output.println("Impulses: off");
+            }
+            if (!fmt.marksUseDefault) {
+                switch(fmt.marks) {
+                case 0:
+                    output.println("Marks: none");
+                case 1:
+                    output.println("Marks: points");
+                case 2:
+                    output.println("Marks: dots");
+                case 3:
+                    output.println("Marks: various");
+                }
+            }
+            // Write the data
             Vector pts = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
                 PlotPoint pt = (PlotPoint)pts.elementAt(pointnum);
@@ -1871,9 +1961,19 @@ public class Plot extends PlotBox {
         _prevx.setElementAt(new Long(xpos), dataset);
         _prevy.setElementAt(new Long(ypos), dataset);
 
-        // Draw the point & associated decorations, if appropriate.
-        if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
-        if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+        // Draw decorations that may be specified on a per-dataset basis
+        Format fmt = (Format)_formats.elementAt(dataset);
+        if (fmt.impulsesUseDefault) {
+            if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+        } else {
+            if (fmt.impulses) _drawImpulse(graphics, xpos, ypos, true);
+        }
+
+        // Check to see whether the dataset has a marks directive
+        int marks = _marks;
+        if (!fmt.marksUseDefault) marks = fmt.marks;
+        if (marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
+
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
         if (pt.errorBar)
             _drawErrorBar(graphics, dataset, xpos,
@@ -1926,9 +2026,19 @@ public class Plot extends PlotBox {
             nextp.connected = false;
         }
 
-        // Draw the point & associated lines, if appropriate.
-        if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
-        if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+        // Draw decorations that may be specified on a per-dataset basis
+        Format fmt = (Format)_formats.elementAt(dataset);
+        if (fmt.impulsesUseDefault) {
+            if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+        } else {
+            if (fmt.impulses) _drawImpulse(graphics, xpos, ypos, true);
+        }
+
+        // Check to see whether the dataset has a marks directive
+        int marks = _marks;
+        if (!fmt.marksUseDefault) marks = fmt.marks;
+        if (marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
+
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
         if (pt.errorBar)
             _drawErrorBar(graphics, dataset, xpos,
@@ -2002,4 +2112,26 @@ public class Plot extends PlotBox {
 
     // Set by _drawPlot(), and reset by clear()
     private boolean _showing = false;
+
+    // Format information on a per data set basis.
+    private Vector _formats = new Vector();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private class Format {
+        // Indicate whether a stem plot should be drawn for this data set.
+        // This is ignored unless the following variable is set to false.
+        public boolean impulses;
+
+        // Indicate whether the above variable should be ignored.
+        public boolean impulsesUseDefault = true;
+
+        // Indicate what type of mark to use.
+        // This is ignored unless the following variable is set to false.
+        public int marks;
+
+        // Indicate whether the above variable should be ignored.
+        public boolean marksUseDefault = true;
+    }
 }
