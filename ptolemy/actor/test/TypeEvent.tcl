@@ -50,6 +50,20 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
+test TypeEvent-1.0 {Test constructor and toString} {
+    set actor [java::new ptolemy.actor.TypedAtomicActor]
+    set port [java::new ptolemy.actor.TypedIOPort $actor port]
+
+    set ti [[java::new ptolemy.data.IntToken] getType]
+    set td [[java::new ptolemy.data.DoubleToken] getType]
+
+    set event [java::new ptolemy.actor.TypeEvent $port $ti $td]
+    $event toString
+} {The type on ..port is changed from int to double}
+
+######################################################################
+####
+#
 test TypeEvent-1.1 {Test type event} {
     #create e1
     set e1 [java::new ptolemy.actor.TypedAtomicActor]

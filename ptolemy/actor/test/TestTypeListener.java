@@ -66,7 +66,7 @@ public class TestTypeListener implements TypeListener {
      *  @param event The type change event.
      */
     public void typeChanged(TypeEvent event) {
-	_message = event.getPort().getFullName() + "/";
+	_message = event.getSource().getFullName() + "/";
 
 	Type oldtype = event.getOldType();
 	_message += oldtype.toString() + "/";

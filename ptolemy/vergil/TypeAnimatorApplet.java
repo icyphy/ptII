@@ -183,7 +183,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
 
         // Called to indicate that a type has changed.
         public void typeChanged(final TypeEvent event) {
-            TypedIOPort port = event.getPort();
+            TypedIOPort port = (TypedIOPort)event.getSource();
             _updateTypeDisplay(port);
         }
     }
