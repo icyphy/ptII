@@ -128,15 +128,16 @@ public class FiltApplet extends Applet implements Runnable {
         
         if (type.equals("IIR")) { // IIR filter
              manager().newFilter(1, "Filter Applet");
-             IIRsetPanel = manager().getIIRSetView().getPanel();
+             IIRsetPanel = manager().getView("IIRFilterParameterView").getPanel();
              this.add(IIRsetPanel);
         } else if (type.equals("Blank")) { // Blank filter
              manager().newFilter(0, "Filter Applet");
         }   
 
-        freqPanel = manager().getFreqView().getPanel();
-        impulsPanel = manager().getImpulsView().getPanel();
-        polezeroPanel = manager().getPoleZeroView().getPanel();
+        freqPanel = manager().getView("FreqView").getPanel();
+        impulsPanel = manager().getView("ImpulseView").getPanel();
+        polezeroPanel = manager().getView("PoleZeroView").getPanel();
+        transferPanel = manager().getView("TransferFunctionView").getPanel();
 
          
 //        _quit = new Button("quit");
@@ -145,16 +146,18 @@ public class FiltApplet extends Applet implements Runnable {
         this.add(polezeroPanel);
         this.add(freqPanel);
         this.add(impulsPanel);
+        this.add(transferPanel);
 
-        manager().getFreqView().initPlots();
-        manager().getImpulsView().initPlots();
-        manager().getPoleZeroView().initPlots();
+        ((PlotView) manager().getView("FreqView")).initPlots();
+        ((PlotView) manager().getView("ImpulseView")).initPlots();
+        ((PlotView) manager().getView("PoleZeroView")).initPlots();
 
 System.out.println("before show");
 
         freqPanel.show();
         impulsPanel.show();
         polezeroPanel.show();
+        transferPanel.show();
         super.init();
     }
 
@@ -173,6 +176,7 @@ System.out.println("before show");
         if (impulsPanel!=null) impulsPanel.paint(graphics);
         if (freqPanel!=null) freqPanel.paint(graphics);
         if (polezeroPanel!=null) polezeroPanel.paint(graphics);
+        if (transferPanel!=null) transferPanel.paint(graphics);
         if (IIRsetPanel!=null) IIRsetPanel.paint(graphics);
     }
 
@@ -202,7 +206,8 @@ System.out.println("before show");
      */
     public boolean action(Event evt, Object arg){
         if (evt.target == _quit){
-             return manager().deletefilter();
+             manager().deletefilter();
+             return true;
         }
         return false;
     }
@@ -229,6 +234,7 @@ System.out.println("before show");
     private Panel impulsPanel = null; 
     private Panel freqPanel = null; 
     private Panel polezeroPanel = null; 
+    private Panel transferPanel = null; 
     private Panel IIRsetPanel = null; 
     private Button _quit;
 
