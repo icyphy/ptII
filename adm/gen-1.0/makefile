@@ -329,6 +329,7 @@ bldmastrcoverage:
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
 		VERSION= \
+		JFLAGS="-deprecation -g" \
 		JSDATABASE=/home/bldmastr/ptII/js \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
