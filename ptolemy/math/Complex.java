@@ -648,4 +648,6 @@ public final class Complex implements Cloneable, Serializable {
     public double real;
     /** The imaginary part. */
     public double imag;
+    /** Complex conjugate pair. */
+    public Complex conjugate = null;
 }
