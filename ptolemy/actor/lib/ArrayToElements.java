@@ -1,6 +1,6 @@
 /* An actor that disassemble an ArrayToken to a multiport output.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -61,7 +61,7 @@ type and send out tokens corresponding to that type.
 
 @author Rachel Zhou
 @version $Id$
-@since Ptolemy II 0.4
+@since Ptolemy II 3.1
 */
 
 public class ArrayToElements extends Transformer {
