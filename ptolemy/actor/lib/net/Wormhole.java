@@ -40,32 +40,32 @@ import java.awt.BorderLayout;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
-//import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 //import java.awt.event.MouseListener;
 
-// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not yet pruned)
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-
+// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (fully pruned)
+//import ptolemy.actor.AtomicActor;
+//import ptolemy.actor.IOPort;
+  import ptolemy.actor.TypedAtomicActor;
+  import ptolemy.actor.TypedIOPort;
+  import ptolemy.data.ArrayToken;
+//import ptolemy.data.BooleanToken;
+  import ptolemy.data.IntToken;
+  import ptolemy.data.StringToken;
+  import ptolemy.data.Token;
+//import ptolemy.data.expr.Parameter;
+  import ptolemy.data.type.ArrayType;
+  import ptolemy.data.type.BaseType;
+//import ptolemy.data.type.Type;
+  import ptolemy.kernel.CompositeEntity;
+//import ptolemy.kernel.util.Attribute;
+  import ptolemy.kernel.util.IllegalActionException;
+  import ptolemy.kernel.util.NameDuplicationException;
+//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// Wormhole
@@ -87,49 +87,109 @@ on the clipboard portion. <p>
 @author Winthrop Williams
 @version $Id$
 */
-public class Wormhole extends TypedAtomicActor {
+public class Wormhole extends TypedAtomicActor implements ClipboardOwner {
 
     public Wormhole(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Output
+        // Outputs
         pasteOutput = new TypedIOPort(this, "pasteOutput");
-        pasteOutput.setTypeEquals(BaseType.GENERAL);
+        pasteOutput.setTypeEquals(BaseType.STRING);
         pasteOutput.setOutput(true);
 
-        /*
-        copyInput
-        pasteOutput
-        copyTrigger
-        focusTrigger
+        copyTrigger = new TypedIOPort(this, "copyTrigger");
+        copyTrigger.setTypeEquals(BaseType.GENERAL);
+        copyTrigger.setOutput(true);
+
+        // Input
+        copyInput = new TypedIOPort(this, "copyInput");
+        copyInput.setTypeEquals(BaseType.STRING);
+        copyInput.setInput(true);
+
+	/*
+         focusTrigger
         */
 
     }
 
     public TypedIOPort pasteOutput;
 
+    public TypedIOPort copyTrigger;
+    
+    public TypedIOPort copyInput;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+
+    /** Fire this actor.
+     *  Blah, blah, blah.
+     */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
-        Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                .getSystemClipboard();
-        Transferable transferable = clipboard.getContents(_myframe);
-        try{
-            pasteOutput.broadcast(new StringToken( (String)transferable
-                    .getTransferData(DataFlavor.stringFlavor) ));
-        // NullPointerException also possible //
-            ////////////////////////////////////
-        } catch (java.io.IOException ex) {
-            throw new IllegalActionException(this,
-                    " Failed to paste (IO Exception): " + ex);
-        } catch (java.awt.datatransfer.UnsupportedFlavorException ex) {
-            throw new IllegalActionException(this,
-                    " Failed to paste: (Flavor Exception)" + ex);
-        }
-        if (_debugging) _debug("fire has completed");
+
+	if (_pasteKeyPressed) {
+	    _pasteKeyPressed = false;
+	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
+                    .getSystemClipboard();
+	    Transferable transferable = clipboard.getContents(_myframe);
+	    try{
+		pasteOutput.broadcast(new StringToken( (String)transferable
+                        .getTransferData(DataFlavor.stringFlavor) ));
+	    // NullPointerException also possible //
+		// Ignore this for now, allowing exception to go uncaught.
+	    } catch (java.io.IOException ex) {
+		throw new IllegalActionException(this,
+                        " Failed to paste (IO Exception): " + ex);
+	    } catch (java.awt.datatransfer.UnsupportedFlavorException ex) {
+		throw new IllegalActionException(this,
+                        " Failed to paste: (Flavor Exception)" + ex);
+	    }
+	}
+
+	if (copyInput.getWidth()>0 && copyInput.hasToken(0)) {
+	    Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
+                    .getSystemClipboard();
+	    String myString = ((StringToken)(copyInput.get(0))).stringValue();
+
+	    /*
+	    ArrayToken myArrayToken = (ArrayToken) copyInput.get(0);
+	    // (Use only low byte of each integer.)
+	    int byteCount = myArrayToken.length();
+	    byte[] byteData = new byte[byteCount];
+	    for (int j = 0; j < byteCount; j++) {
+		IntToken myToken = (IntToken) myArrayToken.getElement(j);
+		byteData[j] = (byte) myToken.intValue();
+	    }
+	    */
+     
+	    clipboard.setContents(new StringSelection(myString), this);
+	}
+
+	if (_copyKeyPressed) {
+	    _copyKeyPressed = false;
+	    copyTrigger.broadcast(new Token());
+	}
+
+	if (_debugging) _debug("fire has completed");
+    }
+
+    /** Comply with the ClipboardOwner interface.  It requires a
+     *  method exist named <i>lostOwnership</i>.  
+     *  
+     *  Without this (and having the actor, or something, 
+     *  implement ClipboardOwner, I get the following error:
+     *  
+     *  setContents(java.awt.datatransfer.Transferable,
+     *              java.awt.datatransfer.ClipboardOwner) 
+     *           in java.awt.datatransfer.Clipboard
+     *           cannot be applied to
+     *             (java.awt.datatransfer.StringSelection,
+     *              ptolemy.actor.lib.net.Wormhole)
+     */
+    public void lostOwnership(Clipboard clipboard, Transferable contents) {
     }
 
     public void preinitialize() {
@@ -138,16 +198,21 @@ public class Wormhole extends TypedAtomicActor {
         if (_debugging) _debug("frame was constructed");
     }
 
+    public void wrapup() {
+	_myframe.dispose();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
     private MyFrame _myframe;
+    private boolean _copyKeyPressed = false;
+    private boolean _pasteKeyPressed = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    private class MyFrame extends JFrame
-        implements ClipboardOwner {
+    private class MyFrame extends JFrame implements ClipboardOwner {
 
         /** Construct a frame associated with the specified Ptolemy II
          *  model.  After constructing this, it is necessary to call
@@ -159,44 +224,55 @@ public class Wormhole extends TypedAtomicActor {
          *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
+
+	    // Paste callback
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			pasteFromBufferToPasteOutput(); 
 		    } 
 	    };
+
+	    // Copy callback
+            ActionListener myCopyListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			if (_debugging) _debug("copy callback called");
+			_copyKeyPressed = true;
+			try {
+			    getDirector().fireAtCurrentTime(Wormhole.this);
+			} catch (IllegalActionException ex) {
+			    System.out.println(this
+			            + "Ex calling fireAtCurrentTime");
+			    throw new RuntimeException("-fireAt* C catch-");
+			}
+			if (_debugging) _debug("copy callback completed");
+		    }
+	    };
+
             getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Paste here!");
+            JLabel label = new JLabel("Copy and/or Paste here!");
             getContentPane().add(label);
+
+	    // Paste registration of callback.
             label.registerKeyboardAction(myPasteListener, "Paste",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Copy registration of callback.
+            label.registerKeyboardAction(myCopyListener, "Copy",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());
             // Set the default size.
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
             pack();
+	    show();
             if (_debugging) _debug("frame constructor completes");
         }
-
-        /** Get the currently selected objects from this document, if any,
-         *  and place them on the clipboard in MoML format.
-         */
-        /*
-        public void copy() {
-            String buff = new String("xyz");
-            Clipboard clipboard =
-                java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-            try {
-                clipboard.setContents(
-                        new StringSelection(buff.toString()), this);
-            }
-            catch (Exception ex) {
-                MessageHandler.error("Copy failed", ex);
-            }
-        }
-        */
 
         /** Comply with the ClipboardOwner interface.
          *  It requires a method exist named <i>lostOwnership</i>.
@@ -209,15 +285,17 @@ public class Wormhole extends TypedAtomicActor {
          *  it into the current model by issuing a change request.
          */
         public void pasteFromBufferToPasteOutput() {
-            if (_debugging) _debug("paste* has been called");
-            try {
+            if (_debugging) _debug("pasteFrom.. has been called");
+            _pasteKeyPressed = true;
+	    try {
                 getDirector().fireAtCurrentTime(Wormhole.this);
             } catch (IllegalActionException ex) {
+		System.out.println("--" + ex.toString() + "--");
                 System.out.println(this
                         + "Exception calling fireAtCurrentTime");
                 throw new RuntimeException("-fireAt* catch-");
             }
-            if (_debugging) _debug("paste* has completed");
+            if (_debugging) _debug("pasteFrom.. has completed");
         }
     }
 }

@@ -77,7 +77,8 @@ until the model is run.<p>
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on TiltSensor actor written by 
  Chamberlain Fong, Xiaojun Liu, Edward Lee)
-@version $Id$ */
+@version $Id$
+*/
 
 
 /** Construct a DatagramSender actor with given name in the given
@@ -90,7 +91,8 @@ until the model is run.<p>
  *  @exception NameDuplicationException If the container already has an
  *   actor with this name.
  *  @exception IllegalActionException If the actor cannot be contained by
- *   this container */
+ *   this container
+ */
 public class DatagramSender extends TypedAtomicActor {
 
     public DatagramSender(CompositeEntity container, String name)

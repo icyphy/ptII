@@ -166,7 +166,8 @@ otherwise. <p>
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
 (Based on TiltSensor actor written
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
-@version $Id$ */
+@version $Id$
+*/
 public class DatagramReceiver extends TypedAtomicActor {
 
     public DatagramReceiver(CompositeEntity container, String name)
@@ -353,7 +354,8 @@ public class DatagramReceiver extends TypedAtomicActor {
      * accessible via the getReceiveBufferSize and
      * setReceiveBufferSize methods of java.net.DatagramSocket.
      * Caution - The set is only a suggestion.  Must call get to see
-     * what you actually got.  */
+     * what you actually got.  
+     */
     public Parameter bufferLength;
 
     ///////////////////////////////////////////////////////////////////
@@ -654,7 +656,8 @@ public class DatagramReceiver extends TypedAtomicActor {
                 useDefaultOutput = false;
                 bytesAvailable = _broadcastPacket.getLength();
                 dataBytes = _broadcastPacket.getData();//The buffer, not copy.
-                _returnAddress = _broadcastPacket.getAddress().getHostAddress();
+                _returnAddress = _broadcastPacket
+                        .getAddress().getHostAddress();
 		_returnSocketNumber = _broadcastPacket.getPort();
 		_packetsAlreadyAwaitingFire--;
             } else {
@@ -933,7 +936,10 @@ public class DatagramReceiver extends TypedAtomicActor {
         if (_debugging) _debug("WRAPUP IS CALLED");
 
         //System.err.println("wrapup() has been called in " + this);
-        //e.printStackTrace();
+        //e.printStackTrace();  
+	      // FIXME cxh's java checker recommends
+	      // KernelException.stackTraceToString(ex)
+	      // instead of printStackTrace() above.  Try it.
         //throw new RuntimeException("Manager: " + e.getMessage());
 
         //throw new IllegalActionException(this,
