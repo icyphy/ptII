@@ -141,7 +141,8 @@ test PNDirector-7.1 {Test a mutation} {
 
     set g2 [java::new ptolemy.actor.CompositeActor $b1 "galaxy2"]
     set sieve [java::new ptolemy.domains.pn.lib.PNGalaxySieve $g2 "2_sieve"]
-    $sieve setParam "prime" "2"
+    set tok [$sieve getAttribute "prime"]
+    $tok setToken [java::new IntToken 2]
     set portin [$sieve getPort "input"]
     set galin [$g2 newPort "input"]
     $g2 connect $portin $galin "2_gal"
