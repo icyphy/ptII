@@ -9,6 +9,16 @@
 <title>3 Expressions</title>
 </head>
 
+<!--
+This file was generated from ptII/doc/design/expressions.fm
+using WebWorks standard edition and then edited by hand.
+Things to watch out for:
+
+* Get rid of the font html
+* Be sure to change the symbol font face p code to &#960;
+  so that you get a pi symbol
+ -->
+
 <body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
 >
 
@@ -32,7 +42,15 @@
 
 
 <p>
-  <a name="175470"> </a>In Ptolemy II, models specify computations by composing actors. Many computations, however, are awkward to specify this way. A common situation is where we wish to evaluate a simple algebraic expression, such as "sin(2<font  face="Symbol">p</font> (<i>x</i>-1))." It is possible to express this computation by composing actors in a block diagram, but it is far more convenient to give it textually.
+
+  <a name="175470"> </a>In Ptolemy II, models specify computations by
+  composing actors. Many computations, however, are awkward to specify
+  this way. A common situation is where we wish to evaluate a simple
+  algebraic expression, such as 
+  "sin(&#960; (<i>x</i>-1))." It is possible to express this computation by
+  composing actors in a block diagram, but it is far more convenient
+  to give it textually.
+
 </p>
 
 
@@ -102,7 +120,8 @@ PI*x/2.0<a name="175697"> </a>
 </pre>
 
 <p>
-  <a name="175694"> </a>is valid if "x" is a variable in scope. In the context of Ptolemy II models, the variables in scope include all parameters defined at the same level of the hierarchy or higher. So for example, if an actor has a parameter named "x" with value 1.0, then another parameter of the same actor can have an expression with value "PI*x/2.0", which will evaluate to <font  face="Symbol">p</font>/2.
+  <a name="175694"> </a>is valid if "x" is a variable in scope. In the context of Ptolemy II models, the variables in scope include all parameters defined at the same level of the hierarchy or higher. So for example, if an actor has a parameter named "x" with value 1.0, then another parameter of the same actor can have an expression with value "PI*x/2.0", which will evaluate to 
+&#960;/2.
 </p>
 
 
