@@ -484,7 +484,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	echo " Where commonOptions is one or more of:"
 	echo " -debug   Enable debugging, see \$PTII/doc/coding/debugging.htm"
 	echo " -help    Print this help message"
-	echo " -helpall List all the Ptolemy II commands that can be invoked"
+	echo " -helpall List the Ptolemy II commands that can be invoked"
 	echo " -jdb     Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
 	echo " -profiler Run under cpu sample profiling"
         echo " -q       Do not echo the command being run"
