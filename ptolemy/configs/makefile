@@ -56,6 +56,7 @@ JSRCS =
 #  has problems pulling in the gif if the gif is in a different jar
 #  so we include it in this jar
 OTHER_FILES_TO_BE_JARED = \
+	README.txt \
 	annotation.xml \
 	automataActorLibrary.xml \
 	basicActorLibrary.xml \
