@@ -14,7 +14,7 @@
 and some actors with icons.
 This example is used to test
 out MoMLFilter and
-FilterOutGraphicalClasses.</text></svg></configure>
+RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

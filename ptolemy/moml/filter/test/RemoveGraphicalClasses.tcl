@@ -1,4 +1,4 @@
-# Tests for the FilterOutGraphicalClasses class
+# Tests for the RemoveGraphicalClasses class
 #
 # @Author: Christopher Hylands
 #
@@ -45,14 +45,14 @@ set header {<?xml version="1.0" standalone="no"?>
 
 
 set hideMoml  "$header 
-<entity name=\"FilterOutGraphicalClassesHide\" class=\"ptolemy.actor.TypedCompositeActor\">
+<entity name=\"RemoveGraphicalClassesHide\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"annotation1\" class=\"ptolemy.kernel.util.Attribute\">
         <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
             <configure><svg><text x=\"20\" y=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\">A simple example that has an annotation
 and some actors with icons.
 This example is used to test
 out MoMLFilter and
-FilterOutGraphicalClasses.</text></svg></configure>
+RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
             <configure>
@@ -75,27 +75,27 @@ FilterOutGraphicalClasses.</text></svg></configure>
 ######################################################################
 ####
 #
-test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} { 
+test RemoveGraphicalClasses-1.1 {This annotation already has a _hideName} { 
     set parser [java::new ptolemy.moml.MoMLParser]
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
     $parser setMoMLFilters [java::null]
 
-    set filter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
 
     # ptolemy.copernicus.kernel.KernelMain does this
     $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
 
     $parser addMoMLFilter $filter
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterHideAnnotationNames]
+    $parser addMoMLFilter [java::new ptolemy.moml.filter.HideAnnotationNames]
     set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FilterOutGraphicalClassesHide" class="ptolemy.actor.TypedCompositeActor">
+<entity name="RemoveGraphicalClassesHide" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
@@ -104,7 +104,7 @@ test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} {
 and some actors with icons.
 This example is used to test
 out MoMLFilter and
-FilterOutGraphicalClasses.</text></svg></configure>
+RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -128,10 +128,10 @@ FilterOutGraphicalClasses.</text></svg></configure>
 ######################################################################
 ####
 #
-test FilterOutGraphicalClasses-1.2 {filterAttributeValue} { 
+test RemoveGraphicalClasses-1.2 {filterAttributeValue} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
-    set toplevel [$parser parseFile "./FilterOutGraphicalClasses.xml"]
+    set toplevel [$parser parseFile "./RemoveGraphicalClasses.xml"]
     set newMoML [$toplevel exportMoML]
     list $newMoML
 } {{<?xml version="1.0" standalone="no"?>
@@ -148,7 +148,7 @@ test FilterOutGraphicalClasses-1.2 {filterAttributeValue} {
 and some actors with icons.
 This example is used to test
 out MoMLFilter and
-FilterOutGraphicalClasses.</text></svg></configure>
+RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

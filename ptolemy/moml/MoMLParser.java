@@ -215,6 +215,7 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     *  @see #addMoMLFilters(List filterList)
      *  @see #getMoMLFilters()
      *  @see #setMoMLFilters(List filterList)
      */
@@ -225,6 +226,21 @@ public class MoMLParser extends HandlerBase {
         _filterList.add(filter);
     }
 
+    /**  Add a List of MoMLFilters to the end of the list of MoMLFilters used
+     *  to translate names.
+     *  Note that this method is static.  The specified MoMLFilter
+     *  will filter all MoML for any instances of this class.
+     *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     *  @see #addMoMLFilter()
+     *  @see #getMoMLFilters()
+     *  @see #setMoMLFilters(List filterList)
+     */
+    public void addMoMLFilters(List filterList) {
+	if (_filterList == null) {
+	    _filterList = new LinkedList();
+	}
+        _filterList.addAll(filterList);
+    }
 
     /** Handle an attribute assignment that is part of an XML element.
      *  This method is called prior to the corresponding startElement()

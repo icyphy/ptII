@@ -1,4 +1,4 @@
-/* Filter out graphical classes
+/* Remove graphical classes
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -28,14 +28,16 @@
 
 */
 
-package ptolemy.moml;
+package ptolemy.moml.filter;
 
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLFilter;
+import ptolemy.moml.MoMLParser;
 
 import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
-//// FilterOutGraphicalClasses
+//// RemoveGraphicalClasses
 /** When this class is registered with the MoMLParser.setMoMLFilter()
 method, it will cause MoMLParser to filter out graphical classes.
 
@@ -48,7 +50,7 @@ run tests when there is no graphical display present.
 @since Ptolemy II 2.0
 */
 
-public class FilterOutGraphicalClasses implements MoMLFilter {
+public class RemoveGraphicalClasses implements MoMLFilter {
 
     /** Add a class to be filtered for and its replacement if the class
      *  is found.  If the replacement is null, then the rest of the

@@ -1,4 +1,4 @@
-# Makefile for the Java classes used to test the moml package
+# Makefile for the Java classes used to test the moml filter package
 #
 # @Authors: Christopher Hylands
 #
@@ -30,13 +30,12 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/moml/test
+ME =		ptolemy/moml/filter/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
-# MoMLWriterTiming needs to include diva because we are looking at the configs
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -50,12 +49,8 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	EntityLibrary.tcl \
-	Location.tcl \
-	MoMLChangeRequest.tcl \
-	MoMLParser.tcl \
-	MoMLWriter.tcl \
-	MoMLWriterTiming.tcl
+	BackwardCompatibility.tcl \
+	RemoveGraphicalClasses.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -65,6 +60,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	RemoveGraphicalClasses.xml \
 	testClass.xml \
 	testClass2.xml \
 	testClass2DotMoml.moml \
@@ -76,7 +72,9 @@ MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	compat \
+	compatDemo
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
@@ -86,6 +84,58 @@ JCLASS =	$(JSRCS:%.java=%.class)
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
+
+# Location of the old tree that we harvest auto/*.xml
+# files from old release trees and copy them into compat and run them
+OLDTREE = $(ROOT)/adm/dists/ptII1.0.1
+
+# Directory that contains models to check for compatibility
+# We could check these into the tree, but it is about 1mb of files
+compat:
+	@if [ ! -d $(OLDTREE) ]; then \
+		echo "$(OLDTREE) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating compat/ from $(OLDTREE)"; \
+		(cd $(OLDTREE); \
+			find . -name "*.xml" -print | \
+			grep auto | \
+			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls); \
+		mkdir compat; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` compat; \
+		echo "Copying xmls that have the same name"; \
+		rm compat/test1.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			compat/sdftest1.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			compat/vqtest1.xml; \
+		rm compat/test2.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			compat/sdftest1.xml; \
+		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			compat/vqtest1.xml; \
+		echo "Removing tests that failed in earlier releases"; \
+		rm -f compat/MaximumEntropy.xml \
+			compat/OutputActionsAttribute.xml; \
+	fi
+
+# Directory that contains models from the demo directory 
+# to check for compatibility
+compatDemo:
+	@if [ ! -d $(OLDTREE) ]; then \
+		echo "$(OLDTREE) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating compatDemo/ from $(OLDTREE)"; \
+		(cd $(OLDTREE); \
+			find . -name "*.xml" -print | \
+			grep demo | \
+			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls); \
+		mkdir compatDemo; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` compatDemo; \
+	fi
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl

@@ -28,16 +28,18 @@
 
 */
 
-package ptolemy.moml;
+package ptolemy.moml.filter;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLFilter;
+import ptolemy.moml.MoMLParser;
 
 import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
-//// FilterHideAnnotationNames
+//// HideAnnotationNames
 /** When this class is registered with the MoMLParser.addMoMLFilter()
 method, it will cause MoMLParser to add a _hideName property
 property for any annotations.
@@ -46,7 +48,7 @@ property for any annotations.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class FilterHideAnnotationNames implements MoMLFilter {
+public class HideAnnotationNames implements MoMLFilter {
 
     /** If the attributeName is "name" and attributeValue ends
      *	with "annotation", then
