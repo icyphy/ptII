@@ -156,10 +156,10 @@ public class StaticSchedulingDirector extends Director{
     /** Validate/Devalidate the schedule. A true argument indicate that
      *  the current (cached) schedule is valid, and the director can use
      *  it in the further execution. A false argument indicate that
-     *  the CompositeActor has been significantly change so that the
+     *  the CompositeActor has been significantly changed so that the
      *  cached schedule is no longer valid, and the director should
-     *  invoke the scheduler again for a new schedule. This is a facad
-     *  for the setValid() method of Scheduler.
+     *  invoke the scheduler again for a new schedule. This calls the 
+     *  setValid() method of Scheduler.
      *  @param true to set the schedule to be valid.
      *  @exception IllegalActionException IF there's no scheduler.
      */
@@ -173,7 +173,7 @@ public class StaticSchedulingDirector extends Director{
     }
 
     /** Return true if the current (cached) schedule is valid.
-     *  This is a facad for the valid() method of Scheduler.
+     *  This calls the valid() method of Scheduler.
      *  @return true if the schedule is valid.
      *  @exception IllegalActionException IF there's no scheduler.
      */
