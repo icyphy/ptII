@@ -65,8 +65,9 @@ public class Skeleton {
             try {
                 ast = JavaParserManip.parse(filename, _debug);
             } catch (Exception e) {
-                System.err.println("error opening input file " + filename);
-                System.err.println(e.toString());
+                System.err.println("error opening or parsing input file " + 
+                        filename);
+                e.printStackTrace();
             }
 
             if (_eliminateImports) {
@@ -92,7 +93,7 @@ public class Skeleton {
             } catch (IOException e) {
                 System.err.println("error opening/writing/closing output file "
                         + outFileName);
-                System.err.println(e.toString());
+                e.printStackTrace();
             }
         }
     }
