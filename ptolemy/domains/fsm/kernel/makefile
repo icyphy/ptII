@@ -88,6 +88,7 @@ OPTIONAL_FILES = \
 	'FSMActor$$1.class' \
 	'FSMActor$$PortScope.class' \
 	'FSMDirector$$1.class' \
+	'FSMDirector$$2.class' \
 	'InterfaceAutomaton$$1.class' \
 	'InterfaceAutomaton$$Triple.class' \
 	'RelationList$$RelationNode.class'
