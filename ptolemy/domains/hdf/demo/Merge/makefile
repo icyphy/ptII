@@ -39,18 +39,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Fibonacci
+PTPACKAGE = 	Merge
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Fibonacci.xml
+	Merge.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	Fibonacci.htm \
+	Merge.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,15 +71,14 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
-
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Fibonacci.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Merge.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Fibonacci.xml
+	"$(PTII)/bin/ptolemy" Merge.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Fibonacci.xml
+	"$(PTII)/bin/vergil" Merge.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

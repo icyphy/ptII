@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Root of the Java directory
-ROOT =		c:/cxh/ptII
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
