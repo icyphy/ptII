@@ -37,10 +37,12 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.de.kernel.*;
+import ptolemy.data.expr.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.graph.*;
 import java.util.Enumeration;
+import java.util.*;
 import collections.LinkedList;
 import ptolemy.domains.fsm.*;
 import ptolemy.domains.fsm.kernel.util.VariableList;
@@ -100,6 +102,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         super(container, name);
     }
 
+    /** What does this do?
+     */
     public Enumeration typeConstraints()  {
 	try {
 	    workspace().getReadAccess();
@@ -132,8 +136,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	}
     }
 
-
-    public void addLocalVariable(String name, Token initialValue)
+    // FIXME: is ptolemy.data.Token the right token?
+    public void addLocalVariable(String name, ptolemy.data.Token initialValue)
             throws IllegalActionException, NameDuplicationException {
         if (_localVariables == null) {
             _localVariables = new VariableList(this, LOCAL_VARIABLE_LIST);
@@ -161,6 +165,8 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	// Initialize the current firing count in the current
 	// iteration of the current static schedule to 0.
 	currentIterFireCount = 0;
+
+	
     }
 
     public Object clone(Workspace ws) throws CloneNotSupportedException {
@@ -262,7 +268,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
             //_currentState.resetLocalInputStatus();
 
-            // Invoke refinement.
+            // Fire the refinement.
             if (currentRefinement() != null) {
 		System.out.println("FSMController:  fire(): firing current refinment");
                 currentRefinement().fire();
@@ -284,6 +290,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 }
             }
 
+	    /*
 	System.out.println("FSMController:  fire(): ***********");
         if (_takenTransition != null) {
             _outputTriggerActions(_takenTransition.getTriggerActions());
@@ -291,6 +298,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             // _takenTransition.executeTransitionActions();
             // do not change state, that's done in postfire()
         }
+	    */
 	System.out.println("FSMController:  fire(): finished");
     }
 
@@ -376,19 +384,17 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     public Port newPort(String name) throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
-            TypedIOPort port = new TypedIOPort(this, name);
+            IOPort port = new IOPort(this, name);
             return port;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "TypedAtomicActor.newPort: Internal error: " +
-		    ex.getMessage());
+                    "AtomicActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
     }
-
 
 
 
@@ -496,18 +502,23 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             // Throw exception!
             //System.out.println("Initialization error: no initial state!");
         }
-        if (currentRefinement() != null) {
-            // FIXME!!
-            // Initialize the refinement.
-            // Delegate to the director or just call preinitialize() on
-            // the refinement?
-            // Now we are doing initialization in FSM system.
-            //currentRefinement().preinitialize();
+        
 
-            //System.out.println("Initializing refinement "+
-            //((ComponentEntity)currentRefinement()).getFullName());
+	
+	// Get the current refinement.
+	TypedCompositeActor curRefinement =
+	    (TypedCompositeActor)currentRefinement();
+	if (curRefinement != null) {
+	    // Update the rate information of the HDF actor containing
+	    // the current refinement.
+	    _updateInputTokenConsumptionRates(curRefinement);
+	    _updateOutputTokenProductionRates(curRefinement);
+	    // FIXME: do this for output ports, too.
+	} else {
+	    throw new IllegalActionException(this,
+			   "current refinement is null.");
+	}
 
-        }
     }
 
     /** Change state according to the enabled transition determined
@@ -603,16 +614,25 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 		// execute the transition actions
 		//_takenTransition.executeTransitionActions();
 		
-		if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {
-		    // Initialize the refinement.
-		    Actor actor = currentRefinement();
-		    if (actor == null) {
-			return true;
-		    }
+		// Now update the token consumption/production rates of
+		// the ports of the HDF actor refining to the FSM (this
+		// actor's container). I.e., queue a mutation with the
+		// mangaer.
+		// This will cause the SDF scheduler to compute a new
+		// schedule based in the new port rates.
 
-		    // FIXME: Is this right? and/or preinitialize()?
-		    actor.initialize();
-		}
+		// Get the new current refinement acotr.
+		TypedCompositeActor actor = (TypedCompositeActor)currentRefinement();
+		// Extract the token consumption/production rates from the
+		// ports of the current refinement and update the
+		// rates of the ports of the HDF actor containing
+		// the refinment.
+		// FIXME: queue this as mutation request with dir/manager?
+		_updateInputTokenConsumptionRates(actor);
+		_updateOutputTokenProductionRates(actor);
+		// Tell the scheduler that the current schedule is no
+		// longer valid.
+		s.setValid(false);
 	    }
 	
 	}	
@@ -1000,5 +1020,269 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     // The number of times fire() has been called in the current
     // iteration of the SDF graph containing this FSM.
     int currentIterFireCount;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor, as supplied by
+     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
+     *  does not exist, then assume the actor is homogeneous and return a
+     *  rate of 1.
+     *  @exception IllegalActionException If the TokenConsumptionRate
+     *   parameter has an invalid expression.
+     */
+    protected int _getTokenConsumptionRate(IOPort p)
+            throws IllegalActionException {
+        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
+        if(param == null) {
+            if(p.isInput())
+                return 1;
+            else
+                return 0;
+        } else
+            return ((IntToken)param.getToken()).intValue();
+    }
+
+
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor during each firing,
+     *  as supplied by
+     *  by the port's "TokenProductionRate" Parameter.   If the parameter
+     *  does not exist, then assume the actor is homogeneous and return a
+     *  rate of 1.
+     *  @exception IllegalActionException If the TokenProductionRate
+     *   parameter has an invalid expression.
+     */
+    protected int _getTokenProductionRate(IOPort p)
+            throws IllegalActionException {
+        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
+        if(param == null) {
+            if(p.isOutput())
+                return 1;
+            else
+                return 0;
+        }
+        return ((IntToken)param.getToken()).intValue();
+    }
+
+    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
+            throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isInput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Input Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("TokenConsumptionRate");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port,"TokenConsumptionRate",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
+    }
+    
+    protected void _setTokenProductionRate(Entity e, IOPort port, int rate)
+            throws NotSchedulableException {
+        if(rate <= 0) throw new NotSchedulableException(
+                "Rate must be > 0");
+        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not an Output Port.");
+        Port pp = e.getPort(port.getName());
+        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+                port.getName() + " is not contained in Entity " +
+                e.getName());
+        Parameter param = (Parameter)
+            port.getAttribute("TokenProductionRate");
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
+                param = new Parameter(port,"TokenProductionRate",
+                        new IntToken(rate));
+            }
+        } catch (Exception exception) {
+            // This should never happen.
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
+    }
+
+
+    /* Extract the token consumption rates from the input
+     * ports of the current refinement and update the
+     * rates of the input ports of the HDF opaque composite actor
+     * containing the refinment. The resulting mutation will cause
+     * the SDF scheduler to compute a new schedule using the
+     * updated rate information.
+     *
+     * @param actor The current refinement.
+     */
+    // FIXME: queue the mutation with the director?
+    protected void _updateInputTokenConsumptionRates(TypedCompositeActor actor) throws IllegalActionException {
+	// Get all of its input ports.
+	Enumeration refineInPorts = actor.inputPorts();
+	// Get the current refinement's container.
+	ComponentEntity refineInPortContainer =
+	    (ComponentEntity) actor.getContainer();
+	
+	while (refineInPorts.hasMoreElements()) {
+	    IOPort refineInPort =
+		(IOPort)refineInPorts.nextElement();
+	    if (_debugging) _debug("Current port of refining actor " +
+				   refineInPort.getFullName());
+	    
+	    
+	    // Get all of the input ports this port is
+	    // linked to on the outside (should only consist
+	    // of 1 port).
+	    Enumeration inPortsOutside = 
+		refineInPort.deepConnectedInPorts();
+	    if (!inPortsOutside.hasMoreElements()) {
+		throw new IllegalActionException("Current " +
+			  "state's refining actor has an input " +
+			  "port not connected to an input port " +
+			                        "of its container.");
+	    }
+	    while (inPortsOutside.hasMoreElements()) {
+		IOPort inputPortOutside =
+		    (IOPort)inPortsOutside.nextElement();
+		if (_debugging) _debug("Current outisde port connected to port of refining actor " +
+				       inputPortOutside.getFullName());
+		// Check if the current port is contained by the
+		// container of the current refinment.
+		ComponentEntity thisPortContainer =
+		    (ComponentEntity)inputPortOutside.getContainer();
+		if (thisPortContainer.getFullName() == refineInPortContainer.getFullName()) {
+		    // The current port  is contained by the
+		    // container of the current refinment.
+		    // Update its consumption rate.
+		    if (_debugging) _debug("Updating consumption " +
+					   "rate of port: " +
+					   inputPortOutside.getFullName());
+		    // Get the port to which "refineInPort" is
+		    // connected on the inside.
+		    List listOfPorts = refineInPort.insidePortList();
+		    // Just get the first port from the list
+		    // since they all must have the same rate.
+		    int refineInPortRate;
+		    if (listOfPorts.isEmpty()) {
+			// Just assume the rate is 1. This could happen
+			// if a Source actor is inside (no input ports).
+			refineInPortRate = 1;
+		    } else {
+			IOPort portWithRateInfo =
+			    (IOPort)listOfPorts.get(0);
+			
+			refineInPortRate =
+			    _getTokenConsumptionRate(portWithRateInfo);
+		    }
+		    if (_debugging) _debug("New consumption rate is " +
+					       refineInPortRate);
+				// FIXME: call requestChange in Manager for this?
+			_setTokenConsumptionRate(refineInPortContainer,
+						 inputPortOutside,
+						 refineInPortRate);
+		}
+	    }
+	}
+    }
+    
+    /* Extract the token production rates from the output
+     * ports of the current refinement and update the
+     * rates of the output ports of the HDF opaque composite actor
+     * containing the refinment. The resulting mutation will cause
+     * the SDF scheduler to compute a new schedule using the
+     * updated rate information.
+     *
+     * @param actor The current refinement.
+     */
+    // FIXME: queue the mutation with the director?
+    protected void _updateOutputTokenProductionRates(TypedCompositeActor actor) throws IllegalActionException {
+	// Get all of its input ports.
+	Enumeration refineOutPorts = actor.outputPorts();
+	// Get the current refinement's container.
+	ComponentEntity refineOutPortContainer =
+	    (ComponentEntity) actor.getContainer();
+	
+	while (refineOutPorts.hasMoreElements()) {
+	    IOPort refineOutPort =
+		(IOPort)refineOutPorts.nextElement();
+	    if (_debugging) _debug("Current port of refining actor " +
+				   refineOutPort.getFullName());
+	    
+	    
+	    // Get all of the output ports this port is
+	    // linked to on the outside (should only consist
+	    // of 1 port).
+	    Enumeration outPortsOutside = 
+		refineOutPort.deepConnectedOutPorts();
+	    if (!outPortsOutside.hasMoreElements()) {
+		throw new IllegalActionException("Current " +
+			  "state's refining actor has an output " +
+			  "port not connected to an output port " +
+			                        "of its container.");
+	    }
+	    while (outPortsOutside.hasMoreElements()) {
+		IOPort outputPortOutside =
+		    (IOPort)outPortsOutside.nextElement();
+		if (_debugging) _debug("Current outisde port connected to port of refining actor " +
+				       outputPortOutside.getFullName());
+		// Check if the current port is contained by the
+		// container of the current refinment.
+		ComponentEntity thisPortContainer =
+		    (ComponentEntity)outputPortOutside.getContainer();
+		if (thisPortContainer.getFullName() == refineOutPortContainer.getFullName()) {
+		    // The current port  is contained by the
+		    // container of the current refinment.
+		    // Update its consumption rate.
+		    if (_debugging) _debug("Updating production " +
+					   "rate of port: " +
+					   outputPortOutside.getFullName());
+		    // Get the port to which "refineOutPort" is
+		    // connected on the inside.
+		    List listOfPorts = refineOutPort.insidePortList();
+		    // Just get the first port from the list
+		    // since they all must have the same rate.
+		    int refineOutPortRate;
+		    if (listOfPorts.isEmpty()) {
+			// Just assume the rate is 1. This could happen
+			// if a Sink actor is inside (no ouput ports).
+			refineOutPortRate = 1;
+		    } else {
+			IOPort portWithRateInfo =
+			    (IOPort)listOfPorts.get(0);
+			
+			refineOutPortRate =
+			    _getTokenProductionRate(portWithRateInfo);
+		    }
+		    if (_debugging) _debug("New consumption rate is " +
+					       refineOutPortRate);
+				// FIXME: call requestChange in Manager for this?
+			_setTokenProductionRate(refineOutPortContainer,
+						outputPortOutside,
+						refineOutPortRate);
+		}
+	    }
+	}
+    }
+    
+
 
 }
