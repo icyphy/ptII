@@ -5,7 +5,7 @@
   
   <!-- SingleWindow Effigy -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-  	<entity name="Navigable Graph Editor" class="ptolemy.actor.gui.NavigableEffigy$Factory">
+  	<entity name="Navigable Graph Editor" class="thales.actor.gui.NavigableEffigy$Factory">
       <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
     </entity>
   </entity>
