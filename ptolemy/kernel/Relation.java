@@ -30,8 +30,6 @@ package pt.kernel;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
-import collections.LinkedList;
-import java.util.NoSuchElementException;
 import pt.exceptions.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,7 +37,7 @@ import pt.exceptions.NameDuplicationException;
 /** A Relation serves as a connection class between Entities in a 
 hierarchical graph. A Relation connects n links such that each link has 
 access to the other n-1 links. In our case, a "link" is a Port. We say 
-that a Relation is <\EM> dangling </EM> if it has only one Port connected 
+that a Relation is <EM> dangling </EM> if it has only one Port connected 
 to it.  FIXME: Eventually we will set a variable in Port for determining if 
 it is connected to a dangling Relation. 
 @author John S. Davis, II
@@ -64,15 +62,16 @@ public abstract class Relation extends GraphElement {
 
     /** Connect a Port to this Relation.
      * @param port The Port being connected to the Relation.
-     * @exception NameDuplicationException Attempt to store two instances of
-     * the same class with identical names in the same container.
+     * @exception pt.exceptions.NameDuplicationException Attempt to store 
+     * two instances of the same class with identical names in the same 
+     * container.
      */	
     public void connectPort(Port port) throws NameDuplicationException {
-	Port duplicatePort;
 	if( links_ == null ) {
 	     links_ = new Hashtable();
 	}
-	duplicatePort = (Port)links_.put( port.getName(), port );
+
+	Port duplicatePort = (Port)links_.put( port.getName(), port );
 	if( duplicatePort != null ) {
 	     duplicatePort = (Port)links_.put
 		( duplicatePort.getName(), duplicatePort );
@@ -93,6 +92,10 @@ public abstract class Relation extends GraphElement {
 	return (Port)links_.remove( port.getName() );
     }
 
+    /** Get a particle from this relation.
+     */
+    public abstract Particle get();
+
     /** Return the Ports which are connected to this Relation.
      * @return Return an Enumeration of Ports; returns null if the
      * collection of Ports is null.
@@ -106,10 +109,6 @@ public abstract class Relation extends GraphElement {
 	}
         return links_.elements();
     }
-
-    /** Initialize this Relation.
-     */
-    public void systemInit() {}
 
     /** Determine if the Relation is dangling? By dangling, we mean that the
      *  Relation has exactly one Port connection.
@@ -137,15 +136,6 @@ public abstract class Relation extends GraphElement {
 	return links_.containsKey( portName );
     }
 
-    /** Return the number of particles stored in this relation.
-    public int numberOfParticles() {
-	 if( _buffer == null ) {
-	      return 0;
-	 }
-	 return _buffer.size();
-    }
-     */	
-
     /** Return the number of Ports connected to the net.
      */	
     public int numberOfConnections() {
@@ -155,18 +145,17 @@ public abstract class Relation extends GraphElement {
         return links_.size();
     }
 
-    /** Get a particle from this relation.
+    /** Return the number of particles stored in this relation. 
      */
-    public abstract Particle get();
+    public abstract int numberOfParticles(); 
 
     /** Put a particle into this relation.
      */
     public abstract void put(Particle particle); 
 
-    /** Return the number of particles stored in this relation. 
+    /** Initialize this Relation.
      */
-    public abstract int numberOfParticles(); 
-
+    public void systemInit() {}
 
     /** Generate a Relation object from a String.
      *  FIXME: How should this method be implemented??
@@ -180,10 +169,6 @@ public abstract class Relation extends GraphElement {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
-
-    /** The storage of particles occurs here. 
-    private LinkedList _buffer;
-     */
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
