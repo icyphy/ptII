@@ -73,6 +73,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	conversions.xml
+	'ExpressionToToken$$1.class' \
+	'ExpressionToToken$$ExpressionScope.class'
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
