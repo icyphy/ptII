@@ -94,7 +94,7 @@ converge.  In the course of an iteration, the director cycles through the
 schedule repeatedly, firing those actors that are allowed to fire and ready 
 to fire.
 <p>
-An iteration <i>has converged</i> if both the total number of receivers and
+An iteration <i>has converged</i> if both the number of known receivers and
 the number of actors that are allowed to fire have converged.
 
 @author Paul Whitaker
@@ -153,10 +153,9 @@ public class SRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Iterate every contained actor with calls to prefire(), fire(), and 
-     *  postfire().
-     *  @exception IllegalActionException If an actor executed by this
-     *  director returns false in its prefire().
+    /** Fire contained actors until the iteration converges.
+     *  @exception IllegalActionException If an actor attempts to modify
+     *   a known value.
      */
     public void fire() throws IllegalActionException {
 
@@ -243,8 +242,8 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     /** Return false if the system has finished executing, either by
-     *  reaching the iteration limit, or having an actor in the model
-     *  return false in postfire.
+     *  reaching the iteration limit, or having no actors in the model
+     *  return true in postfire.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
@@ -266,8 +265,8 @@ public class SRDirector extends StaticSchedulingDirector {
         return _postfireReturns;
     }
 
-    /** Enable all actors and invoke the preinitialize() methods of
-     *  all actors deeply contained by the container.
+    /** Initialize the internal receiver list, enable all actors, and invoke 
+     *  the preinitialize() methods of all deeply contained actors.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -309,7 +308,6 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** Do allow the specified actor to fire.  Typically called when
      *  the prefire method of the actor returns true.
-     *  will be ignored. If the argument is null, then do nothing.
      */
     private void _doAllowFiringOf(Actor actor) {
         if (actor != null) {
@@ -320,8 +318,8 @@ public class SRDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Disable the specified actor.  All events destined to this actor
-     *  will be ignored. If the argument is null, then do nothing.
+    /** Do not allow the specified actor to iterate.  Typically called when
+     *  the postfire method of the actor returns false.
      */
     private void _doNotAllowIterationOf(Actor actor) {
         if (actor != null) {
@@ -334,10 +332,9 @@ public class SRDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Fire the specified actor if the prefire() method of this actor has
-     *  returned true in the current iteration.  If the prefire() method 
-     *  of this actor has not returned true in the current iteration, 
-     *  the prefire() method will be called first.
+    /** Fire the specified actor if the actor is ready to fire.  If the 
+     *  prefire() method of this actor has not returned true in the current 
+     *  iteration, the prefire() method will be called first.
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
 
