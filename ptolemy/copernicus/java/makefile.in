@@ -378,15 +378,13 @@ gcjFixCompile:
 		$(JAVAC) -classpath "$(PTII)" CGoutputBitDisplay.java
 
 gcj1:
-	@echo "---- This will crap out with 'stack underflow' unless"
-	@echo "     We regenerate CGoutputBitDisplay.java by running"
-	@echo "     'make gcjFix'"
+	@echo "---- This will fail during linking because of missing"
+	@echo "     classes like actor.lib.Sequence and util.StringUtilities"
 	cd $(TARGETPATH); \
 		CLASSPATH=$(PTII) \
 		$(GCJ) $(GCJ_FLAGS) \
 			--main=ptolemy.copernicus.java.cg.$(MODEL).Main \
 			-o ortho *.class;
-	@echo "Even so, this fails when linking"
 
 gcj2: $(TARGETPATH)/gcj gcj2_0 gcj2_1 gcj2_2
 
@@ -399,6 +397,13 @@ $(TARGETPATH)/gcj: $(TARGETPATH)/treeshake_codegen.jar
 	mkdir $@
 	cd $@; jar -xf "$(TARGETPATH)/treeshake_codegen.jar"
 
+# Just copy over a few files
+gcj2_0: $(TARGETPATH)/gcj
+	cd $(PTII); tar -cf - ptolemy/util/StringUtilities.class \
+		ptolemy/data/TokenUtilities.class | \
+	(cd $(TARGETPATH)/gcj; tar -xvpf -) 
+
+
 # A list of directories that are required to compile the treeshaken directories
 # This is necessary because we treeshake by class, so the .class files
 # that the treeshaker includes may have methods that are not called
@@ -406,9 +411,9 @@ $(TARGETPATH)/gcj: $(TARGETPATH)/treeshake_codegen.jar
 # treeshaker output.  However, gcj does a C style link, where all
 # the symbols in a .o file must be resolved.  So we include these
 # other classes.
-GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit
+GCJ_AUX_DIRS = ptolemy/data/expr ptolemy/data/unit ptolemy/util ptolemy/math
 
-gcj2_0:
+gcj2_0a: $(TARGETPATH)/gcj
 	@echo "For each directory in the treeshaken output,"
 	@echo "Copy all the class files from corresponding directory"
 	@echo "in $PTII"
@@ -438,7 +443,7 @@ gcj2_1:
 		dirs=`find . -type d -print`; \
 		for dir in $$dirs; \
 		do \
-			files=`ls -1 $$dir/*.class | awk 'END {print NR}'`; \
+			files=`ls -1 $$dir/*.class 2>&1 | awk '$$1 ~ /.class$$/ {c++}  END {print c}'`; \
 			if [ $$files -gt 1 ]; then \
 				echo "$$retval---Running gcj in $$dir"; \
 				(cd $$dir; CLASSPATH="."; \
