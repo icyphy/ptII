@@ -29,12 +29,10 @@ COPYRIGHTENDKEY
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.FIFOQueue;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueWithNextOut

@@ -178,9 +178,8 @@ public class PreemptableTask extends DETransformer {
             } else {
                 _interrupted = false;
                 if (_executing) {
-                    double delay_time = 
-                        currentTime.subtract(_interruptTime).getDoubleValue();
-                    _outputTime = _outputTime.add(delay_time);
+                    _outputTime = _outputTime.add(
+                            currentTime.subtract(_interruptTime));
                     director.fireAt(this, _outputTime);
                 }
             }
