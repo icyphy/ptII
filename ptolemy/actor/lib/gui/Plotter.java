@@ -369,8 +369,8 @@ public class Plotter extends TypedAtomicActor
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         if (plot != null) {
-            // This clears the axes as well.
-            plot.clear(true);
+            // Do not clear the axes.
+            plot.clear(false);
             plot.repaint();
         }
     }
