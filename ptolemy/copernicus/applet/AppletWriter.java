@@ -225,15 +225,15 @@ public class AppletWriter extends SceneTransformer {
 
 	// Create the directory where we will create the files.
 	File outDirFile = new File(_outputDirectory);
-	if (outDirFile.isDirectory()) {
-	    System.out.println(" Warning: '" + outDirFile
-                    + "' already exists.");
+	if (!outDirFile.isDirectory()) {
+            // MakefileWriter should have already created the directory
+            outDirFile.mkdirs();
 	}
-	outDirFile.mkdirs();
+
 
 	// Set up the HashMap we will use when we read in files like
-	// makefile.in and search for strings like @codebase@ and substitute
-	// in the value of _codeBase.
+	// model.htm.in and search for strings like @codebase@ and
+	// substitute in the value of _codeBase.
 	_substituteMap = new HashMap();
 	_substituteMap.put("@codeBase@", _codeBase);
 	_substituteMap.put("@domainJar@", _domainJar);
@@ -280,9 +280,6 @@ public class AppletWriter extends SceneTransformer {
 			   + _templateDirectory + "'");
 
 	try {
-	    Copernicus.substitute(_templateDirectory + "makefile.in",
-				    _substituteMap,
-				    _outputDirectory + "/makefile");
 	    Copernicus.substitute(_templateDirectory + "model.htm.in",
 				    _substituteMap,
 				    _outputDirectory + "/"

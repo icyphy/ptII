@@ -31,6 +31,7 @@ package ptolemy.copernicus.applet;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -72,6 +73,10 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
+
+	// Generate the makefile files in outDir
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel)));
 
 	// Generate the applet files in outDir
         Scene.v().getPack("wjtp").add(new Transform("wjtp.appletWriter",

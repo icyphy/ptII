@@ -5,7 +5,7 @@
 #
 
 # Root of the Java directory
-ROOT =		@codeBase@
+ROOT =		@ptIIDirectory@
 
 CLASSPATH =	$(ROOT)
 
