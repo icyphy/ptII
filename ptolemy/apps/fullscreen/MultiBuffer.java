@@ -87,7 +87,7 @@ public class MultiBuffer {
 	GraphicsEnvironment graphicsEnvironment =
 	    GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-	device = graphicsEnvironment.getDefaultScreenDevice();
+	//device = graphicsEnvironment.getDefaultScreenDevice();
 
 	GraphicsConfiguration gc = device.getDefaultConfiguration();
 	Rectangle graphicsConfigurationBounds =
