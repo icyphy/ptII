@@ -498,7 +498,6 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	puts $results
     }
 
-    puts "codegen.tcl: sootCodeGeneration: speedComparison = $speedComparison"
     if {$speedComparison == 1} {
         return [speedComparison $modelPath $modelName $targetPackage \
 		    3 $modelClass $codeGenType]
