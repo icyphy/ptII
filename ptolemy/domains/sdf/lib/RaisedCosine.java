@@ -139,6 +139,7 @@ public class RaisedCosine extends FIR {
 
         // Hide taps from UI.
         taps.setVisibility(Settable.NONE);
+        _initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,44 +179,50 @@ public class RaisedCosine extends FIR {
             throws IllegalActionException {
         if (attribute == excessBW || attribute == length
                 || attribute == root || attribute == symbolInterval) {
-            double excessBWValue =
-                ((DoubleToken)(excessBW.getToken())).doubleValue();
-            int symbolIntervalValue =
-                ((IntToken)(symbolInterval.getToken())).intValue();
-            int lengthValue = ((IntToken)(length.getToken())).intValue();
-            boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
-            if (excessBWValue < 0.0) {
-                throw new IllegalActionException(this,
-                        "Excess bandwidth was "
-                        + excessBWValue
-                        + " which is not greater than or equal to zero.");
-            }
-            if (lengthValue <= 0) {
-                throw new IllegalActionException(this, "Length was " +
-                        lengthValue + " which is not greater than zero.");
-            }
-
-            double center = lengthValue * 0.5;
-
-            DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
-                (DoubleUnaryOperation)
-                new SignalProcessing.SqrtRaisedCosineSampleGenerator(
-                        symbolIntervalValue, excessBWValue) :
-                (DoubleUnaryOperation)
-                new SignalProcessing.RaisedCosineSampleGenerator(
-                        symbolIntervalValue, excessBWValue);
-
-            double[] tapsArray =
-                SignalProcessing.sampleWave(lengthValue, -center, 1.0,
-                        raisedCosineSampleGenerator);
-	    Token[] tapsArrayToken = new Token[tapsArray.length];
-	    for (int i = 0; i < tapsArray.length; i++) {
-	        tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
-	    }
-
-            taps.setToken(new ArrayToken(tapsArrayToken));
+            _initialize();
         } else {
             super.attributeChanged(attribute);
         }
+    }
+
+    // Initialize the state of the actor based on the current state of the
+    // parameters.
+    private void _initialize() throws IllegalActionException {
+        double excessBWValue =
+            ((DoubleToken)(excessBW.getToken())).doubleValue();
+        int symbolIntervalValue =
+            ((IntToken)(symbolInterval.getToken())).intValue();
+        int lengthValue = ((IntToken)(length.getToken())).intValue();
+        boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
+        if (excessBWValue < 0.0) {
+            throw new IllegalActionException(this,
+                    "Excess bandwidth was "
+                    + excessBWValue
+                    + " which is not greater than or equal to zero.");
+        }
+        if (lengthValue <= 0) {
+            throw new IllegalActionException(this, "Length was " +
+                    lengthValue + " which is not greater than zero.");
+        }
+        
+        double center = lengthValue * 0.5;
+        
+        DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
+            (DoubleUnaryOperation)
+            new SignalProcessing.SqrtRaisedCosineSampleGenerator(
+                    symbolIntervalValue, excessBWValue) :
+            (DoubleUnaryOperation)
+            new SignalProcessing.RaisedCosineSampleGenerator(
+                    symbolIntervalValue, excessBWValue);
+        
+        double[] tapsArray =
+            SignalProcessing.sampleWave(lengthValue, -center, 1.0,
+                    raisedCosineSampleGenerator);
+        Token[] tapsArrayToken = new Token[tapsArray.length];
+        for (int i = 0; i < tapsArray.length; i++) {
+            tapsArrayToken[i] = new DoubleToken(tapsArray[i]);
+        }
+        
+        taps.setToken(new ArrayToken(tapsArrayToken));
     }
 }
