@@ -59,6 +59,7 @@ EXTRA_SRCS =	$(TCL_SRCS) \
 	ptIIdirs \
 	ptlocaldict \
 	ptspell \
+	rmtrailingline \
 	rmtrailingspace
 
 # Sources that may or may not be present, but if they are present, we don't
