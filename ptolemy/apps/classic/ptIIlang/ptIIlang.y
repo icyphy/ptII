@@ -1477,6 +1477,8 @@ void genDef ()
 		sprintf (fullClass, "%s%s", galDef ? "" : domain, objName );
 
    if (!htmlOnly) {
+#ifndef PTII_GENERATE_JAVA_ONLY
+
 /***************************************************************************
 			CREATE THE .h FILE
 */
@@ -1777,8 +1779,215 @@ void genDef ()
 			objName );
 	}
 	(void) fclose(fp);
+
+
+
+/**************************************************************************
+		CREATE THE .java FILE
+*/
+	sprintf (ccname, "%s.java", fullClass);
+	if ((fp = fopen (ccname, "w")) == 0) {
+		perror (ccname);
+		exit (1);
+	}
+	fprintf (fp, "/* %s, %s domain: %s.java file generated from %s by %s\n*/\n",
+		 objName, domain, fullClass, inputFile, progName);
+/* copyright */
+	if (objCopyright) {
+	    if ( strncasecmp(objCopyright,"copyright",9)==0 ) {
+		fprintf (fp, "/*\n%s\n */\n", objCopyright);
+	    } else {
+		fprintf (fp, "/*\n * copyright (c) %s\n */\n", objCopyright);
+	    }
+	}
+
+/* special GNU pragma for efficiency */
+	//fprintf (fp, "\n#ifdef __GNUG__\n#pragma implementation\n#endif\n\n");
+	//fprintf (fp, "\n# line 1 \"%s\"\n", inputFile);
+/* ID block */
+	if (idBlock)
+		fprintf (fp, "%s\n", idBlock);
+/* include files */
+	//fprintf (fp, "#include \"%s.h\"\n", fullClass);
+	fprintf (fp, "package ptolemy.domains.sdf.cgc;\n\n");
+	fprintf (fp, "//////////////////////////////////////////////////////////////////////////\n");
+	fprintf (fp, "//// %s\n", fullClass);
+	fprintf (fp, "/**\n");
+	if (objDesc) {
+		/*
+		 * print descriptor with "\n" replaced with NEWLINE,
+		 * and "\t" replaced with a tab.
+		 * Any other escaped character will be printed as is.
+		 */
+		if(unescape(descriptString, objDesc, MEDBUFSIZE))
+		    yywarn("warning: Descriptor too long. May be truncated.");
+		fprintf (fp, "%s\n", descriptString);
+	} else {
+                fprintf (fp, "%s.\n", fullClass);
+        }
+	if (objHTMLdoc) {
+		fprintf (fp, "<p>\n%s\n", objHTMLdoc);
+        }
+/* See Also list */
+	if (nSeeAlso > 2) {
+	    checkSeeAlsos(nSeeAlso);
+	    for (i = 0; i < nSeeAlso; i++) {
+		seeAlsoGenerate(fp, domain, seeAlsoList[i]);
+	    }
+	}
+	fprintf (fp, "\n");
+	if (objAuthor) {
+		fprintf (fp, " @Author %s", objAuthor);
+		if (objAcknowledge) {
+			fprintf (fp, " Contributor(s): %s",
+	                objAcknowledge);
+		}
+		fprintf(fp, "\n");
+	}
+	fprintf (fp, " @Version $Id$, based on version %s of %s, from Ptolemy Classic \n",
+		objVer, inputFile);
+	fprintf (fp, " @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.\n");
+	fprintf (fp, "*/\n");
+	//if ( coreDef == 1 )
+	//	fprintf(fp, "#include \"%s%s.h\"\n", domain, objName);
+	for (i = 0; i < nCcInclude; i++)
+		fprintf (fp, "#include %s\n", ccInclude[i]);
+/* generate className and (optional) makeNew function */
+/* also generate a global identifier with name star_nm_DDDNNN, where DDD is
+   the domain and NNN is the name */
+	//fprintf (fp, "\nconst char *star_nm_%s = \"%s\";\n", fullClass, fullClass);
+/* Corona keeps source directory for loading cores. */
+	//if ( coronaDef == 1 ) { 
+	//	if (getcwd(srcDirectory, SMALLBUFSIZE) == NULL) {
+	//		perror("ptlang: getcwd() error"); exit(2);
+	//	}
+	//	fprintf (fp, "\nconst char *src_dir_%s = \"%s\";\n", fullClass, srcDirectory);
+	//	fprintf (fp, "\nconst char* %s :: getSrcDirectory() const { return src_dir_%s; }\n", fullClass, fullClass);
+	//}
+/* FIXME: Corona uses className virtual method as secondary init. */
+	//if ( coronaDef == 1 ) 
+        //	fprintf (fp, "\nconst char* %s :: className() const { %sCorona* ptr = (%sCorona* )this; if ( initCoreFlag == 0 ) ptr->addCores(); return star_nm_%s;}\n",
+	//	fullClass, domain, domain, fullClass);
+	//else
+        //fprintf (fp, "\nconst char* %s :: className() const {return star_nm_%s;}\n",
+	//	fullClass, fullClass);
+	//fprintf (fp, "\nISA_FUNC(%s,%s);\n",fullClass,baseClass);
+
+	fprintf(fp, "public class %s extends TypedAtomicActor {\n");
+	fprintf(fp, "    /** Construct an actor in the specified container with the specified\n");
+	fprintf(fp, "     *  name.\n");
+	fprintf(fp, "     *  @param container The container.\n");
+	fprintf(fp, "     *  @param name The name of this adder within the container.\n");
+	fprintf(fp, "     *  @exception IllegalActionException If the actor cannot be contained\n");
+	fprintf(fp, "     *   by the proposed container.\n");
+	fprintf(fp, "     *  @exception NameDuplicationException If the name coincides with\n");
+	fprintf(fp, "     *   an actor already in the container.\n");
+	fprintf(fp, "     */\n");
+	fprintf(fp, "    public %s(CompositeEntity container, String name)\n", fullClass);
+	fprintf(fp, "            throws IllegalActionException, NameDuplicationException {\n");
+	fprintf(fp, "        super(container, name);\n");
+
+	//if (!pureFlag) {
+/* makeNew() for cores takes a corona as argument. */
+	//	if ( coreDef ) {
+	//		fprintf (fp, "\n%sCore* %s :: makeNew( %sCorona & corona_) const { LOG_NEW; return new %s(corona_); }\n",
+	//		 domain, fullClass, domain, fullClass );
+/* Corona constructor takes do core init argument. */
+	//	} else if ( coronaDef == 1 ) {
+	//		fprintf (fp, "\nBlock* %s :: makeNew() const { LOG_NEW; return new %s(1);}\n",
+	//		 fullClass, fullClass);
+	//	} else {
+	//		fprintf (fp, "\nBlock* %s :: makeNew() const { LOG_NEW; return new %s;}\n",
+        //		 fullClass, fullClass);
+	//	}
+	//}
+/* generate the CodeBlock constructor calls */
+	for (i=0; i<numBlocks; i++) {
+	    if ( codeBlockArgs[i] == NULL ) {
+		fprintf (fp, "\nCodeBlock %s :: %s (\n%s\n",
+			fullClass,codeBlockNames[i],codeBlockLines[i]);
+		genCodeBlock( fp, codeBlocks[i], 0);
+		fprintf (fp, ");\n");
+	    } else {
+		fprintf (fp, "\nconst char* %s :: %s(%s) {\n%s\n",
+			fullClass,codeBlockNames[i],codeBlockArgs[i],
+			codeBlockLines[i]);
+		fprintf (fp, "\tstatic StringList _str_; _str_.initialize(); _str_ << \n");
+		genCodeBlock( fp, codeBlocks[i], 1);
+		fprintf (fp, ";\n\treturn (const char*)_str_;\n}\n");
+	    }
+	}
+/* prefix code and constructor */
+/* Core constructor takes corona as argument. */
+	//if ( coreDef == 1 ) {
+	//	fprintf (fp, "\n%s%s::%s ( %sCorona & corona_) : %s%sCore(corona_), corona((%s%s&)corona_)", ccCode, fullClass, fullClass, domain, domain, coreCategory, domain, objName);
+/* Corona takes do core init flag and calls parent constructor. */
+	//} else if ( coronaDef == 1 ) {
+	//	fprintf (fp, "\n%s%s::%s (int doCoreInitFlag) : %sCorona(0)", ccCode, fullClass, fullClass, domain);
+	//} else {
+	//	fprintf (fp, "\n%s%s::%s ()", ccCode, fullClass, fullClass);
+	//}
+	//if (consCalls[0]) {
+/* Core constructor has initializer for corona reference. */
+	//	if ( coreDef == 1 )
+	//		fprintf (fp, ",\n\t%s", consCalls);
+	//	else
+	//		fprintf (fp, " :\n\t%s", consCalls);
+	//}
+	//fprintf (fp, "\n{\n");
+	if (objDesc) {
+		//fprintf (fp, "\tsetDescriptor(\"%s\");\n", objDesc);
+		//fprintf (fp, "//%s\n", objDesc);
+	}
+	/* define the class name */
+	if (!consCode) consCode = "";
+	fprintf (fp, "%s\n%s\n", consStuff, consCode);
+/* Corona conditionally constructs coreList */
+	//if ( coronaDef == 1 )
+	//	fprintf (fp, "\n\tif (doCoreInitFlag == 1 ) addCores();\n");
+	fprintf (fp, "    }\n");
+
+	for (i = 1; i < N_FORMS; i++) {
+		if (codeBody[i] && !inlineFlag[i]) {
+		    char *dst = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
+		    cvtMethod( codeBody[i], dst);
+		    fprintf (fp, "\n%s%s::%s() {\n%s\n}\n",
+		      codeType[i], fullClass, codeFuncName[i], dst);
+		    free(dst);
+		}
+	}
+	//if (miscCode[0])
+	//	fprintf (fp, "%s\n", miscCode);
+	//if (pureFlag) {
+	//	fprintf (fp,
+	//		 "\n// %s is an abstract class: no KnownBlock entry\n",
+	//		 fullClass);
+	//} else if (coreDef) {
+	//	/* FIXME:, these are all the same */
+	//	fprintf (fp,
+	//		"\n// Core prototype instance for known block list\n");
+	//	fprintf (fp, "static %s%s dummy;\n", domain, objName);
+	//	fprintf (fp, "static %s proto(dummy);\n", fullClass);
+	//	fprintf (fp, 
+	//		"static RegisterBlock registerBlock(proto,\"%s%s\");\n",
+	//		objName, coreCategory);
+	//} else if (coronaDef) {
+	//	fprintf (fp, "\n// Corona prototype instance for known block list\n");
+	//	fprintf (fp, "static %s proto;\n", fullClass);
+	//	fprintf (fp, 
+	//		"static RegisterBlock registerBlock(proto,\"%s\");\n",
+	//		objName);
+	//} else {
+	//	fprintf (fp, "\n// prototype instance for known block list\n");
+	//	fprintf (fp, "static %s proto;\n", fullClass);
+	//	fprintf (fp, 
+	//		"static RegisterBlock registerBlock(proto,\"%s\");\n",
+	//		objName );
+	//}
+	(void) fclose(fp);
     }  /* htmlOnly */
 
+#endif /* ! PTII_GENERATE_JAVA_ONLY */
 /**************************************************************************
 		CREATE THE HTML DOCUMENTATION FILE
 */
@@ -2709,21 +2918,21 @@ char *seeAlso;
 		 */
 		if (isupper(seeAlso[0])) {
 			/* Interstellar Hyperdrive (A link to a star) */
-	                fprintf (fp, "<a href=\"$PTOLEMY/src/domains/%s/domain.idx#%s star, %s domain\">%s</a>",
-				cvtToLower(domain), seeAlso, 
-				cvtToUpper(domain), seeAlso);
-
+	                fprintf (fp, "@see ptolemy.domains.%s.stars.%s\n",
+				cvtToLower(domain), seeAlso);
 		} else	if (islower(seeAlso[0])) {
 			/* A facet */
-	                fprintf (fp, "<a href=\"$PTOLEMY/src/domains/%s/domain.idx#%s universe, %s domain\">%s</a>",
-				cvtToLower(domain), seeAlso,
-				cvtToUpper(domain), seeAlso);
+			// FIXME: ignored
+	                //fprintf (fp, "<a href=\"$PTOLEMY/src/domains/%s/domain.idx#%s universe, %s domain\">%s</a>",
+			//	cvtToLower(domain), seeAlso,
+			//	cvtToUpper(domain), seeAlso);
 		} else {
 			/* Does not start with a alpha numeric, so we
 			 * just create a links with a trailing space.
 			 */
-	                fprintf (fp, "<a href=\"$PTOLEMY/src/domains/%s/domain.idx#%s \">%s</a>",
-				cvtToLower(domain), seeAlso, seeAlso);
+			// FIXME: ignored
+	                //fprintf (fp, "<a href=\"$PTOLEMY/src/domains/%s/domain.idx#%s \">%s</a>",
+			//	cvtToLower(domain), seeAlso, seeAlso);
 		}
 	}
 }
