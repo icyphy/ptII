@@ -184,7 +184,7 @@
         </entity>
 
         <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(leader_S ? leader_V : legoID) != legoID">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(leader_isPresent ? leader : legoID) != legoID">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -192,7 +192,7 @@
             </property>
         </relation>
         <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(leader_S ? leader_V : -1) == legoID">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(leader_isPresent ? leader : -1) == legoID">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -220,7 +220,7 @@
 	    </property>
         </relation>
         <relation name="t3" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(step_S ? step_V : 0) == 1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(step_isPresent ? step : 0) == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -248,7 +248,7 @@
 	    </property>
         </relation>
         <relation name="t4" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(step_S ? step_V : 0) == (evadingSteps - 1)">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(step_isPresent ? step : 0) == (evadingSteps - 1)">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -282,7 +282,7 @@
 	    </property>
         </relation>
         <relation name="t5" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(bumped_S ? bumped_V : 0) == 1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(bumped_isPresent ? bumped : 0) == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>

@@ -189,11 +189,11 @@ public class ABP extends TypedCompositeActor {
         Transition ctrlTr1 = new Transition(ctrl, "ctrlTr1");
         ctrlConnecting.outgoingPort.link(ctrlTr1);
         ctrlSending.incomingPort.link(ctrlTr1);
-        ctrlTr1.setGuardExpression("next_S");
+        ctrlTr1.setGuardExpression("next_isPresent");
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
         ctrlConnecting.outgoingPort.link(ctrlTr2);
         ctrlDead.incomingPort.link(ctrlTr2);
-        ctrlTr2.setGuardExpression("error_S");
+        ctrlTr2.setGuardExpression("error_isPresent");
 
         // sender's director
         FSMDirector sdrDir = new FSMDirector(sender, "SenderDirector");
@@ -246,7 +246,7 @@ public class ABP extends TypedCompositeActor {
         Transition conTr1 = new Transition(connect, "conTr1");
         conInit.outgoingPort.link(conTr1);
         conWait.incomingPort.link(conTr1);
-        conTr1.setGuardExpression("request_S");
+        conTr1.setGuardExpression("request_isPresent");
         BroadcastOutput conTr1Act1 = new BroadcastOutput(conTr1, "conTr1Act1");
         conTr1Act1.portName.setExpression("pktOut");
         conTr1Act1.expression.setExpression("-1");
@@ -259,7 +259,7 @@ public class ABP extends TypedCompositeActor {
         Transition conTr2 = new Transition(connect, "conTr2");
         conWait.outgoingPort.link(conTr2);
         conSucc.incomingPort.link(conTr2);
-        conTr2.setGuardExpression("(ack_S ? ack_V : 0) == -1");
+        conTr2.setGuardExpression("(ack_isPresent ? ack : 0) == -1");
         BroadcastOutput conTr2Act1 = new BroadcastOutput(conTr2, "conTr2Act1");
         conTr2Act1.portName.setExpression("next");
         conTr2Act1.expression.setExpression("true");
@@ -269,22 +269,22 @@ public class ABP extends TypedCompositeActor {
         Transition conTr3 = new Transition(connect, "conTr3");
         conWait.outgoingPort.link(conTr3);
         conFail.incomingPort.link(conTr3);
-        conTr3.setGuardExpression("!ack_S && expired_S && count == 0");
+        conTr3.setGuardExpression("!ack_isPresent && expired_isPresent && count == 0");
         BroadcastOutput conTr3Act1 = new BroadcastOutput(conTr3, "conTr3Act1");
         conTr3Act1.portName.setExpression("error");
         conTr3Act1.expression.setExpression("true");
         Transition conTr4 = new Transition(connect, "conTr4");
         conWait.outgoingPort.link(conTr4);
         conFail.incomingPort.link(conTr4);
-        conTr4.setGuardExpression("(ack_S ? ack_V : -1) != -1 && "
-                 + "expired_S && count == 0");
+        conTr4.setGuardExpression("(ack_isPresent ? ack : -1) != -1 && "
+                 + "expired_isPresent && count == 0");
         BroadcastOutput conTr4Act1 = new BroadcastOutput(conTr4, "conTr4Act1");
         conTr4Act1.portName.setExpression("error");
         conTr4Act1.expression.setExpression("true");
         Transition conTr5 = new Transition(connect, "conTr5");
         conWait.outgoingPort.link(conTr5);
         conWait.incomingPort.link(conTr5);
-        conTr5.setGuardExpression("!ack_S && expired_S && count != 0");
+        conTr5.setGuardExpression("!ack_isPresent && expired_isPresent && count != 0");
         BroadcastOutput conTr5Act1 = new BroadcastOutput(conTr5, "conTr5Act1");
         conTr5Act1.portName.setExpression("pktOut");
         conTr5Act1.expression.setExpression("-1");
@@ -297,8 +297,8 @@ public class ABP extends TypedCompositeActor {
         Transition conTr6 = new Transition(connect, "conTr6");
         conWait.outgoingPort.link(conTr6);
         conWait.incomingPort.link(conTr6);
-        conTr6.setGuardExpression("(ack_S ? ack_V : -1) != -1 "
-                + "&& expired_S && count != 0");
+        conTr6.setGuardExpression("(ack_isPresent ? ack : -1) != -1 "
+                + "&& expired_isPresent && count != 0");
         BroadcastOutput conTr6Act1 = new BroadcastOutput(conTr6, "conTr6Act1");
         conTr6Act1.portName.setExpression("pktOut");
         conTr6Act1.expression.setExpression("-1");
@@ -360,11 +360,11 @@ public class ABP extends TypedCompositeActor {
         Transition sendTr1 = new Transition(send, "sendTr1");
         s0.outgoingPort.link(sendTr1);
         s0.incomingPort.link(sendTr1);
-        sendTr1.setGuardExpression("msgIn_S");
+        sendTr1.setGuardExpression("msgIn_isPresent");
         BroadcastOutput sendTr1Act1 =
                 new BroadcastOutput(sendTr1, "sendTr1Act1");
         sendTr1Act1.portName.setExpression("pktOut");
-        sendTr1Act1.expression.setExpression("msgIn_V*2");
+        sendTr1Act1.expression.setExpression("msgIn*2");
         BroadcastOutput sendTr1Act2 =
                 new BroadcastOutput(sendTr1, "sendTr1Act2");
         sendTr1Act2.portName.setExpression("monitor");
@@ -380,15 +380,15 @@ public class ABP extends TypedCompositeActor {
         SetVariable sendTr1Act5 =
                 new SetVariable(sendTr1, "sendTr1Act5");
         sendTr1Act5.variableName.setExpression("msg");
-        sendTr1Act5.expression.setExpression("msgIn_V");
+        sendTr1Act5.expression.setExpression("msgIn");
         Transition sendTr2 = new Transition(send, "sendTr2");
         s0.outgoingPort.link(sendTr2);
         s0.incomingPort.link(sendTr2);
-        sendTr2.setGuardExpression("!ack_S && expired_S && trying");
+        sendTr2.setGuardExpression("!ack_isPresent && expired_isPresent && trying");
         BroadcastOutput sendTr2Act1 =
                 new BroadcastOutput(sendTr2, "sendTr2Act1");
         sendTr2Act1.portName.setExpression("pktOut");
-        sendTr2Act1.expression.setExpression("msgIn_V*2");
+        sendTr2Act1.expression.setExpression("msgIn*2");
         BroadcastOutput sendTr2Act2 =
                 new BroadcastOutput(sendTr2, "sendTr2Act2");
         sendTr2Act2.portName.setExpression("monitor");
@@ -400,12 +400,12 @@ public class ABP extends TypedCompositeActor {
         Transition sendTr3 = new Transition(send, "sendTr3");
         s0.outgoingPort.link(sendTr3);
         s0.incomingPort.link(sendTr3);
-        sendTr3.setGuardExpression("(ack_S ? ack_V : 0) != 0 "
-                + "&& expired_S && trying");
+        sendTr3.setGuardExpression("(ack_isPresent ? ack : 0) != 0 "
+                + "&& expired_isPresent && trying");
         BroadcastOutput sendTr3Act1 =
                 new BroadcastOutput(sendTr3, "sendTr3Act1");
         sendTr3Act1.portName.setExpression("pktOut");
-        sendTr3Act1.expression.setExpression("msgIn_V*2");
+        sendTr3Act1.expression.setExpression("msgIn*2");
         BroadcastOutput sendTr3Act2 =
                 new BroadcastOutput(sendTr3, "sendTr3Act2");
         sendTr3Act2.portName.setExpression("monitor");
@@ -417,7 +417,7 @@ public class ABP extends TypedCompositeActor {
         Transition sendTr4 = new Transition(send, "sendTr4");
         s0.outgoingPort.link(sendTr4);
         s1.incomingPort.link(sendTr4);
-        sendTr4.setGuardExpression("(ack_S ? ack_V : -1) == 0 "
+        sendTr4.setGuardExpression("(ack_isPresent ? ack : -1) == 0 "
                 + "&& trying");
         BroadcastOutput sendTr4Act1 =
                 new BroadcastOutput(sendTr4, "sendTr4Act1");
@@ -434,11 +434,11 @@ public class ABP extends TypedCompositeActor {
         Transition sendTr5 = new Transition(send, "sendTr5");
         s1.outgoingPort.link(sendTr5);
         s1.incomingPort.link(sendTr5);
-        sendTr5.setGuardExpression("msgIn_S");
+        sendTr5.setGuardExpression("msgIn_isPresent");
         BroadcastOutput sendTr5Act1 =
                 new BroadcastOutput(sendTr5, "sendTr5Act1");
         sendTr5Act1.portName.setExpression("pktOut");
-        sendTr5Act1.expression.setExpression("msgIn_V*2+1");
+        sendTr5Act1.expression.setExpression("msgIn*2+1");
         BroadcastOutput sendTr5Act2 =
                 new BroadcastOutput(sendTr5, "sendTr5Act2");
         sendTr5Act2.portName.setExpression("monitor");
@@ -454,15 +454,15 @@ public class ABP extends TypedCompositeActor {
         SetVariable sendTr5Act5 =
                 new SetVariable(sendTr5, "sendTr5Act5");
         sendTr5Act5.variableName.setExpression("msg");
-        sendTr5Act5.expression.setExpression("msgIn_V");
+        sendTr5Act5.expression.setExpression("msgIn");
         Transition sendTr6 = new Transition(send, "sendTr6");
         s1.outgoingPort.link(sendTr6);
         s1.incomingPort.link(sendTr6);
-        sendTr6.setGuardExpression("!ack_S && expired_S && trying");
+        sendTr6.setGuardExpression("!ack_isPresent && expired_isPresent && trying");
         BroadcastOutput sendTr6Act1 =
                 new BroadcastOutput(sendTr6, "sendTr6Act1");
         sendTr6Act1.portName.setExpression("pktOut");
-        sendTr6Act1.expression.setExpression("msgIn_V*2+1");
+        sendTr6Act1.expression.setExpression("msgIn*2+1");
         BroadcastOutput sendTr6Act2 =
                 new BroadcastOutput(sendTr6, "sendTr6Act2");
         sendTr6Act2.portName.setExpression("monitor");
@@ -474,12 +474,12 @@ public class ABP extends TypedCompositeActor {
         Transition sendTr7 = new Transition(send, "sendTr7");
         s1.outgoingPort.link(sendTr7);
         s1.incomingPort.link(sendTr7);
-        sendTr7.setGuardExpression("(ack_S ? ack_V : 1) != 1 "
-                + "&& expired_S && trying");
+        sendTr7.setGuardExpression("(ack_isPresent ? ack : 1) != 1 "
+                + "&& expired_isPresent && trying");
         BroadcastOutput sendTr7Act1 =
                 new BroadcastOutput(sendTr7, "sendTr7Act1");
         sendTr7Act1.portName.setExpression("pktOut");
-        sendTr7Act1.expression.setExpression("msgIn_V*2+1");
+        sendTr7Act1.expression.setExpression("msgIn*2+1");
         BroadcastOutput sendTr7Act2 =
                 new BroadcastOutput(sendTr7, "sendTr7Act2");
         sendTr7Act2.portName.setExpression("monitor");
@@ -491,7 +491,7 @@ public class ABP extends TypedCompositeActor {
         Transition sendTr8 = new Transition(send, "sendTr8");
         s1.outgoingPort.link(sendTr8);
         s0.incomingPort.link(sendTr8);
-        sendTr8.setGuardExpression("(ack_S ? ack_V : -1) == 1 "
+        sendTr8.setGuardExpression("(ack_isPresent ? ack : -1) == 1 "
                 + "&& trying");
         BroadcastOutput sendTr8Act1 =
                 new BroadcastOutput(sendTr8, "sendTr8Act1");
@@ -576,55 +576,55 @@ public class ABP extends TypedCompositeActor {
         Transition recTr1 = new Transition(receiver, "recTr1");
         recInit.outgoingPort.link(recTr1);
         recInit.incomingPort.link(recTr1);
-        recTr1.setGuardExpression("(pktIn_S ? pktIn_V : 0) == -1");
+        recTr1.setGuardExpression("(pktIn_isPresent ? pktIn : 0) == -1");
         BroadcastOutput recTr1Act1 = new BroadcastOutput(recTr1, "recTr1Act1");
         recTr1Act1.portName.setExpression("ack");
         recTr1Act1.expression.setExpression("-1");
         Transition recTr2 = new Transition(receiver, "recTr2");
         recInit.outgoingPort.link(recTr2);
         recS1.incomingPort.link(recTr2);
-        recTr2.setGuardExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
+        recTr2.setGuardExpression("(pktIn_isPresent ? pktIn%2 : 1) == 0");
         BroadcastOutput recTr2Act1 = new BroadcastOutput(recTr2, "recTr2Act1");
         recTr2Act1.portName.setExpression("ack");
         recTr2Act1.expression.setExpression("0");
         BroadcastOutput recTr2Act2 =
         new BroadcastOutput(recTr2, "recTr2Act2");
         recTr2Act2.portName.setExpression("msgOut");
-        recTr2Act2.expression.setExpression("pktIn_V/2");
+        recTr2Act2.expression.setExpression("pktIn/2");
         Transition recTr3 = new Transition(receiver, "recTr3");
         recS1.outgoingPort.link(recTr3);
         recS1.incomingPort.link(recTr3);
-        recTr3.setGuardExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
+        recTr3.setGuardExpression("(pktIn_isPresent ? pktIn%2 : 1) == 0");
         BroadcastOutput recTr3Act1 = new BroadcastOutput(recTr3, "recTr3Act1");
         recTr3Act1.portName.setExpression("ack");
         recTr3Act1.expression.setExpression("0");
         Transition recTr4 = new Transition(receiver, "recTr4");
         recS1.outgoingPort.link(recTr4);
         recS0.incomingPort.link(recTr4);
-        recTr4.setGuardExpression("(pktIn_S ? pktIn_V%2 : 0) == 1");
+        recTr4.setGuardExpression("(pktIn_isPresent ? pktIn%2 : 0) == 1");
         BroadcastOutput recTr4Act1 = new BroadcastOutput(recTr4, "recTr4Act1");
         recTr4Act1.portName.setExpression("ack");
         recTr4Act1.expression.setExpression("1");
         BroadcastOutput recTr4Act2 = new BroadcastOutput(recTr4, "recTr4Act2");
         recTr4Act2.portName.setExpression("msgOut");
-        recTr4Act2.expression.setExpression("pktIn_V/2");
+        recTr4Act2.expression.setExpression("pktIn/2");
         Transition recTr5 = new Transition(receiver, "recTr5");
         recS0.outgoingPort.link(recTr5);
         recS0.incomingPort.link(recTr5);
-        recTr5.setGuardExpression("(pktIn_S ? pktIn_V%2 : 0) == 1");
+        recTr5.setGuardExpression("(pktIn_isPresent ? pktIn%2 : 0) == 1");
         BroadcastOutput recTr5Act1 = new BroadcastOutput(recTr5, "recTr5Act1");
         recTr5Act1.portName.setExpression("ack");
         recTr5Act1.expression.setExpression("1");
         Transition recTr6 = new Transition(receiver, "recTr6");
         recS0.outgoingPort.link(recTr6);
         recS1.incomingPort.link(recTr6);
-        recTr6.setGuardExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
+        recTr6.setGuardExpression("(pktIn_isPresent ? pktIn%2 : 1) == 0");
         BroadcastOutput recTr6Act1 = new BroadcastOutput(recTr6, "recTr6Act1");
         recTr6Act1.portName.setExpression("ack");
         recTr6Act1.expression.setExpression("0");
         BroadcastOutput recTr6Act2 = new BroadcastOutput(recTr6, "recTr6Act2");
         recTr6Act2.portName.setExpression("msgOut");
-        recTr6Act2.expression.setExpression("pktIn_V/2");
+        recTr6Act2.expression.setExpression("pktIn/2");
         
         // connect the top level system
         TypedIORelation sysR1 = (TypedIORelation)this.newRelation("request");

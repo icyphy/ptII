@@ -197,13 +197,13 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <relation name="Tr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.initialPosition = P1_V; Together.initialVelocity = V1_V; Together.initialStickiness = 10.0">
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.initialPosition = P1; Together.initialVelocity = V1; Together.initialStickiness = 10.0">
                 </property>
                 <property name="act0" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="10.0">
@@ -215,7 +215,7 @@ model of the dynamics in that mode.
                 </property>
             </relation>
             <relation name="Tr2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force_V) &gt; Stickiness_V">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(Force) &gt; Stickiness">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -224,25 +224,25 @@ model of the dynamics in that mode.
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="P1.initialState">
                     </property>
                 </property>
                 <property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="P1">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="P2.initialState">
                     </property>
                 </property>
                 <property name="act5" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="V1_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="V1">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="V1.initialState">
                     </property>
                 </property>
                 <property name="act6" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="V1_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="V1">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="V2.initialState">
                     </property>

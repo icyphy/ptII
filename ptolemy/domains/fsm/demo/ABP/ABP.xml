@@ -249,12 +249,19 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Events</title>
+
 <xLabel>Time</xLabel>
+
 <yLabel>Events</yLabel>
+
 <xRange min="0.0" max="100.0"/>
+
 <yRange min="0.0" max="12.0"/>
+
 <noGrid/>
+
 <default connected="no" marks="dots" stems="yes"/>
+
 </plot>?>
         </configure>
     </entity>
@@ -346,7 +353,7 @@
                 </port>
             </entity>
             <relation name="ctrlTr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="next_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="next_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -354,7 +361,7 @@
                 </property>
             </relation>
             <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="error_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="error_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -439,7 +446,7 @@
                 </port>
             </entity>
             <relation name="conTr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="request_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="request_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -465,7 +472,7 @@
                 </property>
             </relation>
             <relation name="conTr2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : 0) == -1">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : 0) == -1">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -485,7 +492,7 @@
                 </property>
             </relation>
             <relation name="conTr3" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_S &amp;&amp; expired_S &amp;&amp; count == 0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; count == 0">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -499,7 +506,7 @@
                 </property>
             </relation>
             <relation name="conTr4" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : -1) != -1 &amp;&amp; expired_S &amp;&amp; count == 0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) != -1 &amp;&amp; expired_isPresent &amp;&amp; count == 0">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -513,7 +520,7 @@
                 </property>
             </relation>
             <relation name="conTr5" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_S &amp;&amp; expired_S &amp;&amp; count != 0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; count != 0">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -539,7 +546,7 @@
                 </property>
             </relation>
             <relation name="conTr6" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : -1) != -1 &amp;&amp; expired_S &amp;&amp; count != 0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) != -1 &amp;&amp; expired_isPresent &amp;&amp; count != 0">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -636,14 +643,14 @@
                 </port>
             </entity>
             <relation name="sendTr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="sendTr1Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V*2">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
                     </property>
                     <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
                     </property>
@@ -667,21 +674,21 @@
                     </property>
                 </property>
                 <property name="sendTr1Act5" class="ptolemy.domains.fsm.kernel.SetVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="msg">
                     </property>
                 </property>
             </relation>
             <relation name="sendTr2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_S &amp;&amp; expired_S &amp;&amp; trying">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; trying">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="sendTr2Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V*2">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
                     </property>
                     <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
                     </property>
@@ -700,14 +707,14 @@
                 </property>
             </relation>
             <relation name="sendTr3" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : 0) != 0 &amp;&amp; expired_S &amp;&amp; trying">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : 0) != 0 &amp;&amp; expired_isPresent &amp;&amp; trying">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="sendTr3Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V*2">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2">
                     </property>
                     <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
                     </property>
@@ -726,7 +733,7 @@
                 </property>
             </relation>
             <relation name="sendTr4" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : -1) == 0 &amp;&amp; trying">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) == 0 &amp;&amp; trying">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -752,14 +759,14 @@
                 </property>
             </relation>
             <relation name="sendTr5" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="sendTr5Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V*2+1">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
                     </property>
                     <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
                     </property>
@@ -783,21 +790,21 @@
                     </property>
                 </property>
                 <property name="sendTr5Act5" class="ptolemy.domains.fsm.kernel.SetVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="msg">
                     </property>
                 </property>
             </relation>
             <relation name="sendTr6" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_S &amp;&amp; expired_S &amp;&amp; trying">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!ack_isPresent &amp;&amp; expired_isPresent &amp;&amp; trying">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="sendTr6Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V*2+1">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
                     </property>
                     <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
                     </property>
@@ -816,14 +823,14 @@
                 </property>
             </relation>
             <relation name="sendTr7" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : 1) != 1 &amp;&amp; expired_S &amp;&amp; trying">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : 1) != 1 &amp;&amp; expired_isPresent &amp;&amp; trying">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="sendTr7Act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn_V*2+1">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="msgIn*2+1">
                     </property>
                     <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="pktOut">
                     </property>
@@ -842,7 +849,7 @@
                 </property>
             </relation>
             <relation name="sendTr8" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_S ? ack_V : -1) == 1 &amp;&amp; trying">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(ack_isPresent ? ack : -1) == 1 &amp;&amp; trying">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -970,7 +977,7 @@
             </port>
         </entity>
         <relation name="recTr1" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_S ? pktIn_V : 0) == -1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_isPresent ? pktIn : 0) == -1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -984,7 +991,7 @@
             </property>
         </relation>
         <relation name="recTr2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_S ? pktIn_V%2 : 1) == 0">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_isPresent ? pktIn%2 : 1) == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -997,14 +1004,14 @@
                 </property>
             </property>
             <property name="recTr2Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_V/2">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pktIn/2">
                 </property>
                 <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="msgOut">
                 </property>
             </property>
         </relation>
         <relation name="recTr3" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_S ? pktIn_V%2 : 1) == 0">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_isPresent ? pktIn%2 : 1) == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1018,7 +1025,7 @@
             </property>
         </relation>
         <relation name="recTr4" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_S ? pktIn_V%2 : 0) == 1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_isPresent ? pktIn%2 : 0) == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1031,14 +1038,14 @@
                 </property>
             </property>
             <property name="recTr4Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_V/2">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pktIn/2">
                 </property>
                 <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="msgOut">
                 </property>
             </property>
         </relation>
         <relation name="recTr5" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_S ? pktIn_V%2 : 0) == 1">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_isPresent ? pktIn%2 : 0) == 1">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1052,7 +1059,7 @@
             </property>
         </relation>
         <relation name="recTr6" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_S ? pktIn_V%2 : 1) == 0">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(pktIn_isPresent ? pktIn%2 : 1) == 0">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1065,7 +1072,7 @@
                 </property>
             </property>
             <property name="recTr6Act2" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pktIn_V/2">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pktIn/2">
                 </property>
                 <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="msgOut">
                 </property>

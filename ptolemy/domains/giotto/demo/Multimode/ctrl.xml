@@ -49,7 +49,7 @@
         </port>
     </entity>
     <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_S ? in_V : 1) % 4 == 0">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_isPresent ? in : 1) % 4 == 0">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -64,13 +64,13 @@
             </property>
         </property>
         <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_S ? (refIn1_V + 1) : 0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_isPresent ? (refIn1 + 1) : 0">
             </property>
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
             </property>
         </property>
         <property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_S ? (refIn2_V + 1) : 0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_isPresent ? (refIn2 + 1) : 0">
             </property>
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
             </property>
@@ -79,7 +79,7 @@
         </property>
     </relation>
     <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_S ? in_V : 1) % 4 == 0">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(in_isPresent ? in : 1) % 4 == 0">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -94,13 +94,13 @@
             </property>
         </property>
         <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_S ? (refIn1_V + 1) : 0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_isPresent ? (refIn1 + 1) : 0">
             </property>
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
             </property>
         </property>
         <property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_S ? (refIn2_V + 1) : 0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_isPresent ? (refIn2 + 1) : 0">
             </property>
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
             </property>

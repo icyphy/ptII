@@ -128,14 +128,14 @@
                 </port>
             </entity>
             <relation name="ctrlTr1" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="act0" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Integrator.initialState">
                     </property>
@@ -144,14 +144,14 @@
                 </property>
             </relation>
             <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_S">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state_V">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state">
                     </property>
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Integrator.initialState">
                     </property>

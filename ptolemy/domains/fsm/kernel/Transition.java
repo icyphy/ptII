@@ -60,21 +60,80 @@ to a boolean value. The trigger of a transition must be true whenever the
 guard is true. A transition is enabled and can be taken when its guard is true.
 A transition is triggered and must be taken when its trigger is true.
 <p>
-A transition can contain a set of actions. An action is either a ChoiceAction
-or a CommitAction. The choice actions are executed when the FSMActor
-containing the transition is fired and the transition is chosen. The commit
-actions are executed when the FSMActor is postfired and the transition is the
-last chosen transition.
+A transition can contain actions.  The simplest way to specify actions
+is to the set the value of the <i>actions</i> parameter.
+The value of this parameter is a string of the form:
+<pre>
+     <i>command</i>; <i>command</i>; ...
+</pre>
+where each <i>command</i> has the form:
+<pre>
+     <i>destination</i> = <i>expression</i>
+</pre>
+where <i>destination</i> is either
+<pre>
+     <i>portName</i>
+</pre>
+or
+<pre>
+     <i>portName</i>(<i>channelNumber</i>)
+</pre>
+or
+<pre>
+     <i>variableName</i>
+</pre>
+Here, <i>portName</i> is the name of a port of the FSM actor,
+If no <i>channelNumber</i> is given, then the value
+is broadcast to all channels of the port.
+Also, <i>variableName</i> is either a variable or parameter of
+the FSM actor, or a variable or parameter of a refinement state.
+To give a variable of a refinement state, use a dotted name,
+as follows:
+<pre>
+     <i>refinementStateName</i>.<i>variableName</i>
+</pre>
+If destination name is given where there is both a port and a variable
+with that name, then the port will be used.
+<p>
+The <i>expression</i> is a string giving an expression in the usual
+Ptolemy II expression language.  The expression may include references
+to variables and parameters contained by the FSM actor.
+<p>
+The <i>actions</i> parameter is not the only way to specify actions.
+In fact, you can add action attributes that are instances of any
+class that extends the abstract base class Action.
+(Use the Add button in the Edit Parameters dialog).
+The <i>actions</i> parameter is an instance of CommitActionsAttribute,
+which implements a particular kind of action.
+<p>
+An action is either a ChoiceAction
+or a CommitAction. The <i>actions</i> parameter is a CommitAction.
+A commit action is executed when the transition is taken to change
+the state of the FSM, in the postfire() method of FSMActor.
+A choice action, by contrast, is executed in the fire() method
+of the FSMActor when the transition is chosen, but not yet taken.
+The difference is subtle, and for most domains, irrelevant.
+A few domains, however, such as CT, which have fixed point semantics,
+where the fire() method may be invoked several times before the
+transisition is taken (committed). For such domains, it is useful
+to have actions that implement the ChoiceAction interface.
+Such actions participate in the search for a fixed point, but
+do not change the state of the FSM.  The class OutputActionsAttribute
+implements this interface.
 <p>
 A transition can be preemptive or non-preemptive. When a preemptive transition
-is chosen, the refinement of its source State is not fired. A non-preemptive
+is chosen, the refinement of its source state is not fired. A non-preemptive
 transition is only chosen after the refinement of its source State is fired.
 
-@author Xiaojun Liu
+@author Xiaojun Liu and Edward A. Lee
 @version $Id$
 @see State
 @see Action
+@see ChoiceAction
+@see CommitAction
+@see CommitActionsAttribute
 @see FSMActor
+@see OutputActionsAttribute
 */
 public class Transition extends ComponentRelation {
 
@@ -102,10 +161,16 @@ public class Transition extends ComponentRelation {
         _guard.setTypeEquals(BaseType.BOOLEAN);
         _trigger = new Variable(this, "_trigger");
         _trigger.setTypeEquals(BaseType.BOOLEAN);
+
+        actions = new CommitActionsAttribute(this, "actions");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    /** The action commands to be taken when the transition is taken.
+     */
+    public CommitActionsAttribute actions;
 
     /** Attribute specifying the guard expression.
      */
