@@ -77,7 +77,8 @@ public interface CQComparator extends Comparator {
     public long getBinIndex(Object key, Object zeroReference, Object binWidth);
 
     /** Given an array of keys, return an appropriate bin width for a
-     *  calendar queue to hold these keys.
+     *  calendar queue to hold these keys.  This method assumes that the
+     *  keys provided are all different, and are in increasing order.
      *  Ideally, the bin width is chosen so that
      *  the average number of entries in non-empty bins is equal to one.
      *  If the argument is null, return the default bin width.
