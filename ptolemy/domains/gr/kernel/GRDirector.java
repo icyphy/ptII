@@ -613,7 +613,8 @@ public class GRDirector extends StaticSchedulingDirector {
             for (int i = 0; i < port.getWidth(); i++) {
                 for (int j = 0; j < remoteReceivers[i].length; j++) {
                     debug.println("  -->" + remoteReceivers[i][j]);
-                    debug.println("  == >" + remoteReceivers[i][j].getContainer());
+                    debug.println("  == >"
+                            + remoteReceivers[i][j].getContainer());
                 }
             }
     }
