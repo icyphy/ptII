@@ -464,6 +464,11 @@ public class ViewScreen2D extends GRActor2D
         if(_frame != null) {
             _frame.addKeyListener(_eventHandler);
         }
+
+        // Must call validate after calling add in case this is called
+        // from initialize AND from place.  (This caused some
+        // artifacts if the run window was used)
+        _container.validate();
     }
 
     protected int _getHorizontalPixels() throws IllegalActionException {

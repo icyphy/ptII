@@ -448,6 +448,10 @@ public class ViewScreen extends GRActor3D
         _simpleUniverse = new SimpleUniverse(_canvas);
         _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
 
+        // Must call validate after calling add in case this is called
+        // from initialize AND from place.  (This caused some
+        // artifacts if the run window was used)
+        _container.validate();
 
         /* FIXME: experimental code for changing views.
            TransformGroup VPTG = new TransformGroup();
