@@ -137,6 +137,7 @@ autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
 autoShallowCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
+autoShallowCG [file join $relativePathToPTII ptolemy domains wireless test auto]
 
 # Print out stats
 #doneTests
