@@ -49,7 +49,7 @@ public class Utilities {
     private Utilities() {
     }
 
-    /** Given a collection, return a string representention of the collection.
+    /** Given a collection, return a string representation of the collection.
      *  The representation returned is obtained by concatenating the
      *  string representations of the individual elements in their sorted
      *  order, as determined by the compareTo method of java.lang.String.
