@@ -292,7 +292,7 @@ test FSMActor-8.1 {test newRelation} {
     set re0 [java::instanceof $r0 ptolemy.domains.fsm.kernel.Transition]
     catch {$fsm newRelation r0} msg
     list $re0 [$r0 getFullName] $msg
-} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named "<Unnamed Object>", which already contains an object with that name.}}
+} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named ".<Unnamed Object>", which already contains an object with that name.}}
 
 ######################################################################
 ####
