@@ -306,18 +306,26 @@ public class FSMDirector extends Director {
      *  iteration. Execute the commit actions contained by the last
      *  chosen transition of the mode controller and set its current
      *  state to the destination state of the transition.
+     *  If this director is at the top level, it will return the 
+     *  postfire() value of the current refinement.
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
      *  @exception IllegalActionException If thrown by any commit action
      *   or there is no controller.
+     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
-        // The postfire of the current refinement should not be ignored.
-        // It is 'anded' with the postfire of the controller.
+        
         boolean result = true;
         if (_fireRefinement) {
             result = ctrl.currentState().getRefinement().postfire();
+            if (getContainer().getExecutiveDirector() != null) {
+                // Not at the top level, ignore the return value from 
+                // the current refinement.
+                result = true;
+            }
+            // Otherwise, 'and' the refinement.postfire() with controller.postfire()
         }
         result = result && ctrl.postfire();
         _currentLocalReceiverMap =
