@@ -75,6 +75,7 @@ SCRIPTS = \
 
 EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
 	jindent.el \
+	memory.xml \
 	ptjavastyle.el \
 	ptlocaldict \
 
