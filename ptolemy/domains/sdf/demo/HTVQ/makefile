@@ -54,6 +54,11 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	HTVQ.htm \
+	HTVQ2.xml \
+	HTVQ3.xml \
+	HTVQ4.xml \
+	HTVQReceiver.xml \
+	HTVQSender.xml \
 	HTVQVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
