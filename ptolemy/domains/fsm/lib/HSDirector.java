@@ -91,44 +91,44 @@ public class HSDirector extends FSMDirector implements CTEmbeddedDirector {
      *  @return True if the current step is successful
      */
     public boolean isThisStepSuccessful() {
-      Actor ref = currentRefinement();
+        Actor ref = currentRefinement();
 
-      //System.out.println("HSDirector: isThisStepSuccessful is called.");
+        //System.out.println("HSDirector: isThisStepSuccessful is called.");
 
-      if (ref instanceof CTStepSizeControlActor) {
+        if (ref instanceof CTStepSizeControlActor) {
 
-          //System.out.println("HSDirector: get step status from subsys " 
-          //+ ((ComponentEntity)ref).getFullName());
+            //System.out.println("HSDirector: get step status from subsys " 
+            //+ ((ComponentEntity)ref).getFullName());
 
-        return ((CTStepSizeControlActor)ref).isThisStepSuccessful();
-      } else {
-        return true;
-      }
+            return ((CTStepSizeControlActor)ref).isThisStepSuccessful();
+        } else {
+            return true;
+        }
     }
 
     /** Return the predicted next step size if this step is successful.
      */
     public double predictedStepSize() {
-      Actor ref = currentRefinement();
-      if (ref instanceof CTStepSizeControlActor) {
-        return ((CTStepSizeControlActor)ref).predictedStepSize();
-      } else {
-        return Double.MAX_VALUE;
-      }
+        Actor ref = currentRefinement();
+        if (ref instanceof CTStepSizeControlActor) {
+            return ((CTStepSizeControlActor)ref).predictedStepSize();
+        } else {
+            return Double.MAX_VALUE;
+        }
     }
 
     /** Return the refined step size if this step is not successful.
      */
     public double refinedStepSize() {
-      Actor ref = currentRefinement();
-      if (ref instanceof CTStepSizeControlActor) {
-        return ((CTStepSizeControlActor)ref).refinedStepSize();
-      } else {
-        // FIXME: this implementation does not allow hierarchical FSM
-        // embedded in CT
-        CTDirector dir = (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
-        return dir.getCurrentStepSize();
-      }
+        Actor ref = currentRefinement();
+        if (ref instanceof CTStepSizeControlActor) {
+            return ((CTStepSizeControlActor)ref).refinedStepSize();
+        } else {
+            // FIXME: this implementation does not allow hierarchical FSM
+            // embedded in CT
+            CTDirector dir = (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
+            return dir.getCurrentStepSize();
+        }
     }
 
     private boolean _first = true;

@@ -56,31 +56,31 @@ public class DEFSMActor extends FSMController implements TypedActor {
         super(container, name);
     }
 
-/*  public double getCurrentTime() throws IllegalActionException {
+    /*  public double getCurrentTime() throws IllegalActionException {
         DEDirector dir = (DEDirector)getDirector();
         if (dir == null) {
-            throw new IllegalActionException("No director available");
+        throw new IllegalActionException("No director available");
         }
         return dir.getCurrentTime();
-    }
+        }
 
-    public double getStartTime() throws IllegalActionException {
+        public double getStartTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	if (dir == null) {
-	    throw new IllegalActionException("No director available");
+        throw new IllegalActionException("No director available");
 	}
 	return dir.getStartTime();
-    }
+        }
 
-    public double getStopTime() throws IllegalActionException {
+        public double getStopTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	if (dir == null) {
-	    throw new IllegalActionException("No director available");
+        throw new IllegalActionException("No director available");
 	}
 	return dir.getStopTime();
-    }
+        }
 
-    public void refireAfterDelay(double delay) throws IllegalActionException {
+        public void refireAfterDelay(double delay) throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	// FIXME: the depth is equal to zero ???
         // If this actor has input ports, then the depth is set to be
@@ -89,8 +89,8 @@ public class DEFSMActor extends FSMController implements TypedActor {
         // to be zero.
 
         dir.fireAfterDelay(this, delay);
-    }
-*/
+        }
+    */
 
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -121,13 +121,13 @@ public class DEFSMActor extends FSMController implements TypedActor {
 		    Enumeration outPorts = outputPorts();
 	    	    while (outPorts.hasMoreElements()) {
 		    	TypedIOPort outport =
-				 (TypedIOPort)outPorts.nextElement();
+                            (TypedIOPort)outPorts.nextElement();
 
 			isUndeclared = outport.getTypeTerm().isSettable();
 		    	if (isUndeclared && inport != outport) {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
-				inport.getTypeTerm(), outport.getTypeTerm());
+                                    inport.getTypeTerm(), outport.getTypeTerm());
 			    result.insertLast(ineq);
 			}
 		    }

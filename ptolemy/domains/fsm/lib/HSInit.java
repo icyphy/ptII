@@ -96,7 +96,7 @@ public class HSInit extends NamedObj implements TransitionAction {
             _valueVar.setExpression(_expression);
         } /*catch (KernelException ex) {
             throw new InvalidStateException(this, ex.getMessage());
-        }*/
+            }*/
     }
 
     /** Execute the action.

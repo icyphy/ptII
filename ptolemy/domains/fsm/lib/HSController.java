@@ -134,7 +134,7 @@ public class HSController extends FSMController {
             return true;
         }
 
-// What to do to the refinement of the state left?
+        // What to do to the refinement of the state left?
 
         _currentState = _takenTransition.destinationState();
 
@@ -158,15 +158,15 @@ public class HSController extends FSMController {
             if (actor == null) {
                 return true;
             }
-// If the refinement is an FSMController or an FSM system, then the trigger 
-// actions of the taken transition should be input to the actor to enable
-// initial transitions.
-// ADD THIS!
-//            if (actor instanceof FSMController) {
-//                // Do what's needed.
-//            } else {
-//                // Do what's needed.
-//            }
+            // If the refinement is an FSMController or an FSM system, then the trigger 
+            // actions of the taken transition should be input to the actor to enable
+            // initial transitions.
+            // ADD THIS!
+            //            if (actor instanceof FSMController) {
+            //                // Do what's needed.
+            //            } else {
+            //                // Do what's needed.
+            //            }
             // FIXME!
             actor.initialize();
         }    
