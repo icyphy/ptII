@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODIOPort-2.1 {Send Token} {
+test ODIOPort-2.1 {Send and receive multiple Tokens across one channel} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     # Note: Director not really needed since blocking won't occur in this test
@@ -72,11 +72,62 @@ test ODIOPort-2.1 {Send Token} {
     $actorB setPriorities
     
     set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
+    set t3 [java::new ptolemy.data.Token]
     
     $portA send 0 $t1 
+    $portA send 0 $t2 
+    $portA send 0 $t3 
+    
+    set t4 [$actorB getNextToken]
+    set t5 [$actorB getNextToken]
+    set t6 [$actorB getNextToken]
 
-    list [expr {$portA == $portB} ] 
-} {0}
+    list [expr {$t1 == $t4} ] [expr {$t2 == $t5} ] [expr {$t3 == $t6} ] 
+} {1 1 1}
+
+######################################################################
+####
+#
+test ODIOPort-3.1 {Receive tokens along two channels} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    # Note: Director not really needed since blocking won't occur in this test
+    set dir [java::new ptolemy.domains.od.kernel.ODDirector $wspc "director"]
+    $topLevel setDirector $dir
+    set actorA [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorB"] 
+    set actorC [java::new ptolemy.domains.od.kernel.ODActor $topLevel "actorC"] 
+    
+    set portA [java::new ptolemy.domains.od.kernel.ODIOPort $actorA "portA"]
+    $portA setOutput true
+    
+    set portB [java::new ptolemy.domains.od.kernel.ODIOPort $actorB "portB"]
+    $portB setOutput true
+    
+    set portC [java::new ptolemy.domains.od.kernel.ODIOPort $actorC "portC"]
+    $portC setInput true
+    $portC setMultiport true
+    
+    set rel1 [$topLevel connect $portA $portC "rel1"]
+    set rel2 [$topLevel connect $portB $portC "rel2"]
+    
+    $dir initialize
+    
+    $actorB setPriorities
+    
+    set t1 [java::new ptolemy.data.Token]
+    set t2 [java::new ptolemy.data.Token]
+    
+    $portA send 0 $t1 
+    $portB send 0 $t2 
+    
+    set t3 [$actorC getNextToken]
+    set t4 [$actorC getNextToken]
+
+    list [expr {$t1 == $t3} ] [expr {$t2 == $t4} ]
+} {1 1}
+
 
 
 
