@@ -42,13 +42,21 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-TCL_SRCS = \
+# Used to build jar files
+PTPACKAGE = 	demo
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	Networked/Networked.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
+EXTRA_SRCS = \
+	$(JSRCS) \
 	index.htm \
 	example.xml \
 	modulation.htm \

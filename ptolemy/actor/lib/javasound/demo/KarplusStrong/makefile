@@ -43,17 +43,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE =	KarplusStrong
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
-	KarplusStrong.htm \
-	KarplusStrongVergil.htm \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	KarplusStrong.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	KarplusStrong.htm \
+	KarplusStrongVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
