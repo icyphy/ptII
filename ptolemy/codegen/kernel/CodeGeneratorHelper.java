@@ -28,12 +28,14 @@
 
 package ptolemy.codegen.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -268,7 +270,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         // Try if the name is a parameter.
         Attribute attribute = _component.getAttribute(name);
+        
         if (attribute != null) {
+            if (attribute instanceof Parameter) {
+                _referencedParameters.add(attribute);
+            }
             result.append(_component.getFullName().replace('.', '_'));
             result.append("_");
             result.append(name);
@@ -278,6 +284,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + name);
     }
 
+    
+    /** Return a list that contains the parameters referenced in the code.
+     * @return The list.
+     * @throws IllegalActionException
+     */
+    public HashSet getReferencedParameter() {
+        return _referencedParameters;
+    }
+    
+    
     /**
      * Process the specified code, replacing macros with their values.
      * 
@@ -288,12 +304,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String processCode(String code) throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
+        _referencedParameters = new HashSet();
         int currentPos = code.indexOf("$");
         if (currentPos < 0) {
             // No "$" in the string
             return code;
         }
-
+         
         result.append(code.substring(0, currentPos));
         while (currentPos < code.length()) {
             int nextPos = code.indexOf("$", currentPos + 1);
@@ -384,4 +401,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** The associated component. */
     private NamedObj _component;
+    
+    private HashSet _referencedParameters;
 }

@@ -74,12 +74,15 @@ public class StaticSchedulingCodeGenerator
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Generate the body code that lies between initialize and wrapup.
-     *  In this base class, nothing is generated.
+    /** Generate the body code that lies between variable declaration
+     *  and wrapup.
+     *  @return The generated body code.
      */
-    public void generateBodyCode(StringBuffer code) throws IllegalActionException {
+    public String generateBodyCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         code.append(comment("SDF schedule:"));
         generateFireCode(code);
+        return code.toString();
     }
 
     /** Generate code.  This is the main entry point.

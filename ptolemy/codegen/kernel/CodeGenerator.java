@@ -30,8 +30,8 @@ package ptolemy.codegen.kernel;
 
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
@@ -42,7 +42,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -128,7 +127,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
      */
-    public void generateBodyCode(StringBuffer code) throws IllegalActionException {
+    public String generateBodyCode() throws IllegalActionException {
+        return "";
     }
 
     /** Generate code.  This is the main entry point.
@@ -137,8 +137,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public void generateCode(StringBuffer code) throws KernelException {
         generateInitializeCode(code);
+        String bodyCode = generateBodyCode();
         generateVariableDeclarations(code);
-        generateBodyCode(code);
+        code.append(bodyCode);
         generateWrapupCode(code);
         
         // Write the code to the file specified by codeDirectory.
@@ -188,11 +189,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            List attributeList = ((NamedObj)actor).attributeList();
-            for (int i = 0; i < attributeList.size(); i ++) {
-                Attribute attribute = (Attribute)attributeList.get(i);
-                if (attribute instanceof Parameter) {
-                    String type = ((Parameter)attribute).getType().toString();
+            // Generate variable declarations for referenced parameters.
+            CodeGeneratorHelper helper
+                = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
+            HashSet parameterSet = helper.getReferencedParameter();
+            if (parameterSet != null) {
+                Iterator parameters = parameterSet.iterator();
+                while (parameters.hasNext()) {
+                    Parameter parameter= (Parameter)parameters.next();
+                    String type = parameter.getType().toString();
                     boolean isArrayType = false;
                     if (type.equals("boolean")) {
                         type = "bool";
@@ -204,15 +209,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     }
                     code.append(type);
                     code.append(" ");
-                    code.append(attribute.getFullName().replace('.', '_'));
+                    code.append(parameter.getFullName().replace('.', '_'));
                     if (isArrayType) {
                         code.append("[ ]");
                     }
                     code.append(" = ");
-                    code.append(((Variable) attribute).getToken().toString());
-                    code.append(";\n");
-                } 
+                    code.append(parameter.getToken().toString());
+                    code.append(";\n"); 
+                }
             }
+            // Generate variable declarations for input ports.
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
@@ -238,6 +244,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 */
                 code.append(";\n");
             }
+            // Generate variable declarations for output ports.
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
                 TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
