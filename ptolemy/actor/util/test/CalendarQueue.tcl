@@ -50,30 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-#test CalendarQueue-1.1 {Get class information} {
-#    # If anything changes, we want to know about it so we can write tests.
-#    set n [java::new ptolemy.actor.util.CalendarQueue]
-#    list [getJavaInfo $n]
-#} {{
-#  class:         ptolemy.actor.util.CalendarQueue
-#  fields:
-#  methods:       {equals java.lang.Object} getClass getNextKey getP
-#    reviousPriority hashCode {includes java.lang.Objec
-#    t ptolemy.actor.util.Sortable} notify notifyAll {put java.lang.Ob
-#    ject ptolemy.actor.util.Sortable} {remove java.lang.Object
-#    ptolemy.actor.util.Sortable} size take toString wait {wait long}
-#    {wait long int}
-#
-#  constructors:  ptolemy.actor.util.CalendarQueue
-#
-#  properties:    class nextPriority previousPriority
-#
-#  superclass:    java.lang.Object
-#
-#}   }
-######################################################################
-####
-#
 set comparator [java::new ptolemy.actor.util.DoubleCQComparator]
 
 ######################################################################
@@ -81,8 +57,8 @@ set comparator [java::new ptolemy.actor.util.DoubleCQComparator]
 #
 test CalendarQueue-2.1 {Construct an empty queue and check defaults} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
-    list [$queue size]
-} {0}
+    list [$queue size] [$queue isEmpty]
+} {0 1}
 
 ######################################################################
 ####
@@ -140,9 +116,10 @@ test CalendarQueue-3.0 {Put 4 datas in the queue and do a single take} {
     $queue put $p3 $n3
     $queue put $p1 $n4
     list [$queue getNextKey] \
-	   [[$queue take] getName] \
-	    [$queue getPreviousKey]
-} {0.0 n4 0.0}
+	    [[$queue take] getName] \
+	    [$queue getPreviousKey] \
+	    [$queue isEmpty]
+} {0.0 n4 0.0 0}
 
 ######################################################################
 ####
