@@ -1,5 +1,4 @@
-/* FBDelay actors are used to prevent Zeno conditions caused by
-cycles of null tokens in feedback topologies in DDE models.
+/* FBDelay actors are used to add delay to feedback topologies.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,12 +39,11 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// FBDelay
 /**
-FBDelay actors are used to prevent Zeno conditions caused by
-cycles of null tokens in feedback topologies in DDE models. If a
-FBDelay actor consumes a token (real or Null), it has the option
-of producing an equivalent token on the output with an incremented 
-time stamp value. Alternatively, the FBDelay actor will simply 
-produce the token without altering the time stamp.
+FBDelay actors are used to add delay to feedback topologies.
+If a FBDelay actor consumes a token (real or Null), it has the 
+option of producing an equivalent token on the output with an 
+incremented time stamp value. Alternatively, the FBDelay actor 
+will simply produce the token without altering the time stamp.
 <P>
 Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are available
 for determining whether an FBDelay actor increments the time stamp of 
@@ -54,21 +52,20 @@ true (false). If the nullDelay (realDelay) parameter is set to true,
 then the time stamps of NullTokens (real tokens) will be incremented as 
 they pass through this actor. 
 <P>
-The delay value that is applied (given that one of the above parameters 
-is true) is determined by the setDelay() and getDelay() methods. 
-Conditional delay values can be made available by overriding the 
-getDelay() method in derived classes.
+The delay value that is applied (given that one of the above 
+parameters is true) is determined by the setDelay() and getDelay() 
+methods. More elaborate delay values can be made available by 
+overriding the getDelay() method in derived classes.
 <P>
 FBDelay actors are effective for preventing Zeno conditions involving 
-cycles of null tokens. If a DDE model has a feedback topology, a FBDelay 
-actor should be added into the feedback loop. 
+cycles of null tokens. If a DDE model has a feedback topology, a 
+FBDelay actor should be added into the feedback loop. 
 <P>
 The delay value of a FBDelay actor must be wisely chosen. The delay 
 value should be smaller than any other successive time stamp increment 
-found in the DDE model. This means that if a particular model might 
+found in a given DDE model. This means that if a particular model might 
 have any two time stamps with time difference delta, then the delay 
 value should be smaller than delta.
-<P>
 
 @author John S. Davis II
 @version $Id$
@@ -77,7 +74,11 @@ value should be smaller than delta.
 public class FBDelay extends DDEActor {
 
     /** Construct a FBDelay with no container and a name that
-     *  is an empty.
+     *  is an empty string.
+     * @exception IllegalActionException If the constructor of the
+     *  superclass throws an IllegalActionException.
+     * @exception NameDuplicationException If the constructor of the
+     *  superclass throws a NameDuplicationException .
      */
     public FBDelay()
             throws IllegalActionException, NameDuplicationException {
@@ -86,8 +87,12 @@ public class FBDelay extends DDEActor {
     }
 
     /** Construct a FBDelay with the specified workspace and
-     *  no name.
+     *  a name that is an empty string.
      * @param workspace The workspace for this FBDelay.
+     * @exception IllegalActionException If the constructor of the
+     *  superclass throws an IllegalActionException.
+     * @exception NameDuplicationException If the constructor of the
+     *  superclass throws a NameDuplicationException .
      */
     public FBDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -143,11 +148,11 @@ public class FBDelay extends DDEActor {
      *  parameter is set to true, then produce an output NullToken to
      *  have a time stamp with a delay specified by getDelay(). Otherwise
      *  produce a NullToken that does not have a delayed time stamp value.
-     *  If the *  input token is a real token and the realDelay parameter 
+     *  If the input token is a real token and the realDelay parameter 
      *  is set to true, then produce an output real token to have a time 
      *  stamp with a delay specified by getDelay(). Otherwise produce a
      *  real token that does not have a delayed time stamp value.
-     * @throws IllegalActionException If there is an error when
+     * @exception IllegalActionException If there is an error when
      *  sending the output token or setting the current time.
      */
     public void fire() throws IllegalActionException {
@@ -177,7 +182,7 @@ public class FBDelay extends DDEActor {
 
     /** Initialize this actor by setting all receivers so that
      *  they do not hide NullTokens.
-     * @throws IllegalActionException If there is an error when
+     * @exception IllegalActionException If there is an error when
      *  when attempting to access the receivers of this actor.
      * @see ptolemy.domains.dde.kernel.NullToken
      * @see ptolemy.domains.dde.kernel.DDEReceiver
@@ -201,16 +206,6 @@ public class FBDelay extends DDEActor {
 		rcvr.hideNullTokens(false);
 	    }
 	}
-    }
-
-    /** Continue execution of this actor by informing the DDEThread
-     *  which controls it to continue iterations.
-     * @return True to indicate that future execution can occur.
-     * @exception IllegalActionException Is not thrown in this class
-     *  but may be thrown in derived classes.
-     */
-    public boolean postfire() throws IllegalActionException {
-        return true;
     }
 
     /** Set the delay value of this actor.
