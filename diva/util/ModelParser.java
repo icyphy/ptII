@@ -29,7 +29,7 @@ import java.io.Reader;
 
 /**
  * ModelParser is an interface that should be extended by application
- * specified model parsers.  It's job is to parse data into an
+ * specified model parsers.  Its job is to parse data into an
  * application specific data structure.
  *
  * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
