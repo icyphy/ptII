@@ -30,12 +30,23 @@
 
 package ptolemy.actor.lib.jspaces;
 
-import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.LongToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
 import ptolemy.actor.TypedCompositeActor;
-// import ptolemy.kernel.util.*;
+import ptolemy.actor.lib.Sink;
+import ptolemy.actor.lib.jspaces.util.SpaceFinder;
 
+import java.rmi.RemoteException;
 import net.jini.space.JavaSpace;
+import net.jini.core.transaction.TransactionException;
+import net.jini.core.lease.Lease;
 
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
@@ -110,8 +121,7 @@ public class Publisher extends Sink {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
 	try {
 	    Publisher newobj = (Publisher)super.clone(ws);
 	    newobj.jspaceName = (Parameter)newobj.getAttribute("jspaceName");
@@ -142,17 +152,25 @@ public class Publisher extends Sink {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
-	String name = ((StringToken)entryName.getToken()).toString();
-	String time = ((LongToken)leaseTime.getTokne()).longValue();
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (input.hasToken(i)) {
-                Token token = input.get(i);
-		TokenEntry entry = new TokenEntry(name, _currentSerialNumber,
-							token);
-		_currentSerialNumber++;
-		_space.write(name, null, time);
+	try {
+	    String name = ((StringToken)entryName.getToken()).toString();
+	    long time = ((LongToken)leaseTime.getToken()).longValue();
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    Token token = input.get(i);
+		    TokenEntry entry = new TokenEntry(name,
+						_currentSerialNumber, token);
+		    _currentSerialNumber++;
+		    _space.write(entry, null, time);
+                }
             }
-        }
+	} catch (RemoteException re) {
+	    throw new IllegalActionException(this, "Cannot write into " +
+		"JavaSpace. " + re.getMessage());
+	} catch (TransactionException te) {
+	    throw new IllegalActionException(this, "Cannot write into " +
+		"JavaSpace. " + te.getMessage());
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
