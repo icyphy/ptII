@@ -30,40 +30,37 @@ package pt.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
 /** 
-Description:   NamedObj is the baseclass for most of the common
-               Ptolemy objects.  A NamedObj is, simply put, a named
-               object; in addition to a name, a NamedObj has a reference
-               to a parent object, which is always a Block (a type of
-               NamedObj). This reference can be null. A NamedObj also
-               has a descriptor. <P>
+NamedObj is the baseclass for most of the common Ptolemy objects.  A
+NamedObj is, simply put, a named object; in addition to a name, a
+NamedObj has a reference to a parent object, which is always a Block
+(a type of NamedObj). This reference can be null. A NamedObj also has
+a descriptor.
 
 @author Richard Stevens
-  Richard S. Stevens is an employee of the U.S. Government, whose
+<P>  Richard Stevens is an employee of the U.S. Government, whose
   written work is not subject to copyright.  His contributions to 
-  this work fall within the scope of 17 U.S.C. A7 105.
+  this work fall within the scope of 17 U.S.C. A7 105. <P>
 
 @version @(#)JavaTemplate.java	1.6	02/14/97
 @see classname
-@see full-classname
-*/
+@see full-classname */
 public abstract class NamedObj {
     /** no-arg Constructor - Construct a blank NamedObj
      * @see full-classname/method-name
-     * @return Set the name, parent, and descriptor to null
+     * @return Reference to created named object
      * @exception full-classname description
      */	
     public NamedObj() {
         this(null, null, null);
     }
 
-    /** Constructor with 3 arguments
+    /** Constructor with 3 arguments - Set the name, parent, 
+     * and descriptor to the respective arguments
      * @see full-classname/method-name
      * @param n name
      * @param p parent
      * @param d descriptor
-     * @return Set the name, parent, and descriptor 
-     *         to the respective arguments
-     * @exception full-classname description
+     * @return Reference to created named object
      */	
     public NamedObj(String n, Block p, String d) {
         super();
@@ -83,6 +80,12 @@ public abstract class NamedObj {
     public String getName() {
         return nm;
     }
+
+    /** Get the name of the object (calls method getName)
+     * @see full-classname/method-name
+     * @return The object name
+     * @exception full-classname description
+     */	
     public String name() {
         return getName();
     }
@@ -95,6 +98,12 @@ public abstract class NamedObj {
     public String getDescriptor() {
         return dscrptr;
     }
+
+    /** Get the descriptor (calls method getDescriptor)
+     * @see full-classname/method-name
+     * @return The descriptor
+     * @exception full-classname description
+     */	
     public String descriptor() {
         return getDescriptor();
     }
@@ -107,25 +116,38 @@ public abstract class NamedObj {
     public Block getParent() {
         return prnt;
     }
+
+    /** Get the parent block (calls method getParent)
+     * @see full-classname/method-name
+     * @return The parent block
+     * @exception full-classname description
+     */	
     public Block parent() {
         return getParent();
     }
 
-    /** This has no relation to the class name; it specifies
-     * the specific instance's place in the universe-galaxy-star
-     * hierarchy. The default implementation returns names that might look
-     * like
-     *
-     *       universe.galaxy.star.port
-     *
-     * for a porthole; the output is the fullName of the parent, plus a
-     * period, plus the name of the NamedObj it is called on.
+    /** Specify the specific instance's place in the
+     * universe-galaxy-star hierarchy. The default implementation
+     * returns names that might look like
+     * 
+     * <P> universe.galaxy.star.port <P>
+     * 
+     * for a porthole; the output is the fullName of the parent, plus
+     * a period, plus the name of the NamedObj it is called on.
+     * This has no relation to the class name.
      *
      * @see full-classname/method-name
      * @return The full object name
-     * @exception full-classname description
-     */	
+     * @exception full-classname description 
+     */
     abstract public String getFullName();
+
+    /**  Specify the specific instance's place in the
+     * universe-galaxy-star hierarchy (calls method getFullName). 
+     * @see full-classname/method-name
+     * @return The full object name
+     * @exception full-classname description 
+     */
     public String fullName() {
         return getFullName();
     }
