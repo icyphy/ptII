@@ -373,8 +373,8 @@ public class DatagramSender extends TypedAtomicActor {
                 _socket = null;
             } else {
 		//System.out.println("Socket was already null in " + this);
-                //throw new IllegalActionException("Socket was already null "
-	        //        +  "at wrapup!?");
+                throw new IllegalActionException("Socket was already null "
+	                +  "at wrapup!?");
             }
         }
     }
