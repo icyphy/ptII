@@ -319,9 +319,15 @@ public class NamedObjEliminator extends SceneTransformer {
                         //                         }
                     }
                 }
+            }
 
-                // Remove all the interfaces that it implements??
-                //                theClass.getInterfaces().clear();
+            // Remove all the interfaces that it implements??
+            for(Iterator interfaces = theClass.getInterfaces().snapshotIterator();
+                interfaces.hasNext();) {
+                SootClass theInterface = (SootClass)interfaces.next();
+                if(theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
+                    theClass.getInterfaces().remove(theInterface);
+                }
             }
         }
 
