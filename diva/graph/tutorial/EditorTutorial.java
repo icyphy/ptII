@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
 @Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
 
@@ -25,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION_2
 						COPYRIGHTENDKEY
+
+
 
 
  */
