@@ -4,21 +4,29 @@
 <class name="ctrl" extends="ptolemy.domains.fsm.kernel.FSMActor">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[628, 205]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 192]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[133, 242]">
     </property>
     <port name="in" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="88.0, 43.0">
+        </property>
     </port>
     <port name="refIn1" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="89.0, 90.0">
+        </property>
     </port>
     <port name="refIn2" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 138.0">
+        </property>
     </port>
     <port name="out" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
+        <property name="_location" class="ptolemy.moml.Location" value="522.0, 92.0">
+        </property>
     </port>
     <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode0">
@@ -47,6 +55,8 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
         <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
             </property>
@@ -74,6 +84,8 @@
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
         <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
