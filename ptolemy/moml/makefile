@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =	Documentation.java \
 	EntityLibrary.java \
 	ErrorHandler.java \
+	FilterOutGraphicalClasses.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	Location.java \
