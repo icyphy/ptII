@@ -138,7 +138,7 @@ public class CTPeriodicalSampler extends CTActor
         _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
         dir.fireAt(this, _nextSamplingTime);
         if(DEBUG) {
-            System.out.println("Sampler: next sampling time= "
+             System.out.println("Sampler: next sampling time= "
                 + _nextSamplingTime);
         }
     }
