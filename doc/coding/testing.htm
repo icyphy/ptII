@@ -51,12 +51,13 @@ There are two ways to write tests:
 The testing infrastructure will automatically run an MoML models
 located in <CODE>test/auto</CODE> directories.
  <p>The test passes if it does not throw an exception
- <p>The Test actor can be used to compare the first few results
+ <p>The <a href="codeDoc/ptolemy/actor/lib/Test.html">Test actor</a>
+ (located under  "more libraries") 
+can be used to compare the first few results
 of a simulation with a known good results.  If the comparison fails,
-then the test fails.
- <p>If a test is in the optional <CODE>test/auto/failed</CODE> 
+then the test fails.  
+ <p>If a test is in the optional <CODE>test/auto/knownFailedTests</CODE> 
 directory, then it will be marked as a known failure if it fails.
-
 
  <p>Do not use annotations, since these will require vergil to
 be present at test time
