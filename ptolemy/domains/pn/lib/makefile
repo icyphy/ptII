@@ -74,7 +74,8 @@ JSRCS = \
 	MatrixPacker.java \
 	MatrixUnpacker.java \
 	RLDecoder.java \
-	RLEncoder.java 
+	RLEncoder.java \
+	ImageDisplay.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
