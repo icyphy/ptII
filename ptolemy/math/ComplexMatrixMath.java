@@ -993,7 +993,7 @@ public class ComplexMatrixMath {
      *  @return A new String representing the matrix in Java array initializers.
      */
     public static final String toString(final Complex[][] matrix) {
-        return toString(matrix, ArrayStringFormat.javaASFormat);
+        return toString(matrix, ", ", "{", "}", "{", ", ", "}");
     }
 
     /** Return a new String representing the matrix, formatted as
@@ -1007,29 +1007,30 @@ public class ComplexMatrixMath {
      *  @return A new String representing the matrix in the specified format.
      */
     public static final String toString(final Complex[][] matrix,
-            final ArrayStringFormat asf) {
+            String elementDelimiter, String matrixBegin, String matrixEnd, 
+            String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
-        sb.append(asf.matrixBeginString());
+        sb.append(matrixBegin);
 
         for (int i = 0; i < _rows(matrix); i++) {
 
-            sb.append(asf.vectorBeginString());
+            sb.append(vectorBegin);
             for (int j = 0; j < _columns(matrix); j++) {
-                sb.append(asf.complexString(matrix[i][j]));
+                sb.append(matrix[i][j].toString());
 
                 if (j < (_columns(matrix) - 1)) {
-                    sb.append(asf.elementDelimiterString());
+                    sb.append(elementDelimiter);
                 }
             }
 
-            sb.append(asf.vectorEndString());
+            sb.append(vectorEnd);
 
             if (i < (_rows(matrix) - 1)) {
-                sb.append(asf.vectorDelimiterString());
+                sb.append(vectorDelimiter);
             }
         }
 
-        sb.append(asf.matrixEndString());
+        sb.append(matrixEnd);
 
         return sb.toString();
     }

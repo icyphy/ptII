@@ -47,8 +47,7 @@ PTPACKAGE = 	math
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = ArrayStringFormat.java \
-	Complex.java \
+JSRCS =	Complex.java \
 	ComplexArrayMath.java \
         ComplexBinaryOperation.java \
         ComplexMatrixMath.java \

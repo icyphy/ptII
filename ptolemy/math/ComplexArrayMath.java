@@ -867,7 +867,7 @@ public class ComplexArrayMath {
      *  @return A new string representing the array.
      */
     public static final String toString(Complex[] array) {
-        return toString(array, ArrayStringFormat.javaASFormat);
+        return toString(array, ", ", "{", "}");
     }
 
     /** Return a new String representing the array, formatted as
@@ -882,22 +882,22 @@ public class ComplexArrayMath {
      *  by the ArrayStringFormat argument.
      */
     public static final String toString(final Complex[] array,
-            ArrayStringFormat format) {
+            String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
-        sb.append(format.vectorBeginString());
+        sb.append(vectorBegin);
 
         for (int i = 0; i < length; i++) {
 
-            sb.append(format.complexString(array[i]));
+            sb.append(array[i].toString());
 
             if (i < (length - 1)) {
-                sb.append(format.elementDelimiterString());
+                sb.append(elementDelimiter);
             }
         }
 
-        sb.append(format.vectorEndString());
+        sb.append(vectorEnd);
 
         return sb.toString();
     }

@@ -949,7 +949,7 @@ public class DoubleMatrixMath {
      *  in Java array initializers.
      */
     public static final String toString(final double[][] matrix) {
-        return toString(matrix, ArrayStringFormat.javaASFormat);
+        return toString(matrix, ", ", "{", "}", "{", ", ", "}");
     }
 
     /** Return a new String representing the matrix, formatted as
@@ -959,29 +959,30 @@ public class DoubleMatrixMath {
      *  format argument.
      */
     public static final String toString(final double[][] matrix,
-            final ArrayStringFormat asf) {
+            String elementDelimiter, String matrixBegin, String matrixEnd, 
+            String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
-        sb.append(asf.matrixBeginString());
+        sb.append(matrixBegin);
 
         for (int i = 0; i < _rows(matrix); i++) {
 
-            sb.append(asf.vectorBeginString());
+            sb.append(vectorBegin);
             for (int j = 0; j < _columns(matrix); j++) {
-                sb.append(asf.doubleString(matrix[i][j]));
+                sb.append(Double.toString(matrix[i][j]));
 
                 if (j < (_columns(matrix) - 1)) {
-                    sb.append(asf.elementDelimiterString());
+                    sb.append(elementDelimiter);
                 }
             }
 
-            sb.append(asf.vectorEndString());
+            sb.append(vectorEnd);
 
             if (i < (_rows(matrix) - 1)) {
-                sb.append(asf.vectorDelimiterString());
+                sb.append(vectorDelimiter);
             }
         }
 
-        sb.append(asf.matrixEndString());
+        sb.append(matrixEnd);
 
         return new String(sb);
     }

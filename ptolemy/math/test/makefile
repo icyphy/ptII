@@ -62,7 +62,6 @@ JSRCS = \
 # Jacl
 JSIMPLE_TESTS = \
 	_Rounding.tcl \
-	ArrayStringFormat.tcl \
 	Complex.tcl \
 	ComplexArrayMath.tcl \
 	ComplexMatrixMath.tcl \

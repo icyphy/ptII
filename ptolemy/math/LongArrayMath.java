@@ -715,7 +715,7 @@ public class LongArrayMath {
      *  in Java array initializers.
      */
     public static final String toString(final long[] array) {
-        return toString(array, ArrayStringFormat.javaASFormat);
+        return toString(array, ", ", "{", "}");
     }
 
     /** Return a new String representing the array, formatted as
@@ -725,22 +725,22 @@ public class LongArrayMath {
      *  format argument.
      */
     public static final String toString(final long[] array,
-            ArrayStringFormat format) {
+            String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
-        sb.append(format.vectorBeginString());
+        sb.append(vectorBegin);
 
         for (int i = 0; i < length; i++) {
 
-            sb.append(format.longString(array[i]));
+            sb.append(Long.toString(array[i]));
 
             if (i < (length - 1)) {
-                sb.append(format.elementDelimiterString());
+                sb.append(elementDelimiter);
             }
         }
 
-        sb.append(format.vectorEndString());
+        sb.append(vectorEnd);
 
         return new String(sb);
     }
