@@ -48,9 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	HierarchicalExecution.xml \
-	HierarchicalExecution.htm \
-	HierarchicalExecutionVergil.htm
+	HierarchicalExecution.xml
+
+#	HierarchicalExecution.htm \
+#	HierarchicalExecutionVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -77,8 +78,8 @@ demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer HierarchicalExecution.htm
 
-demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer HierarchicalExecutionVergil.htm
+#demo_vergil_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer HierarchicalExecutionVergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" HierarchicalExecution.xml
