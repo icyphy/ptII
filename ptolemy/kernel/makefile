@@ -63,7 +63,6 @@ JSRCS = \
 	ComponentRelation.java \
 	CompositeEntity.java \
 	CrossRefList.java \
-	DebugMutationListener.java \
 	Entity.java \
 	KernelException.java \
 	IllegalActionException.java \
