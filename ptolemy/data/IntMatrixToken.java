@@ -48,8 +48,8 @@ public class IntMatrixToken extends MatrixToken {
      *  only element in the array has value 0.
      */
     public IntMatrixToken() {
-	_numRows = 1;
-	_numColumns = 1;
+	_rowCount = 1;
+	_columnCount = 1;
 	_value = new int[1][1];
 	_value[0][0] = 0;
     }
@@ -62,11 +62,11 @@ public class IntMatrixToken extends MatrixToken {
      *   is null.
      */
     public IntMatrixToken(int[][] value) {
-	_numRows = value.length;
-	_numColumns = value[0].length;
-	_value = new int[_numRows][_numColumns];
-	for (int i = 0; i < _numRows; i++) {
-	    for (int j = 0; j < _numColumns; j++) {
+	_rowCount = value.length;
+	_columnCount = value[0].length;
+	_value = new int[_rowCount][_columnCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
 		_value[i][j] = value[i][j];
 	    }
 	}
@@ -117,17 +117,17 @@ public class IntMatrixToken extends MatrixToken {
 
 	    if (t instanceof ScalarToken) {
 		int scalar = ((ScalarToken)t).intValue();
-		result = new int[_numRows][_numColumns];
-		for (int i = 0; i < _numRows; i++) {
-		    for (int j = 0; j < _numColumns; j++) {
+		result = new int[_rowCount][_columnCount];
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
 			result[i][j] = scalar + _value[i][j];
 		    }
 		}
 	    } else {
 		// the specified token is not a scalar.
 	        if (t instanceof MatrixToken) {
-	    	    if (((MatrixToken)t).numRows() != _numRows ||
-		        ((MatrixToken)t).numColumns() != _numColumns) {
+	    	    if (((MatrixToken)t).getRowCount() != _rowCount ||
+		        ((MatrixToken)t).getColumnCount() != _columnCount) {
 		    	throw new IllegalActionException("Cannot add two " +
 				"matrices with different dimension.");
 	    	    }
@@ -138,8 +138,8 @@ public class IntMatrixToken extends MatrixToken {
 		        IntMatrixToken tem = (IntMatrixToken)this.convert(t);
 			result = tem.intMatrix();
 		    }
-		    for (int i = 0; i < _numRows; i++) {
-			for (int j = 0; j < _numColumns; j++) {
+		    for (int i = 0; i < _rowCount; i++) {
+			for (int j = 0; j < _columnCount; j++) {
 			    result[i][j] += _value[i][j];
 			}
 		    }
@@ -177,9 +177,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D Complex array.
      */
     public Complex[][] complexMatrix() {
-        Complex[][] array = new Complex[_numRows][_numColumns];
-        for (int i = 0; i < _numRows; i++) {
-            for (int j = 0; j < _numColumns; j++) {
+        Complex[][] array = new Complex[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
                 array[i][j] = new Complex((double)_value[i][j]);
             }
         }
@@ -232,9 +232,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D double array.
      */
     public double[][] doubleMatrix() {
-        double[][] array = new double[_numRows][_numColumns];
-        for (int i = 0; i < _numRows; i++) {
-            for (int j = 0; j < _numColumns; j++) {
+        double[][] array = new double[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
                 array[i][j] = (double)_value[i][j];
             }
         }
@@ -262,8 +262,8 @@ public class IntMatrixToken extends MatrixToken {
 		t.getClass().getName());
 	}
 
-	if ( ((MatrixToken)t).numRows() != _numRows ||
-	     ((MatrixToken)t).numColumns() != _numColumns) {
+	if ( ((MatrixToken)t).getRowCount() != _rowCount ||
+	     ((MatrixToken)t).getColumnCount() != _columnCount) {
 	    return new BooleanToken(false);
 	}
 
@@ -279,8 +279,8 @@ public class IntMatrixToken extends MatrixToken {
 	    }
 	    int[][] array = tem.intMatrix();
 
-	    for (int i = 0; i < _numRows; i++) {
-		for (int j = 0; j < _numColumns; j++) {
+	    for (int i = 0; i < _rowCount; i++) {
+		for (int j = 0; j < _columnCount; j++) {
 		    if (_value[i][j] != array[i][j]) {
 			return new BooleanToken(false);
 		    }
@@ -308,9 +308,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D integer array.
      */
     public int[][] getWritableCopy() {
-	int[][] result = new int[_numRows][_numColumns];
-	for (int i = 0; i < _numRows; i++) {
-	    for (int j = 0; j < _numColumns; j++) {
+	int[][] result = new int[_rowCount][_columnCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
 		result[i][j] = _value[i][j];
 	    }
 	}
@@ -323,9 +323,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D integer array.
      */
     public int[][] intMatrix() {
-        int[][] array = new int[_numRows][_numColumns];
-        for (int i = 0; i < _numRows; i++) {
-            for (int j = 0; j < _numColumns; j++) {
+        int[][] array = new int[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
                 array[i][j] = _value[i][j];
             }
         }
@@ -335,9 +335,9 @@ public class IntMatrixToken extends MatrixToken {
     /** Return the content of this token as a 2-D long array.
      */
     public long[][] longMatrix() {
-        long[][] array = new long[_numRows][_numColumns];
-        for (int i = 0; i < _numRows; i++) {
-            for (int j = 0; j < _numColumns; j++) {
+        long[][] array = new long[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
                 array[i][j] = (long)_value[i][j];
             }
         }
@@ -347,15 +347,15 @@ public class IntMatrixToken extends MatrixToken {
     /** Return the number of columns in the matrix.
      *  @return An integer.
     */
-    public int numColumns() {
-        return _numColumns;
+    public int getColumnCount() {
+        return _columnCount;
     }
 
     /** Return the number of rows of the contained  matrix.
      *  @return An integer.
     */
-    public int numRows() {
-        return _numRows;
+    public int getRowCount() {
+        return _rowCount;
     }
 
     /** Return a new Token representing the left multiplicative 
@@ -365,9 +365,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the left multiplicative identity.
      */
     public Token one() {
-	int[][] result = new int[_numRows][_numRows];
-	for (int i = 0; i < _numRows; i++) {
-	    for (int j = 0; j < _numRows; j++) {
+	int[][] result = new int[_rowCount][_rowCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _rowCount; j++) {
 		result[i][j] = 0;
 	    }
 	    result[i][i] = 1;
@@ -382,9 +382,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the right multiplicative identity.
      */
     public Token oneR() {
-	int[][] result = new int[_numColumns][_numColumns];
-	for (int i = 0; i < _numColumns; i++) {
-	    for (int j = 0; j < _numColumns; j++) {
+	int[][] result = new int[_columnCount][_columnCount];
+	for (int i = 0; i < _columnCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
 		result[i][j] = 0;
 	    }
 	    result[i][i] = 1;
@@ -399,9 +399,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
-	int[][] result = new int[_numRows][_numColumns];
-	for (int i = 0; i < _numRows; i++) {
-	    for (int j = 0; j < _numColumns; j++) {
+	int[][] result = new int[_rowCount][_columnCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
 		result[i][j] = 0;
 	    }
 	}
@@ -411,7 +411,7 @@ public class IntMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int[][] _value = null;
-    private int _numRows = 0;
-    private int  _numColumns = 0;
+    private int _rowCount = 0;
+    private int  _columnCount = 0;
 }
 
