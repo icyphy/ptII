@@ -338,7 +338,7 @@ test Environ-21.1 {allProperDecls(mask))} {
     # objectsToStrings and iterToObjects are defined
     # in ptII/util/testsuite/enums.tcl
     list [objectsToStrings [iterToObjects $environIter]]
-} {}
+} {{{{*, -1}}}}
 
 ######################################################################
 ####
@@ -349,7 +349,7 @@ test Environ-21.2 {allProperDecls(mask) with a different mask} {
     # objectsToStrings and iterToObjects are defined
     # in ptII/util/testsuite/enums.tcl
     list [objectsToStrings [iterToObjects $environIter]]
-} {}
+} {{{{*, -1}}}}
 
 ######################################################################
 ####
