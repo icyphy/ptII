@@ -2803,7 +2803,7 @@ public class XmlParser {
 
   /**
     * Find the type of an entity.
-    * @returns An integer constant representing the entity type.
+    * @return An integer constant representing the entity type.
     * @see #ENTITY_UNDECLARED
     * @see #ENTITY_INTERNAL
     * @see #ENTITY_NDATA
