@@ -71,7 +71,7 @@ facility, which allows end users to download fully functional distributions
 via the web.
 
 <li> Vergil updates
-(Steve Neuendorffer, Edward A. Lee, John Reekie
+(Steve Neuendorffer, Edward A. Lee, John Reekie)
  Vergil has been improved
  and the following features have been added
 	<menu>
@@ -87,7 +87,9 @@ via the web.
 	when.
 	<li> Better icons - Some icons such as Const, Scale and Expression
 	will display their values.  
-	<li> set data types of ports
+	<li> Set data types of ports
+	<li> Java Virtual Machine properties window - JVM Properties
+	can be queried and garbage collection requested.
 	</menu>
 See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/index.htm</code></a> for more complete information
 
@@ -97,9 +99,10 @@ See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/in
 
 <ul>
 
-<li> <a href="codeDoc/ptolemy/data/ByteToken.html">ptolemy.data.ByteToken</a>
-(Winthrop Williams, Steve Neuendorffer) - A new Token supporting bytes.
 
+<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto Domain rewrite</a>: 
+(Haiyang Zheng) - The Giotto scheduler was rewritten and the kernel
+was updated.
 
 <li> Ptolemy II Matlab interface
 (Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.) -
@@ -125,11 +128,21 @@ java-type conversions for function arguments and results.
 
 <li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
 (Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
-to perform multiple runs of refinement on a model
+to perform multiple runs of refinement on a model.
 
 <li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
  (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
 The graph package was redesigned and reimplemented.
+
+
+<li> <a href="codeDoc/ptolemy/kernel/util/VersionAttribute.html">VersionAttribute</a>
+(Christopher Hylands, Edward A. Lee) -
+Models can be annotated with the Web Start format version number of
+Ptolemy II that is required to run the model.  In the future, we will
+use this attribute to manage backward compatibility.
+
+<li> <a href="codeDoc/ptolemy/data/ByteToken.html">ptolemy.data.ByteToken</a>
+(Winthrop Williams, Steve Neuendorffer) - A new Token supporting bytes.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 
