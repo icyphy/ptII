@@ -75,6 +75,7 @@ EXTRA_SRCS = $(JSRCS) \
 	logaxes.plt \
 	plotmlSample.txt \
 	sinusoids.xml \
+	sinusoidsShow.htm \
 	toc.htm
 
 # The data directory contains binary plot files that cannot be checked
