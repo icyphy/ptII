@@ -132,7 +132,7 @@ test Pulse-3.1 {test indexes that are out of order} {
     } msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse.indexes:
-Error evaluating expression: "{0, 3, 2}
+Error evaluating expression: "{0, 3, 2}"
 In variable: .top.pulse.indexes
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse:
@@ -146,7 +146,7 @@ test Pulse-3.2 {test negative indexes} {
     } msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse.indexes:
-Error evaluating expression: "{-1, 0, 1}
+Error evaluating expression: "{-1, 0, 1}"
 In variable: .top.pulse.indexes
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Object name: .top.pulse:
