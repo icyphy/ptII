@@ -130,7 +130,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * @return The empty string.
      */
     public String generateBodyCode() throws IllegalActionException {
-        return "";
+        return "main() {\n}";
     }
 
     /** Generate code and append it to the given string buffer.
@@ -215,6 +215,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             = new StringTokenizer("{}");
                         type = tokenizer.nextToken();
                     }
+                    code.append("static ");
                     code.append(type);
                     code.append(" ");
                     code.append(parameter.getFullName().replace('.', '_'));
@@ -234,6 +235,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 if (inputPort.getWidth() == 0) {
                     break;
                 }
+                code.append("static ");
                 code.append(inputPort.getType().toString());
                 code.append(" ");
                 code.append(inputPort.getFullName().replace('.', '_'));
@@ -256,6 +258,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // Only generate declarations for those output ports with
                 // port width zero. 
                 if (outputPort.getWidth() == 0) {
+                    code.append("static ");
                     code.append(outputPort.getType().toString());
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
