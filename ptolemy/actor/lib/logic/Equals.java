@@ -104,19 +104,16 @@ public class Equals extends TypedAtomicActor {
      *  base class and sets the public variables to point to the new ports.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            Equals newobj = (Equals)super.clone(ws);
-            newobj.lowerPort = (TypedIOPort)newobj.getPort("lowerPort");
-            newobj.upperPort = (TypedIOPort)newobj.getPort("upperPort");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        Equals newobj = (Equals)super.clone(ws);
+        newobj.lowerPort = (TypedIOPort)newobj.getPort("lowerPort");
+        newobj.upperPort = (TypedIOPort)newobj.getPort("upperPort");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /** If there is a token in both the <i>upperPort</i> and <i>lowerPort</i>
