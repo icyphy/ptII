@@ -59,7 +59,6 @@ EXTRA_SRCS =	$(JSRCS) \
 	ABP.htm \
 	ABP.xml \
 	ABPVergil.htm \
-	ABPVergil.xml \
 	ChannelTest.xml \
 	ConnectComponent.xml \
 	LossyDelayChannel.xml \
