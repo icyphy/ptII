@@ -67,5 +67,6 @@ proc removeGraphicalClasses {parser} {
 
     $filter put "ptolemy.actor.lib.gui.SketchedSource" [java::null]
 
+    $filter put "caltrop.ptolemy.actors.CalInterpreter" [java::null]
     $parser addMoMLFilter $filter
 }
