@@ -35,6 +35,9 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
@@ -51,7 +54,7 @@ An execution listener that suspends execution based on breakpoints.
 @author Elaine Cheong
 @version $Id$
 */
-public class DebugController implements DebugListener {
+public class DebugController extends TransientSingletonConfigurableAttribute implements DebugListener {
 
     /**
      * Construct a new debug controller.
@@ -60,7 +63,9 @@ public class DebugController implements DebugListener {
      * FIXME: What exactly is the graph controller???
      */
     public DebugController(NamedObj object,
-            BasicGraphController graphController) {
+            BasicGraphController graphController)
+            throws NameDuplicationException, IllegalActionException {
+        super(object, "DebugController");
         _object = object;
         _graphController = graphController;
     }
@@ -80,6 +85,7 @@ public class DebugController implements DebugListener {
      */
     public void event(DebugEvent debugEvent) {
 	if (debugEvent instanceof FiringEvent) {
+            System.out.println("haha");
 	    FiringEvent event = (FiringEvent) debugEvent;
 
             if (event.getActor() == _object) {
@@ -108,31 +114,21 @@ public class DebugController implements DebugListener {
                 if (location != null) {
                     Figure figure = _graphController.getFigure(location);
                     if (figure != null) {
-                        if (_debugRenderer == null) {
-                            _debugRenderer = new DebugRenderer();
-                        }
-                        if (event.getType() == FiringEvent.BEFORE_PREFIRE) {
-                            _debugRenderer.renderSelected(figure);
-                            _debugRendered = figure;
+                        if (event.getType() == FiringEvent.BEFORE_PREFIRE &&
+                                objToHighlight.getAttribute("BEFORE_PREFIRE") != null) {
+                            render(figure);
                             System.out.println("DebugController: prefire " + event.getActor().toString());
-                        } else if (event.getType() == FiringEvent.BEFORE_FIRE) {
-                            System.out.println("DebugController: fire");
-                        } else if (event.getType() == FiringEvent.BEFORE_POSTFIRE) {
-                            System.out.println("DebugController: postfire");
-                        } else if (event.getType() == FiringEvent.AFTER_POSTFIRE) {
-                            System.out.println("DebugController: postpostfire");
-
-                    
-                            BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-                            try {
-                                console.readLine();
-                                if (_debugRendered != null) {
-                                    _debugRenderer.renderDeselected(_debugRendered);
-                                }
-                            } catch (IOException e) {
-                                //do nothing
-                            }
                             
+                        } else if (event.getType() == FiringEvent.BEFORE_FIRE &&
+                                   objToHighlight.getAttribute("BEFORE_FIRE") != null) {
+                            render(figure);
+                            System.out.println("DebugController: fire");
+                        } else if (event.getType() == FiringEvent.BEFORE_POSTFIRE && objToHighlight.getAttribute("BEFORE_POSTFIRE") != null) {
+                            render(figure);
+                            System.out.println("DebugController: postfire");
+                        } else if (event.getType() == FiringEvent.AFTER_POSTFIRE&& objToHighlight.getAttribute("AFTER_POSTFIRE") != null) {
+                            render(figure);
+                            System.out.println("DebugController: postpostfire");
                         }
                     }
                 }
@@ -140,6 +136,29 @@ public class DebugController implements DebugListener {
         }
     }
             
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void render(Figure figure) {
+        if (_debugRenderer == null) {
+            _debugRenderer = new DebugRenderer();
+        }
+
+        _debugRenderer.renderSelected(figure);
+        _debugRendered = figure;
+        
+        BufferedReader console = new BufferedReader(
+                new InputStreamReader(System.in));
+        try {
+            console.readLine();
+            if (_debugRendered != null) {
+                _debugRenderer.renderDeselected(_debugRendered);
+            }
+        } catch (IOException e) {
+            //do nothing
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

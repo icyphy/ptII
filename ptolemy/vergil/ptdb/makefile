@@ -18,6 +18,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DebugController.java \
+	BreakpointDialogFactory.java \
+	BreakpointConfigurer.java \
+	BreakpointConfigurerDialog.java
 
 EXTRA_SRCS = \
 	$(JSRCS) $(DIRS)
