@@ -161,7 +161,7 @@ public abstract class Top extends JFrame {
      *  calling the two-argument version with an empty string as the
      *  first argument.
      *  @param ex The exception to report.
-     *  @see report(String, Exception)
+     *  @see #report(String, Exception)
      */
     public void report(Exception ex) {
 	report("", ex);
