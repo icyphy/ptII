@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
@@ -39,6 +39,7 @@ import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.moml.*;
 import ptolemy.vergil.ExceptionHandler;
 import diva.graph.AbstractGraphModel;
@@ -63,12 +64,10 @@ a graph model for graphically manipulating ptolemy FSM models.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class FSMGraphModel extends ModularGraphModel {
+public class FSMGraphModel extends AbstractPtolemyGraphModel {
 
-    /**
-     * Construct a new graph model whose root is the given composite entity.
-     * Create graphical representations of objects in the entity, if 
-     * necessary.
+    /** Construct a new graph model whose root is the given composite entity.
+     *  @param toplevel The top-level composite entity for the model.
      */
     public FSMGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
@@ -76,10 +75,17 @@ public class FSMGraphModel extends ModularGraphModel {
 	toplevel.addChangeListener(new GraphChangeListener());
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** 
      * Return the model for the given composite object.  If the object is not
      * a composite, meaning that it does not contain other nodes, 
-     * then return null.
+     * then return null.  
+     * @param composite An object which is assumed to be a node object in
+     * this graph model.
+     * @return An instance of ToplevelModel if the object is the root 
+     * object of this graph model.  Otherwise return null.
      */
     public CompositeModel getCompositeModel(Object composite) {
 	if(composite.equals(getRoot())) {
@@ -92,6 +98,9 @@ public class FSMGraphModel extends ModularGraphModel {
     /** 
      * Return the model for the given edge object.  If the object is not
      * an edge, then return null.
+     * @param edge An object which is assumed to be in this graph model.
+     * @return An instance of ArcModel if the object is an Arc.
+     * Otherwise return null.
      */
     public EdgeModel getEdgeModel(Object edge) {
 	if(edge instanceof Arc) {
@@ -104,6 +113,9 @@ public class FSMGraphModel extends ModularGraphModel {
     /** 
      * Return the node model for the given object.  If the object is not
      * a node, then return null.
+     * @param node An object which is assumed to be in this graph model.
+     * @return An instance of StateModel if the object is an icon.
+     * Otherwise return null.
      */
     public NodeModel getNodeModel(Object node) {
 	if(node instanceof Icon) {
@@ -113,33 +125,14 @@ public class FSMGraphModel extends ModularGraphModel {
 	}
     }
 
-    /**
-     * Return the property of the object associated with
-     * the given property name.
-     */
-    public Object getProperty(Object o, String propertyName) {
-	try {
-	    NamedObj object = (NamedObj)o;
-	    Attribute a = object.getAttribute(propertyName);
-	    Token t = ((Variable)a).getToken();
-	    if(t instanceof ObjectToken) {
-		return ((ObjectToken)t).getValue();
-	    } else {
-		return t.toString();
-	    }
-	} catch (Exception ex) {
-	    return null;
-	}
-    }
-
     /** Return the semantic object correspoding to the given node, edge,
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this case, if the node is icon, the
-     *  semantic object is an entity.  If it is a vertex or a link, the
-     *  semantic object is a relation.  If it is a port, then the
-     *  semantic object is the port itself.
+     *  semantic object is the entity containing the icon.  If it is 
+     *  an arc, then the semantic object is the arc's relation.  
      *  @param element A graph element.
-     *  @return The semantic object associated with this element.
+     *  @return The semantic object associated with this element, or null
+     *  if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
 	if(element instanceof Icon) {
@@ -151,49 +144,17 @@ public class FSMGraphModel extends ModularGraphModel {
 	}       
     }
 
-    /**
-     * Set the property of the object associated with
-     * the given property name.
-     */
-    public void setProperty(Object o, String propertyName, Object value) {
-	try {
-	    NamedObj object = (NamedObj)o;
-	    Attribute a = object.getAttribute(propertyName);
-	    if(a == null) {
-		a = new Variable(object, propertyName);
-	    } 
-	    Variable v = (Variable)a;
-	    if(value instanceof String) {
-		v.setExpression((String)value);
-		v.getToken();
-	    } else {
-		v.setToken(new ObjectToken(value));
-	    }
-	}
-	catch (Exception ex) {
-	    // Ignore any errors, which will just result in the property
-	    // not being set.
-	}
-    }
-	
-    /**
-     * Set the semantic object correspoding
-     * to the given node, edge, or composite.
-     */
-    public void setSemanticObject(Object o, Object sem) {
-	throw new UnsupportedOperationException("Ptolemy FSM Graph Model does" +
-						" not allow semantic objects" +
-						" to be changed");
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         inner classes                     ////
 
+    /** The model for arcs between states.
+     */
     public class ArcModel implements EdgeModel {
 	/** Return true if the head of the given edge can be attached to the
 	 *  given node.
-	 *  @param edge The edge to attach.
+	 *  @param edge The edge to attach, which is assumed to be an arc.
 	 *  @param node The node to attach to.
+	 *  @return True if the node is an icon.
 	 */
 	public boolean acceptHead(Object edge, Object node) {
 	    if (node instanceof Icon) {
@@ -204,8 +165,9 @@ public class FSMGraphModel extends ModularGraphModel {
 	
 	/** Return true if the tail of the given edge can be attached to the
 	 *  given node.
-	 *  @param edge The edge to attach.
+	 *  @param edge The edge to attach, which is assumed to be an arc.
 	 *  @param node The node to attach to.
+	 *  @return True if the node is an icon.
 	 */
 	public boolean acceptTail(Object edge, Object node) {
 	    if (node instanceof Icon) {
@@ -215,15 +177,15 @@ public class FSMGraphModel extends ModularGraphModel {
 	}
 
 	/** Return the head node of the given edge.
-	 *  @param edge The edge.
-	 *  @return The head node.
+	 *  @param edge The edge, which is assumed to be an arc.
+	 *  @return The node that is the head of the specified edge.
 	 */
 	public Object getHead(Object edge) {
 	    return ((Arc)edge).getHead();
 	}
 
 	/** Return the tail node of the specified edge.
-	 *  @param edge The edge.
+	 *  @param edge The edge, which is assumed to be an arc.
 	 *  @return The node that is the tail of the specified edge.
 	 */
 	public Object getTail(Object edge) {
@@ -232,6 +194,7 @@ public class FSMGraphModel extends ModularGraphModel {
 
 	/** Return true if this edge is directed.  
 	 *  All transitions are directed, so this always returns true.
+	 *  @param edge The edge, which is assumed to be an arc.
 	 *  @return True.
 	 */
 	public boolean isDirected(Object edge) {
@@ -239,8 +202,11 @@ public class FSMGraphModel extends ModularGraphModel {
 	}	
 
 	/** Connect the given edge to the given head node.
-	 *  @param edge The edge.
-	 *  @param head The new head for the edge.
+	 *  This class queues a new change request with the ptolemy model
+	 *  to make this modification.
+	 *  @param edge The edge, which is assumed to be an arc.
+	 *  @param head The new head for the edge, which is assumed to
+	 *  be an icon.
 	 */
 	public void setHead(final Object edge, final Object head) {
 	    _toplevel.requestChange(new ChangeRequest(
@@ -255,8 +221,11 @@ public class FSMGraphModel extends ModularGraphModel {
 	}	
 	
 	/** Connect the given edge to the given tail node.
-	 *  @param edge The edge.
-	 *  @param tail The new tail for the edge.
+	 *  This class queues a new change request with the ptolemy model
+	 *  to make this modification.
+	 *  @param edge The edge, which is assumed to be an arc.
+	 *  @param head The new head for the edge, which is assumed to
+	 *  be an icon.
 	 */
 	public void setTail(final Object edge, final Object tail) {
 	    _toplevel.requestChange(new ChangeRequest(
@@ -271,9 +240,30 @@ public class FSMGraphModel extends ModularGraphModel {
 	}	
     }
     
+    /** The model for an icon that represent states.
+     */
     public class StateModel implements NodeModel {
 	/**
+	 * Return the graph parent of the given node.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @return The container of the icon's container, which should
+	 * be the root of this graph model.
+	 */
+	public Object getParent(Object node) {
+	    return ((Icon)node).getContainer().getContainer();
+	}
+	
+	/**
 	 * Return an iterator over the edges coming into the given node.
+	 * This method first ensures that there is an arc
+	 * object for every link.
+	 * The iterator is constructed by 
+	 * removing any arcs that do not have the given node as head.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @return An iterator of Arc objects, all of which have 
+	 * the given node as their head.
 	 */
 	public Iterator inEdges(Object node) {
 	    Icon icon = (Icon)node;
@@ -310,7 +300,15 @@ public class FSMGraphModel extends ModularGraphModel {
 	}
 	
 	/**
-	 * Return an iterator over the edges coming out of the given node.
+	 * Return an iterator over the edges coming into the given node.
+	 * This method first ensures that there is an arc
+	 * object for every link.
+	 * The iterator is constructed by 
+	 * removing any arcs that do not have the given node as tail.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @return An iterator of Arc objects, all of which have 
+	 * the given node as their tail.
 	 */
 	public Iterator outEdges(Object node) {
 	    Icon icon = (Icon)node;
@@ -338,7 +336,7 @@ public class FSMGraphModel extends ModularGraphModel {
 	    while(links.hasNext()) {
 		Arc link = (Arc)links.next();
 		Object tail = link.getTail();
-		if(tail != null && tail.equals(entity)) {
+		if(tail != null && tail.equals(icon)) {
 		    stateLinkList.add(link);
 		}
 	    }
@@ -347,16 +345,12 @@ public class FSMGraphModel extends ModularGraphModel {
 	}
 	
 	/**
-	 * Return the graph parent of the given node.
-	 */
-	public Object getParent(Object node) {
-	    return ((Icon)node).getContainer().getContainer();
-	}
-	
-	/**
-	 * Set the graph parent of the given node.  Implementors of this method
-	 * are also responsible for insuring that it is set properly as
-	 * the child of the graph in the graph.
+	 * Set the graph parent of the given node.  
+	 * This class queues a new change request with the ptolemy model
+	 * to make this modification.
+	 * @param node The node, which is assumed to be an icon contained in
+	 * this graph model.
+	 * @param parent The parent, which is assumed to be a composite entity.
 	 */
 	public void setParent(final Object node, final Object parent) {
 	    _toplevel.requestChange(new ChangeRequest(
@@ -371,10 +365,15 @@ public class FSMGraphModel extends ModularGraphModel {
 	}
     }
 
+    /** A model for the toplevel composite of this graph model.
+     */
     public class ToplevelModel implements CompositeModel {
 	/**
 	 * Return the number of nodes contained in
 	 * this graph or composite node.
+	 * @param composite The composite, which is assumed to be
+	 * the root composite entity.
+	 * @return The number of entities contained in the composite.
 	 */
 	public int getNodeCount(Object composite) {
 	    CompositeEntity entity = (CompositeEntity)composite;
@@ -383,9 +382,12 @@ public class FSMGraphModel extends ModularGraphModel {
 	}
 	
 	/**
-	 * Provide an iterator over the nodes in the
-	 * given graph or composite node.  This iterator
-	 * does not necessarily support removal operations.
+	 * Return an iterator over all the nodes contained in
+	 * the given composite.  This method ensures that all the entities
+	 * have an icon.
+	 * @param composite The composite, which is assumed to be
+	 * the root composite entity.
+	 * @return An iterator containing icons.
 	 */
 	public Iterator nodes(Object composite) {
 	    Set nodes = new HashSet();
@@ -411,52 +413,6 @@ public class FSMGraphModel extends ModularGraphModel {
 	    
 	    return nodes.iterator();
 	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Mutations may happen to the ptolemy model without the knowledge of
-     *  this model.  This change listener listens for those changes
-     *  and when they occur, issues a GraphEvent so that any views of
-     *  this graph model can come back and update themselves.
-     */
-    public class GraphChangeListener implements ChangeListener {
-
-        /** Notify the listener that a change has been successfully executed.
-	 *  @param change The change that has been executed.
-	 */
-	public void changeExecuted(ChangeRequest change) {
-	    // Ignore anything that comes from this graph model.  
-	    // the other methods take care of issuing the graph event in
-	    // that case.
-	    if(change.getOriginator() == FSMGraphModel.this) {
-                return;
-            }
-	    // This has to happen in the swing thread, because Diva assumes
-	    // that everything happens in the swing thread.  We invoke later
-	    // because the changeRequest that we are listening for often
-	    // occurs in the execution thread of the ptolemy model.
-	    SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    // Otherwise notify any graph listeners 
-		    // that the graph might have
-		    // completely changed.
-		    dispatchGraphEvent(new GraphEvent(
-			FSMGraphModel.this, 
-			GraphEvent.STRUCTURE_CHANGED, getRoot()));
-		}
-	    });
-	}
-
-        /** Notify the listener that the change has failed with the
-         *  specified exception.
- 	 *  @param change The change that has failed.
-         *  @param exception The exception that was thrown.
-         */
-        public void changeFailed(ChangeRequest change, Exception exception) {
-            ExceptionHandler.show("Change failed", exception);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -487,7 +443,10 @@ public class FSMGraphModel extends ModularGraphModel {
 				     + "thwn two states.");
 	}
 	Port port1 = (Port)linkedPortList.get(0);
+	Icon icon1 = _getIcon(port1);
 	Port port2 = (Port)linkedPortList.get(1);
+	Icon icon2 = _getIcon(port2);
+
 	Arc link;
 	try {
 	    link = new Arc(_toplevel, _toplevel.uniqueName("arc"));
@@ -499,16 +458,35 @@ public class FSMGraphModel extends ModularGraphModel {
 		"already exist:" + e.getMessage());
 	}
 	link.setRelation(relation);
-	// FIXME which is which?
-	link.setHead(port1);
-	link.setTail(port2);
+	// We have to get the direction of the arc correct.
+	if(((State)port1.getContainer()).incomingPort.equals(port1)) {	    
+	    link.setHead(icon1);
+	    link.setTail(icon2);
+	} else {
+	    link.setHead(icon2);
+	    link.setTail(icon1);
+	}
+    }
+
+    // Return the icon for the state that contains the given port.
+    public Icon _getIcon(Port port) {
+	Entity entity = (Entity)port.getContainer();
+	List iconList = entity.attributeList(Icon.class);
+	if(iconList.size() > 0) {
+	    return (Icon)iconList.get(0);
+	} else {
+	    throw new InternalErrorException(
+		"Found an entity that does not contain an icon.");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The root of the graph contained by this model.
+    // The root of this graph model, as a CompositeEntity.
     private CompositeEntity _toplevel = null;
+
+    // The models of the different types of nodes and edges.
     private ArcModel _arcModel = new ArcModel();
     private ToplevelModel _toplevelModel = new ToplevelModel();
     private StateModel _stateModel = new StateModel();
