@@ -58,7 +58,7 @@ public class UnitCategory extends Attribute {
      *  Increment the version of the workspace.
      *
      *  <p>This constructor adds the created object to the system wide
-     *  UnitSystem by calling {@link UnitSystem#addUnitCategory(UnitCategory)}.
+     *  UnitSystem by calling {@link UnitUtilities#registerUnitCategory()}
      *
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -70,6 +70,7 @@ public class UnitCategory extends Attribute {
     public UnitCategory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        UnitUtilities.registerUnitCategory(((BaseUnit)this.getContainer()).getName());
+        UnitUtilities.registerUnitCategory(
+                ((BaseUnit)this.getContainer()).getName());
     }
 }

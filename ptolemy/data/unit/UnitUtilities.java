@@ -297,7 +297,7 @@ public class UnitUtilities {
      *  {@link UnitCategory#UnitCategory(NamedObj, String)} constructor
      *  calls this method.
      *
-     *  @param category The unit category to be registered.
+     *  @param categoryName The unit categoryName to be registered.
      */
     public static void registerUnitCategory(String categoryName) {
         synchronized(_indexTable) {
