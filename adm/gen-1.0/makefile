@@ -869,14 +869,31 @@ indent_all:
 INSTALLSHIELD_SRC=installshield
 INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
 INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
+INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/designdoc
+INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
 
-installshield_app: $(INSTALLSHIELD_APP)
+installshield_app: $(INSTALLSHIELD_APP) $(INSTALLSHIELD_DOC) \
+	$(INSTALLSHIELD_DESIGNDOC) $(INSTALLSHIELD_EXPERIMENTAL)
+
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	(cd $(INSTALLSHIELD_SRC); \
 	 tar -zxf ../ptII$(VERSION).src.tar.$(SUFFIX); \
-	 mv ptII$(VERSION) `basename $@`; \
-	 mkdir -p `basename $(INSTALLSHIELD_DOC)`/doc; \
-	 mkdir -p `basename $(INSTALLSHIELD_DOC)`/doc/design; \
-	 mv `basename $@`/doc/codeDoc `basename $(INSTALLSHIELD_DOC)`/doc; \
-	 mv `basename $@`/doc/design/design.pdf `basename $(INSTALLSHIELD_DOC)`/doc/design; \
-	)
+	 mv ptII$(VERSION) `basename $@`)
+
+$(INSTALLSHIELD_DOC):
+	 mkdir -p $@/doc
+	 mv $(INSTALLSHIELD_APP)/doc/codeDoc $@/doc
+
+$(INSTALLSHIELD_DESIGNDOC):
+	 mkdir -p $@/doc/design
+	 mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design
+
+$(INSTALLSHIELD_EXPERIMENTAL):
+	 mkdir -p $@/ptolemy $@/ptolemy/domains/sdf
+	 mv $(INSTALLSHIELD_APP)/ptolemy/codegen $@/ptolemy
+	 mv $(INSTALLSHIELD_APP)/ptolemy/lang $@/ptolemy
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/codegen \
+		$@/ptolemy/domains/sdf
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/dde $@/ptolemy/domains
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
+	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/gr $@/ptolemy/domains
