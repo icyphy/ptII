@@ -33,21 +33,12 @@
 # and we don't need to generate any dependencies.  Please don't use
 # GNU make extensions in this file, such as 'ifdef'.
 #
-# The primary difference between a makefile that uses compile.mk and one
-# that uses no-compile.mk is that in a directory that uses
-# no-compile.mk, all the 'work' is done by make sources, and the make
-# all command usually does nothing.
-#
-# Another difference is that no-compile.mk should probably never appear
-# in a make.template, since if there is a make.template, then we are
-# calculating dependencies on the fly and creating a makefile, which
-# probably means that we are compiling.
+# This makefile is included in makefiles such as $PTII/doc/makefile.
+# and is usually included at the bottom of the makefile, instead 
+# of including ptcommon.mk
+# This makefile provides default all and install rules.
 
-# Provide an initial value for LIB_DEBUG so we don't get messages about
-# multiply defined rules for $(LIB)/$(LIB_DEBUG) if LIB_DEBUG is empty.
-LIBR_DEBUG =	libdummy_g
-
-all install TAGS: $(EXTRA_SRCS) $(HDRS) $(MISC_FILES)
+all install: $(EXTRA_SRCS) $(MISC_FILES)
 	@echo "Nothing to be done in this directory"
 
 depend:
