@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	ActorTransformer.java \
+	CodeGenerationScope.java \
 	CommandLineTemplate.java \
 	CommandLineTransformer.java \
 	ConstantLoopUnroller.java \
