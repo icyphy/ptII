@@ -302,7 +302,7 @@ public class EditorGraphController extends ViewerGraphController {
     }
  
     ///////////////////////////////////////////////////////////////
-    //// RelationCreator
+    //// PortCreator
     
     /** An interactor for creating ports.  (This is currently not used.)
      */
@@ -333,31 +333,50 @@ public class EditorGraphController extends ViewerGraphController {
 
         /** Create a new edge when the mouse is pressed. */
         public void mousePressed(LayerEvent event) {
-	    // Find the container
-	    final CompositeEntity container = 
-		    (CompositeEntity)getGraphModel().getRoot();
-            Figure source = event.getFigureSource();
+	    Figure source = event.getFigureSource();
             NamedObj sourceObject = (NamedObj) source.getUserObject();
-            FigureLayer layer = (FigureLayer) event.getLayerSource();
-            final String name = container.uniqueName("link");
-
+	    
 	    // Create the new edge.
 	    Link link = new Link();
-            
+	    // Set the tail, going through the model so the link is added
+	    // to the list of links.
+            PtolemyGraphModel model = (PtolemyGraphModel)getGraphModel();
+	    model.getLinkModel().setTail(link, sourceObject);
+		
             try {
-		// Add it to the editor
-                addEdge(link,
-                        sourceObject,
-                        ConnectorEvent.TAIL_END,
-                        event.getLayerX(),
-                        event.getLayerY());
+		// add it to the foreground layer.
+		FigureLayer layer = 
+		    getGraphPane().getForegroundLayer();
+		Site headSite, tailSite;
+	
+		// Temporary sites.  One of these will get blown away later.
+		headSite = new AutonomousSite(layer, 
+					      event.getLayerX(), 
+					      event.getLayerY());          
+		tailSite = new AutonomousSite(layer, 
+					      event.getLayerX(), 
+					      event.getLayerY());          
+		// Render the edge.
+		Connector c =
+		    getEdgeController(link).render(link, layer, tailSite, headSite);
+		// get the actual attach site.
+		tailSite = 
+		    getEdgeController(link).getConnectorTarget().getTailSite(c, source, 
+							    event.getLayerX(),
+							    event.getLayerY());
+		if(tailSite == null) {
+		    throw new RuntimeException("Invalid connector target: " + 
+			"no valid site found for tail of new connector.");
+		}
+
+		// And reattach the connector.
+		c.setTailSite(tailSite);
 
                 // Add it to the selection so it gets a manipulator, and
                 // make events go to the grab-handle under the mouse
-                Figure ef = getFigure(link);
-                getSelectionModel().addSelection(ef);
+		getSelectionModel().addSelection(c);
                 ConnectorManipulator cm =
-                       (ConnectorManipulator) ef.getParent();
+                       (ConnectorManipulator) c.getParent();
                 GrabHandle gh = cm.getHeadHandle();
                 layer.grabPointer(event, gh);
             } catch (Exception ex) {
@@ -366,57 +385,9 @@ public class EditorGraphController extends ViewerGraphController {
 	}
     }
 
-    /** An interactor that creates a new Vertex that is connected to a vertex
-     *  in a relation
-     
-    protected class ConnectedVertexCreator extends AbstractInteractor {
-	public void mousePressed(LayerEvent e) {
-	    FigureLayer layer = (FigureLayer) e.getLayerSource();
-	    Figure source = e.getFigureSource();
-	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
-
-            if((sourceObject instanceof Vertex)) {
-		Relation relation = (Relation)sourceObject.getContainer();
-		Vertex vertex = null;
-		try {
-		    vertex = new Vertex(relation,
-                            relation.uniqueName("vertex"));
-                }
-		catch (Exception ex) {
-		    ex.printStackTrace();
-		    throw new RuntimeException(ex.getMessage());
-		}
-		Node node = getGraphImpl().createNode(vertex);
-		//addNode(node, e.getLayerX(), e.getLayerY());
-
-		Edge edge = getGraphImpl().createEdge(null);
-		//addEdge(edge,
-		//	sourcenode,
-		//ConnectorEvent.TAIL_END,
-		//	e.getLayerX(),
-                //e.getLayerY());
-
-		// Add it to the selection so it gets a manipulator, and
-		// make events go to the grab-handle under the mouse
-		Figure nf = (Figure) node.getVisualObject();
-		getSelectionModel().addSelection(nf);
-		//		ConnectorManipulator cm = (ConnectorManipulator) ef.getParent();
-		//GrabHandle gh = cm.getHeadHandle();
-		layer.grabPointer(e, nf);
-	    }
-	}
-    }
-
-    */
     /** The interactor for creating new relations
      */
     private RelationCreator _relationCreator;
-
-    /** The interactor for creating new vertecies connected
-     *  to an existing relation
-     */
-    //   private ConnectedVertexCreator _connectedVertexCreator;
 
     /** The interactor for creating new terminals
      */

@@ -45,12 +45,12 @@ import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;
 import diva.graph.GraphUtilities;
-import diva.graph.MutableGraphModel;
 import diva.graph.toolbox.*;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.CompositeModel;
 import diva.graph.modular.NodeModel;
 import diva.graph.modular.EdgeModel;
+import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.CompositeNodeModel;
 import diva.util.*;
 import java.util.*;
@@ -77,6 +77,36 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Disconnect an edge from its two enpoints and notify graph
+     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     * event whose source is the given source.
+     *
+     * @param eventSource The source of the event that will be dispatched, e.g.
+     *                    the view that made this call.
+     * @exception GraphException if the operation fails.
+     */
+    public void disconnectEdge(Object eventSource, Object edge) {
+	if(!(getEdgeModel(edge) instanceof MutableEdgeModel)) return;
+	MutableEdgeModel model = (MutableEdgeModel)getEdgeModel(edge);
+	Object head = model.getHead(edge);
+	Object tail = model.getTail(edge);
+        model.setTail(edge, null);
+        model.setHead(edge, null);
+        if(head != null) {
+            GraphEvent e = new GraphEvent(eventSource, 
+					  GraphEvent.EDGE_HEAD_CHANGED,
+					  edge, head);
+            dispatchGraphEvent(e);
+        }
+        if(tail != null) {
+            GraphEvent e = new GraphEvent(eventSource, 
+					  GraphEvent.EDGE_TAIL_CHANGED,
+					  edge, tail);
+            dispatchGraphEvent(e);
+        }	
+    }
+	
     /** 
      * Return the model for the given composite object.  If the object is not
      * a composite, meaning that it does not contain other nodes, 
@@ -107,6 +137,13 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	} else {
 	    return null;
 	}
+    }
+
+    public StateModel getStateModel() {
+	return _stateModel;
+    }
+    public ArcModel getArcModel() {
+	return _arcModel;
     }
 
     /** 
@@ -143,12 +180,50 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	}       
     }
 
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     *
+     * @param eventSource The source of the event that will be dispatched, e.g.
+     *                    the view that made this call.
+     * @exception GraphException if the operation fails.
+     */
+    public void removeNode(Object eventSource, Object node) {
+	if(!(getNodeModel(node) instanceof RemoveableNodeModel)) return;
+	RemoveableNodeModel model = (RemoveableNodeModel)getNodeModel(node);
+	// Remove the edges.
+	Iterator i = GraphUtilities.partiallyContainedEdges(node, this);
+	while(i.hasNext()) {
+	    Object edge = i.next();
+	    disconnectEdge(eventSource, edge);
+	}
+
+        i = outEdges(node);
+	while(i.hasNext()) {
+	    Object edge = i.next();
+	    disconnectEdge(eventSource, edge);
+	}
+
+	i = inEdges(node);
+	while(i.hasNext()) {
+	    Object edge = i.next();
+	    disconnectEdge(eventSource, edge);
+	}
+
+	// remove the node.
+	Object prevParent = model.getParent(node);
+        model.removeNode(node);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
+				      node, prevParent);
+        dispatchGraphEvent(e);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The model for arcs between states.
      */
-    public class ArcModel implements EdgeModel {
+    public class ArcModel implements MutableEdgeModel {
 	/** Return true if the head of the given edge can be attached to the
 	 *  given node.
 	 *  @param edge The edge to attach, which is assumed to be an arc.
@@ -484,7 +559,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
     
     /** The model for an icon that represent states.
      */
-    public class StateModel implements NodeModel {
+    public class StateModel implements RemoveableNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon contained in
@@ -584,22 +659,33 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	    return stateLinkList.iterator();
 	}
 	
-	/**
-	 * Set the graph parent of the given node.  
-	 * This class queues a new change request with the ptolemy model
-	 * to make this modification.
-	 * @param node The node, which is assumed to be an icon contained in
-	 * this graph model.
-	 * @param parent The parent, which is assumed to be a composite entity.
+	/** Remove the given node from the model.  The node is assumed
+	 *  to be an icon.
 	 */
-	public void setParent(final Object node, final Object parent) {
-	    try {
-		ComponentEntity entity = 
-		    (ComponentEntity)((Icon)node).getContainer();
-		entity.setContainer((CompositeEntity)parent);
-	    } catch (Exception ex) {
-		throw new GraphException(ex);
-	    }
+	public void removeNode(Object node) {
+            // NOTE: Have to know what this is. This seems awkward.
+            Nameable deleteObj = ((Icon)node).getContainer();
+            String elementName = null;
+            if (deleteObj instanceof ComponentEntity) {
+                // Object is an entity.
+                elementName = "deleteEntity";
+            } else if (deleteObj instanceof Attribute) {
+                // Object is an attribute.
+                elementName = "deleteProperty";
+            } else {
+		throw new UnsupportedOperationException(
+		    "Unrecognized node to remove.");
+            }
+
+            String moml = "<" + elementName + " name=\""
+                    + ((NamedObj)deleteObj).getName() + "\"/>\n";
+
+            // Make the request in the context of the container.
+            NamedObj container = (NamedObj)deleteObj.getContainer();
+            ChangeRequest request = 
+                    new MoMLChangeRequest(
+                    FSMGraphModel.this, container, moml);
+            container.requestChange(request);
 	}
     }
 
@@ -715,6 +801,12 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 		"Found an entity that does not contain an icon.");
 	}
     }
+
+    private interface RemoveableNodeModel extends NodeModel {
+	/** Remove the given edge from the model
+	 */
+	public void removeNode(Object node);
+    }	    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -72,14 +72,24 @@ undirected edge are allowed.
 public class LinkController extends EdgeController {
     public LinkController(GraphController controller) {
 	super(controller);
-	ConnectorTarget ct = new LinkTarget();
-	setConnectorTarget(ct);
-	setEdgeRenderer(new LinkRenderer());
-
 	SelectionModel sm = controller.getSelectionModel();
 	SelectionInteractor interactor =
             (SelectionInteractor) getEdgeInteractor();
 	interactor.setSelectionModel(sm);
+
+        // Create and set up the manipulator for connectors
+        ConnectorManipulator manipulator = new ConnectorManipulator();
+        manipulator.setSnapHalo(4.0);
+        manipulator.addConnectorListener(new LinkDropper());
+        interactor.setPrototypeDecorator(manipulator);
+
+        // The mouse filter needs to accept regular click or control click
+        MouseFilter handleFilter = new MouseFilter(1, 0, 0);
+        manipulator.setHandleFilter(handleFilter);
+
+	ConnectorTarget ct = new LinkTarget();
+	setConnectorTarget(ct);
+	setEdgeRenderer(new LinkRenderer());
 
 	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
@@ -100,6 +110,9 @@ public class LinkController extends EdgeController {
     public void setMenuFactory(MenuFactory factory) {
         _menuCreator.setMenuFactory(factory);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public classes                    ////
 
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
@@ -151,5 +164,34 @@ public class LinkController extends EdgeController {
             return c;
         }
     }
+
+    /** An inner class that handles interactive changes to connectivity.
+     */
+    protected class LinkDropper extends ConnectorAdapter {
+        /**
+         * Called when a connector end is dropped--attach or
+         * detach the edge as appropriate.
+         */
+        public void connectorDropped(ConnectorEvent evt) {
+            Connector c = evt.getConnector();
+            Figure f = evt.getTarget();
+            Object edge = c.getUserObject();
+            Object node = (f == null) ? null : f.getUserObject();
+            PtolemyGraphModel model =  
+		(PtolemyGraphModel) getController().getGraphModel();
+	    switch (evt.getEnd()) {
+	    case ConnectorEvent.HEAD_END:
+		model.getLinkModel().setHead(edge, node);
+		break;
+	    case ConnectorEvent.TAIL_END:
+		model.getLinkModel().setTail(edge, node);
+		break;
+	    default:
+		throw new IllegalStateException(
+						"Cannot handle both ends of an edge being dragged.");
+	    }
+        }
+    }
+
     private MenuCreator _menuCreator;
 }

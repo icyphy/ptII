@@ -96,7 +96,6 @@ import diva.graph.MutableGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LevelLayout;
 import diva.graph.layout.LayoutTarget;
-import diva.graph.toolbox.DeletionListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -419,7 +418,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	GraphPane graphPane = _jgraph.getGraphPane();
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
-	MutableGraphModel model = controller.getGraphModel();
+	GraphModel model = controller.getGraphModel();
 	if(transferable == null) 
 	    return;
 	try {
@@ -855,6 +854,45 @@ public abstract class GraphFrame extends PtolemyFrame
 		}
 		((Locatable)node).setLocation(location);
  	    }
+	}
+    }
+
+    private class DeletionListener implements ActionListener {
+	/** 
+	 * Delete any nodes or edges from the graph that are currently
+	 * selected.  In addition, delete any edges that are connected to
+	 * any deleted nodes.
+	 */
+	public void actionPerformed(ActionEvent e) {
+	    JGraph jgraph = (JGraph) e.getSource();
+	    GraphPane graphPane = jgraph.getGraphPane();
+	    GraphController controller =
+		(GraphController)graphPane.getGraphController();
+	    AbstractPtolemyGraphModel graphModel = 
+		(AbstractPtolemyGraphModel)controller.getGraphModel();
+	    SelectionModel model = controller.getSelectionModel();
+	    Object selection[] = model.getSelectionAsArray();
+	    Object userObjects[] = new Object[selection.length];
+	    // First remove the selection.
+	    for(int i = 0; i < selection.length; i++) {
+		userObjects[i] = ((Figure)selection[i]).getUserObject();
+		model.removeSelection(selection[i]);
+	    }
+	    
+	    // Remove all the edges first, since if we remove the nodes first,
+	    // then removing the nodes might remove some of the edges.
+	    for(int i = 0; i < userObjects.length; i++) {
+		Object userObject = userObjects[i];
+		if(graphModel.isEdge(userObject)) {
+		    graphModel.disconnectEdge(this, userObject);
+		}
+	    }
+	    for(int i = 0; i < selection.length; i++) {
+		Object userObject = userObjects[i];
+		if(graphModel.isNode(userObject)) {
+		    graphModel.removeNode(this, userObject);
+		}
+	    }
 	}
     }
 }

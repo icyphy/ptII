@@ -73,19 +73,25 @@ public class FSMTransitionController extends EdgeController {
     public FSMTransitionController(GraphController controller) {
 	super(controller);
 	// Create and set up the target for connectors
-	// This is wierd...  we want 2 targets, one for head and port,
-	// one for tail and vertex.
-	ConnectorTarget ct = new LinkTarget();
-	setConnectorTarget(ct);
-	setEdgeRenderer(new LinkRenderer());
-
+	
 	SelectionModel sm = controller.getSelectionModel();
 	SelectionInteractor interactor =
             (SelectionInteractor) getEdgeInteractor();
 	interactor.setSelectionModel(sm);
 
-	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
-	//manipulator.setHandleFilter(handleFilter);
+        // Create and set up the manipulator for connectors
+        ConnectorManipulator manipulator = new ConnectorManipulator();
+        manipulator.setSnapHalo(4.0);
+        manipulator.addConnectorListener(new LinkDropper());
+        interactor.setPrototypeDecorator(manipulator);
+
+        // The mouse filter needs to accept regular click or control click
+        MouseFilter handleFilter = new MouseFilter(1, 0, 0);
+        manipulator.setHandleFilter(handleFilter);
+
+	ConnectorTarget ct = new LinkTarget();
+	setConnectorTarget(ct);
+	setEdgeRenderer(new LinkRenderer());
 
 	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
@@ -137,6 +143,34 @@ public class FSMTransitionController extends EdgeController {
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
             return c;
+        }
+    }
+
+    /** An inner class that handles interactive changes to connectivity.
+     */
+    protected class LinkDropper extends ConnectorAdapter {
+        /**
+         * Called when a connector end is dropped--attach or
+         * detach the edge as appropriate.
+         */
+        public void connectorDropped(ConnectorEvent evt) {
+            Connector c = evt.getConnector();
+            Figure f = evt.getTarget();
+            Object edge = c.getUserObject();
+            Object node = (f == null) ? null : f.getUserObject();
+            FSMGraphModel model =  
+		(FSMGraphModel) getController().getGraphModel();
+	    switch (evt.getEnd()) {
+	    case ConnectorEvent.HEAD_END:
+		model.getArcModel().setHead(edge, node);
+		break;
+	    case ConnectorEvent.TAIL_END:
+		model.getArcModel().setTail(edge, node);
+		break;
+	    default:
+		throw new IllegalStateException(
+						"Cannot handle both ends of an edge being dragged.");
+	    }
         }
     }
     private MenuCreator _menuCreator;

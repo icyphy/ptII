@@ -55,6 +55,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
+	AbstractPtolemyGraphModel.java \
 	EditorDropTarget.java \
 	GraphFrame.java \
 	LocatableNodeController.java \

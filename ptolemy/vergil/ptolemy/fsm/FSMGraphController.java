@@ -118,39 +118,57 @@ public class FSMGraphController extends FSMViewerController {
      * to another.
      */
     protected class LinkCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
-            Figure source = e.getFigureSource();
-	    NamedObj object = (NamedObj) source.getUserObject();
+        public void mousePressed(LayerEvent event) {
+            Figure source = event.getFigureSource();
+	    NamedObj sourceObject = (NamedObj) source.getUserObject();
 
-	    FigureLayer layer = (FigureLayer) e.getLayerSource();
+	    Arc link = new Arc();
 
-	    // Create a new edge
-	    CompositeEntity container = 
-		(CompositeEntity)getGraphModel().getRoot();
+	    // Set the tail, going through the model so the link is added
+	    // to the list of links.
+            FSMGraphModel model = (FSMGraphModel)getGraphModel();
+	    model.getArcModel().setTail(link, sourceObject);
+		
+            try {
+		// add it to the foreground layer.
+		FigureLayer layer = 
+		    getGraphPane().getForegroundLayer();
+		Site headSite, tailSite;
+	
+		// Temporary sites.  One of these will get blown away later.
+		headSite = new AutonomousSite(layer, 
+					      event.getLayerX(), 
+					      event.getLayerY());          
+		tailSite = new AutonomousSite(layer, 
+					      event.getLayerX(), 
+					      event.getLayerY());          
+		// Render the edge.
+		Connector c =
+		    getEdgeController(link).render(link, layer, tailSite, headSite);
+		// get the actual attach site.
+		tailSite = 
+		    getEdgeController(link).getConnectorTarget().getTailSite(c, source, 
+							    event.getLayerX(),
+							    event.getLayerY());
+		if(tailSite == null) {
+		    throw new RuntimeException("Invalid connector target: " + 
+			"no valid site found for tail of new connector.");
+		}
 
-	    Arc link;
-	    try {
-                link = new Arc();
-            }
-            catch (Exception ex) {
-		MessageHandler.error("Create relation failed:", ex);
-		return;
-	    }
-	    // Add it to the editor
-	    getLinkController().addEdge(link,
-                    object,
-                    ConnectorEvent.TAIL_END,
-                    e.getLayerX(),
-                    e.getLayerY());
+		// And reattach the connector.
+		c.setTailSite(tailSite);
 
-	    // Add it to the selection so it gets a manipulator, and
-	    // make events go to the grab-handle under the mouse
-	    Figure ef = getFigure(link);
-	    getSelectionModel().addSelection(ef);
-	    ConnectorManipulator cm =
-		(ConnectorManipulator) ef.getParent();
-	    GrabHandle gh = cm.getHeadHandle();
-	    layer.grabPointer(e, gh);
+		// Add it to the selection so it gets a manipulator, and
+		// make events go to the grab-handle under the mouse
+		Figure ef = getFigure(link);
+		getSelectionModel().addSelection(ef);
+		ConnectorManipulator cm =
+		    (ConnectorManipulator) ef.getParent();
+		GrabHandle gh = cm.getHeadHandle();
+		layer.grabPointer(event, gh);
+            } catch (Exception ex) {
+                MessageHandler.error("Drag connection failed:", ex);
+            }	    
 	}
     }
 

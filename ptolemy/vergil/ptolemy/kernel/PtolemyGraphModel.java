@@ -46,7 +46,7 @@ import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
 import diva.graph.GraphException;
 import diva.graph.GraphUtilities;
-import diva.graph.MutableGraphModel;
+import diva.graph.modular.MutableEdgeModel;
 import diva.graph.toolbox.*;
 import diva.graph.modular.ModularGraphModel;
 import diva.graph.modular.CompositeModel;
@@ -100,6 +100,36 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Disconnect an edge from its two enpoints and notify graph
+     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     * event whose source is the given source.
+     *
+     * @param eventSource The source of the event that will be dispatched, e.g.
+     *                    the view that made this call.
+     * @exception GraphException if the operation fails.
+     */
+    public void disconnectEdge(Object eventSource, Object edge) {
+	if(!(getEdgeModel(edge) instanceof MutableEdgeModel)) return;
+	MutableEdgeModel model = (MutableEdgeModel)getEdgeModel(edge);
+	Object head = model.getHead(edge);
+	Object tail = model.getTail(edge);
+        model.setTail(edge, null);
+        model.setHead(edge, null);
+        if(head != null) {
+            GraphEvent e = new GraphEvent(eventSource, 
+					  GraphEvent.EDGE_HEAD_CHANGED,
+					  edge, head);
+            dispatchGraphEvent(e);
+        }
+        if(tail != null) {
+            GraphEvent e = new GraphEvent(eventSource, 
+					  GraphEvent.EDGE_TAIL_CHANGED,
+					  edge, tail);
+            dispatchGraphEvent(e);
+        }	
+    }
 
     /** 
      * Return the model for the given composite object.  If the object is not
@@ -161,6 +191,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}
     }
 
+    public LinkModel getLinkModel() {
+	return _linkModel;
+    }
+    public ToplevelModel getToplevelModel() {
+	return _toplevelModel;
+    }
+    public IconModel getIconModel() {
+	return _iconModel;
+    }
+    public PortModel getPortModel() {
+	return _portModel;
+    }
+    public ExternalPortModel getExternalPortModel() {
+	return _externalPortModel;
+    }
+    public VertexModel getVertexModel() {
+	return _vertexModel;
+    }
+
     /** Return the semantic object correspoding to the given node, edge,
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this case, if the node is icon, the
@@ -188,13 +237,51 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}       
     }
 
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     *
+     * @param eventSource The source of the event that will be dispatched, e.g.
+     *                    the view that made this call.
+     * @exception GraphException if the operation fails.
+     */
+    public void removeNode(Object eventSource, Object node) {
+	if(!(getNodeModel(node) instanceof RemoveableNodeModel)) return;
+	RemoveableNodeModel model = (RemoveableNodeModel)getNodeModel(node);
+	// Remove the edges.
+	Iterator i = GraphUtilities.partiallyContainedEdges(node, this);
+	while(i.hasNext()) {
+	    Object edge = i.next();
+	    disconnectEdge(eventSource, edge);
+	}
+
+        i = outEdges(node);
+	while(i.hasNext()) {
+	    Object edge = i.next();
+	    disconnectEdge(eventSource, edge);
+	}
+
+	i = inEdges(node);
+	while(i.hasNext()) {
+	    Object edge = i.next();
+	    disconnectEdge(eventSource, edge);
+	}
+
+	// remove the node.
+	Object prevParent = model.getParent(node);
+        model.removeNode(node);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
+				      node, prevParent);
+        dispatchGraphEvent(e);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The model for ports that make external connections to this graph.
      *  These ports are always contained by the root of this graph model.
      */
-    private class ExternalPortModel implements NodeModel {
+    public class ExternalPortModel implements RemoveableNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a port contained in
@@ -287,42 +374,28 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    return portLinkList.iterator();
 	}
 	
-	/**
-	 * Set the graph parent of the given node.  
-	 * @param node The node, which is assumed to be a port contained in
-	 * the root of this graph model.
-	 * @param parent The parent, which is assumed to be a composite entity.
+	/** Remove the given edge from the model
 	 */
-	public void setParent(Object node, final Object parent) {
-	    if(parent != null) {
-		throw new UnsupportedOperationException(
-		    "Only node removal is supported by this graph model.");
-	    }
+	public void removeNode(Object node) {
 	    Location location = (Location)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
 	    NamedObj container = (NamedObj)port.getContainer();
-	    try {
-		// Delete the port.
-		StringBuffer moml = new StringBuffer();
-		moml.append("<deletePort name=\"" + 
-			    port.getName(container) + 
-			    "\"/>\n");
-		ChangeRequest request = 
-                    new MoMLChangeRequest(PtolemyGraphModel.this, 
+	    // Delete the port.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<deletePort name=\"" + 
+			port.getName(container) + 
+			"\"/>\n");
+	    ChangeRequest request = 
+    new MoMLChangeRequest(PtolemyGraphModel.this, 
 			  container,
 			  moml.toString());
-		container.requestChange(request);
-                // NOTE: This is not a good idea...
-		// request.waitForCompletion();
-	    } catch (Exception ex) {
-		throw new GraphException(ex);
-	    }
+	    container.requestChange(request);
 	}	
     }
 
     /** The model for an icon that contains ports.
      */
-    private class IconModel implements CompositeNodeModel {
+    public class IconModel implements CompositeNodeModel, RemoveableNodeModel {
 	/**
 	 * Return the number of nodes contained in
 	 * this graph or composite node.
@@ -383,31 +456,16 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    return new NullIterator();
 	}
 	
-	/**
-	 * Set the graph parent of the given node.  
-	 * This class queues a new change request with the ptolemy model
-	 * to make this modification.
-	 * @param node The node, which is assumed to be an icon.
-	 * @param parent The parent, which is assumed to be a composite entity.
+	/** Remove the given node from the model.  The node is assumed
+	 *  to be an icon.
 	 */
-	public void setParent(final Object node, final Object parent) {
-	    if(parent != null) {
-		throw new UnsupportedOperationException(
-		    "Only node removal is supported by this graph model.");
-	    }
-            // NOTE: Have to know whether this is an entity,
-            // port, etc. This seems awkward.
+	public void removeNode(Object node) {
+            // NOTE: Have to know what this is. This seems awkward.
             Nameable deleteObj = ((Icon)node).getContainer();
             String elementName = null;
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.
                 elementName = "deleteEntity";
-            } else if (deleteObj instanceof Port) {
-                // Object is a port.
-                elementName = "deletePort";
-            } else if (deleteObj instanceof Relation) {
-                // Object is a relation.
-                elementName = "deleteRelation";
             } else if (deleteObj instanceof Attribute) {
                 // Object is an attribute.
                 elementName = "deleteProperty";
@@ -425,15 +483,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     new MoMLChangeRequest(
                     PtolemyGraphModel.this, container, moml);
             container.requestChange(request);
-
-            // NOTE: This is not a good idea...
-            // request.waitForCompletion();
 	}
     }
 
     /** The model for links that connect two ports, or a port and a vertex.
      */
-    private class LinkModel implements EdgeModel {
+    public class LinkModel implements MutableEdgeModel {
 	/** Return true if the head of the given edge can be attached to the
 	 *  given node.
 	 *  @param edge The edge to attach, which is assumed to be a link.
@@ -800,7 +855,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     
     /** The model for ports that are contained in icons in this graph.
      */
-    private class PortModel implements NodeModel {
+    public class PortModel implements RemoveableNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a port.
@@ -897,42 +952,30 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    return portLinkList.iterator();
 	}
 	
-	/**
-	 * Set the graph parent of the given node.  
-	 * This class queues a new change request with the ptolemy model
-	 * to make this modification.
-	 * @param node The node, which is assumed to be a port in this model.
-	 * @param parent The parent, which is assumed to be a composite entity.
+	/** Remove the given node from the model.  The node is assumed
+	 *  to be a port.
+	 *  This class queues a new change request with the ptolemy model
+	 *  to make this modification.
 	 */
-	public void setParent(final Object node, final Object parent) {
-	    if(parent != null) {
-		throw new UnsupportedOperationException(
-		    "Only node removal is supported by this graph model.");
-	    }
+	public void removeNode(Object node) {
 	    ComponentPort port = (ComponentPort)node;
 	    NamedObj container = (NamedObj)port.getContainer();
-	    try {
-		// Delete the port.
-		StringBuffer moml = new StringBuffer();
-		moml.append("<deletePort name=\"" + 
-			    port.getName(container) + 
-			    "\"/>\n");
-		ChangeRequest request = 
-                    new MoMLChangeRequest(PtolemyGraphModel.this, 
-					  container,
-					  moml.toString());
-		container.requestChange(request);
-                // NOTE: This is not a good idea...
-		// request.waitForCompletion();
-	    } catch (Exception ex) {
-		throw new GraphException(ex);
-	    }
+	    // Delete the port.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<deletePort name=\"" + 
+			port.getName(container) + 
+			"\"/>\n");
+	    ChangeRequest request = 
+		new MoMLChangeRequest(PtolemyGraphModel.this, 
+				      container,
+				      moml.toString());
+	    container.requestChange(request);
 	}	
     }
 
     /** A model for the toplevel composite of this graph model.
      */
-    private class ToplevelModel implements CompositeModel {
+    public class ToplevelModel implements CompositeModel {
 	/**
 	 * Return the number of nodes contained in
 	 * this graph or composite node.
@@ -1059,7 +1102,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     /** The model for vertexes that are contained within the relations of the
      *  ptolemy model.
      */
-    private class VertexModel implements NodeModel {
+    public class VertexModel implements RemoveableNodeModel {
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be a Vertex.
@@ -1132,38 +1175,25 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    return vertexLinkList.iterator();
 	}
 	
-	/**
-	 * Set the graph parent of the given node.  
-	 * This class queues a new change request with the ptolemy model
-	 * to make this modification.
-	 * @param node The node, which is assumed to be a vertex.
-	 * @param parent The parent, which is assumed to be a 
-	 * component relation.
+	/** Remove the given node from the model.  The node is assumed
+	 *  to be a vertex contained by a relation.
+	 *  This class queues a new change request with the ptolemy model
+	 *  to make this modification.
 	 */
-	public void setParent(final Object node, final Object parent) {
-	    if(parent != null) {
-		throw new UnsupportedOperationException(
-		    "Only node removal is supported by this graph model.");
-	    }
+	public void removeNode(Object node) {
 	    ComponentRelation relation =
 		(ComponentRelation)((Vertex)node).getContainer();
 	    NamedObj container = (NamedObj)relation.getContainer();
-	    try {
-		// Delete the relation.
-		StringBuffer moml = new StringBuffer();
-		moml.append("<deleteRelation name=\"" + 
-			    relation.getName(container) +
-			    "\"/>\n");
-		ChangeRequest request = 
-                    new MoMLChangeRequest(PtolemyGraphModel.this, 
-					  container,
-					  moml.toString());
-		container.requestChange(request);
-                // NOTE: This is not a good idea...
-		// request.waitForCompletion();
-	    } catch (Exception ex) {
-		throw new GraphException(ex);
-	    }
+	    // Delete the relation.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<deleteRelation name=\"" + 
+			relation.getName(container) +
+			"\"/>\n");
+	    ChangeRequest request = 
+		new MoMLChangeRequest(PtolemyGraphModel.this, 
+				      container,
+				      moml.toString());
+	    container.requestChange(request);
 	}	
     }
 
@@ -1312,6 +1342,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    }
 	}
     }
+
+    private interface RemoveableNodeModel extends NodeModel {
+	/** Remove the given edge from the model
+	 */
+	public void removeNode(Object node);
+    }	    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

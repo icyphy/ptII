@@ -119,9 +119,11 @@ public class PortController extends LocatableNodeController {
 	    // Entity Controller.
 	    int direction;
 	    Location location = (Location)n;
+	    System.out.println("rendering location = " + n);
 	    if(location != null) {
 		Port port = (Port)location.getContainer();
 		Color fill;
+		System.out.println("rendering port = " + port.getFullName());
 		if(port instanceof IOPort && ((IOPort)port).isMultiport()) {
 		    fill = Color.white;
 		} else {
@@ -131,16 +133,23 @@ public class PortController extends LocatableNodeController {
 		figure.setToolTipText(port.getName());
 		if(!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;
-		} else if(((IOPort)port).isInput() && 
-			  ((IOPort)port).isOutput()) {
-		    direction = SwingUtilities.NORTH;
-		} else if(((IOPort)port).isInput()) {
-		    direction = SwingUtilities.EAST;
-		} else if(((IOPort)port).isOutput()) {
-		    direction = SwingUtilities.WEST;
 		} else {
-		    // should never happen
+		    IOPort ioport = (IOPort)port;
+		    
+		    System.out.println("input = " + ioport.isInput());
+		    System.out.println("output = " + ioport.isOutput());
+		
+		    if(ioport.isInput() && 
+		       ioport.isOutput()) {
 		    direction = SwingUtilities.NORTH;
+		    } else if(ioport.isInput()) {
+			direction = SwingUtilities.EAST;
+		    } else if(ioport.isOutput()) {
+			direction = SwingUtilities.WEST;
+		    } else {
+			// should never happen
+			direction = SwingUtilities.NORTH;
+		    }
 		}
 		double normal = CanvasUtilities.getNormal(direction);	    
 		Site tsite = new PerimeterSite(figure, 0);

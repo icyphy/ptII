@@ -88,49 +88,16 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     ////                         public methods                    ////
 
     /**
-     * Add a node to the given graph and notify listeners with a
-     * NODE_ADDED event.  
-     * This method overrides the base class to 
-     * perform the operation in a ptolemy change request.
+     * Disconnect an edge from its two enpoints and notify graph
+     * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
+     * event whose source is the given source.
+     *
+     * @param eventSource The source of the event that will be dispatched, e.g.
+     *                    the view that made this call.
+     * @exception GraphException if the operation fails.
      */
-    public void addNode(final Object eventSource, 
-			final Object node, final Object parent) {
-	throw new UnsupportedOperationException("hack");
-    }
-    
-    /**
-     * Connect the given edge to the given tail and head nodes,
-     * then dispatch events to the listeners.
-     * This method overrides the base class to perform the operation
-     * in a ptolemy change request.
-     */
-    public void connectEdge(final Object eventSource, final Object edge, 
-			    final Object tailNode, final Object headNode) {
-	throw new UnsupportedOperationException("hack");
-    }
-
-    /**
-     * Connect the given edge to the given tail and head nodes,
-     * then dispatch events to the listeners.
-     * This method overrides the base class to perform the operation
-     * in a ptolemy change request.
-      */
-    //  public void disconnectEdge(final Object eventSource, final Object edge) {
-    //	throw new UnsupportedOperationException("hack");
-    //}
-
-    /**
-     * Delete a node from its parent graph and notify
-     * graph listeners with a NODE_REMOVED event.  This first removes all the
-     * edges that are connected to the given node, or some subnode of that
-     * node, and then sets the parent of the node to null.
-     * This method overrides the base class to perform the operation
-     * in a ptolemy change request.
-     */
-    //   public void removeNode(final Object eventSource, final Object node) {
-    //throw new UnsupportedOperationException("hack");
-    //}
-
+    public abstract void disconnectEdge(Object eventSource, Object edge);
+	
     /**
      * Return the property of the object associated with
      * the given property name.  In this implementation
@@ -165,6 +132,16 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     public CompositeEntity getToplevel() {
 	return _toplevel;
     }
+
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     *
+     * @param eventSource The source of the event that will be dispatched, e.g.
+     *                    the view that made this call.
+     * @exception GraphException if the operation fails.
+     */
+    public abstract void removeNode(Object eventSource, Object node);
 
     /**
      * Set the property of the given graph object associated with
@@ -234,16 +211,16 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	    // because the changeRequest that we are listening for often
 	    // occurs in the execution thread of the ptolemy model.
 	    // FIXME this causes a threading bug apparently.
-//	    SwingUtilities.invokeLater(new Runnable() {
-//	        public void run() {
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run() {
 		    // Otherwise notify any graph listeners 
 		    // that the graph might have
 		    // completely changed.
 		    dispatchGraphEvent(new GraphEvent(
 			AbstractPtolemyGraphModel.this, 
 			GraphEvent.STRUCTURE_CHANGED, getRoot()));
-//		}
-//	    });
+		}
+	    });
 	}
 
         /** Notify the listener that the change has failed with the
