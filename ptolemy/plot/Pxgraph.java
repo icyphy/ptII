@@ -686,7 +686,7 @@ public class Pxgraph extends Frame {
      */
     private int _parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
-        int i = 0, j, argsread;
+        int i = 0, j, argumentsRead;
         String arg;
 
         String title = "A plot";
@@ -781,7 +781,7 @@ public class Pxgraph extends Frame {
 
         setTitle(title);
 
-        argsread = i++;
+        argumentsRead = i++;
 
         if (_debug > 2) {
             System.err.println("Pxgraph: title = " + title);
@@ -789,7 +789,7 @@ public class Pxgraph extends Frame {
                     " height = " + height + " _debug = " + _debug);
         }
         _plotPanel.parseArgs(args);
-        return argsread;
+        return argumentsRead;
     }
 
     /* Spawn a browser and run the applet Plot class so that the

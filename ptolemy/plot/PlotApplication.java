@@ -227,7 +227,7 @@ public class PlotApplication extends PlotFrame {
      */
     protected int _parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
-        int i = 0, j, argsread;
+        int i = 0, j, argumentsRead;
         String arg;
         String title = "Ptolemy plot";
 
@@ -294,10 +294,10 @@ public class PlotApplication extends PlotFrame {
         setSize(width, height);
         setTitle(title);
 
-        argsread = i++;
+        argumentsRead = i++;
 
         ((Plot)plot).parseArgs(args);
-        return argsread;
+        return argumentsRead;
     }
 
     /** Return a string summarizing the command-line arguments.

@@ -432,7 +432,7 @@ public class Plot extends PlotBox {
      */
     public int parseArgs(String args[]) throws CmdLineArgException,
             FileNotFoundException, IOException {
-        int i = 0, j, argsread = 0;
+        int i = 0, j, argumentsRead = 0;
 
         // If we see both -nl and -bar, assume we do an impulse plot.
         boolean sawbararg = false; // Saw -bar arg.
@@ -686,11 +686,11 @@ public class Plot extends PlotBox {
             throw new
                 CmdLineArgException("Failed to parse `" + arg + "'");
         }
-        argsread = i++;
+        argumentsRead = i++;
 
         setSize(_width, _height);
 
-        for(i = argsread; i < args.length; i++) {
+        for(i = argumentsRead; i < args.length; i++) {
             // Have a filename.  First attempt to open it as a URL.
             InputStream instream;
             try {
@@ -706,7 +706,7 @@ public class Plot extends PlotBox {
                 read(instream);
             }
         }
-        return argsread;
+        return argumentsRead;
     }
 
     /** Override the base class to indicate that a new data set is being read.
