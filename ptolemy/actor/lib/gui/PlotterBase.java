@@ -541,10 +541,11 @@ public class PlotterBase extends TypedAtomicActor
      */
     protected class PlotterPlotFrame extends PlotTableauFrame {
 
-        /** Construct a plot frame with the specified title and the specified
-         *  instance of PlotBox.  After constructing this, it is necessary
+        /** Construct a plot frame in the corresponding Tableau with the
+         *  specified instance of PlotBox.
+         *  After constructing this, it is necessary
          *  to call setVisible(true) to make the plot appear.
-         *  @param title The title to put on the window.
+         *  @param tableau 
          *  @param plotArg the plot object to put in the frame,
          *   or null to create an instance of Plot.
          */
