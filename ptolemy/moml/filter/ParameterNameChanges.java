@@ -117,62 +117,62 @@ public class ParameterNameChanges implements MoMLFilter {
 
 
         if (attributeName.equals("name")) {
-             // Saveig the name of the for later use if we see a "class"
-             _lastNameSeen = attributeValue;
-             if (_currentlyProcessingActorWithParameterNameChanges) {
-                 if (_propertyMap.containsKey(attributeValue)) {
-                     // We will do the above checks only if we found a
-                     // class that had property class changes.
-                     _newName = (String)_propertyMap.get(attributeValue);
-                     if (!attributeValue.equals(_newName)) {
-                         MoMLParser.setModified(true);
-                     }
-                     return _newName;
-                 } else {
-                     return attributeValue;
-                 }
-             }
-         }
+            // Saveig the name of the for later use if we see a "class"
+            _lastNameSeen = attributeValue;
+            if (_currentlyProcessingActorWithParameterNameChanges) {
+                if (_propertyMap.containsKey(attributeValue)) {
+                    // We will do the above checks only if we found a
+                    // class that had property class changes.
+                    _newName = (String)_propertyMap.get(attributeValue);
+                    if (!attributeValue.equals(_newName)) {
+                        MoMLParser.setModified(true);
+                    }
+                    return _newName;
+                } else {
+                    return attributeValue;
+                }
+            }
+        }
 
-         // If you change this class, you should run before and after
-         // timing tests on large moml files, a good command to run
-         // is:
-         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
-         // which will open up a large xml file and then close after 2 seconds.
-         if (attributeName.equals("class")) {
-             if (_classesWithParameterNameChanges
-                     .containsKey(attributeValue)) {
-                 // We found a class with a parameter name change.
-                 _currentlyProcessingActorWithParameterNameChanges = true;
-                 _currentActorFullName = container.getFullName()
-                     + "." + _lastNameSeen;
-                 _propertyMap =
-                     (HashMap) _classesWithParameterNameChanges
-                     .get(attributeValue);
-             } else if (_currentlyProcessingActorWithParameterNameChanges
-                     && _newName != null) {
+        // If you change this class, you should run before and after
+        // timing tests on large moml files, a good command to run
+        // is:
+        // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
+        // which will open up a large xml file and then close after 2 seconds.
+        if (attributeName.equals("class")) {
+            if (_classesWithParameterNameChanges
+                    .containsKey(attributeValue)) {
+                // We found a class with a parameter name change.
+                _currentlyProcessingActorWithParameterNameChanges = true;
+                _currentActorFullName = container.getFullName()
+                    + "." + _lastNameSeen;
+                _propertyMap =
+                    (HashMap) _classesWithParameterNameChanges
+                    .get(attributeValue);
+            } else if (_currentlyProcessingActorWithParameterNameChanges
+                    && _newName != null) {
 
-                 // We found a property class to change, and now we
-                 // found the class itself that needs changing.
-                 // Only return the new class once, but we might
-                 // have other properties that need changing
-                 //_currentlyProcessingActorWithParameterNameChanges = false;
+                // We found a property class to change, and now we
+                // found the class itself that needs changing.
+                // Only return the new class once, but we might
+                // have other properties that need changing
+                //_currentlyProcessingActorWithParameterNameChanges = false;
 
-                 //                 String temporaryNewClass = _newName;
-                 //                 if (!attributeValue.equals(_newName)) {
-                 //                     MoMLParser.setModified(true);
-                 //                 }
+                //                 String temporaryNewClass = _newName;
+                //                 if (!attributeValue.equals(_newName)) {
+                //                     MoMLParser.setModified(true);
+                //                 }
 
-                 _newName = null;
-             } else if (  _currentlyProcessingActorWithParameterNameChanges
-                     && container != null
-                     && !container.getFullName()
-                     .equals(_currentActorFullName)
-                     && !container.getFullName()
-                     .startsWith(_currentActorFullName)) {
-                 // We found another class in a different container
-                 // while handling a class with port name changes
-                 _currentlyProcessingActorWithParameterNameChanges = false;
+                _newName = null;
+            } else if (  _currentlyProcessingActorWithParameterNameChanges
+                    && container != null
+                    && !container.getFullName()
+                    .equals(_currentActorFullName)
+                    && !container.getFullName()
+                    .startsWith(_currentActorFullName)) {
+                // We found another class in a different container
+                // while handling a class with port name changes
+                _currentlyProcessingActorWithParameterNameChanges = false;
             }
         }
         return attributeValue;

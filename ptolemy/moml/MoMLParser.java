@@ -280,10 +280,10 @@ public class MoMLParser extends HandlerBase {
         if (_namespace == _AUTO_NAMESPACE
                 && _current != null
                 && (name.equals("name")
-                || name.equals("port")
-                || name.equals("relation")
-                || name.equals("vertex")
-                || name.equals("pathTo"))) {
+                        || name.equals("port")
+                        || name.equals("relation")
+                        || name.equals("vertex")
+                        || name.equals("pathTo"))) {
             // See whether the name is in the translation table.
             // Note that the name might be compound, e.g. "Const.output",
             // in which case, we need to parse it and check to see whether
@@ -306,7 +306,7 @@ public class MoMLParser extends HandlerBase {
                     suffix = value.substring(period);
                 }
                 String replacement
-                        = (String)_namespaceTranslationTable.get(prefix);
+                    = (String)_namespaceTranslationTable.get(prefix);
                 if (replacement != null) {
                     // Replace name with translation.
                     value = replacement + suffix;
@@ -326,10 +326,10 @@ public class MoMLParser extends HandlerBase {
             if (_namespace != _DEFAULT_NAMESPACE
                     && _namespace != _AUTO_NAMESPACE
                     && (name.equals("name")
-                    || name.equals("port")
-                    || name.equals("relation")
-                    || name.equals("vertex")
-                    || name.equals("pathTo"))) {
+                            || name.equals("port")
+                            || name.equals("relation")
+                            || name.equals("vertex")
+                            || name.equals("pathTo"))) {
                 value = _namespace + ":" + value;
             }
         }
@@ -606,7 +606,7 @@ public class MoMLParser extends HandlerBase {
                 // For undo need to know if a previous doc attribute with this
                 // name existed
                 Documentation previous =
-                        (Documentation)_current.getAttribute(_currentDocName);
+                    (Documentation)_current.getAttribute(_currentDocName);
                 String previousValue = null;
                 if (previous != null) {
                     previousValue = previous.getValue();
@@ -617,7 +617,7 @@ public class MoMLParser extends HandlerBase {
                 // same name, since Documentation is a SigletonAttribute.
                 if (_currentCharData.length() > 0) {
                     Documentation doc
-                             = new Documentation(_current, _currentDocName);
+                        = new Documentation(_current, _currentDocName);
                     doc.setValue(_currentCharData.toString());
                 }
                 else {
@@ -647,18 +647,18 @@ public class MoMLParser extends HandlerBase {
             }
             else if (
                     elementName.equals("property")
-                     || elementName.equals("class")
-                     || elementName.equals("deleteEntity")
-                     || elementName.equals("deletePort")
-                     || elementName.equals("deleteProperty")
-                     || elementName.equals("deleteRelation")
-                     || elementName.equals("director")
-                     || elementName.equals("entity")
-                     || elementName.equals("model")
-                     || elementName.equals("port")
-                     || elementName.equals("relation")
-                     || elementName.equals("rendition")
-                     || elementName.equals("vertex")) {
+                    || elementName.equals("class")
+                    || elementName.equals("deleteEntity")
+                    || elementName.equals("deletePort")
+                    || elementName.equals("deleteProperty")
+                    || elementName.equals("deleteRelation")
+                    || elementName.equals("director")
+                    || elementName.equals("entity")
+                    || elementName.equals("model")
+                    || elementName.equals("port")
+                    || elementName.equals("relation")
+                    || elementName.equals("rendition")
+                    || elementName.equals("vertex")) {
                 try {
                     _current = (NamedObj)_containers.pop();
                     _namespace = (String)_namespaces.pop();
@@ -837,13 +837,13 @@ public class MoMLParser extends HandlerBase {
                     xmlFileWasNull = true;
                     _xmlFile = new URL(base.toExternalForm());
                 }
-                    try {
+                try {
                     _parser.parse(base.toExternalForm(), null, buffered);
-                    } finally {
+                } finally {
                     if (xmlFileWasNull) {
                         _xmlFile = null;
                     }
-                    }
+                }
             }
         } catch (CancelException ex) {
             // Parse operation cancelled.
@@ -1311,7 +1311,7 @@ public class MoMLParser extends HandlerBase {
                         // Add a URL attribute to the toplevel to
                         // indicate where it was read from.
                         URIAttribute attribute
-                                 = new URIAttribute(_toplevel, "_uri");
+                            = new URIAttribute(_toplevel, "_uri");
                         attribute.setURL(_xmlFile);
                     }
                 }
@@ -1506,7 +1506,7 @@ public class MoMLParser extends HandlerBase {
                         // Add a URL attribute to the toplevel to
                         // indicate where it was read from.
                         URIAttribute attribute
-                                 = new URIAttribute(_toplevel, "_uri");
+                            = new URIAttribute(_toplevel, "_uri");
                         attribute.setURL(_xmlFile);
                     }
                 }
@@ -1924,7 +1924,7 @@ public class MoMLParser extends HandlerBase {
                     }
                     _pushContext();
                     _current =  (Attribute)
-                            _current.getAttribute(propertyName);
+                        _current.getAttribute(propertyName);
                     _namespace = _DEFAULT_NAMESPACE;
 
                     // Handle undo
@@ -1942,7 +1942,7 @@ public class MoMLParser extends HandlerBase {
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
-                            _current.getAttribute(propertyName);
+                        _current.getAttribute(propertyName);
                     Class newClass = null;
                     if (className != null) {
                         try {
@@ -2191,7 +2191,7 @@ public class MoMLParser extends HandlerBase {
                         // element
                         try {
                             UndoContext parentContext =
-                                    (UndoContext)_undoContexts.peek();
+                                (UndoContext)_undoContexts.peek();
                             parentContext.applyRename(newName);
                             // Simply create in the undo MoML another rename
                             _undoContext.appendUndoMoML("<rename name=\"" +
@@ -2355,7 +2355,7 @@ public class MoMLParser extends HandlerBase {
                 // For undo need to know if a previous vertex attribute
                 // with this name existed, and if so its expression
                 Vertex previous =
-                        (Vertex)_current.getAttribute(vertexName);
+                    (Vertex)_current.getAttribute(vertexName);
                 String previousValue = null;
                 if (previous != null) {
                     previousValue = previous.getExpression();
@@ -2384,7 +2384,7 @@ public class MoMLParser extends HandlerBase {
                             vertexName + "\" ");
                     if (previousValue != null) {
                         _undoContext.appendUndoMoML("value=\""  +
-                        previousValue + "\" ");
+                                previousValue + "\" ");
                     }
                     _undoContext.appendUndoMoML(">\n");
 
@@ -2875,7 +2875,7 @@ public class MoMLParser extends HandlerBase {
                     throw new XmlException("Could not find '"
                             + classAsFile + "' or '"
                             + altClassAsFile + "' using base '"
-                             + _base + "': " ,
+                            + _base + "': " ,
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber(), ex2);
@@ -3122,7 +3122,7 @@ public class MoMLParser extends HandlerBase {
                 // Get the containing compositeEntity as this is needed for the
                 // generating the link MoML and level crossing links below
                 CompositeEntity composite =
-                        (CompositeEntity)portContainer.getContainer();
+                    (CompositeEntity)portContainer.getContainer();
                 String replicaLinkMoML = composite.exportLinks(0, filter);
                 _undoContext.appendUndoMoML(replicaLinkMoML);
             }
@@ -3273,19 +3273,19 @@ public class MoMLParser extends HandlerBase {
         // elements usage is undoable
         // NOTE: property appears first for reasons of efficency.
         if (elementName.equals("property")
-                 || elementName.equals("doc")
-                 || elementName.equals("deleteEntity")
-                 || elementName.equals("deletePort")
-                 || elementName.equals("deleteProperty")
-                 || elementName.equals("deleteRelation")
-                 || elementName.equals("entity")
-                 || elementName.equals("group")
-                 || elementName.equals("link")
-                 || elementName.equals("port")
-                 || elementName.equals("relation")
-                 || elementName.equals("rename")
-                 || elementName.equals("unlink")
-                 || elementName.equals("vertex")) {
+                || elementName.equals("doc")
+                || elementName.equals("deleteEntity")
+                || elementName.equals("deletePort")
+                || elementName.equals("deleteProperty")
+                || elementName.equals("deleteRelation")
+                || elementName.equals("entity")
+                || elementName.equals("group")
+                || elementName.equals("link")
+                || elementName.equals("port")
+                || elementName.equals("relation")
+                || elementName.equals("rename")
+                || elementName.equals("unlink")
+                || elementName.equals("vertex")) {
             return true;
         }
         return false;

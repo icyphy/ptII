@@ -64,7 +64,7 @@ the model and so must be cleared.
 @since Ptolemy II 2.1
 */
 public class UndoInfoAttribute extends SingletonAttribute
-         implements NotPersistent {
+    implements NotPersistent {
 
     /**
      *  Construct an attribute with the given name contained by the
@@ -85,7 +85,7 @@ public class UndoInfoAttribute extends SingletonAttribute
      *      attribute already in the container.
      */
     public UndoInfoAttribute(NamedObj container, String name)
-             throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // Flag that indicates if the redo information should be cleared
         _clearRedoInfo = true;
@@ -112,8 +112,8 @@ public class UndoInfoAttribute extends SingletonAttribute
      *  allow the deletion of ports attached to hidden relations to be
      *  undoable.
      */
-     public void mergeTopTwoUndos() {
-         if (_undoEntries.size() < 2) {
+    public void mergeTopTwoUndos() {
+        if (_undoEntries.size() < 2) {
             // Nothing to do so return
             return;
         }
@@ -133,7 +133,7 @@ public class UndoInfoAttribute extends SingletonAttribute
         combinedMoML.append("</group>\n");
         pushUndoEntry(new MoMLUndoEntry(contextFirst,
                 combinedMoML.toString()));
-     }
+    }
 
 
     /** Get the UndoInfoAttribute associated with the given model. If no such
@@ -144,7 +144,7 @@ public class UndoInfoAttribute extends SingletonAttribute
      *  @throws Exception if the argument is null
      */
     public static UndoInfoAttribute getUndoInfo(NamedObj namedObj)
-        throws Exception {
+            throws Exception {
         if (namedObj == null) {
             // Argmuent cannot be null as we then have no entry point
             // into the model

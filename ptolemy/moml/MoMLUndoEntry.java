@@ -60,12 +60,12 @@ public class MoMLUndoEntry  {
     /**
      */
     public MoMLUndoEntry(NamedObj context,
-                         String undoMoML) {
-      // First store the context
-      _context = context;
+            String undoMoML) {
+        // First store the context
+        _context = context;
 
-      // For now the xml to execute to undo the entry...
-      _undoMoML = undoMoML;
+        // For now the xml to execute to undo the entry...
+        _undoMoML = undoMoML;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -73,15 +73,15 @@ public class MoMLUndoEntry  {
 
     /** Gets the MoML that will undo the entry */
     public String getUndoMoML() {
-      return _undoMoML;
+        return _undoMoML;
     }
 
     /** Get teh context for the undo
      *  @return the NamedObj which is the context for the undo MoML
      */
-     public NamedObj getUndoContext() {
+    public NamedObj getUndoContext() {
         return _context;
-     }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

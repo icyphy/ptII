@@ -242,10 +242,10 @@ public class JXTALibrary extends EntityLibrary
 
 
     public void changeFailed(ChangeRequest change, Exception exception) {
-       System.out.println(change.toString());
-       System.out.println(exception.getMessage());
-       exception.printStackTrace();
-       throw new RuntimeException(exception.toString());
+        System.out.println(change.toString());
+        System.out.println(exception.getMessage());
+        exception.printStackTrace();
+        throw new RuntimeException(exception.toString());
     }
 
     public void discoveryEvent(DiscoveryEvent event) {
@@ -313,7 +313,7 @@ public class JXTALibrary extends EntityLibrary
                     Class cls = classLoader.myDefineClass(null, buff, 0, len);
                     try {
                         _saveClass(cls, buff);
-                     } catch (IOException ex) {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                     String clsName = cls.getName();
@@ -570,7 +570,7 @@ public class JXTALibrary extends EntityLibrary
         try {
             BufferedReader fileReader =
                 new BufferedReader(new FileReader(_configDir +
-                                           "/" + pipeAdvFile));
+                        "/" + pipeAdvFile));
             String newline = System.getProperty("line.separator");
             queryTextBuffer = queryTextBuffer.append("<PtolemyInputPipe>\n");
             //String peerID = (_group.getPeerID()).toString();
@@ -718,12 +718,12 @@ public class JXTALibrary extends EntityLibrary
     }
 
     private void _saveClass(Class cls, byte[] buf) throws IOException {
-    String clsName = cls.getName();
+        String clsName = cls.getName();
         char fileSeparator = System.getProperty("file.separator").charAt(0);
-    String pathName = clsName.replace('.', fileSeparator);
+        String pathName = clsName.replace('.', fileSeparator);
         String pathDir = pathName.substring(0, pathName.lastIndexOf(fileSeparator));
         //String rootPath = System.getProperty("ptolemy.ptII.dir", ".");
-    String rootPath = System.getProperty("user.dir");
+        String rootPath = System.getProperty("user.dir");
         File destDir = new File(rootPath + fileSeparator + pathDir);
         if (!destDir.exists()) {
             destDir.mkdirs();
@@ -765,5 +765,5 @@ public class JXTALibrary extends EntityLibrary
     private ResolverService _resolverService;
     private final static String _TAG = "sharedPtActor";
     private static final MimeMediaType _XML_MIME_TYPE =
-        new MimeMediaType("text/xml");
+    new MimeMediaType("text/xml");
 }
