@@ -47,7 +47,7 @@ if [info exist env(PTII)] {
 if {![info exist PTII]} {
     # If we are here, then we are probably running jacl and we can't
     # read environment variables
-    set PTII [file join [pwd] .. .. .. .. .. ..]
+    set PTII [file join [pwd] .. .. .. .. ..]
 }
 
 # Load up the test definitions.
@@ -55,19 +55,16 @@ if {[string compare test [info procs test]] != 0} then {
     source [file join $PTII util testsuite testDefs.tcl]
 } {}
 
-#  if {[string compare iterToTokenValues [info procs iterToTokenValues]] != 0} \
-#          then {
-#      source [file join $PTII util testsuite enums.tcl]
-#  } {}
+if {[string compare iterToTokenValues [info procs iterToTokenValues]] != 0} \
+        then {
+    source [file join $PTII util testsuite enums.tcl]
+} {}
 
-#  if {[string compare sdfModel [info procs sdfModel]] != 0} \
-#          then {
-#      source [file join $PTII util testsuite models.tcl]
-#  } {}
+if {[string compare sdfModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
 
-#  if {[info procs test_clone] == "" } then { 
-#      source [file join $PTII util testsuite testParameters.tcl]
-#  }
-
-
-
+if {[info procs test_clone] == "" } then { 
+    source [file join $PTII util testsuite testParameters.tcl]
+}
