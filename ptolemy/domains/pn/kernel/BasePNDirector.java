@@ -243,7 +243,7 @@ public class BasePNDirector extends ProcessDirector {
 		    workspace.wait(this);
 		}
 		//Set this flag as a derived class might use this variable.
-		_notdone = !_handleDeadlock();
+		_notDone = _resolveDeadlock();
 	    }
 	}
         return;
@@ -364,7 +364,6 @@ public class BasePNDirector extends ProcessDirector {
      *  true.
      *  @exception IllegalActionException Not thrown in this base class. This
      *  might be thrown by derived classes.
-     */
     protected boolean _handleDeadlock() throws IllegalActionException {
         if (_writeBlockCount == 0) {
 	    //There is a real deadlock. Hence return with a value true.
@@ -377,6 +376,7 @@ public class BasePNDirector extends ProcessDirector {
 	    return false;
         }
     }
+     */
 
     /** Double the capacity of one of the queues with the smallest
      *  capacity belonging to a receiver on which a process is blocked
@@ -586,6 +586,38 @@ public class BasePNDirector extends ProcessDirector {
 	}
     }
 
+    /** Resolve an artificial deadlock and return true. If the
+     *  deadlock is not an artificial deadlock (it is a real deadlock), 
+     *  then return false.
+     *  If it is an artificial deadlock, select the
+     *  receiver with the smallest queue capacity on which any process is
+     *  blocked on a write and increment the capacity of the contained queue.
+     *  If the capacity is non-negative, then increment the capacity by 1.
+     *  Otherwise set the capacity to 1. Unblock the process blocked on
+     *  this receiver. Notify the thread corresponding to the blocked
+     *  process and return true.
+     *  <pP
+     *  If derived classes introduce new forms of deadlocks, they should
+     *  override this method to introduce mechanisms of handling those
+     *  deadlocks. This method is called from the fire() method of the director
+     *  alone.
+     *  @return True after handling an artificial deadlock. Otherwise return
+     *  false.
+     *  @exception IllegalActionException Not thrown in this base class. 
+     *  This might be thrown by derived classes.
+     */
+    protected boolean _resolveDeadlock() throws IllegalActionException {
+        if (_writeBlockCount == 0) {
+	    //There is a real deadlock. 
+	    return false;
+        } else {
+            //This is an artificial deadlock. Hence find the input port with
+	    //lowest capacity queue that is blocked on a write and increment
+	    //its capacity;
+            _incrementLowestWriteCapacityPort();
+	    return true;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

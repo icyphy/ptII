@@ -312,7 +312,7 @@ public class DDEDirector extends ProcessDirector {
      *  May be thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
-	return _notdone;
+	return _notDone;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -420,7 +420,6 @@ public class DDEDirector extends ProcessDirector {
      *  been resolved; return false otherwise.
      * @return True if deadlocks no longer exist; return
      *  false otherwise.
-     */
     protected boolean _handleDeadlock() throws
     	    IllegalActionException {
         if( _writeBlocks != 0 ) {
@@ -436,17 +435,18 @@ public class DDEDirector extends ProcessDirector {
         }
 
         if( _pendingMutations ) {
-	    /* FIXME
-               try {
-               _processTopologyRequests();
-               } catch( TopologyChangeFailedException e ) {
-               throw new IllegalActionException("TopologyChangeFailed: "
-               + e.getMessage());
-               }
-	    */
+	    // FIXME
+            // try {
+            // _processTopologyRequests();
+            // } catch( TopologyChangeFailedException e ) {
+            // throw new IllegalActionException("TopologyChangeFailed: "
+            // + e.getMessage());
+            // }
+	    //
         }
         return false;
     }
+     */
 
     /** Increment the port capacity's according to Tom Parks'
      *  algorithm. Select the port with the smallest capacity
@@ -503,6 +503,40 @@ public class DDEDirector extends ProcessDirector {
     protected void _performMutations() {
         ;
     }
+
+    /** Resolve any deadlocks of the actors governed by this
+     *  director. Return true if the deadlock has successfully
+     *  been resolved; return false otherwise.
+     * @return True if deadlocks no longer exist; return
+     *  false otherwise.
+     */
+    protected boolean _resolveDeadlock() throws
+    	    IllegalActionException {
+        if( _writeBlocks != 0 ) {
+            // Artificial Non-timed Deadlock
+            System.out.println("Artificial deadlock!! Write blocks = "
+                    + _writeBlocks);
+            _incrementLowestCapacityPort();
+        } else {
+            // Real Non-timed Deadlock
+            System.out.println("Real deadlock!! Read blocks = "
+            	    + _readBlocks);
+            return false;
+        }
+
+        if( _pendingMutations ) {
+	    /* FIXME
+               try {
+               _processTopologyRequests();
+               } catch( TopologyChangeFailedException e ) {
+               throw new IllegalActionException("TopologyChangeFailed: "
+               + e.getMessage());
+               }
+	    */
+        }
+        return true;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

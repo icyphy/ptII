@@ -209,7 +209,7 @@ public class CSPDirector extends ProcessDirector {
         if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
             return true;
         } else {
-            return _notdone;
+            return _notDone;
         }
     }
 
@@ -352,8 +352,123 @@ public class CSPDirector extends ProcessDirector {
      *  above this one in the hierarchy, then real deadlock marks the
      *  end of executing the model.
      *  @return True if real deadlock occurred, false otherwise.
-     */
     protected synchronized boolean _handleDeadlock() {
+        // JFIXME try {
+        if (_topologyChangesPending) {
+            / JFIXME
+               _processTopologyRequests();
+               LinkedList newThreads = new LinkedList();
+               Enumeration newActors = _newActors();
+               while (newActors.hasMoreElements()) {
+               Actor actor = (Actor)newActors.nextElement();
+               actor.initialize();
+               ProcessThread pnt = new ProcessThread(actor, this);
+               newThreads.insertFirst(pnt);
+               }
+               // Note we only start the threads after they have
+               // all had the receivers created.
+               Enumeration allThreads = newThreads.elements();
+               while (allThreads.hasMoreElements()) {
+               ProcessThread p = (ProcessThread)allThreads.nextElement();
+               p.start();
+               _addNewThread(p);
+               }
+               _topologyChangesPending = false;
+               JFIXME /
+
+        } else if (_actorsDelayed > 0) {
+            // Time deadlock.
+            double nextTime = _getNextTime();
+            _currentTime = nextTime;
+
+            // Now go through list of delayed actors
+            // and wake up those at this time
+            // Note that to deal with roundoff errors on doubles,
+            // any times within TOLERANCE are considered the same.
+            boolean done = false;
+            while (!done && _delayedActorList.size() > 0 ) {
+                DelayListLink val =
+                    (DelayListLink)_delayedActorList.first();
+                if (Math.abs(val._resumeTime - nextTime) < TOLERANCE) {
+                    _delayedActorList.removeFirst();
+                    val._actor._continue();
+                    _actorsDelayed--;
+                } else {
+                    done = true;
+                }
+            }
+        } else {
+            // Real deadlock. Return true so that the
+            // fire method can return.
+            return true;
+        }
+        // Return false for topology changes and time deadlock.
+        return false;
+        // JFIXME
+        // } catch (TopologyChangeFailedException ex ) {
+        // throw new InvalidStateException("CSPDirector: failed to " +
+        // "complete topology change requests.");
+        // } catch (IllegalActionException ex ) {
+        // throw new InvalidStateException("CSPDirector: failed to " +
+        // "create new receivers following a topology " +
+        // "change request.");
+        // }
+        //
+    }
+     */
+
+    /** Returns true if all active processes are either blocked or
+     *  delayed, false otherwise.
+     */
+    protected synchronized boolean _isDeadlocked() {
+        if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Returns true if all active processes are either blocked, delayed or
+     *  paused. If so, then all of the processes cannot make any progress
+     *  and the model has been paused. It returns false otherwise.
+     */
+    protected synchronized boolean _isPaused() {
+        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed ==
+                _getActiveActorsCount()) {
+	    return true;
+        }
+        return false;
+    }
+
+    /** Determines how the director responds when a deadlock is
+     *  detected. It is where nearly all the control for the
+     *  model at this level in the hierarchy is located.
+     *  <p>
+     *  Deadlock occurs if the number of blocked and delayed processes
+     *  equals the number of active processes. The method looks for
+     *  three cases in the following order: are there topology changes
+     *  waiting to happen, are there any processes delayed, are all the
+     *  processes blocked trying to rendezvous.
+     *  <p>
+     *  If there are changes to the topology waiting to happen, they are
+     *  performed and the execution of the model continues.
+     *  Note that the result of performing the topology changes may be
+     *  to remove the deadlock that had occurred.
+     *  <p>
+     *  If the number of delayed processes is greater than zero, then
+     *  <i>time deadlock</i> has occurred. If one or more processes
+     *  are delayed waiting for deadlock to occur, then those processes
+     *  are resumed and time is not advanced. Otherwise time is advanced
+     *  and the earliest delayed process is resumed. Current time is
+     *  defined as the double value returned by getCurrentTime()
+     *  plus/minus 10e-10.
+     *  <p>
+     *  If all the processes are blocked, then <i>real deadlock</i> has
+     *  occurred, and this method returns false. If there are no levels
+     *  above this one in the hierarchy, then real deadlock marks the
+     *  end of executing the model.
+     *  @return False if real deadlock occurred, true otherwise.
+     */
+    protected synchronized boolean _resolveDeadlock() {
         // JFIXME try {
         if (_topologyChangesPending) {
             /* JFIXME
@@ -399,12 +514,11 @@ public class CSPDirector extends ProcessDirector {
                 }
             }
         } else {
-            // Real deadlock. Return true so that the
-            // fire method can return.
-            return true;
+            // Real deadlock. 
+            return false;
         }
-        // Return false for topology changes and time deadlock.
-        return false;
+        // Return true for topology changes and time deadlock.
+        return true;
         /* JFIXME
            } catch (TopologyChangeFailedException ex ) {
            throw new InvalidStateException("CSPDirector: failed to " +
@@ -415,28 +529,6 @@ public class CSPDirector extends ProcessDirector {
            "change request.");
            }
         */
-    }
-
-    /** Returns true if all active processes are either blocked or
-     *  delayed, false otherwise.
-     */
-    protected synchronized boolean _isDeadlocked() {
-        if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Returns true if all active processes are either blocked, delayed or
-     *  paused. If so, then all of the processes cannot make any progress
-     *  and the model has been paused. It returns false otherwise.
-     */
-    protected synchronized boolean _isPaused() {
-        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed ==
-                _getActiveActorsCount()) {
-	    return true;
-        }
-        return false;
     }
 
     ///////////////////////////////////////////////////////////////////

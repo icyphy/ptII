@@ -232,7 +232,7 @@ public class PNDirector extends BasePNDirector {
 		    worksp.wait(this);
 		}
                 if (!_areAllThreadsStopped()) {
-                    _notdone = !_handleDeadlock();
+                    _notDone = _resolveDeadlock();
                 }
 	    }
 	}

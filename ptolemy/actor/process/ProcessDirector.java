@@ -119,7 +119,7 @@ public class ProcessDirector extends Director {
         ProcessDirector newobj = (ProcessDirector)super.clone(ws);
         newobj._actorsActive = 0;
         newobj._actorsPaused = 0;
-        newobj._notdone = true;
+        newobj._notDone = true;
         newobj._pausedReceivers = new LinkedList();
         newobj._threadList = new LinkedList();
 	newobj._threadsStopped = 0;
@@ -151,9 +151,9 @@ public class ProcessDirector extends Director {
 		workspace.wait(this);
             }
             if( _isDeadlocked() ) {
-                _notdone = !_handleDeadlock();
+                _notDone = _resolveDeadlock();
             } else {
-		_notdone = true;
+		_notDone = true;
 	    }
         }
     }
@@ -179,7 +179,7 @@ public class ProcessDirector extends Director {
      *   of one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-	_notdone = true;
+	_notDone = true;
 	_actorsActive = 0;
 	_actorsPaused = 0;
 	_threadsStopped = 0;
@@ -244,7 +244,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-	return _notdone;
+	return _notDone;
     }
 
     /** Start threads for all actors that have not had threads started
@@ -634,11 +634,24 @@ public class ProcessDirector extends Director {
         return (_actorsPaused == _actorsActive);
     }
 
+    /** Return false.
+     *  In derived classes, override this method to obtain domain
+     *  specific handling of deadlocks. Return false if a
+     *  real deadlock has occurred and the simulation can be ended.
+     *  Return true if the simulation can proceed given additional
+     *  data and need not be terminated.
+     * @return False.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    protected boolean _resolveDeadlock() throws IllegalActionException {
+	return false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     // Flag for determining when an iteration completes
-    protected boolean _notdone = true;
+    protected boolean _notDone = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
