@@ -200,6 +200,11 @@ public class Display extends Sink implements Placeable, SequenceActor {
         */
     }
 
+    /** Set the background */
+    public Color getBackground() {
+	return _scrollPane.getBackground();
+    } 
+
     /** Specify the container in which the data should be displayed.
      *  An instance of JTextArea will be added to that container.
      *  This method needs to be called before the first call to initialize().
@@ -280,6 +285,11 @@ public class Display extends Sink implements Placeable, SequenceActor {
         textArea.append("\n");
         return super.postfire();
     }
+
+    /** Set the background */
+    public void setBackground(Color background) {
+	_scrollPane.setBackground(background);
+    } 
 
     /** Override the base class to make sure the end of the text is visible.
      */
