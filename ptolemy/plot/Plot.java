@@ -51,6 +51,7 @@ import java.util.*;
 import java.net.*;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import java.awt.Rectangle;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
@@ -1048,13 +1049,14 @@ public class Plot extends PlotBox {
      *  with swing policy.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
+     *  @param drawRect The Rectangle to draw in.
      */
     protected synchronized void _drawPlot(Graphics graphics,
-            boolean clearfirst) {
+            boolean clearfirst, Rectangle drawRect) {
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
-        super._drawPlot(graphics, clearfirst);
+        super._drawPlot(graphics, clearfirst, drawRect);
 
         // Plot the points in reverse order so that the first colors
         // appear on top.
