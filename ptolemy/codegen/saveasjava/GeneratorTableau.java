@@ -1,6 +1,6 @@
 /* A tableau for controlling code generation.
 
- Copyright (c) 1998-2000 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.codegen.saveasjava;
@@ -38,6 +38,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.domains.sdf.codegen.SDFCodeGenerator;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
@@ -54,7 +55,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -75,7 +82,7 @@ import java.util.LinkedList;
 /**
 A tableau that creates a new control panel for code generation.
 
-@author Shuvra Bhattacharyya and Edward A. Lee
+@author Shuvra Bhattacharyya, Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class GeneratorTableau extends Tableau {
@@ -136,7 +143,8 @@ public class GeneratorTableau extends Tableau {
 
             // Panel for push buttons.
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+            buttonPanel.setLayout(new BoxLayout(buttonPanel,
+						BoxLayout.X_AXIS));
             buttonPanel.setBorder(
                     BorderFactory.createEmptyBorder(10, 0, 10, 0));
             buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -150,7 +158,12 @@ public class GeneratorTableau extends Tableau {
             // Next, put in a Query to set parameters.
             final Query query = new Query();
 
-            query.addLine("directory", "Destination directory", _directoryName);
+	    String[] generatorOptions = {"shallow", "deep"};
+	    query.addRadioButtons("generator", "Generator",
+				  generatorOptions, _generatorName);
+
+            query.addLine("directory", "Destination directory",
+			  _directoryName);
 
 	    // The vergil start up script sets ptolemy.ptII.dir to $PTII
 	    query.addLine("classpath", "Classpath", _classpathName);
@@ -189,18 +202,75 @@ public class GeneratorTableau extends Tableau {
                                 "Not a directory: " + _directoryName);
                             }
                         }
-                        // FIXME: Check that directory is writable.
 
-                        // Write the generated code.
-                        File destination = new File(_directoryName,
-                                model.getName() + ".java");
+			if (!directory.canWrite()) {
+                                throw new IllegalActionException(model,
+                                "Can't write: " + _directoryName);
+			}
 
-                        FileWriter outfile = new FileWriter(destination);
-                        PrintWriter outprinter = new PrintWriter(outfile);
-                        outprinter.print((new SaveAsJava()).generate(model));
-                        outfile.close();
-                        report("Code generation complete.");
-			
+			// Handle the package entry.
+			// This is out of order because we use the
+			// packageName in the generator.
+			_packageName = query.stringValue("package");
+			if (_packageName.length() > 0
+			    && ! _packageName.endsWith(".") ) {
+			    _packageName = _packageName + '.';
+			}
+
+			// Handle the generator entry.
+                        _generatorName = query.stringValue("generator");
+
+			File destination = null; 
+			if (_generatorName.equals("shallow")) {
+			    // Write the generated code.
+			    destination = new File(_directoryName,
+						   model.getName()
+						   + ".java");
+			    
+			    FileWriter outfile = new FileWriter(destination);
+			    PrintWriter outprinter = new PrintWriter(outfile);
+			    outprinter.print((new SaveAsJava()).generate(model));
+			    outfile.close();
+			} else if (_generatorName.equals("deep")) {
+			    // FIXME: what if this is not an SDF Model? 
+			    SDFCodeGenerator codeGenerator =
+				new SDFCodeGenerator();
+			    codeGenerator.
+				setOutputDirectoryName(_directoryName);
+			    codeGenerator.
+				setOutputPackageName(_packageName);
+
+			    // Create a manager.
+			    Manager manager = ((CompositeActor)model)
+				.getManager();
+			    //			    if (manager == null) {
+				
+				((CompositeActor)model)
+				    .setManager(new Manager(model.workspace(),
+							     "manager"));
+				manager = ((CompositeActor)model).getManager();
+				//}
+
+			    LinkedList models = new LinkedList();
+			    models.add(model);
+			    codeGenerator.setModels(models);
+			    
+
+			    // FIXME: the output should go into the text widget
+			    // FIXME: this should be run in the backgroun
+			    codeGenerator.generateCode();
+			    destination = new File(codeGenerator.getPackageDirectoryName,
+						   model.getName()
+						   + ".java")
+			} else {
+			    throw new IllegalActionException(model,
+			     "Unimplemented generator: " + _generatorName);
+			}
+
+
+			    report("Code generation complete.");
+
+
 			// Handle the classpath entry.
 			_classpathName = query.stringValue("classpath");
 			if (_classpathName.length() > 0 
@@ -209,13 +279,6 @@ public class GeneratorTableau extends Tableau {
 				+ _classpathName + "\" ";
 			}
 			
-			// Handle the package entry.
-			_packageName = query.stringValue("package");
-			if (_packageName.length() > 0
-			    && ! _packageName.endsWith(".") ) {
-			    _packageName = _packageName + '.';
-			}
-
 			// Handle the show checkbox.
 			_show = query.booleanValue("show");
                         if (_show) {
@@ -280,6 +343,9 @@ public class GeneratorTableau extends Tableau {
     // The current working directory.
     private static File _currentWorkingDirectory;
 
+    // The name of the generator to use.
+    private static String _generatorName;
+
     // The name of the directory to create the .java file in.
     private static String _directoryName;
 
@@ -302,6 +368,7 @@ public class GeneratorTableau extends Tableau {
     // are saved between invocations of the code generator.
     // Ideally, we would have a preferences manager for this.
     static {
+	_generatorName = new String("shallow");
 
 	// FIXME: getProperty() will probably fail in applets.
 	_currentWorkingDirectory = new File(System.getProperty("user.dir"));
@@ -315,6 +382,7 @@ public class GeneratorTableau extends Tableau {
 				    + File.pathSeparator
 				    + ".\" ");
 	}
+
     }
 
 
