@@ -237,6 +237,7 @@ public class CNames {
         else if (type instanceof FloatType) name = "float"; 
         else if (type instanceof IntType) name = "int"; 
         else if (type instanceof LongType) name = "long"; 
+        else if (type instanceof NullType) name = "void*"; 
         else if (type instanceof ShortType) name = "short"; 
         else if (type instanceof VoidType) name = "void"; 
         else new RuntimeException("Unsupported Soot type '"
