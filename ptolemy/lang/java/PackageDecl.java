@@ -199,19 +199,16 @@ public class PackageDecl extends JavaDecl
 
                     String name = nameList[j];
                     int length = name.length();
-                    String className = null;
 
-                    if ((length > 5) && name.substring(length - 5).equals(".java")) {
-                        className = name.substring(0, length - 5);
-                    } else if ((length > 6) && name.substring(length - 6).equals(".jskel")) {
-                        className = name.substring(0, length - 6);
-                    }
+                    if ((length > 5) &&
+                            name.substring(length - 5).equals(".java")) {
+                        String className = name.substring(0, length - 5);
 
-                    if (className != null) {
-
-                        // make sure we don't create 2 class decls if there are two files
-                        // with the same base name, but with different extensions.
-                        if (_scope.lookupLocal(className, CG_USERTYPE) == null) {
+                        // make sure we don't create 2 class decls if there
+                        // are two files with the same base name, but with
+                        // different extensions.
+                        if (_scope.lookupLocal(className, CG_USERTYPE) ==
+                                null) {
 
                             //System.out.println("adding class/interface " +
                             //                   className + " from " +
@@ -226,23 +223,23 @@ public class PackageDecl extends JavaDecl
                         }
 
                     } else {
-                        String fullname = dirName + name;
+                        String fullName = dirName + name;
 
-                        File fs = new File(fullname);
+                        File fs = new File(fullName);
 
                         if (fs.isDirectory()) {
                             _scope.add(new PackageDecl(name, this));
 	                    empty = false;
                             //System.out.println(fullName() + " " +
 			    // getName() + " : found subpackage in " +
-                            // fullname +
+                            // fullName +
 			    //		       " Adding " + name);
                         }
 
-                    } // className != null
-                } // for (int j = 0; j < nameList.length; j++)
-            } // if (dir.isDirectory())
-        } // for (int i = 0; i < paths.size(); i++)
+                    }
+                }
+            }
+        }
 
         if (empty && (this != StaticResolution.UNNAMED_PACKAGE)) {
             System.err.println("Warning: " +

@@ -392,9 +392,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                 }
             } else if ((modifiers & NATIVE_MOD) == 0) {
 		// If we are using reflection, then the method will not
-		// have a body.  The skeleton mechanism uses a hack
-		// to mark everything as native in the .jskel files to
-		// get by this.
+		// have a body.
                 //throw new RuntimeException("abstract or native modifier " +
 		// required on  methods without a body");
             }

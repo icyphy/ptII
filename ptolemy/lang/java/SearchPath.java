@@ -101,31 +101,13 @@ public class SearchPath extends Vector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Open the Java source file with the qualified class name. The name may
-     *  either be qualified by the '.' character or by the value of
-     *  File.pathSeparatorChar. 
-     *  The syteTry to open a skeleton version of the source
-     *  code before trying the ordinary version. Return an instance of File
-     *  associated with the path of the source code. If the source code
-     *  cannot be found, return null. This method simply calls
-     *  openSource(target, true).
-     */
-    public File openSource(String target) {
-        // StaticResolution.resolveAName() and _requireClass() 
-        // call ClassDecl.loadSource(), which in turn call this method.
-        return openSource(target, true);
-    }
-
-
     /** Open the Java source file with the qualified class name.
      *  @param The qualified class name, which may either be qualified
      *  by the '.' character or by the value of File.pathSeparatorChar.
-     *  @param favorSkeletons True if .jskel files are opened instead of 
-     *  .java files.
      *  @return an instance of File associated with the path of the
      *  source code. If the source code cannot be found, return null.
      */
-    public File openSource(String target, boolean favorSkeletons) {
+    public File openSource(String target) {
 
 	// Convert a Java qualified name into a partial pathname, without the
 	// file extension. For example, "ptolemy.lang.java.SearchPath" is
@@ -136,29 +118,16 @@ public class SearchPath extends Vector {
         for (int i = 0; i < size(); i++) {
             String candidate = (String) get(i);
 
-            File file = null;
+            String fullName = new String(candidate + targetPath + ".java");
+            File file = new File(fullName);
 
-            if (favorSkeletons) {
-                // favor skeletons instead of full versions for performance
-                file = _tryOpen(candidate, targetPath, "jskel");
-                if (file != null) {
-                    File javaFile = _tryOpen(candidate, targetPath, "java");
-                    if (javaFile != null) {
-                        if (javaFile.lastModified() > file.lastModified()) {
-                            throw new RuntimeException("SearchPath." +
-                                    "openSource():" +
-                                    candidate + target + 
-                                    ".java was modified more recently than" +
-                                    candidate + target + ".jskel. Rerun '" +
-                                    "cd $PTII/ptolemy/lang/java;"  +
-                                    "make skeleton'");
-                        }
-                    }
+            if (file.isFile()) {
+                try {
+                    file = file.getCanonicalFile();
+                } catch (IOException ioe) {
+                    throw new RuntimeException(
+                            "cannot get canonical filename");
                 }
-            }
-
-            if (file == null) {
-                file = _tryOpen(candidate, targetPath, "java");
             }
 
             if (file != null) {
@@ -363,26 +332,5 @@ public class SearchPath extends Vector {
 				       "'");
 	}
 	return systemJar;
-    }
-
-    /* Try to open a file in directory, with a filename target
-     * and a suffix.  
-     * @param directory The base directory 
-     * @param target The pathname to the file
-     * @param suffix The suffix of the path.
-     */
-    private static File _tryOpen(String directory, String target,
-			       String suffix) {
-        String fullname = directory + target + '.' + suffix;
-        File file = new File(fullname);
-
-        if (file.isFile()) {
-            try {
-                return file.getCanonicalFile();
-            } catch (IOException ioe) {
-                throw new RuntimeException("cannot get canonical filename");
-            }
-        }
-        return null;
     }
 }

@@ -766,9 +766,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		" categories :" + categories;
 	    if (name.getIdent().equals("java")) {
 		message += "\nSince the missing symbol is 'java', perhaps\n" +
-		    "you don't have the the .jskel files set up for\n" +
-		    "the java sources or the directory that contains\n" +
-		    "those .jskel files is not in the CLASSPATH?";
+		    "the SearchPath static constructor is not able to\n" +
+                    "find your JDK runtime jar file?";
 	    }
             throw new RuntimeException(message);
         }
