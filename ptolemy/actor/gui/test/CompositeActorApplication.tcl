@@ -40,7 +40,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 set testCase {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
     <director name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" value="2"/>
