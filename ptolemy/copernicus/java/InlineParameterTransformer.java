@@ -333,19 +333,22 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         if (debug) System.out.println("Settable base = " + attribute);
 
                         // If the attribute resolves to null, then
-                        // replace the invocation with an
-                        // exception throw.
-                        if (attribute == null) {
-                            if (debug) System.out.println("replacing with NullPointerException!");
-                            Local exceptionLocal =
-                                SootUtilities.createRuntimeException(
-                                        body, stmt,
-                                        "NullPointerException: " + r);
-                            body.getUnits().swapWith(stmt,
-                                    Jimple.v().newThrowStmt(
-                                            exceptionLocal));
-                            continue;
-                        }
+                        // replace the invocation with an exception
+                        // throw.  It would be nice to do this, but
+                        // some strange cases fail as a result, in
+                        // particular, if you showName on a
+                        // PortParameter it fails (!)
+//                         if (attribute == null) {
+//                             if (debug) System.out.println("replacing with NullPointerException!");
+//                             Local exceptionLocal =
+//                                 SootUtilities.createRuntimeException(
+//                                         body, stmt,
+//                                         "NullPointerException: " + r);
+//                             body.getUnits().swapWith(stmt,
+//                                     Jimple.v().newThrowStmt(
+//                                             exceptionLocal));
+//                             continue;
+//                         }
 
                         // Inline getType, setTypeEquals, etc...
                         if (attribute instanceof Typeable) {

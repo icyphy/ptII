@@ -936,6 +936,12 @@ public class ModelTransformer extends SceneTransformer
         _fieldToEntityMap.put(field, entity);
     }
 
+    /** Assert that the given field always points to the given object.
+     */
+    public static void addFieldForObject(SootField field, NamedObj object) {
+        _fieldToEntityMap.put(field, object);
+    }
+
     /** Return the name of the field that is created for the
      *  given entity.
      */
@@ -968,6 +974,13 @@ public class ModelTransformer extends SceneTransformer
      */
     public static SootClass getClassForActor(Entity entity) {
         return (SootClass) _objectToClassMap.get(entity);
+    }
+
+    /** Return the entity for the given class if the given class is a
+     *  class being generated, or null if not.
+     */
+    public static SootClass getClassForObject(NamedObj object) {
+        return (SootClass) _objectToClassMap.get(object);
     }
 
     /** Return true if the given class was generated for an actor in the model
@@ -2110,7 +2123,8 @@ public class ModelTransformer extends SceneTransformer
                 attribute instanceof Location ||
                 attribute instanceof WindowPropertiesAttribute ||
                 attribute instanceof GeneratorAttribute ||
-                attribute instanceof GeneratorTableauAttribute) {
+                attribute instanceof GeneratorTableauAttribute ||
+                attribute.getName().equals("_showName")) {
             return true;
         }
         return false;

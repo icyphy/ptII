@@ -339,10 +339,10 @@ public class TypeSpecializerAnalysis {
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
 
-        System.out.println("specializer");
-        System.out.println("type1 = " + type1);
-        System.out.println("type2 = " + type2);
-        System.out.println("result = " + TypeLattice.compare(type1, type2));
+//         System.out.println("specializer");
+//         System.out.println("type1 = " + type1);
+//         System.out.println("type2 = " + type2);
+//         System.out.println("result = " + TypeLattice.compare(type1, type2));
         
         // Only inline if both are concrete types.
         if (type1.isInstantiable() && type2.isInstantiable()) {

@@ -276,9 +276,9 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         //     System.out.println("theClass = " + theClass);
         //         System.out.println("object = " + correspondingObject);
         if (!correspondingObject.equals(_model)) {
-            Entity container = (Entity)correspondingObject.getContainer();
+            NamedObj container = (NamedObj)correspondingObject.getContainer();
             SootClass containerClass =
-                ModelTransformer.getClassForActor(container);
+                ModelTransformer.getClassForObject(container);
             SootField field = new SootField(
                     ModelTransformer.getContainerFieldName(),
                     RefType.v(containerClass),
@@ -288,7 +288,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
 
             field.addTag(new ValueTag(container));
 
-            ModelTransformer.addFieldForEntity(field, container);
+            ModelTransformer.addFieldForObject(field, container);
 
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {

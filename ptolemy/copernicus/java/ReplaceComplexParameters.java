@@ -127,48 +127,47 @@ public class ReplaceComplexParameters extends SceneTransformer
             SootClass modelClass, CompositeActor model) {
         Director director = model.getDirector();
 
-        copyAttributesOtherThanVariable(model, modelClass);
-
-        // Loop over all the model instance classes.
-        for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            String className =
-                ModelTransformer.getInstanceClassName(entity, _options);
-            SootClass entityClass = Scene.v().loadClassAndSupport(className);
-
-            // recurse.
-            if (entity instanceof CompositeActor) {
-                _replaceComplexParametersIn(entityClass,
-                        (CompositeActor)entity);
-            } else {
-                copyAttributesOtherThanVariable(entity, entityClass);
-            }
-        }
+        copyAttributesOtherThanVariable(model);
 
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
     }
 
-    public  void copyAttributesOtherThanVariable(
-            Entity entity, SootClass entityClass) {
-        // Loop over all the attributes of the actor
-        for (Iterator attributes =
-                 entity.attributeList(Attribute.class).iterator();
-             attributes.hasNext();) {
-            Attribute attribute = (Attribute) attributes.next();
+    public void copyAttributesOtherThanVariable(NamedObj object) {
+        if(object instanceof CompositeActor) {
+            CompositeActor model = (CompositeActor)object;
+            // Loop over all the model instance classes.
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                // recurse.
+                copyAttributesOtherThanVariable(entity);
+            }
+        }
+        // Don't copy attributes in ports, because ports don't have
+        // classes, so there is no container class.
+//         if(object instanceof Entity) {
+//             Entity entity = (Entity)object;
+//             for (Iterator ports = entity.portList().iterator();
+//                  ports.hasNext();) {
+//                 Port port = (Port)ports.next();
+//                 copyAttributesOtherThanVariable(port);
+//             }
+//         }
 
+        if(object instanceof Attribute) {
+            Attribute attribute = (Attribute)object;
             // Ignore attributes that are ignorable.
             if (ModelTransformer._isIgnorableAttribute(attribute)) {
-                continue;
+                return;
             }
-
+            
             // PortParameters are handled specially.
             //  if (attribute instanceof PortParameter) {
             //                 continue;
             //             }
-
+            
             // If we have an attribute that derives from
             // stringAttribute, or Parameter then we need to grab some
             // code for it. (i.e. FileParameter, and FileParameter)
@@ -177,22 +176,25 @@ public class ReplaceComplexParameters extends SceneTransformer
                     (attribute instanceof Parameter &&
                             !attribute.getClass().equals(Parameter.class))) {
                 String className = attribute.getClass().getName();
-
+                
+                // System.out.println("ComplexAttribute = " + attribute +
+                // " Class = " + className);
+                
                 SootClass attributeClass =
                     Scene.v().loadClassAndSupport(className);
                 attributeClass.setLibraryClass();
                 String newClassName =
                     ModelTransformer.getInstanceClassName(attribute, _options);
-
+                
                 // Create a new class for the attribute.
                 SootClass newClass = SootUtilities.copyClass(
                         attributeClass, newClassName);
                 // Make sure that we generate code for the new class.
                 newClass.setApplicationClass();
-
+                
                 // Associate the new class with the attribute.
                 ModelTransformer.addAttributeForClass(newClass, attribute);
-
+                
                 // Fold the copied class up to StringAttribute, or parameter
                 SootClass superClass = newClass.getSuperclass();
                 while (superClass != PtolemyUtilities.objectClass &&
@@ -202,7 +204,7 @@ public class ReplaceComplexParameters extends SceneTransformer
                     SootUtilities.foldClass(newClass);
                     superClass = newClass.getSuperclass();
                 }
-
+                
                 // Remove problematic methods for PortParameter
                 if (newClass.declaresMethodByName("setContainer")) {
                     SootMethod method =
@@ -225,11 +227,11 @@ public class ReplaceComplexParameters extends SceneTransformer
                     Port port = ((PortParameter)attribute).getPort();
                     field.addTag(new ValueTag(port));
                 }
-
+                
                 // Add a container field to the generated class.
                 FieldsForEntitiesTransformer._createContainerField(
                         newClass);
-
+                
                 // Loop over all the methods and replace construction
                 // of the old attribute with construction of the
                 // copied class.
@@ -244,8 +246,16 @@ public class ReplaceComplexParameters extends SceneTransformer
                 }
             }
         }
+        // Loop over all the attributes of the actor
+        for (Iterator attributes =
+                 object.attributeList(Attribute.class).iterator();
+             attributes.hasNext();) {
+            Attribute attribute = (Attribute) attributes.next();
+            
+            copyAttributesOtherThanVariable(attribute);
+        }
     }
-
+        
     // This operation is similar to sootUtilities.changeTypesOfFields
     // and SootUtilities.changeTypesInMethods, except that it uses
     // namedObjAnalysis to pick up only references to the given
@@ -348,7 +358,7 @@ public class ReplaceComplexParameters extends SceneTransformer
             Iterator j = newBody.getUnits().iterator();
             while (j.hasNext()) {
                 Unit unit = (Unit)j.next();
-                //    System.out.println("unit = " + unit);
+                // System.out.println("unit = " + unit);
                 Iterator boxes = unit.getUseBoxes().iterator();
                 while (boxes.hasNext()) {
                     ValueBox box = (ValueBox)boxes.next();
