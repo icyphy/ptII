@@ -62,16 +62,6 @@ read from a channel (read-blocked), when trying to write to a channel
 (write-blocked) or when waiting for a queued topology change request to be
 processed (mutation-blocked).
 <p>
-This director also permits pausing of the execution. An execution is paused
-when all active processes are blocked or paused (at least one process is
-paused). In case of PN, a process can be paused only when it tries to
-communicate with other processes. Thus a process can be paused in the get()
-or put() methods of the receivers alone. In case a pause is requested, the
-process does not return from the call to the get() or the put() method of the
-receiver until the execution is resumed. If there is a process that does
-not communicate with other processes in the model, then the simulation can
-never pause in that model.
-<p>
 A <i>deadlock</i> is when all the active processes are blocked.
 The director is responsible for handling deadlocks during execution.
 This director handles two different sorts of deadlocks, <i>real deadlock</i>
@@ -93,29 +83,7 @@ capacity of the receiver with the smallest capacity amongst all the
 receivers on which a process is blocked on a write.
 This breaks the deadlock and the execution can resume.
 <p>
-This director is capable of handling dynamic changes to the topology,
-i.e. mutations of graphs. These mutations can be non-deterministic. In PN,
-since the execution of a model is not centralized, it is impossible to define
-a useful point in the execution of all the active processes where
-mutations can occur. Due to this, PN permits mutations
-to happen as soon as they are requested. Thus as soon as a process queues
-mutations in PN, the director is notified and the director pauses the
-execution. Then it performs all the mutations requested, and notifies the
-topology listeners. After this the execution is resumed.
-<p>
-In case of PN, a process can be paused only when it tries to communicate with
-other processes. A pause in PN is defined as a state when all processes are
-blocked or are explicitly paused in the get() or
-put() method of the receiver. Thus if there is a process that does not
-communicate with other processes in the model, then the simulation may
-never pause in that model.
-<p>
-Though this class defines and uses a event-listener mechanism for notifying
-the listeners of the various states a process is in, this mechanism is expected
-to change to a great extent in the later versions of this class. A developer
-must keep that in mind while building applications by using this mechanism. It
-is highly recommended that the user do not use this mechanism as the future
-changes might not be compatible with the current listener mechanism.<p>
+Currently this director does not properly deal with topology mutations.
 
 @author Mudit Goel
 @version $Id$
@@ -236,45 +204,6 @@ public class PNDirector extends BasePNDirector {
 	    }
 	}
 	return;
-    }
-
-    /** Add a topology change request to the request queue and suspend the
-     *  calling thread until the requests are processed. These changes
-     *  are executed in the fire() method of the director.
-     *  After queuing the requests, increment the count of processes blocked
-     *  while waiting for the topology change requests to be processed
-     *  (mutation-blocked). Notify the directing thread
-     *  of pending topology changes. The directing thread pauses the execution
-     *  and processes the queued topology change requests in the fire() method
-     *  of the director. After the directing thread processes all the requests,
-     *  it notifies the calling thread to resume. On resuming, decrease the
-     *  count of processes blocked while waiting for topology changes.
-     *  This method is synchronized on the director.
-     *  <p>
-     *  This method is called by the processes requesting mutations and not
-     *  the directing thread.
-     *
-     *  @param request An object with commands to perform topology changes
-     *  and to inform the topology listeners of the same.
-     *  @see ptolemy.kernel.event.ChangeRequest
-     *  @see ptolemy.kernel.event.ChangeListener
-     *  @see #fire
-     */
-    public void requestChange(ChangeRequest request) {
-	synchronized(this) {
-	    _mutationsRequested = true;
-	    _informOfMutationBlock();
-            super.requestChange(request);
-            //Wake up the director to inform it that mutation is requested
-            //notifyAll();
-	    while(_mutationsRequested) {
-		try {
-		    wait();
-		} catch (InterruptedException e) {
-		    System.err.println(e.toString());
-		}
-	    }
-	}
     }
 
     ///////////////////////////////////////////////////////////////////
