@@ -41,6 +41,7 @@ include $(CONFIG)
 # directories.
 
 TYPACKAGE = 	ptplot
+TYPACKAGE_ROOTDIR = ..
 TYPACKAGE_DIR = $(TYPACKAGE)
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
