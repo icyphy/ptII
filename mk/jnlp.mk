@@ -97,6 +97,7 @@ DSP_JNLP_JARS =	\
 PTINY_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
+	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
@@ -377,17 +378,30 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII2.0/jnlp
+DIST_BASE = ptolemyII/ptII2.0/ptII2.0-beta
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
-DIST_URL = http://ptolemy.eecs.berkeley.edu:/$(DIST_BASE)
+DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
+KEYSTORE2=/users/ptII/adm/certs/ptkeystore
+KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx"
-jnlp_dist:
+# make DIST_BASE=~cxh/tmp/ptII2.0-beta DIST_DIR=/home/eecs/cxh/public_html/tmp/ptII2.0-beta jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
+
+jnlp_dist: jnlp_dist_1 jnlp_dist_update
+jnlp_dist_1:
 	rm -f $(JNLPS)
-	$(MAKE) KEYSTORE=/users/ptII/adm/certs/ptkeystore \
-		KEYALIAS=ptolemy KEYPASSWORD= \
-		PTII_LOCALURL=$(DIST_URL) $(JNLPS)
+	$(MAKE) KEYSTORE=$(KEYSTORE2) \
+		KEYALIAS=$(KEYALIAS2) KEYPASSWORD= \
+		PTII_LOCALURL=$(DIST_URL) jnlp_sign
+
+jnlp_dist_update:
 	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
+
+sign_jar_dist: 
+	"$(PTJAVA_DIR)/bin/jarsigner" \
+		-keystore $(KEYSTORE2) \
+		$(JARFILE) $(KEYALIAS2)
+
