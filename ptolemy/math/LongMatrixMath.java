@@ -417,13 +417,6 @@ public class LongMatrixMath {
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
-    public static final long[][] longIdentityMatrix(final int dim) {
-        return identity(dim);
-    }
-
-    /** Return an new identity matrix with the specified dimension. The
-     *  matrix is square, so only one dimension specifier is needed.
-     */
     public static final long[][] identity(final int dim) {
         long[][] returnValue = new long[dim][dim];
         // we rely on the fact Java fills the allocated matrix with 0's
@@ -433,6 +426,12 @@ public class LongMatrixMath {
         return returnValue;
     }
 
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final long[][] identityLong(final int dim) {
+        return identity(dim);
+    }
 
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The second matrix argument must be

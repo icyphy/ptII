@@ -427,7 +427,7 @@ public class IntegerMatrixMath {
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
-    public static final int[][] intIdentityMatrix(final int dim) {
+    public static final int[][] identityInt(final int dim) {
         return identity(dim);
     }
 

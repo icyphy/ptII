@@ -510,6 +510,14 @@ public class Complex implements Cloneable, Serializable {
         return z.exp();
     }
 
+    /** Return the imaginary part of the specified complex number.
+     *  @param z The complex number.
+     *  @return The imaginary part of the argument.
+     */
+    public static double imag(Complex z) {
+        return z.imag;
+    }
+
     /** Return true if both the real and imaginary parts of this
      *  complex number are close to those of the argument.  The
      *  epsilon field is used to determine closeness.
@@ -775,6 +783,14 @@ public class Complex implements Cloneable, Serializable {
      */
     public static Complex pow(double z, Complex y) {
         return (new Complex(z, 0.0)).pow(y);
+    }
+
+    /** Return the real part of the specified complex number.
+     *  @param z The complex number.
+     *  @return The real part of the argument.
+     */
+    public static double real(Complex z) {
+        return z.real;
     }
 
     /** Return the reciprocal of this complex number.

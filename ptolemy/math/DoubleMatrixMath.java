@@ -328,13 +328,6 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
-    /** Return an new identity matrix with the specified dimension. The
-     *  matrix is square, so only one dimension specifier is needed.
-     */
-    public static final double[][] doubleIdentityMatrix(final int dim) {
-        return identity(dim);
-    }
-
     /** Return a new array that is filled with the contents of the matrix.
      *  The doubles are stored row by row, i.e. using the notation
      *  (row, column), the entries of the array are in the following order
@@ -387,6 +380,8 @@ public class DoubleMatrixMath {
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
+     *  Note that this method does the same thing as identityDouble(),
+     *  but the latter is more useful in the expression language.
      */
     public static final double[][] identity(final int dim) {
         double[][] returnValue = new double[dim][dim];
@@ -395,6 +390,13 @@ public class DoubleMatrixMath {
             returnValue[i][i] = 1.0;
         }
         return returnValue;
+    }
+
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final double[][] identityDouble(final int dim) {
+        return identity(dim);
     }
 
     /** Return a new matrix that is constructed by inverting the input

@@ -213,13 +213,6 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return an new identity matrix with the specified dimension. The
-     *  matrix is square, so only one dimension specifier is needed.
-     */
-    public static final Complex[][] complexIdentityMatrix(final int dim) {
-        return identity(dim);
-    }
-
     /** Return a new matrix that is constructed by conjugating the elements
      *  of the input matrix.
      *
@@ -475,6 +468,13 @@ public class ComplexMatrixMath {
             returnValue[i][i] = Complex.ONE;
         }
         return returnValue;
+    }
+
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final Complex[][] identityComplex(final int dim) {
+        return identity(dim);
     }
 
     /** Return a new matrix that is formed by taking the imaginary parts of the
