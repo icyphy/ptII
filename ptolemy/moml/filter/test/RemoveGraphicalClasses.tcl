@@ -113,17 +113,14 @@ RemoveGraphicalClasses.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
 </entity>
 }}
+
 
 ######################################################################
 ####
@@ -138,6 +135,8 @@ test RemoveGraphicalClasses-1.2 {filterAttributeValue} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MoMLFilter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -157,13 +156,9 @@ RemoveGraphicalClasses.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
