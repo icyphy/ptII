@@ -270,10 +270,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The current step size.
      */
     public double getCurrentStepSize() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getCurrentStepSize();
+            return executiveDirector.getCurrentStepSize();
         } else {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
@@ -303,10 +302,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The current execution phase of this director.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getExecutionPhase();
+            return executiveDirector.getExecutionPhase();
         } else {
             // For any executive director that is not a CTGeneralDirector,
             // the current execution phase is always 
@@ -321,10 +319,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The begin time of the current iteration.
      */
     public Time getIterationBeginTime() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getIterationBeginTime();
+            return executiveDirector.getIterationBeginTime();
         } else {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
@@ -369,10 +366,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  for normal integration.
      */
     public ODESolver getNormalODESolver() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getNormalODESolver();
+            return executiveDirector.getNormalODESolver();
         } else {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
@@ -436,10 +432,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return True if this is the discrete phase execution.
      */
     public boolean isDiscretePhase() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().isDiscretePhase();
+            return executiveDirector.isDiscretePhase();
         } else {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
@@ -677,7 +672,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public boolean postfire() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
-        Director dir= container.getExecutiveDirector();
+        Director executiveDirector = container.getExecutiveDirector();
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
@@ -719,22 +714,22 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // If the top level of the model is modal model, the director
             // is null. We do not request to be fired again since no one in 
             // the upper level of hierarchy will do that.
-            if (dir != null) {
+            if (executiveDirector != null) {
                 if (_debugging) {
-                    _debug(dir.getFullName() 
+                    _debug(executiveDirector.getFullName() 
                             + " requests refiring at " + getModelTime());
                 }
                 // If there is one transition enabled, the HSDirector requests
                 // to be fired again at the same time to see whether the next 
                 // state has some outgoing transition enabled.
-                dir.fireAt(container, getModelTime());
+                executiveDirector.fireAt(container, getModelTime());
             }
             // If this iteration is the end of a complete iteration of the 
             // enclosing CT director, or the enclosing director is not a CT
             // director, reset the _enabledTransition to null.
             if ((getExecutionPhase() == 
                     CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) 
-                    || getEnclosingCTGeneralDirector() == null)  {
+                    || executiveDirector == null)  {
                 // Only clear the cached enabled transition at the 
                 // updating continuous states phase. This guarantees that
                 // only one transition is taken in an iteration of discrete

@@ -407,7 +407,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public CTExecutionPhase getExecutionPhase() {
         CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getExecutionPhase();
+            return executiveDirector.getExecutionPhase();
         } else {
             return _executionPhase;
         }

@@ -188,10 +188,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return The current step size.
      */
     public double getCurrentStepSize() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getCurrentStepSize();
+            return executiveDirector.getCurrentStepSize();
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
@@ -223,10 +222,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return The current execution phase.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getExecutionPhase();
+            return executiveDirector.getExecutionPhase();
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
@@ -240,10 +238,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return The begin time of the current iteration.
      */
     public Time getIterationBeginTime() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().getIterationBeginTime();
+            return executiveDirector.getIterationBeginTime();
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
@@ -275,10 +272,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return True if this is the discrete phase execution.
      */
     public boolean isDiscretePhase() {
-        CTGeneralDirector executiveDirector =
-            getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
-            return getEnclosingCTGeneralDirector().isDiscretePhase();
+            return executiveDirector.isDiscretePhase();
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
