@@ -75,7 +75,7 @@ public class Equals extends TypedAtomicActor {
 	upperPort = new TypedIOPort(this, "upperPort", true, false);
         lowerPort = new TypedIOPort(this, "lowerPort", true, false);
 	output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BooleanToken.class);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////

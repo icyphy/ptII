@@ -71,8 +71,8 @@ public class LogicalXor extends ptolemy.actor.lib.Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	input.setMultiport(true);
-        input.setTypeEquals(BooleanToken.class);
-        output.setTypeEquals(BooleanToken.class);
+        input.setTypeEquals(BaseType.BOOLEAN);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
 

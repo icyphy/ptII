@@ -66,8 +66,8 @@ public class LogicalNot extends ptolemy.actor.lib.Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	input.setMultiport(false);
-        input.setTypeEquals(BooleanToken.class);
-        output.setTypeEquals(BooleanToken.class);
+        input.setTypeEquals(BaseType.BOOLEAN);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
