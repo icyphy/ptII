@@ -72,14 +72,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     public PtolemyFrame(CompositeEntity model, Tableau tableau) {
         super(tableau);
         setModel(model);
-	// _getDefaultIconImage() could return null if we can't find the
-	// image file, so we need to check.  This could happen if
-	// we were running from a jar file and the image file was not
-	// in jar.
-	Image defaultIconImage = _getDefaultIconImage();
-	if (defaultIconImage != null) {
-	    setIconImage(defaultIconImage);
-	}
+        setIconImage(_getDefaultIconImage);
     }
 
     ///////////////////////////////////////////////////////////////////
