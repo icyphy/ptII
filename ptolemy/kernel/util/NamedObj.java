@@ -712,6 +712,16 @@ public class NamedObj implements Nameable, Debuggable,
 			     + VersionAttribute.CURRENT_VERSION.getExpression()
 			     + "\">\n");
 		output.write(_getIndentPrefix(depth+1) + "</property>\n");
+	    } else if (_attributes != null
+		       && _attributes.get("_createdBy") != null) {
+		try {
+		    ((VersionAttribute)_attributes.get("_createdBy"))
+			.setExpression(VersionAttribute
+				       .CURRENT_VERSION.getExpression());
+		} catch (IllegalActionException ex) {
+		    throw new InternalErrorException(this, ex, "Failed to update"
+						     + "_createdBy");
+		}
 	    }
   	}
 
