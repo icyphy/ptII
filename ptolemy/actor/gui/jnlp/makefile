@@ -79,6 +79,15 @@ OTHER_JARS = \
 	PtinySandboxApplication.jar \
 	VisualSenseApplication.jar
 
+# make clean removes $(KRUFT)
+KRUFT = \
+	DSPApplication.jar \
+	FullApplication.jar \
+	HyVisualApplication.jar \
+	PtinyApplication.jar \
+	PtinySandboxApplication.jar \
+	VisualSenseApplication.jar
+
 all: jclass $(OTHER_JARS)
 install: all
 DSPApplication.jar: DSPApplication.class MenuApplication.class
