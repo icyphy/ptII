@@ -46,10 +46,19 @@ TCL_SRCS = \
 	models.tcl \
 	tclshrc.tcl \
 	testDefs.tcl \
-	testEnums.tcl
+	testEnums.tcl \
+	testParameters.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) \
+	chkextra \
 	chkjava \
+	html2ps \
+	mkreview \
+	ptIIbuildfast \
+	ptIIbuildtest \
+	ptIIdirs \
+	ptlocaldict \
+	ptspell \
 	rmtrailingspace
 
 # Sources that may or may not be present, but if they are present, we don't

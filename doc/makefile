@@ -42,9 +42,32 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
+	acks.htm \
+	banner.htm \
+	body.htm \
+	buttons.htm \
+	contents.css \
+	contentsheader.htm \
+	default.css \
+	docbody.htm \
+	docbuttons.htm \
+	docs.htm \
+	doctoc.htm \
+	domains.htm \
+	footer.htm \
+	help.htm \
+	index.htm \
+	install.htm \
+	main.htm \
+	mainheader.htm \
+	ptII0.3.release.htm \
+	ptIIfaq.htm \
+	toc.css \
+	toc.htm \
+	troubleshooting.htm
 
 # The files in design and img are not under CVS because they are binaries.
-MISC_FILES =	$(DIRS) design img
+MISC_FILES =	$(DIRS) design img uml
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

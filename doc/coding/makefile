@@ -41,17 +41,25 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
+	applets.htm \
+	body.htm \
+	buttons.htm \
 	develsetup.htm \
 	directories.htm \
 	index.htm \
 	javalinks.htm \
+	main.htm \
 	packages.htm \
+	performance.htm \
 	rating.htm \
 	reviews.htm \
 	style.htm \
-	testing.htm
+	testing.htm \
+	toc.htm
 
-MISC_FILES =	$(DIRS)
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS) templates
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
