@@ -1,0 +1,25 @@
+
+If an actor's prefire() method is called repeatedly and returns false every
+time, the actor will never be fired or postfired.  Is this right?
+
+
+
+How do we force domain-polymorphic actors to follow SR semantics?  Once
+an actor produces an output, it is not allowed to "change its mind" and
+produce a different output just because more inputs are available.  Any
+arbitrary ordering of actor firings should produce the same result.
+
+Imagine an adder that adds two constants.
+
+Case #1: Const1 fires, Const2 fires, then the adder fires (and produces an
+output).
+
+Case #2: Const1 fires, then the adder fires (must not produce an output!), 
+then Const2 fires, then the adder fires again (and produces an output).
+
+How do we get actors to distinguish between an unknown value and an absent 
+value?  Do actors need to explicitly call isKnown()?  What should hasToken() 
+return on an input port that has unknown value?
+
+
+
