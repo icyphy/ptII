@@ -104,7 +104,8 @@ JSRCS = \
 	UnknownResultException.java \
 	UtilityFunctions.java \
 	UnknownToken.java \
-	Variable.java
+	Variable.java \
+	XmlParser.java
 
 EXTRA_SRCS =	PtParser.jjt MatrixParser.jjt $(JSRCS)
 
