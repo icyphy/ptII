@@ -1593,7 +1593,7 @@ else
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
        # PTGR_PACKAGES is used in ptII/doc/makefile
-       PTGR_PACKAGES="ptolemy.dimains.gr.kernel ptolemy.domains.gr.lib"
+       PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        AC_MSG_WARN(['"$JAVAC" java3dTest.java' failed.
 	http://java.sun.com/products/java-media/3D/download.html
