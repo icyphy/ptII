@@ -55,8 +55,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 35.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 240.0">
@@ -77,8 +75,6 @@ CTDirector to schedule and execute the model correctly.
             </configure>
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 839, 626}}">
@@ -103,8 +99,6 @@ the model works as a discrete system. </text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 400.0">
         </property>
     </property>
@@ -116,8 +110,6 @@ the model works as a discrete system. </text></svg></configure>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 60.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -135,8 +127,6 @@ the model works as a discrete system. </text></svg></configure>
         <property name="IODependence" class="ptolemy.actor.IODependence">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 190.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -163,8 +153,6 @@ the model works as a discrete system. </text></svg></configure>
         <property name="IODependence" class="ptolemy.actor.IODependence">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 190.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -255,8 +243,6 @@ the model works as a discrete system. </text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="71.0, 29.0">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -553,8 +539,6 @@ the model works as a discrete system. </text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 120.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -584,8 +568,6 @@ the model works as a discrete system. </text></svg></configure>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 130.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
