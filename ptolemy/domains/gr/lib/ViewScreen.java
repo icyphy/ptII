@@ -81,6 +81,7 @@ public class ViewScreen extends GRActor implements Placeable {
         showAxes = new Parameter(this,"show axes",new BooleanToken(false));
 
         _lastTransform = new Transform3D();
+        _root = this;
         //_userTransformation = new TransformGroup();
         //_userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         //_userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
@@ -233,19 +234,21 @@ public class ViewScreen extends GRActor implements Placeable {
         simpleU.addBranchGraph(lightRoot);
     }
 
+    
+    public void addChild(Node node) {
+        _userTransformation.addChild(node);
+    }
+
+
     public void makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
         for(int i=0;i<width;i++) {
-            ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
-            Node n = (Node) o.getValue();
-            addChild(n);
+            ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
+            Node node = (Node) objectToken.getValue();
+            addChild(node);
         }
         branchRoot.compile();
         simpleU.addBranchGraph(branchRoot);
-    }
-
-    public void addChild(Node node) {
-        _userTransformation.addChild(node);
     }
 
     public void wrapup() throws IllegalActionException {
