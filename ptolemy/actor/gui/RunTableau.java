@@ -98,7 +98,7 @@ public class RunTableau extends Tableau {
 			+ "you try to run a non-toplevel model that "
 			+ "is a component of a toplevel model.  "
 			+ "The solution is invoke View -> Run while in a "
-			+ "toplevel window" );
+			+ "toplevel window." );
 	    }
 	    manager = actor.getManager();
         }
