@@ -70,7 +70,7 @@ children of each node before resolving the type of the current node.
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
 */
-public class ASTPtRootNode implements Node {
+public class ASTPtRootNode implements Node, Cloneable {
 
     public ASTPtRootNode(int i) {
         _id = i;
@@ -82,6 +82,16 @@ public class ASTPtRootNode implements Node {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the parse tree node by invoking the clone() method of
+     *  the base class (java.lang.Object).
+     *  @return A new parse tree node.
+     *  @exception CloneNotSupportedException If the superclass clone()
+     *   method throws it.
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     /** Override this method if you want to customize how the node dumps
      *  out its children.

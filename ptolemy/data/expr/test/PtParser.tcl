@@ -881,3 +881,32 @@ test PtParser-16.2 {Test record indexing} {
     set res2 [ $evaluator evaluateParseTree $root]
     list [$res1 toString] [$res2 toString]
 } {2 3}
+
+test PtParser-17.1 {Test correct scoping in function definitions.} {
+    set e [java::new ptolemy.kernel.Entity]
+    $e setName "e"
+    set e [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e p1]
+    set p2 [java::new ptolemy.data.expr.Parameter $e p2]
+    set p3 [java::new ptolemy.data.expr.Parameter $e p3]
+    $p3 setExpression "10 * 5"
+    $p1 setExpression "function(x) x + p3"
+    $p2 setExpression "4 + p1(6)"
+    list [[$p2 getToken] toString]
+} {60}
+
+test PtParser-17.2 {Test nested function definitions.} {
+    set e [java::new ptolemy.kernel.Entity]
+    $e setName "e"
+    set e [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.data.expr.Parameter $e p1]
+    set p2 [java::new ptolemy.data.expr.Parameter $e p2]
+    set p3 [java::new ptolemy.data.expr.Parameter $e p3]
+    set p4 [java::new ptolemy.data.expr.Parameter $e p4]
+    $p3 setExpression "5"
+    $p1 setExpression "function (y) function(x) x + y + p3"
+    $p2 setExpression "p1(6)"
+    $p4 setExpression "p2(4)"
+    list [[$p4 getToken] toString]
+} {15}
+

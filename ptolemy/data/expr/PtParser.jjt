@@ -440,6 +440,11 @@ TOKEN : /*Boolean literals */
     <BOOLEAN : ( "TRUE" | "true" | "True" | "FALSE" | "false" | "False") >
 }
 
+TOKEN : /* function definition */
+{
+    <FUNCTION: "function">
+}
+
 TOKEN : /* Function names */
 {
 	< ID: ( <LETTER> )+ (["0"-"9", "$", "@"] | <LETTER> )* >
@@ -477,7 +482,12 @@ TOKEN : /* literal strings */
 ASTPtRootNode start() #PtRootNode :
 {}
 {
-    funcIf() <EOF>
+	(
+      	LOOKAHEAD(<FUNCTION> "(")
+		functionDefinition()
+      |
+      	funcIf()
+	) <EOF>
 	{ return jjtThis; }
 }
 
@@ -651,6 +661,7 @@ void unary() #void :
  |  element()
 }
 
+/*
 void element() #void :
 {  
   boolean isMethodCall = false;
@@ -661,6 +672,39 @@ void element() #void :
     [ "." <ID> {jjtThis._methodName = token.image; isMethodCall = true;}
       ( "(" [ funcIf() ( "," funcIf() )* ] ")" )? ]
   ) #PtMethodCallNode(isMethodCall)
+}
+*/
+
+void element() #void :
+{
+	boolean hasName = false;
+	boolean hasCall = false;
+	String name = null;
+}
+{
+    (
+      	(
+        	primaryElement()
+
+			[
+				"." <ID>
+				{
+					name = token.image;
+					hasName = true;
+				}
+			]
+
+			[
+				"(" [ funcIf() ( "," funcIf() )* ] ")"
+				{
+					hasCall = true;
+				}
+			]
+			{
+				jjtThis._methodName = name;
+			}
+		) #PtMethodCallNode(hasName)
+    ) #PtFunctionNode(!hasName && hasCall)
 }
 
 void primaryElement() #void :
@@ -862,6 +906,8 @@ String tidied, x;
       }
    ) #PtLeafNode   
 
+  |   LOOKAHEAD("(" <FUNCTION> "(")
+      "(" functionDefinition() ")"
 
   | "(" funcIf() ")"
  
@@ -879,17 +925,30 @@ String tidied, x;
     
   |   identifier()
 
+}
 
+void functionDefinition() #PtFunctionDefinitionNode :
+{}
+{
+  <FUNCTION>
+  "("
+  [
+    <ID> { jjtThis._argList.add(token.image); }
+    ("," <ID> { jjtThis._argList.add(token.image); } )*
+  ]
+  ")"
+  (
+      LOOKAHEAD(<FUNCTION> "(")
+      functionDefinition()
+    |
+      funcIf()
+  )
 }
 
 void function() #PtFunctionNode :
 {}
 {    
-    <ID> 
-    { 
-        // Store the name of the function.
-        jjtThis._funcName = token.image;
-    }
+	identifier()
     "(" [ funcIf() ( "," funcIf() )* ] ")"
 }
 

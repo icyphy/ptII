@@ -59,6 +59,8 @@ public interface ParseTreeVisitor {
             throws IllegalActionException;
     public void visitFunctionNode(ASTPtFunctionNode node) 
             throws IllegalActionException;
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException;
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException;
     public void visitLeafNode(ASTPtLeafNode node) 

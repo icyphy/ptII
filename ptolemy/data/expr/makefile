@@ -58,6 +58,7 @@ JSRCS = \
 	ASTPtArrayConstructNode.java \
 	ASTPtBitwiseNode.java \
 	ASTPtFunctionNode.java \
+        ASTPtFunctionDefinitionNode.java \
 	ASTPtFunctionalIfNode.java \
 	ASTPtLeafNode.java \
 	ASTPtLogicalNode.java \
@@ -80,6 +81,7 @@ JSRCS = \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
 	ParseTreeFreeVariableCollector.java \
+        ParseTreeFunctionDefinitionEvaluator.java \
 	ParseTreeTypeInference.java \
 	ParseTreeVisitor.java \
 	ParseTreeWriter.java \

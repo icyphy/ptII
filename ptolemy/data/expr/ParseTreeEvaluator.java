@@ -38,6 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import ptolemy.data.*;
@@ -189,36 +190,70 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
-        if(_scope != null) {
+		String functionName = node.getFunctionName();
+        if(_scope != null && functionName != null) {
             value = _scope.get(node.getFunctionName());
         }
-        if(value != null) {
-            // It does, so we assume that the node is an array index node.
+        if(value != null || functionName == null) {
+            // The value of the first child should be either a FunctionToken,
+			// an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
             _evaluateAllChildren(node);
+			
+			value = node.jjtGetChild(0).getToken();
 
-            int numChildren = node.jjtGetNumChildren();
-            if(numChildren == 1) {
-                // Assume array index.
-                result = _evaluateArrayIndex(node, value,
-                        node.jjtGetChild(0).getToken());
-            } else if(numChildren == 2) {
-                result = _evaluateMatrixIndex(node, value,
-                        node.jjtGetChild(0).getToken(),
-                        node.jjtGetChild(1).getToken());
-            } else {
-		throw new IllegalActionException("Wrong number of indices "
-			+ "when referencing " + node.getFunctionName());
-            }
+			int numChildren = node.jjtGetNumChildren();
+			if(value instanceof ArrayToken) {
+				if(numChildren == 2) {
+					result = _evaluateArrayIndex(node, value,
+                    node.jjtGetChild(1).getToken());
+				} else {
+					//FIXME need better error message when the first child
+					// is, say, an array expression
+					throw new IllegalActionException("Wrong number of indices "
+							+ "when referencing " + node.getFunctionName());
+				}
+            } else if(value instanceof MatrixToken) {
+				if (numChildren == 3) {
+					result = _evaluateMatrixIndex(node, value,
+                        	node.jjtGetChild(1).getToken(),
+							node.jjtGetChild(2).getToken());
+				} else {
+					//FIXME need better error message when the first child
+					// is, say, a matrix expression
+					throw new IllegalActionException("Wrong number of indices "
+							+ "when referencing " + node.getFunctionName());
+				}
+			} else if(value instanceof FunctionToken) {
+				FunctionToken function = (FunctionToken)value;
+				// check number of children against number of arguments of
+				// function
+				if (function.getNumberOfArguments() != numChildren - 1) {
+					throw new IllegalActionException("Wrong number of "
+							+ "arguments when applying function "
+							+ value.toString());
+				}
+				// apply the function token to the arguments
+				ArrayList argList = new ArrayList(numChildren - 1);
+				for(int i = 0; i < numChildren - 1; ++i) {
+					argList.add(i, node.jjtGetChild(i + 1).getToken());
+				}
+				result = function.apply(argList);
+			} else {
+				// the value cannot be indexed or applied
+				// throw exception
+				throw new IllegalActionException("Cannot index or apply arguments to "
+						+ value.toString());
+			}
             node.setToken(result);
             return;
         }
 
         if (node.getFunctionName().compareTo("eval") == 0) {
-            if (node.jjtGetNumChildren() == 1) {
-                _evaluateChild(node, 0);
+            if (node.jjtGetNumChildren() == 2) {
+                _evaluateChild(node, 1);
                 ptolemy.data.Token token = 
-                    node.jjtGetChild(0).getToken();
+                    node.jjtGetChild(1).getToken();
                 
                 if(token instanceof StringToken) {
                     // Note that we do not want to store a reference to
@@ -241,9 +276,9 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
 
         if (node.getFunctionName().compareTo("matlab") == 0) {
-            _evaluateChild(node, 0);
+            _evaluateChild(node, 1);
             ptolemy.data.Token token = 
-                node.jjtGetChild(0).getToken();
+                node.jjtGetChild(1).getToken();
 	    if (token instanceof StringToken) {
                 // Invoke the matlab engine to evaluate this function
                 String expression = ((StringToken)token).stringValue();
@@ -326,8 +361,8 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
 	    }
         }
 
-        int argCount = node.jjtGetNumChildren();
-        _evaluateAllChildren(node);
+		// the first child contains the function name as an id
+        int argCount = node.jjtGetNumChildren() - 1;
 
         // If not a special function, then reflect the name of the function.
 	Type[] argTypes = new Type[argCount];
@@ -336,7 +371,8 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         // First try to find a signature using argument token values.
 	for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
-            ptolemy.data.Token token = node.jjtGetChild(i).getToken();
+			_evaluateChild(node, i + 1);
+            ptolemy.data.Token token = node.jjtGetChild(i + 1).getToken();
             argValues[i] = token;
             argTypes[i] = token.getType();
         }
@@ -345,6 +381,13 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
                 node.getFunctionName(), argCount, argTypes, argValues);
         node.setToken(result);
     }
+	
+	public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+			throws IllegalActionException {
+		ParseTreeFunctionDefinitionEvaluator evaluator =
+				new ParseTreeFunctionDefinitionEvaluator();
+		evaluator.evaluateFunctionDefinition(node, _scope);
+	}
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
@@ -397,7 +440,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         
         token = conversionType.convert(token);
         node.setToken(token);
-    }        
+    }
 
     public void visitLeafNode(ASTPtLeafNode node) 
             throws IllegalActionException {

@@ -69,9 +69,10 @@ public interface PtParserConstants {
   int DOUBLE = 38;
   int COMPLEX = 39;
   int BOOLEAN = 40;
-  int ID = 41;
-  int LETTER = 42;
-  int STRING = 43;
+  int FUNCTION = 41;
+  int ID = 42;
+  int LETTER = 43;
+  int STRING = 44;
 
   int DEFAULT = 0;
   int IN_SINGLE_LINE_COMMENT = 1;
@@ -120,13 +121,14 @@ public interface PtParserConstants {
     "<DOUBLE>",
     "<COMPLEX>",
     "<BOOLEAN>",
+    "\"function\"",
     "<ID>",
     "<LETTER>",
     "<STRING>",
+    "\"(\"",
     "\"?\"",
     "\":\"",
     "\".\"",
-    "\"(\"",
     "\",\"",
     "\")\"",
     "\"[\"",

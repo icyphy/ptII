@@ -61,6 +61,19 @@ public class ASTPtProductNode extends ASTPtRootNode {
         super(p, id);
     }
 
+    /** Clone the parse tree node by invoking the clone() method of
+     *  the base class. The new node copies the list of operators (*, /)
+     *  represented by this node.
+     *  @return A new parse tree node.
+     *  @exception CloneNotSupportedException If the superclass clone()
+     *   method throws it.
+     */
+    public Object clone() throws CloneNotSupportedException {
+        ASTPtProductNode newNode = (ASTPtProductNode)super.clone();
+        newNode._lexicalTokens = (ArrayList)_lexicalTokens.clone();
+        return newNode;
+    }
+
     /** Return the list of lexical tokens that were used to make this node.
      */
     public List getLexicalTokenList() {

@@ -93,10 +93,21 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
     }
     public void visitFunctionNode(ASTPtFunctionNode node) 
             throws IllegalActionException {
-        int argCount = node.jjtGetNumChildren();
-        _visitAllChildren(node);
+        int argCount = node.jjtGetNumChildren() - 1;
+		String functionName = node.getFunctionName();
+		if(functionName == null) {
+			_visitChild(node, 0);
+		}
+		for(int i = 0; i < argCount; ++i) {
+			_visitChild(node, i + 1);
+		}
+		
+		if(functionName == null) {
+			throw new IllegalActionException(
+                    "unimplemented case");
+		}
 
-        if(_isValidName(node.getFunctionName())) {
+        if(_isValidName(functionName)) {
             // Handle as an array or matrix index into a named
             // variable reference.
             Type type = _getTypeForName(node.getFunctionName());
@@ -123,21 +134,29 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
                     + "when referencing " + node.getFunctionName());
         }
         
-        if (node.getFunctionName().compareTo("eval") == 0) {
+        if (functionName.compareTo("eval") == 0) {
             throw new IllegalActionException(
                     "unimplemented case");
         }
         
-        if (node.getFunctionName().compareTo("matlab") == 0) {
+        if (functionName.compareTo("matlab") == 0) {
             throw new IllegalActionException(
                     "unimplemented case");
         }
 
         // Otherwise, try to reflect the method name.
-        Type[] childTypes = _getChildTypes(node);
+        //Type[] childTypes = _getChildTypes(node);
+		Type[] childTypes = new Type[argCount];
+        for (int i = 0; i < argCount; i++) {
+            childTypes[i] =  ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
+            if(childTypes[i] == null) {
+                throw new RuntimeException("node " + node + " has null child.");
+            }
+        }
+
         
         CachedMethod cachedMethod =
-            CachedMethod.findMethod(node.getFunctionName(),
+            CachedMethod.findMethod(functionName,
                     childTypes, CachedMethod.FUNCTION);
         // System.out.println("method = " + cachedMethod);
 
@@ -161,6 +180,11 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
                     node.getFunctionName() + "( " + buffer + " ).");
         }
     }
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node) 
+            throws IllegalActionException {
+		//FIXME
+		return;
+	}
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _visitAllChildren(node);

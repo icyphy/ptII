@@ -76,6 +76,10 @@ public class ParseTreeDumper implements ParseTreeVisitor {
             throws IllegalActionException  {
         _displayNode(node);
     }
+	public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException  {
+        _displayNode(node);
+    }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node) 
             throws IllegalActionException {
         _displayNode(node);

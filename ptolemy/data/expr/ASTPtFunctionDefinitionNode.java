@@ -1,6 +1,7 @@
-/* ASTPtSumNode represent sum(+, -) nodes in the parse tree
+/* ASTPtFunctionDefinitionNode represent function definitions in the
+parse tree.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,7 +28,7 @@
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-Created : May 1998
+Created: September 2002
 
 */
 
@@ -40,26 +41,30 @@ import java.util.List;
 import java.util.ArrayList;
 
 //////////////////////////////////////////////////////////////////////////
-//// ASTPtSumNode
+//// ASTPtFunctionDefinitionNode
 /**
-The parse tree created from the expression string consists of a
-hierarchy of node objects. This class represents sum(+, -) nodes in
-the parse tree.
+The parse tree created from function definitions of the form:
+<pre>
+    function (x) x + 5
+</pre>
+which defines a function of one argument.
 
-@author Neil Smyth, Steve Neuendorffer
+FIXME: check argument name duplication
+
+@author Xiaojun Liu
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
 */
-public class ASTPtSumNode extends ASTPtRootNode {
+public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
 
-    public ASTPtSumNode(int id) {
+    public ASTPtFunctionDefinitionNode(int id) {
         super(id);
     }
 
-    public ASTPtSumNode(PtParser p, int id) {
+    public ASTPtFunctionDefinitionNode(PtParser p, int id) {
         super(p, id);
     }
 
@@ -71,30 +76,32 @@ public class ASTPtSumNode extends ASTPtRootNode {
      *   method throws it.
      */
     public Object clone() throws CloneNotSupportedException {
-        ASTPtSumNode newNode = (ASTPtSumNode)super.clone();
-        newNode._lexicalTokens = (ArrayList)_lexicalTokens.clone();
+        ASTPtFunctionDefinitionNode newNode =
+                (ASTPtFunctionDefinitionNode)super.clone();
+        newNode._argList = (ArrayList)_argList.clone();
         return newNode;
     }
 
-    /** Return the list of lexical tokens that were used to make this node.
+    /** Return the list of argument names.
      */
-    public List getLexicalTokenList() {
-        return _lexicalTokens;
+    public List getArgumentNameList() {
+        return _argList;
     }
-
+	
     /** Close this node.
      */
     public void jjtClose() {
         super.jjtClose();
-        _lexicalTokens.trimToSize();
+        _argList.trimToSize();
     }
 
     /** Traverse this node with the given visitor.
      */
     public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
-        visitor.visitSumNode(this);
+        visitor.visitFunctionDefinitionNode(this);
     }
 
-    protected ArrayList _lexicalTokens = new ArrayList();
+    protected ArrayList _argList = new ArrayList();
 }
+
