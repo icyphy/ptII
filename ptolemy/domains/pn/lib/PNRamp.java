@@ -80,14 +80,14 @@ public class PNRamp extends PNActor {
     }
     
     public void setParam(String name, double value) 
-        throws IllegalActionException {
-            System.out.println(name + ": " + value);
+            throws IllegalActionException {
+        System.out.println(name + ": " + value);
 
-            if (name.equals("seed")) {
-                _seed = (int) value;
-            } else {
-                throw new IllegalActionException("Unknown parameter: " + name);
-            }
+        if (name.equals("seed")) {
+            _seed = (int) value;
+        } else {
+            throw new IllegalActionException("Unknown parameter: " + name);
+        }
     }
     
     ///////////////////////////////////////////////////////////////////

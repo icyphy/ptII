@@ -49,7 +49,7 @@ public class PNRedirect extends PNActor{
      *  to the star
      */
     public PNRedirect(CompositeActor container, String name)
-             throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container, name);
         _input = newInPort(this, "input");
         _output = newOutPort(this, "output");
@@ -86,7 +86,7 @@ public class PNRedirect extends PNActor{
     /** Initializes a token to be written to the output 
      * @param initValue is the initial token that the star puts in the stream
      */
-     public void setInitState(int initvalue) {
+    public void setInitState(int initvalue) {
         _initValue = new IntToken(initvalue);
     }
 

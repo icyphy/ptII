@@ -67,13 +67,13 @@ public class PNExampleApplet extends Applet {
      * java -classpath $PTOLEMY/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptolemy.domains.pn.kernel.demo.PNExampleApplet 0 1
      */
     public static void main(String args[])
-    {
-        int pnmode = Integer.parseInt(args[0]);
-        int pncount = Integer.parseInt(args[1]);
-        PNExampleApplet myapplet = new PNExampleApplet() ;
-        myapplet._run(pnmode, pncount);
-	return;
-    }
+        {
+            int pnmode = Integer.parseInt(args[0]);
+            int pncount = Integer.parseInt(args[1]);
+            PNExampleApplet myapplet = new PNExampleApplet() ;
+            myapplet._run(pnmode, pncount);
+            return;
+        }
 
     /**
      * Initialize the applet.  Read the applet parameters.

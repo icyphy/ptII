@@ -74,36 +74,36 @@ public class PNSieve extends PNActor {
         try {
             writeTo(_output, new IntToken(_prime));
             for (int i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-	      Enumeration relations = _input.linkedRelations();
-	      while (relations.hasMoreElements()) {
-		  IORelation rel = (IORelation)relations.nextElement();
-		  data = readFrom(_input, rel);
-		  if (((IntToken)data[0]).intValue()%_prime != 0) {
-		      // is it the next prime? 
-		      if (islargestprime) {
+                Enumeration relations = _input.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    IORelation rel = (IORelation)relations.nextElement();
+                    data = readFrom(_input, rel);
+                    if (((IntToken)data[0]).intValue()%_prime != 0) {
+                        // is it the next prime? 
+                        if (islargestprime) {
 
-			  // yes - make the mutation for it 
-                          Mutation m = makeMutation(((IntToken)data[0]).intValue());
+                            // yes - make the mutation for it 
+                            Mutation m = makeMutation(((IntToken)data[0]).intValue());
 
-                          PNDirector director = (PNDirector)getDirector();
+                            PNDirector director = (PNDirector)getDirector();
 
-                          // Queue the new mutation
-                          director.queueMutation(m);
-                          islargestprime = false;
+                            // Queue the new mutation
+                            director.queueMutation(m);
+                            islargestprime = false;
 
-                          // In PN, we should process the mutations NOW
-                          director.processPendingMutations();
+                            // In PN, we should process the mutations NOW
+                            director.processPendingMutations();
 
-                          // In PN, we notify the director so that it
-                          // schedules the new actor threads
-                          director.startNewActors();
+                            // In PN, we notify the director so that it
+                            // schedules the new actor threads
+                            director.startNewActors();
 
-                      } 
-                      else {
-                          writeTo(_output, data[0]);
-                      }
-                  }
-              }
+                        } 
+                        else {
+                            writeTo(_output, data[0]);
+                        }
+                    }
+                }
             }
             ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchItemException e) {
@@ -113,7 +113,7 @@ public class PNSieve extends PNActor {
     }
     
     public void setParam(String name, double value)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (name.equals("prime")) {
             _prime = (int) value;
         } else {
