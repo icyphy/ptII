@@ -69,11 +69,18 @@ public class FilterBackwardCompatibility implements MoMLFilter {
         //_debug("filterAttributeValue: " + container + "\t"
         //        +  attributeName + "\t" + attributeValue);
 
+        // This method gets called many times by the MoMLParser,
+        // so we try to be smart about the number of comparisons
+        // and we try to group comparisons together so that we
+        // are not making the same comparison more than once.
+
         if (attributeValue == null) {
 	    // attributeValue == null is fairly common, so we check for
 	    // that first
             return null;
 	}
+        
+
 	if (attributeName.equals("name")) {
 	    // Save the name of the for later use if we see a "class"
 	    _lastNameSeen = attributeValue;
@@ -83,9 +90,50 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// has _icon
 		_currentlyProcessingActorThatMayNeedAnIcon = false;
 		//_debug("filterAttributeValue: saw _icon");
-	    }
+	    } else if (_currentlyProcessingActorWithPortNameChanges
+                    && _portMap != null
+                    && _portMap.containsKey(attributeValue)) {
+		// We will do the above checks only if we found a
+		// class that had port name changes, but have not
+		// yet found the next class.
+		
+		// Here, we add the port name and the new port name
+		// to a map for later use.
 
+		String containerName =
+		    container.getFullName();
+		
+		String newPort = (String)_portMap.get(attributeValue);
+
+		// Save the container.newPort name for later use.
+		_containerPortMap.put(containerName + "." + attributeValue,
+                    containerName + "." + newPort
+				  );
+		//_debug("filterAttributeValue: return1 ("
+		//       + containerName + "." + attributeValue + ", "
+		//       +  containerName + "." + newPort + ") "
+		//       + newPort);
+		return newPort;
+            } else if (_currentlyProcessingActorWithPropertyClassChanges) {
+                if (_propertyMap.containsKey(attributeValue)) {
+                    // We will do the above checks only if we found a
+                    // class that had property class changes.
+                    _newClass = (String)_propertyMap.get(attributeValue);
+                    //_debug("filterAttributeValue: not return _newClass ="
+                    //       + _newClass);
+                } else {
+                    //_debug("filterAttributeValue: not return '"
+                    //       + attributeValue + "' did not match");
+                    
+                    // Saw a name that did not match.
+                    // However, we might have other names that
+                    // did match, so keep looking
+                    //_currentlyProcessingActorWithPropertyClassChanges = false;
+                    _newClass = null;
+                }
+            }
 	}
+
 	// The code below is more complicated than perhaps it
 	// should be because we do all the backward compatibility
 	// changes in one pass.  An alternative would be to have
@@ -208,50 +256,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _portMap = null;
                 }
             }
-        } else if (_currentlyProcessingActorWithPortNameChanges
-		       && attributeName.equals("name")
-		       && _portMap != null
-		       && _portMap.containsKey(attributeValue)) {
-		// We will do the above checks only if we found a
-		// class that had port name changes, but have not
-		// yet found the next class.
-		
-		// Here, we add the port name and the new port name
-		// to a map for later use.
-
-		String containerName =
-		    container.getFullName();
-		
-		String newPort = (String)_portMap.get(attributeValue);
-
-		// Save the container.newPort name for later use.
-		_containerPortMap.put(containerName + "." + attributeValue,
-                    containerName + "." + newPort
-				  );
-		//_debug("filterAttributeValue: return1 ("
-		//       + containerName + "." + attributeValue + ", "
-		//       +  containerName + "." + newPort + ") "
-		//       + newPort);
-		return newPort;
-        } else if (_currentlyProcessingActorWithPropertyClassChanges) {
-		if (attributeName.equals("name")) {
-		    if (_propertyMap.containsKey(attributeValue)) {
-			// We will do the above checks only if we found a
-			// class that had property class changes.
-			_newClass = (String)_propertyMap.get(attributeValue);
-			//_debug("filterAttributeValue: not return _newClass ="
-			//       + _newClass);
-		    } else {
-			//_debug("filterAttributeValue: not return '"
-			//       + attributeValue + "' did not match");
-
-			// Saw a name that did not match.
-			// However, we might have other names that
-			// did match, so keep looking
-			//_currentlyProcessingActorWithPropertyClassChanges = false;
-			_newClass = null;
-		    }
-		}
         } else if (_doneProcessingActorWithPortNameChanges
 		       && attributeName.equals("port")
 		       && _containerPortMap.containsKey(container.getFullName()
