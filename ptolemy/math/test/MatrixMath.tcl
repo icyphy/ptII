@@ -1,6 +1,6 @@
 # Tests for the MatrixMath Class
 #
-# @Author: Edward A. Lee, Christopher Hylands
+# @Author: Jeff Tsay
 #
 # @Version: $Id$
 #
@@ -40,11 +40,14 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-set PI [java::field java.lang.Math PI]
+set epsilon [java::field ptolemy.math.SignalProcessing epsilon]
+
 
 set a1 [java::new {double[]} 3 [list 3.7 -6.6 0.0003]]
-set a2 [java::new {double[]} 3 [list 4826.2 236.1 -36.21]]
+set a2 [java::new {double[]} 3 [list 4862.2 236.1 -36.25]]
 set a3 [java::new {double[]} 3 [list -5.7 0.0036 30.3]]
+
+set a12 [java::new {double[]} 6 [list 3.7 -6.6 0.0003 4862.2 236.1 -36.25]]
 
 set b2 [java::new {double[]} 3 [list -56.4 -26.3 4.9]] 
 
@@ -54,7 +57,13 @@ set m3 [java::new {double[][]} 3 [list [list 3.7 -6.6 0.0003] \
 set m3_2 [java::new {double[][]} 3 [list [list -3.2 -6.6 6.3] \
                                          [list 0.1 9.0 -5.25] \
                                          [list 34.2 26.2 5.1]]]
+set m23 [java::new {double[][]} 2 [list [list 3.7 -6.6 0.0003] \
+ 	                                [list 4862.2 236.1 -36.25]]]
+set m23_2 [java::new {double[][]} 2 [list [list -3.2 -6.6 6.3] \
+                                          [list 0.1 9.0 -5.25]]]
+ 	                                  
 set m1 [java::new {double[][]} 1 [list [list 25.0]]]
+
 
 proc javaPrintArray {javaArrayObj} {
     set result {}
@@ -76,16 +85,95 @@ test MatrixMath-1.2 {add double[][] double} {
 
 ####################################################################
 test MatrixMath-1.2 {add double[][] double} {
-    set mr [java::call ptolemy.math.MatrixMath {add double[][] double} $m3 0.25]
+    set mr [java::call ptolemy.math.MatrixMath {add double[][] double} $m23 \
+    0.25]
     set s [java::call ptolemy.math.MatrixMath toString $mr]
-} {{{3.95, -6.35, 0.2503}, {4862.45, 236.35, -36.0}, {-56.15, -26.05, 5.15}}}
+} {{{3.95, -6.35, 0.2503}, {4862.45, 236.35, -36.0}}}
 
 ####################################################################
-test MatrixMath-1.2 {add double[][] double[][]} {
+test MatrixMath-1.3 {add double[][] double[][]} {
     set mr [java::call ptolemy.math.MatrixMath {add double[][] double[][]} \
-    $m3 $m3_2]
+    $m23 $m23_2]
     set s [java::call ptolemy.math.MatrixMath toString $mr]
-} {{{0.5 -13.2 6.3003}, {4862.3 245.1 -41.5}, {-22.2 -0.1 10.0}}}
+} {{{0.5, -13.2, 6.3003}, {4862.3, 245.1, -41.5}}}
 
+####################################################################
+test MatrixMath-1.1 {determinate double[][] not square} {
+    catch {set r [java::call ptolemy.math.MatrixMath determinate $m23]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.MatrixMath.determinate() : matrix argument [2 x 3] is not a square matrix.}}
+
+####################################################################
+test MatrixMath-1.1 {determinate double[][]} {
+   set r [java::call ptolemy.math.MatrixMath determinate $m3]
+   set ok [java::call ptolemy.math.SignalProcessing close $r 144468.485554]
+} {1}
+
+####################################################################
+test MatrixMath-1.1 {identity int 1} {
+   set mr [java::call ptolemy.math.MatrixMath identity 1]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{1.0}}}
+
+####################################################################
+test MatrixMath-1.1 {identity int 2} {
+   set mr [java::call ptolemy.math.MatrixMath identity 2]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{1.0, 0.0}, {0.0, 1.0}}}
+
+####################################################################
+test MatrixMath-1.1 {identity int 3} {
+   set mr [java::call ptolemy.math.MatrixMath identity 3]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}}}
+
+####################################################################
+test MatrixMath-1.1 {inverse double[][] not square} {
+    catch {set r [java::call ptolemy.math.MatrixMath inverse $m23]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.MatrixMath.inverse() : matrix argument [2 x 3] is not a square matrix.}}
+
+####################################################################
+test MatrixMath-1.1 {inverse double[][]} {
+   set mr [java::call ptolemy.math.MatrixMath inverse $m3]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{0.00140871553556869, 0.000223800435617599, 0.00165558024009741}, {-0.150761461342092, 0.000125611616474079, 0.000938499905222039}, {-0.79297446471244, 0.00325018981267364, 0.228174953683435}}}
+
+####################################################################
+test MatrixMath-1.1 {negative double[][]} {
+   set mr [java::call ptolemy.math.MatrixMath negative $m23]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{-3.7, 6.6, -3.0E-4}, {-4862.2, -236.1, 36.25}}}
+
+####################################################################
+test MatrixMath-1.1 {subtract double[][] double[][]} {
+   set mr [java::call ptolemy.math.MatrixMath subtract $m23 $m23_2]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{6.9, 0.0, -6.2997}, {4862.1, 227.1, -31.0}}}
+
+####################################################################
+test MatrixMath-1.1 {toMatrixFromArray double[][] int int} {
+   set mr [java::call ptolemy.math.MatrixMath toMatrixFromArray $a12 2 3]
+   set ok [java::call ptolemy.math.MatrixMath {within double[][] double[][] \
+           double} $mr $m23 $epsilon]
+} {1}
+
+####################################################################
+test MatrixMath-1.1 {trace double[][] not square} {
+    catch {set r [java::call ptolemy.math.MatrixMath trace $m23]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.MatrixMath.trace() : matrix argument [2 x 3] is not a square matrix.}}
+
+####################################################################
+test MatrixMath-1.1 {trace double[][]} {
+   set r [java::call ptolemy.math.MatrixMath trace $m3]
+   set ok [java::call ptolemy.math.SignalProcessing close $r 244.7]
+} {1}
+
+####################################################################
+test MatrixMath-1.1 {transpose double[][]} {
+   set mr [java::call ptolemy.math.MatrixMath transpose $m23]
+   set s [java::call ptolemy.math.MatrixMath toString $mr]
+} {{{3.7, 4862.2}, {-6.6, 236.1}, {3.0E-4, -36.25}}}
 
 

@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	ExtendedMath.tcl \
 	FixPoint.tcl \
 	Fraction.tcl \
+        MatrixMath.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
@@ -67,7 +68,6 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	MatrixMath.tcl \
 	$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -105,6 +105,9 @@ test_jdas: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayStat.tcl
 
 test_jem:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ExtendedMath.tcl
 	   $(JTCLSH) ExtendedMath.tcl
+
+test_jmm:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ExtendedMath.tcl
+	   $(JTCLSH) MatrixMath.tcl
 
 test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
 	  $(JTCLSH) SignalProcessing.tcl
