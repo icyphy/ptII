@@ -428,6 +428,7 @@ public class SoundPlayback {
 	if (_playbackMode == "speaker") {
 	    // Stop real-time playback to speaker.
 	    if (_sourceLine != null) {
+		_sourceLine.drain();
 		_sourceLine.stop();
 		_sourceLine.close();
 	    }

@@ -479,7 +479,12 @@ public class SoundCapture {
 	}
 	// For real-time capture:
 	if (_targetLine != null) {
-	    _targetLine.close();
+
+	    if (_targetLine.isOpen() == true) {
+		_targetLine.stop();
+		_targetLine.close();
+		_targetLine = null;
+	    }
 	}
     }
 
