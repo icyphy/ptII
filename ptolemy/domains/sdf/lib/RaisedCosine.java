@@ -108,7 +108,7 @@ I. Korn, <i>Digital Communications</i>, Van Nostrand Reinhold, New York, 1985.
 */
 
 public class RaisedCosine extends FIR {
-    // FIXME: support mutations.
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -128,9 +128,8 @@ public class RaisedCosine extends FIR {
         symbolInterval =
             new Parameter(this, "symbolInterval", new IntToken(16));
 
-        // Hide taps and interpolation from UI.
+        // Hide taps from UI.
         taps.setVisibility(Settable.NONE);
-        interpolation.setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -161,36 +160,46 @@ public class RaisedCosine extends FIR {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set up the taps and consumption and production constants.
+    /** Reevaluate the filter taps if the attribute is any of the ones
+     *  defined locally, and otherwise call the superclass.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the parameters are out of range.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == excessBW || attribute == length
+                || attribute == root || attribute == symbolInterval) {
+            double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
+            int inter = ((IntToken)(symbolInterval.getToken())).intValue();
+            int len = ((IntToken)(length.getToken())).intValue();
+            boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
+            if(ebw < 0.0) {
+                throw new IllegalActionException(this,
+                        "Excess bandwidth was "
+                        + ebw
+                        + " which is not greater than or equal to zero.");
+            }
+            if(len <= 0) {
+                throw new IllegalActionException(this, "Length was " +
+                        len + " which is not greater than zero.");
+            }
 
-        double ebw = ((DoubleToken)(excessBW.getToken())).doubleValue();
-        int inter = ((IntToken)(symbolInterval.getToken())).intValue();
-        int len = ((IntToken)(length.getToken())).intValue();
-        boolean sqrt = ((BooleanToken)(root.getToken())).booleanValue();
-        if(ebw < 0.0) {
-            throw new IllegalActionException(this, "Excess bandwidth was " +
-                    ebw + " which is not greater than or equal to zero.");
+            double [][] tps = new double[1][];
+            double center = len * 0.5;
+
+            DoubleUnaryOperation rcSg = sqrt ?
+                   (DoubleUnaryOperation)
+                   new SignalProcessing.SqrtRaisedCosineSampleGenerator(
+                       inter, ebw) :
+                   (DoubleUnaryOperation)
+                   new SignalProcessing.RaisedCosineSampleGenerator(
+                       inter, ebw);
+
+            tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
+
+            taps.setToken(new DoubleMatrixToken(tps));
+        } else {
+            super.attributeChanged(attribute);
         }
-        if(len <= 0) {
-            throw new IllegalActionException(this, "Length was " +
-                    len + " which is not greater than zero.");
-        }
-
-        double [][] tps = new double[1][];
-        double center = len * 0.5;
-
-        DoubleUnaryOperation rcSg = sqrt ?
-            (DoubleUnaryOperation)
-            new SignalProcessing.SqrtRaisedCosineSampleGenerator(inter, ebw) :
-            (DoubleUnaryOperation)
-            new SignalProcessing.RaisedCosineSampleGenerator(inter, ebw);
-
-        tps[0] = SignalProcessing.sampleWave(len, -center, 1.0, rcSg);
-
-        taps.setToken(new DoubleMatrixToken(tps));
     }
 }

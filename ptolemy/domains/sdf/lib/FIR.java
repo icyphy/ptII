@@ -101,7 +101,7 @@ For more information about polyphase filters, see F. J. Harris,
 @see ptolemy.data.Token
 */
 public class FIR extends SDFTransformer {
-    // FIXME: support mutations.
+
     // FIXME: use past sample support.
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -163,6 +163,59 @@ public class FIR extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Set a flag that causes recalculation of various local variables 
+     *  that are used in execution on the next invocation of fire().
+     *  @param attribute The attribute that changed.
+     */
+    public void attributeChanged(Attribute attribute)
+             throws IllegalActionException {
+        if (attribute == interpolation) {
+            IntToken token = (IntToken)(interpolation.getToken());
+            _interp = token.intValue();
+            if (_interp <= 0) {
+                throw new IllegalActionException(this,
+                "Invalid interpolation: " + _interp + ". Must be positive.");
+            }
+            output.setTokenProductionRate(_interp);
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+            }
+            _reinitializeNeeded = true;
+        } else if (attribute == decimation) {
+            IntToken token = (IntToken)(decimation.getToken());
+            _dec = token.intValue();
+            if (_dec <= 0) {
+                throw new IllegalActionException(this,
+                "Invalid decimation: " + _interp + ". Must be positive.");
+            }
+            input.setTokenConsumptionRate(_dec);
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+            }
+            _reinitializeNeeded = true;
+        } else if (attribute == decimationPhase) {
+            IntToken token = (IntToken)(decimationPhase.getToken());
+            _decPhase = token.intValue();
+            if (_decPhase < 0) {
+                throw new IllegalActionException(this,
+                "Invalid decimation: " + _interp + ". Must be nonnegative.");
+            }
+            _reinitializeNeeded = true;
+        } else if (attribute == taps) {
+            ArrayToken tapsToken = (ArrayToken)(taps.getToken());
+            _taps = tapsToken.arrayValue();
+
+            // Get a token representing zero in the appropriate type.
+            _zero = _taps[0].zero();
+
+            _reinitializeNeeded = true;
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** Set the type constraints on the input and output port.
      * @exception IllegalActionException by derived classes.
      */
@@ -193,9 +246,14 @@ public class FIR extends SDFTransformer {
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
-     *  @exception IllegalActionException If a runtime type conflict occurs.
+     *  @exception IllegalActionException If parameter values are invalid,
+     *   or if there is no director, or if runtime type conflicts occur.
      */
     public void fire() throws IllegalActionException {
+        // If an attribute has changed since the last fire(), or if
+        // this is the first fire(), then renitialize.
+        if (_reinitializeNeeded) _reinitialize();
+
         // phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
@@ -235,53 +293,6 @@ public class FIR extends SDFTransformer {
         }
     }
 
-    /** Set up the consumption and production constants.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-
-        IntToken token;
-	token = (IntToken)(interpolation.getToken());
-        _interp = token.intValue();
-	token = (IntToken)(decimation.getToken());
-        _dec = token.intValue();
-	token = (IntToken)(decimationPhase.getToken());
-	_decPhase = token.intValue();
-
-        input.setTokenConsumptionRate(_dec);
-        output.setTokenProductionRate(_interp);
-        if (_decPhase >= _dec) {
-            throw new IllegalActionException(this,
-                    "decimationPhase too large");
-        }
-    }
-
-    /** Initialize the actor.
-     */
-    public void initialize() throws IllegalActionException {
-	super.initialize();
-
-        ArrayToken tapsToken = (ArrayToken)(taps.getToken());
-
-        _taps = tapsToken.arrayValue();
-
-        // Get a token representing zero in the appropriate type.
-	_zero = _taps[0].zero();
-
-        _phaseLength = (int)(_taps.length / _interp);
-        if ((_taps.length % _interp) != 0) _phaseLength++;
-
-        // Create new data array and initialize index into it.
-        int datalength = _taps.length/_interp;
-        if (_taps.length%_interp != 0) datalength++;
-        _data = new Token[datalength];
-        for(int i = 0; i < datalength; i++ ) {
-            _data[i] = _zero;
-        }
-        _mostRecent = datalength;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -292,6 +303,34 @@ public class FIR extends SDFTransformer {
 
     /** Control variables for the FIR main loop. */
     protected int _dec, _interp, _decPhase;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Reinitialize local variables in response to changes in attributes.
+    private void _reinitialize() throws IllegalActionException {
+        if (_decPhase >= _dec) {
+            throw new IllegalActionException(this,
+                    "Invalid decimationPhase: " + _decPhase
+                    + ". Must be less than decimation: " + _dec + ".");
+        }
+
+        _phaseLength = (int)(_taps.length / _interp);
+        if ((_taps.length % _interp) != 0) _phaseLength++;
+
+        // Create new data array and initialize index into it.
+        int datalength = _taps.length/_interp;
+        if (_taps.length%_interp != 0) datalength++;
+
+        // Avoid losing the data if possible.
+        if (_data == null || _data.length != datalength) {
+            _data = new Token[datalength];
+            for(int i = 0; i < datalength; i++ ) {
+                _data[i] = _zero;
+            }
+            _mostRecent = datalength;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -308,4 +347,8 @@ public class FIR extends SDFTransformer {
 
     // Cache of the zero token.
     private Token _zero;
+
+    // Indicator that at least one attribute has been changed
+    // since the last initialization.
+    private boolean _reinitializeNeeded = true;
 }
