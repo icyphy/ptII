@@ -86,6 +86,47 @@ public class BooleanMatrixToken extends MatrixToken {
         _initialize(value);
     }
 
+    /** Construct an BooleanMatrixToken from the specified array of
+     *  tokens.  The tokens in the array must be scalar tokens
+     *  convertible into integers.
+     *  @param tokens The array of tokens, which must contains
+     *  rows*columns BooleanTokens.
+     *  @param rows The number of rows in the matrix to be created.
+     *  @param columns The number of columns in the matrix to be
+     *  created.
+     *  @exception IllegalActionException If the array of tokens is
+     *  null, or the length of the array is not correct, or if one of
+     *  the elements of the array is null, or if one of the elements
+     *  of the array cannot be losslessly converted to a boolean.
+     */
+    public BooleanMatrixToken(Token[] tokens, int rows, int columns) 
+            throws IllegalActionException {
+        if(tokens == null) {
+            throw new IllegalActionException(
+                    "BooleanMatrixToken: The specified"
+                    + " array is null.");
+        }
+        if(tokens.length != rows * columns) {
+            throw new IllegalActionException(
+                    "BooleanMatrixToken: The specified"
+                    + " array is not of the correct length");
+        }
+        _rowCount = rows;
+        _columnCount = columns;
+        _value = new boolean[rows][columns];
+        for (int i = 0; i < tokens.length; i++) {
+            Token token = tokens[i];
+            if(token instanceof BooleanToken) {
+                _value[i / columns][i % columns] =
+                    ((BooleanToken)token).booleanValue();
+            } else {
+                throw new IllegalActionException("BooleanMatrixToken: Element "
+                        + i + " in the array with value " + token +
+                        " is not a ScalarToken");
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

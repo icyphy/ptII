@@ -96,6 +96,47 @@ public class FixMatrixToken extends MatrixToken {
         _initialize(value);
     }
 
+    /** Construct an FixMatrixToken from the specified array of
+     *  tokens.  The tokens in the array must be scalar tokens
+     *  convertible into integers.
+     *  @param tokens The array of tokens, which must contains
+     *  rows*columns ScalarTokens.
+     *  @param rows The number of rows in the matrix to be created.
+     *  @param columns The number of columns in the matrix to be
+     *  created.
+     *  @exception IllegalActionException If the array of tokens is
+     *  null, or the length of the array is not correct, or if one of
+     *  the elements of the array is null, or if one of the elements
+     *  of the array cannot be losslessly converted to a fixed point.
+     */
+    public FixMatrixToken(Token[] tokens, int rows, int columns) 
+            throws IllegalActionException {
+        if(tokens == null) {
+            throw new IllegalActionException(
+                    "FixMatrixToken: The specified"
+                    + " array is null.");
+        }
+        if(tokens.length != rows * columns) {
+            throw new IllegalActionException(
+                    "FixMatrixToken: The specified"
+                    + " array is not of the correct length");
+        }
+        _rowCount = rows;
+        _columnCount = columns;
+        _value = new FixPoint[rows][columns];
+        for (int i = 0; i < tokens.length; i++) {
+            Token token = tokens[i];
+            if(token instanceof ScalarToken) {
+                _value[i / columns][i % columns] =
+                    ((ScalarToken)token).fixValue();
+            } else {
+                throw new IllegalActionException("FixMatrixToken: Element "
+                        + i + " in the array with value " + token +
+                        " is not a ScalarToken");
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

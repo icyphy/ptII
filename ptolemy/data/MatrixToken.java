@@ -31,6 +31,7 @@
 
 package ptolemy.data;
 
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.data.type.TypeLattice;
@@ -199,6 +200,123 @@ public abstract class MatrixToken extends Token {
     public Complex[][] complexMatrix() throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedConversionMessage(this, "complex matrix"));
+    }
+
+    /** Create a new instance of a MatrixToken subclass with the given number
+     *  of rows and columns.  The token will contain all of the elements of the
+     *  given array.  The element type of the matrix token will be
+     *  the least upper bound of the types of all of the tokens in the given
+     *  array.  The size of the array must be (rows*columns).
+     *  @return An instance of a subclass of MatrixToken.
+     *  @exception IllegalActionException If no type exists for the
+     *  matrix token, or the array of tokens is not the right size, or
+     *  the array is null.
+     */
+    public static MatrixToken create(Token[] tokens, int rows, int columns) 
+            throws IllegalActionException {
+        Object[] typeTerms = new Object[tokens.length];
+        for (int i = 0; i < tokens.length; i++) {
+            typeTerms[i] = tokens[i].getType();
+        }
+
+        Type type = (Type)TypeLattice.lattice().leastUpperBound(typeTerms);
+   
+        MatrixToken token;
+        if (type == BaseType.UNKNOWN) {
+            throw new IllegalActionException("Cannot resolve type for "
+                    + "matrix construction.");
+        } else if (type == BaseType.BOOLEAN) {
+            token = new BooleanMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.INT) {
+            token = new IntMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.LONG) {
+            token = new LongMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.DOUBLE) {
+            token = new DoubleMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.COMPLEX) {
+            token = new ComplexMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.FIX) {
+            token = new FixMatrixToken(tokens, rows, columns);
+        } else {
+            throw new IllegalActionException("Unrecognized type for matrix" +
+                    " creation.");
+        }
+        return token;
+    }
+
+    /** Create an array of tokens of the given length.  The first
+     *  token in the sequence will have value start and each succeeding
+     *  token will have the value created by adding the given increment
+     *  to the preceeding token.
+     *  @param start The value of the first element of the returned array.
+     *  @param increment The difference between elements in the array.
+     *  @param length The size of the array to create, which must not be
+     *  negative.
+     *  @exception IllegalActionException If the length is negative, or
+     *  tokens of the given type cannot be added together.
+     */
+    public static Token[] createTokenSequence(
+            Token start, Token increment, int length) 
+            throws IllegalActionException {
+        Token[] result = new Token[length];
+        Token value = start;
+        if(length > 0) {
+            result[0] = start;
+            for(int i = 1; i < length; i++) {
+                value = value.add(increment);
+                result[i] = value;
+            }
+        }
+        return result;
+    }
+
+    /** Count the number of tokens differing by the given increment
+     *  that fit in a range between the given start token and the
+     *  given end token.  This computes, type polymorphically, the
+     *  value floor(((end-start)/increment) + 1).  If the size of the
+     *  sequence cannot be determined, because the increment is zero,
+     *  or the increment is positive and end is greater than start, or
+     *  the increment is negative and start is greater than end,
+     *  then an exception will be thrown.
+     *  @return The size of the sequence, which will be greater than zero.
+     *  @exception IllegalActionException If the length of the
+     *  sequence cannot be determined, or the tokens provided do not
+     *  support the zero, isEqualTo, isLessThan, add, divide, or
+     *  subtract operations, or is not convertible to a double token.
+     */
+    public static int determineSequenceLength(
+            ScalarToken start, ScalarToken increment, ScalarToken end)
+            throws IllegalActionException {
+        ScalarToken zero = (ScalarToken)increment.zero();
+        if(increment.isEqualTo(increment.zero()).booleanValue()) {
+            throw new IllegalActionException("Sequence length cannot " +
+                    "be determined because the increment is zero.");
+        } else if(increment.isLessThan(zero).booleanValue() && 
+                start.isLessThan(end).booleanValue()) {
+            throw new IllegalActionException("Sequence length cannot " +
+                    "be determined because the increment has the wrong sign.");
+        } else if(zero.isLessThan(increment).booleanValue() &&
+                end.isLessThan(start).booleanValue()) {
+            throw new IllegalActionException("Sequence length cannot " +
+                    "be determined because the increment has the wrong sign.");
+        } else {
+            ScalarToken diff = 
+                (ScalarToken)end.subtract(start).divide(increment);
+            int count;
+            // UGH...  I don't see how to abstract this nicely...
+            if(diff instanceof LongToken) {
+                count = ((int)diff.longValue()) + 1;
+            } else if(diff instanceof DoubleToken) {
+                count = ((int)diff.doubleValue()) + 1;
+            } else {
+                count = diff.intValue() + 1;
+            }
+            if(count < 1) {
+                throw new InternalErrorException(
+                        "The determined count does not make sense.");
+            } 
+            return count;
+        }
     }
 
     /** Return a new token whose value is the value of this token
