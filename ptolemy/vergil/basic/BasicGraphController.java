@@ -31,6 +31,7 @@
 package ptolemy.vergil.basic;
 
 import diva.canvas.Figure;
+import diva.canvas.JCanvas;
 import diva.canvas.TransformContext;
 import diva.canvas.connector.Connector;
 import diva.canvas.event.EventLayer;
@@ -56,8 +57,9 @@ import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.toolbox.EditParametersFactory;
+import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
@@ -338,7 +340,9 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  is called by the setGraphPane() method of the superclass.
      *  This initialization cannot be done in the constructor because
      *  the controller does not yet have a reference to its pane
-     *  at that time.
+     *  at that time.  Regrettably, the canvas is not yet associated
+     *  with the GraphPane, so you can't do any initialization that
+     *  involves the canvas.
      */
     protected void initializeInteraction() {
         GraphPane pane = getGraphPane();
@@ -365,6 +369,10 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** Renderer for animation. */
     protected SelectionRenderer _animationRenderer;
+
+    /** The configure action. */
+    protected static ConfigureAction _configureAction
+            = new ConfigureAction("Configure (Ctrl-E)");
 
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
@@ -444,7 +452,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 	    if (getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
 		// No location in the action, so put it in the middle.
-                BasicGraphFrame frame = getFrame();
+                BasicGraphFrame frame = BasicGraphController.this.getFrame();
                 if (frame != null) {
                     // Put in the middle of the visible part.
                     Point2D center = frame.getCenter();
@@ -574,7 +582,7 @@ public abstract class BasicGraphController extends AbstractGraphController
          */
 	public SchematicContextMenuFactory(GraphController controller) {
 	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
+            addMenuItemFactory(new MenuActionFactory(_configureAction));
 	}
 
 	protected NamedObj _getObjectFromFigure(Figure source) {

@@ -369,7 +369,7 @@ public class FSMGraphController extends FSMViewerGraphController {
 	    if (getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
 		// No location in the action, so put it in the middle.
-                BasicGraphFrame frame = getFrame();
+                BasicGraphFrame frame = FSMGraphController.this.getFrame();
                 Point2D center;
                 if (frame != null) {
                     // Put in the middle of the visible part.

@@ -99,10 +99,8 @@ public class ActorViewerGraphController extends RunnableGraphController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
-        if (_entityController instanceof ActorController) {
-            GUIUtilities.addHotKey(getFrame().getJGraph(),
-                    ((ActorController)_entityController)._lookInsideAction);
-        }
+        GUIUtilities.addHotKey(getFrame().getJGraph(),
+                _entityController._lookInsideAction);
     }
 
     /** React to an event by highlighting the actor being iterated.
@@ -303,7 +301,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
     protected NamedObjController _attributeController;
 
     /** The entity controller. */
-    protected NamedObjController _entityController;
+    protected ActorController _entityController;
 
     /** The entity port controller. */
     protected NamedObjController _entityPortController;

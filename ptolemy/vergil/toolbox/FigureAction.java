@@ -48,6 +48,8 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 
@@ -55,14 +57,17 @@ import java.awt.event.ActionEvent;
 //// FigureAction
 /**
 An action that is attached to a figure on a named object.
-Such an action is usually fired
-in two ways.  The first way is through an ActionInteractor that is attached
+Such an action is fired in one of several ways.
+The first way is through an ActionInteractor that is attached
 to the figure.  The second way is through a context menu that is created
-on the figure.  Unfortunately, the source of the event is different in
-these two cases.  This class makes it easy to write an action that is
-accessed by either mechanism.
+on the figure.  A third way is through a hotkey.
+Unfortunately, the source of the event is different in
+these cases.  This class makes it easier to write an action that is
+triggered by any mechanism. Such an action would be derived from this
+class, and would invoke super.actionPerformed() first in its own
+actionPerformed() method.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -72,8 +77,18 @@ public class FigureAction extends AbstractAction {
 	super(name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Determine the target Ptolemy II object, the originating frame,
+     *  and the X, Y position of the action, if possible.  After this
+     *  is invoked, the other public methods can be used to access
+     *  this data.
+     *  @param e The event.
+     */
     public void actionPerformed(ActionEvent e) {
 	Object source = e.getSource();
+        Component parent = null;
 	if (source instanceof LayerEvent) {
 	    _sourceType = CANVAS_TYPE;
 	    // Action activated using an ActionInteractor.
@@ -91,14 +106,22 @@ public class FigureAction extends AbstractAction {
 		Object object = figure.getUserObject();
 		_target = (NamedObj) model.getSemanticObject(object);
 	    }
+
+            // Set the position.
 	    _x = event.getX();
 	    _y = event.getY();
+
+            // Set the parent.
+            CanvasPane canvasPane = layer.getCanvasPane();
+            parent = canvasPane.getCanvas();
+
 	} else if (source instanceof JMenuItem) {
 	    // Action activated using a context menu.
 	    JMenuItem item = (JMenuItem) source;
 	    if (item.getParent() instanceof JContextMenu) {
 		_sourceType = CONTEXTMENU_TYPE;
 		JContextMenu menu = (JContextMenu)item.getParent();
+                parent = menu.getInvoker();
 		_target = (NamedObj) menu.getTarget();
 		_x = item.getX();
 		_y = item.getY();
@@ -110,6 +133,7 @@ public class FigureAction extends AbstractAction {
 	    // presumably we are in a toolbar...
 	    _sourceType = TOOLBAR_TYPE;
 	    _target = null;
+            parent = ((Component)source).getParent();
 	} else if (source instanceof JGraph) {
             // This is an absurdly convoluted way to get the info we need.
             // But there seems to be no other way.
@@ -133,24 +157,82 @@ public class FigureAction extends AbstractAction {
 		_target = (NamedObj) model.getRoot();
             }
             _sourceType = HOTKEY_TYPE;
+
+            // FIXME: set _x and _y.  How to do this?
+            _x = 0;
+            _y = 0;
+
+            // Set the parent.
+            CanvasPane canvasPane = layer.getCanvasPane();
+            parent = canvasPane.getCanvas();
 	} else {
 	    _sourceType = null;
 	    _target = null;
+            parent = null;
+            _x = 0;
+            _y = 0;
 	}
+        if (parent != null) {
+            while (parent.getParent() != null) {
+                parent = parent.getParent();
+            }
+        }
+        if (parent instanceof Frame) {
+            _frame = (Frame)parent;
+        } else {
+            _frame = null;
+        }
     }
 
+    // FIXME: The following methods should all be protected.
+
+    /** Return the source type of this action, which is one of
+     *  CANVAS_TYPE, CONTEXTMENU_TYPE, TOOLBAR_TYPE, MENUBAR_TYPE,
+     *  HOTKEY_TYPE, or null if none was recognized.
+     *  @return The source type of this action.
+     */
     public SourceType getSourceType() {
 	return _sourceType;
     }
 
+    /** Return the frame responsible for triggering this action,
+     *  or null if none could be found.  This can be used to set the
+     *  owner of any dialogs triggered by this event.  This must
+     *  be called after actionPerformed(), and is typically called
+     *  inside the actionPerformed() method of a subclass.
+     *  @return The frame that triggered this action.
+     */
+    public Frame getFrame() {
+	return _frame;
+    }
+
+    /** Return the target Ptolemy II object for this action,
+     *  or null if none could be found.  This is typically the object
+     *  whose icon is the figure on which this action was invoked.
+     *  This must be called after actionPerformed(), and is typically called
+     *  inside the actionPerformed() method of a subclass.
+     *  @return The frame that triggered this action.
+     */
     public NamedObj getTarget() {
 	return _target;
     }
 
+    /** Return the horizontal position of the action, or 0 if this
+     *  is not relevant (e.g., the action was triggered by a toolbar button).
+     *  This must be called after actionPerformed(), and is typically called
+     *  inside the actionPerformed() method of a subclass.
+     *  @return The x position of the action.
+     */
     public int getX() {
 	return _x;
     }
 
+    /** Return the vertical position of the action, or 0 if this
+     *  is not relevant (e.g., the action was triggered by a toolbar button).
+     *  This must be called after actionPerformed(), and is typically called
+     *  inside the actionPerformed() method of a subclass.
+     *  @return The y position of the action.
+     */
     public int getY() {
 	return _y;
     }
@@ -195,6 +277,7 @@ public class FigureAction extends AbstractAction {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private Frame _frame = null;
     private SourceType _sourceType = null;
     private NamedObj _target = null;
     private int _x = 0;

@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AnnotationEditorFactory.java \
-	EditParametersFactory.java \
+	ConfigureAction.java \
 	FigureAction.java \
 	GraphicElement.java \
 	MenuActionFactory.java \

@@ -53,6 +53,7 @@ import diva.graph.layout.LevelLayout;
 import diva.graph.layout.LevelLayout.LevelInfo;
 import diva.graph.modular.Edge;
 import diva.graph.modular.Node;
+import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FocusMouseListener;
 import diva.gui.toolbox.JCanvasPanner;
 import diva.util.java2d.ShapeUtilities;
@@ -299,10 +300,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	_toolbar = new JToolBar();
 	getContentPane().add(_toolbar, BorderLayout.NORTH);
 
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
+       	GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
+       	GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
+       	GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
+       	GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
 
 	_cutAction = new CutAction();
 	_copyAction = new CopyAction();
@@ -711,12 +712,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame
        	_editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
 	_menubar.add(_editMenu);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+	GUIUtilities.addHotKey(_jgraph, _cutAction);
+	GUIUtilities.addMenuItem(_editMenu, _cutAction);
+	GUIUtilities.addHotKey(_jgraph, _copyAction);
+	GUIUtilities.addMenuItem(_editMenu, _copyAction);
+	GUIUtilities.addHotKey(_jgraph, _pasteAction);
+	GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+
+        // Hot key for configure (edit parameters).
+        GUIUtilities.addHotKey(_jgraph, BasicGraphController._configureAction);
 
         // May be null if there are not multiple views in the configuration.
         if (_viewMenu == null) {
@@ -726,24 +730,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         } else {
             _viewMenu.addSeparator();
         }
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomInAction);
-	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomInAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomResetAction);
-	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomResetAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomFitAction);
-	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _zoomOutAction);
-	diva.gui.GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
+	GUIUtilities.addHotKey(_jgraph, _zoomInAction);
+	GUIUtilities.addMenuItem(_viewMenu, _zoomInAction);
+	GUIUtilities.addHotKey(_jgraph, _zoomResetAction);
+	GUIUtilities.addMenuItem(_viewMenu, _zoomResetAction);
+	GUIUtilities.addHotKey(_jgraph, _zoomFitAction);
+	GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
+	GUIUtilities.addHotKey(_jgraph, _zoomOutAction);
+	GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
 
        	_graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
 	_menubar.add(_graphMenu);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
-      	diva.gui.GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
+	GUIUtilities.addHotKey(_jgraph, _layoutAction);
+	GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
+	GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
+	GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
+      	GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
+	GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
@@ -918,10 +922,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    super("Copy");
 	    putValue("tooltip",
                     "Copy the current selection onto the clipboard.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_C,
                             Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_C));
 	}
 
@@ -942,10 +946,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    super("Cut");
 	    putValue("tooltip",
                     "Cut the current selection onto the clipboard.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_X,
                             Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_T));
 	}
 
@@ -1003,10 +1007,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	public ExecuteSystemAction() {
 	    super("Go");
 	    putValue("tooltip", "Execute The Model");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_G,
                     Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_G));
 	}
 
@@ -1032,7 +1036,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	public ImportLibraryAction() {
 	    super("Import Library");
 	    putValue("tooltip", "Import a library into the Palette");
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_M));
 	}
 
@@ -1099,9 +1103,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	public LayoutAction() {
 	    super("Automatic Layout");
 	    putValue("tooltip", "Layout the Graph (Ctrl+T)");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_L));
 	}
 
@@ -1128,10 +1132,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    super("Paste");
 	    putValue("tooltip",
                     "Paste the contents of the clipboard.");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_V,
                             Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_P));
 	}
 
@@ -1342,7 +1346,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	public SaveInLibraryAction() {
 	    super("Save In Library");
 	    putValue("tooltip", "Save as a Component in Library");
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_S));
 	}
 
@@ -1385,17 +1389,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "/ptolemy/vergil/basic/img/zoomin.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+                putValue(GUIUtilities.LARGE_ICON, icon);
             }
 	    putValue("tooltip", description + " (Ctrl+Shift+=)");
             // NOTE: The following assumes that the + key is the same
             // as the = key.  Unfortunately, the VK_PLUS key event doesn't
             // work, so we have to do it this way.
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
                             Event.CTRL_MASK
                             | Event.SHIFT_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_Z));
 	}
 
@@ -1420,13 +1424,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "/ptolemy/vergil/basic/img/zoomreset.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+                putValue(GUIUtilities.LARGE_ICON, icon);
             }
 	    putValue("tooltip", description + " (Ctrl+=)");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
                             Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_M));
 	}
 
@@ -1451,14 +1455,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "/ptolemy/vergil/basic/img/zoomfit.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+                putValue(GUIUtilities.LARGE_ICON, icon);
             }
 	    putValue("tooltip", description + " (Ctrl+Shift+-)");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+            putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
                             Event.CTRL_MASK
                             | Event.SHIFT_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_F));
 	}
 
@@ -1483,13 +1487,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "/ptolemy/vergil/basic/img/zoomout.gif");
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+                putValue(GUIUtilities.LARGE_ICON, icon);
             }
 	    putValue("tooltip", description + " (Ctrl+-)");
-	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
                             Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
 	}
 

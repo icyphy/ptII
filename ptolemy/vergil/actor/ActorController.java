@@ -388,6 +388,7 @@ public class ActorController extends AttributeController {
 
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
+
         public LookInsideAction() {
             super("Look Inside (Ctrl+L)");
             // For some inexplicable reason, the I key doesn't work here.
@@ -395,6 +396,7 @@ public class ActorController extends AttributeController {
 	    putValue(GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
+
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
@@ -434,8 +436,9 @@ public class ActorController extends AttributeController {
     }
 
     // Error message used when we can't find the inside definition.
-    private String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
-    + "Perhaps source code is not installed? "
-    + "You can obtain source code for Berkeley actors at: "
-    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+    private static String _CANNOT_FIND_MESSAGE
+             = "Cannot find inside definition. "
+             + "Perhaps source code is not installed? "
+             + "You can obtain source code for Berkeley actors at: "
+             + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 }

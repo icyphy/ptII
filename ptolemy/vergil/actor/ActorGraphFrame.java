@@ -33,6 +33,7 @@ package ptolemy.vergil.actor;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Configuration;

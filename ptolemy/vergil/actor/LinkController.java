@@ -56,13 +56,13 @@ import diva.graph.GraphPane;
 import diva.gui.toolbox.MenuCreator;
 import diva.gui.toolbox.MenuFactory;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.toolbox.EditParametersFactory;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
@@ -118,34 +118,13 @@ public class LinkController extends BasicEdgeController {
         // menu factory, which is a protected member of this class.
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
-        _menuFactory.addMenuItemFactory(new EditParametersFactory("Configure"));
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(_configureAction));
         _menuCreator.setMenuFactory(_menuFactory);
 
         // Add a double click interactor.
-        Action action = new AbstractAction("Configure") {
-	    public void actionPerformed(ActionEvent e) {
-                LayerEvent event = (LayerEvent)e.getSource();
-                Figure figure = event.getFigureSource();
-                Object object = figure.getUserObject();
-                GraphModel graphModel = controller.getGraphModel();
-                NamedObj target =
-                         (NamedObj)graphModel.getSemanticObject(object);
-                // Create a dialog for configuring the object.
-                Component pane = controller.getGraphPane().getCanvas();
-                while (pane.getParent() != null) {
-                    pane = pane.getParent();
-                }
-                if (pane instanceof Frame) {
-                    // The first argument below is the parent window
-                    // (a Frame), which ensures that if this is iconified
-                    // or sent to the background, it can be found again.
-                    new EditParametersDialog((Frame)pane, target);
-                } else {
-                    new EditParametersDialog(null, target);
-                }
-	    }
-	};
-        ActionInteractor doubleClickInteractor = new ActionInteractor(action);
+        ActionInteractor doubleClickInteractor
+                = new ActionInteractor(_configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -168,6 +147,10 @@ public class LinkController extends BasicEdgeController {
 
     /** The configuration. */
     protected Configuration _configuration;
+
+    /** The configure action, which handles edit parameters requests. */
+    protected static ConfigureAction _configureAction
+             = new ConfigureAction("Configure (Ctrl-E)");
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;
