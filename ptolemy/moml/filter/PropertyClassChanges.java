@@ -97,6 +97,9 @@ public class PropertyClassChanges implements MoMLFilter {
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
 
+        System.out.println("filterAttributeValue: " + container + "\t"
+           +  attributeName + "\t" + attributeValue);
+
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -135,8 +138,10 @@ public class PropertyClassChanges implements MoMLFilter {
         // which will open up a large xml file and then close after 2 seconds.
 
         if (attributeName.equals("class")) {
+        System.out.println("filterAttributeValue2: " + attributeValue);
             if (_actorsWithPropertyClassChanges
                     .containsKey(attributeValue)) {
+        System.out.println("filterAttributeValue3: " + attributeValue);
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
                 _currentActorFullName = container.getFullName()
@@ -147,6 +152,7 @@ public class PropertyClassChanges implements MoMLFilter {
             } else if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
 
+                System.out.println("filterAttributeValue4: " + attributeValue + " " + _newClass);
                 // We found a property class to change, and now we
                 // found the class itself that needs changing.
 
@@ -169,6 +175,7 @@ public class PropertyClassChanges implements MoMLFilter {
                     .startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
+        System.out.println("filterAttributeValue5: " + attributeValue);
                 _currentlyProcessingActorWithPropertyClassChanges = false;
             }
         }
@@ -384,16 +391,5 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.sdf.lib.VariableFIR",
                 rateParameterChanges);
-
-        // DE VariableDelay, the delay DEIOPort is now
-        // a PortParameter
-
-        HashMap variableDelayClassChanges = new HashMap();
-        variableDelayClassChanges.put("delay",
-                "ptolemy.actor.parameters.PortParameter");
-
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.de.lib.VariableDelay",
-                    variableDelayClassChanges);
     }
 }
