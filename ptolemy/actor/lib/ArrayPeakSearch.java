@@ -45,6 +45,7 @@ import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayPeakSearch
@@ -191,6 +192,20 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to set type constraints.
+     *  @param workspace The workspace for the new object.
+     *  @return A new instance of ArrayPeakSearch.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ArrayPeakSearch newObject = (ArrayPeakSearch)super.clone(workspace);
+        newObject.input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        newObject.peakValues.setTypeAtLeast(newObject.input);
+        return newObject;
+    }
 
     /** Consume at most one array from the input port and produce
      *  two arrays containing the indices and values of the identified
