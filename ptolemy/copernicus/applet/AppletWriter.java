@@ -298,15 +298,16 @@ public class AppletWriter extends SceneTransformer {
 	Iterator atomicEntities = _model.allAtomicEntityList().iterator();
 	while (atomicEntities.hasNext()) {
 	    Object object = atomicEntities.next();
-	    
-	    //System.out.println("_allAtomicEntityJars: " + object.getClass().getName());
 	    results.put(object.getClass().getName(),
-			_getDomainJar(object.getClass().getPackage().getName()));
+			_getDomainJar(object.getClass().getPackage()
+				      .getName()));
 
 	    if (object instanceof AtomicActor) {
-		// Add in the Managers
-		results.put(((AtomicActor)object).getDirector().getClass().getName(),
-			    _getDomainJar(((AtomicActor)object).getDirector().getClass().getPackage().getName()));
+		// Add in the Managers.
+		results.put(((AtomicActor)object).getDirector().getClass()
+			    .getName(),
+			    _getDomainJar(((AtomicActor)object).getDirector()
+					  .getClass().getPackage().getName()));
 	    }
 	}
 	return results;
