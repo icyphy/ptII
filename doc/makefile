@@ -77,6 +77,7 @@ EXTRA_SRCS = \
 	domains.htm \
 	footer.htm \
 	help.htm \
+	hyVisualHtml.awk \
 	index.htm \
 	install.htm \
 	installJNLP.htm \
@@ -85,6 +86,7 @@ EXTRA_SRCS = \
 	mainheader.htm \
 	oldFeatures.htm \
 	ptII$(PTVERSION).release.htm \
+	ptII2.2.releaseVergil.htm \
 	ptIIfaq.htm \
 	removeasd \
 	toc.css \
