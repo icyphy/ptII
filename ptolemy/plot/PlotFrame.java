@@ -253,7 +253,6 @@ public class PlotFrame extends Frame {
      */
     protected void _open() {
         FileDialog filedialog = new FileDialog(this, "Select a plot file");
-        filedialog.setFilenameFilter(new PlotFilenameFilter());
         if (_directory != null) {
             filedialog.setDirectory(_directory);
         }
@@ -344,11 +343,10 @@ public class PlotFrame extends Frame {
      */
     protected void _saveAs() {
         FileDialog filedialog = new FileDialog(this, "Save plot as...");
-        filedialog.setFilenameFilter(new PlotFilenameFilter());
         if (_directory != null) {
             filedialog.setDirectory(_directory);
         }
-        filedialog.setFile("plot.plt");
+        filedialog.setFile("plot.xml");
         filedialog.setVisible(true);
         _filename = filedialog.getFile();
         if (_filename == null) return;
@@ -389,15 +387,6 @@ public class PlotFrame extends Frame {
                 plot.clear(true);
                 samplePlot();
             }
-        }
-    }
-
-    // FIXME: This filter doesn't work.  Why?
-    class PlotFilenameFilter implements FilenameFilter {
-        public boolean accept(File dir, String name) {
-            name = name.toLowerCase();
-            if (name.endsWith(".plt")) return true;
-            return false;
         }
     }
 }
