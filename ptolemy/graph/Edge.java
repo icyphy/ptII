@@ -79,13 +79,7 @@ public final class Edge {
      */
     public Edge(Node source, Node sink, Object weight) {
         this(source, sink);
-        if (weight == null) {
-            throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to an edge.\nThe source node: " + source
-                    + ".\nThe sink node: " + sink + ".\n");
-        } else {
-            _weight = weight;
-        }
+        setWeight(weight);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,6 +98,19 @@ public final class Edge {
     public boolean isSelfLoop() {
         return _source == _sink;
     }
+
+    /** Set or change the weight of an edge.
+     *  @param weight The new weight.
+     */
+    public void setWeight(Object weight) {
+        if (weight == null) {
+            throw new IllegalArgumentException("Attempt to assign a null "
+                    + "weight to an edge.\nThe source node: " + _source
+                    + ".\nThe sink node: " + _sink + ".\n");
+        } else {
+            _weight = weight;
+        }
+    } 
 
     /** Return the sink node of the edge.
      *  @return The sink node.
