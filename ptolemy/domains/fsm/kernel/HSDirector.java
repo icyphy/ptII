@@ -358,7 +358,12 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 ((Transition) iterator.next()).getRelationList().clearRelationList();
             }
             CompositeActor container = (CompositeActor)getContainer();
-            dir.fireAt(container, getCurrentTime());
+            // If the top level of the model is modal model, the director
+            // is null. We do not request to fire again since no one in upper
+            // hierarchy will do that.
+            if (dir != null) {
+                dir.fireAt(container, getCurrentTime());
+            }
         }
         return super.postfire();
     }
