@@ -40,8 +40,10 @@ import ptolemy.gui.MessageHandler;
 
 // Java imports.
 import java.awt.Container;
+import java.util.Collections;
 import java.util.EmptyStackException;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -244,6 +246,7 @@ public class MoMLParser extends HandlerBase {
         }
         // NOTE: value may be null if attribute default is #IMPLIED.
         _attributes.put(name, value);
+        _attributeNameList.add(name);
     }
 
     /** Handle character data.  In this implementation, the
@@ -699,23 +702,22 @@ public class MoMLParser extends HandlerBase {
                 }
                 _currentCharData.append("<" + elementName);
                 // Put the attributes into the character data.
-                // FIXME: These will not come out in the same order that
-                // they originally appeared.
-                Iterator attributes = _attributes.entrySet().iterator();
-                while (attributes.hasNext()) {
-                    Map.Entry entry = (Map.Entry)attributes.next();
-                    if (entry.getValue() != null) {
+                Iterator attributeNames = _attributeNameList.iterator();
+                while (attributeNames.hasNext()) {
+                    String name = (String)attributeNames.next();
+                    String value = (String)_attributes.get(name);
+                    if(value != null) {
                         // Note that we have to escape the value again,
                         // so that it is properly parsed.
                         _currentCharData.append(" "
-                                + entry.getKey()
+                                + name
                                 + "=\""
-                                + StringUtilities.escapeForXML(
-                                        (String)entry.getValue())
+                                + StringUtilities.escapeForXML(value)
                                 + "\"");
                     }
                 }
                 _attributes.clear();
+                _attributeNameList.clear();
                 _currentCharData.append(">");
                 return;
             }
@@ -1348,6 +1350,7 @@ public class MoMLParser extends HandlerBase {
             }
         }
         _attributes.clear();
+        _attributeNameList.clear();
     }
 
     /** Handle the start of an external entity.  This pushes the stack so
@@ -2093,7 +2096,7 @@ public class MoMLParser extends HandlerBase {
     // Given the name of a MoML class and a source URL, check to see
     // whether this class has already been instantiated, and if so,
     // return the previous instance.
-    private ComponentEntity _searchForClass(String name, String source)
+    public ComponentEntity _searchForClass(String name, String source)
             throws XmlException {
 
         // If the name is absolute, the class may refer to an existing
@@ -2290,6 +2293,9 @@ public class MoMLParser extends HandlerBase {
 
     // Attributes associated with an entity.
     private Map _attributes = new HashMap();
+ 
+    // The list of attribute names, in the order they were parsed.
+    private List _attributeNameList = new LinkedList();
 
     // Base for relative URLs.
     private URL _base;
