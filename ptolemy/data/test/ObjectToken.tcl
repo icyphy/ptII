@@ -66,15 +66,6 @@ test ObjectToken-2.2 {Create an empty instance and query its value} {
 ######################################################################
 ####
 # 
-test ObjectToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new ptolemy.data.ObjectToken]
-    catch {$p fromString foo} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Tokens of class ptolemy.data.ObjectToken cannot be initialized from a string.}}
-
-######################################################################
-####
-# 
 test ObjectToken-4.1 {Create an empty instance and clone} {
     set p [java::new ptolemy.data.ObjectToken]
     set q [$p clone]

@@ -66,15 +66,6 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 ######################################################################
 ####
 # 
-test StringToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new ptolemy.data.StringToken]
-    $p fromString foo
-    $p toString
-} {ptolemy.data.StringToken(foo)}
-
-######################################################################
-####
-# 
 test StringToken-4.1 {Create an empty instance and clone} {
     set p [java::new ptolemy.data.StringToken]
     set q [$p clone]
