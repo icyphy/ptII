@@ -1,3 +1,5 @@
+package ptolemy.copernicus.java.test;
+
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;

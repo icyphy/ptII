@@ -1,3 +1,5 @@
+package ptolemy.copernicus.java.test;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
