@@ -75,7 +75,6 @@ JSRCS = \
 	StringToken.java \
 	Token.java \
 	TokenPublisher.java \
-	Typable.java \
 	TypeCPO.java
 
 EXTRA_SRCS =	$(JSRCS)
