@@ -262,8 +262,6 @@ public class DDEDirector extends ProcessDirector {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
 
-        String name = ((Nameable)actor).getName();
-        System.out.println(name+": calling fireAt()");
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
         if( thread instanceof DDEThread ) {
@@ -361,7 +359,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Transfer data from an input port of the container to the
-     *  ports it is connected to on the inside.  The port argument must
+     *  ports it is connected to on the inside. The port argument must
      *  be an opaque input port. If any channel of the input port
      *  has no data, then that channel is ignored.
      *  JFIXME
@@ -380,7 +378,7 @@ public class DDEDirector extends ProcessDirector {
         Token token = null;
         Receiver[][] insiderecs = port.deepGetReceivers();
         if( port.getWidth() > 0 ) {
-            System.out.println(name+":\t Beginning of transferInputs");
+            // System.out.println(name+":\t Beginning of transferInputs");
         }
         for (int i = 0; i < port.getWidth(); i++) {
             if (insiderecs != null && insiderecs[i] != null) {
@@ -398,7 +396,7 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
-        System.out.println(name+":\t End of transferInputs");
+        // System.out.println(name+":\t End of transferInputs");
     }
 
     /** Transfer data from an output port of the container to the
@@ -420,7 +418,7 @@ public class DDEDirector extends ProcessDirector {
         }
         Receiver[][] insiderecs = port.getInsideReceivers();
         if( insiderecs.length > 0 ) {
-            System.out.println(name+":\t Beginning of transferOutputs");
+            // System.out.println(name+":\t Beginning of transferOutputs");
         }
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
@@ -443,7 +441,7 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
-        System.out.println(name+":\t End of transferOutputs");
+        // System.out.println(name+":\t End of transferOutputs");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -749,7 +747,7 @@ public class DDEDirector extends ProcessDirector {
     	    IllegalActionException {
             
         String name = ((Nameable)getContainer()).getName();
-        System.out.println("Inside of "+name+" there is an External Write Deadlock!");
+        // System.out.println("Inside of "+name+" there is an External Write Deadlock!");
         _incrementLowestCapacityPort();
         
         if( _pendingMutations ) {
@@ -773,7 +771,7 @@ public class DDEDirector extends ProcessDirector {
     protected boolean _resolveInternalReadDeadlock() throws
     	    IllegalActionException {
         String name = ((Nameable)getContainer()).getName();
-        System.out.println("Inside of "+name+" there is an Internal Read Deadlock!");
+        // System.out.println("Inside of "+name+" there is an Internal Read Deadlock!");
         if( _pendingMutations ) {
 	    /* FIXME
                try {
@@ -796,7 +794,7 @@ public class DDEDirector extends ProcessDirector {
     	    IllegalActionException {
             
         String name = ((Nameable)getContainer()).getName();
-        System.out.println("Inside of "+name+" there is an Internal Write Deadlock!");
+        // System.out.println("Inside of "+name+" there is an Internal Write Deadlock!");
         _incrementLowestCapacityPort();
 
         if( _pendingMutations ) {

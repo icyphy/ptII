@@ -168,6 +168,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		_writePending = false;
 		notifyAll();
 	    }
+            
 	    Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
@@ -272,6 +273,12 @@ public class DDEReceiver extends TimedQueueReceiver
      * @param time The time stamp associated with the token.
      */
     public void put(Token token, double time) {
+        IOPort port = (IOPort)getContainer();
+        String portName = ((Nameable)port).getName();
+        if( portName.equals("wormout") ) {
+            System.out.println(portName+": put() called at time = "+time);
+        }
+        
         Workspace workspace = getContainer().workspace();
         DDEDirector director = null;
         if( isOutsideBoundary() ) {
@@ -281,10 +288,6 @@ public class DDEReceiver extends TimedQueueReceiver
             director = (DDEDirector)((Actor)
                     getContainer().getContainer()).getDirector();
         }
-        /* FIXME
-        DDEDirector director = (DDEDirector)
-            ((Actor)getContainer().getContainer()).getDirector();
-        */
 	_put(token, time, workspace, director);
     }
 
@@ -500,9 +503,17 @@ public class DDEReceiver extends TimedQueueReceiver
         synchronized(this) {
             String name = ((Nameable)getContainer().getContainer()).getName();
             if( token instanceof NullToken ) {
-                // System.out.println(name+": A Null Token was placed in this receiver.");
+                /*
+                if( name.equals("actorRcvr") ) {
+                    System.out.println(name+": A Null Token was placed in this receiver at time "+time+".");
+                }
+                */
             } else {
-                // System.out.println(name+": A non-Null Token was placed in this receiver.");
+                /*
+                if( name.equals("actorRcvr") ) {
+                    System.out.println(name+": A non-Null Token was placed in this receiver at time "+time+".");
+                }
+                */
             }
             if( time > getCompletionTime() &&
                     getCompletionTime() != ETERNITY && !_terminate ) {
