@@ -160,8 +160,7 @@ public class BusAssembler extends TypedAtomicActor {
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
             TypedIOPort port = (TypedIOPort)inputPorts.next();
-            _outputWidth += port.getWidth(); // includes all linked
-relations
+            _outputWidth += port.getWidth(); // includes all linked relations
         }
         outputRelation.setWidth(_outputWidth);
         // TODO: figure out how to obey if the output relation width is
