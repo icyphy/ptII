@@ -712,8 +712,6 @@ and the new classname:	ptolemy.domains.sdf.lib.vq.HTVQEncode
 	ptolemy.domains.sdf.lib.vq.ImagePartition
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
-	ptolemy.actor.lib.javasound.AudioReader
-		sourceURL	 -> ptolemy.data.expr.Parameter
 	ptolemy.domains.sdf.lib.vq.ImageUnpartition
 		input	 -> ptolemy.actor.TypedIOPort
 		output	 -> ptolemy.actor.TypedIOPort
