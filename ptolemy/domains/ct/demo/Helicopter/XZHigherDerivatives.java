@@ -30,7 +30,6 @@ package ptolemy.domains.ct.demo.Helicopter;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -62,8 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (reviewmoderator)
 
 */
-public class XZHigherDerivatives extends TypedAtomicActor
-    implements TimedActor{
+public class XZHigherDerivatives extends TypedAtomicActor {
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name

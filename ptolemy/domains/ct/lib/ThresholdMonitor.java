@@ -30,7 +30,6 @@ package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -66,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 
 public class ThresholdMonitor extends TypedAtomicActor
-    implements CTStepSizeControlActor, TimedActor{
+    implements CTStepSizeControlActor {
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a

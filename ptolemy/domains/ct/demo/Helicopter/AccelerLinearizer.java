@@ -32,7 +32,6 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -54,8 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-public class AccelerLinearizer extends TypedAtomicActor
-    implements TimedActor{
+public class AccelerLinearizer extends TypedAtomicActor {
     /** Constructor
      */
     public AccelerLinearizer(CompositeEntity container, String name)

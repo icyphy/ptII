@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.lib;
 
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -58,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CTPeriodicSampler extends Transformer
-    implements CTEventGenerator, TimedActor {
+    implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

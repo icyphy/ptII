@@ -30,7 +30,6 @@
 package ptolemy.domains.ct.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -57,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CTTriggeredSampler extends Transformer
-    implements CTEventGenerator, TimedActor {
+    implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
