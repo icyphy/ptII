@@ -170,7 +170,7 @@ public class RTPDirector extends ProcessDirector {
             }
         }
     }
-        
+
     /** Start all actors and set the stop condition.
      *  @throws IllegalActionException If any of the actors throws it.
      */
@@ -205,7 +205,7 @@ public class RTPDirector extends ProcessDirector {
                 // ignore...
             }
         }
-        
+
         return false;
     }
 

@@ -65,13 +65,13 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Methods from the ProcessReceivers interface.
      */
-    
+
     /** FIXME: Let it make sense.
      */
     public boolean isConnectedToBoundary() {
         return false;
     }
-    
+
     /** FIXME: Let it make sense.
      */
     public boolean isConnectedToBoundaryInside() {
@@ -79,7 +79,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** FIXME: Let it make sense.
-     */    
+     */
     public boolean isConnectedToBoundaryOutside() {
         return false;
     }
@@ -111,8 +111,8 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     public boolean isWriteBlocked() {
         return false;
     }
-    
-        
+
+
 
     /** Bolcking read on the token. This method will not return until
      *  there is a new token be put into the receiver.
@@ -174,6 +174,6 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     ////                        Inner Class                        ////
     /** A null token indicating no token is available.
      */
-    private class Lock extends Object { 
+    private class Lock extends Object {
     }
 }
