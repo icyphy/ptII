@@ -518,8 +518,53 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 ######################################################################
 ####
 #
-test CalendarQueue-6.1 {Tests identical entry} {
+test CalendarQueue-6.1 {Test identical entry} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+    $queue put $p1 $n5
+    $queue put $p1 $n5
+
+    set mylist [list [$queue getNextKey] \
+	    [$queue remove $p1 $n5] \
+	    [$queue getNextKey] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+	    [$queue getPreviousKey]]
+
+    $queue put $p1 $n5
+    $queue put $p1 $n5
+    $queue put $p1 $n5
+    lappend mylist [$queue remove $p2 $n3] \
+	    [$queue remove $p2 $n3] \
+	    [$queue remove $p3 $n7]
+    $queue put $p1 $n5
+    lappend mylist [$queue includes $p2 $n3] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName]
+    catch {[$queue getNextKey]} msg1
+    lappend mylist $msg1
+
+} {0.0 1 0.0 n5 0.0 0 0 0 0 n5 n5 n5 n5 {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
+
+######################################################################
+####
+#
+test CalendarQueue-7.1 {Test the clear method} {
+
+    $queue put $p1 $n5
+    $queue take
+    $queue put $p1 $n5
+    $queue put $p1 $n5
+    $queue put $p1 $n5
+    $queue put $p1 $n5
+    $queue take
+
+    $queue clear
     $queue put $p1 $n5
     $queue put $p1 $n5
 
