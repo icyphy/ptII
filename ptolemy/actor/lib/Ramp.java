@@ -159,8 +159,10 @@ public class Ramp extends SequenceSource {
      *  iteration count, and if the result is equal to <i>lifetime</i>, then
      *  return false.
      *  @return False if the number of iterations matches the number requested.
+     *  @exception IllegalActionException If the firingCountLimit parameter
+     *   has an invalid expression.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
         try {
             _stateToken = _stateToken.add(step.getToken());
         } catch (IllegalActionException ex) {

@@ -124,8 +124,10 @@ public class SequenceSource extends Source implements SequenceActor {
      *  Otherwise, return true.  Derived classes should call this
      *  at the end of their postfire() method and return its returned
      *  value.
+     *  @exception IllegalActionException If firingCountLimit has
+     *   an invalid expression.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
         _iterationCount++;
         if (_iterationCount ==
                 ((IntToken)firingCountLimit.getToken()).intValue()) {

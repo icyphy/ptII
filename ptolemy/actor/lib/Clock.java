@@ -273,7 +273,7 @@ public class Clock extends TimedSource {
         double[][] offsts =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
         MatrixToken val = (MatrixToken)(values.getToken());
-        if (offsts[0].length != val.getRowCount()) {
+        if (offsts[0].length != val.getColumnCount()) {
             throw new IllegalActionException(this,
             "Values and offsets vectors do not have the same length.");
         }
@@ -343,7 +343,7 @@ public class Clock extends TimedSource {
             throw new IllegalActionException(this,
                     "Index out of range of the values parameter.");
         }
-        return val.getElementAsToken(0,index);
+        return val.getElementAsToken(0, index);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -55,8 +55,8 @@ For now, it outputs a zero (of the same type as the values) whenever
 the iteration count does not match an index in <i>indexes</i>.
 <p>
 The default for the <i>values</i> parameter is
-an integer vector of form [1,0].
-The default indexes matrix is [0,1].
+an integer vector of form [1, 0].
+The default indexes matrix is [0, 1].
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
 The type of the output can be any token type that has a corresponding
@@ -264,8 +264,10 @@ public class Pulse extends SequenceSource {
 
     /** Update the iteration counters until they exceed the values
      *  in the indexes vector.
+     *  @exception IllegalActionException If the expression of indexes
+     *   is not valid.
      */
-    public boolean postfire() {
+    public boolean postfire() throws IllegalActionException {
         int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
         // We stop incrementing after reaching the top of the indexes
         // vector to avoid possibility of overflow.
@@ -313,7 +315,7 @@ public class Pulse extends SequenceSource {
 
     // Default value of the values array.
     private int defaultValues[][] = {
-        {1,0}
+        {1, 0}
     };
 
     // Default value of the values parameter.
