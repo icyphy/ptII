@@ -75,6 +75,17 @@ public class PNRedirect extends PNStar{
         super.initialize(this);
     }
 
+    public void initialize() 
+            throws NameDuplicationException, IllegalActionException {
+        _input = newInPort(this, "input");
+        _output = newOutPort(this, "output");
+        super.initialize(this);
+    }
+
+    public void setInitState(int initvalue) {
+        _initValue = new IntToken(initValue);
+    }
+
     /** Reads a token from it's input stream and writes it to the output
      */
     public void run() {
