@@ -1130,6 +1130,8 @@ public class Graph {
 
     /** Register a new edge in the graph. The edge is assumed to
      *  be non-null, unique, and consistent with the node set.
+     *  Derived classes can override this method to first check that
+     *  the edge weight is meaningful in the context of the graph.
      *  @param edge The new edge.
      */
     protected void _registerEdge(Edge edge) {
@@ -1153,6 +1155,8 @@ public class Graph {
 
     /** Register a new node in the graph. The node is assumed to
      *  be non-null and unique.
+     *  Derived classes can override this method to first check that
+     *  the node weight is meaningful in the context of the graph.
      *  @param node The new node.
      */
     protected void _registerNode(Node node) {
