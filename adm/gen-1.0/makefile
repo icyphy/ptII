@@ -195,7 +195,7 @@ $(VERGIL): $(PTIIDIST)
 	$(COMPRESS) $(basename $@)
 	mv $(basename $@).bak $(basename $@)
 	chmod g+w $@ $(basename $@)
-	chgrp ptolemy $@ $(basename $@)
+	-chgrp ptolemy $@ $(basename $@)
 	ls -l $@ $(basename $@)
 
 update_ftp: update_ptii_ftp update_ptii_itcl untar
