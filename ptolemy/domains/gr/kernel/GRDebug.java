@@ -49,12 +49,6 @@ public class GRDebug {
         }
     }
 
-    public static final void println(Object object) {
-        if (_debugOn) {
-            System.out.println(object.toString());
-        }
-    }
-
     public static final void printStackTrace() {
         if (_debugOn) {
             try {
@@ -62,6 +56,12 @@ public class GRDebug {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static final void println(Object object) {
+        if (_debugOn) {
+            System.out.println(object.toString());
         }
     }
 

@@ -541,24 +541,6 @@ public class GRDirector extends StaticSchedulingDirector {
         }
     }
 
-
-    /** For debugging purposes.  Display the list of contained entities
-     *  inside the composite object
-     *  @param object The composite entity with a list of contained entities.
-     */
-    private void _debugViewEntityList(CompositeEntity object) {
-
-        List list = object.entityList();
-            Iterator listIterator = list.iterator();
-
-            debug.println("\nentity List:");
-            while (listIterator.hasNext()) {
-                Entity entity = (Entity) listIterator.next();
-                debug.println(entity);
-            }
-            debug.println("\n");
-    }
-
     /** For debugging purposes. This is mainly used for figuring out
      *  the list of output ports in a TypedCompositeActor container.
      *  Note: This method seems to work only for opaque
@@ -580,6 +562,23 @@ public class GRDirector extends StaticSchedulingDirector {
             //_debugViewPortRemoteReceivers(port);
         }
         debug.println("\n");
+    }
+
+    /** For debugging purposes.  Display the list of contained entities
+     *  inside the composite object
+     *  @param object The composite entity with a list of contained entities.
+     */
+    private void _debugViewEntityList(CompositeEntity object) {
+
+        List list = object.entityList();
+            Iterator listIterator = list.iterator();
+
+            debug.println("\nentity List:");
+            while (listIterator.hasNext()) {
+                Entity entity = (Entity) listIterator.next();
+                debug.println(entity);
+            }
+            debug.println("\n");
     }
 
     /** For debugging purposes.  This function only makes sense
