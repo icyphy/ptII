@@ -453,6 +453,13 @@ public class PtolemyModule implements Module {
 	_notationModel.removeElement(notation);
     }
 
+    /** 
+     * The color that is used for the background of a Ptolemy model.  
+     * Icons should be designed to show up well against this color.
+     */
+    public static Color BACKGROUND_COLOR = 
+	new Color((float).85, (float).85, (float).85);
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
@@ -563,6 +570,7 @@ public class PtolemyModule implements Module {
 	    //System.out.println("lib = " + lib.description());
 		// createNodes(pane, "TreePane", library);
 	    JTree designTree = new JDesignTree(library);
+	    designTree.setBackground(BACKGROUND_COLOR);
 	    JScrollPane scrollPane = new JScrollPane(designTree);
 	    scrollPane.setMinimumSize(new Dimension(200, 200));
 	    scrollPane.setPreferredSize(new Dimension(200, 200));

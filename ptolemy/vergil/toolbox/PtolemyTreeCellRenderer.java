@@ -67,6 +67,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 	if(value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
 	    component.setText(object.getName());
+	    component.setBackground(new java.awt.Color(0, 0, 0, 0));
 	   
             // Now we get to create its icon:
 	    NamedObj iconObject = object.getAttribute("_icon");

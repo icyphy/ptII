@@ -174,7 +174,7 @@ public class EditorDropTarget extends DropTarget {
                             throw new RuntimeException("Drop target doesn't " + 
                                     "recognize data");
                         }
-                        gc.addNode(newNode, p.x, p.y);
+                        gc.addNode(newNode, ((int)p.x), ((int)p.y));
                     }
                     catch (Exception ex) {
                         ex.printStackTrace();

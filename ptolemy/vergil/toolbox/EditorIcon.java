@@ -159,7 +159,7 @@ public class EditorIcon extends Icon {
      * The default background figure, if nothing else is available.
      */
     protected static Figure _createDefaultBackgroundFigure() {
-	return new BasicRectangle(0, 0, 60, 40, Color.yellow, 1);
+	return new BasicRectangle(0, 0, 60, 40, Color.white, 1);
     }
 
 }

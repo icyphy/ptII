@@ -51,6 +51,7 @@ import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 
+import java.awt.Color;
 import java.awt.datatransfer.*;
 import java.awt.Dimension;
 import java.awt.event.*;
@@ -164,6 +165,7 @@ public class PtolemyDocument extends AbstractDocument
         jgraph.setRequestFocusEnabled(true);
 	jgraph.setAlignmentX(1);
 	jgraph.setAlignmentY(1);
+	jgraph.setBackground(PtolemyModule.BACKGROUND_COLOR);
 	return jgraph;
     }
 
