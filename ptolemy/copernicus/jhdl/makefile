@@ -51,7 +51,6 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
 	runCommandTemplate.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
