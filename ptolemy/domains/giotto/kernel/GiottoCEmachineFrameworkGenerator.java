@@ -86,10 +86,26 @@ import ptolemy.util.StringUtilities;
  */
 /**
    This attribute is a visible attribute that when configured (by double
-   clicking on it or by invoking Configure in the context menu) it generates
-   Giotto code and displays it a text editor.  It is up to the user to save
-   the Giotto code in an appropriate file, if necessary.
-
+   clicking on it), displays a dialog box asking the user to select a
+   directory. Once the user selects and has clicked on the "Generate Files"
+   button, the attribute does two things<DL>
+   <DT>1. Generates the Giotto code for the model and stores it in 
+      "selected_directory/model_name/model_name.giotto".</DT>
+   <DT>2. Generates the Emachine framework code files and stores them in
+      "selected_directory/model_name/c_functionality/fcode". This particular
+      direcotry structure is chosen to reflect the Emachine directory
+      structure.</DT>
+      <DT>The framework code consists of</DT>
+      <DT><DD>f_code.c : This contains the driver code for the model, including the
+                 output driver initialization code, and memory allocation
+                 for array data types.</DD>
+      <DD>f_code.h : Header file for the previous file. Simply contains the
+                 driver function declarations, and the task frequency definitions
+      <DD>task_code.h : Contains the function declarations for the task codes.</DD>
+                    this is simply provided as a convenience to the user as he
+                    does not need to worry about the exact syntax of the
+                    functions, and can simply copy them from here.</DD></DT></DL>
+                    
    @author Edward A. Lee, Vinay Krishnan
    @version $Id$
    @since Ptolemy II 4.0
@@ -129,6 +145,15 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Generate Giotto code for the given model.
+     *  @param model The model for which the Giotto code is to be generated
+     *  @param directory The directory into which the generated file
+     *                   (model_name.giotto) is to be written
+     *  @exception IllegalActionException If the file 
+     *              "directory"/"model_name"/model_name.giotto cannot be opened 
+     *  @exception NameDuplicationException If any actor name coincides with
+     *   the name of another actor already in the model.
+     */
     public static void writeGiottoCode(TypedCompositeActor model, File directory)
                 throws IllegalActionException, NameDuplicationException {
 
@@ -154,10 +179,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
 
-    /** Generate Giotto code for the given model.
-     *  @return The Giotto code.
-     */
-    public static String generateGiottoCode(TypedCompositeActor model)
+    private static String generateGiottoCode(TypedCompositeActor model)
             throws IllegalActionException {
         String generatedCode = "";
 
@@ -784,10 +806,15 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate the Framework code. Presently this functionality
-     * is hard coded to generate the files in $PTII/domains/giotto/kernel
-     * It creates the directory c_functionality/fcode with the files
-     * f_code.c and f_code.h in it.
+    /** Generate the Framework code for the given model. It creates the
+     *  directory "directory"/"model_name"/c_functionality/fcode with the
+     * files f_code.c, f_code.h and task_code.h in it.
+     *  @param model The model for which the Framework code is to be generated
+     *  @param directory The directory into which the generated files
+     *                   are to be written
+     *  @exception IllegalActionException If any of the files cannot be opened 
+     *  @exception NameDuplicationException If any actor name coincides with
+     *   the name of another actor already in the model.
      */
     public static void writeFrameworkCode(TypedCompositeActor model, File directory)
                     throws IllegalActionException, NameDuplicationException {
