@@ -1160,8 +1160,8 @@ test Function-toString {Test toString} {
 # iterate
 
 test Function-iterate {Test iterate} {
-    list [evaluate {iterate(function(x) x+1, 10, 0)}] \
-        } {{{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}}}
+    list [evaluate {iterate(function(x:int) x+1, 10, 0)}] \
+        } {{{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}}}
 
 ####################################################################
 ####################################################################
