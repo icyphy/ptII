@@ -142,7 +142,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
+import java.util.LinkedHashSet;
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
 /**
@@ -820,8 +820,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                             (NamedObj)graphModel.getSemanticObject(userObject);
                     if (actual != null) {
                         if (graphModel.isEdge(userObject)) {
+			    System.out.println("BasicGraphFrame: adding "
+					       + actual + " to EdgeSet");
                             namedObjEdgeSet.add(actual);
                         } else {
+			    System.out.println("BasicGraphFrame: adding "
+					       + actual + " to NodeSet");
+
                             namedObjNodeSet.add(actual);
                         }
                     }
@@ -838,8 +843,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // This is need to avoid problems with relations not existing due to
         // the way some relations are hidden and ports are shown directly
         // connected
-        ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
+
+	// Formerly, we used an ArrayList here, but this caused problems
+	// if we had a relation between two links and the user selected
+	// the relation and a link by dragging a box.
+	// JDK1.4 provides us with a LinkedHashSet that is ordered and
+	// has unique elements, so we use that. -cxh 11/16/02
+	//
+	// ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
+        // namedObjList.addAll(namedObjNodeSet);
+
+        LinkedHashSet namedObjList = new LinkedHashSet(namedObjEdgeSet);
         namedObjList.addAll(namedObjNodeSet);
+
         // Generate the MoML to carry out the deletion
         StringBuffer moml = new StringBuffer();
         moml.append("<group>\n");
@@ -848,6 +864,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             NamedObj element = (NamedObj)elements.next();
             String deleteElemName = "";
             if (element instanceof Relation) {
+		System.out.println("BasicGraphFrame: deleteRelation"
+				   + element.getName());
+
                 deleteElemName = "deleteRelation";
             }
             else if (element instanceof Entity) {
