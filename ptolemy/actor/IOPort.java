@@ -68,18 +68,21 @@ import ptolemy.kernel.util.Workspace;
    input port, then it contains some number of receivers, which are
    responsible for receiving data from remote entities. If it is an
    output port, then it can send data to remote receivers.
+
    <p>
    Its receivers are created by a director.  It must therefore be
    contained by an actor that has a director.  If it is not, then
    any attempt to read data or list the receivers will trigger
    an exception.
-   <p>
-   If this port is at the boundary of an composite actor,
-   then it can have both inside and outside links, with corresponding
-   inside and outside receivers if it opaque. The inside links are to relations
-   inside the opaque composite actor, whereas the outside links are
-   to relations outside. If it is not specified, then a link is an
-   outside link.
+
+   <p> 
+   If this port is at the boundary of an composite actor, then it
+   can have both inside and outside links, with corresponding inside
+   and outside receivers if it opaque. The inside links are to
+   relations inside the opaque composite actor, whereas the outside
+   links are to relations outside. If it is not specified, then a link
+   is an outside link.
+
    <p>
    The port has a <i>width</i>, which by default is constrained to
    be either zero or one.
@@ -87,6 +90,7 @@ import ptolemy.kernel.util.Workspace;
    A port with a width greater than one behaves as a bus interface,
    so if the width is <i>w</i>, then the port can simultaneously
    handle <i>w</i> distinct input or output channels of data.
+
    <p>
    In general, an input port might have more than one receiver for
    each channel.  This occurs particularly for transparent input ports,
@@ -95,27 +99,31 @@ import ptolemy.kernel.util.Workspace;
    Each receiver in the group is sent the same data. Thus, an input port in
    general will have <i>w</i> distinct groups of receivers, and can receive
    <i>w</i> distinct channels.
+
    <p>
    By default, the maximum width of the port is one, so only one
    channel is handled. A port that allows a width greater than one
    is called a <i>multiport</i>. Calling setMultiport() with a
    <i>true</i> argument converts the port to a multiport.
+
    <p>
    The width of the port is not set directly. It is the sum of the
    widths of the relations that the port is linked to on the outside.
    The sum of the widths of the relations linked on the inside can be
-   more or less than the width.  If it is more, then the excess inside relations
-   will be treated as if they are unconnected.  If it is less, then the
-   excess outside relations will be treated as if they are unconnected.
+   more or less than the width.  If it is more, then the excess inside
+   relations will be treated as if they are unconnected.  If it is
+   less, then the excess outside relations will be treated as if they
+   are unconnected.
+
    <p>
    An IOPort can only link to instances of IORelation. Derived classes
-   may further constrain links to a subclass of IORelation.  To do this,
-   they should override the protected methods _checkLink() and _checkLiberalLink()
-   to throw an exception if their arguments are not of the appropriate
-   type.  Similarly, an IOPort can only be contained by a class
-   derived from ComponentEntity and implementing the Actor interface.
-   Subclasses may further constrain the containers by overriding
-   the protected method _checkContainer().
+   may further constrain links to a subclass of IORelation.  To do
+   this, they should override the protected methods _checkLink() and
+   _checkLiberalLink() to throw an exception if their arguments are
+   not of the appropriate type.  Similarly, an IOPort can only be
+   contained by a class derived from ComponentEntity and implementing
+   the Actor interface.  Subclasses may further constrain the
+   containers by overriding the protected method _checkContainer().
 
    @author Edward A. Lee, Jie Liu, Neil Smyth, Lukito Muliadi
    @version $Id$

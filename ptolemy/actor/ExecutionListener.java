@@ -38,11 +38,12 @@ package ptolemy.actor;
    or an object that is communicating with a front end. Most of the
    events that are reported are state changes in the manager.
    <p>
-   Some execution events happen in response to an asynchronous request.
-   For example, when the pause() method of a manager is called, a flag is set, and
-   at the end of the next toplevel iteration, the manager will notice the flag
-   and pause execution. In such cases, the execution listeners are not notified
-   when the request occurs, but only when the execution thread has actually
+   Some execution events happen in response to an asynchronous
+   request.  For example, when the pause() method of a manager is
+   called, a flag is set, and at the end of the next toplevel
+   iteration, the manager will notice the flag and pause execution. In
+   such cases, the execution listeners are not notified when the
+   request occurs, but only when the execution thread has actually
    been suspended.
 
    @author Steve Neuendorffer, Edward A. Lee

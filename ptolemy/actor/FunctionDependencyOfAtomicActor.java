@@ -37,30 +37,32 @@ import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfAtomicActor
-/** An instance of FunctionDependencyOfAtomicActor describes the function
-    dependence relation of an atomic actor. It contains a ports graph
-    including the container ports only.
-    <p>
-    For most atomic actors, usually, all the input ports and output ports are
-    dependent. E.g, the AddSubtract actor. (For definition of <i>dependent</i>,
-    see FunctionDependency.) Thus, the input and out ports in the ports graph are
-    fully connected. for some atomic actors, such as TimedDelay actor, its input
-    and output ports are not dependent, we use the
-    <i>removeDependence(input, output)</i> method to declare that there is no
-    dependency between the input and output port, thus they are not connected.
-    See the {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
-    <p>
-    Note, for Multiplexer, Demultiplexer actors, the boolean control input and
-    output are dependent.
+/**
+   An instance of FunctionDependencyOfAtomicActor describes the function
+   dependence relation of an atomic actor. It contains a ports graph
+   including the container ports only.
 
-    @see FunctionDependency
-    @see ptolemy.domains.de.lib.TimedDelay
-    @author Haiyang Zheng
-    @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
-    07:57:24 hyzheng Exp $
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (hyzheng)
-    @Pt.AcceptedRating Red (hyzheng)
+   <p> For most atomic actors, usually, all the input ports and
+   output ports are dependent. E.g, the AddSubtract actor. (For
+   definition of <i>dependent</i>, see FunctionDependency.) Thus, the
+   input and out ports in the ports graph are fully connected. for
+   some atomic actors, such as TimedDelay actor, its input and output
+   ports are not dependent, we use the <i>removeDependence(input,
+   output)</i> method to declare that there is no dependency between
+   the input and output port, thus they are not connected.  See the
+   {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
+
+   <p> Note, for Multiplexer, Demultiplexer actors, the boolean
+   control input and output are dependent.
+
+   @see FunctionDependency
+   @see ptolemy.domains.de.lib.TimedDelay
+   @author Haiyang Zheng
+   @version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21
+   07:57:24 hyzheng Exp $
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 

@@ -753,7 +753,8 @@ public class Manager extends NamedObj implements Runnable {
                     _actorsToInitialize.remove(otherActor);
                     otherActorContainer = null;
                 } else {
-                    otherActorContainer = (NamedObj)otherActorContainer.getContainer();
+                    otherActorContainer =
+                        (NamedObj)otherActorContainer.getContainer();
                 }
             }
         }

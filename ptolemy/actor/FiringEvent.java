@@ -35,16 +35,19 @@ import ptolemy.kernel.util.NamedObj;
 //// FiringEvent
 /**
    An event that is published by directors whenever an actor is activated.
-   An activation occurs whenever an actor is prefired, fired, or postfired.
-   The appropriate event should be published just before or after the associated
-   method of the executable interface is called.   The iterate event
-   is published by those directors which vectorize firings of a
-   particular actor.  This event may be published instead of many individual
-   prefire, fire and postfire events.   As an example of
-   how to implement a director that publishes these events, see the SDF Director.
-   One way in which these events are used is to trace the firings of different
-   actors.  A user interface can also implement a breakpoint mechanism by
-   pausing execution of the executing thread in response to one of these events.
+   An activation occurs whenever an actor is prefired, fired, or
+   postfired.  The appropriate event should be published just before
+   or after the associated method of the executable interface is
+   called.  The iterate event is published by those directors which
+   vectorize firings of a particular actor.  This event may be
+   published instead of many individual prefire, fire and postfire
+   events.  As an example of how to implement a director that
+   publishes these events, see the SDF Director.
+   One way in which these events are used is to trace the firings of
+   different actors.  A user interface can also implement a breakpoint
+   mechanism by pausing execution of the executing thread in response
+   to one of these events.
+
    <p>
    Note that since most directors work with a constant set of actors, and fire
    them repeatedly, it may improve efficiency dramatically to use a

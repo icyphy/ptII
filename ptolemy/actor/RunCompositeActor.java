@@ -256,8 +256,8 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  The initialization of the submodel is accomplished in fire().
      *  The subclass of this can set the <i>_isSubclassOfThis<i> to
      *  be true to call the initialize method of the superclass of this.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
@@ -280,8 +280,8 @@ public class RunCompositeActor extends TypedCompositeActor {
     /** Return true, indicating that execution can continue.
      *  The subclass of this can set the <i>_isSubclassOfThis<i> to
      *  be true to call the postfire method of the superclass of this.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
         //Call the initialize method of the superclass.
@@ -292,8 +292,8 @@ public class RunCompositeActor extends TypedCompositeActor {
     }
 
     /** Return true, indicating that this actor is always ready to fire.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public boolean prefire() throws IllegalActionException {
         return true;
@@ -334,8 +334,8 @@ public class RunCompositeActor extends TypedCompositeActor {
     }
 
     /** Override the base class to do nothing.
-     *  @exception IllegalActionException Not thrown, but declared
-     *   so the subclasses can throw it.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but declared so the subclasses can throw it.
      */
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
