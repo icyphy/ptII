@@ -632,20 +632,13 @@ Update any actor port class names that have been renamed.
 
 Below are the changes that are not handled automatically:
 <menu>
-<li> ct.kernel.CTRealTimeDirector has been removed, the fix
-is to use ct.kernel.CTDirector instead and to 
-set the synchronizeToRealTime parameter to true.
-
-<li> DDE: RcvrComparator renamed to ReceiverComparator
-
-<li> actor.lib.Reader is now actor.lib.DoubleReader
- <br> The Reader class was
-included in the Ptolemy II 1.0.1 download, but was not part of the 
-default configuration.
 
 <li> AudioReader now uses a FileAttribute instead of a string valued
 parameter.  The name of this parameter has changed from
 sourceURL to fileOrURL to conform with LineReader and ExpressionReader.
+
+<li> Longs are now printed with a trailing capital <CODE>L</CODE>
+character.
 </menu>
 
 If you have developed your own actors under Ptolemy II 1.0.1 by
