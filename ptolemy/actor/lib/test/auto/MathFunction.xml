@@ -184,19 +184,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display23" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="410.0, 307.0"/>
-        </rendition>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="Test40" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0,0.6931472]">
         </property>
@@ -266,7 +253,6 @@
     <link port="MathFunction11.output" relation="relation30"/>
     <link port="Test16.input" relation="relation26"/>
     <link port="Test20.input" relation="relation28"/>
-    <link port="Display23.input" relation="relation29"/>
     <link port="Test40.input" relation="relation27"/>
     <link port="Test42.input" relation="relation29"/>
 </model>
