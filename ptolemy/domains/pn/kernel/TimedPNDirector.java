@@ -437,7 +437,7 @@ public class TimedPNDirector extends BasePNDirector {
 		    setCurrentTime(((Double)(_eventQueue.getPreviousKey()))
 			    .doubleValue());
 		    _informOfDelayUnblock();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalActionException e) {
 		    throw new InternalErrorException("Inconsistency"+
 			    " in number of actors blocked on delays count"+
 			    " and the entries in the CalendarQueue");
@@ -467,7 +467,7 @@ public class TimedPNDirector extends BasePNDirector {
 				_eventQueue.put (new Double(newtime), actor);
 				sametime = false;
 			    }
-			} catch (IllegalAccessException e) {
+			} catch (IllegalActionException e) {
 			    throw new InternalErrorException(e.toString());
 			}
 		    } else {
