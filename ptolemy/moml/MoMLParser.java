@@ -37,7 +37,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.CancelException;
-import ptolemy.gui.GUIStringUtilities;
+import ptolemy.util.StringUtilities;
 import ptolemy.gui.MessageHandler;
 
 // Java imports.
@@ -775,7 +775,7 @@ public class MoMLParser extends HandlerBase {
     public NamedObj parse(String text) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
-	String cwd = GUIStringUtilities.getProperty("user.dir");
+	String cwd = StringUtilities.getProperty("user.dir");
 	if (cwd != null) {
             // We have to append a trailing / here for this to
             // work under Solaris.
@@ -823,7 +823,7 @@ public class MoMLParser extends HandlerBase {
     public NamedObj parseFile(String filename) throws Exception {
         URL base = null;
         // Use the current working directory as a base.
-	String cwd = GUIStringUtilities.getProperty("user.dir");
+	String cwd = StringUtilities.getProperty("user.dir");
 	if (cwd != null) {
             // We have to append a trailing / here for this to
             // work under Solaris.
@@ -2541,7 +2541,7 @@ public class MoMLParser extends HandlerBase {
                 // Try relative to the current working directory.
                 // NOTE: This is last because it will fail with a
                 // security exception in applets.
-                String cwd = GUIStringUtilities.getProperty("user.dir");
+                String cwd = StringUtilities.getProperty("user.dir");
                 if (cwd != null) {
                     try {
                         // We have to append a trailing "/" here for this to
