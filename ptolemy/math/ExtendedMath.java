@@ -43,8 +43,8 @@ import java.lang.reflect.*;
  * ExtendedMath is a library of additional mathematical operations
  * beyond those provided by the Java Math class.
  *
- * @author: Albert Chen, William Wu, Edward A. Lee
- * @version: $Id$
+ * @author Albert Chen, William Wu, Edward A. Lee
+ * @version $Id$
  */
 
 public final class ExtendedMath {
