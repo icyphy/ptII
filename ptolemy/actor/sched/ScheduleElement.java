@@ -156,7 +156,7 @@ public abstract class ScheduleElement {
 	}
     }
 
-   
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
