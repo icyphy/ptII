@@ -28,6 +28,7 @@
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 Review synchronization of _enqueueEvent() and _dequeueEvent() methods.
 Do this together with re-review of Director base class.
+TransferOutputs: transfers all available tokens.
 */
 
 package ptolemy.domains.de.kernel;
@@ -695,7 +696,7 @@ public class DEDirector extends Director {
             
             // Otherwise it is a proper timing relation.
             // We set the current time.
-            if (Math.abs(nextEventTime - outsideCurrentTime)< 1e-10) {
+            if (Math.abs(nextEventTime - outsideCurrentTime) < 1e-10) {
                 // Round up the error in double number calculation.
                 setCurrentTime(nextEventTime);
             } else {
@@ -786,6 +787,29 @@ public class DEDirector extends Director {
             }
         }
         super.stopFire();
+    }
+
+    /** Override the base class method to transfer all the available
+     *  tokens from a DE model.  No data remains at the boundary of a
+     *  DE model after the model has been fired.  This facilitates
+     *  building multirate DE models.  The port argument must be an
+     *  opaque output port. If any channel of the output port has no
+     *  data, then that channel is ignored.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public boolean transferOutputs(IOPort port)
+            throws IllegalActionException {
+        boolean anyWereTransferred = false;
+        boolean moreTransfersRemaining = true;
+        while(moreTransfersRemaining) {
+	    moreTransfersRemaining = super.transferOutputs(port);
+            anyWereTransferred |= moreTransfersRemaining;
+	}
+	return anyWereTransferred;
     }
 
     ///////////////////////////////////////////////////////////////////
