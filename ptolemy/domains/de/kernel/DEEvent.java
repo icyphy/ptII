@@ -222,14 +222,11 @@ public final class DEEvent implements Comparable {
     // The destination actor.
     private Actor _actor;
 
-    // The destination receiver (only set for non-pure events).
-    private DEReceiver _receiver;
-
-    // The token contained by this event.
-    private Token _token;
-
     // The microstep.
     private int _microstep;
+
+    // The destination receiver (only set for non-pure events).
+    private DEReceiver _receiver;
 
     // The depth of the destination receiver.
     private int _receiverDepth;
@@ -237,4 +234,6 @@ public final class DEEvent implements Comparable {
     // The time stamp of the event.
     private double _timeStamp;
 
+    // The token contained by this event.
+    private Token _token;
 }
