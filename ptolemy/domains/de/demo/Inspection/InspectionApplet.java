@@ -184,7 +184,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _eventplot.plot.setYLabel("Wait time");
             _eventplot.plot.setXRange(0.0, _getStopTime());
             _eventplot.plot.setYRange(0.0, 4.0);
-            _eventplot.plot.setSize(450,200);
+            _eventplot.plot.setSize(450, 200);
             _eventplot.plot.setConnected(false);
             _eventplot.plot.setImpulses(true);
             _eventplot.plot.setMarksStyle("dots");
@@ -199,7 +199,7 @@ public class InspectionApplet extends DEApplet implements QueryListener {
             _histplot.histogram.setYLabel("Passengers");
             _histplot.histogram.setXRange(0.0, 6.0);
             _histplot.histogram.setYRange(0.0, 20.0);
-            _histplot.histogram.setSize(450,200);
+            _histplot.histogram.setSize(450, 200);
             _histplot.histogram.setBinWidth(0.2);
             _histplot.fillOnWrapup.setToken(new BooleanToken(false));
 
