@@ -65,7 +65,7 @@ echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
-    echo "http://www.gigascale.org/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+    echo "http://chess.eecs.berkeley.edu/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
 else
     echo "$ptbuildlog on `hostname`" >> $mailmsg
 fi
@@ -163,7 +163,7 @@ if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     echo "Code Coverage Summary" >> $mailmsg
     echo "" >> $mailmsg
     echo "To see code coverage, view:" >> $mailmsg
-    echo "http://www.gigascale.org/ptexternal/nightly/coverage.html" >> $mailmsg
+    echo "http://chess.eecs.berkeley.edu/ptexternal/nightly/coverage.html" >> $mailmsg
     echo "" >> $mailmsg
     sh $ADMDIR/bin/coveragesummary >> $mailmsg
 fi
