@@ -234,13 +234,15 @@ cxh@tycho 30% pxgraph -binary binary.plt
 </pre>
 
 <DT> <A NAME="endian"><B>3.3 How do I handle endian issues in binary data?</B></A>
-<DD> Binary data is encoded in different ways on different platforms
+<DD> Traditional C/C++ programs encode binary data in different formats
+on different patforms.
 <menu>
 <li> Big-endian - SPARCs and the network in general use this format.
 <li> Little-endian - Intel x86 chips use this format.
 </menu>
 Problems can occur when you try to read a binary format file on a
-machine other than the machine it was created on.  The <CODE>pxgraph</CODE>
+machine other than the machine it was created on. Java always
+reads binary data in big-endian format, so the <CODE>pxgraph</CODE>
 script and the <CODE>pxgraphargs</CODE> applet parameter take the
 following arguments:
 <menu>
