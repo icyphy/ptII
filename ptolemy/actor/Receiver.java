@@ -66,7 +66,7 @@ public interface Receiver {
      *  is a runtime exception.
      *  @exception NoTokenException If there is no token.
      */
-    public Token get() throws NoTokenException;
+    public Token get();
 
     /** Return the container. */
     public Nameable getContainer();
@@ -96,7 +96,7 @@ public interface Receiver {
      *  catch it.
      *  @exception NoRoomException If the token cannot be put.
      */
-    public void put(Token t) throws NoRoomException;
+    public void put(Token t);
 
     /** Set the container.
      *  @exception IllegalActionException If the container is not of
