@@ -200,7 +200,7 @@ public class HDEDirector extends DEDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public HDEDirector() {
-	this(null);
+        this(null);
     }
 
     /**  Construct a director in the  workspace with an empty name.
@@ -209,7 +209,7 @@ public class HDEDirector extends DEDirector {
      *  @param workspace The workspace of this object.
      */
     public HDEDirector(Workspace workspace) {
-	super(workspace);
+        super(workspace);
 
     }
 
@@ -229,7 +229,7 @@ public class HDEDirector extends DEDirector {
      */
     public HDEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
 
     }
 
@@ -350,8 +350,8 @@ public class HDEDirector extends DEDirector {
      *  @return A new DEReceiver.
      */
     public Receiver newReceiver() {
-	if (_debugging) _debug("Creating new HDE receiver.");
-	return new HDEReceiver();
+        if (_debugging) _debug("Creating new HDE receiver.");
+        return new HDEReceiver();
     }
 
     /** Override the base class method to transfer all the available
@@ -375,10 +375,10 @@ public class HDEDirector extends DEDirector {
     */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
-	if (_debugging) _debug("Transferring outputs on port " +
+        if (_debugging) _debug("Transferring outputs on port " +
                 port.getFullName());
         boolean flag = port.transferOutputs();
-	if (_debugging) _debug("Done Transferring outputs on port " +
+        if (_debugging) _debug("Done Transferring outputs on port " +
                 port.getFullName());
         return flag;
         

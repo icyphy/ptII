@@ -76,7 +76,7 @@ public class HDEReceiver extends DEReceiver {
     /** Construct an empty DEReceiver with no container.
      */
     public HDEReceiver() {
-	super();
+        super();
     }
 
     /** Construct an empty DEReceiver with the specified container.
