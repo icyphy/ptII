@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ public class DEDelay extends DEActor {
             throw new IllegalActionException(this,
             "Invalid delay.  Cannot be less than zero.");
         }
-        _delay = delay;
+        _delay = new Parameter(this, "delay", new DoubleToken(delay));
         // create the ports
         output = new DEIOPort(this, "output", false, true);
         input = new DEIOPort(this, "input", true, false);
@@ -84,7 +85,7 @@ public class DEDelay extends DEActor {
         for(int i = 0; i < input.getWidth(); i++) {
             Token inputToken;
             inputToken = input.get(i);
-            output.send(i, inputToken, _delay);
+            output.send(i, inputToken, ((DoubleToken)_delay.getToken()).doubleValue());
         }
     }
 
@@ -98,5 +99,6 @@ public class DEDelay extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _delay = 0.0;
+    //private double _delay = 0.0;
+    private Parameter _delay;
 }

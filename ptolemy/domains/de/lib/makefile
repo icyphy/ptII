@@ -57,11 +57,13 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	DEClock.java \
 	DEDelay.java \
+	DEHistogram.java \
 	DEPassGate.java \
 	DEPlot.java \
 	DEPoisson.java \
 	DESampler.java \
 	DEServer.java \
+	DEStatistics.java \
 	DEWaitingTime.java \
 	FIFOQueue.java \
 	Not.java \

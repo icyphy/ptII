@@ -32,6 +32,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,8 +63,8 @@ public class DEClock extends DEActor {
             throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         output = new IOPort(this, "output", false, true);
-        _interval = interval;
-        _value = value;
+        _interval = new Parameter(this, "interval", new DoubleToken(interval));
+        _value = new Parameter(this, "value", new DoubleToken(value));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,8 +97,8 @@ public class DEClock extends DEActor {
      */
     public void fire()
             throws IllegalActionException {
-        output.broadcast(new DoubleToken(_value));
-	refireAtTime(_interval);
+        output.broadcast(_value.getToken());
+	refireAtTime(((DoubleToken)_interval.getToken()).doubleValue());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,9 +111,11 @@ public class DEClock extends DEActor {
     ////                         private variables                 ////
 
     // the interval between events
-    private double _interval;
+    // private double _interval;
+    private Parameter _interval;
     // the output value.
-    private double _value;
+    // private double _value;
+    private Parameter _value;
 }
 
 

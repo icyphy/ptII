@@ -2,7 +2,7 @@
 #
 # @Author: Lukito Muliadi
 #
-# @Version: %W	%G
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -57,7 +57,7 @@ test DEClock-2.1 {Test the constructors} {
     $actor setDirector $dir
     set exe [java::new ptolemy.actor.Director]
     $actor setExecutiveDirector $exe
-    set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 $actor "MyClock"]
+    set clock [java::new ptolemy.domains.de.lib.DEClock $actor "MyClock" 1.0 1.0]
     list \
 } {}
 
