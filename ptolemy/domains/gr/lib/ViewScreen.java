@@ -487,7 +487,7 @@ public class ViewScreen extends GRActor implements Placeable {
         boolean stopped = false;
         ViewScreen _viewContainer;
     }
-;
+
     private MouseRotateView mouseRotate;
     private Canvas3D _canvas;
     private SimpleUniverse simpleUniverse;
