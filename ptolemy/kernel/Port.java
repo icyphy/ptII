@@ -448,9 +448,9 @@ public class Port extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The list of relations for this port.
+    /** @serial The list of relations for this port. */
     private CrossRefList _relationsList;
 
-    // The entity that contains this port.
+    /** @serial The entity that contains this port. */
     private Entity _container;
 }

@@ -393,32 +393,35 @@ public class TopologyEvent extends java.util.EventObject {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private fields                    ////
+    ////                       private variables                   ////
 
-    // Flag that the mutation has been performed.
+    /** @serial Flag that the mutation has been performed. */
     private boolean _mutationDone = false;
 
-    // The id of the event. Note: this field name has a
-    // preceding underscore even though it makes it inconsistent with AWT.
+    /** @serial The id of the event. Note: this field name has a
+     * preceding underscore even though it makes it inconsistent with AWT.
+     */
     private int _id;
 
-    // The component entity that was added to or removed from
-    //  a composite entity
+    /** @serial The component entity that was added to or removed from
+     *  a composite entity
+     */
     private ComponentEntity _componentEntity;
 
-    // The composite entity that had something added or removed.
+    /** @serial The composite entity that had something added or removed. */
     private CompositeEntity _compositeEntity;
 
-    // The entity that had a port added or removed
+    /** @serial The entity that had a port added or removed. */
     private Entity _entity;
 
-    // The port that was added, removed, linked, or unlinked
+    /** @serial The port that was added, removed, linked, or unlinked. */
     private Port _port;
 
-    // The relation that was linked or unlinked
+    /** @serial The relation that was linked or unlinked. */
     private Relation _relation;
 
-    // The component relation that was added to or removed
-    // from a composite entity
+    /** @serial The component relation that was added to or removed
+     *  from a composite entity.
+     */
     private ComponentRelation _componentRelation;
 }

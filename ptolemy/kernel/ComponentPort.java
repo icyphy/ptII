@@ -691,7 +691,7 @@ public class ComponentPort extends Port {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The list of inside relations for this port.
+    /** @serial The list of inside relations for this port. */
     private CrossRefList _insideLinks;
 
     // A cache of the deeply linked ports, and the version used to

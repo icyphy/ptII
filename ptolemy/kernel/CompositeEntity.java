@@ -690,16 +690,18 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // List of contained entities.
+    /** @serial List of contained entities. */
     private NamedList _containedEntities = new NamedList(this);
 
-    // List of contained ports.
+    /** @serial List of contained ports. */
     private NamedList _containedRelations = new NamedList(this);
 
-    // Count of automatic names generated for entities and relations.
+    /** @serial Count of automatic names generated for entities */
     private int _entitynamecount = 0;
+
+    /** @serial Count of automatic names generated for entities */
     private int _relationnamecount = 0;
 
-    // Flag indicating whether level-crossing connect is permitted.
+    /** @serial Flag indicating whether level-crossing connect is permitted. */
     private boolean _levelCrossingConnectAllowed = false;
 }

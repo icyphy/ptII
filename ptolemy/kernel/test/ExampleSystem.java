@@ -269,46 +269,18 @@ public class ExampleSystem implements Serializable {
 
     // Components of the system.
 
-         public CompositeEntity e0;
-         public CompositeEntity e3;
-         public CompositeEntity e4;
-         public CompositeEntity e7;
-         public CompositeEntity e10;
+    /** @serial Composite Entities that make up the Example System. */
+    public CompositeEntity e0, e3, e4, e7, e10;
 
-     public ComponentEntity e1;
-     public ComponentEntity e2;
-     public ComponentEntity e5;
-     public ComponentEntity e6;
-     public ComponentEntity e8;
-     public ComponentEntity e9;
+    /** @serial Component Entities that make up the Example System. */
+    public ComponentEntity e1, e2, e5, e6, e8, e9;
 
-     public ComponentPort p0;
-     public ComponentPort p1;
-     public ComponentPort p2;
-     public ComponentPort p3;
-     public ComponentPort p4;
-     public ComponentPort p5;
-     public ComponentPort p6;
-     public ComponentPort p7;
-     public ComponentPort p8;
-     public ComponentPort p9;
-     public ComponentPort p10;
-     public ComponentPort p11;
-     public ComponentPort p12;
-     public ComponentPort p13;
-     public ComponentPort p14;
+    /** @serial Component Ports that make up the Example System. */
+    public ComponentPort p0, p1, p2, p3, p4, p5, p6, p7, p8, p9,
+        p10, p11, p12, p13, p14;
 
-     public ComponentRelation r1;
-     public ComponentRelation r2;
-     public ComponentRelation r3;
-     public ComponentRelation r4;
-     public ComponentRelation r5;
-     public ComponentRelation r6;
-     public ComponentRelation r7;
-     public ComponentRelation r8;
-     public ComponentRelation r9;
-     public ComponentRelation r10;
-     public ComponentRelation r11;
-     public ComponentRelation r12;
+    /** @serial Component Relations that make up the Example System. */
+    public ComponentRelation r1, r2, r3, r4, r5, r6, r7, r8, r9,
+        r10, r11, r12;
 }
 

@@ -370,14 +370,14 @@ public class Entity extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // A list of Ports owned by this Entity.
+    /** @serial A list of Ports owned by this Entity. */
     private NamedList _portList;
 
     // Cached list of connected ports.
     private transient LinkedList _connectedports;
     private transient long _connectedportsversion = -1;
 
-    // Cached list of linked relations.
+    // @serial Cached list of linked relations.
     private transient LinkedList _linkedrelations;
     private transient long _linkedrelationsversion = -1;
 }

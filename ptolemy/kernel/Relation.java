@@ -272,7 +272,8 @@ public class Relation extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The CrossRefList of Ports which are connected to this Relation.
+    /** @serial The CrossRefList of Ports which are connected
+     *  to this Relation.
      */
     private CrossRefList _portList;
 }

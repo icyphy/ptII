@@ -66,19 +66,17 @@ public class TopologyChangeFailedException extends KernelException {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The mutation event that failed.
-     */
+    /** @serial The mutation event that failed. */
     public TopologyEvent failedEvent;
 
-    /** The mutation event that failed when a rollback was attempted.
-     */
+    /** @serial The mutation event that failed when a rollback was attempted.*/
     public TopologyEvent failedEventOnUndo;
 
-    /** The exception that was thrown by the failed mutation event.
-     */
+    /** @serial The exception that was thrown by the failed mutation event. */
     public Exception thrownException;
 
-    /** The exception that was thrown by the failed undo mutation event.
+    /** @serial The exception that was thrown by the failed undo
+     *  mutation event.
      */
     public Exception thrownExceptionOnUndo;
 

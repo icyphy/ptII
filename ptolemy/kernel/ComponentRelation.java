@@ -258,7 +258,7 @@ public class ComponentRelation extends Relation {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The entity that contains this entity.
+    /** @serial The entity that contains this entity. */
     private CompositeEntity _container;
 
     // A cache of the deeply linked ports, and the version used to

@@ -288,6 +288,6 @@ public class ComponentEntity extends Entity {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The entity that contains this entity.
+    /** @serial The entity that contains this entity. */
     private CompositeEntity _container;
 }
