@@ -87,7 +87,7 @@ OPTIONAL_FILES = \
 	'CTBaseIntegrator$$DoubleDouble.class' \
 	'CTBaseIntegrator$$History.class' \
 	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$SignalTypes.class'
+	'CTScheduler$$SignalTypes.class' \
 	'CTScheduler$$SignalTypeMap.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
