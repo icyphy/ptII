@@ -39,13 +39,87 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 
+set header {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
+
+set hideMoml  "$header 
+<entity name=\"FilterOutGraphicalClassesHide\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"annotation1\" class=\"ptolemy.kernel.util.Attribute\">
+        <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
+            <configure><svg><text x=\"20\" y=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\">A simple example that has an annotation
+and some actors with icons.
+This example is used to test
+out MoMLFilter and
+FilterOutGraphicalClasses.</text></svg></configure>
+        </property>
+        <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
+            <configure>
+      <svg>
+        <text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name=\"_controllerFactory\" class=\"ptolemy.vergil.basic.NodeControllerFactory\">
+        </property>
+        <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.AnnotationEditorFactory\">
+        </property>
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"190.0, 5.0\">
+        </property>
+        <property name=\"_hideName\" class=\"ptolemy.data.expr.Parameter\">
+        </property>
+    </property>
+</entity>"
+
 ######################################################################
 ####
 #
-test FilterOutGraphicalClasses-1.1 {filterAttributeValue} { 
+test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterHideAnnotationNames]
+    set toplevel [$parser parse $hideMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FilterOutGraphicalClassesHide" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A simple example that has an annotation
+and some actors with icons.
+This example is used to test
+out MoMLFilter and
+FilterOutGraphicalClasses.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
+    </property>
+</entity>
+}}
+
+######################################################################
+####
+#
+test FilterOutGraphicalClasses-1.2 {filterAttributeValue} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parseFile "./FilterOutGraphicalClasses.xml"]
     set newMoML [$toplevel exportMoML]
     list $newMoML
