@@ -29,20 +29,34 @@
 
 package ptolemy.actor.lib.comm;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Enumeration;
+import javax.comm.CommPort;
+import javax.comm.CommPortIdentifier;
+import javax.comm.SerialPort;
+import javax.comm.SerialPortEvent;
+import javax.comm.SerialPortEventListener;
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
-import ptolemy.actor.lib.*;
-
-import javax.comm.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SerialComm
