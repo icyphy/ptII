@@ -32,6 +32,7 @@ that will generate .class files for non-hierarchical SDF models
 
 <ul>
 <li> SR Domain
+
  <!-- petrinet ?-->
 
 <li> Units
@@ -94,11 +95,11 @@ b	 finite state machines,
 	3-D graphics (experimental),
  <!-- petrinet ??-->
 <li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
-	process networks, and
+	process networks,
 <li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
-	synchronous dataflow.
+	synchronous dataflow, and
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
-	synchronous/reactive.
+	synchronous/reactive (experimental).
 
 </ul>
 
@@ -112,10 +113,6 @@ and with JDK1.3.1 and JDK1.4beta.  Note that code generation
 only works under JDK1.3.0 or 1.3.1 because of limitations in soot.
 
 Ptolemy II 2.0 will not compile under JDK1.2.2.
-
-
-<p>See the <a href="install.htm#Jacl">Jacl</a> section of
-the installation page for information about the Ptolemy II test suite
 
 <p>Ptolemy II is available in two versions
    <menu>
@@ -317,13 +314,6 @@ will only work under Windows.
 
 <h3>Limitations in the FSM Domain</h3>
 
-The FSM domain is still fairly preliminary, and is likely to change
-rapidly in future releases.  At this time, it is difficult to build
-nontrivial FSM models using Vergil.  Hierarchical models are particularly
-difficult to build, and will be handled quite differently in the next
-version.  We cannot assure that FSM models that are constructed with
-this release will work with future releases.
-
 <h3>Limitations in the GR Domain</h3>
 Some of the demos do not work.
 
@@ -335,16 +325,6 @@ would otherwise.  (i.e. they are non-deterministic in when they execute)
 However, for timed PN models, there is actually some expressiveness
 lost, since timed PN models can locally execute mutations deterministically.
 
-
-<h3>Limitations in the SDF Domain</h3>
-There are currently two bugs in the SDF Domain.  Both are bugs in the scheduler that can be fairly easily avoided.
-<menu>
-<li> Opaque tunneling entities result in a NullPointerException.  An Opaque tunneling entity is one that does not have any entities.  It only contains relations between external ports.
-<br> <b>Workaround:</b> Do not use a director for tunneling entities.
-
-<li> The SDF scheduler reports that actors are disconnected, when they are connected through external ports.
-<br> <b>Workaround:</b> Connect the actors in another way.  This is usually possible when the connection is through an output port (since sources have trigger inputs that are usually disconnected in SDF), but somewhat more difficult when the connection is only through an input port.
-</menu>
 
 <h3>Limitations in the User Interface</h3>
 Version 2.0 of Ptolemy II includes the Vergil, a graphical user
@@ -366,10 +346,8 @@ Show Name, the name appears twice.
 <li>Cannot have more than one vertex in a connection.
 <li>No mechanism to set the width of a relation.
 <li>The integrated web browser is not a full-featured browser.
-<li>No snap-to-grid.
 <li>Icon editor not yet integrated.
 <li>Debugger not yet integrated.
-<li>FSM editor is not yet useful.
 <li>It is difficult to add actors to the libraries.
 <li>No dynamic class loading.
 </menu>
