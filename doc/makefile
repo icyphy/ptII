@@ -198,11 +198,14 @@ ALLPACKAGES =		$(COPERNICUSPACKAGES) \
 			ptolemy.media \
 			ptolemy.moml \
 			ptolemy.vergil \
+			ptolemy.vergil.actor \
+			ptolemy.vergil.basic \
 			ptolemy.vergil.debugger \
 			ptolemy.vergil.icon \
-			ptolemy.vergil.ptolemy \
-			ptolemy.vergil.ptolemy.fsm \
-			ptolemy.vergil.ptolemy.kernel \
+			ptolemy.vergil.fsm \
+			ptolemy.vergil.fsm.ia \
+			ptolemy.vergil.fsm.modal \
+			ptolemy.vergil.kernel \
 			ptolemy.vergil.toolbox \
 			ptolemy.vergil.tree
 
@@ -221,15 +224,16 @@ $(VERGIL_DOCS): javahtml.awk
 
 # Version of main.htm without links
 # Convert <a href="foobar" target="body">bif</a> -> bif
+# BTw -Don't use $<, use $^ instead for compatibility with non-gnu make
 mainVergil.htm: main.htm
-	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' $< > $@
+	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' $^ > $@
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
 ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
-	awk -f javahtml.awk $< > $@  
+	awk -f javahtml.awk $^ > $@  
 troubleshootingVergil.htm: troubleshooting.htm
-	awk -f javahtml.awk $< > $@  
+	awk -f javahtml.awk $^ > $@  
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
@@ -276,11 +280,14 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
 			../ptolemy/vergil/*.java \
+			../ptolemy/vergil/actor/*.java \
+			../ptolemy/vergil/basic/*.java \
 			../ptolemy/vergil/debugger/*.java \
 			../ptolemy/vergil/icon/*.java \
-			../ptolemy/vergil/ptolemy/*.java \
-			../ptolemy/vergil/ptolemy/fsm/*.java \
-			../ptolemy/vergil/ptolemy/kernel/*.java \
+			../ptolemy/vergil/fsm/*.java \
+			../ptolemy/vergil/fsm/ia/*.java \
+			../ptolemy/vergil/fsm/modal/*.java \
+			../ptolemy/vergil/kernel/*.java \
 			../ptolemy/vergil/toolbox/*.java \
 			../ptolemy/vergil/tree/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
