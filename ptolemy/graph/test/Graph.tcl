@@ -657,3 +657,24 @@ test Graph-8.4 {mirrorAs() from Graph to DirectedGraph with same weights} {
     list $mgclsstr
 } {{class ptolemy.graph.DirectedGraph}}
 
+######################################################################
+####
+#
+test Graph-8.5 {relating mirror and original nodes, edges by labels} {
+    set n1lbl [$mg node $nw1]
+    set n2lbl [$mg node $nw2]
+    set n3lbl [$mg node $nw3]
+    set e1lbl [$mg edge $ew1]
+    set e2lbl [$mg edge $ew2]
+    set nodesC [$mg nodes]
+    set nodes  [$nodesC iterator]
+    set mn1    [$nodes next]
+    set mn2    [$nodes next]
+    set mn3    [$nodes next]
+    set edgesC [$mg edges]
+    set edges  [$edgesC iterator]
+    set me1    [$edges next]
+    set me2    [$edges next]
+    list [$n1lbl equals $mn1] [$n2lbl equals $mn2] [$n3lbl equals $mn3] [$e1lbl equals $me1] [$e2lbl equals $me2]
+} {1 1 1 1 1}
+

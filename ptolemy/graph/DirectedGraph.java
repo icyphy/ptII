@@ -116,9 +116,9 @@ public class DirectedGraph extends Graph {
      *  each element is a {@link Node}.
      *  @exception IllegalActionException If any two nodes are strongly
      *  connected.
-     *  @see #attemptTopologicalSort(Object[])
+     *  @see #topologicalSort(Object[])
      */
-    public Collection attemptTopologicalSort(Collection nodeCollection)
+    public Collection topologicalSort(Collection nodeCollection)
             throws IllegalActionException {
         boolean[][] transitiveClosure = transitiveClosure();
 
@@ -160,11 +160,11 @@ public class DirectedGraph extends Graph {
      *  @return The weights of the sorted nodes.
      *  @exception IllegalActionException If any two nodes are strongly
      *   connected.
-     *  @see #attemptTopologicalSort(Collection)
+     *  @see #topologicalSort(Collection)
      */
-    public Object[] attemptTopologicalSort(Object[] weights) throws
+    public Object[] topologicalSort(Object[] weights) throws
             IllegalActionException {
-        return weightArray(attemptTopologicalSort(
+        return weightArray(topologicalSort(
                 nodes(Arrays.asList(weights))));
     }
 
@@ -556,7 +556,7 @@ public class DirectedGraph extends Graph {
 
         try {
             sortedSCCRepresentatives =
-                attemptTopologicalSort(sccRepresentatives);
+                topologicalSort(sccRepresentatives);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("nodes in different SCCs were"
                     + " found to be strongly connected.");

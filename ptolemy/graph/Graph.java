@@ -693,8 +693,9 @@ public class Graph implements Cloneable {
         return Collections.unmodifiableList(_incidentEdgeList(node));
     }
 
-    /** Default {@link #mirror(boolean)} without weights cloning.
-     *  Set the argument <code>cloneWeights</code> to <code>false</code>.
+    /** A {@link #mirror(boolean)} method without weights cloning.
+     *  The argument <code>cloneWeights</code> is set to default
+     *  value of <code>false</code>.
      *
      *  @return The mirror graph.
      */
@@ -702,7 +703,10 @@ public class Graph implements Cloneable {
         return mirror(false);
     }
 
-    /** Return a mirror of this graph. The mirror and original graphs
+    /** Return a mirror of this graph.
+     *  This is a {@link #mirrorAs(Graph, boolean)} with this graph
+     *  as the argument graph.
+     *  The mirror and original graphs
      *  are isomorphic (of same topology). However, nodes and edges
      *  of the mirror are newly created and therefore not equal to
      *  those of the original graph (See {@link #equals(Object)}).
@@ -715,8 +719,9 @@ public class Graph implements Cloneable {
         return mirrorAs(this, cloneWeights);
     }
 
-    /** Default {@link #mirrorAs(Graph, boolean)} without weights cloning.
-     *  Set the argument <code>cloneWeights</code> to <code>false</code>.
+    /** A {@link #mirrorAs(Graph, boolean)} method without weights cloning.
+     *  The argument <code>cloneWeights</code> is set to default value of
+     *  <code>false</code>.
      *
      *  @param graph The desired target graph type.
      *  @return The mirror graph.
@@ -731,7 +736,16 @@ public class Graph implements Cloneable {
      *  are isomorphic (of same topology). However, nodes and edges
      *  of the mirror are newly created and therefore not equal to
      *  those of the original graph.
-     *  Users can specify whether to clone weights.
+     *  <p>
+     *  The returned mirror graph has the same ordering(integer labeling)
+     *  of nodes(edges) as the original graph. Therefore, correspondent
+     *  nodes(edges) pairs in both graphs can be gotten through same labels.
+     *  In other words, labels are used to relate mirror and original
+     *  nodes(edges).
+     *  <p>
+     *  In this method, users can also specify whether to clone node and
+     *  edge weights. If the weights are no cloneable, a
+     *  <code>RuntimeException</code> will be thrown.
      *
      *  @param graph The desired target graph type.
      *  @param cloneWeights True if weight cloning is desired.
@@ -757,6 +771,9 @@ public class Graph implements Cloneable {
                     if (cloneWeights) {
                         Object oldWeight = node.weight();
                         if (oldWeight instanceof Cloneable) {
+                            /* Since clone() of Object is protected, it can't
+                               be called publicly. The class Method is used
+                               here to call public clone(). */
                             Class[] argumentTypes = {};
                             Method method = oldWeight.getClass().
                                     getMethod(nameClone, argumentTypes);
@@ -766,6 +783,8 @@ public class Graph implements Cloneable {
                     } else
                         mirrorWeight = node.weight();
                 } catch (Exception e) {
+                    /* Exception due to non-Cloneable weights or
+                       weights without public clone(). */
                     throw new RuntimeException(
                             "Can not clone the node weight.\n");
                 }
@@ -791,6 +810,9 @@ public class Graph implements Cloneable {
                     if (cloneWeights) {
                         Object oldWeight = edge.weight();
                         if (oldWeight instanceof Cloneable) {
+                            /* Since clone() of Object is protected, it can't
+                               be called publicly. The class Method is used
+                               here to call public clone(). */
                             Class[] argumentTypes = {};
                             Method method = oldWeight.getClass().
                                     getMethod(nameClone, argumentTypes);
@@ -800,6 +822,8 @@ public class Graph implements Cloneable {
                     } else
                         mirrorWeight = edge.weight();
                 } catch (Exception e) {
+                    /* Exception due to non-Cloneable weights or
+                       weights without public clone(). */
                     throw new RuntimeException(
                             "Can not clone the edge weight.\n");
                 }
