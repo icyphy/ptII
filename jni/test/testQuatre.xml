@@ -493,11 +493,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="930.0, 230.0">
         </property>
@@ -509,11 +509,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="915.0, 325.0">
         </property>
@@ -525,11 +525,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="920.0, 405.0">
         </property>
@@ -541,11 +541,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest4" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0, -2.0, 0.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="880.0, 515.0">
         </property>
@@ -578,8 +578,11 @@ and jnitesttrois.</text></svg></configure>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="testDeuxItestDeux.in" relation="relation"/>
     <link port="testDeuxItestDeux.inoutin" relation="relation4"/>
+    <link port="testDeuxItestDeux.inoutout" relation="relation7"/>
     <link port="testDeuxItestDeux.ret" relation="relation5"/>
     <link port="Clock2.output" relation="relation"/>
     <link port="testTroisIfnTest.in" relation="relation8"/>
@@ -611,5 +614,6 @@ and jnitesttrois.</text></svg></configure>
     <link port="testTroisIfnTest10.inoutin" relation="relation6"/>
     <link port="NonStrictTest.input" relation="relation2"/>
     <link port="NonStrictTest2.input" relation="relation3"/>
+    <link port="NonStrictTest3.input" relation="relation7"/>
     <link port="NonStrictTest4.input" relation="relation5"/>
 </entity>
