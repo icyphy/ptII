@@ -76,10 +76,11 @@ install: all
 
 # Run the demo in all its different formats
 # Run demo_application first so that we generate Butterfly.xml
-demo: demo_application demo_applet demo_CompositeActorApplication demo_ptolemy
+demo: demo_application demo_applet demo_CompositeActorApplication \
+	demo_ptolemy demo_vergil
 
 demo_applet: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) appletviewer Butterfly.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Butterfly.htm
 
 demo_application: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \
@@ -92,6 +93,9 @@ demo_CompositeActorApplication: $(PTCLASSJAR)
 
 demo_ptolemy:
 	$(PTII)/bin/ptolemy Butterfly.xml
+
+demo_vergil:
+	$(PTII)/bin/vergil Butterfly.xml
 
 depend:
 	@echo "no dependencies in this directory"

@@ -63,7 +63,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) \
+	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
 		-class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
 		-iterations 50
