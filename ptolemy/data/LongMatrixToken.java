@@ -97,7 +97,6 @@ public class LongMatrixToken extends MatrixToken {
      *   not of a type that can be added to this token.
      */
     public Token add(Token token) throws IllegalActionException {
-
 	int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
 	    String msg = "add method not supported between " +
@@ -173,7 +172,6 @@ public class LongMatrixToken extends MatrixToken {
      */
     public static Token convert(Token token)
 	    throws IllegalActionException {
-
 	int compare = TypeLattice.compare(BaseType.LONG_MATRIX, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("LongMatrixToken.convert: " +
@@ -208,6 +206,45 @@ public class LongMatrixToken extends MatrixToken {
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"LongMatrixToken.");
+    }
+
+    /** Return the number of columns in the matrix.
+     *  @return The number of columns in the matrix.
+     */
+    public int getColumnCount() {
+	return _columnCount;
+    }
+
+    /** Return the element of the matrix at the specified
+     *  row and column in a LongToken.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return A LongToken containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of the matrix.
+     */
+    public Token getElementAsToken(int row, int column)
+            throws ArrayIndexOutOfBoundsException {
+	return new LongToken(_value[row][column]);
+    }
+
+    /** Return the element of the contained matrix at the specified
+     *  row and column.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return The long at the specified matrix entry.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of the matrix.
+     */
+    public long getElementAt(int row, int column) {
+        return _value[row][column];
+    }
+
+    /** Return the number of rows in the matrix.
+     *  @return The number of rows in the matrix.
+     */
+    public int getRowCount() {
+	return _rowCount;
     }
 
     /** Return the type of this token.
@@ -258,45 +295,6 @@ public class LongMatrixToken extends MatrixToken {
 	    }
 	    return new BooleanToken(true);
 	}
-    }
-
-    /** Return the element of the matrix at the specified
-     *  row and column in a LongToken.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return A LongToken containing the matrix element.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of the matrix.
-     */
-    public Token getElementAsToken(int row, int column)
-            throws ArrayIndexOutOfBoundsException {
-	return new LongToken(_value[row][column]);
-    }
-
-    /** Return the element of the contained matrix at the specified
-     *  row and column.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return The long at the specified matrix entry.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of the matrix.
-     */
-    public long getElementAt(int row, int column) {
-        return _value[row][column];
-    }
-
-    /** Return the number of columns in the matrix.
-     *  @return The number of columns in the matrix.
-     */
-    public int getColumnCount() {
-	return _columnCount;
-    }
-
-    /** Return the number of rows in the matrix.
-     *  @return The number of rows in the matrix.
-     */
-    public int getRowCount() {
-	return _rowCount;
     }
 
     /** Return the content in the token as a 2-D long matrix.

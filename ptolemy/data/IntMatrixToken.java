@@ -126,7 +126,6 @@ public class IntMatrixToken extends MatrixToken {
      *   not of a type that can be added to this token.
      */
     public final Token add(Token token) throws IllegalActionException {
-
         int compare = TypeLattice.compare(this, token);
         if (compare == CPO.INCOMPARABLE) {
             String msg = "add method not supported between " +
@@ -201,7 +200,6 @@ public class IntMatrixToken extends MatrixToken {
      */
     public static final Token convert(Token token)
             throws IllegalActionException {
-
         int compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("IntMatrixToken.convert: " +
@@ -243,6 +241,45 @@ public class IntMatrixToken extends MatrixToken {
      */
     public final double[][] doubleMatrix() {
         return IntegerMatrixMath.toDoubleMatrix(_value);
+    }
+
+    /** Return the number of columns in the matrix.
+     *  @return The number of columns in the matrix.
+     */
+    public final int getColumnCount() {
+        return _columnCount;
+    }
+
+    /** Return the element of the matrix at the specified
+     *  row and column in a IntToken.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return A IntToken containing the matrix element.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of the matrix.
+     */
+    public final Token getElementAsToken(final int row, final int column)
+            throws ArrayIndexOutOfBoundsException {
+        return new IntToken(_value[row][column]);
+    }
+
+    /** Return the element of the contained matrix at the specified
+     *  row and column.
+     *  @param row The row index of the desired element.
+     *  @param column The column index of the desired element.
+     *  @return The int at the specified matrix entry.
+     *  @exception ArrayIndexOutOfBoundsException If the specified
+     *   row or column number is outside the range of the matrix.
+     */
+    public final int getElementAt(final int row, final int column) {
+        return _value[row][column];
+    }
+
+    /** Return the number of rows in the matrix.
+     *  @return The number of rows in the matrix.
+     */
+    public final int getRowCount() {
+        return _rowCount;
     }
 
     /** Return the type of this token.
@@ -296,45 +333,6 @@ public class IntMatrixToken extends MatrixToken {
             return new BooleanToken(IntegerMatrixMath.within(_value,
                     tem._getInternalIntMatrix(), 0));
         }
-    }
-
-    /** Return the element of the matrix at the specified
-     *  row and column in a IntToken.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return A IntToken containing the matrix element.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of the matrix.
-     */
-    public final Token getElementAsToken(final int row, final int column)
-            throws ArrayIndexOutOfBoundsException {
-        return new IntToken(_value[row][column]);
-    }
-
-    /** Return the element of the contained matrix at the specified
-     *  row and column.
-     *  @param row The row index of the desired element.
-     *  @param column The column index of the desired element.
-     *  @return The int at the specified matrix entry.
-     *  @exception ArrayIndexOutOfBoundsException If the specified
-     *   row or column number is outside the range of the matrix.
-     */
-    public final int getElementAt(final int row, final int column) {
-        return _value[row][column];
-    }
-
-    /** Return the number of columns in the matrix.
-     *  @return The number of columns in the matrix.
-     */
-    public final int getColumnCount() {
-        return _columnCount;
-    }
-
-    /** Return the number of rows in the matrix.
-     *  @return The number of rows in the matrix.
-     */
-    public final int getRowCount() {
-        return _rowCount;
     }
 
     /** Return the content of this token as a 2-D long matrix.

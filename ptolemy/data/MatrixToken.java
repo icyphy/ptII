@@ -90,28 +90,6 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to a double matrix.");
     }
 
-    /** Return the content of this token as a 2-D integer matrix.
-     *  In this base class, just throw an exception.
-     *  @return A 2-D integer matrix.
-     *  @exception IllegalActionException If the token cannot be represented
-     *   as requested (always thrown in this base class).
-     */
-    public int[][] intMatrix() throws IllegalActionException {
-        throw new IllegalActionException(this.getClass().getName() +
-                " cannot be converted to an integer matrix.");
-    }
-
-    /** Return the content of this matrix as a 2-D long matrix.
-     *  In this base class, just throw an exception.
-     *  @return A 2-D long matrix.
-     *  @exception IllegalActionException If the token cannot be represented
-     *   as requested (always thrown in this base class).
-     */
-    public long[][] longMatrix() throws IllegalActionException {
-        throw new IllegalActionException(this.getClass().getName() +
-                " cannot be converted to a long matrix.");
-    }
-
     /** Return the number of columns of the matrix.
      *  @return The number of columns of the matrix.
      */
@@ -133,6 +111,28 @@ public abstract class MatrixToken extends Token {
      *  @return The number of rows of the matrix.
      */
     public abstract int getRowCount();
+
+    /** Return the content of this token as a 2-D integer matrix.
+     *  In this base class, just throw an exception.
+     *  @return A 2-D integer matrix.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+     */
+    public int[][] intMatrix() throws IllegalActionException {
+        throw new IllegalActionException(this.getClass().getName() +
+                " cannot be converted to an integer matrix.");
+    }
+
+    /** Return the content of this matrix as a 2-D long matrix.
+     *  In this base class, just throw an exception.
+     *  @return A 2-D long matrix.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+     */
+    public long[][] longMatrix() throws IllegalActionException {
+        throw new IllegalActionException(this.getClass().getName() +
+                " cannot be converted to a long matrix.");
+    }
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
@@ -205,6 +205,9 @@ public abstract class MatrixToken extends Token {
         sb.append("]");
         return sb.toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected variables                  ////
 
     /** A constant indicating to constructors that contents of an argument 2-D
      *  matrix should be copied. The contents of the input 2-D matrix may be
