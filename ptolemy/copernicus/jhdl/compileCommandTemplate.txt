@@ -1,3 +1,10 @@
+# This file contains the commmand template that is preprocessed
+# by ptolemy.copernicus.kernel.Copernicus to create the command
+# that will generate code
+#
+# @author Christopher Hylands
+# @version $Id$
+#
 @java@ @jvmSize@
  -classpath @classPath@
  -Dptolemy.ptII.dir='@root@'
