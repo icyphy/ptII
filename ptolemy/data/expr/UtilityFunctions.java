@@ -34,7 +34,7 @@ package ptolemy.data.expr;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
-
+import ptolemy.gui.GUIStringUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.*;
@@ -128,7 +128,7 @@ public class UtilityFunctions {
     public static String findFile(String name) {
         File file = new File(name);
         if (!file.exists()) {
-            String curDir = System.getProperty("user.dir");
+            String curDir = GUIStringUtilities.getProperty("user.dir");
             file = new File(curDir, name);
         }
         if (!file.exists()) {
@@ -162,12 +162,6 @@ public class UtilityFunctions {
 	return new LongToken(Runtime.getRuntime().freeMemory());
     }
 
-    /** FIXME. Placeholder for a function that will return a model.
-     */
-    public static ObjectToken model(String classname)
-            throws IllegalActionException {
-        return new ObjectToken(classname);
-    }
 
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist,
@@ -186,108 +180,28 @@ public class UtilityFunctions {
      *  <dt> "ptolemy.ptII.dirAsURL"
      *  <dd> Return $PTII as a URL.  For example, if $PTII was c:\ptII,
      *  then return file:/c:/ptII/.
+     *  <dt> "user.dir"
+     *  <dd> Return the canonical path name to the current working directory.
+     *  This is necessary because under JDK1.4.1 System.getProperty()
+     *  returns <code><b>c</b>:/<i>foo</i></code>
+     *  whereas most of the other methods that operate
+     *  on path names return <code><b>C</b>:/<i>foo</i></code>.
      *  </dl>
      *  @param propertyName The name of property.
      *  @return A String containing the string value of the property.
+     *  @deprecated Use
+     *  {@link ptolemy.gui.GUIStringUtilities.getProperty(String)}
+     *  instead
      */ 
     public static String getProperty(String propertyName) {
-	// NOTE: getProperty() will probably fail in applets, which
-	// is why this is in a try block.
-	String property = null;
-	try {
-	    property = System.getProperty(propertyName);
-        } catch (SecurityException security) {
-	    if (!propertyName.equals("ptolemy.ptII.dir")) {
-		throw new InternalErrorException(null, security,
-						 "Could not find '"
-						 + propertyName
-						 + "' System property");
-	    }
-	}
-	if (property != null) {
-	    return property;
-	}
-	if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
-            // Return $PTII as a URL.  For example, if $PTII was c:\ptII,
-            // then return file:/c:/ptII/
-            File ptIIAsFile = new File(getProperty("ptolemy.ptII.dir"));
-            
-            try {
-                URL ptIIAsURL = ptIIAsFile.toURL();
-                return ptIIAsURL.toString();
-            } catch (java.net.MalformedURLException malformed) {
-                throw new InternalErrorException(null, malformed,
-                        "While trying to find '" + propertyName 
-                        + "', could not convert '"
-                        + ptIIAsFile + "' to a URL");
-            }
-        }
+        return GUIStringUtilities.getProperty(propertyName);
+    }
 
-	if (propertyName.equals("ptolemy.ptII.dir")) {
-
-	    String namedObjPath = "ptolemy/kernel/util/NamedObj.class";
-	    String home = null;
-	    // PTII variable was not set
-	    URL namedObjURL =
-		Thread.currentThread().getContextClassLoader()
-		.getResource(namedObjPath);
-							
-	    if (namedObjURL != null) {
-		String namedObjFileName = namedObjURL.getFile().toString();
-		// FIXME: How do we get from a URL to a pathname?
-		if (namedObjFileName.startsWith("file:")) {
-		    // We get rid of either file:/ or file:\
-		    namedObjFileName = namedObjFileName.substring(6);
-		}
-		String abnormalHome = namedObjFileName.substring(0,
-						  namedObjFileName.length()
-						  - namedObjPath.length());
-
-		// abnormalHome will have values like: "/C:/ptII/"
-		// which cause no end of trouble, so we construct a File
-		// and call toString().
-
-		home = (new File(abnormalHome)).toString();
-
-		// If we are running under Web Start, then strip off
-		// the trailing "!"
-		if (home.endsWith("!")) {
-		    home =
-			home.substring(0, home.length() - 1);
-		}
-
-		// Web Start
-		String ptsupportJarName = File.separator + "DMptolemy"
-		    + File.separator + "RMptsupport.jar";
-		if (home.endsWith(ptsupportJarName)) {
-		    home =
-			home.substring(0, home.length()
-				       - ptsupportJarName.length());
-		}
-
-		ptsupportJarName = File.separator + "ptolemy" 
-		    + File.separator + "ptsupport.jar";
-		if (home.endsWith(ptsupportJarName)) {
-		    home =
-			home.substring(0, home.length()
-				       - ptsupportJarName.length());
-		}
-	    }
-
-	    if (home == null) {
-		throw new InternalErrorException(null, null,
- 		    "Could not find "
-		    + "'ptolemy.ptII.dir'"
-		    + " property.  Also tried loading '"
-		    + namedObjPath + "' as a resource and working from that. "
-		    + "Vergil should be "
-	            + "invoked with -Dptolemy.ptII.dir"
-		    + "=\"$PTII\"");
-	    }
-	    System.setProperty("ptolemy.ptII.dir", home);
-	    return home;
-        }
-	return property;
+    /** FIXME. Placeholder for a function that will return a model.
+     */
+    public static ObjectToken model(String classname)
+            throws IllegalActionException {
+        return new ObjectToken(classname);
     }
 
     /** Get the specified property from the environment. An empty string
@@ -304,9 +218,10 @@ public class UtilityFunctions {
      *
      *  @param propertyName The name of property.
      *  @return A token containing the string value of the property.
+     *  @see ptolemy.kernel.util.StringUtilities(String)
      */
     public static StringToken property(String propertyName) {
-        return new StringToken(getProperty(propertyName));
+        return new StringToken(GUIStringUtilities.getProperty(propertyName));
     }
 
     /** Get the string text contained in the specified file. For
@@ -366,7 +281,7 @@ public class UtilityFunctions {
                 }
             }
         } catch (FileNotFoundException ex) {
-            // what should we do here?
+           // what should we do here?
             throw new IllegalActionException(null, ex, "File not found");
         }
         //System.out.println("Contents of file are: " + result);
