@@ -1230,6 +1230,20 @@ testMatrix negative $types
 
 ######################################################################
 ####
+#  *ArrayMath Test out: xxx[] normalize(xxx[])
+
+# FIXME: Missing Complex[] normalize(Complex[])
+
+set types [list \
+	[list Double double double \
+	{{0.8164965809277261 -0.4082482904638631 0.4082482904638631 0.0}}] \
+	[list Float float float \
+	{{0.81649655 -0.40824828 0.40824828 0.0}}]]
+
+testArrayMathArray normalize $types 4_4
+
+######################################################################
+####
 ##  *MatrixMath Test out: xxx[][] orthogonalizeColumns(xxx[][])
 
 ## FIXED (FIXME): Missing Complex[][] orthogonalizeColumns(xxx[][])
