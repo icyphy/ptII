@@ -1,6 +1,6 @@
 /* A Scheduler for the PSDF domain
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -122,7 +122,7 @@ pages 84-89, Paris, France, June 2000.
 
 @author Stephen Neuendorffer, Shuvra S. Bhattacharyya
 @version $Id$
-@since Ptolemy II 0.2
+@since Ptolemy II 3.1
 */
 public class PSDFScheduler extends BaseSDFScheduler {
     /** Construct a scheduler with no container(director)
@@ -341,8 +341,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     if (relationList.size() != 1) {
                         // FIXME: Need to generalize this?
                         throw new RuntimeException("Cannot handle relation "
-                                + "lists that are not singletons.\nThe size of "
-                                + "this relation list is " + relationList.size()
+                                + "lists that are not singletons.\n"
+                                + "The size of this relation list is "
+                                + relationList.size()
                                 + "\nA dump of the offending edge follows.\n"
                                 + nextEdge + "\n");
                     }
@@ -357,11 +358,12 @@ public class PSDFScheduler extends BaseSDFScheduler {
                             + ")) / "
                             + PSDFGraphs.gcdExpression(produced, consumed);
 
-                    // Due to the bottom-up traversal in _expandAPGAN, relations
-                    // that are linked to multiple sink nodes will 
-                    // have their buffer sizes progressively replaced by
-                    // those of outer clusterings, and will end up with
-                    // the buffer size determined by the outermost clustering.
+                    // Due to the bottom-up traversal in _expandAPGAN,
+                    // relations that are linked to multiple sink
+                    // nodes will have their buffer sizes
+                    // progressively replaced by those of outer
+                    // clusterings, and will end up with the buffer
+                    // size determined by the outermost clustering.
                     _debug("Associating buffer size expression '" 
                             + bufferSizeExpression
                             + "' with relation '"
@@ -441,8 +443,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
          *  a::out::tokenProductionRate)."
          *
-         *  @param expression The expression to be associated with the iteration
-         *  count.
+         *  @param expression The expression to be associated with the
+         *  iteration count.
          */
         public void setIterationCount(String expression) {
             _expression = expression;
@@ -522,8 +524,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
          *  a::out::tokenProductionRate)."
          *
-         *  @param expression The expression to be associated with the iteration
-         *  count.
+         *  @param expression The expression to be associated with the
+         *  iteration count.
          */
         public void setIterationCount(String expression) {
             _expression = expression;
@@ -576,8 +578,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  "a2::in::tokenConsumptionRate/gcd(a2::in::tokenConsumptionRate,
          *  a::out::tokenProductionRate)."
          *
-         *  @param expression The expression to be associated with the iteration
-         *  count.
+         *  @param expression The expression to be associated with the
+         *  iteration count.
          */
         public void setIterationCount(String expression);
     }
