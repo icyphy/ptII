@@ -1,0 +1,58 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Ptolemy II Kernel Demonstrations</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Ptolemy II Kernel Demonstrations</h1>
+
+Some of these demos implement the standard Ptolemy II 
+<a href="../../../doc/img/ptIIexample.gif">Clustered Example Graph</a>
+ <p>Some of the examples can be run by executing <CODE>make tests</CODE>.
+
+<h2>ExampleSystem</h2>
+The <a href="ExampleSystem.java">ExampleSystem</a> class
+is a Java application that creates the Clustered Example Graph and
+then prints out information about the Ports.  For a Tcl version
+of the Clustered Example Graph, see the
+<a href="../test/CompositeEntity.tcl">CompositeEntity tests</a>.
+ <p>To run this application, do:
+<pre>
+setenv CLASSPATH ../../..
+java ptolemy.kernel.demo.ExampleSystem
+</pre>
+
+<h2>ExampleSystemApplet</h2>
+The <a href="ExampleSystemApplet.java">ExampleSystemApplet</a> class
+is an applet implementation of the Clustered Example Graph.
+Unfortunately it requires that Ptolemy II be compiled with JDK1.2
+and that the appletviewer or browser be a JDK1.2 browser. 
+ <p>To attempt to run the applet, view 
+<a href="ExampleSystem.html"><CODE>ExampleSystem.html</CODE></a>.
+
+<h2>ExampleSerializable</h2>
+The <a href="ExampleSerializable.java">ExampleSerializable</a> class
+writes the Clustered Example Graph to disk and then reads it back in.
+
+ <p>To run this example, do the following:
+<pre>
+ptII@ptolemy 136% rm *.data
+ptII@ptolemy 137% java ptolemy.kernel.demo.ExampleSerializable write
+Wrote to ExampleSerializable.data
+ptII@ptolemyn 138% java ptolemy.kernel.demo.ExampleSerializable
+OK: Description read in from ExampleSerializable.data is the same as the original
+
+ptII@ptolemy 139% 
+</pre>
+
+
+<a href="../../../doc/index.html">Ptolemy II Home Page</a>
+<hr>
+Copyright &#169 1998 The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>ptII@eecs.berkeley.edu</author>
+</body>
+</html>
+
