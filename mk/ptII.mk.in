@@ -94,10 +94,6 @@ PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 JAVAC = 	$(PTJAVA_DIR)/bin/javac
 
 # Flags to pass to javac.  Usually something like '-g -depend'
-# This line gets substituted by configure
-# Note that we don't include JDEPENDFLAG in the JFLAGS because it
-# causes the build to take much longer
-JDEPENDFLAG =	@JDEPENDFLAG@   
 JDEBUG =	-g
 JOPTIMIZE =	-O
 JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
@@ -116,6 +112,17 @@ JAVA =		$(PTJAVA_DIR)/bin/java
 
 # The 'rmic' command - The Java Remote Method Invocation (RMI) command
 RMIC =		$(PTJAVA_DIR)/bin/rmic
+
+# If Jini is present, the set to yes, otherwise, set to no
+JINI_PRESENT =  @JINI_PRESENT@
+
+# Jini home directory, see http://www.sun.com/jini/
+JINI_DIR =	@JINI_DIR@
+
+# lib/ directory of the Jini distribution
+JINI_LIB =	$(JINI_DIR)/lib
+
+JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar$(CLASSPATHSEPARATOR)
 
 # JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
 # The default location is $(PTII)/vendors/sun/JavaCC
