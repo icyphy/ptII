@@ -146,7 +146,9 @@ if [ "$windows" = "yes" ]; then
     WINTYCHOJAVA=`(cd $TYCHO/java; cmd /c chdir) | tr -d '\r'`
     $JAVAHOME/bin/java -classpath $WINTYCHOJAVA\;$JAVAHOME\\lib\\classes.zip ptplot.Pxgraph ${1+"$@"}
 elif [ "$PTARCH" = "alpha4" ]; then
-     $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/classes  ptplot.Pxgraph ${1+"$@"}
+    CLASSPATH=$TYCHO/java
+    export CLASSPATH
+    java ptplot.Pxgraph ${1+"$@"}
 else
     $JAVAHOME/bin/java -classpath $TYCHO/java:$JAVAHOME/lib/classes.zip ptplot.Pxgraph ${1+"$@"}
 fi
