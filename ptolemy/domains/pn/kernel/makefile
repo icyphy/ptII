@@ -56,9 +56,8 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	PNActorListener.java \
 	PNDirector.java \
-	PNQueueReceiver.java \
-	PNThread.java \
-	TerminateProcessException.java 
+	PNQueueReceiver.java 
+
 
 EXTRA_SRCS =	$(JSRCS)
 
