@@ -61,7 +61,7 @@ overridden in derived classes to get domain-specific behaviour. The
 implementations given here are trivial and suffice only to illustrate
 the approach that should be followed.
 <p>
-@author Mudit Goel, Neil Smyth
+@author Mudit Goel, Neil Smyth, John S. Davis II
 @version $Id$
 @see Director
 */
@@ -183,8 +183,28 @@ public class ProcessDirector extends Director {
                 //they can transmit data in their initialize method.
                 actor.createReceivers();
                 actor.initialize();
+	        
+		// Initialize Receivers
+                Enumeration ports = actor.inputPorts(); 
+		while (ports.hasMoreElements()) {
+		    IOPort port = (IOPort)ports.nextElement(); 
+		    Receiver[][] receivers = port.getReceivers(); 
+		    for (int i = 0; i < receivers.length; i++) {
+		        for (int j = 0; j < receivers[i].length; j++) {
+			    ((ProcessReceiver)receivers[i][j]).initialize();
+			}
+		    }
+		}
             }
-            setCurrentTime(getCurrentTime());
+
+	    CompositeActor topOfContainer = 
+		    (CompositeActor)container.getContainer();
+	    if( topOfContainer == null ) {
+		setCurrentTime(0.0);
+	    } else {
+		double time = topOfContainer.getDirector().getCurrentTime();
+                setCurrentTime(time);
+	    }
         }
 
     }
