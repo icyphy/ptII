@@ -97,7 +97,7 @@ public class DEProcessor extends TypedCompositeActor {
         input = new TypedIOPort(this, "input", true, false);
 
         // create and attach a local director
-        DECQDirector localDir = new DECQDirector(name + " local director");
+        DEDirector localDir = new DEDirector(name + " local director");
         this.setDirector(localDir);
         
         // create the actors.

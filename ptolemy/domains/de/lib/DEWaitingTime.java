@@ -88,8 +88,8 @@ public class DEWaitingTime extends DEActor {
                 godot = true;
             }
         }
-        // FIXME: Should be DEDirector, not DECQDirector
-        double currentTime = ((DECQDirector)getDirector()).getCurrentTime();
+        // FIXME: Should be DEDirector, not DEDirector
+        double currentTime = ((DEDirector)getDirector()).getCurrentTime();
         for (int i=0; i<waitee.getWidth(); i++) {
             if (waiter.hasToken(i)) {
                 waiter.get(i);

@@ -104,7 +104,7 @@ public class DEServerAlt extends DEActor {
 
         if (input.hasToken(0)) {
             DoubleToken inputToken = (DoubleToken)(input.get(0));
-            double inputTime = ((DECQDirector)getDirector()).getCurrentTime();
+            double inputTime = ((DEDirector)getDirector()).getCurrentTime();
             output.broadcast(inputToken, _serviceTime);
             _busyUntil = getCurrentTime() + _serviceTime;
         }

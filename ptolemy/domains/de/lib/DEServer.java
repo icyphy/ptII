@@ -103,7 +103,7 @@ public class DEServer extends DEActor {
         inputToken = (DoubleToken)(input.get(0));
 
         // produce the output token.
-        double inputTime = ((DECQDirector)getDirector()).getCurrentTime();
+        double inputTime = ((DEDirector)getDirector()).getCurrentTime();
 	double outputTime;
 	if (_firstInput) {
 	    _firstInput = false;
