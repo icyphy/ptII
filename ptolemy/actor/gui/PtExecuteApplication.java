@@ -65,7 +65,6 @@ public class PtExecuteApplication extends MoMLApplication
 
     public PtExecuteApplication() throws Exception {
 	super(null);
-        System.out.println("PtExecuteApplication()");
     }
 
     /** Parse the specified command-line arguments, creating models
@@ -75,7 +74,6 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public PtExecuteApplication(String args[]) throws Exception {
 	super(args);
-        System.out.println("PtExecuteApplication(args)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,16 +86,7 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param ex The exception being reported.
      */
     public synchronized void executionError(Manager manager, Exception ex) {
-        // FIXME
-        System.out.println("executionError: before -- adjustment: " +
-                _activeCount + "\n" + this + 
-                util.testsuite.PrintThreads.allThreads());
-
         _activeCount--;
-        // FIXME
-        System.out.println("executionError: after adjustment: " +
-                _activeCount + "\n" + this + 
-                util.testsuite.PrintThreads.allThreads());
         if (_activeCount == 0) {
             notifyAll();
         }
@@ -109,15 +98,7 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param manager The manager calling this method.
      */
     public synchronized void executionFinished(Manager manager) {
-        // FIXME
-        System.out.println("executionFinished: before -- adjustment: " +
-                _activeCount + "\n" + this + 
-                util.testsuite.PrintThreads.allThreads());
         _activeCount--;
-        // FIXME
-        System.out.println("executionFinished: after adjustment: " +
-                _activeCount + "\n" + this + 
-                util.testsuite.PrintThreads.allThreads());
         if (_activeCount == 0) {
             notifyAll();
         }
@@ -173,15 +154,7 @@ public class PtExecuteApplication extends MoMLApplication
     /** Wait for all executing runs to finish, then return.
      */
     public synchronized void waitForFinish() {
-        // FIXME
-        System.out.println("waitForFinish: before while loop: " +
-                _activeCount + "\n" + this + 
-                util.testsuite.PrintThreads.allThreads());
         while (_activeCount > 0) {
-            // FIXME
-            System.out.println("waitForFinish: inside while: " +
-                    _activeCount + "\n" + this + 
-                    util.testsuite.PrintThreads.allThreads());
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -239,19 +212,9 @@ public class PtExecuteApplication extends MoMLApplication
                     actor.setManager(manager);
                 }
                 manager.addExecutionListener(this);
-                // FIXME
-                System.out.println("_parseArgs: before ++ adjustment: " +
-                        _activeCount + "\n" + this + 
-                        util.testsuite.PrintThreads.allThreads());
                 _activeCount++;
-                // FIXME
-                System.out.println("_parseArgs: after adjustment: " +
-                        _activeCount + "\n" + this + 
-                        util.testsuite.PrintThreads.allThreads());
                 // Run the model in a new thread.
-                System.out.println("_parseArgs: before startRun()");
                 manager.startRun();
-                System.out.println("_parseArgs: after startRun()");
             }
         }
     }
@@ -263,5 +226,9 @@ public class PtExecuteApplication extends MoMLApplication
     private Configuration _configuration;
 
     // The count of currently executing runs.
-    private int _activeCount = 0;
+    // Note that there is a bug here, if _activeCount is initialized
+    // in the declaration below, then we have problems because it
+    // is constantly being set to 0.  Another workaround is to
+    // make _activeCount be static.
+    private int _activeCount;
 }
