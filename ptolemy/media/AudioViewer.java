@@ -116,7 +116,7 @@ public class Sound extends PtolemyPlot {
         double[] plotdata = _sound.toDouble(0);
         if (plotdata != null) {
             _plot.addPoint(0, 0, plotdata[0], false);
-            for (int i=1; i < plotdata.length; i++) {
+            for (int i = 1; i < plotdata.length; i++) {
                 _plot.addPoint(0, i/8000.0, plotdata[i], true);
             }
         }
@@ -302,13 +302,13 @@ public class Sound extends PtolemyPlot {
 //                 + " options that take values as second args:\n";
 //
 //         int i;
-//         for(i=0; i < commandOptions.length; i++) {
+//         for(i = 0; i < commandOptions.length; i++) {
 //             result += " " + commandOptions[i][0] +
 //                     " " + commandOptions[i][1] +
 //                     " " + commandOptions[i][4] + "\n";
 //         }
 //         result += "\nBoolean flags:\n";
-//         for(i=0; i < commandFlags.length; i++) {
+//         for(i = 0; i < commandFlags.length; i++) {
 //             result += " " + commandFlags[i][0] +
 //                     " " + commandFlags[i][2] + "\n";
 //         }
