@@ -7,6 +7,9 @@
       <group>
 <doc>Synchronous-reactive actors</doc>
 
+<entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
+</entity>
+
 <entity name="Delay" class="ptolemy.domains.sr.lib.Delay">
 </entity>
 
@@ -42,6 +45,9 @@
 </entity>
 
 <entity name="TriggeredTime" class="ptolemy.domains.sr.lib.TriggeredTime">
+</entity>
+
+<entity name="Undefined" class="ptolemy.domains.sr.lib.Undefined">
 </entity>
 
       </group>

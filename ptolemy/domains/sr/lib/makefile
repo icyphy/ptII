@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	Absent.java \
 	Delay.java \
 	Latch.java \
 	NonStrictActor.java \
@@ -56,7 +57,8 @@ JSRCS = \
 	SequenceTest.java \
 	SingleTokenDistributor.java \
 	TimedDisplay.java \
-	TriggeredTime.java
+	TriggeredTime.java \
+	Undefined.java
 
 OTHER_FILES_TO_BE_JARED = \
 	srentities.xml
