@@ -93,7 +93,7 @@ BusContentionDemo.jar: $(JSRCS) $(JCLASS)
 depend:
 	@echo "no dependencies in this directory"
 
-run::
+demo:
 	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.csp.guidemo.BusContentionApplication
 
 # Get the rest of the rules
