@@ -42,12 +42,19 @@ import ptolemy.domains.sdf.kernel.*;
 //// SineFM
 /**
 A multiplier actor for the SDF domain. This actor has two input ports and
-one output port.
+one output port. This actor multiplies the tokens at the two
+input ports. This actor is similar in function to actor.lib.MultiplyDivide,
+but this actor is optimized to provide better performance in the SDF
+domain. In order to get improved performance, the <i>rate</i>
+parameter must be set to a value greater than 1. The default rate is
+256. Currently, the input
+ports, <i>input</i>, <i>input2</i>, and the output port, <i>output</i>,
+are constrained to be of type DoubleToken.
 @author Brian K. Vogel.
 @version $Id$
-// FIXME: Clean up documentation!
 */
-
+// FIXME: Consider allowing arbitrary types instead of constraining to
+// be double token.
 public class SDFMultiply extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
@@ -62,10 +69,9 @@ public class SDFMultiply extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	
-	// parameters
+	// Ports
 	input2 = new SDFIOPort(this, "input2", true, false);
 	input2.setTypeEquals(BaseType.DOUBLE);
-
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -95,8 +101,8 @@ public class SDFMultiply extends SDFTransformer {
         return newobj;
     }
 
-    /**  <i>rate</i> tokens are consumed 
-     *  and produced on each call to this method.
+    /** Output the product of the two input port's values. Process 
+     *  <i>rate</i> tokens.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

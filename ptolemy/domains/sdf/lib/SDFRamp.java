@@ -45,15 +45,19 @@ This actor is similar to the actor.lib.Ramp actor, but provides
 better performance in the SDF domain.
 <p
 Produce <i>rate</i> output tokens on each firing where each
-sucessive token has a value that is
-incremented by the specified step. The
-first output and the step value are given by parameters.
-The type of the output and the parameters are DoubleToken.
+sucessive token has a value that is incremented by the specified 
+step. This actor is similar in function to actor.lib.Ramp, but this
+actorr is optimized to provide better performance in the SDF
+domain. In order to get improved performance, the <i>rate</i>
+parameter must be set to a value greater than 1. The default rate is
+256. Thefirst output and the step value are given by parameters.
+The type of the output port and the parameters are DoubleToken.
 
 @author Brian K. Vogel. Based on Ramp, by Yuhong Xiong, Edward A. Lee
 @version $Id$
 */
-
+// FIXME: Consider allowing arbitrary types instead of constraining to
+// be double token.
 public class SDFRamp extends SDFSource {
 
     /** Construct an actor with the given container and name.

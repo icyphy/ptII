@@ -41,12 +41,19 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// SDFAdd
 /**
-An adder for the SDF domain.
+An adder for the SDF domain. This actor sums the tokens at the two
+input ports. This actor is similar in function to actor.lib.AddSubtract,
+but this actor is optimized to provide better performance in the SDF
+domain. In order to get improved performance, the <i>rate</i>
+parameter must be set to a value greater than 1. The default rate is
+256. Currently, the input
+ports, <i>input</i>, <i>input2</i>, and the output port, <i>output</i>,
+are constrained to be of type DoubleToken.
 @author Brian K. Vogel.
 @version $Id$
-// FIXME: Add documentation!
 */
-
+// FIXME: Consider allowing arbitrary types instead of constraining to
+// be double token.
 public class SDFAdd extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
@@ -61,12 +68,9 @@ public class SDFAdd extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	
-	// parameters
+	// Ports
 	input2 = new SDFIOPort(this, "input2", true, false);
 	input2.setTypeEquals(BaseType.DOUBLE);
-
-        
-
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -77,8 +81,6 @@ public class SDFAdd extends SDFTransformer {
     /** Second input port to add.
      */
     public SDFIOPort input2;
-
-   
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -98,7 +100,7 @@ public class SDFAdd extends SDFTransformer {
         return newobj;
     }
 
-    /** Do Add.
+    /** Perform addition. Process <i>rate</i> tokens.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -110,14 +112,11 @@ public class SDFAdd extends SDFTransformer {
 	
 
 	for (int i = 0; i < _rate; i++) {
-	    // Convert to double[].
 	    _resultTokenArray[i] = 
 		(DoubleToken)_tokenArray1[i].add(_tokenArray2[i]);
 		//  *******  OR *********** code below seems slightly faster.
 		//new DoubleToken((_tokenArray1[i].doubleValue())*(_tokenArray2[i].doubleValue()));
 	}
-	
-
 	output.sendArray(0, _resultTokenArray);
     }
 
@@ -138,7 +137,6 @@ public class SDFAdd extends SDFTransformer {
 	super.preinitialize();
 	input2.setTokenConsumptionRate(_rate);
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -146,5 +144,4 @@ public class SDFAdd extends SDFTransformer {
     DoubleToken[] _tokenArray1;
     DoubleToken[] _tokenArray2;
     DoubleToken[] _resultTokenArray;
-
 }
