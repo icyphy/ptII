@@ -51,19 +51,10 @@ import java.util.List;
 /**
 This class is a modal dialog box for configuring the ports of an entity.
 An instance of this class contains an instance of PortConfigurer.
-<p>
-If the panels returned by EditorPaneFactory implement the
-CloseListener interface, then they are notified when this dialog
-is closed, and are informed of which button (if any) was used to
-close the dialog.
-<p>
 The dialog is modal, so the statement that creates the dialog will
-not return until the user dismisses the dialog.  The method buttonPressed()
-can then be called to find out whether the user clicked the Commit button
-or the Cancel button (or any other button specified in the constructor).
-Then you can access the component to determine what values were set
-by the user.
+not return until the user dismisses the dialog.
 
+@see PortConfigurer
 @author Edward A. Lee
 @version $Id$
 */
