@@ -95,12 +95,9 @@ public class PtolemyTableauFactory extends TableauFactory {
         effigy.setTableauFactory(this);
 
         // Delegate to the first contained effigy to open a view.
-        // As a precaution, we delegate until one creates a view,
-        // but by convention, all them should be capable of creating one,
-        // so the first one will succeed.
-	Tableau tableau = null;
+ 	Tableau tableau = null;
 	Iterator factories = entityList(TableauFactory.class).iterator();
-	while(factories.hasNext() && tableau == null) {
+	if(factories.hasNext()) {
 	    TableauFactory factory = (TableauFactory)factories.next();
 	    tableau = factory.createTableau(effigy);
 	}
