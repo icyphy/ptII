@@ -615,6 +615,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/actors \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/ddi \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
