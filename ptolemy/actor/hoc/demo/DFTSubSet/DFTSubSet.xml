@@ -97,7 +97,7 @@
 ComputeCoefficient contains a model to compute one DFT coefficient using the Goertzel
 kernel.  NDFTCoefficients instances are used.
 
-Zoltan Kemenczy, Research in Motion</text></svg></configure>
+Zoltan Kemenczy and Sean Simmons, Research in Motion Ltd.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
