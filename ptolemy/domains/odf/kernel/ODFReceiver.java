@@ -163,6 +163,9 @@ public class ODFReceiver extends TimedQueueReceiver
 	    ODFDirector director, ODFThread thread ) {
 	// FIXME: synchronized not needed.
 	synchronized(this) {
+            if( thread.getNextTime() == -1.0 ) {
+                requestFinish();
+            }
 	    if( getRcvrTime() > thread.getNextTime() && !_terminate ) {
 		if( getContainer().getContainer().getName().equals("printer") ) {
 		    /*
