@@ -135,6 +135,9 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
+# Set to backtrack and used in ptolemy/makefile if jrefactory.jar was found
+PTBACKTRACK_DIR =	@PTBACKTRACK_DIR@
+
 # Used by Mescal. Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp
 PTBOOST_INCLUDE =	"@PTBOOST_INCLUDE@"
@@ -256,6 +259,10 @@ JMF_JARS =	@JMF_JARS@
 # Jar file that contains Joystick interface,
 # see http://sourceforge.net/projects/javajoystick/
 JOYSTICK_JAR =	@JOYSTICK_JAR@
+
+# Jar file that contains JRefactory interface,
+# see http://jrefactory.sourceforge.net/
+JREFACTORY_JAR = @JREFACTORY_JAR@
 
 # Jython home directory that contains jython.jar, see http://www.jython.org
 JYTHON_DIR =    @JYTHON_DIR@
