@@ -9,7 +9,9 @@
 # and generated $PTII/lib/ptII.properties.in
 #
 # We use a properties file here so that we can easily start Ptolemy II
-# without passing lots of command line arguments
+# without passing lots of command line arguments.  However, when
+# running "vergil -sandbox" or "vergil -policyfile ...", merging
+# properties from ptII.properties.in might not work.
 #
 # The format of this file is documented in the java.util.Properties
 # Javadoc page, for example
