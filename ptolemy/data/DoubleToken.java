@@ -85,70 +85,69 @@ public class DoubleToken extends ScalarToken {
      *  @return A DoubleToken.
      */
     public ScalarToken absolute() {
-	DoubleToken result;
+        DoubleToken result;
         if (_value >= 0.0) {
-	    result = new DoubleToken(_value);
-	} else {
-	    result = new DoubleToken(-_value);
-	}
-
-	if ( !_isUnitless()) {
-	    int length = _unitCategoryExponents.length;
-	    result._unitCategoryExponents = new int[length];
-	    System.arraycopy(_unitCategoryExponents, 0,
-			     result._unitCategoryExponents, 0, length);
+            result = new DoubleToken(_value);
+        } else {
+            result = new DoubleToken(-_value);
         }
-	return result;
+
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to add to this Token.
-     *  @return A new Token containing the result.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
-     *   is not of a type that can be added to this Tokens value, or
+     *   is not of a type that can be added to this token, or
      *   the units of this token and the argument token are not the same.
      */
-    public Token add(ptolemy.data.Token rightArgument)
-            throws IllegalActionException {
+    public Token add(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.addReverse(this);
-            } else if (rightArgument instanceof DoubleToken) {
-                double result =
-		        _value + ((DoubleToken)rightArgument).doubleValue();
-                return new DoubleToken(result);
-            } else  if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightArgument);
-                double result = _value + tmp.doubleValue();
-                return new DoubleToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
             } else {
-                throw new Exception();
+               doubleToken = (DoubleToken)rightArgument;
             }
-        } catch (Exception ex) {
-            String str = "add method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArgument.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            double sum = _value + doubleToken.doubleValue();
+            DoubleToken result = new DoubleToken(sum);
+            if ( !_isUnitEqual(doubleToken)) {
+                throw new IllegalActionException("DoubleToken.add: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as that of the argument: "
+                        + doubleToken._unitString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.addReverse(this);
+        } else {
+            throw new IllegalActionException("DoubleToken.add: Cannot add "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
         }
     }
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
-     *  the returned Token type chosen to achieve
+     *  the returned token type chosen to achieve
      *  a lossless conversion.
-     *  @param leftArgument The token to add this Token to.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param leftArgument The token to add this token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or
+     *   the units of this token and the argument token are not the same.
      */
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftArgument);
-        double result = tmp.doubleValue() + _value;
-        return new DoubleToken(result);
+        return this.add(leftArgument);
     }
 
     /** Return the value of this token as a Complex. The real part
@@ -173,9 +172,7 @@ public class DoubleToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static Token convert(Token token)
-            throws IllegalActionException {
-
+    public static Token convert(Token token) throws IllegalActionException {
         int compare = TypeLattice.compare(BaseType.DOUBLE, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("DoubleToken.convert: " +
@@ -190,58 +187,70 @@ public class DoubleToken extends ScalarToken {
 
         compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            IntToken inttoken = (IntToken)IntToken.convert(token);
-            return new DoubleToken(inttoken.doubleValue());
+            IntToken intToken = (IntToken)IntToken.convert(token);
+            DoubleToken result = new DoubleToken(intToken.doubleValue());
+            result._unitCategoryExponents = intToken._copyOfCategoryExponents();
+            return result;
+        } else {
+            throw new IllegalActionException("Cannot convert from token "
+                    + "type: " + token.getClass().getName()
+                    + " to a DoubleToken");
         }
-        throw new IllegalActionException("cannot convert from token " +
-                "type: " + token.getClass().getName() + " to a DoubleToken");
     }
 
-    /** Return a new Token whose value is the value of this token
+    /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token.
-     *  Type resolution also occurs here, with the returned Token type
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param divisor The token to divide this Token by
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by.
-     *  @return A new Token containing the result.
+     *  @param divisor The token to divide this token by
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can divide the value of this token.
      */
     public Token divide(Token divisor) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, divisor);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return divisor.divideReverse(this);
-            } else if (divisor instanceof DoubleToken) {
-                double result = _value / ((DoubleToken)divisor).doubleValue();
-                return new DoubleToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(divisor);
-                double result = _value / tmp.doubleValue();
-                return new DoubleToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(divisor);
             } else {
-                throw new Exception();
+               doubleToken = (DoubleToken)divisor;
             }
-        } catch (Exception ex) {
-            String str = "divide method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + divisor.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            double quotient = _value / doubleToken.doubleValue();
+            DoubleToken result = new DoubleToken(quotient);
+            // compute units
+            result._unitCategoryExponents =
+                            _subtractCategoryExponents(doubleToken);
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return divisor.divideReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "DoubleToken.divide: Cannot divide "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " by "
+                    + divisor.getClass().getName() + " " + divisor.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of the argument token
+    /** Return a new token whose value is the value of the argument token
      *  divided by the value of this token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
+     *  also occurs here, with the returned token type chosen to achieve
      *  a lossless conversion.
-     *  @param dividend The token to be divided by the value of this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be divided by this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param dividend The token to be divided by the value of this token.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be divided by this token.
+     *  @return A new token containing the result.
      */
     public Token divideReverse(Token dividend) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(dividend);
-        double result = tmp.doubleValue() / _value;
-        return new DoubleToken(result);
+        DoubleToken doubleToken = (DoubleToken)DoubleToken.convert(dividend);
+        double quotient = doubleToken.doubleValue() / _value;
+        DoubleToken result = new DoubleToken(quotient);
+
+        // compute units
+        result._unitCategoryExponents =
+                        doubleToken._subtractCategoryExponents(this);
+        return result;
     }
 
     /** Return the value in the token as a double.
@@ -258,38 +267,43 @@ public class DoubleToken extends ScalarToken {
         return BaseType.DOUBLE;
     }
 
-    /** Test the values of this Token and the argument Token for equality.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Test the value and units of this token and the argument token
+     *  for equality.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
      *  @param token The token to test equality of this token with.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be compared with this Tokens value.
-     *  @return BooleanToken indicating whether the values are equal.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are equal to those of the argument
+     *   token.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return token.isEqualTo(this);
-            } else if (token instanceof DoubleToken) {
-                if ( _value == ((DoubleToken)token).doubleValue()) {
-                    return new BooleanToken(true);
-                }
-                return new BooleanToken(false);
-            } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(token);
-                if ( _value == tmp.doubleValue()) {
-                    return new BooleanToken(true);
-                }
-                return new BooleanToken(false);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(token);
             } else {
-                throw new Exception();
+               doubleToken = (DoubleToken)token;
             }
-        } catch (Exception ex) {
-            String str = "equality method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+
+            if (_value == doubleToken.doubleValue()
+                && _isUnitEqual(doubleToken)) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+
+        } else if (typeInfo == CPO.LOWER) {
+            return token.isEqualTo(this);
+        } else {
+            throw new IllegalActionException("DoubleToken.isEqualTo: "
+                    + "Cannot compare "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + token.getClass().getName() + " " + token.toString()
+                    + " for equality.");
         }
     }
 
@@ -299,136 +313,164 @@ public class DoubleToken extends ScalarToken {
      *  @return A BooleanToken with value true if this token is strictly
      *   less than the argument.
      *  @exception IllegalActionException If the type of the argument token
-     *   is incomparable with the type of this token.
+     *   is incomparable with the type of this token, or the units of this
+     *   token is not the same as those of the argument.
      */
-    public BooleanToken isLessThan(ScalarToken arg)
+    public BooleanToken isLessThan(ScalarToken token)
             throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, arg);
-        if (typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("DoubleToken.isLessThan: The " +
-                    "type of the argument token is incomparable with the type "
-		    + "of this token. argType: " + arg.getType());
+        int typeInfo = TypeLattice.compare(this, token);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(token);
+            } else {
+               doubleToken = (DoubleToken)token;
+            }
+            if ( !_isUnitEqual(doubleToken)) {
+                throw new IllegalActionException("DoubleToken.isLessThan: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as that of the argument: "
+                        + doubleToken._unitString());
+            }
+            if (_value < doubleToken.doubleValue()) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+        } else if (typeInfo == CPO.LOWER) {
+            if (token.isEqualTo(this).booleanValue()) {
+                return new BooleanToken(false);
+            } else {
+                return token.isLessThan(this).not();
+            }
+        } else {
+            throw new IllegalActionException("DoubleToken.isLessThan: "
+                    + "Cannot check whether "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " is less than "
+                    + token.getClass().getName() + " " + token.toString());
         }
-
-        if (typeInfo == CPO.LOWER) {
-	    if (arg.isEqualTo(this).booleanValue()) {
-	        return new BooleanToken(false);
-	    } else {
-                return arg.isLessThan(this).not();
-	    }
-        }
-
-        // Argument type is lower or equal to this token.
-        ScalarToken doubleArg = arg;
-        if (typeInfo == CPO.HIGHER) {
-            doubleArg = (ScalarToken)convert(arg);
-        }
-
-        if (_value < doubleArg.doubleValue()) {
-            return new BooleanToken(true);
-        }
-        return new BooleanToken(false);
     }
 
-    /** Return a new Token whose value is the value of this token
+    /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.
-     *  Type resolution also occurs here, with the returned Token type
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to modulo this Token by
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be  used with modulo.
-     *  @return A new Token containing the result.
+     *  @param rightArgument The token to modulo this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be  used with modulo, or the units of
+     *   this token are not the same as those of the argument.
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.moduloReverse(this);
-            } else if (rightArgument instanceof DoubleToken) {
-                double result =
-		        _value % ((DoubleToken)rightArgument).doubleValue();
-                return new DoubleToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightArgument);
-                double result = _value % tmp.doubleValue();
-                return new DoubleToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
             } else {
-                throw new Exception();
+               doubleToken = (DoubleToken)rightArgument;
             }
-        } catch (Exception ex) {
-            String str = "modulo method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArgument.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            double remainder = _value % doubleToken.doubleValue();
+            DoubleToken result = new DoubleToken(remainder);
+            if ( !_isUnitEqual(doubleToken)) {
+                throw new IllegalActionException("DoubleToken.modulo: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as that of the argument: "
+                        + doubleToken._unitString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.moduloReverse(this);
+        } else {
+            throw new IllegalActionException("DoubleToken.modulo: "
+                    + "Cannot compute the modulo of "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of the argument token
+    /** Return a new token whose value is the value of the argument token
      *  modulo the value of this token.
-     *  Type resolution also occurs here, with the returned Token
+     *  Type resolution also occurs here, with the returned token
      *  type chosen to achieve a lossless conversion.
      *  @param leftArgument The token to apply modulo to by the value of this
-     *   Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can apply modulo by this Tokens value.
-     *  @return A new Token containing the result.
+     *   token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can apply modulo by this tokens, or
+     *   if the units of this token are not the same as those of the
+     *   argument.
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftArgument);
-        double result = tmp.doubleValue() %  _value;
-        return new DoubleToken(result);
+        DoubleToken doubleToken =
+                (DoubleToken)DoubleToken.convert(leftArgument);
+
+        double remainder = doubleToken.doubleValue() % _value;
+        DoubleToken result = new DoubleToken(remainder);
+        if ( !_isUnitEqual(doubleToken)) {
+            throw new IllegalActionException("DoubleToken.moduloReverse: "
+                    + "The units of this token: " + _unitString()
+                    + " are not the same as that of the argument: "
+                    + doubleToken._unitString());
+        }
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
-
-    /** Return a new Token whose value is the value of this Token
-     *  multiplied by the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightFactor The token to multiply this Token by.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be multiplied to this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param rightFactor The token to multiply this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be multiplied to this token.
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightFactor);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightFactor.multiplyReverse(this);
-            } else if (rightFactor instanceof DoubleToken) {
-                double result = _value *
-                    ((DoubleToken)rightFactor).doubleValue();
-                return new DoubleToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightFactor);
-                double result = _value * tmp.doubleValue();
-                return new DoubleToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(rightFactor);
             } else {
-                throw new Exception();
+               doubleToken = (DoubleToken)rightFactor;
             }
-        } catch (Exception ex) {
-            String str = "multiply method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightFactor.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            double product = _value * doubleToken.doubleValue();
+            DoubleToken result = new DoubleToken(product);
+            // compute units
+            result._unitCategoryExponents =
+                            _addCategoryExponents(doubleToken);
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightFactor.multiplyReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "DoubleToken.multiply: Cannot multiply "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " with "
+                    + rightFactor.getClass().getName() + " "
+                    + rightFactor.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  multiplied by the value of this Token.
-     *  Type resolution also occurs here, with the returned Token
+    /** Return a new token whose value is the value of the argument token
+     *  multiplied by the value of this token.
+     *  Type resolution also occurs here, with the returned token
      *  type chosen to achieve a lossless conversion.
      *  @param leftFactor The token to be multiplied by the value of
-     *   this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be multiplied by this Token's value.
-     *  @return A new Token containing the result.
+     *   this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be multiplied by this token.
      */
     public Token multiplyReverse(Token leftFactor)
             throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftFactor);
-        double result = tmp.doubleValue() * _value;
-        return new DoubleToken(result);
+        return this.multiply(leftFactor);
     }
 
     /** Returns a new DoubleToken with value 1.0.
@@ -438,53 +480,71 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(1.0);
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  subtracted from the value of this Token.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to subtract to this Token.
+     *  @param rightArgument The token to subtract to this token.
+     *  @return A new token containing the result.
      *  @exception IllegalActionException If the passed token is
-     *   not of a type that can be subtracted from this Tokens value.
-     *  @return A new Token containing the result.
+     *   not of a type that can be subtracted from this token, or the units
+     *   of this token are not the same as those of the argument.
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.subtractReverse(this);
-            } else if (rightArgument instanceof DoubleToken) {
-                double result =
-		        _value -  ((DoubleToken)rightArgument).doubleValue();
-                return new DoubleToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(rightArgument);
-                double result = _value - tmp.doubleValue();
-                return new DoubleToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            DoubleToken doubleToken;
+            if (typeInfo == CPO.HIGHER) {
+               doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
             } else {
-                throw new Exception();
+               doubleToken = (DoubleToken)rightArgument;
             }
-        } catch (Exception ex) {
-            String str = "subtract method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArgument.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            double difference = _value - doubleToken.doubleValue();
+            DoubleToken result = new DoubleToken(difference);
+            if ( !_isUnitEqual(doubleToken)) {
+                throw new IllegalActionException("DoubleToken.subtract: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as that of the argument: "
+                        + doubleToken._unitString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.subtractReverse(this);
+        } else {
+            throw new IllegalActionException("DoubleToken.subtract: "
+                    + "Cannot subtract "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " by "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Return a new token whose value is the value of this token
+     *  subtracted from the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param leftArgument The token to subtract this Token from.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param leftArgument The token to subtract this token from.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or the units
+     *   of this token are not the same as those of the argument.
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(leftArgument);
-        double result = tmp.doubleValue() - _value;
-        return new DoubleToken(result);
+        DoubleToken doubleToken =
+	        (DoubleToken)DoubleToken.convert(leftArgument);
+        double difference = doubleToken.doubleValue() - _value;
+        DoubleToken result = new DoubleToken(difference);
+        if ( !_isUnitEqual(doubleToken)) {
+            throw new IllegalActionException("DoubleToken.subtractReverse: "
+                    + "The units of this token: " + _unitString()
+                    + " are not the same as that of the argument: "
+                    + doubleToken._unitString());
+        }
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -496,15 +556,20 @@ public class DoubleToken extends ScalarToken {
      *  Double.toString(), except that we limit the precision to seven
      *  fractional digits.  If you really must have better precision,
      *  then use <code>Double.toString(token.doubleValue())</code>.
-     *  @return A String representing the double value of this token.
+     *  If this token has a unit, the return string also includes a unit
+     *  string produced by the _unitString() method in the super class.
+     *  @return A String representing the double value and the units (if
+     *   any) of this token.
+     *  @see ptolemy.data.ScalarToken#_unitString
      */
     public String toString() {
+	String unitString = _unitString();
         double mag = Math.abs(_value);
         if(mag == 0.0 || (mag < 1000000 && mag > .001)) {
-            return _regularFormat.format(_value);
+            return _regularFormat.format(_value) + unitString;
         } else {
-            return _exponentialFormat.format(_value);
-	}
+            return _exponentialFormat.format(_value) + unitString;
+        }
     }
 
     /** Returns a new DoubleToken with value 0.0.
