@@ -1031,14 +1031,16 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            // FIXME: Delete the relations as well.
 	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
            
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
-            String moml = "<deleteEntity name=\""
-                    + deleteObj.getName(container) + "\"/>\n";
-            return moml;
+            StringBuffer moml = new StringBuffer("<group>/n");
+
+            moml.append("<deleteEntity name=\""
+                    + deleteObj.getName(container) + "\"/>\n");
+            moml.append("</group>\n");
+            return moml.toString();
         }
 
 	/** Return the graph parent of the given node.
