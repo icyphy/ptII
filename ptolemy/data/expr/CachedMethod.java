@@ -393,6 +393,11 @@ public class CachedMethod {
 //             }
             try {
                 result = method.invoke(argValues[0], methodArgValues);
+            } catch (InvocationTargetException ex) {
+                ex.printStackTrace();
+                throw new IllegalActionException(null, ex.getCause(),
+                        "Error invoking method " + method + " on object " +
+                        argValues[0] + "\n");
             } catch (Exception ex) {
                 ex.printStackTrace();
                 throw new IllegalActionException(null, ex,
@@ -416,6 +421,9 @@ public class CachedMethod {
             try {
                 result = method.invoke(method.getDeclaringClass(),
                         methodArgValues);
+            } catch (InvocationTargetException ex) {
+                throw new IllegalActionException(null, ex.getCause(),
+                        "Error invoking function " + method + "\n");
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
                         "Error invoking function " + method + "\n");
