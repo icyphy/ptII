@@ -92,7 +92,7 @@ import java.util.List;
 
    @author Haiyang Zheng
    @version $Id$
-   @since Ptolemy II 2.0
+   @since Ptolemy II 2.1
  */
 public class CTAssertion extends Assertion implements CTStepSizeControlActor {
 
