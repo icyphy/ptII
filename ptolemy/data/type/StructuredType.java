@@ -47,7 +47,7 @@ interface defines methods for these operations.
 <p>
 Subclasses should override clone() to do a deep cloning.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 $Id$
 
 */

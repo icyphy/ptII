@@ -39,7 +39,7 @@ import ptolemy.graph.*;
 /**
 Type hierarchy for token classes. This class implements the CPO interface.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 @see ptolemy.graph.CPO
 */

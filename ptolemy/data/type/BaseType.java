@@ -42,7 +42,7 @@ import ptolemy.data.*;
 The type of base token classes. This class provides a type safe
 enumeration of base types.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 */
 
