@@ -397,7 +397,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
      *  The entity is assumed to be contained by this composite (otherwise,
      *  nothing happens). This method does not alter the entity in any way.
      *  This method is sychronized on the workspace.
-     *  @param entity
+     *  @param entity Entity to be removed.
      */	
     protected void _removeEntity(ComponentEntity entity) {
         synchronized(workspace()) {
