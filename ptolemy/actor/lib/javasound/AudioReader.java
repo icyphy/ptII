@@ -111,22 +111,23 @@ public class AudioReader extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
 	output.setMultiport(true);
-	sourceURL = new StringAttribute(this, "sourceURL");
-	sourceURL.setExpression("file:///tmp/test.wav");
+	sourceURL = new Parameter(this, "sourceURL");
+	sourceURL.setExpression("&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
     /** The URL of the file to read from. The default value of this
-     *  parameter is the URL "file:///tmp/test.wav".
+     *  parameter is the URL 
+     *  "&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/actor/lib/javasound/test/voice.wav&quot;"
      *  Supported file formats are  WAV, AU, and AIFF. The sound
      *  file format is determined from the file extension.
      *  <p>
      *  An exception will occur if the path references a
      *  non-existent or unsupported sound file.
      */
-    public StringAttribute sourceURL;
+    public Parameter sourceURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -319,7 +320,8 @@ public class AudioReader extends Source {
             _soundReader.closeFile();
 	}
 	// Load audio from a URL.
-	String theURL = sourceURL.getExpression();
+	StringToken urlToken = (StringToken)sourceURL.getToken();
+	String theURL = urlToken.stringValue();
 	// Each read this many samples per channel when
 	// _soundReader.getSamples() is called.
 	// This value was chosen somewhat arbitrarily.
