@@ -199,12 +199,13 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 	    
     /** Given a dot separated classname, return the jar file or directory
-     *  where the class can be found
+     *  where the class can be found.
      *  @param necessaryClass  The dot separated class name, for example
      *  "ptolemy.kernel.util.NamedObj"
      *  @return If the class can be found as a resource, return the
      *  directory or jar file where the necessary class can be found.
      *  otherwise, return null.
+     *  @see #getResource(String necessaryClass)
      */
     public static String lookupClassAsResource(String necessaryClass) {
 	String necessaryResource =
@@ -283,22 +284,32 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	updateModelAttributes(modelPathOrURL);
 
 
+	String ptII =
+	    ((StringToken)
+	     ((Parameter)getAttribute("ptII"))
+	     .getToken()).stringValue();
+
 	String ptIIUserDirectory =
 	    ((StringToken)
 	     ((Parameter)getAttribute("ptIIUserDirectory"))
 	     .getToken()).stringValue();
 
+
 	// Check that we will be able to write to the value of
-	// the ptIIUserDirectory Parameter
+	// the ptIIUserDirectory Parameter, and that
+        // if we are running under Webstart, then ptIIUserDirectory
+        // does not equal ptII.
 	File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
 	if (!ptIIUserDirectoryFile.isDirectory() 
-	    || !ptIIUserDirectoryFile.canWrite()) {
+	    || !ptIIUserDirectoryFile.canWrite()
+            || (JNLPUtilities.isRunningUnderWebStart()
+                    && ptIIUserDirectory == ptII)) {
 
 	    // It would be nice to tell the user we are changing the
 	    // ptIIUserDirectory directory of the build.  Usually
 	    // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
 
-	    // Get user.dir  and create a ptII/cg subdir if necessary
+	    // Get user.dir and create a ptII/cg subdir if necessary
             String userDir = 
 		UtilityFunctions.getProperty("user.dir");
 	    if (userDir != null) {
