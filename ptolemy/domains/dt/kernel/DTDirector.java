@@ -232,13 +232,6 @@ public class DTDirector extends SDFDirector {
     public void fire() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = _getOutsideDirector();
-        double presentTime;
-
-        if (outsideDirector != null) {
-            presentTime = outsideDirector.getCurrentTime();
-        } else {
-            presentTime = getCurrentTime();
-        }
         // Some timed directors (such as CT) increment time after prefire()
         // and during fire(), so time may not be properly updated
         // before this stage of the execution.
@@ -259,7 +252,6 @@ public class DTDirector extends SDFDirector {
         /*
         _debugViewSchedule();
 
-        debug.println("DTDirector fire  " + presentTime);
         if (container == null) {
             throw new InvalidStateException("DTDirector " + getName() +
                     " fired, but it has no container!");
