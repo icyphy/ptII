@@ -44,15 +44,18 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	CSPCheckToken.java \
+	CSPGet.java \
+	CSPPut.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	CSPActor.tcl \
-	CSPDirector.tcl \
-	CSPReceiver.tcl \
 	ConditionalBranch.tcl \
 	ConditionalReceive.tcl \
 	ConditionalSend.tcl \
+	CSPActor.tcl \
+	CSPDirector.tcl \
+	CSPReceiver.tcl 
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
