@@ -1,4 +1,4 @@
-/* Anx IOPort with a type.
+/* An IOPort with a type.
 
  Copyright (c) 1997-2003 The Regents of the University of California.
  All rights reserved.
@@ -259,14 +259,8 @@ public class TypedIOPort extends IOPort implements Typeable {
                 TypedIOPort port =
                     (TypedIOPort)farReceivers[i][j].
                     getContainer();
-                Type farType = port.getType();
-
-                if (farType.equals(token.getType())) {
-                    farReceivers[i][j].put(token);
-                } else {
-                    Token newToken = farType.convert(token);
-                    farReceivers[i][j].put(newToken);
-                }
+                Token newToken = port.convert(token);
+                farReceivers[i][j].put(newToken);
             }
         }
     }
@@ -355,7 +349,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     // For better efficiency, make sure
                     // all ports have the same type.
                     for (int k = 0; k < vectorLength; k++) {
-                        farReceivers[i][j].put(farType.convert(tokenArray[k]));
+                        farReceivers[i][j].put(port.convert(tokenArray[k]));
                     }
                 }
             }
@@ -389,6 +383,23 @@ public class TypedIOPort extends IOPort implements Typeable {
         newObject._typeListeners = new LinkedList();
         newObject._constraints = new LinkedList();
         return newObject;
+    }
+    
+    /** Convert the specified token into a token with type equal
+     *  to the type returned by getType(). If the token is already
+     *  of this type, then simply return the specified token.
+     *  @param token The token to convert.
+     *  @exception IllegalActionException If the convertion is
+     *   invalid.
+     */
+    public Token convert(Token token) throws IllegalActionException {
+        Type type = getType();
+        if (type.equals(token.getType())) {
+            return token;
+        } else {
+            Token newToken = type.convert(token);
+            return newToken;
+        }
     }
 
     /** Return the type of this port.  If this port is opaque, this method
@@ -556,14 +567,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                 TypedIOPort port =
                     (TypedIOPort)farReceivers[channelIndex][j].getContainer();
-                Type farType = port.getType();
-
-                if (farType.equals(token.getType())) {
-                    farReceivers[channelIndex][j].put(token);
-                } else {
-                    Token newToken = farType.convert(token);
-                    farReceivers[channelIndex][j].put(newToken);
-                }
+                Token newToken = port.convert(token);
+                farReceivers[channelIndex][j].put(newToken);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the channel index is out of range.
@@ -682,7 +687,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     // all ports have the same type.
                     for (int i = 0; i < vectorLength; i++) {
                         farReceivers[channelIndex][j].put(
-                                farType.convert(tokenArray[i]));
+                                port.convert(tokenArray[i]));
                     }
                 }
             }
@@ -723,7 +728,8 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param channelIndex The index of the channel, from 0 to width-1
      *  @param token The token to send
      *  @exception NoRoomException If there is no room in the receiver.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If conversion to the type of
+     *   the destination port cannot be done.
      */
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
@@ -755,14 +761,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                 TypedIOPort port =
                     (TypedIOPort)farReceivers[channelIndex][j].getContainer();
-                Type farType = port.getType();
-
-                if (farType.equals(token.getType())) {
-                    farReceivers[channelIndex][j].put(token);
-                } else {
-                    Token newToken = farType.convert(token);
-                    farReceivers[channelIndex][j].put(newToken);
-                }
+                Token newToken = port.convert(token);
+                farReceivers[channelIndex][j].put(newToken);
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may occur if the channel index is out of range.
