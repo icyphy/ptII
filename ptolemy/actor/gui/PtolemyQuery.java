@@ -51,6 +51,7 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 import java.awt.Container;
 import java.awt.Font;

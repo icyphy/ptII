@@ -31,6 +31,7 @@
 
 package ptolemy.data.expr;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 import java.io.Writer;
 import java.io.IOException;
