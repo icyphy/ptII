@@ -450,7 +450,7 @@ public class LongMatrixMath {
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
-    public static final long[][] identityLong(final int dim) {
+    public static final long[][] identityMatrixLong(final int dim) {
         return identity(dim);
     }
 

@@ -473,7 +473,7 @@ public class ComplexMatrixMath {
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
-    public static final Complex[][] identityComplex(final int dim) {
+    public static final Complex[][] identityMatrixComplex(final int dim) {
         return identity(dim);
     }
 

@@ -398,7 +398,7 @@ public class DoubleMatrixMath {
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
-    public static final double[][] identityDouble(final int dim) {
+    public static final double[][] identityMatrixDouble(final int dim) {
         return identity(dim);
     }
 

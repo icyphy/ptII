@@ -121,7 +121,7 @@ test Function-acos {Test acos} {
      } {1 0.0 0.0 0.0 1}
 
 test Functions-acos-2 {test acos} {
-    list [evaluate {acos(identityDouble(2))}] \
+    list [evaluate {acos(identityMatrixDouble(2))}] \
         [evaluate {acos(-1.0)}] \
         [evaluate {acos({-1.0, 0.5})}] \
         [evaluate {isNaN(acos(2.0))}]
@@ -139,7 +139,7 @@ test Function-asin {Test asin} {
      } {1 0.0 0.0 0.0 1}
 
 test Functions-asin {test asin-2} {
-    list [evaluate {asin(identityDouble(2))}] \
+    list [evaluate {asin(identityMatrixDouble(2))}] \
         [evaluate {asin(-1.0)}] \
         [evaluate {asin({-1.0, 0.5})}] \
         [evaluate {isNaN(asin(2.0))}]
@@ -157,7 +157,7 @@ test Function-atan {Test atan} {
      } {1 1 0.0 1 1}
 
 test Functions-atan-2 {test atan} {
-    list [evaluate {atan(identityDouble(2))}] \
+    list [evaluate {atan(identityMatrixDouble(2))}] \
         [evaluate {atan(-1.0)}] \
         [evaluate {atan({-1.0, 0.5})}] \
         [evaluate {atan(-1.0/0.0)}]
@@ -174,7 +174,7 @@ test Function-atan2 {Test atan2} {
      } {1 1 0.0 1}
 
 test Functions-atan2-2 {test atan2} {
-    list [evaluate {atan2(identityDouble(2), -identityDouble(2))}] \
+    list [evaluate {atan2(identityMatrixDouble(2), -identityMatrixDouble(2))}] \
         [evaluate {atan2(-1.0, 1.0)}] \
         [evaluate {atan2({-1.0, 0.5}, {-1.0, 0.5})}] \
         [evaluate {atan2(1.0/0.0, 1.0)}]
@@ -226,7 +226,7 @@ test Function-cos-2 {Test cos} {
 } {{0.8337300251311491 - 0.9888977057628653i} {{0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i}} {[0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i]}}
 
 test Functions-cos-3 {test cos} {
-    list [evaluate {cos(identityDouble(2))}] \
+    list [evaluate {cos(identityMatrixDouble(2))}] \
         [evaluate {cos(0.0)}] \
         [evaluate {cos({-1.0, 0.5})}] \
         [evaluate {cos(2*PI)}]
@@ -347,10 +347,10 @@ test Function-abs-2 {Test abs on arrays} {
 test Function-abs-3 {Test abs on matrices} {
     list [evaluatePtClose {abs([1+i, 1-i])} \
                   {[1.4142135623731, 1.4142135623731]}] \
-         [evaluate {abs(-identityDouble(2))}] \
-         [evaluate {abs(-identityInt(2))}] \
-         [evaluate {abs(-identityLong(2))}] \
-         [evaluate {abs(-identityComplex(2))}] \
+         [evaluate {abs(-identityMatrixDouble(2))}] \
+         [evaluate {abs(-identityMatrixInt(2))}] \
+         [evaluate {abs(-identityMatrixLong(2))}] \
+         [evaluate {abs(-identityMatrixComplex(2))}] \
 } {1 {[1.0, 0.0; 0.0, 1.0]} {[1, 0; 0, 1]} {[1L, 0L; 0L, 1L]} {[1.0, 0.0; 0.0, 1.0]}}
 
 ####################################################################
@@ -379,7 +379,7 @@ test Function-ceil {Test ceil} {
      } {-1.0 -1.0 1.0 {{2.0, 3.0}} {[2.0, 3.0]}}
 
 test Functions-ceil-2 {test ceil} {
-    list [evaluate {ceil(identityDouble(2) + 0.5)}] \
+    list [evaluate {ceil(identityMatrixDouble(2) + 0.5)}] \
         [evaluate {ceil(-1.5)}] \
         [evaluate {ceil({-1.0, 0.5})}] \
         [evaluate {ceil(1.5)}]
@@ -420,13 +420,13 @@ test Function-exp {Test exp} {
      } {1 1 1 1 1}
 
 test Functions-exp-2 {test exp} {
-    list [evaluate {exp(identityDouble(2))}] \
+    list [evaluate {exp(identityMatrixDouble(2))}] \
         [evaluate {exp(-1.0)}] \
         [evaluate {exp({-1.0, 0.5})}] \
         [evaluate {exp(0.0)}] \
         [evaluate {exp(-1.0/0.0)}] \
         [evaluate {exp(i*PI/2)}] \
-        [evaluate {exp(i*pi*identityComplex(2))}] \
+        [evaluate {exp(i*pi*identityMatrixComplex(2))}] \
         [evaluate {exp({-i*PI/2, i*PI/2})}]
 } {{[2.718281828459, 1.0; 1.0, 2.718281828459]} 0.3678794411714 {{0.3678794411714, 1.6487212707001}} 1.0 0.0 {6.123233995736766E-17 + 1.0i} {[-1.0 + 1.2246467991473532E-16i, 1.0 + 0.0i; 1.0 + 0.0i, -1.0 + 1.2246467991473532E-16i]} {{6.123233995736766E-17 - 1.0i, 6.123233995736766E-17 + 1.0i}}}
 
@@ -443,7 +443,7 @@ test Function-floor {Test floor} {
      } {-2.0 -1.0 1.0 {{1.0, 2.0}} {[1.0, 2.0]}}
 
 test Functions-floor-2 {test floor} {
-    list [evaluate {floor(identityDouble(2) + 0.5)}] \
+    list [evaluate {floor(identityMatrixDouble(2) + 0.5)}] \
         [evaluate {floor(-1.5)}] \
         [evaluate {floor({-1.0, 0.5})}] \
         [evaluate {floor(1.5)}]
@@ -499,7 +499,7 @@ test Function-log {Test log} {
      } {1 -Infinity 0.0 0.0 1}
 
 test Functions-log-2 {test log} {
-    list [evaluate {log(identityDouble(2) + 1.0)}] \
+    list [evaluate {log(identityMatrixDouble(2) + 1.0)}] \
         [evaluate {isNaN(log(-1.0))}] \
         [evaluate {log({e, 1.0})}] \
         [evaluate {isInfinite(log(0.0)) && log(0.0) < 0.0}] \
@@ -522,7 +522,7 @@ test Function-log10 {Test log10} {
      } {1 -Infinity 0.0 0.0}
 
 test Functions-log10-2 {test log10} {
-    list [evaluate {log10(identityDouble(2) + 10.0)}] \
+    list [evaluate {log10(identityMatrixDouble(2) + 10.0)}] \
         [evaluate {isNaN(log10(-1.0))}] \
         [evaluate {log10({10.0, 1.0})}] \
         [evaluate {isInfinite(log10(0.0)) && log10(0.0) < 0.0}] \
@@ -542,7 +542,7 @@ test Function-log2 {Test log2} {
      } {1 -Infinity 0.0 0.0}
 
 test Functions-log2-2 {test log2} {
-    list [evaluate {log2(identityDouble(2) + 2.0)}] \
+    list [evaluate {log2(identityMatrixDouble(2) + 2.0)}] \
         [evaluate {isNaN(log2(-1.0))}] \
         [evaluate {log2({2.0, 1.0})}] \
         [evaluate {isInfinite(log2(0.0)) && log2(0.0) < 0.0}] \
@@ -566,14 +566,14 @@ test Function-max {Test max} {
      } {2.0 0.0 1 2ub 1L 2.0 2 2L 2ub}
 
 test Functions-max-2 {test max} {
-    list [evaluate {max(identityDouble(2), -identityDouble(2))}] \
+    list [evaluate {max(identityMatrixDouble(2), -identityMatrixDouble(2))}] \
         [evaluate {max(-1.0, 1.0)}] \
         [evaluate {max({-1.0, 0.5}, {1.0, -0.5})}] \
         [evaluate {isInfinite(max(1.0/0.0, 1.0))}] \
-        [evaluate {max(identityInt(2), -identityInt(2))}] \
+        [evaluate {max(identityMatrixInt(2), -identityMatrixInt(2))}] \
         [evaluate {max({-1, 2}, {1, -2})}] \
         [evaluate {max(-1, 1)}] \
-        [evaluate {max(identityLong(2), -identityLong(2))}] \
+        [evaluate {max(identityMatrixLong(2), -identityMatrixLong(2))}] \
         [evaluate {max({-1L, 2L}, {1L, -2L})}] \
         [evaluate {max(-1L, 1L)}]
 } {{[1.0, 0.0; 0.0, 1.0]} 1.0 {{1.0, 0.5}} true {[1, 0; 0, 1]} {{1, 2}} 1 {[1L, 0L; 0L, 1L]} {{1L, 2L}} 1L}
@@ -595,14 +595,14 @@ test Function-min {Test min} {
      } {1.0 -1.0 -1 1ub -1L 1.0 1 1L 1ub}
 
 test Functions-min-2 {test min} {
-    list [evaluate {min(identityDouble(2), -identityDouble(2))}] \
+    list [evaluate {min(identityMatrixDouble(2), -identityMatrixDouble(2))}] \
         [evaluate {min(-1.0, 1.0)}] \
         [evaluate {min({-1.0, 0.5}, {1.0, -0.5})}] \
         [evaluate {isInfinite(min(-1.0/0.0, 1.0))}] \
-        [evaluate {min(identityInt(2), -identityInt(2))}] \
+        [evaluate {min(identityMatrixInt(2), -identityMatrixInt(2))}] \
         [evaluate {min({-1, 2}, {1, -2})}] \
         [evaluate {min(-1, 1)}] \
-        [evaluate {min(identityLong(2), -identityLong(2))}] \
+        [evaluate {min(identityMatrixLong(2), -identityMatrixLong(2))}] \
         [evaluate {min({-1L, 2L}, {1L, -2L})}] \
         [evaluate {min(-1L, 1L)}]
 } {{[-1.0, 0.0; 0.0, -1.0]} -1.0 {{-1.0, -0.5}} true {[-1, 0; 0, -1]} {{-1, -2}} -1 {[-1L, 0L; 0L, -1L]} {{-1L, -2L}} -1L}
@@ -711,7 +711,7 @@ test Function-pow2 {Test pow on complex} {
      } {1 1 1}
 
 test Functions-pow-3 {test pow} {
-    list [evaluate {pow(2.0*identityDouble(2), -identityDouble(2))}] \
+    list [evaluate {pow(2.0*identityMatrixDouble(2), -identityMatrixDouble(2))}] \
         [evaluate {pow(-1.0, 2.0)}] \
         [evaluate {pow({-1.0, 0.5}, {-1.0, 0.5})}] \
         [evaluate {pow(e, pi* i)}] \
@@ -801,7 +801,7 @@ test Function-sgn {Test sgn} {
      } {1 -1 1}
 
 test Functions-sgn-2 {test sgn} {
-    list [evaluate {sgn(-identityDouble(2))}] \
+    list [evaluate {sgn(-identityMatrixDouble(2))}] \
         [evaluate {sgn(0.0)}] \
         [evaluate {sgn({-1.0, 0.5})}] \
         [evaluate {sgn(1.0)}]
@@ -818,7 +818,7 @@ test Function-sqrt {Test sqrt} {
      } {2.0 NaN 0.0 {2.0 + 0.0i}}
 
 test Functions-sqrt-2 {test sqrt} {
-    list [evaluate {sqrt(2.0*identityDouble(2))}] \
+    list [evaluate {sqrt(2.0*identityMatrixDouble(2))}] \
         [evaluate {sqrt(0.0)}] \
         [evaluate {sqrt({1.0, 2.0})}] \
         [evaluate {sqrt(1.0)}] \
@@ -838,7 +838,7 @@ test Function-toDegrees {Test toDegrees} {
      } {0.0 1}
 
 test Functions-toDegrees-2 {test toDegrees} {
-    list [evaluate {toDegrees(PI*identityDouble(2))}] \
+    list [evaluate {toDegrees(PI*identityMatrixDouble(2))}] \
         [evaluate {toDegrees(0.0)}] \
         [evaluate {toDegrees({-PI/2, PI/2})}] \
         [evaluate {toDegrees(2*PI)}]
@@ -853,7 +853,7 @@ test Function-toRadians {Test toRadians} {
      } {0.0 1}
 
 test Functions-toRadians-2 {test toRadians} {
-    list [evaluate {toRadians(180.0*identityDouble(2))}] \
+    list [evaluate {toRadians(180.0*identityMatrixDouble(2))}] \
         [evaluate {toRadians(0.0)}] \
         [evaluate {toRadians({-90.0, 90.0})}] \
         [evaluate {toRadians(360.0)}]
@@ -919,19 +919,19 @@ test Function-createSequence {Test createSequence} {
 # crop
 
 test Function-crop {Test crop} {
-    list [evaluate {crop(identityDouble(3), 0, 1, 2, 2)}] \
-         [evaluate {crop(identityInt(3), 0, 1, 2, 2)}] \
-         [evaluate {crop(identityComplex(3), 0, 1, 2, 2)}] \
-         [evaluate {crop(identityLong(3), 0, 1, 2, 2)}] \
+    list [evaluate {crop(identityMatrixDouble(3), 0, 1, 2, 2)}] \
+         [evaluate {crop(identityMatrixInt(3), 0, 1, 2, 2)}] \
+         [evaluate {crop(identityMatrixComplex(3), 0, 1, 2, 2)}] \
+         [evaluate {crop(identityMatrixLong(3), 0, 1, 2, 2)}] \
 } {{[0.0, 0.0; 1.0, 0.0]} {[0, 0; 1, 0]} {[0.0 + 0.0i, 0.0 + 0.0i; 1.0 + 0.0i, 0.0 + 0.0i]} {[0L, 0L; 1L, 0L]}}
 
 ####################################################################
 # determinant
 
 test Function-determinant {Test determinant} {
-    list [evaluate {determinant(identityDouble(3))}] \
-         [evaluate {determinant(identityInt(3))}] \
-         [evaluate {determinant(identityComplex(3))}]
+    list [evaluate {determinant(identityMatrixDouble(3))}] \
+         [evaluate {determinant(identityMatrixInt(3))}] \
+         [evaluate {determinant(identityMatrixComplex(3))}]
 } {1.0 1.0 {1.0 + 0.0i}}
 
 ####################################################################
@@ -967,17 +967,17 @@ test Function-hilbert {Test hilbert} {
 # identity
 
 test Function-identity {Test identity} {
-    list [evaluate {identityComplex(2)}] \
-         [evaluate {identityDouble(2)}] \
-         [evaluate {identityInt(2)}] \
-         [evaluate {identityLong(2)}]
+    list [evaluate {identityMatrixComplex(2)}] \
+         [evaluate {identityMatrixDouble(2)}] \
+         [evaluate {identityMatrixInt(2)}] \
+         [evaluate {identityMatrixLong(2)}]
 } {{[1.0 + 0.0i, 0.0 + 0.0i; 0.0 + 0.0i, 1.0 + 0.0i]} {[1.0, 0.0; 0.0, 1.0]} {[1, 0; 0, 1]} {[1L, 0L; 0L, 1L]}}
 
 ####################################################################
 # inverse and within
 
 test Function-inverse {Test inverse} {
-    list [evaluate {within(inverse(hilbert(3))*hilbert(3), identityDouble(3), 1.0e-6)}]
+    list [evaluate {within(inverse(hilbert(3))*hilbert(3), identityMatrixDouble(3), 1.0e-6)}]
 } {true}
 
 ####################################################################
@@ -1012,32 +1012,32 @@ test Function-multiplyElements {Test elementwise multiply on matrices} {
 # orthogonalizeColumns
 
 test Function-orthogonalizeColumns {Test orthogonalizeColumns} {
-    list [evaluate {within(orthogonalizeColumns(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
-         [evaluate {within(orthogonalizeColumns(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+    list [evaluate {within(orthogonalizeColumns(identityMatrixDouble(3)), identityMatrixDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthogonalizeColumns(identityMatrixComplex(3)), identityMatrixComplex(3), 1.0e-6)}]
         } {true true}
 
 ####################################################################
 # orthogonalizeRows
 
 test Function-orthogonalizeRows {Test orthogonalizeRows} {
-    list [evaluate {within(orthogonalizeRows(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
-         [evaluate {within(orthogonalizeRows(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+    list [evaluate {within(orthogonalizeRows(identityMatrixDouble(3)), identityMatrixDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthogonalizeRows(identityMatrixComplex(3)), identityMatrixComplex(3), 1.0e-6)}]
         } {true true}
 
 ####################################################################
 # orthonormalizeColumns
 
 test Function-orthonormalizeColumns {Test orthonormalizeColumns} {
-    list [evaluate {within(orthonormalizeColumns(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
-         [evaluate {within(orthonormalizeColumns(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+    list [evaluate {within(orthonormalizeColumns(identityMatrixDouble(3)), identityMatrixDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthonormalizeColumns(identityMatrixComplex(3)), identityMatrixComplex(3), 1.0e-6)}]
         } {true true}
 
 ####################################################################
 # orthonormalizeRows
 
 test Function-orthonormalizeRows {Test orthonormalizeRows} {
-    list [evaluate {within(orthonormalizeRows(identityDouble(3)), identityDouble(3), 1.0e-6)}] \
-         [evaluate {within(orthonormalizeRows(identityComplex(3)), identityComplex(3), 1.0e-6)}]
+    list [evaluate {within(orthonormalizeRows(identityMatrixDouble(3)), identityMatrixDouble(3), 1.0e-6)}] \
+         [evaluate {within(orthonormalizeRows(identityMatrixComplex(3)), identityMatrixComplex(3), 1.0e-6)}]
         } {true true}
 
 ####################################################################
@@ -1071,20 +1071,20 @@ test Function-sum {Test sum} {
 # trace
 
 test Function-trace {Test trace} {
-    list [evaluate {trace(identityComplex(3))}] \
-         [evaluate {trace(identityDouble(3))}] \
-         [evaluate {trace(identityInt(3))}] \
-         [evaluate {trace(identityLong(3))}] \
+    list [evaluate {trace(identityMatrixComplex(3))}] \
+         [evaluate {trace(identityMatrixDouble(3))}] \
+         [evaluate {trace(identityMatrixInt(3))}] \
+         [evaluate {trace(identityMatrixLong(3))}] \
         } {{3.0 + 0.0i} 3.0 3 3L}
 
 ####################################################################
 # transpose
 
 test Function-transpose {Test transpose} {
-    list [evaluate {identityComplex(3)==transpose(identityComplex(3))}] \
-         [evaluate {identityDouble(3)==transpose(identityDouble(3))}] \
-         [evaluate {identityInt(3)==transpose(identityInt(3))}] \
-         [evaluate {identityLong(3)==transpose(identityLong(3))}] \
+    list [evaluate {identityMatrixComplex(3)==transpose(identityMatrixComplex(3))}] \
+         [evaluate {identityMatrixDouble(3)==transpose(identityMatrixDouble(3))}] \
+         [evaluate {identityMatrixInt(3)==transpose(identityMatrixInt(3))}] \
+         [evaluate {identityMatrixLong(3)==transpose(identityMatrixLong(3))}] \
         } {true true true true}
 
 ##### within is tested above.

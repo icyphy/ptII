@@ -980,11 +980,13 @@ public class SignalProcessing {
      *  (for excess bandwidth of 1.0).  The elements of the returned array
      *  are samples of the function:
      *  <pre>
-     *         sin(PI t)   cos(x PI t)
-     *  h(t) = --------- * -----------
-     *           PI t      1-(2 x t)<sup>2</sup>
+     *         sin(PI t/T)   cos(x PI t/T)
+     *  h(t) = ----------- * -----------------
+     *          PI t/T      1-(2 x t/T)<sup>2</sup>
      *  </pre>
-     *  where x is the excess bandwidth. The samples are taken with a
+     *  where x is the excess bandwidth and T is the number of samples
+     *  from the center of the pulse to the first zero crossing.
+     *  The samples are taken with a
      *  sampling interval of 1.0, and the returned array is symmetric.
      *  With an excessBandwidth of 0.0, this pulse is a sinc pulse.
      *  @param excessBandwidth The excess bandwidth.
@@ -1029,6 +1031,44 @@ public class SignalProcessing {
         return window;
     }
 
+    /** Return an array containing a symmetric raised-cosine pulse.
+     *  This pulse is widely used in communication systems, and is called
+     *  a "raised cosine pulse" because the magnitude its Fourier transform
+     *  has a shape that ranges from rectangular (if the excess bandwidth
+     *  is zero) to a cosine curved that has been raised to be non-negative
+     *  (for excess bandwidth of 1.0).  The elements of the returned array
+     *  are samples of the function:
+     *  <pre>
+     *           4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4x t/T))
+     *  h(t) =  ---------------------------------------------------
+     *                PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
+     *  </pre>
+     *  <p>
+     *  where <i>x</i> is the the excess bandwidth.
+     *  This pulse convolved with itself will, in principle, be equal
+     *  to a raised cosine pulse.  However, because the pulse decays rather
+     *  slowly for low excess bandwidth, this ideal is not
+     *  closely approximated by short finite approximations of the pulse.
+     *  The samples are taken with a
+     *  sampling interval of 1.0, and the returned array is symmetric.
+     *  With an excessBandwidth of 0.0, this pulse is a scaled sinc pulse.
+     *  @param excessBandwidth The excess bandwidth.
+     *  @param firstZeroCrossing The number of samples from the center of the
+     *   pulse to the first zero crossing.
+     *  @param length The length of the returned array.
+     *  @return A new array containing a square-root raised-cosine pulse.
+     */
+    public static final double[] generateSqrtRaisedCosinePulse(
+            double excessBandwidth, double firstZeroCrossing, int length) {
+        RaisedCosineSampleGenerator generator
+               = new RaisedCosineSampleGenerator(firstZeroCrossing, excessBandwidth);
+        return sampleWave(
+               length,
+               -(length-1)/2.0,
+               1.0,
+               generator);        
+    }
+    
     /** Return a new array that is filled with samples of a window of a
      *  specified length and type. Throw an IllegalArgumentException
      *  if the length is less than 1 or the window type is unknown.
@@ -1734,7 +1774,7 @@ public class SignalProcessing {
      *  The function computed is:
      *  <p>
      *  <pre>
-     *           4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4n x/T))
+     *           4 x(cos((1+x)PI t/T) + T sin((1-x)PI t/T)/(4x t/T))
      *  h(t) =  ---------------------------------------------------
      *                PI sqrt(T)(1-(4 x t/T)<sup>2</sup>)
      *  </pre>
