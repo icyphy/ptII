@@ -44,7 +44,21 @@ import caltrop.interpreter.SingleOutputPort;
 import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.ast.PortDecl;
+import caltrop.interpreter.ast.QID;
+import caltrop.interpreter.ast.Transition;
 import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.Utility;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.caltrop.actors.CalInterpreter;
+import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
+import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow
@@ -61,6 +75,7 @@ public class Dataflow extends AbstractDDI implements DDI {
             Environment env) {
         _ptActor = ptActor;
         _actor = actor;
+        _actions = Utility.prioritySortActions(_actor);
         _context = context;
         _env = env;
         _inputPorts = createPortMap(_actor.getInputPorts(), true);
@@ -87,11 +102,14 @@ public class Dataflow extends AbstractDDI implements DDI {
 
     private CalInterpreter _ptActor;
     private Actor _actor;
+    private Action [] _actions;
     private Context _context;
     private Environment _env;
+    private Set _currentStateSet;
     private DataflowActorInterpreter _actorInterpreter;
     private Map _inputPorts;
     private Map _outputPorts;
+	private Action _lastFiredAction;
 
 
     public boolean isLegalActor() {
@@ -130,6 +148,7 @@ public class Dataflow extends AbstractDDI implements DDI {
                 _selectAction();
             }
             if (_actorInterpreter.currentAction() != null) {
+				_lastFiredAction = _actorInterpreter.currentAction();
                 _actorInterpreter.actionStep();
                 _actorInterpreter.actionComputeOutputs();
                 _actorInterpreter.actionClear();
@@ -152,15 +171,16 @@ public class Dataflow extends AbstractDDI implements DDI {
      * action was selected.
      */
     private int  _selectAction() {
-        Action [] actions = _actor.getActions();
-        for (int i = 0; i < actions.length; i++) {
-            // Note: could we perhaps reuse environment?
-            _actorInterpreter.actionSetup(actions[i]);
-            if (_actorInterpreter.actionEvaluatePrecondition()) {
-                return i;
-            } else {
-                _actorInterpreter.actionClear();
-            }
+        for (int i = 0; i < _actions.length; i++) {
+        	if (this.isEligibleAction(_actions[i])) {
+        		// Note: could we perhaps reuse environment?
+        		_actorInterpreter.actionSetup(_actions[i]);
+        		if (_actorInterpreter.actionEvaluatePrecondition()) {
+        			return i;
+        		} else {
+        			_actorInterpreter.actionClear();
+        		}
+        	}
         }
         return -1;
     }
@@ -181,6 +201,13 @@ public class Dataflow extends AbstractDDI implements DDI {
 
 
     public void initialize() throws IllegalActionException {
+    	
+    	if (_actor.getScheduleFSM() == null) {
+    		_currentStateSet = null;
+    	} else {
+    		_currentStateSet = Collections.singleton(_actor.getScheduleFSM().getInitialState());
+    	}
+    	
         _clearInputChannels();
         try {
             _selectInitializer();
@@ -214,6 +241,8 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     public boolean postfire() throws IllegalActionException {
+    	_currentStateSet = computeNextStateSet(_currentStateSet, _lastFiredAction);
+    	_lastFiredAction = null;
         return false;
     }
 
@@ -226,6 +255,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      *
      */
     public boolean prefire() throws IllegalActionException {
+		_lastFiredAction = null;
         try {
             _selectAction();
             if (_actorInterpreter.currentAction() != null)
@@ -241,7 +271,53 @@ public class Dataflow extends AbstractDDI implements DDI {
 
     public void preinitialize() throws IllegalActionException {
     }
+    
+    private boolean  isEligibleAction(Action a) {
+    	QID tag = a.getTag();
+    	if (tag != null && _currentStateSet != null) {
+    		Transition [] ts = _actor.getScheduleFSM().getTransitions();
+    		for (int i = 0; i < ts.length; i++) {
+    			Transition t = ts[i];
+    			if (_currentStateSet.contains(t.getSourceState())
+    			    && isPrefixedByTagList(tag, t.getActionTags())) {
+    				
+    				return true;
+    			}
+    		}
+    		return false;
+    	} else {
+    		return true;
+    	}
+    }
 
+    private Set  computeNextStateSet(Set s, Action a) {
+    	if (s == null) 
+    		return null;
+    	if (a == null || a.getTag() == null)
+    		return s;
+    	
+    	Set ns = new HashSet();
+    	QID tag = a.getTag();
+    	Transition [] ts = _actor.getScheduleFSM().getTransitions();
+    	for (int i = 0; i < ts.length; i++) {
+    		Transition t = ts[i];
+    		if (s.contains(t.getSourceState()) 
+    		    && isPrefixedByTagList(tag, t.getActionTags())) {
+
+				ns.add(t.getDestinationState());
+			}
+    	}
+    	return ns;
+    }
+    
+    private boolean  isPrefixedByTagList(QID tag, QID [] tags) {
+    	for (int j = 0; j < tags.length; j++) {
+    		if (tags[j].isPrefixOf(tag)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }
 
 

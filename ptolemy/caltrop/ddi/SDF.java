@@ -57,6 +57,7 @@ import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.Utility;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFJava
@@ -92,10 +93,11 @@ public class SDF extends AbstractDDI implements DDI {
             Environment env) {
         _ptActor = ptActor;
         _actor = actor;
+        _actions = Utility.prioritySortActions(_actor);
         _context = context;
         _env = env;
         _eval = new ExprEvaluator(_context,  _env);
-        _actionRates = new ActionRateSignature[_actor.getActions().length];
+        _actionRates = new ActionRateSignature[_actions.length];
         _initializerRates =
             new ActionRateSignature[_actor.getInitializers().length];
         _inputPorts = createPortMap(_actor.getInputPorts(), true);
@@ -122,6 +124,7 @@ public class SDF extends AbstractDDI implements DDI {
 
     private CalInterpreter _ptActor;
     private Actor _actor;
+    private Action [] _actions;
     private Context _context;
     private Environment _env;
     private ExprEvaluator _eval;
@@ -231,10 +234,8 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     private boolean atLeastOneUnguardedAction() {
-        Action [] actions = _actor.getActions();
-
-        for (int i = 0; i < actions.length; i++) {
-            Action action = actions[i];
+        for (int i = 0; i < _actions.length; i++) {
+            Action action = _actions[i];
             if (action.getGuards().length == 0)
                 return true;
         }
@@ -276,10 +277,8 @@ public class SDF extends AbstractDDI implements DDI {
      * @return
      */
     private boolean computeActionRates() {
-        Action [] actions = _actor.getActions();
-
-        for (int i = 0; i < actions.length; i++) {
-            Action action =  actions[i];
+        for (int i = 0; i < _actions.length; i++) {
+            Action action =  _actions[i];
             ActionRateSignature ars = new ActionRateSignature();
 
             InputPattern [] inputPatterns = action.getInputPatterns();
@@ -480,10 +479,9 @@ public class SDF extends AbstractDDI implements DDI {
      * action was selected.
      */
     private int  _selectAction() {
-        Action [] actions = _actor.getActions();
-        for (int i = 0; i < actions.length; i++) {
+        for (int i = 0; i < _actions.length; i++) {
             // Note: could we perhaps reuse environment?
-            _actorInterpreter.actionSetup(actions[i]);
+            _actorInterpreter.actionSetup(_actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
             } else {

@@ -42,6 +42,7 @@ import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.util.Utility;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.actors.CalInterpreter;
@@ -75,6 +76,7 @@ public class CSP extends AbstractDDI implements DDI {
             Context context, Environment env) {
         _ptActor = ptActor;
         _actor = actor;
+        _actions = Utility.prioritySortActions(_actor);
         _context = context;
         _env = env;
         _eval = new ExprEvaluator(_context, _env);
@@ -84,6 +86,7 @@ public class CSP extends AbstractDDI implements DDI {
 
     private CalInterpreter _ptActor;
     private Actor _actor;
+    private Action [] _actions;
     private Context _context;
     private Environment _env;
     private ExprEvaluator _eval;
@@ -105,7 +108,7 @@ public class CSP extends AbstractDDI implements DDI {
         // assume repeat expressions are statically computable,
         // and no multiport support (always assume channel 0) FIXME
 
-        Action [] actions = _actor.getActions();
+    	Action [] actions = (Action [])_actions.clone();
         Map inputProfile;
         Map dataSoFar = new HashMap();
         while (true) {

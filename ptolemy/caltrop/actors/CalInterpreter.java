@@ -215,7 +215,8 @@ public class CalInterpreter extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         // FIXMELATER: commit state changes.
-        return super.postfire();
+    	super.postfire();
+    	return _ddi.postfire();
     }
 
     public boolean superPrefire()
@@ -235,10 +236,25 @@ public class CalInterpreter extends TypedAtomicActor {
     private static ptolemy.data.type.Type _getPtolemyType(TypeExpr typeExpr) {
         if (typeExpr == null)
             return ptolemy.data.type.BaseType.GENERAL;
-        ptolemy.data.type.Type t = ptolemy.data.type.BaseType.forName(typeExpr.getName()); //FIXMELATER ignores type parameters
+        
+        //FIXMELATER ignores type parameters
+        String s = (String)_typeNameMap.get(typeExpr.getName());
+        if (s == null)
+        	s = typeExpr.getName();
+        
+        ptolemy.data.type.Type t = ptolemy.data.type.BaseType.forName(s); 
         return (t == null) ? ptolemy.data.type.BaseType.GENERAL : t;
     }
-
+    
+    static private Map _typeNameMap;
+    static {
+    	_typeNameMap = new HashMap();
+    	_typeNameMap.put("UINT8", "int");
+    	_typeNameMap.put("UINT9", "int");
+    	_typeNameMap.put("INT19", "int");
+    	_typeNameMap.put("positive", "int");
+    }
+    
     private static Actor _stringToActor(String code) throws Throwable {
         return caltrop.interpreter.util.SourceReader.readActor(code);
     }
