@@ -47,7 +47,7 @@
 
 <entity name="Network" class="ptolemy.moml.EntityLibrary">
     <entity name="NetworkLayer" class="ptolemy.moml.EntityLibrary">
-        <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.PoissonNetwork">
+        <entity name="PoissonNetwork" class="ptolemy.domains.wireless.lib.network.PoissonNetwork">
         </entity>
     </entity>
 
