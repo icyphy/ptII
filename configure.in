@@ -65,8 +65,33 @@ if test  ! -w "$PTII"; then
     echo "Windows, then you might be able to ignore this problem and"
     echo "proceed with the build.  If you continue to have problems,"
     echo "try upgrading to cygwin1.1.0 or later"
+fi
 
+AC_MSG_CHECKING([if $PTII contains "cygdrive"])
+grep cygdrive "$PTII" > /dev/null
+status=$?
+if test "$status" -eq 1 ; then
+    AC_MSG_RESULT([ok
+  $PTII does not contain cygdrive, which is right.])
+else
+    AC_MSG_WARN([\$PTII == $PTII,
+which contains "cygdrive".
 
+It could be that you have incorrectly set PTII.
+If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
+is in a directory outside of the c:/cygwin tree, then Cygwin may
+change your PTII variable to include "/cygdrive/c".  This
+will cause problems with non-Cygwin tools like javac that do
+not understand /cygdrive/c
+
+Under Cygwin, try setting PTII in the control panel 
+(Start->Control Panels->Advanced->Environment Variables)
+or it with backslashes:
+  PTII=c:\\\\users\\\\yourname\\\\ptII
+  export PTII
+and then rerun
+  ./configure
+See $PTII/doc/install.htm for details.'])
 fi
 
 PTII_DEFAULT=$PTII
@@ -204,33 +229,39 @@ JVERSION=unknown
 # under NT and cygwin works properly
 startdir=`pwd`
 cd "$srcdir/config"
-# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if "$JAVAC" confTest.java ; then
     AC_MSG_RESULT(ok)
 
     AC_MSG_CHECKING([the value of the java.version Property ])
-    if env CLASSPATH=$PTII/config "$JAVA" confTest ; then
+    # Older versions of cygwin might not have env, but 1.1 does
+    if env CLASSPATH=$PTII/config "$JAVA" confTest > /dev/null; then
 	# Run it again and get the results
 	JVERSION=`CLASSPATH=$PTII/config "$JAVA" confTest`
 	AC_MSG_RESULT($JVERSION)
     else	
 	AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVA confTest failed.
-If java fails, then you will not be able to compile Ptolemy II.
+If java fails, then you will not be able to run Ptolemy II.
 This could be because your PTII variable is set incorrectly.
-Under Cygwin, try setting it with backslashes:
-PTII=c:\\users\\yourname\\ptII
-export PTII
-and then rerun configure.
+Under Cygwin, try setting PTII in the control panel 
+(Start->Control Panels->Advanced->Environment Variables)
+or it with backslashes:
+  PTII=c:\\\\users\\\\yourname\\\\ptII
+  export PTII
+and then rerun
+  ./configure
 See $PTII/doc/install.htm for details.'])
    fi
 else
    AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVAC confTest.java failed.
 If javac fails, then you will not be able to compile Ptolemy II.
 This could be because your PTII variable is set incorrectly.
-Under Cygwin, try setting it with backslashes:
-PTII=c:\\users\\yourname\\ptII
-export PTII
-and then rerun configure.
+Under Cygwin, try setting PTII in the control panel 
+(Start->Control Panels->Advanced->Environment Variables)
+or it with backslashes:
+  PTII=c:\\\\users\\\\yourname\\\\ptII
+  export PTII
+and then rerun
+  ./configure
 See $PTII/doc/install.htm for details.'])
 
 fi
