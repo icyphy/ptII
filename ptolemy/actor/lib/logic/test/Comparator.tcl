@@ -1,4 +1,4 @@
-# Test Compare.
+# Test Comparator.
 #
 # @Author: Edward A. Lee
 #
@@ -40,10 +40,10 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Compare-1.1 {test constructor and clone} {
+test Comparator-1.1 {test constructor and clone} {
     set e0 [sdfModel 1]
-    set compare [java::new ptolemy.actor.lib.logic.Compare $e0 compare]
-    set newObject [java::cast ptolemy.actor.lib.logic.Compare [$compare clone]]
+    set compare [java::new ptolemy.actor.lib.logic.Comparator $e0 compare]
+    set newObject [java::cast ptolemy.actor.lib.logic.Comparator [$compare clone]]
     set comparison [java::cast ptolemy.kernel.util.StringAttribute \
             [$compare getAttribute comparison]]
     # Success here is just not throwing an exception.

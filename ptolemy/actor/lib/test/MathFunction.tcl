@@ -121,6 +121,10 @@ test MathFunction-2.5 {test with sqrt} {
 test MathFunction-3.1 {test with remainder} {
     # Uses setup from MathFunction 1-1, 2-2 and 2-3
     $function setExpression "remainder"
+    # Have to make sure the expression is processed before we attempt
+    # to connect to the port whose creation is triggered by changing
+    # the parameter value.
+    $function validate
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set value [getParameter $const value]
     $value setExpression {3.0}

@@ -33,7 +33,6 @@ package ptolemy.moml;
 // Ptolemy imports.
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.CancelException;
@@ -315,12 +314,12 @@ public class MoMLParser extends HandlerBase {
         // depends on.
         Iterator parameters = _paramsToParse.iterator();
         while(parameters.hasNext()) {
-            Variable param = (Variable)parameters.next();
+            Settable param = (Settable)parameters.next();
             // NOTE: We used to catch exceptions here and issue
             // a warning only, but this has the side effect of blocking
             // the mechanism in PtolemyQuery that carefully prompts
             // the user for corrected parameter values.
-            param.propagate();
+            param.validate();
         }
     }
 
@@ -1096,11 +1095,7 @@ public class MoMLParser extends HandlerBase {
                                 }
                                 Settable settable = (Settable)property;
                                 settable.setExpression(value);
-                                if (property instanceof Variable) {
-                                    // Add to the list of parameters to evaluate
-                                    // in endDocument().
-                                    _paramsToParse.add(property);
-                                }
+                                _paramsToParse.add(property);
                             }
                             createdNew = true;
                         } catch (NameDuplicationException ex) {
@@ -1128,11 +1123,7 @@ public class MoMLParser extends HandlerBase {
                             }
                             Settable settable = (Settable)property;
                             settable.setExpression(value);
-                            if (property instanceof Variable) {
-                                // Add to the list of parameters to evaluate
-                                // in endDocument().
-                                _paramsToParse.add(property);
-                            }
+                            _paramsToParse.add(property);
                         }
                     }
                     _containers.push(_current);
@@ -2232,7 +2223,7 @@ public class MoMLParser extends HandlerBase {
     // The stack of name spaces.
     private Stack _namespaces = new Stack();
 
-    // A list of parameters specified in property tags.
+    // A list of settable parameters specified in property tags.
     private List _paramsToParse = new LinkedList();
 
     // The parser.

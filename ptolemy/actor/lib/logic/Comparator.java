@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.*;
 // to update the list in actor/lib/logic/logic.xml.
 
 //////////////////////////////////////////////////////////////////////////
-//// Compare
+//// Comparator
 /**
 Compare two double-valued inputs, and output the boolean result
 of the comparison.  The exact comparison performed is given by the
@@ -55,15 +55,24 @@ values:
 <li> <b>&gt;=</b>: <i>left</i> &gt;= <i>right</i></li>
 <li> <b>&lt;</b>: <i>left</i> &lt; <i>right</i></li>
 <li> <b>&lt;=</b>: <i>left</i> &lt;= <i>right</i></li>
+<li> <b>==</b>: <i>left</i> == <i>right</i></li>
 </ul>
 The default is "&gt;".
 The input ports are named <i>left</i> and <i>right</i> to indicate
 which side of the comparison operator their value appears on.
+<p>
+The <i>tolerance</i> parameter, which defaults to zero, defines
+an error tolerance.  That is, the actor may produce true even if
+the specified test is not exactly satisfied, but rather is almost
+satisfied, within the specified tolerance.
+<p>
+Note that this actor will work with any data type that can be losslessly
+converted to doubles, such as integers.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class Compare extends TypedAtomicActor {
+public class Comparator extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.  Set the
      *  comparison to the default ("&gt;").  Set the types of
@@ -76,14 +85,16 @@ public class Compare extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Compare(CompositeEntity container, String name)
+    public Comparator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // Parameters
         comparison = new StringAttribute(this, "comparison");
         comparison.setExpression(">");
-        _comparison = _GT;
+
+        tolerance = new Parameter(this, "tolerance");
+        tolerance.setExpression("0.0");
 
         // Ports
         left = new TypedIOPort(this, "left", true, false);
@@ -111,6 +122,11 @@ public class Compare extends TypedAtomicActor {
      */
     public StringAttribute comparison;
 
+    /** The tolerance for the comparison. This has type double,
+     *  and defaults to 0.0.
+     */
+    public Parameter tolerance;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -123,7 +139,9 @@ public class Compare extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws  IllegalActionException {
 
-        if (attribute == comparison) {
+        if (attribute == tolerance) {
+            _tolerance = ((DoubleToken)tolerance.getToken()).doubleValue();
+        } else if (attribute == comparison) {
             String comparisonName = comparison.getExpression();
 
             if (comparisonName.equals(">")) {
@@ -134,6 +152,8 @@ public class Compare extends TypedAtomicActor {
                 _comparison = _LT;
             } else if (comparisonName.equals("<=")) {
                 _comparison = _LE;
+            } else if (comparisonName.equals("==")) {
+                _comparison = _EQ;
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized comparison: " + comparisonName);
@@ -143,7 +163,7 @@ public class Compare extends TypedAtomicActor {
         }
     }
 
-    /** Consume at most one input token from each input port,
+    /** Consume exactly one input token from each input port,
      *  and compute the specified comparison. This method assumes
      *  that both ports have an input, as checked by prefire().
      *  @exception IllegalActionException If there is no director.
@@ -155,25 +175,31 @@ public class Compare extends TypedAtomicActor {
 
         switch(_comparison) {
         case _GT:
-            if (leftIn > rightIn) result = BooleanToken.TRUE;
+            if (leftIn + _tolerance > rightIn) result = BooleanToken.TRUE;
             break;
         case _GE:
-            if (leftIn >= rightIn) result = BooleanToken.TRUE;
+            if (leftIn + _tolerance >= rightIn) result = BooleanToken.TRUE;
             break;
         case _LT:
-            if (leftIn < rightIn) result = BooleanToken.TRUE;
+            if (leftIn < rightIn + _tolerance) result = BooleanToken.TRUE;
             break;
         case _LE:
-            if (leftIn <= rightIn) result = BooleanToken.TRUE;
+            if (leftIn <= rightIn + _tolerance) result = BooleanToken.TRUE;
+            break;
+        case _EQ:
+            if (leftIn <= rightIn + _tolerance
+                   && leftIn >= rightIn - _tolerance) {
+                result = BooleanToken.TRUE;
+            }
             break;
         default:
             throw new InternalErrorException(
                     "Invalid value for _comparison private variable. "
-                    + "Compare actor (" + getFullName()
+                    + "Comparator actor (" + getFullName()
                     + ")"
                     + " on comparison type " + _comparison);
         }
-        output.broadcast(result);
+        output.send(0, result);
     }
 
     /** Check that each input port has at least one token, and if
@@ -193,9 +219,13 @@ public class Compare extends TypedAtomicActor {
     // An indicator for the comparison to compute.
     private int _comparison;
 
+    // The cached value of the tolerance parameter.
+    private double _tolerance;
+
     // Constants used for more efficient execution.
     private static final int _LT = 0;
     private static final int _LE  = 1;
     private static final int _GT = 2;
     private static final int _GE = 3;
+    private static final int _EQ = 4;
 }

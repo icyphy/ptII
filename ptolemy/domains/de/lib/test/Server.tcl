@@ -81,13 +81,16 @@ test Server-3.2 {test with negative service time} {
     catch {[$e0 getManager] execute} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.server:
-Cannot have negative service time.}}
+Cannot have negative service time: -1.0}}
 
 test Server-4.0 {Test with service time input} {
     set clock2 [java::new ptolemy.actor.lib.Clock $e0 clock2]
     set period [java::field $clock2 period]
     # set period larger than execution time so we get only one cycle
     $period setExpression {4.0}
+    # Have to reset service time to a legit value because it will be
+    # examined in preinitialize.
+    $serviceTime setExpression "1.0"
     set values [java::field $clock2 values]
     $values setExpression {[1.5, 0.5]}
     $e0 connect \

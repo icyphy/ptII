@@ -51,7 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Compare.java \
+	Comparator.java \
 	Equals.java \
 	LogicFunction.java \
 	LogicalNot.java

@@ -139,22 +139,23 @@ public class Location extends SingletonAttribute
                 + getMoMLInfo().elementName + ">\n");
     }
 
-    /** Get the value of the attribute that has been set by setExpression(),
-     *  or null if there is none.
+    /** Get the value of the attribute that has been set by setExpression()
+     *  or by setLocation(), whichever was most recently called,
+     *  or return an empty string if neither has been called.
      *  @return The expression.
      */
     public String getExpression() {
+        if (_expressionSet) return _expression;
         if(_location == null || _location.length == 0) {
             return "";
         }
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
+        StringBuffer result = new StringBuffer();
         for(int i = 0; i < _location.length - 1; i++) {
-            pw.print(_location[i]);
-            pw.print(", ");
+            result.append(_location[i]);
+            result.append(", ");
         }
-        pw.print(_location[_location.length - 1]);
-        return sw.toString();
+        result.append(_location[_location.length - 1]);
+        return result.toString();
     }
 
     /** Get the location in some cartesian coordinate system.
@@ -184,42 +185,24 @@ public class Location extends SingletonAttribute
     }
 
     /** Set the value of the attribute by giving some expression.
+     *  This expression is not parsed until validate() is called, and
+     *  the container and value listeners are not notified until validate()
+     *  is called.
      *  @param expression The value of the attribute.
-     *  @exception IllegalActionException If the expression is invalid.
      */
-    public void setExpression(String expression)
-            throws IllegalActionException {
-
-        // Parse the specification: a comma specified list of doubles.
-        StringTokenizer tokenizer = new StringTokenizer(expression, ",");
-        double[] location = new double[tokenizer.countTokens()];
-        int count = tokenizer.countTokens();
-        for(int i = 0; i < count; i++) {
-            String next = tokenizer.nextToken().trim();
-            location[i] = Double.parseDouble(next);
-        }
-
-        _location = location;
-
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
-        }
-        if (_valueListeners != null) {
-            Iterator listeners = _valueListeners.iterator();
-            while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
-                listener.valueChanged(this);
-            }
-        }
+    public void setExpression(String expression) {
+        _expression = expression;
+        _expressionSet = true;
     }
 
-    /** Set the location in some cartesian coordinate system.
+    /** Set the location in some cartesian coordinate system, and notify
+     *  the container and any value listeners of the new location.
      *  @param location The location.
      */
     public void setLocation(double[] location)
             throws IllegalActionException {
         _location = location;
+        _expressionSet = false;
 
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
@@ -254,8 +237,53 @@ public class Location extends SingletonAttribute
         return "(" + className + ", Location = (" + getExpression() + "))";
     }
 
+    /** Parse the location specification given by setExpression(), if there
+     *  has been one, and otherwise set the location to 0.0, 0.0.
+     *  Notify the container and any value listeners of the new location.
+     *  @exception IllegalActionException If the expression is invalid.
+     */
+    public void validate() throws IllegalActionException {
+        // If the value has not been set via setExpression(), there is
+        // nothing to do.
+        if (!_expressionSet) return;
+        if (_expression == null) {
+            _location = new double[2];
+            _location[0] = 0.0;
+            _location[1] = 0.0;
+        } else {
+            // Parse the specification: a comma specified list of doubles.
+            StringTokenizer tokenizer = new StringTokenizer(_expression, ",");
+            double[] location = new double[tokenizer.countTokens()];
+            int count = tokenizer.countTokens();
+            for(int i = 0; i < count; i++) {
+                String next = tokenizer.nextToken().trim();
+                location[i] = Double.parseDouble(next);
+            }
+
+            _location = location;
+        }
+
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The expression given in setExpression().
+    private String _expression;
+
+    // Indicator that the expression is the most recent spec for the location.
+    private boolean _expressionSet = false;
 
     // The location.
     private double[] _location;

@@ -1,4 +1,4 @@
-/* A polymorphic logical equals operator.
+/* A logical equals operator.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnli@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (johnli@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.logic;
@@ -40,12 +40,12 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Equals
 /**
-A polymorphic logical equals operator.  This operator has one input
+A logical equals operator.  This operator has one input
 multiport and one output port that is not a multiport. It will consume
-exactly one token from each input channel, and compare the tokens
+at most one token from each input channel, and compare the tokens
 using the isEqualTo() method of the Token class.  If all observed
 input tokens are equal, then the output will be a true-valued boolean
-token.  If there is not at least one token on each input channel,
+token.  If there is not at least one token on the input channels,
 then no output is produced.
 The type of the input port is undeclared and will be resolved by the type
 resolution mechanism.  Note that all input channels must resolve to the
@@ -77,36 +77,26 @@ public class Equals extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume exactly one token from each input channel, and output
+    /** Consume at most one token from each input channel, and output
      *  the result of comparing these tokens using the isEqualTo() method
      *  of the Token class.  If the input has width 1, then the output
-     *  is always true.
+     *  is always true.  If the input has width 0, or there are no
+     *  no input tokens available, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         BooleanToken result = BooleanToken.TRUE;
-        Token previous = input.get(0);
-        for (int i = 1; i < input.getWidth(); i++) {
+        Token reference = null;
+        boolean foundOne = false;
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (!input.hasToken(i)) continue;
+            foundOne = true;
             Token next = input.get(i);
-            if (!(next.isEqualTo(previous)).booleanValue()) {
+            if (reference == null) reference = next;
+            else if (!(next.isEqualTo(reference)).booleanValue()) {
                 result = BooleanToken.FALSE;
             }
-            previous = next;
         }
-        output.broadcast(result);
-    }
-
-    /** Check that each input channel has at least one token, and if
-     *  so, return the result of the superclass prefire() method.
-     *  Otherwise, return false.
-     *  @return True if there inputs available on all input channels.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // First check that each input has a token.
-        for (int i = 0; i < input.getWidth(); i++) {
-            if (!input.hasToken(i)) return false;
-        }
-        return super.prefire();
+        if (foundOne) output.send(0, result);
     }
 }

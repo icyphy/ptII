@@ -122,10 +122,11 @@ public class Server extends DETransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTime) {
-            if (((DoubleToken)(serviceTime.getToken())).doubleValue()
-                    < 0.0) {
+            double time = 
+                    ((DoubleToken)(serviceTime.getToken())).doubleValue();
+            if (time < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative service time.");
+                        "Cannot have negative service time: " + time);
             }
         } else {
             super.attributeChanged(attribute);

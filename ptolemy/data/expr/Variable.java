@@ -941,6 +941,20 @@ public class Variable extends Attribute implements Typeable, Settable {
 	return result;
     }
 
+    /** Notify the container, if there is one, by calling its
+     *  attributeChanged() method, and then call propagate().
+     *  @see #propagate()
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to the container, or if the expression cannot be evaluated.
+     */
+    public void validate() throws IllegalActionException {
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+        propagate();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

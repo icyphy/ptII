@@ -120,6 +120,15 @@ public interface Settable extends Nameable {
      */
     public void setVisibility(Settable.Visibility visibility);
 
+    /** Check the validity of the expression set in setExpression().
+     *  Implementations of this method should notify the container
+     *  by calling attributeChanged().  It should also notify any
+     *  registered value listeners.
+     *  @exception IllegalActionException If the expression is not valid, or
+     *   its value is not acceptable to the container or the listeners.
+     */
+    public void validate() throws IllegalActionException;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 

@@ -84,18 +84,18 @@ public class TypeAttribute extends StringAttribute {
         return _type;
     }
 
-    /** Set the type designation.
-     *  @param expression The type designation.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to the container.
+    /** Check the type designation using BaseType.forName().
+     *  @see BaseType#forName(String)
+     *  @exception IllegalActionException If the expression is not a valid
+     *   type name.
      */
-    public void setExpression(String expression) throws IllegalActionException {
-        _type = BaseType.forName(expression);
+    public void validate() throws IllegalActionException {
+        _type = BaseType.forName(getExpression());
         if (_type == null) {
             throw new IllegalActionException(this,
-                    "Cannot find type class: " + expression);
+                    "Cannot find type class: " + getExpression());
         }
-        super.setExpression(expression);
+        super.validate();
     }
 
     ///////////////////////////////////////////////////////////////////
