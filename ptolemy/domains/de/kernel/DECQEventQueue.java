@@ -100,7 +100,8 @@ public class DECQEventQueue implements DEEventQueue {
         _cQueue.clear();
     }
 
-    /** Return the earliest event in the queue without dequeueing it.
+    /** Return the earliest event in the queue without removing the event
+     *  from the queue.
      *  This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      *  @return The smallest event in the queue.

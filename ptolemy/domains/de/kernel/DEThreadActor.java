@@ -49,14 +49,14 @@ FIXME: EXPERIMENTAL.
 <P>
 This actor, upon its initialization, will start another thread.
 The thread communicate with the DEDirector thread by placing
-events into the DEEventQueue ashynchronously.
+events into the DEEventQueue asynchronously.
 <P>
 Subclass of this class should implement the run() method.
 The subclass is executed in an event driven way. More precisely,
 the implementation of the run() method should call
 waitForNewInputs() after processing all current events. The
 calls are blocked until the next time fire() is called.
-Recall that the Director (after puting events into the
+Recall that the Director (after putting events into the
 receiver of the input ports) will call fire() on the actor.
 NOTE: The synchronization mechanism is implemented in DECQEventQueue
 to ensure the correct multi-threading behaviour.
@@ -192,10 +192,10 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
         Iterator ports = inputPortList().iterator();
         while (ports.hasNext()) {
             IOPort port = (IOPort)ports.next();
-            for (int ch = 0; ch < port.getWidth(); ch++) {
+            for (int channel = 0; channel < port.getWidth(); channel++) {
                 try {
-                    while (port.hasToken(ch)) {
-                        port.get(ch);
+                    while (port.hasToken(channel)) {
+                        port.get(channel);
                     }
                 } catch (IllegalActionException e) {
                     e.printStackTrace();

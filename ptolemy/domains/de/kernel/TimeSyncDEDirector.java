@@ -56,11 +56,11 @@ import java.net.Socket;
  *  <P>
  *  The extension of this director w.r.t. the base DEDirector is a parameter
  *  'timeBaseHost', which takes an IP address.
- *  FIXME: consider network time protocol.
- *  This director maintains a 'timeOrigin', which is the network time
+ *  FIXME: Consider network time protocol.
+ *  This director maintains a <i>timeOrigin</i>, which is the global time
  *  corresponding to modeling time 0. To map the modeling time 't' to the
- *  network in other systems, use the fomular:
- *  <Pre>
+ *  global time shared by all systems, use:
+ *  <pre>
  *      t+timeOrigin
  *  </pre>
  *
@@ -139,7 +139,7 @@ public class TimeSyncDEDirector extends DEDirector {
      *  so that the model time is always this amount ahead of the
      *  global time, in order to compensate the computation delay.
      *  In this design, the parameter is not suggested to be changeable
-     *  at run time. The default is 500 milli-seconds0.5 seconds.
+     *  at run time. The default is 500 milliseconds or 0.5 seconds.
      *
      public Parameter delayTolerance;
     */
@@ -170,7 +170,7 @@ public class TimeSyncDEDirector extends DEDirector {
         TimeSyncDEDirector newobj = (TimeSyncDEDirector)(super.clone(ws));
         newobj.timeBaseHost =
             (Parameter)newobj.getAttribute("timeBaseHost");
-        //newobj.delaTolerance =
+        //newobj.delayTolerance =
         //    (Parameter)newobj.getAttribute("delayTolerance");
         try {
             newobj.timeBaseHost.setTypeEquals(BaseType.STRING);
@@ -228,7 +228,7 @@ public class TimeSyncDEDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // time origin wrt the global time.
+    // time origin w.r.t. the global time.
     private double _timeOrigin;
 
 

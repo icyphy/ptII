@@ -94,7 +94,7 @@ public class DEReceiver extends AbstractReceiver {
      *  the current time.  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
-     *  exception. This method is synhronized since the actor may not
+     *  exception. This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens. This is
@@ -148,7 +148,7 @@ public class DEReceiver extends AbstractReceiver {
      *  the director with the current time
      *  of the director.  However, by calling setDelay() before calling put(),
      *  you can enqueue the event with a time stamp at a future time.
-     *  This method is synhronized since the actor may not
+     *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
      */
@@ -177,7 +177,7 @@ public class DEReceiver extends AbstractReceiver {
      *  Note that the time should be greater than or equal
      *  to the current time of the director, otherwise an exception will
      *  be thrown.
-     *  This method is synhronized since the actor may not
+     *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
      *  @param time The time stamp of the token
@@ -206,7 +206,7 @@ public class DEReceiver extends AbstractReceiver {
      *  only used in the next call to put().
      *  If the specified delay is zero, then the next event is queued to be
      *  processed in the next microstep.
-     *  This method is synhronized since the actor may not
+     *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @param delay The delay.
      *  @exception IllegalActionException If the delay is negative.

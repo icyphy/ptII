@@ -42,9 +42,13 @@ import ptolemy.actor.lib.TimedActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEActor
+
 /** A base class for actors specific to the DE domain.  This class
  *  implements both SequenceActor and TimedActor.
- *  Actors in DE models need not derive from this class.
+ *  This class returns a new DEIOPort for the newPort() method.
+ *  Although most DE specific actors extend this class, 
+ *  other (domain polymorphic) actors can also be used in the 
+ *  DE domain.
  *
  *  @author Jie Liu
  *  @version $Id$
@@ -53,7 +57,7 @@ import ptolemy.actor.lib.TimedActor;
 public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {
 
-    /** Constructor an with the specified container and name.
+    /** Construct an actor with the specified container and name.
      *  This is protected because there is no reason to create an instance
      *  of this class, but derived classes will want to invoke the
      *  constructor of the superclass.

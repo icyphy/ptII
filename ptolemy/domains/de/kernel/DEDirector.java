@@ -300,7 +300,7 @@ public class DEDirector extends Director {
      *  Changes to <i>isCQAdaptive</i>, <i>minBinCount</i>, and
      *  <i>binCountFactor</i> parameters will only be effective on
      *  the next time the model is executed.
-     *  @param attr The changed parameter.
+     *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      *     Not thrown in this class. May be needed by derived classes.
      */
@@ -1002,16 +1002,16 @@ public class DEDirector extends Director {
 
                 // Transfer the event to the receiver and keep track
                 // of which receiver is filled.
-                DEReceiver rec = currentEvent.receiver();
+                DEReceiver receiver = currentEvent.receiver();
 
                 // If receiver is null, then it's a 'pure event', and there's
                 // no need to put event into receiver.
-                if (rec != null) {
+                if (receiver != null) {
                     // Transfer the event to the receiver.
                     if(_debugging) _debug(getName(),
                             "put trigger event to",
-                            rec.getContainer().getName());
-                    rec._triggerEvent(currentEvent.token());
+                            receiver.getContainer().getName());
+                    receiver._triggerEvent(currentEvent.token());
                 }
             } else {
                 // Already seen an event.
@@ -1025,12 +1025,12 @@ public class DEDirector extends Director {
                     _eventQueue.take();
 
                     // Transfer the event into the receiver.
-                    DEReceiver rec = nextEvent.receiver();
-                    // If rec is null, then it's a 'pure event' and
+                    DEReceiver receiver = nextEvent.receiver();
+                    // If receiver is null, then it's a 'pure event' and
                     // there's no need to put event into receiver.
-                    if (rec != null) {
+                    if (receiver != null) {
                         // Transfer the event to the receiver.
-                        rec._triggerEvent(nextEvent.token());
+                        receiver._triggerEvent(nextEvent.token());
                     }
                 } else {
                     // Next event has a future tag or different destination.
@@ -1090,11 +1090,11 @@ public class DEDirector extends Director {
                         continue;
                     }
                     // find the input ports connected to outPort
-                    Iterator inPortIter =
+                    Iterator inPortIterator =
                         outPort.deepConnectedInPortList().iterator();
-                    while (inPortIter.hasNext()) {
-                        IOPort pp = (IOPort)inPortIter.next();
-                        Actor destination = (Actor)(pp.getContainer());
+                    while (inPortIterator.hasNext()) {
+                        IOPort port = (IOPort)inPortIterator.next();
+                        Actor destination = (Actor)(port.getContainer());
                         if(destination.equals(actor)) {
                             throw new IllegalActionException(this,
                                     "Zero delay self-loop on actor: "

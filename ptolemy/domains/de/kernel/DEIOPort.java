@@ -94,8 +94,8 @@ public class DEIOPort extends TypedIOPort {
      *
      *  @param container The container actor.
      *  @param name The name of the port.
-     *  @param isinput True if this is to be an input port.
-     *  @param isoutput True if this is to be an output port.
+     *  @param isInput True if this is to be an input port.
+     *  @param isOutput True if this is to be an output port.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the
      *   Actor interface.
@@ -103,9 +103,9 @@ public class DEIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public DEIOPort(ComponentEntity container, String name,
-            boolean isinput, boolean isoutput)
+            boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, isinput, isoutput);
+        super(container, name, isInput, isOutput);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ public class DEIOPort extends TypedIOPort {
      *  send(token, delay) instead. If the channel index is out of range,
      *  then the token is not sent anywhere.
      *
-     *  @param channelindex The index of the channel, from 0 to width-1
+     *  @param channelIndex The index of the channel, from 0 to width-1
      *  @param token The token to send
      *  @exception IllegalActionException If the port is not an output,
      *   or if the token to be sent cannot
@@ -224,7 +224,7 @@ public class DEIOPort extends TypedIOPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *   This should not occur in the DE domain.
      */
-    public void send(int channelindex, Token token)
+    public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (_useDelay) {
             _useDelay = false;
@@ -232,10 +232,10 @@ public class DEIOPort extends TypedIOPort {
                 workspace().getReadAccess();
                 Receiver[][] farReceivers = getRemoteReceivers();
                 if (farReceivers == null) return;
-                if (farReceivers[channelindex] == null) return;
-                for (int j = 0; j < farReceivers[channelindex].length; j++) {
+                if (farReceivers[channelIndex] == null) return;
+                for (int j = 0; j < farReceivers[channelIndex].length; j++) {
                     try {
-                        ((DEReceiver)farReceivers[channelindex][j]).
+                        ((DEReceiver)farReceivers[channelIndex][j]).
                             setDelay(_delay);
                     } catch (ClassCastException e) {
                         throw new InvalidStateException("DEIOPort.send() " +
@@ -243,14 +243,14 @@ public class DEIOPort extends TypedIOPort {
                                 "DEReceiver.");
                     }
                 }
-                super.send(channelindex, token);
+                super.send(channelIndex, token);
             } catch (ArrayIndexOutOfBoundsException ex) {
                 // Ignore... send token nowhere.
             } finally {
                 workspace().doneReading();
             }
         } else {
-            super.send(channelindex, token);
+            super.send(channelIndex, token);
         }
     }
 
@@ -260,17 +260,17 @@ public class DEIOPort extends TypedIOPort {
      *  If the specified delay is zero, then the event is queued to be
      *  processed in the next microstep.
      *
-     *  @param channelindex The index of the channel, from 0 to width-1.
+     *  @param channelIndex The index of the channel, from 0 to width-1.
      *  @param token The token to send.
      *  @param delay The time delay of the token being sent.
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range.
      */
-    public void send(int channelindex, Token token, double delay)
+    public void send(int channelIndex, Token token, double delay)
             throws IllegalActionException {
         _delay = delay;
         _useDelay = true;
-        send(channelindex, token);
+        send(channelIndex, token);
     }
 
     ///////////////////////////////////////////////////////////////////
