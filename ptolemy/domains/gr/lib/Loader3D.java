@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.gr.lib;
@@ -47,6 +45,8 @@ import com.sun.j3d.loaders.objectfile.ObjectFile;
 /**
    @author C. Fong
    @version $Id$
+   @Pt.ProposedRating Red (cxh)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Loader3D extends GRShadedShape {
 

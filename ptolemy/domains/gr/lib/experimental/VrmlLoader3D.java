@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (chf)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.gr.lib.experimental;
@@ -63,6 +61,8 @@ import java.net.MalformedURLException;
 /**
    @author C. Fong
    @version $Id$
+   @Pt.ProposedRating Red (chf)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class VrmlLoader3D extends GRShadedShape {
 

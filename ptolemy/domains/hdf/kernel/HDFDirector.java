@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (zhouye)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.hdf.kernel;
@@ -106,6 +104,8 @@ import ptolemy.kernel.util.Workspace;
 
    @author Brian K. Vogel and Rachel Zhou
    @version $Id$
+   @Pt.ProposedRating Red (zhouye)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class HDFDirector extends SDFDirector {
 

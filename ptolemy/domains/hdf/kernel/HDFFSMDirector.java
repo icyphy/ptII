@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (zhouye)
-   @AcceptedRating Red (cxh)
 
 */
 
@@ -125,6 +123,8 @@ import ptolemy.kernel.util.Workspace;
 
    @author Brian K. Vogel and Rachel Zhou
    @version $Id$
+   @Pt.ProposedRating Red (zhouye)
+   @Pt.AcceptedRating Red (cxh)
    @see HDFDirector
 */
 public class HDFFSMDirector extends FSMDirector {

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal)
-@AcceptedRating Red (neuendor)
 
 */
 
@@ -44,6 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
    @author Stephen Neuendorffer
    @version $Id$
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (neuendor)
 */
 public class PBOReceiver extends AbstractReceiver {
 

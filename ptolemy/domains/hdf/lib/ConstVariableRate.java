@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.hdf.lib;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.Workspace;
 
    @author Brian K. Vogel
    @version $Id$
+   @Pt.ProposedRating Red (vogel)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class ConstVariableRate extends Const {
