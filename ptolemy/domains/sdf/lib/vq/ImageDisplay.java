@@ -1,4 +1,5 @@
 /* Display an Black and White image on the screen using the Picture class.
+
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
 
@@ -72,7 +73,6 @@ public final class ImageDisplay extends SDFAtomicActor {
         
 	input = (SDFIOPort) newPort("input");
         input.setInput(true);
-        input.setTokenConsumptionRate(1);
         input.setTypeEquals(IntMatrixToken.class);
 
         _oldxsize = 0;
@@ -125,7 +125,6 @@ public final class ImageDisplay extends SDFAtomicActor {
         } else {
             _frame = null;
         }
-        System.out.println("initialize");
     }
 
     /**
@@ -146,12 +145,13 @@ public final class ImageDisplay extends SDFAtomicActor {
         int xsize = message.getColumnCount();
         int ysize = message.getRowCount();
 
+        // If the image changes size, then we have to go through some 
+        // trouble to resize the window.
         if((_oldxsize != xsize) || (_oldysize != ysize)) {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
             if(_panel == null) {
-                System.out.println("panel disappeared!");
                 _frame = new _PictureFrame("ImageDisplay");
                 _panel = _frame.getPanel();
             } else {
@@ -181,11 +181,11 @@ public final class ImageDisplay extends SDFAtomicActor {
             if(_frame != null) {
                 _frame.pack();
             }
-
-            System.out.println("new buffer");
         }
 
-        // convert the B/W image to a packed RGB image
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
         int i, j, index = 0;
         for(j = ysize - 1; j >= 0; j--) {
             for(i = 0; i < xsize; i++, index++)
@@ -194,6 +194,8 @@ public final class ImageDisplay extends SDFAtomicActor {
                     ((frame[j][i] & 255) << 8) |
                     (frame[j][i] & 255);
         }
+
+        // display it.
         _picture.displayImage();
         _picture.repaint();
     }
@@ -205,6 +207,9 @@ public final class ImageDisplay extends SDFAtomicActor {
         _panel = panel;
     }
 
+    /** This inner class provides a convenient way to create a Frame for the
+     *  picture when it becomes necessary.
+     */
     private class _PictureFrame extends Frame {
         public _PictureFrame(String title) {
             super(title);

@@ -57,22 +57,23 @@ public final class VQDecode extends SDFAtomicActor {
 
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
-        input.setTokenConsumptionRate(3168);
         input.setTypeEquals(IntToken.class);
 
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
-        output.setTokenProductionRate(3168);
         output.setTypeEquals(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "Codebook",
+        codeBook = new Parameter(this, "codeBook",
                 new StringToken("ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
-	new Parameter(this, "XFramesize", new IntToken("176"));
-        new Parameter(this, "YFramesize", new IntToken("144"));
-        new Parameter(this, "XPartitionSize", new IntToken("4"));
-        new Parameter(this, "YPartitionSize", new IntToken("2"));
-
+        blockCount = new Parameter(this, "blockCount", new IntToken("1"));
+        _blockCount = ((IntToken)blockCount.getToken()).intValue();
+        output.setTokenProductionRate(_blockCount);
+        input.setTokenConsumptionRate(_blockCount);
+        blockWidth = 
+            new Parameter(this, "blockWidth", new IntToken("4"));
+        blockHeight = 
+            new Parameter(this, "blockHeight", new IntToken("2"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,7 +85,23 @@ public final class VQDecode extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
-    // FIXME: Check that the above comment is correct.
+     /** A Parameter of type String, giving the location of the codebook data
+     *  file relative to the root classpath.
+     */
+    public Parameter codeBook;
+
+    /** The number of blocks to be decoded during each firing.  
+     *  The default value is one, which will always work, but using a higher
+     *  number (such as the number of blocks in a frame) will speed things up.
+     *  This should contain an integer.
+     */
+    public Parameter blockCount;
+
+    /** The width, in integer pixels, of the block to decode. */
+    public Parameter blockWidth;
+
+    /** The width, in integer pixels, of the block to decode. */
+    public Parameter blockHeight;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,6 +117,10 @@ public final class VQDecode extends SDFAtomicActor {
             VQDecode newobj = (VQDecode)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.codeBook = (Parameter)newobj.getAttribute("codeBook");
+            newobj.blockCount = (Parameter)newobj.getAttribute("blockCount");
+            newobj.blockWidth = (Parameter)newobj.getAttribute("blockWidth");
+            newobj.blockHeight = (Parameter)newobj.getAttribute("blockHeight");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -117,19 +138,18 @@ public final class VQDecode extends SDFAtomicActor {
      */
     public void fire() throws IllegalActionException {
         int j;
-        int numpartitions =
-            _xframesize * _yframesize / _xpartsize / _ypartsize;
-
         input.getArray(0, _codewords);
 
-        for(j = 0; j < numpartitions; j++) {
-            System.arraycopy(_codebook[2][_codewords[j].intValue()], 0,
+        for(j = 0; j < _blockCount; j++) {
+            /*           System.arraycopy(_codebook[2][_codewords[j].intValue()], 0,
                     _part, 0,
                     _xpartsize * _ypartsize);
-            _partitions[j] = new IntMatrixToken(_part, _ypartsize, _xpartsize);
+            _blocks[j] = new IntMatrixToken(_part, _ypartsize, _xpartsize);
+            */
+            _blocks[j] = new IntMatrixToken(_codebook[2][_codewords[j].intValue()], _blockHeight, _blockWidth);
         }
 
-        output.sendArray(0, _partitions);
+        output.sendArray(0, _blocks);
     }
 
     public void initialize() throws IllegalActionException {
@@ -137,28 +157,18 @@ public final class VQDecode extends SDFAtomicActor {
 
         InputStream source = null;
 
-        Parameter p;
-	p = (Parameter) getAttribute("XFramesize");
-        _xframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YFramesize");
-        _yframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("XPartitionSize");
-        _xpartsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YPartitionSize");
-        _ypartsize = ((IntToken)p.getToken()).intValue();
+        _blockCount = ((IntToken)blockCount.getToken()).intValue();
+        input.setTokenConsumptionRate(_blockCount);
+        output.setTokenProductionRate(_blockCount);
 
-        _codewords =
-            new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
+        _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
+        _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
-        _part = new int[_ypartsize * _xpartsize];
-        _partitions =
-            new IntMatrixToken[_yframesize * _xframesize
-                    / _ypartsize / _xpartsize];
+        _codewords =  new IntToken[_blockCount];
+        _blocks = new IntMatrixToken[_blockCount];
 
-
-        p = (Parameter) getAttribute("Codebook");
-        String filename = ((StringToken)p.getToken()).stringValue();
-        try {
+        String filename = ((StringToken)codeBook.getToken()).stringValue();
+         try {
             if (filename != null) {
                 if(_baseurl != null) {
                     try {
@@ -226,7 +236,11 @@ public final class VQDecode extends SDFAtomicActor {
         }
     }
 
-    int _fullread(InputStream s, byte b[]) throws IOException {
+    public void setBaseURL(URL baseurl) {
+        _baseurl = baseurl;
+    }
+
+    protected int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;
         int bytesread = 0;
@@ -240,18 +254,12 @@ public final class VQDecode extends SDFAtomicActor {
         return len;
     }
 
-    public void setBaseURL(URL baseurl) {
-        _baseurl = baseurl;
-    }
-
     private int _codebook[][][] = new int[6][256][];
     private IntToken _codewords[];
-    private IntMatrixToken _partitions[];
-    private int _part[];
-    private int _xframesize;
-    private int _yframesize;
-    private int _xpartsize;
-    private int _ypartsize;
-    private URL _baseurl;
+    private IntMatrixToken _blocks[];
 
+    private int _blockCount;
+    private int _blockWidth;
+    private int _blockHeight;
+    private URL _baseurl;
 }

@@ -41,9 +41,9 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImagePartition
 /**
-This actor partitions an image into smaller subimages.  Each input matrix
-should have dimensions XFrameSize by YFrameSize, and each output matrix
-will have dimensions XPartitionSize by YPartitionSize.  The output images
+This actor partitions a image into smaller submatrices.  Each input image
+should have dimensions imageColumns by imageRows, and each output image
+will have dimensions partitionColumns by partitionRows.  The output matrices
 are row scanned from the input image.
 
 @author Steve Neuendorffer
@@ -56,21 +56,22 @@ public final class ImagePartition extends SDFAtomicActor {
 
         super(container, name);
 
-	new Parameter(this, "XFramesize", new IntToken("176"));
-        new Parameter(this, "YFramesize", new IntToken("144"));
-        new Parameter(this, "XPartitionSize", new IntToken("4"));
-        new Parameter(this, "YPartitionSize", new IntToken("2"));
-
-        output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
-        output.setTokenProductionRate(3168);
-        output.setTypeEquals(IntMatrixToken.class);
+	imageColumns = 
+            new Parameter(this, "imageColumns", new IntToken("176"));
+        imageRows = 
+            new Parameter(this, "imageRows", new IntToken("144"));
+        partitionColumns = 
+            new Parameter(this, "partitionColumns", new IntToken("4"));
+        partitionRows = 
+            new Parameter(this, "partitionRows", new IntToken("2"));
 
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
         input.setTokenConsumptionRate(1);
-        input.setTypeEquals(IntMatrixToken.class);
 
+        output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTypeEquals(IntMatrixToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,6 +82,19 @@ public final class ImagePartition extends SDFAtomicActor {
 
     /** The output port. */
     public SDFIOPort output;
+
+    /** The width of the input matrices */
+    public Parameter imageColumns;
+
+    /** The height of the input matrices */
+    public Parameter imageRows;
+
+    /** The width of the input partitions */
+    public Parameter partitionColumns;
+
+    /** The height of the input partitions */
+    public Parameter partitionRows;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -96,6 +110,14 @@ public final class ImagePartition extends SDFAtomicActor {
             ImagePartition newobj = (ImagePartition)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.imageRows = 
+                (Parameter)newobj.getAttribute("imageRows");
+            newobj.imageColumns = 
+                (Parameter)newobj.getAttribute("imageColumns");
+            newobj.partitionRows = 
+                (Parameter)newobj.getAttribute("partitionRows");
+            newobj.partitionColumns = 
+                (Parameter)newobj.getAttribute("partitionColumns");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -110,54 +132,54 @@ public final class ImagePartition extends SDFAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	Parameter p;
-	p = (Parameter) getAttribute("XFramesize");
-        xframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YFramesize");
-        yframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("XPartitionSize");
-        xpartsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YPartitionSize");
-        ypartsize = ((IntToken)p.getToken()).intValue();
 
-        part = new int[xpartsize*ypartsize];
-        partitions = new IntMatrixToken[xframesize * yframesize
-                / xpartsize / ypartsize];
+        _imageColumns = ((IntToken)imageColumns.getToken()).intValue();
+        _imageRows = ((IntToken)imageRows.getToken()).intValue();
+        _partitionColumns = ((IntToken)partitionColumns.getToken()).intValue();
+        _partitionRows = ((IntToken)partitionRows.getToken()).intValue();
+
+        part = new int[_partitionColumns * _partitionRows];
+        int partitionCount = _imageColumns * _imageRows
+                / _partitionColumns / _partitionRows;
+        partitions = new IntMatrixToken[partitionCount];
+        output.setTokenProductionRate(partitionCount);
     }
 
     /**
      * Fire this actor
      * Consume a single IntMatrixToken on the input.  Produce IntMatrixTokens
-     * on the output port by partitioning the input matrix.
+     * on the output port by partitioning the input image.
      *
-     * @exception IllegalActionException If a contained method throws it.
+     * @exception IllegalActionException If the ports are not connected.
      */
     public void fire() throws IllegalActionException {
         int i, j;
 	int x, y;
         int a;
+        IntMatrixToken message;
 
         message = (IntMatrixToken) input.get(0);
-        frame = message.intArray();
+        image = message.intArray();
 
-        for(j = 0, a = 0 ; j < yframesize; j += ypartsize)
-            for(i = 0; i < xframesize; i += xpartsize, a++) {
-                for(y = 0; y < ypartsize; y++)
-                    System.arraycopy(frame, (j + y) * xframesize + i,
-                            part, y * xpartsize, xpartsize);
-                partitions[a] = new IntMatrixToken(part, ypartsize, xpartsize);
+        for(j = 0, a = 0 ; j < _imageRows; j += _partitionRows)
+            for(i = 0; i < _imageColumns; i += _partitionColumns, a++) {
+                for(y = 0; y < _partitionRows; y++)
+                    System.arraycopy(image, (j + y) * _imageColumns + i,
+                            part, y * _partitionColumns, _partitionColumns);
+                partitions[a] = 
+                    new IntMatrixToken(part, _partitionRows, _partitionColumns);
             }
 
         output.sendArray(0, partitions);
     }
 
-    private IntMatrixToken message;
     private IntMatrixToken partitions[];
+
     private int part[];
-    private int frame[];
-    private int xframesize;
-    private int yframesize;
-    private int xpartsize;
-    private int ypartsize;
+    private int image[];
+    private int _imageColumns;
+    private int _imageRows;
+    private int _partitionColumns;
+    private int _partitionRows;
 
 }

@@ -42,10 +42,32 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImageSequence
 /**
+This actor loads a sequence of binary images from files, and creates
+IntMatrixTokens from them.  The data is assumed to row scanned, starting 
+at the top row.  Each byte of the binary file is assumed to be the 
+greyscale intensity of a single pixel in the image.
+<p>
+The files to be loaded are specified as relative URLs from the base URL path.
+Usually the base path should be set to the root ptolemy classpath. 
+The file names are created by replacing *'s in the filename with consecutive
+integers (using zero padding).  For example, specifying a URLtemplate of 
+"missa***.qcf" and a starting frame of
+zero, will create the names:
+<ul>
+<li>missa000.qcf
+<li>missa001.qcf
+<li>missa002.qcf
+<li>...
+</ul>
+The name manufacturing algorithm is not especially robust, so attaching
+a debug listener to this actor will print out a list of the file names.
+
+This actor could be greatly expanded to use the Java Advanced Imaging API
+for loading images.
+
 @author Steve Neuendorffer
 @version $Id$
 */
-
 public final class ImageSequence extends SDFAtomicActor {
  
     /** Construct an actor with the given container and name.
@@ -63,16 +85,19 @@ public final class ImageSequence extends SDFAtomicActor {
 
         output = (SDFIOPort) newPort("output");
         output.setOutput(true);
-        output.setTokenProductionRate(1);
         output.setTypeEquals(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "imageURLTemplate",
+        imageURLTemplate = new Parameter(this, "imageURLTemplate",
                 new StringToken("ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
-        new Parameter(this, "XImageSize", new IntToken("176"));
-        new Parameter(this, "YImageSize", new IntToken("144"));
-        new Parameter(this, "Start Frame", new IntToken("0"));
-        new Parameter(this, "End Frame", new IntToken("29"));
+        imageColumns = 
+            new Parameter(this, "imageColumns", new IntToken("176"));
+        imageRows = 
+            new Parameter(this, "imageRows", new IntToken("144"));
+        startFrame = 
+            new Parameter(this, "startFrame", new IntToken("0"));
+        endFrame = 
+            new Parameter(this, "endFrame", new IntToken("29"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,19 +106,35 @@ public final class ImageSequence extends SDFAtomicActor {
     /** The output port. */
     public SDFIOPort output;
 
+    public Parameter imageURLTemplate;
+    public Parameter imageColumns;
+    public Parameter imageRows;
+    public Parameter startFrame;
+    public Parameter endFrame;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
      *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
+     *  @param ws The workspace for the new object.     *  @return A new actor.
      */
     public Object clone(Workspace ws) {
         try {
             ImageSequence newobj = (ImageSequence)(super.clone(ws));
             newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.imageURLTemplate = 
+                (Parameter)newobj.getAttribute("imageURLTemplate");
+            newobj.imageColumns = 
+                (Parameter)newobj.getAttribute("imageColumns");
+            newobj.imageRows = 
+                (Parameter)newobj.getAttribute("imageRows");
+            newobj.startFrame = 
+                (Parameter)newobj.getAttribute("startFrame");
+            newobj.endFrame = 
+                (Parameter)newobj.getAttribute("endFrame");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -105,32 +146,33 @@ public final class ImageSequence extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         InputStream source = null;
-        Parameter p = (Parameter) getAttribute("imageURLTemplate");
-        String fileroot = ((StringToken)p.getToken()).stringValue();
-        p = (Parameter) getAttribute("Start Frame");
-        int startframe = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("End Frame");
-        int endframe = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("XImageSize");
-        xsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YImageSize");
-        ysize = ((IntToken)p.getToken()).intValue();
+
+        String fileroot = 
+            ((StringToken)imageURLTemplate.getToken()).stringValue();
+        _startFrame = ((IntToken)startFrame.getToken()).intValue();
+        _endFrame = ((IntToken)endFrame.getToken()).intValue();
+        _imageColumns = ((IntToken)imageColumns.getToken()).intValue();
+        _imageRows = ((IntToken)imageRows.getToken()).intValue();
 
         // If we've already loaded all these images, then don't load
         // them again.
-        if((_baseurl != null)&&(frames != null)) {
+        if((_baseurl != null)&&(_images != null)) {
             return;
         }
-        numframes = endframe - startframe + 1;
-        frames = new byte[numframes][ysize * xsize];
-        frame = new int[ysize * xsize];
-        for(framenumber = 0;
-            framenumber < numframes;
-            framenumber++) {
+
+        _frameCount = _endFrame - _startFrame + 1;
+        _images = new IntMatrixToken[_frameCount];
+        _frameInts = new int[_imageRows * _imageColumns];
+        _frameBytes = new byte[_imageRows * _imageColumns];
+        for(_frameNumber = 0;
+            _frameNumber < _frameCount;
+            _frameNumber++) {
 
             try {
+                // Assemble the file name, replacing '*'
                 byte arr[] = fileroot.getBytes();
-                int i = framenumber + startframe;
+                int i, j, n;
+                i = _frameNumber + _startFrame;
                 String tfilename = new String(fileroot);
                 int loc = tfilename.lastIndexOf('*');
                 while(loc >= 0) {
@@ -140,22 +182,14 @@ public final class ImageSequence extends SDFAtomicActor {
                     loc = tfilename.lastIndexOf('*');
                 }
                 String filename = new String(arr);
+                _debug("file = " + filename + "\n");
+
+                // load the file as a url if baseurl is set, or as a file if
+                // not
                 if (filename != null) {
                     if(_baseurl != null) {
-                        try {
-                            URL dataurl = new URL(_baseurl, filename);
-                            System.out.println("dataurl = " + dataurl);
-                            source = dataurl.openStream();
-                        } catch (MalformedURLException e) {
-                            System.err.println(e.toString());
-                        } catch (FileNotFoundException e) {
-                            System.err.println("RLEncodingApplet: " +
-                                    "file not found: " +e);
-                        } catch (IOException e) {
-                            System.err.println(
-                                    "RLEncodingApplet: error reading"+
-                                    " input file: " +e);
-                        }
+                        URL dataurl = new URL(_baseurl, filename);
+                        source = dataurl.openStream();
                     } else {
                         File sourcefile = new File(filename);
                         if(!sourcefile.exists() || !sourcefile.isFile())
@@ -167,29 +201,44 @@ public final class ImageSequence extends SDFAtomicActor {
                         source = new FileInputStream(sourcefile);
                     }
                 }
-
-                if(_fullread(source, frames[framenumber])
-                        != ysize*xsize)
+                
+                // Load the frame from the file.
+                if(_fullread(source, _frameBytes)
+                        != _imageRows*_imageColumns)
                     throw new IllegalActionException("Error reading " +
-                            "Image file!");
+                            "image file!");
+                // This is necessary to convert from bytes to ints
+                for(i = 0, n = 0; i < _imageRows; i++) {
+                    for(j = 0; j < _imageColumns; j++, n++)
+                        _frameInts[n] = ((int) _frameBytes[n]) & 255;
+                }
+                
+                _images[_frameNumber] = 
+                    new IntMatrixToken(_frameInts, _imageRows, _imageColumns);
             }
-            catch (Exception e) {
-                throw new IllegalActionException(e.getMessage());
+            catch (IllegalActionException ex) {
+                throw ex;
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                throw new IllegalActionException(ex.getMessage());
             }
             finally {
                 if(source != null) {
                     try {
                         source.close();
                     }
-                    catch (IOException e) {
-                        throw new IllegalActionException(e.getMessage());
+                    catch (IOException ex) {
+                        ex.printStackTrace();
+                        throw new IllegalActionException(ex.getMessage());
                     }
                 }
             }
         }
-        framenumber = 0;
+        _frameNumber = 0;
     }
 
+    // FIXME this should be made a parameter.
     public void setBaseURL(URL baseurl) {
         _baseurl = baseurl;
     }
@@ -197,17 +246,9 @@ public final class ImageSequence extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int i, j, n;
 
-        // This is necessary to convert from bytes to ints
-        for(i = 0, n = 0; i < ysize; i++) {
-            for(j = 0; j < xsize; j++, n++)
-                frame[n] = ((int) frames[framenumber][n]) & 255;
-        }
-
-        IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);
-        output.send(0, message);
-
-        framenumber++;
-        if(framenumber >= numframes) framenumber = 0;
+        output.send(0, _images[_frameNumber]);
+        _frameNumber++;
+        if(_frameNumber >= _frameCount) _frameNumber = 0;
     }
 
     int _fullread(InputStream s, byte b[]) throws IOException {
@@ -224,14 +265,15 @@ public final class ImageSequence extends SDFAtomicActor {
         return len;
     }
 
-    String filetemplate;
-    byte frames[][];
-    int xsize;
-    int ysize;
-    int frame[];
-    int startframe;
-    int endframe;
-    int numframes;
-    int framenumber;
-    URL _baseurl;
+    private int _frameCount;
+    private IntMatrixToken _images[];
+    private byte _frameBytes[];
+    private int _frameInts[];
+    private int _imageURLTemplate;
+    private int _imageColumns;
+    private int _imageRows;
+    private int _startFrame;
+    private int _endFrame;
+    private int _frameNumber;
+    private URL _baseurl;
 }

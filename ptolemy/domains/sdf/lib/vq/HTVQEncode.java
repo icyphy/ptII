@@ -78,23 +78,25 @@ public final class HTVQEncode extends SDFAtomicActor {
 
         super(container, name);
         
-	output = (SDFIOPort) newPort("output");
-        output.setOutput(true);
-        output.setTokenProductionRate(3168);
-        output.setTypeEquals(IntToken.class);
-
         input = (SDFIOPort) newPort("input");
         input.setInput(true);
-        input.setTokenConsumptionRate(3168);
         input.setTypeEquals(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "Codebook",
+	output = (SDFIOPort) newPort("output");
+        output.setOutput(true);
+        output.setTypeEquals(IntToken.class);
+
+        codeBook = new Parameter(this, "codeBook",
                 new StringToken("ptolemy/domains/sdf" +
                         "/lib/vq/data/usc_hvq_s5.dat"));
-	new Parameter(this, "XFramesize", new IntToken("176"));
-        new Parameter(this, "YFramesize", new IntToken("144"));
-        new Parameter(this, "XPartitionSize", new IntToken("4"));
-        new Parameter(this, "YPartitionSize", new IntToken("2"));
+        blockCount = new Parameter(this, "blockCount", new IntToken("1"));
+        _blockCount = ((IntToken)blockCount.getToken()).intValue();
+        output.setTokenProductionRate(_blockCount);
+        input.setTokenConsumptionRate(_blockCount);
+        blockWidth = 
+            new Parameter(this, "blockWidth", new IntToken("4"));
+        blockHeight = 
+            new Parameter(this, "blockHeight", new IntToken("2"));
     }
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -104,6 +106,23 @@ public final class HTVQEncode extends SDFAtomicActor {
     
     /** The output port. */
     public SDFIOPort output;
+    
+    /** A Parameter of type String, giving the location of the codebook data
+     *  file relative to the root classpath.
+     */
+    public Parameter codeBook;
+
+    /** The number of blocks to be encoded during each firing.  
+     *  The default value is one, which will always work, but using a higher
+     *  number (such as the number of blocks in a frame) will speed things up.
+     */
+    public Parameter blockCount;
+
+    /** The width, in pixels, of the block to encode. */
+    public Parameter blockWidth;
+
+    /** The width, in pixels, of the block to encode. */
+    public Parameter blockHeight;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -119,6 +138,10 @@ public final class HTVQEncode extends SDFAtomicActor {
             HTVQEncode newobj = (HTVQEncode)(super.clone(ws));
             newobj.input = (SDFIOPort)newobj.getPort("input");
             newobj.output = (SDFIOPort)newobj.getPort("output");
+            newobj.codeBook = (Parameter)newobj.getAttribute("codeBook");
+            newobj.blockCount = (Parameter)newobj.getAttribute("blockCount");
+            newobj.blockWidth = (Parameter)newobj.getAttribute("blockWidth");
+            newobj.blockHeight = (Parameter)newobj.getAttribute("blockHeight");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -135,15 +158,13 @@ public final class HTVQEncode extends SDFAtomicActor {
      * @exception IllegalActionException if a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        int numpartitions =
-            _xframesize * _yframesize / _xpartsize / _ypartsize;
-
         int j;
-        input.getArray(0, _tokens);
+        input.getArray(0, _blocks);
 
-        for(j = 0; j < numpartitions; j++) {
+        for(j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
-                    _encode(_tokens[j].intArray(), _xpartsize * _ypartsize));
+                    _encode(_blocks[j].intArray(), 
+                            _blockWidth * _blockHeight));
 	}
 
         output.sendArray(0, _codewords);
@@ -159,23 +180,17 @@ public final class HTVQEncode extends SDFAtomicActor {
 
         InputStream source = null;
 
-        Parameter p;
-	p = (Parameter) getAttribute("XFramesize");
-        _xframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YFramesize");
-        _yframesize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("XPartitionSize");
-        _xpartsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("YPartitionSize");
-        _ypartsize = ((IntToken)p.getToken()).intValue();
+        _blockCount = ((IntToken)blockCount.getToken()).intValue();
+        input.setTokenConsumptionRate(_blockCount);
+        output.setTokenProductionRate(_blockCount);
 
-        _codewords =  new IntToken[_yframesize * _xframesize /
-                _ypartsize / _xpartsize];
-        _tokens = new IntMatrixToken[_yframesize * _xframesize /
-                _ypartsize / _xpartsize];
+        _blockWidth = ((IntToken)blockWidth.getToken()).intValue();
+        _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
-        p = (Parameter) getAttribute("Codebook");
-        String filename = ((StringToken)p.getToken()).stringValue();
+        _codewords =  new IntToken[_blockCount];
+        _blocks = new IntMatrixToken[_blockCount];
+
+        String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
             if (filename != null) {
                 if(_baseurl != null) {
@@ -213,12 +228,12 @@ public final class HTVQEncode extends SDFAtomicActor {
                 size = size * 2;
                 temp = new byte[size];
                 for(j = 0; j < 256; j++) {
-                    _codebook[i][j] = new int[size];
+                    _codeBook[i][j] = new int[size];
                     if(_fullread(source, temp) != size)
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
-                        _codebook[i][j][x] = temp[x] & 255;
+                        _codeBook[i][j][x] = temp[x] & 255;
                 }
 
                 temp = new byte[65536];
@@ -227,7 +242,7 @@ public final class HTVQEncode extends SDFAtomicActor {
                     throw new IllegalActionException("Error reading " +
                             "codebook file!");
                 for(x = 0; x < 65536; x++)
-                    _lookup_table[i][x] = temp[x] & 255;
+                    _lookupTable[i][x] = temp[x] & 255;
             }
         }
         catch (Exception e) {
@@ -239,6 +254,7 @@ public final class HTVQEncode extends SDFAtomicActor {
                     source.close();
                 }
                 catch (IOException e) {
+                    // ARgh...  can't we do anything right?
                 }
             }
         }
@@ -252,10 +268,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         _baseurl = baseurl;
     }
 
-    int ipbuf_encodep1[][] = new int[8][8];
-    int ipbuf_encodep2[][] = new int[8][8];
-
-    int _stages(int len) {
+    private int _stages(int len) {
         int x = 0;
         if(len < 2) throw new RuntimeException(
                 "HTVQEncode: vector length of " + len +
@@ -264,7 +277,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         return x;
     }
 
-    int _encode(int p[], int len) {
+    private int _encode(int p[], int len) {
         int[][] p5, p4, p3, p2, p1, p0;
         int numstages;
 	int stage = 0;
@@ -321,94 +334,94 @@ public final class HTVQEncode extends SDFAtomicActor {
         case 4:
             //XSIZE = 8, YSIZE = 4
             ip = ((p5[0][0] & 255) << 8) + (p5[0][1] & 255);
-            p4[0][0] = _lookup_table[stage][ip];
+            p4[0][0] = _lookupTable[stage][ip];
             ip = ((p5[0][2] & 255) << 8) + (p5[0][3] & 255);
-            p4[1][0] = _lookup_table[stage][ip];
+            p4[1][0] = _lookupTable[stage][ip];
             ip = ((p5[0][4] & 255) << 8) + (p5[0][5] & 255);
-            p4[2][0] = _lookup_table[stage][ip];
+            p4[2][0] = _lookupTable[stage][ip];
             ip = ((p5[0][6] & 255) << 8) + (p5[0][7] & 255);
-            p4[3][0] = _lookup_table[stage][ip];
+            p4[3][0] = _lookupTable[stage][ip];
 
             ip = ((p5[1][0] & 255) << 8) + (p5[1][1] & 255);
-            p4[0][1] = _lookup_table[stage][ip];
+            p4[0][1] = _lookupTable[stage][ip];
             ip = ((p5[1][2] & 255) << 8) + (p5[1][3] & 255);
-            p4[1][1] = _lookup_table[stage][ip];
+            p4[1][1] = _lookupTable[stage][ip];
             ip = ((p5[1][4] & 255) << 8) + (p5[1][5] & 255);
-            p4[2][1] = _lookup_table[stage][ip];
+            p4[2][1] = _lookupTable[stage][ip];
             ip = ((p5[1][6] & 255) << 8) + (p5[1][7] & 255);
-            p4[3][1] = _lookup_table[stage][ip];
+            p4[3][1] = _lookupTable[stage][ip];
 
             ip = ((p5[2][0] & 255) << 8) + (p5[2][1] & 255);
-            p4[0][2] = _lookup_table[stage][ip];
+            p4[0][2] = _lookupTable[stage][ip];
             ip = ((p5[2][2] & 255) << 8) + (p5[2][3] & 255);
-            p4[1][2] = _lookup_table[stage][ip];
+            p4[1][2] = _lookupTable[stage][ip];
             ip = ((p5[2][4] & 255) << 8) + (p5[2][5] & 255);
-            p4[2][2] = _lookup_table[stage][ip];
+            p4[2][2] = _lookupTable[stage][ip];
             ip = ((p5[2][6] & 255) << 8) + (p5[2][7] & 255);
-            p4[3][2] = _lookup_table[stage][ip];
+            p4[3][2] = _lookupTable[stage][ip];
 
             ip = ((p5[3][0] & 255) << 8) + (p5[3][1] & 255);
-            p4[0][3] = _lookup_table[stage][ip];
+            p4[0][3] = _lookupTable[stage][ip];
             ip = ((p5[3][2] & 255) << 8) + (p5[3][2] & 255);
-            p4[1][3] = _lookup_table[stage][ip];
+            p4[1][3] = _lookupTable[stage][ip];
             ip = ((p5[3][4] & 255) << 8) + (p5[3][4] & 255);
-            p4[2][3] = _lookup_table[stage][ip];
+            p4[2][3] = _lookupTable[stage][ip];
             ip = ((p5[3][6] & 255) << 8) + (p5[3][6] & 255);
-            p4[3][3] = _lookup_table[stage][ip];
+            p4[3][3] = _lookupTable[stage][ip];
             stage++;
         case 3:
             //XSIZE = 4, YSIZE = 4
             ip = ((p4[0][1] & 255) << 8) + (p4[0][0] & 255);
-            p3[0][0] = _lookup_table[stage][ip];
+            p3[0][0] = _lookupTable[stage][ip];
             ip = ((p4[0][3] & 255) << 8) + (p4[0][2] & 255);
-            p3[1][0] = _lookup_table[stage][ip];
+            p3[1][0] = _lookupTable[stage][ip];
 
             ip = ((p4[1][1] & 255) << 8) + (p4[1][0] & 255);
-            p3[0][1] = _lookup_table[stage][ip];
+            p3[0][1] = _lookupTable[stage][ip];
             ip = ((p4[1][3] & 255) << 8) + (p4[1][2] & 255);
-            p3[1][1] = _lookup_table[stage][ip];
+            p3[1][1] = _lookupTable[stage][ip];
 
             ip = ((p4[2][1] & 255) << 8) + (p4[2][0] & 255);
-            p3[0][2] = _lookup_table[stage][ip];
+            p3[0][2] = _lookupTable[stage][ip];
             ip = ((p4[2][3] & 255) << 8) + (p4[2][2] & 255);
-            p3[1][2] = _lookup_table[stage][ip];
+            p3[1][2] = _lookupTable[stage][ip];
 
             ip = ((p4[3][1] & 255) << 8) + (p4[3][0] & 255);
-            p3[0][3] = _lookup_table[stage][ip];
+            p3[0][3] = _lookupTable[stage][ip];
             ip = ((p4[3][3] & 255) << 8) + (p4[3][2] & 255);
-            p3[1][3] = _lookup_table[stage][ip];
+            p3[1][3] = _lookupTable[stage][ip];
             stage++;
         case 2:
             //XSIZE = 4, YSIZE = 2
             ip = ((p3[0][1] & 255) << 8) + (p3[0][0] & 255);
-            p2[0][0] = _lookup_table[stage][ip];
+            p2[0][0] = _lookupTable[stage][ip];
             ip = ((p3[0][3] & 255) << 8) + (p3[0][2] & 255);
-            p2[1][0] = _lookup_table[stage][ip];
+            p2[1][0] = _lookupTable[stage][ip];
 
             ip = ((p3[1][1] & 255) << 8) + (p3[1][0] & 255);
-            p2[0][1] = _lookup_table[stage][ip];
+            p2[0][1] = _lookupTable[stage][ip];
             ip = ((p3[1][3] & 255) << 8) + (p3[1][2] & 255);
-            p2[1][1] = _lookup_table[stage][ip];
+            p2[1][1] = _lookupTable[stage][ip];
             stage++;
         case 1:
             //XSIZE = 2, YSIZE = 2
             ip = ((p2[0][1] & 255) << 8) + (p2[0][0] & 255);
-            p1[0][0] = _lookup_table[stage][ip];
+            p1[0][0] = _lookupTable[stage][ip];
             ip = ((p2[1][1] & 255) << 8) + (p2[1][0] & 255);
-            p1[0][1] = _lookup_table[stage][ip];
+            p1[0][1] = _lookupTable[stage][ip];
             stage++;
 
         case 0:
             //XSIZE = 2, YSIZE = 1
             ip = ((p1[0][1] & 255) << 8) + (p1[0][0] & 255);
-            p0[0][0] = _lookup_table[stage][ip];
+            p0[0][0] = _lookupTable[stage][ip];
             stage++;
   	}
 
         return p0[0][0];
     }
 
-    long _distortion(int a[], int b[], int len) {
+    protected long _distortion(int a[], int b[], int len) {
         long c, d = 0;
         int i;
         for(i = 0;i < len;i++)
@@ -419,7 +432,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         return d;
     }
 
-    int _fullread(InputStream s, byte b[]) throws IOException {
+    protected int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;
         int bytesread = 0;
@@ -433,14 +446,15 @@ public final class HTVQEncode extends SDFAtomicActor {
         return len;
     }
 
-    private int _codebook[][][] = new int[6][256][];
-    private int _lookup_table[][] = new int[6][65536];
+    private int ipbuf_encodep1[][] = new int[8][8];
+    private int ipbuf_encodep2[][] = new int[8][8];
+    private int _codeBook[][][] = new int[6][256][];
+    private int _lookupTable[][] = new int[6][65536];
     private IntToken _codewords[];
-    private IntMatrixToken _tokens[];
-    private int _part[];
-    private int _xframesize;
-    private int _yframesize;
-    private int _xpartsize;
-    private int _ypartsize;
+    private IntMatrixToken _blocks[];
+
+    private int _blockCount;
+    private int _blockWidth;
+    private int _blockHeight;
     private URL _baseurl;
 }
