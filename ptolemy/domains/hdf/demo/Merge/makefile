@@ -29,6 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+ME =		ptolemy/domains/hdf/demo/Merge
+
 # Root of the Java directory
 ROOT =		../../../../..
 
