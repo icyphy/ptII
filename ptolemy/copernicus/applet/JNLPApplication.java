@@ -53,8 +53,6 @@ that two Web Start applications cannot share one jar file, so
 we create these wrapper classes that call the appropriate main class.
 <p>For more information about JNLP, see $PTII/mk/jnlp.in.
 
-@see ptolemy.actor.gui.jnlp.MenuApplication
-
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 3.1
