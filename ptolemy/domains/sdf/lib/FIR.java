@@ -326,22 +326,36 @@ public class FIR extends SDFTransformer {
     protected void _reinitialize() throws IllegalActionException {
         if (_decimationPhaseValue >= _decimationValue) {
             throw new IllegalActionException(this,
-                    "Invalid decimationPhase: " + _decimationPhaseValue
-                    + ". Must be less than decimation: " + _decimationValue + ".");
+                    "Invalid decimationPhase: "
+                    + _decimationPhaseValue
+                    + ". Must be less than decimation: "
+                    + _decimationValue
+                    + ".");
         }
-
         _phaseLength = (int)(_taps.length / _interpolationValue);
         if ((_taps.length % _interpolationValue) != 0) _phaseLength++;
 
         // Create new data array and initialize index into it.
         // Avoid losing the data if possible.
-        // FIXME: data is thrown away if the filter length increases.  This
-        // is not necessary.
+        // NOTE: If the filter length increases, then it is impossible
+        // to correctly initialize the delay line to contain previously
+        // seen data, because that data has not been saved.
         int length = (int)Math.max(_phaseLength, _decimationValue);
-        if (_data == null || _data.length != length) {
+        if (_data == null) {
             _data = new Token[length];
             for (int i = 0; i < length; i++ ) {
                 _data[i] = _zero;
+            }
+            _mostRecent = _phaseLength;
+        } else if (_data.length != length) {
+            Token[] _oldData = _data;
+            _data = new Token[length];
+            for (int i = 0; i < length; i++ ) {
+                if (i < _oldData.length) {
+                    _data[i] = _oldData[i];
+                } else {
+                    _data[i] = _zero;
+                }
             }
             _mostRecent = _phaseLength;
         }
