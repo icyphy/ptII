@@ -138,8 +138,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      * @throws IllegalActionException
      */
     protected void _constructDependencyGraph() {
-        Attribute attribute = getAttribute("Atomic");
-        if (attribute != null) {
+        Attribute attribute = getContainer().getAttribute("Atomic");
+        if (attribute != null) { 
             super._constructDependencyGraph();
         } else {
             // First, construct the detailed dependency graph
