@@ -346,6 +346,11 @@ public class PlotBox extends Panel {
 
         int ind = 0;
         if (_yticks == null) {
+            Vector ygrid = null;
+            if (_ylog) {
+                ygrid = _initGrid(yStart, yStep);
+            }
+
             // automatic ticks
             // First, figure out how many digits after the decimal point
             // will be used.
@@ -373,12 +378,18 @@ public class PlotBox extends Panel {
             // System.out.println("-999.0001 integer digits: " +
             //                    _numIntDigits(999.0001));
 
-            for (double ypos=yStart; ypos <= _ytickMax; ypos += yStep) {
+            
+            double yTmpStart = yStart;
+            if (_ylog)
+                yTmpStart = _gridStep(ygrid, ind, yStart, yStep, _ylog);
+
+            for (double ypos=yTmpStart; ypos <= _ytickMax;
+                 ypos = _gridStep(ygrid, ind, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 String yl;
                 if (_ylog) {
-                    yl = _formatLogNum(ypos);
+                    yl = _formatLogNum(ypos, numfracdigits);
                 } else {
                     yl = _formatNum(ypos, numfracdigits);
                 }
@@ -433,9 +444,20 @@ public class PlotBox extends Panel {
         int xCoord2 = _lrx-tickLength;
         
         if (_yticks == null) {
+            Vector ygrid = null;
+            if (_ylog) {
+                ygrid = _initGrid(yStart, yStep);
+            }
+
             // auto-ticks
             ind = 0;
-            for (double ypos=yStart; ypos <= _ytickMax; ypos += yStep) {
+
+            double yTmpStart = yStart;
+            if (_ylog)
+                yTmpStart = _gridStep(ygrid, ind, yStart, yStep, _ylog);
+
+            for (double ypos=yTmpStart; ypos <= _ytickMax;
+                 ypos = _gridStep(ygrid, ind, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 int yCoord1 = _lry - (int)((ypos-_ytickMin)*_ytickscale);
@@ -450,6 +472,10 @@ public class PlotBox extends Panel {
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
                     graphics.setColor(_foreground);
                 }
+                if (_debug == 5) 
+                    System.out.println("ypos = "+ypos+" ylabels["+ind+"] ="+
+                            ylabels[ind] );
+
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
                         _ulx-ylabwidth[ind++]-4, yCoord1+offset);
@@ -526,7 +552,7 @@ public class PlotBox extends Panel {
             }
             xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
             numfracdigits = _numFracDigits(xStep);
-
+            
             // Compute x starting point so it is a multiple of xStep.
             double xStart=xStep*Math.ceil(_xtickMin/xStep);
         
@@ -536,12 +562,7 @@ public class PlotBox extends Panel {
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos=xStart; xpos <= _xtickMax; xpos += xStep) {
-                String xticklabel;
-                if (_xlog) {
-                    xticklabel = _formatLogNum(xpos);
-                } else {
-                    xticklabel =  _formatNum(xpos, numfracdigits);
-                }
+                String xticklabel =  _formatNum(xpos, numfracdigits);
                 xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
@@ -1246,7 +1267,6 @@ public class PlotBox extends Panel {
         _ylog = ylog;
     }
 
-
     /**
      * Set the Y (vertical) range of the plot.  If this is not done
      * explicitly, then the range is computed automatically from data
@@ -1442,10 +1462,6 @@ public class PlotBox extends Panel {
     // Whether to draw the axes using a logarithmic scale.
     protected boolean _xlog = false, _ylog = false;
 
-    // ln(10), used to calculae log10: 
-    //   Log base 10 = Math.log(x)/Math.log(10)
-    protected static final double _LN10 = 2.30258509299;
-
     // Whether to draw a background grid.
     protected boolean _grid = true;
     
@@ -1538,13 +1554,40 @@ public class PlotBox extends Panel {
      * If the numer is not an integer, then print only the fractional
      * components.
      */
-    private String _formatLogNum (double num) {
+    private String _formatLogNum (double num, int numfracdigits) {
         String results;
-        if (num - Math.floor(num) < 0.001) {
-            results = "1e"+Integer.toString((int)Math.floor(num));
+        int exponent = (int)num;
+
+        // Determine the exponent, prepending 0 or -0 if necessary.
+        if (exponent >= 0 && exponent < 10) {
+            results = "0" + exponent;
         } else {
-            results = Integer.toString((int)((num - Math.floor(num))*10));
+            if (exponent < 0 && exponent > -10) {
+                results = "-0" + (-exponent);
+            } else {
+                results = Integer.toString(exponent);
+            }
         }
+
+        // Handle the mantissa.
+        if (num >= 0.0 ) {
+            if (num - (int)(num) < 0.001) {
+                results = "1e" + results;
+            } else {
+                results = _formatNum(Math.pow(10.0,(num - (int)num)),
+                        numfracdigits - 1);
+            }
+        } else {
+            if (-num - (int)(-num) < 0.001) {
+                results = "1e" + results;
+            } else {
+                results = _formatNum(Math.pow(10.0,(num - (int)num))*10,
+                        numfracdigits - 1);
+            }
+        }
+        if (_debug == 5) 
+            System.out.println("PlotBox: _formatLogNum: "+num+" "+
+                    Math.pow(10.0,num)+" "+results+" "+(num -(int)num));
         return results;
     }
 
@@ -1598,6 +1641,142 @@ public class PlotBox extends Panel {
         }
     }
  
+    private double _gridBase = 0.0;
+    private double _gridStep(Vector grid, int ind, double pos, double step, boolean logflag) {
+        if (logflag) {
+            if (++gridCurJuke >= grid.size()) {
+                gridCurJuke = 0;
+                // FIXME: 1.0 is not right if step is more than 1.0
+                _gridBase++;
+                //gridBase += gridStep;
+                //pos += _roundUp(step);
+                if (_debug == 5)
+                    System.out.println("_gridStep: pos = "+pos+" _roundUp = "+
+                            _roundUp(step));
+            }
+            //return(gridBase + gridJuke[gridCurJuke]);
+
+            return _gridBase + ((Double)grid.elementAt(gridCurJuke)).doubleValue();
+        } else {
+            return pos + step;
+        }
+    }
+
+    private int gridNJuke = 0, gridCurJuke = 0;
+    private double log10(double v) { return Math.log(v)*_log10scale;}
+
+    /*
+     * Determine what values to use for log axes.
+     * based on initGrid() from xgraph.c by David Harrison.
+     */
+    private Vector _initGrid(double low, double step) {
+        double ratio, x;
+        Vector grid = new Vector(101); // 101 comes from xgraph.c
+
+        // How log axes work:
+        // _initGrid() creates a vector with the values to use for the
+        // log axes.  For example, the vector might contain
+        // {0.0 0.301 0.698}, which could correspond to
+        // axis labels {1 1.2 1.5 10 12 15 100 120 150}
+        //
+        // _stepGrid() gets the proper value.  _initGrid is cycled through
+        // for each integer log value.
+
+        gridNJuke = 0;
+        gridCurJuke = 0;
+        grid.addElement(new Double(0.0));
+
+	_gridBase = Math.floor(low);
+	//gridStep = ceil(step);
+	ratio = Math.pow(10.0, step);
+	if (ratio <= 3.0) {
+	    if (ratio > 2.0) {
+                gridNJuke++;
+		//gridJuke[gridNJuke++] = log10(3.0);
+                grid.addElement(new Double(log10(3.0)));
+	    } else if (ratio > 1.333) {
+                gridNJuke++;                 gridNJuke++;
+		//gridJuke[gridNJuke++] = log10(2.0);	gridJuke[gridNJuke++] = log10(5.0);
+                grid.addElement(new Double(log10(2.0)));
+                grid.addElement(new Double(log10(5.0)));
+	    } else if (ratio > 1.25) {
+                gridNJuke++;                 gridNJuke++;
+                gridNJuke++;                 gridNJuke++;
+                gridNJuke++;  
+		//gridJuke[gridNJuke++] = log10(1.5);	gridJuke[gridNJuke++] = log10(2.0);	gridJuke[gridNJuke++] = log10(3.0);
+		//gridJuke[gridNJuke++] = log10(5.0);	gridJuke[gridNJuke++] = log10(7.0);
+                grid.addElement(new Double(log10(1.5)));
+                grid.addElement(new Double(log10(2.0)));
+                grid.addElement(new Double(log10(3.0)));
+                grid.addElement(new Double(log10(5.0)));
+                grid.addElement(new Double(log10(7.0)));
+	    } else {
+		for (x = 1.0; x < 10.0 && (x+.5)/(x+.4) >= ratio; x += .5) {
+		    //gridJuke[gridNJuke++] = log10(x + .1);	gridJuke[gridNJuke++] = log10(x + .2);
+                gridNJuke++;                 gridNJuke++;
+                    grid.addElement(new Double(log10(x + .1)));
+                    grid.addElement(new Double(log10(x + .2)));
+		    //gridJuke[gridNJuke++] = log10(x + .3);	gridJuke[gridNJuke++] = log10(x + .4);
+		    //gridJuke[gridNJuke++] = log10(x + .5);
+                gridNJuke++;                 gridNJuke++;
+                gridNJuke++;
+                    grid.addElement(new Double(log10(x + .3)));
+                    grid.addElement(new Double(log10(x + .4)));
+                    grid.addElement(new Double(log10(x + .5)));
+		}
+		if (Math.floor(x) != x) {
+                 gridNJuke++;
+                    //gridJuke[gridNJuke++] = log10(x += .5);
+                    grid.addElement(new Double(log10(x += .5)));
+                }
+		for ( ; x < 10.0 && (x+1.0)/(x+.5) >= ratio; x += 1.0) {
+                 gridNJuke++;
+		    //gridJuke[gridNJuke++] = log10(x + .5);
+                    grid.addElement(new Double(log10(x + .5)));
+                 gridNJuke++;
+                    //gridJuke[gridNJuke++] = log10(x + 1.0);
+                    grid.addElement(new Double(log10(x + 1.0)));
+		}
+		for ( ; x < 10.0 && (x+1.0)/x >= ratio; x += 1.0) {
+                 gridNJuke++;
+		    //gridJuke[gridNJuke++] = log10(x + 1.0);
+                    grid.addElement(new Double(log10(x + 1.0)));
+		}
+		if (x == 7.0) {
+                 gridNJuke--;
+		    //gridNJuke--;
+		    x = 6.0;
+                    grid.removeElement(grid.lastElement());
+		}
+		if (x < 7.0) {
+                 gridNJuke++;
+		    //gridJuke[gridNJuke++] = log10(x + 2.0);
+                    grid.addElement(new Double(log10(x + 2.0)));
+		}
+		if (x == 10.0) {
+                 gridNJuke--;
+                    //gridNJuke--;
+                    grid.removeElement(grid.lastElement());
+                }
+	    }
+	    x = low - _gridBase;
+            //x = low - Math.floor(low);
+            //for (gridCurJuke = -1; x >= gridJuke[gridCurJuke+1]; gridCurJuke++){
+            for (gridCurJuke = -1; (gridCurJuke+1) < grid.size() && x >= ((Double)grid.elementAt(gridCurJuke+1)).doubleValue(); gridCurJuke++){
+            }
+	}
+        if ((gridNJuke + 1 )!= grid.size()) {
+            System.out.println("Internal Error: _initGrid: gridNJuke+1 != "+
+                    "grid.size() ("+gridNJuke+"+1 != "+grid.size()+")" );
+        }
+        //gridNJuke = grid.size();
+        if (_debug == 5 )
+            System.out.println("PrintBox: _initGrid: ratio = "+ratio+
+                    "gridNJuke = "+gridNJuke+" gridCurJuke = "+gridCurJuke+
+                    " grid.size()"+grid.size()+grid.toString());
+        return grid;
+    }
+
     /*
      * Measure the various fonts.  
      */
@@ -1716,15 +1895,15 @@ public class PlotBox extends Panel {
             min -= 1.0;
             max += 1.0;
         }
-        if (_xRangeGiven) {
+        //if (_xRangeGiven) {
             // The user specified the range, so don't pad.
-            _xMin = min;
-            _xMax = max;
-        } else {
+        //_xMin = min;
+        //  _xMax = max;
+        //} else {
             // Pad slightly so that we don't plot points on the axes.
             _xMin = min - ((max - min) * _PADDING);
             _xMax = max + ((max - min) * _PADDING);
-        }
+            //}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_xMin),Math.abs(_xMax));
@@ -1754,15 +1933,15 @@ public class PlotBox extends Panel {
             min -= 0.1;
             max += 0.1;
         }
-        if (_yRangeGiven) {
+        //        if (_yRangeGiven) {
             // The user specified the range, so don't pad.
-            _yMin = min;
-            _yMax = max;
-        } else {
+        //            _yMin = min;
+        //            _yMax = max;
+        //        } else {
             // Pad slightly so that we don't plot points on the axes.
             _yMin = min - ((max - min) * _PADDING);
             _yMax = max + ((max - min) * _PADDING);
-        }
+            //        }
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_yMin),Math.abs(_yMax));
