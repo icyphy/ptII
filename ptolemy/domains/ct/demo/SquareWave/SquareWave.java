@@ -84,8 +84,7 @@ public class SquareWave extends TypedCompositeActor {
 
         Clock sqwv = new Clock(this, "SQWV");
         sqwv.period.setExpression("period");
-        double values[][] = {{2.0, -2.0}};
-        sqwv.values.setToken(new DoubleMatrixToken(values));
+        sqwv.values.setExpression("{2.0, -2.0}");
         ContinuousTransferFunction tf = new ContinuousTransferFunction(
                 this, "TransferFunction");
         tf.numerator.setExpression("numerator");
