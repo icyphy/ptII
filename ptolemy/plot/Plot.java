@@ -658,6 +658,19 @@ public class Plot extends PlotBox {
         _sweepsPersistence = persistence;
     }
 
+
+    /** Start the plot.
+     * This method is redefined in child classes, such as PlotLive.   
+     */
+    public void start () {
+    }
+
+    /** Stop the plot.
+     * This method is redefined in child classes, such as PlotLive.   
+     */
+    public void stop () {
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                          protected methods                       ////
   
