@@ -191,14 +191,14 @@ public class ArrayToken extends Token {
      *  for every element in the array separated by commas, ending with "]".
      */
     public String toString() {
-	String s = "[";
+	String s = "{";
 	for (int i = 0; i < length(); i++) {
 	    s += _value[i].toString();
 	    if (i < (length()-1)) {
 		s += ", ";
 	    }
 	}
-	return s + "]";
+	return s + "}";
     }
 
     /** Returns a new ArrayToken representing the additive identity.

@@ -104,7 +104,7 @@ test ArrayType-2.1 {Test convert} {
 
     list [[$c1 getType] toString] [$c1 toString] \
          [[$c2 getType] toString] [$c2 toString]
-} {(int)array {[0, 1]} (string)array {["0", "1"]}}
+} {(int)array {{0, 1}} (string)array {{"0", "1"}}}
 
 ######################################################################
 ####

@@ -57,5 +57,5 @@ test ArrayToken-1.0 {Create a string array} {
     set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
 
     $valToken toString
-} {["AB", "CD"]}
+} {{"AB", "CD"}}
 
