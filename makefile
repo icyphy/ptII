@@ -36,7 +36,9 @@ ME =		.
 # Go into com before compiling ptolemy so we get JLex
 # PTJNI_DIR is set to jni by configure in $PTII/mk/ptII.mk
 #   if gcc or cc was found.
-DIRS = util com ptolemy $(PTJNI_DIR) bin doc
+# PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
+#   if $PTII/mescal was found
+DIRS = util com ptolemy $(PTJNI_DIR) $(PTMESCAL_DIR) bin doc
 
 # Root of Ptolemy II directory
 ROOT =		.
