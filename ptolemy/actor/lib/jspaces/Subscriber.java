@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jspaces;
@@ -177,9 +177,9 @@ public class Subscriber extends Source implements RemoteEventListener {
 
         // Register for notification
         try {
-            _eventReg = _space.notify(
+            _eventRegister = _space.notify(
                     template, null, this, Lease.FOREVER, null);
-            _notificationSeq = _eventReg.getSequenceNumber();
+            _notificationSeq = _eventRegister.getSequenceNumber();
 
         } catch (Exception e) {
             throw new IllegalActionException( this,
@@ -272,7 +272,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     private Token _lastReadToken;
 
     // Used to identify the event registration
-    private EventRegistration _eventReg;
+    private EventRegistration _eventRegister;
 
     // Notification sequence number
     private long _notificationSeq;
@@ -308,8 +308,8 @@ public class Subscriber extends Source implements RemoteEventListener {
          */
         public void run() {
             // check if it is the right notification
-            if (_event.getSource().equals(_eventReg.getSource()) &&
-                    _event.getID() == _eventReg.getID() &&
+            if (_event.getSource().equals(_eventRegister.getSource()) &&
+                    _event.getID() == _eventRegister.getID() &&
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read all new entries.
                 synchronized(_lock) {
