@@ -102,7 +102,7 @@ public class DESampler extends AtomicActor {
             // If the input also has token then update _lastToken.
             if (inputR.hasToken()) {
                 try {
-                _lastToken=(DoubleToken)(input.get(0));
+                    _lastToken=(DoubleToken)(input.get(0));
                 } catch (NoSuchItemException e) {
                     // Can't occur
                     throw new InvalidStateException("Check DESampler.fire()"+

@@ -91,7 +91,7 @@ public class DEFIFOQueue extends AtomicActor {
     public void fire() 
             throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing "+
-                           description(CLASSNAME|FULLNAME));
+                description(CLASSNAME|FULLNAME));
 
 	boolean bugFree = false;
 
@@ -143,7 +143,7 @@ public class DEFIFOQueue extends AtomicActor {
 	
 	if (!bugFree) {
 	    throw new InvalidStateException("Bug in scheduler, look at "+
-					"DEFIFOQueue");
+                    "DEFIFOQueue");
 	}
     }
 

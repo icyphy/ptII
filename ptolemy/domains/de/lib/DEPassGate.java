@@ -85,7 +85,7 @@ public class DEPassGate extends AtomicActor {
     public void fire() 
             throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing "+
-                           description(CLASSNAME|FULLNAME));
+                description(CLASSNAME|FULLNAME));
 
         
         // Check if there's an event in the "input" port.

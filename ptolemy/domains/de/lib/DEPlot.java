@@ -130,7 +130,7 @@ public class DEPlot extends AtomicActor{
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == _inputWidth) {
             throw new InvalidStateException("DEPlot.fire(), no tokens in the "+
-                                        "input port, bad scheduler ?");
+                    "input port, bad scheduler ?");
         }
         
     }
