@@ -39,7 +39,7 @@ This class defines a relation supporting hierarchy (clustered graphs).
 Specifically, a method is added for defining a container and for
 performing deep traversals of
 a graph. Most importantly, however, instances of this class refuse to link
-to ports that are not instances of ComponenPort.  Thus, this class
+to ports that are not instances of ComponentPort.  Thus, this class
 ensures that ComponentPort instances are only connected to other
 ComponentPort instances.
 <p>

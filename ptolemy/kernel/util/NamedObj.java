@@ -208,7 +208,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     /** Return a string of the form "workspace.name1.name2...nameN". Here,
      *  "nameN" is the name of this object, "workspace" is the name of the
      *  workspace, and the intervening names are the names of the containers
-     *  of this othe name of this object, if there are containers.
+     *  of this other name of this object, if there are containers.
      *  A recursive structure, where this object is directly or indirectly
      *  contained by itself, results in a runtime exception of class
      *  InvalidStateException.  Note that it is 
