@@ -26,6 +26,8 @@ config.cache
 config.log
 config.status
 core
+doc/codeDocHyVisual
+doc/codeDocHyVisual.jar
 doc/design/src
 doc/design/html
 doc/uml
