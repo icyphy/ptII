@@ -161,8 +161,13 @@ public abstract class Top extends JFrame {
      *  the value of the last Open URL dialog.
      *  If the Open URL menu choice has not yet been invoked, then
      *  return null.
+     *  <p>The value returned by getLastOverallURL() is used
+     *  by MoMLParser to determine whether we should display
+     *  a Security concern dialog and ask the user if they want
+     *  to download a model from outside the value of getLastOverallURL().
      *  @return the most recently entered URL in the most recently
      *  invoked Open URL dialog box.
+     *  @see #setLastOverallURL
      */
     public static String getLastOverallURL() {
 	// This method is static so that we can get at it from
@@ -218,6 +223,21 @@ public abstract class Top extends JFrame {
         if (_statusBar != null) {
             _statusBar.setBackground(background);
         }
+    }
+
+    /** Set the value of the last overall URL.  
+     *  @param lastOverallURL The last overall URL
+     *  @see getLastOverallURL
+     */
+    public static void setLastOverallURL(String lastOverallURL) {
+	// This method is static so that we can get at it from
+	// MoMLParser.  MoMLApplet calls this method as well
+        // so that signed applets will not invoke the 
+        // 'Security concern' message in MoMLParser.  In
+        // someways, it makes more sense for _lastOverallURL
+        // to be in MoMLParser, but ptolemy.gui does not
+        // otherwise depend on ptolemy.moml.
+	_lastOverallURL = lastOverallURL;
     }
 
     /** Record whether the data associated with this window has been
