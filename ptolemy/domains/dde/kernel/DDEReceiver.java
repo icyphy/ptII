@@ -401,8 +401,8 @@ public class DDEReceiver extends TimedQueueReceiver
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
 	    if( name.equals("fBack") ) {
-            System.out.println("RcvrTime = "+getRcvrTime()+";   Time Keeper Time = "
-            	+timeKeeper.getNextTime());
+            System.out.println("RcvrTime = " + getRcvrTime() +
+                    ";   Time Keeper Time = " + timeKeeper.getNextTime());
 	    }
 	    return false;
 	}
@@ -415,7 +415,9 @@ public class DDEReceiver extends TimedQueueReceiver
 		&& timeKeeper.getHighestPriorityReal() == null ) {
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
 	        if( name.equals("fBack") ) {
-	            System.out.println(name+":  This is not the highest priority receiver! The priority is " + getPriority() );
+	            System.out.println(name + ":  This is not the" +
+                    highest priority receiver! The priority is " +
+                    getPriority());
 		    if( getRcvrTime() > 20.0 ) {
 		        if( hasNullToken() ) {
 			    System.out.println(name+":  Has a null token.\n\n");

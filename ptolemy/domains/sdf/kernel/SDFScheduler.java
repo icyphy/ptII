@@ -728,7 +728,8 @@ public class SDFScheduler extends Scheduler {
                 Enumeration ainputports = a.inputPorts();
                 while(ainputports.hasMoreElements()) {
                     IOPort ainputport = (IOPort) ainputports.nextElement();
-                    // Initialize the waitingTokens at all the inputports to zero
+                    // Initialize the waitingTokens at all the 
+                    // inputports to zero
                     waitingTokens.putAt(ainputport, new Integer(0));
 
                     Enumeration cports = ainputport.deepConnectedOutPorts();
@@ -740,7 +741,8 @@ public class SDFScheduler extends Scheduler {
                             = (ComponentEntity) cport.getContainer();
                         int rate = _getTokenInitProduction(cport);
                         if(rate > 0) {
-                            int tokens = ((Integer) waitingTokens.at(ainputport))
+                            int tokens =
+                                ((Integer) waitingTokens.at(ainputport))
                                 .intValue();
                             waitingTokens.putAt(ainputport,
                                     new Integer(tokens + rate));
@@ -866,7 +868,8 @@ public class SDFScheduler extends Scheduler {
                             int inputThreshold =
                                 _getTokenConsumptionRate(connectedPort);
                             if((curTokenAmt.intValue() < inputThreshold) &&
-                                    ((newTokenAmt.intValue() >= inputThreshold)))
+                                    ((newTokenAmt.intValue() >=
+                                            inputThreshold)))
                                 {
                                     Integer i =
                                         (Integer) unfulfilledInputs.at(
