@@ -41,6 +41,10 @@ import java.lang.reflect.*;
 /**
  * This class provides library for mathematical operations on Complex
  * and double arrays.  This library is just a starting point.
+ * <p>
+ * Note that in general, these methods do not check that array
+ * arguments are not null. Thus, calling them with null arguments will
+ * likely result in a null pointer exception.
  *
  * @author Albert Chen, William Wu, Edward A. Lee
  * @version $Id$
@@ -164,6 +168,7 @@ public final class ArrayMath {
      *  @param bottom The bottom limit.
      *  @param top The top limit.
      *  @return A new array with values in the range [bottom, top].
+     *  @see Double
      */
     public static double[] limit(double[] array, double bottom, double top) {
         double[] result = new double[array.length];
@@ -197,7 +202,7 @@ public final class ArrayMath {
      *  (1 - <em>r</em><sub>N-1</sub><em>z</em><sup>-1</sup>).
      *  <p>
      *  The returned polynomial will always be monic, meaning that
-     *  <em>a</em><sub>0</sub> = 0.
+     *  <em>a</em><sub>0</sub> = 1.
      *
      *  @param roots An array of roots of a polynomial.
      *  @return A new array representing a monic polynomial with the given
