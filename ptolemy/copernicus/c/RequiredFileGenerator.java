@@ -93,14 +93,18 @@ public class RequiredFileGenerator {
             Scene.v().loadClassAndSupport(className);
 
             // Generate headers for everything in the transitive closure.
+
             Iterator j = Scene.v().getClasses().iterator();
             while(j.hasNext()) {
                 String nextClassName=((SootClass)j.next()).getName();
                 _generateHeaders(classPath, nextClassName, compileMode,
                     verbose);
+                //_generateC(classPath, nextClassName, compileMode, verbose);
             }
 
+
             // Generate only the required .c files.
+
             Iterator i = _requiredClasses.iterator();
             while (i.hasNext()) {
                 String nextClassName=((SootClass)i.next()).getName();
@@ -111,6 +115,7 @@ public class RequiredFileGenerator {
 
                 _generateC(classPath, nextClassName, compileMode, verbose);
             }
+
 
          }
     }
@@ -143,41 +148,14 @@ public class RequiredFileGenerator {
         }
     }
 
-    /** Returns the C filename corresponding to a class.
-     *  @param className The name of a class.
-     *  @return The C fileName corresponding to this class.
-     */
-    public static String classNameToFileName(String className) {
-        if (isSystemClass(className)) {
-            return(System.getProperty("j2c_lib")
-                + "/" + className.replace('.', '/'));
-        }
-        else {
-            return(className);
-        }
-    }
-
-    /** Returns whether a given class is a System class.
-     *  @param className A class.
-     *  @return True if the given class is a System class.
-     */
-    public static boolean isSystemClass(String className) {
-
-        if ((className.startsWith("java."))||
-                (className.startsWith("sun."))) {
-            return (true);
-        }
-        else {
-            return(false);
-        }
-    }
-
 
     /** Calculate which classes and methods are really needed.
         @param classPath The classpath.
         @param className The name of the class.
      */
     private static void _compute(String classPath, String className) {
+
+         // Initialize the scene and other variables.
          _requiredMethods = new HashSet();
          _requiredClasses = new HashSet();
          Scene.v().setSootClassPath(classPath);
@@ -186,9 +164,12 @@ public class RequiredFileGenerator {
          ClassHierarchyAnalysis analyser = new ClassHierarchyAnalysis();
          Scene.v().setActiveInvokeGraph(analyser.newInvokeGraph());
 
+        // Note all methods in the main class as required methods.
          Iterator mainMethodsIter =
                  Scene.v().getMainClass().getMethods().iterator();
 
+        // Note all methods possibly called by any of the main methods as
+        // required methods.
          while (mainMethodsIter.hasNext()) {
              SootMethod thisMethod = (SootMethod)mainMethodsIter.next();
              List targetList =
@@ -203,13 +184,39 @@ public class RequiredFileGenerator {
              _requiredMethods.add(thisMethod);
          }
 
-         Iterator requiredMethodsIter = _requiredMethods.iterator();
-         while (requiredMethodsIter.hasNext()) {
+         // Add all required runtime methods to the list of required
+         // methods.
 
+         SootClass stringClass = Scene.v().
+                loadClassAndSupport("java.lang.String");
+         SootMethod initStringWithCharArray = stringClass.getMethod(
+                "void <init>(char[])");
+         _requiredMethods.add(initStringWithCharArray);
+
+
+         // The set of required classes is all classes that declare atleast
+         // one required method.
+         Iterator requiredMethodsIter = _requiredMethods.iterator();
+
+         while (requiredMethodsIter.hasNext()) {
              SootMethod thisMethod =
                      (SootMethod)requiredMethodsIter.next();
 
              _requiredClasses.add(thisMethod.getDeclaringClass());
+         }
+
+         // Make sure the "clinit" method is noted as required, if it
+         // exists
+
+         Iterator requiredClassesIter = _requiredClasses.iterator();
+         while (requiredClassesIter.hasNext()) {
+             SootClass thisClass = (SootClass)requiredClassesIter.next();
+
+             if (thisClass.declaresMethod("void <clinit>()")) {
+                 SootMethod initMethod =
+                        thisClass.getMethod("void <clinit>()");
+                 _requiredMethods.add(initMethod);
+             }
          }
     }
 
@@ -236,7 +243,7 @@ public class RequiredFileGenerator {
 
         // Make changes in the filename.
         String fileName = new String();
-        fileName = classNameToFileName(className);
+        fileName = CNames.classNameToFileName(className);
 
         // Generate the .c file.
         if (compileMode.equals("full")) {
@@ -278,7 +285,7 @@ public class RequiredFileGenerator {
 
         // Make changes in the filename.
         String fileName = new String();
-        fileName = classNameToFileName(className);
+        fileName = CNames.classNameToFileName(className);
 
         // Create any parent directories, if required.
         if (fileName.lastIndexOf('/')>0) {
@@ -298,7 +305,7 @@ public class RequiredFileGenerator {
         else {
             code = iGenerator.generate(sootClass);
             FileHandler.write(fileName
-                    + InterfaceFileGenerator.interfaceFileNameSuffix(),code);
+                    + InterfaceFileGenerator.interfaceFileNameSuffix(), code);
             if(verbose) System.out.println( "\tcreated: " + fileName
                     + InterfaceFileGenerator.interfaceFileNameSuffix());
         }
@@ -306,12 +313,12 @@ public class RequiredFileGenerator {
 
         // Generate the .h file.
         if(FileHandler.exists(fileName+".h")) {
-            if(verbose) System.out.println( "\texists: "+fileName+".h");
+            if(verbose) System.out.println( "\texists: " + fileName + ".h");
         }
         else {
             code = hGenerator.generate(sootClass);
-            FileHandler.write(fileName+".h",code);
-            if(verbose) System.out.println( "\tcreated: "+fileName+".h");
+            FileHandler.write(fileName+".h", code);
+            if(verbose) System.out.println( "\tcreated: " + fileName + ".h");
         }
     }
 

@@ -1,7 +1,6 @@
 /*
-An application that converts a Java class into  C
-source files (an "interface header" file, a .h file and a .c file) that implement
-the class.
+An application that converts a Java class into  C source files (an
+"interface header" file, a .h file and a .c file) that implement the class.
 
 Copyright (c) 2001-2002 The University of Maryland.
 All rights reserved.

@@ -119,7 +119,7 @@ public class MakeFileGenerator {
      */
     protected static String _classNameToMakeFileName(String className) {
         StringBuffer name = new StringBuffer(
-            RequiredFileGenerator.classNameToFileName(className));
+            CNames.classNameToFileName(className));
 
         // Replace "$" with "$$"so that the make utility interprets names
         // correctly.

@@ -475,8 +475,16 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _context.addIncludeFile(includeFileName);
         }
 
-        _push(CNames.functionNameOf(v.getMethod()) + "("
-            +_generateArguments(v, 0) + ")");
+        // Comment out native method calls.
+        if (v.getMethod().isNative()) {
+            _push("/*" + CNames.functionNameOf(v.getMethod()) + "("
+                    +_generateArguments(v, 0) + ")" + "*/" );
+        }
+        else {
+            _push(CNames.functionNameOf(v.getMethod()) + "("
+                    +_generateArguments(v, 0) + ")");
+        }
+
     }
 
     public void caseSubExpr(SubExpr v) {
@@ -748,7 +756,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _push("< UNHANDLED: "+obj.getClass().getName()+">");
         }
 
-        System.err.println("Unsupported visitation type: "
+        System.out.println("Unsupported visitation type: "
                 + obj.getClass().getName() + "(ignored).");
     }
 

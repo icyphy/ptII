@@ -274,8 +274,8 @@ public class HeaderFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // override method in CodeFileGenerator and include "interface header" files instead
-    // of .h files.
+    // override method in CodeFileGenerator and include "interface header"
+    // files instead of .h files.
 
     protected String _generateIncludeDirectives() {
         StringBuffer headerCode = new StringBuffer();

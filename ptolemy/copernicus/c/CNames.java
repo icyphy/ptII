@@ -181,6 +181,36 @@ public class CNames {
         return name;
     }
 
+    /** Returns the C filename corresponding to a class.
+     *  @param className The name of a class.
+     *  @return The C fileName corresponding to this class.
+     */
+    public static String classNameToFileName(String className) {
+        if (isSystemClass(className)) {
+            return(System.getProperty("j2c_lib")
+                + "/" + className.replace('.', '/'));
+        }
+        else {
+            return(className);
+        }
+    }
+
+    /** Returns whether a given class is a System class.
+     *  @param className A class.
+     *  @return True if the given class is a System class.
+     */
+    public static boolean isSystemClass(String className) {
+
+        if ((className.startsWith("java."))||
+                (className.startsWith("sun."))) {
+            return (true);
+        }
+        else {
+            return(false);
+        }
+    }
+
+
     /** Determine the C name for the instance-specific structure type that
      *  implements a Soot class. The instance-specific structure has
      *  type "struct {@link #instanceNameOf(SootClass)}". Additionally,
@@ -251,7 +281,7 @@ public class CNames {
 
     /** Determine the C name associated with a Soot type. For RefType types,
      *  the C name returned is the name of the instance-specific data structure.
-     *  To obtain the name of the class-specific data strucuture associated with
+     *  To obtain the name of the class-specific data structure associated with
      *  a RefType, see {@link #instanceNameOf(SootClass)}.
      *  @param type The type.
      *  @return The C name.
