@@ -1293,6 +1293,65 @@ public class Graph implements Cloneable {
         return true;
     }
 
+    /** Validate the weight of an edge. Operation parallels that of
+     *  #validateWeight(Node).
+     *  @param edge The edge whose weight is to be validated.
+     *  @return True if the edge weight has changed, as determined by the equals
+     *  method.
+     *  @exception GraphElementException If the specified edge is not in
+     *  the graph.
+     *  @exception GraphElementException If the weight of the given edge
+     *  is not valid, as determined by {@link #validEdgeWeight(Object)}.
+     *  @see #validateWeight(Edge, Object).
+     */
+    public boolean validateWeight(Edge edge) {
+        if (edge == null) {
+            throw new NullPointerException("Attempt to validate the weight "
+                    + "of a null graph edge.");
+        }
+        if (!containsEdge(edge)) {
+            throw new GraphElementException(
+                    "The specified edge is not in the graph."
+                    + GraphException.edgeDump(edge, this));
+        }
+        Object weightArgument = edge.hasWeight() ? edge.getWeight() : null;
+        if (!validEdgeWeight(weightArgument)) {
+            throw new GraphElementException(
+                    "Invalid weight associated with an edge in the graph."
+                    + GraphException.edgeDump(edge, this));
+        }
+        boolean changed = _removeWeight(edge, weightArgument, _edgeWeightMap,
+                _unweightedEdgeSet);
+        _registerWeight(edge, _edgeWeightMap, _unweightedEdgeSet);
+        return changed;
+    }
+
+    /** Validate the weight of an edge given the edge and its previous weight.
+     *  Operation parallels that of #validateWeight(Node, Object).
+     *
+     *  @param edge The edge whose weight is to be validated.
+     *  @param oldWeight The previous weight of the edge.
+     *  @return True if the edge weight has changed, as determined by the equals
+     *  method.
+     *  @see #validateWeight(Edge)
+     *  @see #validateWeight(Node, Object)
+     */
+     public boolean validateWeight(Edge edge, Object oldWeight) {
+        if (!containsEdge(edge)) {
+            throw new GraphElementException(
+                    "The specified edge is not in the graph."
+                    + GraphException.edgeDump(edge, this));
+        }
+        Object newWeight = edge.hasWeight() ? edge.getWeight() : null;
+        if (!validEdgeWeight(newWeight)) {
+            throw new GraphElementException(
+                    "Invalid weight associated with an edge in the graph."
+                    + GraphException.edgeDump(edge, this));
+        }
+        return _validateWeight(edge, oldWeight, newWeight, _edges, 
+                _edgeWeightMap, _unweightedEdgeSet);
+     }
+
     /** Validate the weight of a node. This method checks the validity of
      *  the node weight (using {@link #validNodeWeight(Object)}, and
      *  updates, if necessary, the internal mapping of weights into
