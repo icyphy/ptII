@@ -459,14 +459,6 @@ public class FixToken extends ScalarToken {
 
     /** Return the value contained in this Token as a String.
      *  @return A String.
-     *  @deprecated Use toString() instead.
-     */
-    public String stringValue() {
-	return toString();
-    }
-
-    /** Return the value contained in this Token as a String.
-     *  @return A String.
      */
     public String toString() {        
         Precision precision = _value.getPrecision();
