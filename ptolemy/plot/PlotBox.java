@@ -124,13 +124,18 @@ public class PlotBox extends Applet {
     /** 
      * Handle button presses to fill the plot.  This rescales so that
      * the data that is currently plotted just fits.
+     * @deprecated FIXME: action() in java.awt.component 
+     * is deprecated in JDK1.1, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == __fillButton) {
             fillPlot();
             return true;
         } else {
-            return super.action (evt, arg);
+            return super.action (evt, arg); // action() is deprecated in 1.1
+	    				    // but we need to compile under 
+	    				    // jdk1.0.2 for netscape3.x
         }
     }
 
@@ -190,8 +195,11 @@ public class PlotBox extends Applet {
 	// up to date.
 	Thread.yield();
 	    
-        // Find the width and height of the total drawing area, and clear it.
-        Rectangle drawRect = bounds();
+       // Find the width and height of the total drawing area, and clear it.
+        Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
+	// in JDK1.1, but we need to compile // under 1.0.2 for
+	// netscape3.x compatibilty.
+
         graphics.setPaintMode();
         if (clearfirst) {
             graphics.clearRect(drawRect.x, drawRect.y,
@@ -627,10 +635,13 @@ public class PlotBox extends Applet {
 	    if (__binary) {
 		_convertBinaryStream(in);
 	    } else {
-		String line = in.readLine();
+
+		String line = in.readLine(); // FIXME: readLine() is
+ 		// deprecated in JDK1.1, but we need to compile under
+		//1.0.2 for netscape3.x compatibilty.
 		while (line != null) {
 		    parseLine(line);
-		    line = in.readLine();
+		    line = in.readLine(); // readLine() is deprecated.
 		}
 	    }
 	} catch (MalformedURLException e) {
@@ -656,8 +667,11 @@ public class PlotBox extends Applet {
 	
     /**
      * Set the starting point for an interactive zoom box.
+     * @deprecated FIXME: mouseDown() in java.awt.component 
+     * is deprecated in JDK1.1, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
      */
-    public boolean mouseDown(Event evt, int x, int y) {
+    public boolean mouseDown(Event evt, int x, int y) { // deprecated
         // ignore if out of range
         if (y <= _lry && y >= _uly && x <= _lrx && x >= _ulx) {
             __zoomx = x;
@@ -671,6 +685,9 @@ public class PlotBox extends Applet {
      * Set the starting point for an interactive zoom box.
      * Return a boolean indicating whether or not we have dealt with
      * the event.
+     * @deprecated FIXME: mouseDown() in java.awt.component 
+     * is deprecated in JDK1.1, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDrag(Event evt, int x, int y) {
         boolean pointinside = y <= _lry && y >= _uly &&
@@ -741,8 +758,11 @@ public class PlotBox extends Applet {
 
     /**
      * Set the starting point for an interactive zoom box.
+     * @deprecated FIXME: mouseUp() in java.awt.component 
+     * is deprecated in JDK1.1, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
      */
-    public boolean mouseUp(Event evt, int x, int y) {
+    public boolean mouseUp(Event evt, int x, int y) { // deprecated
         // ignore if there hasn't been a drag, or if x,y is out of range
         boolean pointinside = y <= _lry && y >= _uly &&
 	    x <= _lrx && x >= _ulx;
