@@ -51,7 +51,9 @@ import diva.gui.toolbox.*;
  * A palette of entities for the ptolemy schematic editor.  When nodes are 
  * dragged in this palette, instead of moving the entity, a swing drag and
  * drop action is started, which can drop the entity on another canvas 
- * with an appropriate drop target.
+ * with an appropriate drop target.  Drop targets will most likely
+ * support the SchematicPalette.nodeFlavor data flavor in order to get a 
+ * reference to the dropped node.
  *
  * @author Steve Neuendorffer, Michael Shilman
  * @version $Id$
@@ -172,24 +174,35 @@ public class SchematicPalette extends JGraph {
 		_controller = (PaletteController) c;
 		_palette = palette;
 	    }
-	    
+
+            /** Respond to a mouse press in the palette by setting the 
+             *  palette's dragged node.	
+             */    
             public void mousePressed (LayerEvent layerEvent) {
-                System.out.println("mouse pressed");
                 Figure draggedFigure = layerEvent.getFigureSource();
                 _palette.setDraggedNode((Node)draggedFigure.getUserObject());
             }
 
+            /** Respond to a mouse press in the palette by resetting the
+             * palette's dragged node.
+             */
             public void mouseReleased (LayerEvent layerEvent) {
-                System.out.println("mouse released");
                 _palette.setDraggedNode(null);
             }
 
+            /** Respond to a translate request.  Don't actually do anything, 
+             *  since the palette uses swing drag and drop instead of 
+             *  figure translation.  
+             */
             public void translate(LayerEvent e, double x, double y) {
                 // This drag interactor doesn't actually drag.
             }
 	}
     }
 
+    /** A transferable object that contains a local JVM reference to a 
+     *  a node.
+     */
     public class NodeTransferable implements Transferable {
 	public NodeTransferable(Node node) {
 	    _node = node;

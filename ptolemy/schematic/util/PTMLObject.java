@@ -41,8 +41,7 @@ import diva.util.*;
 //// PTMLObject
 /**
 
-A PTMLObject is the base class for
-any object that can be pulled out of a Schematic file.  
+The base class for objects parsed from PTML files.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -100,15 +99,31 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         return _parameters.includes(t);
     }
 
-    /** Clone the object into the current workspace by calling the clone()
-     *  method that takes a Workspace argument.
+    /** Clone this object.  Return a new object of this type with 
+     *  copies of all this object's parameters.
      *  This method read-synchronizes on the workspace.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
     public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        try {
+            PTMLObject newobj = (PTMLObject) super.clone();
+            newobj._container = null;
+            newobj.setName(_createUniqueName());
+            newobj._parameters = null;
+            Enumeration objects = parameters();
+            while(objects.hasMoreElements()) {
+                PTMLObject object = (PTMLObject)objects.nextElement();
+                newobj.addParameter((SchematicParameter)object.clone());
+            }
+            return newobj;
+        } catch (Exception e) {
+            if(e instanceof CloneNotSupportedException)
+                throw (CloneNotSupportedException)e;
+            else 
+                throw new CloneNotSupportedException(e.getMessage());
+        }
     }
 
     /** Return true if this object contains the specified object,
@@ -305,6 +320,13 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
+    /** Return a unique name for this object.
+     */
+    protected String _createUniqueName() {
+        // FIXME This is such a ridiculously lame way to do this.
+        return getClass().getName() + PTMLObject._uniqueID++;
+    }
+
     /** Return a description of the object.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
      *  Zero, one or two brackets can be specified to surround the returned
@@ -353,5 +375,7 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
     private Nameable _container;
     private String _name;
     private NamedList _parameters;
+
+    private static long _uniqueID = 1;
 }
 

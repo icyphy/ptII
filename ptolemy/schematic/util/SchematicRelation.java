@@ -46,14 +46,6 @@ Every link has a name that specifies the unique port within a schematic that
 it is connected to.   A link name is formed by period concatenating the
 entity name and the port name that the link is connected to, such as
 "entity.port".
-<!-- schematic relations will be parsed into class SchemticRelation -->
-<!ELEMENT relation (link)*>
-<!ATTLIST relation
-name ID #REQUIRED>
-<!ELEMENT link EMPTY>
-<!ATTLIST link
-name CDATA #REQUIRED>
-
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$

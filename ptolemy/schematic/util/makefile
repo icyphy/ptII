@@ -66,6 +66,7 @@ JSRCS = \
 	SchematicRelation.java \
 	SchematicTerminal.java \
 	Terminal.java \
+	TerminalMap.java \
 	TerminalStyle.java	
 
 EXTRA_SRCS =	$(JSRCS)

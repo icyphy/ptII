@@ -95,10 +95,17 @@ public class EntityTemplate extends PTMLObject {
     }
 
     /**
-     * Get the string that specifies the icon for this entity.
+     * Get the terminal style for this entity.
      */
     public TerminalStyle getTerminalStyle () {
         return _terminalstyle;
+    }
+
+    /**
+     * Get the terminal map for this entity.
+     */
+    public TerminalMap getTerminalMap () {
+        return _terminalmap;
     }
 
     /**
@@ -156,6 +163,13 @@ public class EntityTemplate extends PTMLObject {
     }
 
     /**
+     * Set the TerminalMap that describes this entity.
+     */
+    public void setTerminalMap (TerminalMap tmap) {
+	_terminalmap = tmap;
+    }
+
+    /**
      * Return a string this representing Icon.
      */
     public String toString() {
@@ -173,6 +187,10 @@ public class EntityTemplate extends PTMLObject {
             str += "\nTerminalStyle = null";
         else
             str += "\n" + _terminalstyle.toString();
+        if(_terminalmap == null) 
+            str += "\nTerminalMap = null";
+        else
+            str += "\n" + _terminalmap.toString();
         
         return str + ")";
     }
@@ -224,6 +242,7 @@ public class EntityTemplate extends PTMLObject {
     private NamedList _ports;
     private Icon _icon;
     private TerminalStyle _terminalstyle;
+    private TerminalMap _terminalmap;
 }
 
 

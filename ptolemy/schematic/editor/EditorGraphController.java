@@ -97,7 +97,7 @@ public class EditorGraphController extends GraphController {
         // The interactors attached to terminals and edges
         SelectionModel sm = getSelectionModel();
         NodeInteractor ni = new NodeInteractor(this, sm);
-	ni.setSelectionManipulator(new BoundsManipulator());
+	//ni.setSelectionManipulator(new BoundsManipulator());
         EdgeInteractor ei = new EdgeInteractor(this, sm);
         setNodeInteractor(ni);
         setEdgeInteractor(ei);
@@ -164,26 +164,29 @@ public class EditorGraphController extends GraphController {
             headSite = getConnectorTarget().getHeadSite(nf, x, y);
             getGraphImpl().setEdgeHead(edge, node);
         }
-	System.out.println("tailsite = " + tailSite);
-	System.out.println("headsite = " + headSite);
+
         Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
         ef.setInteractor(getEdgeInteractor());
 
-        // Add to the view and model
+        // Add to the view
         ef.setUserObject(edge);
         edge.setVisualObject(ef);
         layer.add(ef);
-    }
+
+        // Add to the graph
+        
+        //        getGraphImpl().addEdge(edge, getGraph());    
+}
 
     /** Add a node to this graph editor and render it
      * at the given location.
      */
-    public void addNode(Node n, double x, double y) {
+    public void addNode(Node node, double x, double y) {
         // Create a figure for it
-        drawNode(n,x,y);
+        drawNode(node, x, y);
  
         // Add to the graph
-        getGraphImpl().addNode(n, getGraph());
+        getGraphImpl().addNode(node, getGraph());
     }
     
     /** Draw an edge.
@@ -372,6 +375,7 @@ public class EditorGraphController extends GraphController {
 
             // Create a new edge
             Edge edge = getGraphImpl().createEdge(null);
+            // SchematicRelation r = new SchematicRelation
 
             // Add it to the editor
             addEdge(edge,

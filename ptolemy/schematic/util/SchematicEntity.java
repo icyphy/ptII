@@ -114,6 +114,39 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
+     * Clone this entity.  Return a new SchematicEntity with a unique name
+     * and copies of this entities ports and terminals.
+     */
+    public Object clone() throws CloneNotSupportedException {
+       try {
+           SchematicEntity newobj = 
+               new SchematicEntity(_createUniqueName(), 
+                       (EntityTemplate)getTemplate());
+           //  (SchematicEntity) super.clone();
+           newobj._ports = new NamedList();
+           Enumeration objects = ports();
+           while(objects.hasMoreElements()) {
+               PTMLObject object = (PTMLObject)objects.nextElement();
+               newobj.addPort((SchematicPort)object.clone());
+           }
+           
+           /*newobj._terminals = new NamedList();
+           objects = terminals();
+           while(objects.hasMoreElements()) {
+               PTMLObject object = (PTMLObject)objects.nextElement();
+               newobj.addTerminal((SchematicTerminal)object.clone());
+               }*/
+
+           return newobj;
+       } catch (Exception e) {
+           if(e instanceof CloneNotSupportedException)
+               throw (CloneNotSupportedException)e;
+           else 
+               throw new CloneNotSupportedException(e.getMessage());
+       }
+    }
+    
+    /**
      * Test if this entity contains the given port.
      */
     public boolean containsPort (SchematicPort port) {

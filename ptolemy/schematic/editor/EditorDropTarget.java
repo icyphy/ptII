@@ -88,6 +88,7 @@ public class EditorDropTarget extends DropTarget {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		    data = (SchematicEntity)dtde.getTransferable().
 			getTransferData(SchematicPalette.nodeFlavor);
+                    data = (SchematicEntity)data.clone();
                     System.out.println("Data is [" + data + "]");//DEBUG
                 }
                 catch(Exception e) {
