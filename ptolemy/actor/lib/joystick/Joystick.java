@@ -63,12 +63,9 @@ target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
 <p>Currently, this actor will only work under Windows, though 
 the Joystick interface also supports Linux.
 
-<p>If you get the following error on the console:
-<pre>
-TBA
-</pre>
-then you need to be sure that the 
-<code>jjstick.dll</code> is in your path.  
+<p>Under Windows, <code>jjstick.dll</code> must be in your path
+and <code>joystick.jar</code> must be in the classpath.
+
 <p>By default, $PTII/configure looks for the Joystick
 interface in <code>$PTII/vendors/misc/joystick/lib</code>, so you could either
 add that directory to your path, or copy <code>jjstick.dll</code>
@@ -76,11 +73,8 @@ to <code>$PTII/bin</code>:
 <pre>
 cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
 </pre>
-
-<p> When the fire() method is called, a DoubleMatrixToken is
-produced on the output.  The X value is in [0][0] and the
-Y value is in [1][0] (FIXME: what is the range?)
-
+By default, if configure finds <code>joystick.jar</code>, then
+vergil will include <code>joystick.jar<code> in the classpath.
 
 @author Christopher Hylands, David Lee, Paul Yang
 @version $Id$
