@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
+<class name="fsm" extends="ptolemy.domains.fsm.kernel.FSMActor">
+  <doc>
+	FSM entities
+  </doc>
+  <entity name="State" class="ptolemy.domains.fsm.kernel.State">
+  <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+  <configure>generic.transformer</configure>
+  </rendition>
+  </entity>
+</class>
