@@ -45,7 +45,16 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import com.sun.media.jai.codec.FileSeekableStream;
+// FIXME: we should not import com.sun classes.
+// http://java.sun.com/products/java-media/jai/forDevelopers/jai-apidocs/com/sun/media/jai/codec/FileCacheSeekableStream.html
+// says:
+// "This class is not a committed part of the JAI API. It may be
+// removed or changed in future releases of JAI."
+
+import com.sun.media.jai.codec.FileCacheSeekableStream;
+import com.sun.media.jai.codec.SeekableStream;
+import java.io.InputStream;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageReader
@@ -54,7 +63,7 @@ import com.sun.media.jai.codec.FileSeekableStream;
    specified using any form acceptable to FileParameter.  Supports BMP, FPX,
    GIF, JPEG, PNG, PBM, PGM, PPM, and TIFF file formats.
 
-   @author James Yeh, Steve Neuendorffer
+   @author James Yeh, Steve Neuendorffer, Christopher Brooks
    @version $Id$
    @since Ptolemy II 3.0
    @Pt.ProposedRating Red (cxh)
@@ -100,12 +109,7 @@ public class JAIImageReader extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == fileOrURL) {
-            URL url = fileOrURL.asURL();
-            if (url == null) {
-                throw new IllegalActionException("URLToken was null");
-            } else {
-                _fileRoot = url.getFile();
-            }
+            _fileURL = fileOrURL.asURL();
         } else {
             super.attributeChanged(attribute);
         }
@@ -117,23 +121,41 @@ public class JAIImageReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        InputStream inputStream = null;
+        SeekableStream seekableStream = null;
         try {
             try {
-                _stream = new FileSeekableStream(_fileRoot);
+                inputStream = _fileURL.openStream();
+                // We use a FileCacheSeekableStream here because 
+                // we need to have a stream that can go backwards.
+                // If we are running under the windows installer, Web Start
+                // or any other jar based installation, we need to be
+                // able to handle images in jar files.
+                seekableStream = new FileCacheSeekableStream(inputStream);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Unable to load file '" + _fileRoot + "'");
+                        "Unable to load file '" + _fileURL + "'");
             }
-            _outputtedImage = JAI.create("stream", _stream);
+            _outputtedImage = JAI.create("stream", seekableStream);
             PlanarImage dummy = _outputtedImage.getRendering();
         } finally {
-            try {
-                if (_stream != null) {
-                    _stream.close();
+            if (seekableStream != null) {
+                try {
+                    seekableStream.close();
+                } catch (Throwable throwable2) {
+                    throw new IllegalActionException(this, throwable2,
+                            "Unable to close SeekableStream for '"
+                            + _fileURL + "'");
                 }
-            } catch (Throwable throwable) {
-                throw new IllegalActionException(this, throwable,
-                        "Unable to close stream for '" + _fileRoot + "'");
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Throwable throwable3) {
+                    throw new IllegalActionException(this, throwable3,
+                            "Unable to close InputStream for '"
+                            + _fileURL + "'");
+                }
             }
         }
         output.send(0, new JAIImageToken(_outputtedImage));
@@ -142,14 +164,11 @@ public class JAIImageReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The String that specifies where the file is located. */
-    private String _fileRoot;
+    /** The URL that specifies where the file is located. */
+    private URL _fileURL;
 
     /** The RenderedOp created by JAI from the stream.  This is then
      *  encapsulated by a JAIImageToken.
      */
     private RenderedOp _outputtedImage;
-
-    /** A stream which JAI uses to create RenderedOp's */
-    private FileSeekableStream _stream;
 }
