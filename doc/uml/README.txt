@@ -52,3 +52,49 @@ Figure	UML file		Page within that file
 3.3	??? Token class
 3.6	actor.lib.uml		Sources
 3.7	actor.lib.uml		Sinks
+3.8	actor.lib.logic.uml	Page-1
+3.9	actor.lib.conversions.uml  Page-1     "Copy Document" menu not present?
+
+5.9	moml.uml		Logical View
+
+7.2	???					key classes in kernel
+7.3	kernel.util.vsd		kernel.util				
+7.4	kernel.vsd		kernel
+7.13	???					kernel.util.vsd:mutation
+						does not contain roles	
+
+8.2	actor.vsd		ports
+8.10    actor.util.vsd		actor.util
+8.12	actor.vsd		director
+8.17	actor.vsd		scheduler
+
+9.1	data.vsd		token
+9.3	data.expr.vsd		data.expr
+9.6	fixpoint.vsd		Logical View
+
+10.1	graph.vsd		graph
+
+11.4	data.type.vsd		token
+11.5	actor.vsd		typed
+
+14.15   ct.vsd			ct.packages
+14.16	ct.vsd			kernel.util
+14.19	ct.vsd			solver
+14.17   ct.vsd			Page-1
+14.18	ct.vsd			director
+
+15.4	de.vsd			domains.de.kernel
+15.5	de.vsd			domains.de.lib
+
+16.10	sdf.vsd			sdf.kernel
+
+17.4	fsm.vsd			Logical View
+17.10	???					"FSM kernel classes that
+						 support modal models"
+
+18.5    ct.vsd			Logical View
+
+19.5	ddeLocalTime.vsd	Logical View
+19.6	ddeDeadlock.vsd		Logical View
+
+20.1	pn.kernel.vsd		Logical View
