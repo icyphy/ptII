@@ -72,6 +72,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -393,6 +394,68 @@ public class Query extends JPanel {
         entryBox.addFocusListener(new QueryFocusListener(name));
     }
 
+    /** Create a single-line password box with the specified name, label, and
+     *  default value.  To control the width of the box, call setTextWidth()
+     *  first.
+     *  @param name The name used to identify the entry (when accessing
+     *   the entry).
+     *  @param label The label to attach to the entry.
+     *  @param defaultValue Default value to appear in the entry box.
+     *  @since Ptolemy II 3.1
+     */
+    public void addPassword(String name, String label, String defaultValue) {
+        addPassword(name, label, defaultValue, Color.white);
+    }
+
+    /** Create a single-line password box with the specified name,
+     *  label, and default value.  To control the width of the box,
+     *  call setTextWidth() first.
+     *  <p>To get the value, call getCharArrayValue().  
+     *  Calling getStringValue() on a password entry will result in an
+     *  error because it is less secure to pass around passwords as
+     *  Strings than as arrays of characters.
+     *  <p>The underlying class that is used to implement the password
+     *  facility is javax.sqing.JPasswordField.  For details about how to
+     *  use JPasswordField, see the
+     *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/passwordfield.html" target="_top">Java Tutorial</a>
+     * 
+     *  @param name The name used to identify the entry (when accessing
+     *   the entry).
+     *  @param label The label to attach to the entry.
+     *  @param defaultValue Default value to appear in the entry box.
+     *  @param background The background color.
+     *  @since Ptolemy II 3.1
+     */
+    public void addPassword(
+            String name,
+            String label,
+            String defaultValue,
+            Color background) {
+
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+        JPasswordField entryBox = new JPasswordField(defaultValue, _width);
+        entryBox.setBackground(background);
+        _addPair(name, lbl, entryBox, entryBox);
+
+        // Add the listener last so that there is no notification
+        // of the first value.
+        entryBox.addActionListener(new QueryActionListener(name));
+
+        // Add a listener for loss of focus.  When the entry gains
+        // and then loses focus, listeners are notified of an update,
+        // but only if the value has changed since the last notification.
+        // FIXME: Unfortunately, Java calls this listener some random
+        // time after the window has been closed.  It is not even a
+        // a queued event when the window is closed.  Thus, we have
+        // a subtle bug where if you enter a value in a line, do not
+        // hit return, and then click on the X to close the window,
+        // the value is restored to the original, and then sometime
+        // later, the focus is lost and the entered value becomes
+        // the value of the parameter.  I don't know of any workaround.
+        entryBox.addFocusListener(new QueryFocusListener(name));
+    }
+
     /*  Create a text area.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
@@ -641,6 +704,35 @@ public class Query extends JPanel {
     }
 
     /** Get the current value in the entry with the given name
+     *  and return as an array of characters. 
+     *  <p>If the entry is a password field, then it is recommended for
+     *  strong security that each element of the array be set to 0
+     *  after use.
+     *  @return The state of the entry
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry type does not
+     *   have a string representation (this should not be thrown).
+     *   This is a runtime exception, so it need not be declared explicitly.
+     *  @since Ptolemy II 3.1
+     */
+    public char [] getCharArrayValue(String name)
+        throws NoSuchElementException, IllegalArgumentException {
+        Object result = _entries.get(name);
+        if (result == null) {
+            throw new NoSuchElementException(
+                "No item named \"" + name + "\" in the query box.");
+        }
+        if (result instanceof JPasswordField) {
+            // Calling JPasswordField.getText() is deprecated
+            return ((JPasswordField) result).getPassword();
+        } else {
+            return getStringValue(name).toCharArray();
+        }
+    }
+
+    /** Get the current value in the entry with the given name
      *  and return as a double value.  If the entry is not a line,
      *  then throw an exception.  If the value of the entry is not
      *  a double, then throw an exception.
@@ -665,7 +757,13 @@ public class Query extends JPanel {
             throw new NoSuchElementException(
                 "No item named \"" + name + " \" in the query box.");
         }
-        if (result instanceof JTextField) {
+        if (result instanceof JPasswordField) {
+            // Note that JPasswordField extends JTextField, so
+            // we should check for JPasswordField first.
+            throw new IllegalArgumentException("For security reasons, "
+                    + "calling getDoubleValue() on a password field is "
+                    + "not permitted.  Instead, call getCharArrayValue()");
+        } else if (result instanceof JTextField) {
             return (new Double(((JTextField) result).getText())).doubleValue();
         } else {
             throw new IllegalArgumentException(
@@ -702,7 +800,13 @@ public class Query extends JPanel {
             throw new NoSuchElementException(
                 "No item named \"" + name + " \" in the query box.");
         }
-        if (result instanceof JTextField) {
+        if (result instanceof JPasswordField) {
+            // Note that JPasswordField extends JTextField, so
+            // we should check for JPasswordField first.
+            throw new IllegalArgumentException("For security reasons, "
+                    + "calling getIntValue() on a password field is "
+                    + "not permitted.  Instead, call getCharArrayValue()");
+        } else if (result instanceof JTextField) {
             return (new Integer(((JTextField) result).getText())).intValue();
         } else if (result instanceof JSlider) {
             return ((JSlider) result).getValue();
@@ -793,7 +897,15 @@ public class Query extends JPanel {
         // We should define a set of inner classes, one for each entry type.
         // Currently, this has to be updated each time a new entry type
         // is added.
-        if (result instanceof JTextField) {
+
+        if (result instanceof JPasswordField) {
+            // Note that JPasswordField extends JTextField, so
+            // we should check for JPasswordField first.
+            throw new IllegalArgumentException("For security reasons, "
+                    + "calling getStringValue() on a password fields is "
+                    + "not permitted.  Instead, call getCharArrayValue()");
+
+        } else if (result instanceof JTextField) {
             return ((JTextField) result).getText();
         } else if (result instanceof QueryColorChooser) {
             return ((QueryColorChooser) result).getSelectedColor();
