@@ -78,10 +78,20 @@ resolution.
 <li><i>channels</i> should be set to desired number of audio 
 channels.
 <li><i>bufferSize</i> should be set to optimize performance.
-<li><i>tokenProductionRate</i> should be set to optimize 
+<li><i>tokenProductionRate</i> may be set to optimize 
 performance.
 </ul>
 <p>(2) Capture from a sound file (local or URL).
+<p>
+The following parameters are relavent to audio capture from
+a sound file, and should be set accordingly:
+<ul>
+<li><i>channels</i> should be set to desired number of audio 
+channels. The default is 1. Choose 2 only if the sound file
+is known to be stereo.
+<li><i>tokenProductionRate</i> may be set to optimize 
+performance.
+</ul>
 <p>The sound file is not periodically repeated. postfire()
 will return false when the end of the sound file is reached.
 <p>There are security issues involed with accessing files.
@@ -102,6 +112,7 @@ performance.
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.media.javasound.SoundCapture
+@see ptolemy.media.javasound.SoundPlayback
 @see ptolemy.domains.sdf.lib.javasound.AudioSink
 */
 
@@ -123,7 +134,8 @@ public class AudioSource extends SDFAtomicActor {
 
 	output = new SDFIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
-	
+	output.setMultiport(true);
+
 	pathName = new Parameter(this, "pathName",
                 new StringToken("soundFile.wav"));
 	source = new Parameter(this, "source", new StringToken("mic"));
@@ -215,8 +227,6 @@ public class AudioSource extends SDFAtomicActor {
      *  or line-in. The number of channels is automatically
      *  determined when capturing samples from a sound file.
      */
-    // FIXME: Currently, only single channel audio is allowed, so
-    // do not set this!
     public Parameter channels;
 
     /** Requested size of the internal audio input
@@ -304,21 +314,32 @@ public class AudioSource extends SDFAtomicActor {
      *  audio source. False if there are no more samples (end
      *  of sound file reached).
      */
+    // FIXME: If audio is read from file and file channels < parameter
+    // channels => bad.
     public boolean postfire() throws IllegalActionException {
 	//System.out.println("AudioSource: postfire(): invoked");
 	// Read in audio data.
 	_audioInDoubleArray =_soundCapture.getSamples();
-	
+	//System.out.println("AudioSource: postfire(): after getSamples");
 	// Check that the read was successful
+	
 	if (_audioInDoubleArray != null) {
-	    _audioTokenArray = new DoubleToken[_productionRate];
-	    // Convert to DoubleToken[].
-	    for (int i = 0; i < _productionRate; i++) {
-		_audioTokenArray[i] =
-		    new DoubleToken(_audioInDoubleArray[i]);
-	    }
+	    // For each channel (in both the audio and Ptolemy II sense):
 	    
-	    output.sendArray(0, _audioTokenArray);
+	    for (int j = 0; j < _channels; j++) {
+
+		_audioTokenArray = new DoubleToken[_productionRate];
+		// Convert to DoubleToken[].
+		for (int i = 0; i < _productionRate; i++) {
+		    _audioTokenArray[i] =
+			new DoubleToken(_audioInDoubleArray[j][i]);
+		}
+		//System.out.println("AudioSource: postfire(): getWidth " +
+		//	   output.getWidth());
+		output.sendArray(j, _audioTokenArray);
+	    }
+
+	    //System.out.println("AudioSource: postfire(): returning true");
 	    return true;
 	} else {
 	    // Read was unsuccessfull.
@@ -332,8 +353,11 @@ public class AudioSource extends SDFAtomicActor {
 	    for (int i = 0; i < _productionRate; i++) {
 		_audioTokenArray[i] = new DoubleToken(0);
 	    }
-	    
-	    output.sendArray(0, _audioTokenArray);
+	    // Output an array of zeros on each channel.
+	    for (int j = 0; j < _channels; j++) {
+		output.sendArray(j, _audioTokenArray);
+	    }
+	    System.out.println("AudioSource: postfire(): returning false");
 	    return false;
 	}
     }
@@ -346,8 +370,11 @@ public class AudioSource extends SDFAtomicActor {
 
 	_productionRate =
 	    ((IntToken)tokenProductionRate.getToken()).intValue();
+	_channels =
+	    ((IntToken)channels.getToken()).intValue();
+
 	output.setTokenProductionRate(_productionRate);
-	output.setMultiport(true);
+	
     }
 
     /** Check parameters and begin the sound capture process. If the
@@ -422,8 +449,9 @@ public class AudioSource extends SDFAtomicActor {
 
     private int _productionRate;
     
+    private int _channels;
 
-    private double[] _audioInDoubleArray;
+    private double[][] _audioInDoubleArray;
 
     private DoubleToken[] _audioTokenArray;
 }

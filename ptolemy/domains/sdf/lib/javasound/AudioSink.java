@@ -55,16 +55,18 @@ import ptolemy.domains.sdf.kernel.*;
 This actor reads in audio data from one input channel and records the
 data to a sound file and/or plays the audio data. The input is of type
 DoubleToken. Each DoubleToken read from the input represents one sample
-of the audio data and should be in the range [-1,1]. Currently, only
-single-channel audio is supported.
+of the audio data and should be in the range [-1,1]. Valid sound file
+formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). Single channel
+(mono) and multichannel audio (stereo) are supported. For single
+audio, data is read from channel 0 of the input port. For multichannel
+(stereo) audio, audio is read from channel 0 (left) and channel 1
+(right) of the input port.
 <p>
-This actor will play the accumulated audio data on wrapup if the
-<i>playAudio</i> parameter is true. It is true by default. This actor
+ This actor
 will save the accumulated audio data to the file specified by the
 <i>pathName</i> parameter if <i>saveAudio</i> is true. It is true
 by default. The audio file format to use is inferred from the
-<i>fileName</i> parameter. Refer to the Java Sound API documentation
-for a list of supported file formats (or just look at this code).
+<i>fileName</i> parameter.
 <p>
 The sampling rate to use can be specified by the <i>sampleRate</i>
 parameter. The default sampling rate is 22050 Hz. The number of
@@ -73,6 +75,7 @@ parameter. The default sample size is 16 bits.
 
 @author  Brian K. Vogel
 @version  $Id$
+@see ptolemy.media.javasound.SoundCapture
 @see ptolemy.media.javasound.SoundPlayback
 @see ptolemy.domains.sdf.lib.javasound.AudioSource
 */
@@ -83,6 +86,7 @@ public class AudioSink extends SDFAtomicActor {
         super(container, name);
         input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
+	input.setMultiport(true);
 
 	pathName = new Parameter(this, "pathName",
                 new StringToken("soundFile.wav"));
@@ -134,7 +138,7 @@ public class AudioSink extends SDFAtomicActor {
     /** The name of the file to write to. If no value is specified,
      *  the default vaule of "soundFile.wav" will be used. Note
      *  that audio will only be written to a sound file if
-     *  parameter <i>sink</i> is set to "file" or "both".
+     *  parameter <i>sink</i> is set to "file".
      *  <p>
      *  For a list of allowable audio file formats, refer to the
      *  ptolemy.media.javasound package documentation.
@@ -215,25 +219,32 @@ public class AudioSink extends SDFAtomicActor {
         }
     }
 
-    /** Read at most one token from each input channel and write its
-     *  string value to the specified file.  Each value is terminated
-     *  with a newline character.
+    /** Read <i>tokenConsumptionRate</i> tokens from each channel.
+     *  Write these tokens to a sound file and/or send them to
+     *  the speaker, depending on the current mode, which is
+     *  determined by the value of <i>sink</i>.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
 	//System.out.println("AudioSink: postfire(): invoked");
-        DoubleToken[] audioTokenArray = new DoubleToken[_consumptionRate];
-        input.getArray(0, audioTokenArray);
-        // Convert to double[].
-        double[] audioInDoubleArray = new double[_consumptionRate];
-        int i;
-        for (i = 0; i < _consumptionRate; i++) {
-            audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
-        }
 
+	// For each channel (in both the audio and Ptolemy II sense):
+	for (int j = 0; j < _channels; j++) {
+	    //for (int j = 0; j < 1; j++) {
+	    DoubleToken[] audioTokenArray = new DoubleToken[_consumptionRate];
+	    input.getArray(j, audioTokenArray);
+       
+	    // For each samples in the current channel:
+	    for (int i = 0; i < _consumptionRate; i++) {
+		// Convert to double[].
+		// *************************************************
+		// FIXME: remove multiply after debug is complete!!
+		// *************************************************
+		_audioInDoubleArray[j][i] = 1.23456789*audioTokenArray[i].doubleValue();
+	    }
+	}
 	// write out samples to speaker and/or file.
-	_soundPlayback.putSamples(audioInDoubleArray);
-
+	_soundPlayback.putSamples(_audioInDoubleArray);
 	return true;
     }
 
@@ -294,7 +305,9 @@ public class AudioSink extends SDFAtomicActor {
 	System.out.println("AudioSink: initialize(): return");
     }
 
-    /** Set up the input port's consumption rate.
+    /** Set up the input port's consumption rate. For optimization, 
+     *  allocate variables
+     *  for use in the postfire() method.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -302,8 +315,12 @@ public class AudioSink extends SDFAtomicActor {
 
 	_consumptionRate =
 	    ((IntToken)tokenConsumptionRate.getToken()).intValue();
+	_channels =
+	    ((IntToken)channels.getToken()).intValue();
+	_audioInDoubleArray = new double[_channels][_consumptionRate];
+
 	input.setTokenConsumptionRate(_consumptionRate);
-	input.setMultiport(true);
+	
     }
 
     /** Close the specified file, if any.
@@ -324,4 +341,8 @@ public class AudioSink extends SDFAtomicActor {
     private int _consumptionRate;
 
     private SoundPlayback _soundPlayback;
+
+    private int _channels;
+
+    private double[][] _audioInDoubleArray;
 }

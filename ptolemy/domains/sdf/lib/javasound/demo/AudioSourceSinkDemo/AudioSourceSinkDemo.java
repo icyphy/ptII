@@ -1,5 +1,5 @@
-/* A model that uses Ptolemy II SDF domain to perform
- * real-time pitch shifting of audio signals.
+/* A model that uses Ptolemy II SDF domain to capture and playback
+   audio data.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -72,11 +72,8 @@ A simple model demonstrating the use of the AudioSource and
 AudioSink actors. The model consists of an AudioSource connected
 to an AudioSink.
 <p>
-Note: AudioSource will not work unless Java 1.3.0 RC1
- or later is used.
-// FIXME: currently requies that a soundfile with name 
-// "1-welcome.wav", mono, 11 kHz sample rate, be in
-// current directory.
+Note: Requires Java 2 v1.3.0 RC1 or later.
+
 @author Brian K. Vogel
 @version $Id$
 */
@@ -114,11 +111,12 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
             _sdfDirector.setScheduleValid(false);
 
 	    // ********** FOR DEBUF ONLY ************
-	    _sdfDirector.iterations.setToken(new IntToken(100));
+	    //_sdfDirector.iterations.setToken(new IntToken(100));
 
 	    // Set the sampling rate to use.
 	    int sampleRate = 22050;
 
+	    int channels = 2;
 	    // Set the token consumption rate and production rate to use.
 	    // Larger values may speed up execution.
 	    int cPRate = 512;
@@ -129,8 +127,8 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 
             // Read audio data from a local file.
             //soundSource.source.setToken(new StringToken("file"));
-	    //soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
-
+	    //soundSource.pathName.setToken(new StringToken("22-new.aif"));
+	    //soundSource.channels.setToken(new IntToken(channels));
 	    // *** OR ***
 
 	    // Read audio data from a URL.
@@ -142,17 +140,24 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	    // Read audio form microphone (real-time capture).
 	    soundSource.source.setToken(new StringToken("mic"));
 	    soundSource.sampleRate.setToken(new IntToken(sampleRate));
+	    soundSource.channels.setToken(new IntToken(channels));
 
             AudioSink soundSink = new AudioSink(this, "soundSink");
 	  soundSink.pathName.setToken(new StringToken("outputFile.wav"));
-	  //soundSink.sink.setToken(new StringToken("speaker"));
-	  soundSink.sink.setToken(new StringToken("file"));
+	  soundSink.sink.setToken(new StringToken("speaker"));
+	  //soundSink.sink.setToken(new StringToken("file"));
 	  soundSink.sampleRate.setToken(new IntToken(sampleRate));
 	  soundSink.sampleSizeInBits.setToken(new IntToken(16));
 	  soundSink.tokenConsumptionRate.setToken(new IntToken(cPRate));
+	  soundSink.channels.setToken(new IntToken(channels));
 
-            this.connect(soundSource.output, soundSink.input);
-	   
+	  //this.connect(soundSource.output, soundSink.input);
+	  TypedIORelation rel1 =
+	    (TypedIORelation)this.newRelation("relation1");
+	  rel1.setWidth(2);
+	  soundSource.output.link(rel1);
+	  soundSink.input.link(rel1);
+
         } catch (Exception ex) {
             System.err.println("Setup failed:" + ex);
         }
