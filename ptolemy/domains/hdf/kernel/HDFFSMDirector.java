@@ -230,12 +230,12 @@ public class HDFFSMDirector extends FSMDirector {
 
     /** If this method is called immediately after preinitialze(),
      *  initialize the mode controller and all the refinements.
-     *  If reinitialization is desired and the current director is a
+     *  If this is a reinitialization and the current director is a
      *  sub-layer HDFFSMDirector, this method reinitializes all the
-     *  refinements in the sub-layer and recompute the schedule of
-     *  the initial states of the sub-layer HDFFSMDirector.
+     *  refinements in the sub-layer and recomputes the schedule of
+     *  the initial state of the sub-layer HDFFSMDirector.
      *  @exception IllegalActionException If the initialize() method of
-     *   one of the associated actors throws it.
+     *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
         if (!_reinitialize){
@@ -243,8 +243,8 @@ public class HDFFSMDirector extends FSMDirector {
             _reinitialize = true;
         } else if (!_resetCurrentHDFFSM) {
             // This is a sub-layer HDFFSMDirector.
-            // Reinitialize all the refinements in the sub-layer HDFFSMDirector
-            // and recompute the schedule.
+            // Reinitialize all the refinements in the sub-layer
+            // HDFFSMDirector and recompute the schedule.
             super.initialize();
             _firingsSoFar = 0;
             FSMActor controller = getController();
@@ -324,8 +324,8 @@ public class HDFFSMDirector extends FSMDirector {
      *  <p>
      *  Otherwise, if a type B firing has occured, a transition is
      *  allowed to occur. Set up new state and connection map if exactly
-     *  one transition is enabled. Update the port rates of the container
-     *  of this director and get the schedule of the current refinement.
+     *  one transition is enabled. Get the schedule of the current
+     *  refinement and propagate its port rates to the outside. 
      *  The upper-level director will be notified of the new connection
      *  and new port rates from the refinement. Return true if the
      *  super class method returns true.
@@ -347,10 +347,10 @@ public class HDFFSMDirector extends FSMDirector {
              "Can't postfire because current refinement is null.");
         }
 
-        // Postfire the current refinement.
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
         boolean postfireReturn = currentRefinement[0].postfire();
+        boolean superPostfire;
         _firingsSoFar++;
         if (_debug_info) {
             System.out.println(getFullName() + " :  postfire(): " +
@@ -364,28 +364,19 @@ public class HDFFSMDirector extends FSMDirector {
             // Set firing count back to zero for next iteration.
             _firingsSoFar = 0;
             Transition lastChosenTr = _getLastChosenTransition();
+            TypedCompositeActor actor;
+            Director refinementDir;
             if (lastChosenTr  == null) {
-                // There is no enabled transition, so remain in the
-                // current state.
+                // No transition enabled. Remain in the current state.
                 if (_debug_info) System.out.println(getFullName() +
                     " :  postfire(): Making a state transition back "
                   + "to the current state. " + curState.getFullName());
-                TypedCompositeActor actor =
+
                 // FIXME
-                //(TypedCompositeActor)curState.getRefinement();
-                    (TypedCompositeActor)(curState.getRefinement())[0];
-                // Even when the finite state machine remains in the
-                // current state, the schedule may change. This occurs
-                // in cases of multi-level HDFFSM model. The sup-mode
-                // remains the same but the sub-mode has changed.
-                Director refinementDir = actor.getDirector();
-                _updateInputTokenConsumptionRates(actor);
-                _updateOutputTokenProductionRates(actor);
-                CompositeActor hdfActor = _getHighestFSM();
-                Director director = hdfActor.getExecutiveDirector();
-                if (director instanceof HDFDirector) {
-                    ((HDFDirector)director).invalidateSchedule();
-                }
+                //actor = (TypedCompositeActor)curState.getRefinement();
+                actor = (TypedCompositeActor)(curState.getRefinement())[0];
+                refinementDir = actor.getDirector();
+                superPostfire = super.postfire();
             } else {
                 // Make a state transition.
                 State newState = lastChosenTr.destinationState();
@@ -393,22 +384,14 @@ public class HDFFSMDirector extends FSMDirector {
                 if (_debug_info) System.out.println(getName() +
                    " : postfire(): making state transition to: " +
                                            newState.getFullName());
-                Iterator actions =
-                    lastChosenTr.commitActionList().iterator();
-                while (actions.hasNext() && !_stopRequested) {
-                    Action action = (Action)actions.next();
-                    action.execute();
-                }
+                //superPostfire = super.postfire();
                 BooleanToken resetToken =
                     (BooleanToken)lastChosenTr.reset.getToken();
                 if (resetToken.booleanValue()) {
                     setCurrentHDFFSMReset(true);
-                    Actor actor = newState.getRefinement()[0];
-                    if (actor != null) {
-                        actor.initialize();
-                    }
-                    initialize();
+                    //initialize();
                 }
+                superPostfire = super.postfire();
                 setCurrentHDFFSMReset(false);
                 curState = newState;
                 // Set up the new connection map and receivers.
@@ -417,11 +400,10 @@ public class HDFFSMDirector extends FSMDirector {
                     (Map)_localReceiverMaps.get(ctrl.currentState());
 
                 // Get the new current refinement actor.
-                TypedCompositeActor actor =
-                    // FIXME
-                    //(TypedCompositeActor)curState.getRefinement();
-                    (TypedCompositeActor)(curState.getRefinement())[0];
-                Director refinementDir = actor.getDirector();
+                // FIXME
+                // actor = (TypedCompositeActor)curState.getRefinement();
+                actor = (TypedCompositeActor)(curState.getRefinement())[0];
+                refinementDir = actor.getDirector();
                 if (refinementDir instanceof HDFFSMDirector) {
                     refinementDir.postfire();
                 } else if (refinementDir instanceof HDFDirector) {
@@ -440,24 +422,25 @@ public class HDFFSMDirector extends FSMDirector {
                         "Only HDF, SDF, or HDFFSM director is "
                         + "allowed in the refinement.");
                 }
-                _updateInputTokenConsumptionRates(actor);
-                _updateOutputTokenProductionRates(actor);
-
-                CompositeActor hdfActor = _getHighestFSM();
-                Director director = hdfActor.getExecutiveDirector();
-                if (director instanceof HDFDirector) {
-                    ((HDFDirector)director).invalidateSchedule();
-                }
-
-                // Tell the scheduler that the current schedule is no
-                // longer valid.
-                if (_debug_info) System.out.println(getName() +
-                    " : invalidating current schedule.");
             }
-            return super.postfire();
+            // Even when the finite state machine remains in the
+            // current state, the schedule may change. This occurs
+            // in cases of multi-level HDFFSM model. The sup-mode
+            // remains the same but the sub-mode has changed.
+            _updateInputTokenConsumptionRates(actor);
+            _updateOutputTokenProductionRates(actor);
+
+            CompositeActor hdfActor = _getHighestFSM();
+            Director director = hdfActor.getExecutiveDirector();
+            if (director instanceof HDFDirector) {
+                ((HDFDirector)director).invalidateSchedule();
+            }
+            if (_debug_info) System.out.println(getName() +
+                    " : invalidating current schedule.");
+
+            //return super.postfire();
+            return superPostfire;
         }
-        if (_debug_info) System.out.println(getName() +
-                             " :  postfire(): returning now.");
 
         return postfireReturn;
     }
@@ -1066,7 +1049,7 @@ public class HDFFSMDirector extends FSMDirector {
     // A flag indicating whether the current director
     // has made a transition with "reset" set to be true.
     private boolean _resetCurrentHDFFSM = false;
-    
+
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
     private boolean _reinitialize;
