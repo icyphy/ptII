@@ -72,38 +72,39 @@ import ptolemy.kernel.util.Workspace;
    DDF domain, there are few constraints on the production and consumption
    behavior of actors and the schedulers make no attempt to construct a
    compile-time schedule. Instead, each actor has a set of firing rules
-   and can be fired if one of them is satisfied, i.e., one set of firing
-   patterns forms a prefix of sequences of unconsumed tokens at input
-   ports.
+   (patterns) and can be fired if one of them is satisfied, i.e., one 
+   particular firing pattern forms a prefix of sequences of unconsumed 
+   tokens at input ports.
    <p>
-   The scheduler implemented in this director fires all enabled and non
+   The scheduler implemented in this director fires all enabled and non-
    deferrable actors once in a basic iteration. A deferrable actor is one
-   which will not help the downstream actor become enabled because it either
-   already has enough data or is waiting for data on another arc. If no actor
-   fires, then one deferrable actor which has the smallest maximum number of
-   tokens on its output arcs is fired. A user can treat several such basic
-   iterations as a single iteration by specifying the number of times a
-   particular actor must be fired in a single iteration. If the value of
-   the parameter runUntilDeadlock is a BooleanToken with value true, the
-   scheduler will repeat the basic iteration until deadlock in <i>one
-   iteration</i>.
+   which will not help one of the downstream actors become enabled because 
+   that actor either already has enough data on the arc connecting those 
+   two actors or is waiting for data on another arc. If no actor fires, 
+   then among all deferrable actors, those which have the smallest maximum 
+   number of tokens on their output arcs are fired. A user can treat several 
+   such basic iterations as a single iteration by adding a parameter with 
+   name "requiredFiringsPerIteration" to an actor (which is often a sink
+   actor or an actor connected to output port of a composite actor this
+   director is embedded in) and specifying the number of times this actor 
+   must be fired in a single iteration. If the value of the parameter 
+   runUntilDeadlock is a BooleanToken with value true, one single iteration 
+   consists of repeating the basic iteration until deadlock. 
    <p>
    The algorithm implementing one basic iteration goes like this:
    <pre>
    E = set of enabled actors
    D = set of deferrable enabled actors
    </pre>
-
-   One default iteration consists of:
+   One basic(default) iteration consists of:
    <pre>
-   if (E-D != 0) fire(E-D)
+   if (E-D != 0) fire (E-D)
    else if (D != 0) fire minimax(D)
    else deadlocked.
    </pre>
-
-   The function "minimax(D)" returns set of actors with the smallest
-   maximum number of tokens on its output paths.
-
+   The function "minimax(D)" returns the a subset of D with the smallest
+   maximum number of tokens on their output paths.
+   <p>
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
 
    @author Gang Zhou
@@ -185,15 +186,19 @@ public class DDFDirector extends Director {
     ////                         public methods                    ////
 
     /** Prior to each basic iteration, scan all active actors to put all
-     *  enabled and not deferrable actors in a list and find the minimax
-     *  actor. Fire all actors in the list. If no actor has been fired,
-     *  fire the minimax actor. If still no actor has been fired, a
-     *  deadlock has been detected. This concludes one basic iteration.
-     *  If some actor has a parameter named "requiredFiringsPerIteration"
+     *  enabled and non-deferrable actors in a list and find the minimax
+     *  actors. Fire all actors once in the list. If no actor has been 
+     *  fired, fire the minimax actors. If still no actor has been fired, 
+     *  a deadlock has been detected. This concludes one basic iteration, 
+     *  and by default also one iteration of this director. However,
+     *  if some actor has a parameter named "requiredFiringsPerIteration"
      *  defined, continue to execute basic iterations until the actor has
      *  been fired at least the number of times given in that parameter. If
      *  more than one actor has such a parameter, then the iteration will
-     *  continue until all are satisfied.
+     *  continue until all are satisfied. If the parameter runUntilDeadlock
+     *  has value true, one iteration consists of repeatedly executing basic 
+     *  iterations until the actors under control of this director reach 
+     *  a deadlock. 
      *  @exception IllegalActionException If any actor executed by this
      *   actor return false in prefire.
      */
@@ -271,23 +276,25 @@ public class DDFDirector extends Director {
                 }
                 return;
             }
-
-            // Check to see if we need to repeat basic iteration to
-            // satisfy requiredFiringsPerIteration for some actors.
-            actors = _actorsToCheckNumberOfFirings.iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor)actors.next();
-                int[] flags = (int[])_actorsFlags.get(actor);
-                int requiredFirings = flags[_REQUIRED_FIRINGS_PER_ITERATION];
-                int firingsDone = flags[_NUMBER_OF_FIRINGS];
-                if (firingsDone < requiredFirings) {
-                    repeatBasicIteration = true;
-                    break;
+             
+            if (!_runUntilDeadlock) {
+                // Check to see if we need to repeat basic iteration to
+                // satisfy requiredFiringsPerIteration for some actors.
+                actors = _actorsToCheckNumberOfFirings.iterator();
+                while (actors.hasNext()) {
+                    Actor actor = (Actor)actors.next();
+                    int[] flags = (int[])_actorsFlags.get(actor);
+                    int requiredFirings 
+                        = flags[_REQUIRED_FIRINGS_PER_ITERATION];
+                    int firingsDone = flags[_NUMBER_OF_FIRINGS];
+                    if (firingsDone < requiredFirings) {
+                        repeatBasicIteration = true;
+                        break;
+                    }
                 }
-            }
-
-            // Repeat
-            if (_runUntilDeadlock) {
+            } else {
+                // Repeat basic iteration if at lease one actor 
+                // has been fired.
                 repeatBasicIteration = _firedOne;
             }
         }
