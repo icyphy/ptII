@@ -592,14 +592,25 @@ public class DEDirector extends Director {
     public void initialize() throws IllegalActionException {
         if (!_isEmbedded() && getStartTime() > getStopTime()) {
             throw new IllegalActionException(this,
-                    " startTime must be less than the stopTime.");
+                    " startTime (" + getStartTime() 
+                    + ") must be less than the stopTime ("
+                    + getStopTime() + ").");
         }
         _exceedStopTime = false;
-        super.initialize();
         // use the protected variable directly, since time can go backward.
         // This is the only place in DE where time can go backward.
         _currentTime = getStartTime();
         _realStartTime = System.currentTimeMillis();
+        // We cannot call super.initialize() since it will set current time
+        // back to 0.0
+        Iterator actors = ((CompositeActor)getContainer())
+            .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (_debugging) _debug("Invoking initialize(): ",
+                    ((NamedObj)actor).getFullName());
+            actor.initialize();
+        }
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
@@ -733,7 +744,9 @@ public class DEDirector extends Director {
             if (outsideCurrentTime < getCurrentTime()) {
                 throw new IllegalActionException(this,
                         "Received an event in the past at "
-                        + "an opaque composite actor boundary.");
+                        + "an opaque composite actor boundary: "
+                        + "Outside time is " + outsideCurrentTime
+                        + ". Local current time is " + getCurrentTime() + ".");
             }
             setCurrentTime(outsideCurrentTime);
             return super.transferInputs(port);
@@ -967,7 +980,9 @@ public class DEDirector extends Director {
             microstep = _microstep + 1;
         } else if ( time < getCurrentTime()) {
             throw new IllegalActionException((Nameable)actor,
-                    "Attempt to queue an event in the past.");
+                    "Attempt to queue an event in the past:"
+                    + " Current time is " + getCurrentTime() 
+                    + " while event time is " + time);
         }
         int depth = _getDepth(actor);
         if(_debugging) _debug("enqueue a pure event: ",
@@ -1003,7 +1018,9 @@ public class DEDirector extends Director {
         } else if ( time < getCurrentTime()) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
-                    "Attempt to queue an event in the past.");
+                    "Attempt to queue an event in the past: "
+                    + " Current time is " + getCurrentTime() 
+                    + " while event time is " + time);
         }
 
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
@@ -1051,8 +1068,8 @@ public class DEDirector extends Director {
         if (depth != null) {
             return depth.intValue();
         }
-        throw new IllegalActionException("Attempt to get depth of actor " +
-                "that was not sorted.");
+        throw new IllegalActionException("Attempt to get depth actor " +
+                ((NamedObj)actor).getName() + " that was not sorted.");
     }
 
     /** Override the default Director implementation, because in DE
