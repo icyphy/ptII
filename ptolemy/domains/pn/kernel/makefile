@@ -40,7 +40,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 
-DIRS = 		demo test #doc
+DIRS = 		#demo test #doc
 
 CLASSPATH = ../../../..
 
@@ -59,12 +59,6 @@ JSRCS = \
 	PNQueueReceiver.java \
 	PNThread.java \
 	TerminateProcessException.java 
-
-# PNActor.java
-# PNCompositeActor.java
-# PNInPort.java
-# PNOutPort.java
-# PNPort.java
 
 EXTRA_SRCS =	$(JSRCS)
 
