@@ -403,6 +403,16 @@ public class LinearStateSpace extends TypedCompositeActor {
         }
     }
 
+    /** Stop the current firing. This method overrides the stopFire()
+     *  method in TypedCompositeActor base class, so that it will not
+     *  invoke the local director (since there is none). This method
+     *  should not be called after initialization phase, i.e. when
+     *  the actor is transparent.
+     */
+    public void stopFire() {
+        return;
+    } 
+
     /** Set the opaqueness back to true and call the wrapup() method
      *  of the super class.
      *  @exception IllegalActionException If there is no director.
