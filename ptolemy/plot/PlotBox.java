@@ -672,7 +672,7 @@ public class PlotBox extends Applet {
         if (idx != -1) {
             return (String)_legendStrings.elementAt(idx);
         } else {
-            return new String("");
+            return null;
         }
     }
       
