@@ -21,9 +21,7 @@
 	<entity name="JAIInterpolation" class="ptolemy.actor.lib.jai.JAIInterpolation">
 	</entity>
 	<entity name="JAIInvert" class="ptolemy.actor.lib.jai.JAIInvert">
-	</entity>	
-	<entity name="JAItemp" class="ptolemy.actor.lib.jai.JAItemp">
-	</entity>	
+	</entity>
       </group>
     ?>
   </configure>
