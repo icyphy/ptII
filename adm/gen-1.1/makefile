@@ -1,6 +1,6 @@
 # makefile to create tar files for distribution
-# Version: @(#)makefile	1.90 09/22/00
-# Copyright (c) 1994-2000 The Regents of the University of California.
+# Version: $Id$
+# Copyright (c) 1994-2001 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -341,7 +341,7 @@ bldmastrcoverage:
 		JFLAGS="-deprecation -g" \
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
-		JSCLASSPATH=/usr/local/JavaScope/classes \
+		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
 		remote1distclean \
 		remote1configure \
 		remote1doc \
