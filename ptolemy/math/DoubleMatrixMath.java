@@ -1059,6 +1059,8 @@ public class DoubleMatrixMath {
 	 *  @param matrix1 The first matrix.
 	 *  @param matrix2 The second matrix.
 	 *  @param errorMatrix The distance to use for comparison.
+         *  Note that if errorMatrix contains an element that is negative,
+         *  then this method will return false.
 	 *  @return True if the elements of the two matrices are within the
 	 *   specified distance.
 	 *  @exception IllegalArgumentException If the third argument has negative
