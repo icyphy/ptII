@@ -98,7 +98,7 @@ public class DEWaitingTime extends DEActor {
             godot = true;
         }
         if(godot) {
-            for (int i=0; i<_waiting.size(); i++) {
+            for (int i = 0; i<_waiting.size(); i++) {
                 double previousTime =
                     ((Double)_waiting.elementAt(i)).doubleValue();
                 DoubleToken outToken =
