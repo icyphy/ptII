@@ -219,6 +219,21 @@ test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using
     # for some reason TclBlend puts brackets around the result, it seems 
     # because there are spaces within the paranthesis???
 } {{"-27.5 hello 11"}}
+
+######################################################################
+####
+#
+test PtParser-3.2 {Construct a parser with \0, which will trigger
+a TokenMgrError, which is _not_ a ParseException } {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    catch {$p1 {generateParseTree String} {\0}} errmsg
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $errmsg "\n" output
+    set lines [split $output "\n"]
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "\0"} Because: {Lexical error at line 1, column 1.  Encountered: "\\" (92), after : ""}}
+
 ######################################################################
 ####
 # 
@@ -1052,3 +1067,21 @@ test PtParser-19.8 {Test String mode} {
     list [$res toString]
 } {{"a baz baz a baz a $bar"}}
 
+test PtParser-19.9 {Test String mode with \0} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    # Should this be an error?
+    set root [$p generateStringParseTree {\0}]
+    set res  [ $evaluator evaluateParseTree $root $scope]
+    list [$res toString]
+} {{"\0"}}
+
+test PtParser-19.10 {Test String mode with {}} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    # Should this be an error?
+    catch {$p generateStringParseTree {}} errmsg
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        $errmsg "\n" output
+    set lines [split $output "\n"]
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""} Because: {Encountered "<EOF>" at line 0, column 0.}}
