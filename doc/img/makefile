@@ -119,6 +119,8 @@ OTHER_FILES_TO_BE_JARED = \
 	expressions8.gif \
 	expressions9.gif \
 	expressionsa.gif \
+	Helen256x256.png  \
+	PtolemyII256x256.png \
 	ptIIplanet.gif \
 	ptIIplanetIcon.gif \
 	PtolemyII.jpg \
