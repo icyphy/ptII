@@ -48,11 +48,12 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	CGCDirector.java \
-	ClassicCGCActor.java \
-	CodeGenActor.java \
-	CodeGeneratingActor.java \
-	ClassicPort.java
+	ActorCodeGenerator.java \
+	CCodeGeneratorHelper.java \
+	CodeGenerator.java \
+	CodeGeneratorHelper.java \
+	ComponentCodeGenerator.java \
+	StaticSchedulingCodeGenerator.java
 
 EXTRA_SRCS =	$(JSRCS)
 
