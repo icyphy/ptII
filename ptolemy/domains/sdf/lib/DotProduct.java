@@ -51,6 +51,7 @@ port have a token upon firing. It always sends one DoubleToken as
 its output.
 
 @author Jeff Tsay
+@version $Id$
 */
 
 public class DotProduct extends SDFAtomicActor {
