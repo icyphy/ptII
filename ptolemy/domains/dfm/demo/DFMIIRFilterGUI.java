@@ -74,7 +74,8 @@ public class DFMIIRFilterGUI implements ActionListener {
             quit = new Button("Quit");
             quit.setActionCommand("quit");
             quit.addActionListener(this);
-            facet = new facetImage("/users/wbwu/ptII/ptolemy/domains/dfm/demo/filterfacet.gif", 640, 480);
+            // facet = new facetImage("/users/wbwu/ptII/ptolemy/domains/dfm/demo/filterfacet.gif", 640, 480);
+            facet = new facetImage("/home/wbwu/berkeley/ptII/ptolemy/domains/dfm/demo/filterfacet.gif", 640, 480);
         } else {
             facet = new facetImage(facetpic, 640, 480);
         }

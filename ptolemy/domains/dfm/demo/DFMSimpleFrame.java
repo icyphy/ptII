@@ -27,7 +27,6 @@
  
 package ptolemy.domains.dfm.demo;
 
-
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -66,9 +65,9 @@ public class DFMSimpleFrame implements ActionListener {
         source3param = new Button(" Edit Source 3 Param ");
         source3param.setActionCommand("edit source 3");
         source3param.addActionListener(this);
-        threasholdparam = new Button(" Edit Threashold Param ");
-        threasholdparam.setActionCommand("edit threashold");
-        threasholdparam.addActionListener(this);
+        thresholdparam = new Button(" Edit Threshold Param ");
+        thresholdparam.setActionCommand("edit threshold");
+        thresholdparam.addActionListener(this);
 
         CompositeActor myUniverse = new CompositeActor();
 
@@ -85,7 +84,9 @@ public class DFMSimpleFrame implements ActionListener {
             quit = new Button("Quit");
             quit.setActionCommand("quit");
             quit.addActionListener(this);
-            facet = new facetImage("/users/wbwu/ptII/ptolemy/domains/dfm/demo/facet.gif", 400, 200);
+            // facet = new facetImage("/users/wbwu/ptII/ptolemy/domains/dfm/demo/facet.gif", 400, 200);
+            facet = new facetImage("/home/wbwu/berkeley/ptII/ptolemy/domains/dfm/demo/facet.gif", 400, 200);
+
         } else {
             facet = new facetImage(facetpic, 400, 200);
         }
@@ -163,9 +164,9 @@ public class DFMSimpleFrame implements ActionListener {
         myUniverse.connect(portin1, portout1, "first_mul_input_queue");
         myUniverse.connect(portin2, portout2, "second_mul_input_queue");
 
-        threa = new DFMThreasholdActor(myUniverse, "threashold");
-        threa.changeParameter("ThreasholdValue", String.valueOf(1000.0));
-        threawin = new ParamWin("threashold", "Threashold Value", 1000.0); 
+        threa = new DFMThresholdActor(myUniverse, "threshold");
+        threa.changeParameter("ThresholdValue", String.valueOf(1000.0));
+        threawin = new ParamWin("threshold", "Threshold Value", 1000.0); 
         DFMActorDrawer threadraw = new DFMActorDrawer(353, 58, 386, 112,facet);
         DFMPortDrawer threaoutportdraw = new DFMPortDrawer(360, 163, facet, true);
         threa.addActorDrawer(threadraw);
@@ -173,7 +174,7 @@ public class DFMSimpleFrame implements ActionListener {
         
         portin1 = (IOPort) threa.getPort("input"); 
         portout1 = (IOPort) mul.getPort("output"); 
-        myUniverse.connect(portin1, portout1, "threashold_input");
+        myUniverse.connect(portin1, portout1, "threshold_input");
 
         portin1 = (IOPort) feedback.getPort("input"); 
         portout1 = (IOPort) threa.getPort("output"); 
@@ -207,7 +208,7 @@ public class DFMSimpleFrame implements ActionListener {
         buttonPanel.add(source1param);
         buttonPanel.add(source2param);
         buttonPanel.add(source3param);
-        buttonPanel.add(threasholdparam);
+        buttonPanel.add(thresholdparam);
         if (quit != null) buttonPanel.add(quit);
     
         myPanel.add("Center", facet);
@@ -238,7 +239,7 @@ public class DFMSimpleFrame implements ActionListener {
         } else if (action.getActionCommand().equals("edit source 3")){
             source3win.setSize(150, 90);
             source3win.setVisible(true); 
-        } else if (action.getActionCommand().equals("edit threashold")){
+        } else if (action.getActionCommand().equals("edit threshold")){
             threawin.setSize(150, 90);
             threawin.setVisible(true); 
         }
@@ -258,11 +259,11 @@ public class DFMSimpleFrame implements ActionListener {
    ParamWin source3win;
    ParamWin threawin;
 
-   Button go, quit, source1param, source2param, source3param, threasholdparam;
+   Button go, quit, source1param, source2param, source3param, thresholdparam;
    DFMDoubleSourceActor source1; 
    DFMDoubleSourceActor source2; 
    DFMDoubleSourceActor source3; 
-   DFMThreasholdActor threa; 
+   DFMThresholdActor threa; 
   
    class MyThread extends Thread {
         public void run() {
@@ -314,9 +315,9 @@ public class DFMSimpleFrame implements ActionListener {
                      if (source3.changeParameter("Value", value)){
                          setVisible(false);
                      }
-                 } else if (_name.equals("threashold")){
+                 } else if (_name.equals("threshold")){
                      facet.clearPortDrawerTokens();
-                     if (threa.changeParameter("ThreasholdValue", value)){
+                     if (threa.changeParameter("ThresholdValue", value)){
                          setVisible(false);
                      }
                  }

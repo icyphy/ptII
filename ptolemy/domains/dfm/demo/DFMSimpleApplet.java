@@ -135,8 +135,8 @@ public class DFMSimpleFrame {
         myUniverse.connect(portin1, portout1, "first_mul_input_queue");
         myUniverse.connect(portin2, portout2, "second_mul_input_queue");
 
-        DFMThreasholdActor threa = new DFMThreasholdActor(myUniverse, "threashold");
-        threa.changeParameter("ThreasholdValue", String.valueOf(1000.0));
+        DFMThresholdActor threa = new DFMThresholdActor(myUniverse, "threashold");
+        threa.changeParameter("ThresholdValue", String.valueOf(1000.0));
         DFMActorDrawer threadraw = new DFMActorDrawer(353, 58, 386, 112,facet);
         DFMPortDrawer threaoutportdraw = new DFMPortDrawer(360, 163, facet);
         threa.addActorDrawer(threadraw);

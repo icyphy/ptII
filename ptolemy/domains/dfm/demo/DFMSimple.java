@@ -99,8 +99,8 @@ public class DFMSimple {
         myUniverse.connect(portin1, portout1, "first_mul_input_queue");
         myUniverse.connect(portin2, portout2, "second_mul_input_queue");
 
-        DFMThreasholdActor threa = new DFMThreasholdActor(myUniverse, "threashold");
-        threa.changeParameter("ThreasholdValue", String.valueOf(1000.0));
+        DFMThresholdActor threa = new DFMThresholdActor(myUniverse, "threashold");
+        threa.changeParameter("ThresholdValue", String.valueOf(1000.0));
         
         portin1 = (IOPort) threa.getPort("input"); 
         portout1 = (IOPort) mul.getPort("output"); 
