@@ -1691,7 +1691,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     // Set to true to turn on debugging messages.
     protected final static boolean _debug = false;
