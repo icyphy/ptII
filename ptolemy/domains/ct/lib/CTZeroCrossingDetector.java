@@ -37,25 +37,28 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CTZeroCrossingDetector
 /**
-This actor periodically sample the input signal and generate an event
-which has the value of the input signal.
+This is a event detector that monitors the signal coming from "trigger"
+input. If the trigger is zero, then output the token from "input."
+This actor controls the integration step size to accurately resolve 
+the time that the zero crossing happens.
+It has a parameter "ErrorTolerance," which controls how accurate the 
+zero 
 @author Jie Liu
 @version $Id$
 @see classname
 @see full-classname
 */
 public class CTZeroCrossingDetector extends CTActor
-        implements CTEventGenerateActor {
+        implements CTEventGenerator, CTStepSizeControlActor {
 
-    public static final boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  A CTActor can be either dynamic, or not.  It must be set at the
-     *  construction time and can't be changed thereafter.
-     *  A dynamic actor will produce a token at its initialization phase.
+     *  The actor has two input, "trigger" and "input", and one output,
+     *  "output." Both of them are single ports.
      *
      *  @param CompositeActor The subsystem that this actor is lived in
      *  @param name The actor's name
@@ -101,7 +104,7 @@ public class CTZeroCrossingDetector extends CTActor
                 " Must be executed after a CTMixedSignalDirector.");
         }
         updateParameters();
-       
+        _first = true;
         if(DEBUG) {
             System.out.println("ZeroCrossingDetector initialize");
         }
@@ -112,6 +115,7 @@ public class CTZeroCrossingDetector extends CTActor
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
+        _inputToken = input.get(0);
     }
 
     /** Postfire: if this is the sampling point, output a token with the
@@ -119,23 +123,78 @@ public class CTZeroCrossingDetector extends CTActor
      *  register the next sampling time as the next break point.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_eventNow) {
-            if(input.hasToken(0)) {
-                DoubleToken value = (DoubleToken) input.get(0);
-                if(DEBUG) {
-                    CTDirector dir = (CTDirector) getDirector();
-                    double tnow = dir.getCurrentTime(); 
-                    System.out.println(" Emit an event at" + tnow
-                    +  " with the value: " +value.doubleValue());
-                }
-                output.broadcast(value);
-            }
-            _eventNow = false;
-        }
         _lastTrg = _thisTrg;
         return true;
     }
 
+    /** Return true if this step did not cross zero.
+     */
+    public boolean isThisStepSuccessful() {
+        if (_first) {
+            _first = false;
+            return true;
+        }
+        if (Math.abs(_thisTrg) < _errorTolerance) {
+            if (_enabled) {
+                //double tnow = dir.getCurrentTime(); 
+                //dir.setFireEndTime(tnow);
+                _eventNow = true;
+                if(DEBUG) {
+                    System.out.println("Event Detected:" + 
+                            getDirector().getCurrentTime());
+                }
+                _enabled = false;
+            }
+            _eventMissed = false;
+            return true;
+        } else {
+            if(!_enabled) {  // if last step is a zero, always successful.
+                _enabled = true;
+            } else {
+                if ((_lastTrg * _thisTrg) < 0.0) {
+                    CTDirector dir = (CTDirector)getDirector();
+                    _eventMissed = true;
+                    _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
+                        (_thisTrg-_lastTrg);
+                    return false;
+                }
+            }
+            _eventMissed = false;
+            return true;
+        }
+    }
+    
+    /** Return the maximum Double, since this actor does not predict 
+     *  step size.
+     */
+    public double predictedStepSize() {
+        return java.lang.Double.MAX_VALUE;
+    }
+
+    /** Return the refined step size if there is a missed event,
+     *  otherwise return the current step size.
+     */
+    public double refinedStepSize() {
+        if(_eventMissed) {
+            return _refineStep;
+        } 
+        return ((CTDirector)getDirector()).getCurrentStepSize();
+    }
+                             
+    /** Return true if there is an event at the current time.
+     */
+    public boolean hasCurrentEvent() {
+        return _eventNow;
+    }
+
+    /** Emit the event. There's no current event after emitting it.
+     */
+    public void emitCurrentEvents() throws IllegalActionException{
+        if(_eventNow) {
+            output.broadcast(_inputToken);
+            _eventNow = false;
+        }
+    }
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
@@ -150,63 +209,6 @@ public class CTZeroCrossingDetector extends CTActor
         _errorTolerance = p;
     }
 
-    /** Return true if there is defintly an event missed in the
-     *  last step.
-     */
-    public boolean hasMissedEvent() {
-
-	if (_first_ask) {
-            _first_ask = false;
-            return false;
-        }
-
-        CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
-        if (Math.abs(_thisTrg) < _errorTolerance) {
-            if (_enabled) {
-                double tnow = dir.getCurrentTime(); 
-                //dir.setFireEndTime(tnow);
-                _eventNow = true;
-                if(DEBUG) {
-                    System.out.println("set FireEndTime:" + tnow);
-                }
-                _enabled = false;
-            }
-            _eventMissed = false;
-            return false;
-        } else {
-            _enabled = true;
-            if (_lastTrg < 0.0) {
-                if (_thisTrg > 0.0) {
-                    _eventMissed = true;
-                    _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
-                        (_thisTrg-_lastTrg);
-                    return true;
-                }
-                _eventMissed = false;
-            } else {
-                if (_thisTrg < 0.0) {
-                     _eventMissed = true;
-                    _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
-                        (_thisTrg-_lastTrg);
-                    return true;
-                }
-                _eventMissed = false;
-            }
-        }
-        return false;
-    }
-       
-    /** If there is a missed event return the expected sample time
-     *  - current time; else return the current step size.
-     */
-    public double refineStepSize() {
-        if(_eventMissed) {
-            _eventMissed = false;
-            return _refineStep;
-        }
-        CTDirector dir = (CTDirector)getDirector();
-        return dir.getCurrentStepSize();
-    }
 
 
     ////////////////////////////////////////////////////////////////////////
@@ -233,5 +235,6 @@ public class CTZeroCrossingDetector extends CTActor
     private double _thisTrg;
     private boolean _enabled;
     private boolean _eventNow = false;
-    private boolean _first_ask = true;
+    private boolean _first = true;
+    private  Token _inputToken;
 }
