@@ -567,8 +567,8 @@ proc jdkStackTrace {} {
 	set exceptionMessage [$exception getMessage]
 	puts "    while executing"
 	set stack [$stream toString]
-	if { [string length $stack] > 1024 } {
-	    puts "[string range $stack 0 1024] . . ."
+	if { [string length $stack] > 10240 } {
+	    puts "[string range $stack 0 10240] . . ."
 	} else {
 	    puts "$stack"
 	}
@@ -616,7 +616,10 @@ set isRunningNightlyBuild \
 
 if {"$isRunningNightlyBuild" == "true"} {
    if ![info exists timeOutSeconds] {
-	   set timeOutSeconds 1200
+       set timeOutSeconds
+	       [java::call System getProperty ptolemy.ptII.timeOutSeconds]
+       if {"$timeOutSeconds" == ""} {
+       set timeOutSeconds 1200
    }
    puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds"
