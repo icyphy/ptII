@@ -35,6 +35,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
@@ -218,6 +219,12 @@ public class ModalPort extends TypedIOPort {
                             ((RefinementPort)mirrorPort)
                                      ._mirrorDisable = true;
                             mirrorPort.setName(name);
+                            // Rename the corresponding relation.
+                            Relation relation = container.getRelation(
+                                    oldName + "Relation");
+                            if (relation != null) {
+                                relation.setName(name + "Relation");
+                            }
                         } finally {
                             ((RefinementPort)mirrorPort)
                                      ._mirrorDisable = false;

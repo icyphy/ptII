@@ -209,9 +209,10 @@ public class Configuration extends CompositeEntity {
      *   there are no relative file references.
      *  @param in The input URL.
      *  @param identifier The identifier that uniquely identifies the model.
+     *  @return The tableau that is created, or null if none.
      *  @exception Exception If the URL cannot be read.
      */
-    public void openModel(URL base, URL in, String identifier)
+    public Tableau openModel(URL base, URL in, String identifier)
             throws Exception {
         ModelDirectory directory = (ModelDirectory)getEntity("directory");
         if (directory == null) {
@@ -250,7 +251,7 @@ public class Configuration extends CompositeEntity {
             if (effigy == null) {
                 MessageHandler.error("Unsupported file type: "
                         + in.toExternalForm());
-                return;
+                return null;
             }
             effigy.identifier.setExpression(identifier);
             // Check the URL to see whether it is a file,
@@ -264,10 +265,10 @@ public class Configuration extends CompositeEntity {
             } else {
                 effigy.setModifiable(false);
             }
-            createPrimaryTableau(effigy);
+            return createPrimaryTableau(effigy);
         } else {
             // Model already exists.
-            effigy.showTableaux();
+            return effigy.showTableaux();
         }
     }
 
@@ -275,12 +276,13 @@ public class Configuration extends CompositeEntity {
      *  open tableaux, then put those in the foreground.  Otherwise,
      *  create a new tableau.
      *  @param entity The model.
+     *  @return The tableau that is created, or null if none.
      *  @throws IllegalActionException If constructing an effigy or tableau
      *   fails.
      *  @throws NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public void openModel(NamedObj entity)
+    public Tableau openModel(NamedObj entity)
             throws IllegalActionException, NameDuplicationException {
 
         // If the entity defers its MoML definition to another,
@@ -295,7 +297,7 @@ public class Configuration extends CompositeEntity {
         PtolemyEffigy effigy = getEffigy(entity);
         if (effigy != null) {
             // Found one.  Display all open tableaux.
-            effigy.showTableaux();
+            return effigy.showTableaux();
         } else {
             // There is no pre-existing effigy.  Create one.
             effigy = new PtolemyEffigy(workspace());
@@ -319,7 +321,7 @@ public class Configuration extends CompositeEntity {
                 effigy.setContainer(directory);
                 
                 // Create a default tableau.
-                createPrimaryTableau(effigy);
+                return createPrimaryTableau(effigy);
             } else {
                 // If we get here, then we are looking inside a model
                 // that is defined within the same file as the parent,
@@ -329,28 +331,31 @@ public class Configuration extends CompositeEntity {
                 // Put the effigy inside the effigy of the parent,
                 // rather than directly into the directory.
                 NamedObj parent = (NamedObj)entity.getContainer();
+                PtolemyEffigy parentEffigy = null;
+                // Find the first container above in the hierarchy that
+                // has an effigy.
+                while (parent != null && parentEffigy == null) {
+                    parentEffigy = getEffigy(parent);
+                    parent = (NamedObj)parent.getContainer();
+                }
                 boolean isContainerSet = false;
-                if (parent != null) {
-                    PtolemyEffigy parentEffigy = getEffigy(parent);
-                    if (parentEffigy != null) {
-                        // OK, we can put it into this other effigy.
-                        effigy.setName(parentEffigy.uniqueName(
-                                entity.getName()));
-                        effigy.setContainer(parentEffigy);
+                if (parentEffigy != null) {
+                    // OK, we can put it into this other effigy.
+                    effigy.setName(parentEffigy.uniqueName(entity.getName()));
+                    effigy.setContainer(parentEffigy);
                             
-                        // Set the identifier of the effigy to be that
-                        // of the parent with the model name appended.
-                        effigy.identifier.setExpression(
-                                parentEffigy.identifier.getExpression()
-                                + "#" + entity.getName());
-                                
-                        // Set the url of the effigy to that of
-                        // the parent.
-                        effigy.url.setURL(parentEffigy.url.getURL());
+                    // Set the identifier of the effigy to be that
+                    // of the parent with the model name appended.
+                    effigy.identifier.setExpression(
+                            parentEffigy.identifier.getExpression()
+                            + "#" + entity.getName());
+          
+                    // Set the url of the effigy to that of
+                    // the parent.
+                    effigy.url.setURL(parentEffigy.url.getURL());
                         
-                        // Indicate success.
-                        isContainerSet = true;
-                    }
+                    // Indicate success.
+                    isContainerSet = true;
                 }
                 // If the above code did not find an effigy to put
                 // the new effigy within, then put it into the
@@ -362,7 +367,7 @@ public class Configuration extends CompositeEntity {
                     effigy.identifier.setExpression(entity.getFullName());
                 }
                         
-                createPrimaryTableau(effigy);
+                return createPrimaryTableau(effigy);
             }
         }
     }

@@ -396,9 +396,7 @@ public class Variable extends Attribute implements Typeable, Settable {
                 _scope = new NamedList();
             }
             NamedObj container = (NamedObj)getContainer();
-            if (container != null) {
-                NamedObj containerContainer =
-                    (NamedObj)container.getContainer();
+            while (container != null) {
                 Iterator level1 = container.attributeList().iterator();
                 Attribute var = null;
                 while (level1.hasNext()) {
@@ -413,39 +411,15 @@ public class Variable extends Attribute implements Typeable, Settable {
                             _scope.append(var);
                             ((Variable)var)._addScopeDependent(this);
                         } catch (NameDuplicationException ex) {
-                            // This occurs when a variable in the same NamedObj
-                            // has the same name as a variable added to the
-                            // scope of this variable. The variable in the same
-                            // NamedObj is shadowed.
+                            // This occurs when a variable is shadowed by one
+                            // that has been previously entered in the scope.
                         } catch (IllegalActionException ex) {
                             // This should not happen since we are dealing with
                             // variables which are Nameable.
                         }
                     }
                 }
-                if (containerContainer != null) {
-                    Iterator level2 =
-                        containerContainer.attributeList().iterator();
-                    while (level2.hasNext()) {
-                        var = (Attribute)level2.next();
-                        try {
-                            if (var instanceof Variable) {
-                                if (_isLegalInScope((Variable)var)) {
-                                    _scope.append(var);
-                                    ((Variable)var)._addScopeDependent(this);
-                                }
-                            }
-                        } catch (NameDuplicationException ex) {
-                            // Name clash between the two levels of scope,
-                            // or a variable at the upper level has the same
-                            // name as a variable added to the scope of this
-                            // variable. The upper level variable is shadowed.
-                        } catch (IllegalActionException ex) {
-                            // This should not happen since we are dealing with
-                            // variables which are Nameable.
-                        }
-                    }
-                }
+                container = (NamedObj)container.getContainer();
             }
             _scopeVersion = workspace().getVersion();
             return _scope;

@@ -30,14 +30,18 @@
 package ptolemy.vergil.ptolemy.fsm.modal;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 
-// NOTE: This class is virtually identical to Refinement, but
+// NOTE: This class duplicates code in Refinement, but
 // because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
 
@@ -47,6 +51,9 @@ import ptolemy.kernel.util.*;
 This FSM actor supports mirroring of its ports in its container
 (which is required to be a ModalModel), which in turn assures
 mirroring of ports in each of the refinements.
+<p>
+Note that this actor has no attributes of its own.
+Requests for attributes are delegated to the container.
 
 @author Edward A. Lee
 @version $Id$
@@ -73,8 +80,8 @@ public class ModalController extends FSMActor {
 
     /** Create a new port with the specified name in the container of
      *  this controller, which in turn creates a port in this controller
-     *  and all the refinements.  This method is write-synchronized on
-     *  the workspace.
+     *  and all the refinements.
+     *  This method is write-synchronized on the workspace.
      *  @param name The name to assign to the newly created port.
      *  @return The new port.
      *  @exception NameDuplicationException If the entity already has a port
@@ -86,7 +93,19 @@ public class ModalController extends FSMActor {
             if (_mirrorDisable || getContainer() == null) {
                 // Have already called the super class.
                 // This time, process the request.
-                Port port = new RefinementPort(this, name);
+                RefinementPort port = new RefinementPort(this, name);
+                // Create the appropriate links.
+                ModalModel container = (ModalModel)getContainer();
+                if (container != null) {
+                    String relationName = name + "Relation";
+                    Relation relation = container.getRelation(relationName);
+                    if (relation == null) {
+                        relation = container.newRelation(relationName);
+                        Port containerPort = container.getPort(name);
+                        containerPort.link(relation);
+                    }
+                    port.link(relation);
+                }
                 return port;
             } else {
                 _mirrorDisable = true;

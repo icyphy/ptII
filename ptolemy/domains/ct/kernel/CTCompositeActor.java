@@ -172,10 +172,8 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public Port newPort(String name)
             throws NameDuplicationException {
-        System.out.println("Create port for CTCompositeActor");
         Port newPort = super.newPort(name);
         try {
-            System.out.println("add parameter.");
             Parameter type = new Parameter(newPort, "signalType",
                     new StringToken("CONTINUOUS"));
         } catch (IllegalActionException ex) {
@@ -185,5 +183,4 @@ public class CTCompositeActor extends TypedCompositeActor
         }
         return newPort;
     }
-
 }

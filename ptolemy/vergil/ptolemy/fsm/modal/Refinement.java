@@ -31,15 +31,19 @@ package ptolemy.vergil.ptolemy.fsm.modal;
 
 import java.util.Iterator;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
+import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 
-// NOTE: This class is virtually identical to ModalController, but
-// because of the inheritance hierarchy, there appears to be no convenient
+// NOTE: This is a combination of ModalController and CTStepSizeControlActor,
+// but because of the inheritance hierarchy, there appears to be no convenient
 // way to share the code.
 
 //////////////////////////////////////////////////////////////////////////
@@ -48,11 +52,14 @@ import ptolemy.kernel.util.*;
 This typed composite actor supports mirroring of its ports in its container
 (which is required to be a ModalModel), which in turn assures
 mirroring of ports in each of the refinements and the controller.
+This class implements the CTStepSizeControlActor interface so that
+it can be used to construct hybrid systems using the CT domain.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class Refinement extends TypedCompositeActor {
+public class Refinement extends TypedCompositeActor
+         implements CTStepSizeControlActor {
 
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
@@ -76,10 +83,24 @@ public class Refinement extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return true, indicating that this composite actor does not
+     *  perform step size control.
+     *  @return True if this step is accurate.
+     */
+    public boolean isThisStepAccurate() {
+        Director dir = getDirector();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isThisStepAccurate();
+        }
+        return true;
+    }
+
     /** Create a new port with the specified name in the container of
-     *  this controller, which in turn creates a port in this controller
-     *  and all the refinements.  This method is write-synchronized on
-     *  the workspace.
+     *  this refinement, which in turn creates a port in this refinement
+     *  all other refinements, and the controller.
+     *  This method is write-synchronized on the workspace.
      *  @param name The name to assign to the newly created port.
      *  @return The new port.
      *  @exception NameDuplicationException If the entity already has a port
@@ -120,6 +141,32 @@ public class Refinement extends TypedCompositeActor {
             _mirrorDisable = false;
             _workspace.doneWriting();
         }
+    }
+
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return java.lang.Double.MAX_VALUE.
+     *  @return The predicted step size.
+     */
+    public double predictedStepSize() {
+        Director dir = getDirector();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).predictedStepSize();
+        }
+        return java.lang.Double.MAX_VALUE;
+    }
+
+    /** Delegate to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return the current step size of the executive director.
+     *  @return The refined step size.
+     */
+    public double refinedStepSize() {
+        Director dir = getDirector();
+        if((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).refinedStepSize();
+        }
+        return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -238,6 +238,10 @@ public class RefinementPort extends TypedIOPort {
 
     /** If the argument is true, make the port an output port.
      *  If the argument is false, make the port not an output port.
+     *  In addition, if the container is an instance of Refinement,
+     *  and the argument is true, find the corresponding port of
+     *  of the controller and make it an input.  This makes it
+     *  possible for the controller to see the outputs of the refinements.
      *  This method overrides the base class to make the same
      *  change on the mirror ports in the controller and state refinments.
      *  This method invalidates the schedule and resolved types of the
@@ -264,6 +268,26 @@ public class RefinementPort extends TypedIOPort {
                         if (port instanceof IOPort) {
                             ((IOPort)port).setOutput(isOutput);
                             success = true;
+                        }
+                        if (isOutput && container instanceof Refinement) {
+                            // Find the corresponding port in the controller
+                            // and make an input as well.
+                            ModalController controller = (ModalController)
+                                    ((ModalModel)modal)
+                                    .getEntity("_Controller");
+                            if (controller != null) {
+                                RefinementPort controlPort
+                                       = (RefinementPort)controller
+                                       .getPort(getName());
+                                if (controlPort != null) {
+                                    try {
+                                        controlPort._mirrorDisable = true;
+                                        controlPort.setInput(true);
+                                    } finally {
+                                        controlPort._mirrorDisable = false;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

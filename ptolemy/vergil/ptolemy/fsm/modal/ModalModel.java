@@ -32,12 +32,14 @@ package ptolemy.vergil.ptolemy.fsm.modal;
 import java.util.Iterator;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.HSDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -52,13 +54,45 @@ import ptolemy.moml.MoMLChangeRequest;
 /**
 This is a typed composite actor designed to be a modal model.
 Inside the modal model is a finite-state machine controller, and
-inside each state in the FSM is a refinement model. Adding or
-removing ports in this actor results in the same ports appearing
+inside each state in the FSM is a refinement model. To use this
+actor, just drag it into a model, and look inside to start constructing
+the controller.  You may add ports to get inputs and outputs, and
+add states to the controller.  You may add one or more refinements
+to a state (each of these refinements will be executed when this
+actor is executed).  Each refinement is required to have its own
+director, so you will need to choose a director.
+<p>
+The controller is a finite-state machine (FSM), which consists of
+states and transitions.  One of the states is an initial state.
+When this actor executes, if the current state has a refinement,
+then that refinement is executed.  Then the guards on all the outgoing
+transitions of the current state are evaluated, and if one of those
+guards is true, then the transition is taken.  Taking the transition
+means that the actions associated with the transition are executed
+(which can result in producing outputs), and the new current state is
+the state at the destination of the transition.  It is an error if
+more than one of the guards evaluates to true.
+<p>
+To add a state, click on a state button in the toolbar, or drag
+in a state from the library at the left.  To add a transition,
+position the mouse over the source state, hold the control button,
+and drag to the destination state.  The destination state may be
+the same state, in which case the transition is used simply to
+execute its actions.
+<p>
+Adding or removing ports in this actor results in the same ports appearing
 or disappearing in the FSM controller and in each of the refinements.
 Similarly, adding or removing ports in the controller or in the
 refinements results in this actor and the other refinements
 reflecting the same change to the ports.  That is, this actor,
 the controller, and the refinments all contain the same ports.
+<p>
+There is one subtlety regarding ports however.  If you add an
+output port to a refinement, then the corresponding port in the
+controller will be both an input and an output.  The reason for
+this is that the controller can access the results of executing
+a refinement in order to choose a transition.
+<p>
 This class is designed to work closely with ModalController and
 Refinement, since changes to ports can be initiated in this class
 or in those.
@@ -93,7 +127,8 @@ public class ModalModel extends TypedCompositeActor {
         // likelihood of a conflict with a user-desired name.
         // NOTE This director will be described in the exported MoML
         // file, so when that is encountered, it will match this director.
-        FSMDirector director = new FSMDirector(this, "_Director");
+        FSMDirector director = newDirector();
+
         // NOTE This controller will be described in the exported MoML
         // file, so when that is encountered, it will match this.
         _controller = new ModalController(this, "_Controller");
@@ -125,13 +160,32 @@ public class ModalModel extends TypedCompositeActor {
                 this, library, moml);
         library.requestChange(request);
 
-        // Putting this attribute in causes look-inside to be handled
+        // Putting this attribute in causes look inside to be handled
         // by it.
         new ModalTableauFactory(this, "_tableauFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Create a new director for use in this composite.  This base
+     *  class returns an instance of FSMDirector, but derived classes
+     *  may return a subclass.  Note that this method is called in the
+     *  constructor, so derived classes will not have been fully
+     *  constructed when it is called.
+     *  @exception IllegalActionException If constructing the director
+     *   triggers an exception.
+     *  @exception NameDuplicationException If there is already a director
+     *   with name "_Director".
+     *  @return A new director.
+     */
+    public FSMDirector newDirector()
+            throws IllegalActionException, NameDuplicationException {
+        // NOTE: To support continuous-time models, we use this:
+        return new HSDirector(this, "_Director");
+        // NOTE: To not support continuous-time models, use this:
+        // return new FSMDirector(this, "_Director");
+    }
 
     /** Create a new port with the specified name in this entity, the
      *  controller, and all the refinements.  Link these ports so that
@@ -199,7 +253,7 @@ public class ModalModel extends TypedCompositeActor {
     //// ModalTableauFactory
 
     /** A tableau factory that opens an editor on the contained controller
-     *  rather than this composite actor.
+     *  rather than this composite actor.  This is triggered by look inside.
      */
     public class ModalTableauFactory extends TableauFactory {
 
@@ -230,28 +284,8 @@ public class ModalModel extends TypedCompositeActor {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
 
-            // Check to see whether the specified effigy contains an effigy
-            // for the controller, and if not, create one.
-            PtolemyEffigy controllerEffigy = null;
-            Iterator effigies =
-                    effigy.entityList(PtolemyEffigy.class).iterator();
-            while (effigies.hasNext()) {
-                PtolemyEffigy candidate = (PtolemyEffigy)effigies.next();
-
-                // First see whether this effigy matches.
-                if (candidate.getModel() == _controller) {
-                    controllerEffigy = candidate;
-                    break;
-                }
-            }
-            if (controllerEffigy == null) {
-                controllerEffigy = new PtolemyEffigy(
-                        effigy, effigy.uniqueName("effigy"));
-                controllerEffigy.setModel(_controller);
-            }
-
-            // Display all open tableaux.
-            return controllerEffigy.showTableaux();
+            Configuration configuration = (Configuration)effigy.toplevel();
+            return configuration.openModel(_controller);
         }
     }
 }
