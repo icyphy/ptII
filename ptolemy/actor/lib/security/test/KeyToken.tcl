@@ -90,6 +90,39 @@ test KeyToken-4.1 {equals} {
 } {true}
 
 
+######################################################################
+####
+# 
+test KeyToken-4.2 {equals(): Two Keys are not likely to have the same encoding} {
+    # uses 1.1 above (secretKeyToken)
+
+    set keyGenerator3 [java::call javax.crypto.KeyGenerator getInstance "DES"]
+    set secureRandom3 [java::new java.security.SecureRandom]
+    $keyGenerator3 {init int java.security.SecureRandom} 56 $secureRandom3
+
+    set secretKey3 [$keyGenerator3 generateKey]
+    set secretKeyToken3 \
+	    [java::new ptolemy.actor.lib.security.KeyToken $secretKey3]
+
+    set  boolean [$secretKeyToken isEqualTo $secretKeyToken3]
+    $boolean toString
+} {false}
+
+######################################################################
+####
+# 
+test KeyToken-4.3 {equals(): Different Algorithms} {
+    # uses 1.1 above
+    set keyGenerator4 [java::call javax.crypto.KeyGenerator getInstance "AES"]
+    set secureRandom4 [java::new java.security.SecureRandom]
+    $keyGenerator4 {init int java.security.SecureRandom} 128 $secureRandom4
+    set secretKey4 [$keyGenerator4 generateKey]
+    set secretKeyToken4 \
+	    [java::new ptolemy.actor.lib.security.KeyToken $secretKey4]
+
+    set  boolean [$secretKeyToken isEqualTo $secretKeyToken4]
+    $boolean toString
+} {false}
 
 ######################################################################
 ####
