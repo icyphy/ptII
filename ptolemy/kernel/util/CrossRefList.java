@@ -189,7 +189,7 @@ public final class CrossRefList implements Serializable  {
     }
 
     /** Delete a link to the specified container.  If there is no such
-     *  link, ignore.  Back references are likewise updated.If no
+     *  link, ignore.  Back references are likewise updated. If no
      *  container or if this CrossRefList has no links then just
      *  return.
      *  In the case of redundant links this deletes the first link
