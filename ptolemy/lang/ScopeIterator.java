@@ -1,4 +1,4 @@
-/* An iterator for declarations from an environment. Instead of looking up
+/* An iterator for declarations from an scope. Instead of looking up
 all matches of a declaration at once, declarations are found on an
 as-needed basis.
 
@@ -39,7 +39,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-/**  An iterator for declarations from an environment. Instead of looking up
+/**  An iterator for declarations from an scope. Instead of looking up
 all matches of a declaration at once, declarations are found on an
 as-needed basis.
 <p>
@@ -121,7 +121,7 @@ public class ScopeIterator implements Iterator {
             }
 
             //System.out.println("ScopeIterator : going to next " +
-            // "environment looking for " + _name);
+            // "scope looking for " + _name);
 
             _declIter = _nextScope.allProperDecls();
             _nextScope = _nextScope.parent();
@@ -212,7 +212,7 @@ public class ScopeIterator implements Iterator {
                 return false;
             }
 
-            // move on to the next environment, discarding last environment
+            // move on to the next scope, discarding last environment
 
             _declIter = _nextScope.allProperDecls();
             _nextScope = _nextScope.parent();
