@@ -115,11 +115,13 @@ public interface Type {
      * TypeLattice.compare(this,type(index)).
      * @param index Other type's node index in the type lattice.
      * @return Cached type comparison result.
+     * @since Ptolemy II 2.1
      */
     public int getCachedTypeComparisonResult(int index);
 
     /** Return this type's node index in the (constant) type lattice.
      * @return this type's node index in the (constant) type lattice.
+     * @since Ptolemy II 2.1
      */
     public int getNodeIndex();
     /** Cache type comparison result:
@@ -127,12 +129,14 @@ public interface Type {
     /** Set the cached TypeLattice.compare(this, type) value.
      * @param index The other type's node index.
      * @param value TypeLattice.compare(this, type) result.
+     * @since Ptolemy II 2.1
      */
     public void setCachedTypeComparisonResult(int index, int value);
 
     /** Set this type's node index in the (constant) type lattice.
      * @param index This type's node index.
      * @param value The total number of types in the type lattice.
+     * @since Ptolemy II 2.1
      */
     public void setNodeIndex(int index, int nodeCount);
 
