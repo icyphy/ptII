@@ -746,7 +746,10 @@ proc createAndExecute {file} {
 
 
 #foreach file [list compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml compat/FIR1.xml] {
-foreach file [lsort [glob compat/*.xml compat2/*.xml]] {
+
+# Use -nocomplain here so that we do not spuriously report an error
+# in alljtests.tcl if compat and compat2 do not exist.
+foreach file [lsort [glob -nocomplain compat/*.xml compat2/*.xml]] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
         set application [createAndExecute $file]
