@@ -138,8 +138,8 @@ public class TypeApplet extends SDFApplet {
 //            add(BorderLayout.SOUTH,visPanel);
 
             visPanel.add(jgraph, BorderLayout.WEST);
-            jgraph.setPreferredSize(new Dimension(400, 200));
-            jgraph.setSize(new Dimension(400, 200));
+            jgraph.setPreferredSize(new Dimension(400, 270));
+            jgraph.setSize(new Dimension(400, 270));
 
             // Construct the Ptolemy type lattice model
             final GraphModel graphModel = constructLattice();
@@ -152,7 +152,7 @@ public class TypeApplet extends SDFApplet {
 
             // Display the trace
             traceCanvas = displayTrace(traceModel);
-            traceCanvas.setPreferredSize(new Dimension(400,200));
+            traceCanvas.setPreferredSize(new Dimension(400,270));
             visPanel.add(traceCanvas, BorderLayout.EAST);
 
             _addListeners();
@@ -592,7 +592,7 @@ public class TypeApplet extends SDFApplet {
     private class SchematicPanel extends Panel {
 
 	public SchematicPanel() {
-	    setBackground(new Color(0.9F, 1.0F, 0.7F));
+//	    setBackground(new Color(0.9F, 1.0F, 0.7F));
 	}
 
     	public void paint(Graphics graph) {
@@ -601,17 +601,17 @@ public class TypeApplet extends SDFApplet {
 	    final int ACTOR_HEIGHT = 65;
 
 	    final int RAMP1_X = 70;
-	    final int RAMP1_Y = 10;
+	    final int RAMP1_Y = 30;
 	    final int RAMP1_TYPE_X = RAMP1_X+ACTOR_WIDTH+8;
 	    final int RAMP1_TYPE_Y = RAMP1_Y+ACTOR_HEIGHT/2-8;
 
 	    final int RAMP2_X = 70;
-	    final int RAMP2_Y = 120;
+	    final int RAMP2_Y = 160;
 	    final int RAMP2_TYPE_X = RAMP2_X+ACTOR_WIDTH+8;
 	    final int RAMP2_TYPE_Y = RAMP2_Y+ACTOR_HEIGHT/2+20;
 
 	    final int EXPR_X = 360;
-	    final int EXPR_Y = 60;
+	    final int EXPR_Y = 90;
 	    final int EXPR_IN_TYPE_X = EXPR_X-60;
 	    final int EXPR_IN_TYPE_Y1 = EXPR_Y-2;
 	    final int EXPR_IN_TYPE_Y2 = EXPR_Y+ACTOR_HEIGHT+12;
@@ -619,7 +619,7 @@ public class TypeApplet extends SDFApplet {
 	    final int EXPR_OUT_TYPE_Y = EXPR_Y+ACTOR_HEIGHT/2-8;
 
 	    final int PLOT_X = 650;
-	    final int PLOT_Y = 60;
+	    final int PLOT_Y = 90;
 	    final int PLOT_TYPE_X = PLOT_X-70;
 	    final int PLOT_TYPE_Y = PLOT_Y+ACTOR_HEIGHT/2-8;
 
@@ -774,7 +774,7 @@ public class TypeApplet extends SDFApplet {
 
         /** The size
          */
-        private double _size = 25;
+        private double _size = 20;
 
         /**
          * Return the rendered visual representation of this node.
