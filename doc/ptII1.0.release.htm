@@ -79,11 +79,16 @@ expressions of double-valued inputs.
 
 <h3>Limitations in the User Interface</h3>
 Version 1.0 of Ptolemy II includes the first graphical user
-interface for Ptolemy II.  This UI still has a number of limitations.
+interface for Ptolemy II.  This UI is preliminary, and is made
+up mostly of code that is rated "red", meaning that both the APIs
+and the implementations are likely to change.
+There are quite a few limitations.
 <menu>
 <li>No undo mechanism.
 <li>No way to set the name of ports, relations, or entities.
 <li>Weak support for multiports in the graph editor.
+<li>It is difficult to control wire routing.
+<li>Cannot have more than one vertex in a connection.
 <li>No mechanism to set the width of a relation.
 <li>No mechanism to create a port in an atomic actor.
 <li>The integrated web browser is not a full-featured browser.
