@@ -1,4 +1,4 @@
-/* A CSP demonstation of hardware bus contention.
+/* A CSP model of hardware bus contention.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -38,6 +38,11 @@ import diva.canvas.toolbox.*;
 import diva.canvas.connector.*;
 import diva.util.gui.BasicWindow;
 
+
+
+
+
+
 import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -45,6 +50,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.actor.gui.*;
 import ptolemy.domains.csp.lib.*;
+import ptolemy.domains.csp.gui.*;
 import ptolemy.domains.csp.kernel.*;
 
 import java.awt.*;
@@ -96,64 +102,10 @@ import javax.swing.SwingUtilities;
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
  */
-public class BusContentionApplet extends PtolemyApplet {
-
-    /** Create an empty model with the specified manager and top-level
-     *  composite actor.  The model is actually created by the
-     *  initializeDemo() method.
-    public BusContentionApplet(Manager manager,
-	    TypedCompositeActor topLevel) {
-	_manager = manager;
-	_toplevel = topLevel;
-    }
-     */
-
-    ///////////////////////////////////////////////////////////////////
-    ////                          main method                      ////
-
-    /**
-    public static void main(String argv[]) {
-	Manager manager = new Manager("manager");
-	TypedCompositeActor topLevel = new TypedCompositeActor();
-
-	try {
-            topLevel.setName("topLevel");
-            topLevel.setManager(manager);
-	} catch( KernelException e ) {
-            // This should not occur.
-	    throw new InternalErrorException(e.toString());
-	}
-
-        BusContentionApplet app =
-            new BusContentionApplet( manager, topLevel );
-
-	Panel nullAppletPanel = null;
-	app.initializeDemo(nullAppletPanel);
-    }
-    */
+public class BusContentionApplet extends CSPApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Respond to button pushes.
-    public void actionPerformed(ActionEvent event) {
-	String action = event.getActionCommand();
-	if( action.equals("Go") ) {
-	    try {
-                this.runDemo();
-            } catch( Exception e ) {
-	        e.printStackTrace();
-	        throw new InternalErrorException("Error in GoButton: "
-                        + e.getMessage());
-            }
-	}
-	if( action.equals("Stop") ) {
-	    endSimulation();
-	} else if( action.equals("Quit") ) {
-	    shutDown();
-	}
-    }
-     */
 
     /** Initialize the applet.
      */
@@ -164,7 +116,7 @@ public class BusContentionApplet extends PtolemyApplet {
 
 	// Panel for controls and plotter
 	Panel topPanel = new Panel();
-	topPanel.setSize( new Dimension(600, 300) );
+	topPanel.setSize( new Dimension(600, 50) );
 
 	// The '2' argument specifies a 'go' and 'stop' button.
 	topPanel.add( _createRunControls(2), BorderLayout.NORTH );
@@ -173,7 +125,7 @@ public class BusContentionApplet extends PtolemyApplet {
 	constructPtolemyModel();
 
 	_divaPanel = new JPanel( new BorderLayout() );
-	_divaPanel.setSize( new Dimension(600, 300) );
+	_divaPanel.setSize( new Dimension(600, 350) );
 	_divaPanel.setBackground( getBackground() );
 	add( _divaPanel, BorderLayout.CENTER );
 
@@ -330,8 +282,7 @@ public class BusContentionApplet extends PtolemyApplet {
     }
 
     /** Construct the graph widget with the default constructor (giving
-     *  it an empty graph), and then set the model once the _window is
-     *  showing. Add control buttons to the _window.
+     *  it an empty graph). 
      */
     public void displayGraph(JGraph g, GraphModel model) {
 	_divaPanel.add( g, BorderLayout.NORTH );
@@ -359,45 +310,9 @@ public class BusContentionApplet extends PtolemyApplet {
 		}
 	    });
 	} catch (Exception e) {
-	    System.out.println(e);
+	    e.printStackTrace();
+            throw new RuntimeException(e.toString());
 	}
-        /*
-	Panel controlPanel = new Panel();
-
-	Button startButton = new Button("Go");
-	startButton.addActionListener( this );
-	controlPanel.add(startButton, BorderLayout.WEST);
-
-	Button stopButton = new Button("Stop");
-	stopButton.addActionListener( this );
-	controlPanel.add(stopButton, BorderLayout.CENTER);
-
-	Button quitButton = new Button("Quit");
-	quitButton.addActionListener( this );
-	controlPanel.add(quitButton, BorderLayout.EAST);
-
-	controlPanel.setVisible(true);
-
-        _window = new BasicWindow("Basic Window");
-	_window.getContentPane().add(controlPanel, BorderLayout.NORTH);
-	_window.getContentPane().add(g, BorderLayout.CENTER);
-	_window.setSize(500, 600);
-	_window.setLocation(100, 100);
-	_window.setVisible(true);
-
-        // Make sure we have the right renderers and then display the graph
-        GraphPane gp = (GraphPane) g.getCanvasPane();
-        GraphView gv = gp.getGraphView();
-        gv.setNodeRenderer(new ThreadRenderer());
-        gv.setEdgeRenderer(new LocalEdgeRenderer());
-        g.setGraphModel(model);
-
-        // Do the layout
-        LevelLayout staticLayout = new LevelLayout();
-        staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-        staticLayout.layout(gv, model.getGraph());
-        gp.repaint();
-        */
     }
 
     /** Override the baseclass start method so that the model
@@ -407,83 +322,6 @@ public class BusContentionApplet extends PtolemyApplet {
      */
     public void start() {
     }
-
-    /**
-    public void initializeDemo(Panel appletPanel) {
-        _nodeMap = new HashMap();
-        _jgraph = new JGraph();
-	_appletPanel = appletPanel;
-
-        // Construct the Ptolemy kernel topology
-        constructPtolemyModel();
-
-        // Construct the graph representing the topology
-        _model = constructDivaGraph();
-
-        // Display the model in the _window
-        try {
-	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run() {
-		    displayGraph(_jgraph, _model);
-		}
-	    });
-            // displayGraph(_jgraph, _model);
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-            System.exit(0);
-        }
-        StateListener listener =
-            new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_processActor1.addListeners(listener);
-	_processActor2.addListeners(listener);
-	_processActor3.addListeners(listener);
-    }
-     */
-
-    /**
-    public void runDemo() throws IllegalActionException {
-        // Run the model
-	// I'm not sure why but "manager.run()" doesn't seem to work.
-	_manager.startRun();
-	return;
-    }
-     */
-
-    /**
-    public void endSimulation() {
-        Director director = _toplevel.getDirector();
-	_manager.finish();
-    }
-     */
-
-    /**
-    public void shutDown() {
-        Director director = _toplevel.getDirector();
-	try {
-	    // Eventually we will not need to call Director.wrapup()
-	    // as Manager.finish() will subsume this responsibility.
-	    director.wrapup();
-	    _manager.finish();
-	    _manager = null;
-	} catch( IllegalActionException e ) {
-	    System.err.println("IllegalActionException thrown while " +
-		    "attempting to shutDown()");
-	    e.printStackTrace();
-	}
-	if( _appletPanel == null ) {
-	    _window.setVisible(false);
-	    _window.dispose();
-	    _window = null;
-
-	    System.exit(0);
-	} else {
-	    _window.setVisible(false);
-	    _window.dispose();
-	    _window = null;
-	}
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -508,23 +346,8 @@ public class BusContentionApplet extends PtolemyApplet {
     // The Diva graph model
     private GraphModel _model;
 
-    /*
-    // The BasicWindow to display in if this is an Application
-    private BasicWindow _window;
-
-    // The Panel to display in if this is an Applet
-    private Panel _appletPanel;
-
-    // Top Level Actor
-    TypedCompositeActor _topLevel;
-
-    // Manager
-    Manager _manager;
-    */
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
 
     ///////////////////////////////////////////////////////////////////
     //// StateListener
