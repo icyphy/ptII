@@ -72,28 +72,18 @@ public class EntityPortController extends NodeController {
     public EntityPortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityPortRenderer());
-	SelectionModel sm = controller.getSelectionModel();
-	NodeInteractor interactor = new NodeInteractor(sm);
-        interactor.setDragInteractor(null);
-	setNodeInteractor(interactor);
+	//SelectionModel sm = controller.getSelectionModel();
+	// Ports of entities do not use the same selection model as
+	// the rest of the first level figures.
+	// If this is allowed, then the port can be deleted.
+	CompositeInteractor interactor = new CompositeInteractor();
+ 	setNodeInteractor(interactor);
 	_menuCreator = new MenuCreator(new PortContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }
 
-
-    public class EntityPortRenderer implements NodeRenderer {
-	public Figure render(Node n) {
-            Port port = (Port) n.getSemanticObject();
-
-	    Polygon2D.Double polygon = new Polygon2D.Double();
-	    polygon.moveTo(-4, 4);
-	    polygon.lineTo(4, 0);
-	    polygon.lineTo(-4, -4);
-	    polygon.closePath();
-	    Figure figure = new BasicFigure(polygon, Color.black);
-	    return figure;
-	}
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Given a node, add it to the given parent.
      */
@@ -124,6 +114,20 @@ public class EntityPortController extends NodeController {
                 parentFigure.getBackgroundFigure().getBounds().getY());
 
 	parentFigure.add(nf);
+    }
+
+    public class EntityPortRenderer implements NodeRenderer {
+	public Figure render(Node n) {
+            Port port = (Port) n.getSemanticObject();
+
+	    Polygon2D.Double polygon = new Polygon2D.Double();
+	    polygon.moveTo(-4, 4);
+	    polygon.lineTo(4, 0);
+	    polygon.lineTo(-4, -4);
+	    polygon.closePath();
+	    Figure figure = new BasicFigure(polygon, Color.black);
+	    return figure;
+	}
     }
 
     /**

@@ -134,14 +134,14 @@ public class EditorGraphController extends ViewerGraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)getPortController().getNodeInteractor()).addInteractor(_linkCreator);
-        ((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+	//((CompositeInteractor)getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+        //((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
 	((CompositeInteractor)getRelationController().getNodeInteractor()).addInteractor(_linkCreator);
 
-	//LinkCreator linkCreator2 = new LinkCreator();
-	//linkCreator2.setMouseFilter(
-        //   new MouseFilter(InputEvent.BUTTON1_MASK,0));
-	//((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+	LinkCreator linkCreator2 = new LinkCreator();
+	linkCreator2.setMouseFilter(
+           new MouseFilter(InputEvent.BUTTON1_MASK,0));
+	((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(linkCreator2);
 
 
         /*        // Create the interactor that drags new edges.
@@ -190,7 +190,6 @@ public class EditorGraphController extends ViewerGraphController {
      */
     protected class RelationCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
-            System.out.println("Relation Creator");
 	    Graph graph = getGraph();
 	    CompositeEntity toplevel =
 		(CompositeEntity)graph.getSemanticObject();
