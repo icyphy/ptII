@@ -317,7 +317,6 @@ test Manager-10.0 {Test execution listener} {
     #9/02 - 'processing mutations' moved from line 4 to line 2
     list $stdoutResultsWithoutTime [[$manager getState] getDescription] 
 } {{preinitializing
-processing mutations
 resolving types
 initializing
 executing number 1
