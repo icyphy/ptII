@@ -241,6 +241,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             result.append(_component.getFullName().replace('.', '_'));
             result.append("_");
             result.append(refName);
+            int[] channelAndOffset = _getChannelAndOffset(name);
+            if (channelAndOffset[0] != -1) {
+                throw new IllegalActionException(_component,
+                        "a parameter cannot have channel number.");
+            }
+            if (channelAndOffset[1] >= 0) {
+                result.append("[" + channelAndOffset[1] + "]");
+            }
             return result.toString();
         }
         

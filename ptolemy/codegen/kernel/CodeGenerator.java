@@ -212,13 +212,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     Parameter parameter= (Parameter)parameters.next();
                     String type = parameter.getType().toString();
                     boolean isArrayType = false;
-                    if (type.equals("boolean")) {
-                        type = "bool";
-                    } else if (type.charAt(0) == '{') {
+                    if (type.charAt(0) == '{') {
                         // This should be an ArrayType.
                         StringTokenizer tokenizer
-                            = new StringTokenizer("{}");
+                            = new StringTokenizer(type, "{}");
                         type = tokenizer.nextToken();
+                        isArrayType = true;
+                    }
+                    if (type.equals("boolean")) {
+                        type = "bool";
                     }
                     code.append("static ");
                     code.append(type);
@@ -240,8 +242,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 if (inputPort.getWidth() == 0) {
                     break;
                 }
+                String type = inputPort.getType().toString();
+                boolean isArrayType = false;
+                if (type.charAt(0) == '{') {
+                    // This should be an ArrayType.
+                    StringTokenizer tokenizer
+                        = new StringTokenizer(type, "{}");
+                    type = tokenizer.nextToken();
+                    isArrayType = true;
+                }
+                if (type.equals("boolean")) {
+                    type = "bool";
+                }
                 code.append("static ");
-                code.append(inputPort.getType().toString());
+                code.append(type);
                 code.append(" ");
                 code.append(inputPort.getFullName().replace('.', '_'));
                 
@@ -263,8 +277,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // Only generate declarations for those output ports with
                 // port width zero. 
                 if (outputPort.getWidth() == 0) {
+                    String type = outputPort.getType().toString();
+                    boolean isArrayType = false;
+                    if (type.charAt(0) == '{') {
+                        // This should be an ArrayType.
+                        StringTokenizer tokenizer
+                            = new StringTokenizer(type, "{}");
+                        type = tokenizer.nextToken();
+                        isArrayType = true;
+                    }
+                    if (type.equals("boolean")) {
+                        type = "bool";
+                    }
                     code.append("static ");
-                    code.append(outputPort.getType().toString());
+                    code.append(type);
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
                     code.append(";\n");

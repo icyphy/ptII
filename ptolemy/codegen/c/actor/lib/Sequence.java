@@ -69,7 +69,7 @@ public class Sequence extends CCodeGeneratorHelper {
                     + "}\n");
         } else {
             tmpStream.append(
-                      "if ($ref(enable) != 0)\n"
+                      "if ($ref(enable) \n"
                     + "        && currentIndex < $size(values)) {\n"
                     + "    $ref(output) = $ref(values, currentIndex);\n"
                     + "    outputProduced = 1;\n"
@@ -77,11 +77,11 @@ public class Sequence extends CCodeGeneratorHelper {
         }
         
         tmpStream.append(
-                  "if (outputProduced != 0) {\n"
+                  "if (outputProduced) {\n"
                 + "    outputProduced = 0;\n"
                 + "    currentIndex += 1;\n"
                 + "    if (currentIndex >= $size(values)) {\n"
-                + "        if ($val(repeat) ! = 0) {\n"
+                + "        if ($val(repeat)) {\n"
                 + "           currentIndex = 0;\n"
                 + "        } else {\n"
                 + "           /*To prevent overflow...*/\n"
@@ -95,9 +95,9 @@ public class Sequence extends CCodeGeneratorHelper {
         stream.append(processCode(_codeBlock));
     }
     
-    public void generateInitializeCode(StringBuffer stream)
+    public String generateInitializeCode()
             throws IllegalActionException {
-        stream.append(processCode(_initBlock));
+        return processCode(_initBlock);
 }
 
    
