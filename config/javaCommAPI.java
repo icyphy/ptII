@@ -32,7 +32,7 @@ import javax.comm.CommPort;
 /** Simple class used by configure to test whether the Java Communications
     API  is present.
     If this file will not compile because the import statement fails,
-    then try installing Java Communcations API from
+    then try installing Java Communications API from
     http://java.sun.com/products/javacomm/index.html
 @author Christopher Hylands
 @version $Id$
