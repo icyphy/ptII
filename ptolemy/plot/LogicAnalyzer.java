@@ -38,11 +38,8 @@ import java.net.*;
 //////////////////////////////////////////////////////////////////////////
 //// LogicAnalyzer
 /**
-
 @author Lukito Muliadi
 @version $Id$
-@see classname
-@see full-classname
 */
 public class LogicAnalyzer extends PlotBox {
 
