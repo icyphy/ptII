@@ -34,6 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
+import ptolemy.actor.util.CalendarQueue; // For javadoc
 import ptolemy.data.*;
 import ptolemy.graph.*;
 import collections.LinkedList;
