@@ -38,6 +38,7 @@ import ptolemy.actor.lib.Expression;
 import ptolemy.actor.lib.MultiplyDivide;
 import ptolemy.actor.lib.Ramp;
 import ptolemy.actor.lib.Scale;
+import ptolemy.actor.lib.TrigFunction;
 import ptolemy.actor.lib.conversions.PolarToRectangular;
 import ptolemy.actor.lib.gui.XYPlotter;
 import ptolemy.data.DoubleToken;
@@ -96,15 +97,11 @@ public class Butterfly extends TypedCompositeActor {
 	PolarToRectangular polarToRect1 =
 	    new PolarToRectangular(this, "polarToRect1");
 
-	Expression sin1 = new Expression(this, "sin1");
-	TypedIOPort sin1Input = new TypedIOPort(sin1, "sin1Input",
-                true, false);
-	sin1.expression.setExpression("sin(sin1Input)");
+	TrigFunction sin1 = new TrigFunction(this, "sin1");
+	sin1.function.setExpression("sin");
 
-	Expression cos1 = new Expression(this, "cos1");
-	TypedIOPort cos1Input = new TypedIOPort(cos1, "cos1Input",
-                true, false);
-	cos1.expression.setExpression("cos(cos1Input)");
+	TrigFunction cos1 = new TrigFunction(this, "cos1");
+	cos1.function.setExpression("cos");
 
 	// Here, we collapse two actors into one expression actor.
 	Expression cos2 = new Expression(this, "cos2");
@@ -123,8 +120,8 @@ public class Butterfly extends TypedCompositeActor {
 	xyPlotter.plot.setXRange(-3, 4);
 	xyPlotter.plot.setYRange(-4, 4);
 
-	this.connect(scale2.output, sin1Input);
-	this.connect(scale1.output, cos1Input);
+	this.connect(scale2.output, sin1.input);
+	this.connect(scale1.output, cos1.input);
 	this.connect(cos1.output, scale3.input);
 
 	TypedIORelation node4 = (TypedIORelation) newRelation("node4");
@@ -156,22 +153,7 @@ public class Butterfly extends TypedCompositeActor {
 	connect(polarToRect1.x, xyPlotter.inputX);
 	connect(polarToRect1.y, xyPlotter.inputY);
 	
-	// If Butterfly.xml does not exist, then create it.
-	// FIXME: This will print a warning message 
-	// when run under an applet.
-	// The point of this demo is to have the same
-	// model as an applet, application, CompositeActorApplication
-	// and .xml file
-	try {
-	    File momlFile = new File("Butterfly.xml");
-	    if (!momlFile.exists()) {
-		System.out.println("Dumping out MoML");
-		FileWriter momlFileWriter = new FileWriter(momlFile);
-		momlFileWriter.write(exportMoML());
-		momlFileWriter.close();
-	    }
-	} catch (Exception e) {
-		System.err.println("Failed to export MoML: "+ e);
-	}
+	// Export a MoML version of this model to standard output.
+	// System.out.println(momlFileWriter.write(exportMoML());
     }
 }
