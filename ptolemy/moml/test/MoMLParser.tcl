@@ -214,7 +214,7 @@ test MoMLParser-1.3.6 {check multiple reference with absolute name} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {$parser parse $moml_3_6]} msg
     list $msg
-} {{com.microstar.xml.XmlException: Sorry: Ptolemy II does not support multiple containment.  Attempt to place .lib.top into .lib.another}}
+} {{com.microstar.xml.XmlException: Sorry: Ptolemy II does not support multiple containment.  Attempt to place .lib.top into .lib.another in file:c:/users/neuendor/ptII/ptolemy/moml/test at line 9 and column 56}}
 
 #----------------------------------------------------------------------
 set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
@@ -310,7 +310,7 @@ test MoMLParser-1.8 {test with a pre-existing port given, with wrong class} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {set toplevel [$parser parse $moml]} msg
     list $msg
-} {{com.microstar.xml.XmlException: port named "output" exists and is not an instance of ptolemy.actor.lib.Ramp}}
+} {{com.microstar.xml.XmlException: port named "output" exists and is not an instance of ptolemy.actor.lib.Ramp in file:c:/users/neuendor/ptII/ptolemy/moml/test at line 6 and column 51}}
 
 #----------------------------------------------------------------------
 set moml "$header
@@ -574,7 +574,7 @@ test MoMLParser-1.14 {test that instantiation of an entity fails} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {set toplevel [$parser parse $moml]} msg
     list $msg
-} {{com.microstar.xml.XmlException: Attempt to extend an entity that is not a class: .top.master}}
+} {{com.microstar.xml.XmlException: Attempt to extend an entity that is not a class: .top.master in file:c:/users/neuendor/ptII/ptolemy/moml/test at line 7 and column 32}}
 
 #----------------------------------------------------------------------
 set body {

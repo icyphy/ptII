@@ -82,7 +82,7 @@ The returned value is top-level composite entity of the model.
 public class MoMLParser extends HandlerBase {
 
     /** Construct a parser that creates a new workspace into which to
-     *  put the entities created by the parse() method.
+     *  put the entities created by the parse() method.  
      */
     public MoMLParser() {
         this(null);
@@ -90,7 +90,8 @@ public class MoMLParser extends HandlerBase {
 
     /** Construct a parser that creates entities
      *  in the specified workspace.  If the argument is null,
-     *  create a new workspace with an empty name.
+     *  create a new workspace with an empty name.  Classes will be 
+     *  created using the classloader that created this class.
      *  @param workspace The workspace into which to place entities.
      */
     public MoMLParser(Workspace workspace) {
@@ -103,12 +104,13 @@ public class MoMLParser extends HandlerBase {
      *  panel.  If the workspace argument is null, then
      *  create a new workspace with an empty name.
      *  If the panel argument is null, then entities implementing Placeable
-     *  are not placed.
+     *  are not placed.  Classes will be 
+     *  created using the classloader that created this class.
      *  @param workspace The workspace into which to place entities.
      *  @param panel The panel into which to place Placeable entities.
      */
     public MoMLParser(Workspace workspace, Container panel) {
-        super();
+	super();
         if (workspace == null) {
             // NOTE: Workspace has no name, to ensure that full names
             // of enties conform to MoML standard of starting with a
@@ -116,7 +118,26 @@ public class MoMLParser extends HandlerBase {
             workspace = new Workspace();
         }
         _workspace = workspace;
-        _panel = panel;
+        _panel = panel;	
+    }
+
+    /** Construct a parser that creates entities
+     *  in the specified workspace, and if any of these entities implements
+     *  the Placeable interface, then places the entity in the specified
+     *  panel.  If the workspace argument is null, then
+     *  create a new workspace with an empty name.
+     *  If the panel argument is null, then entities implementing Placeable
+     *  are not placed.  Classes will be 
+     *  created using the classloader that created this class.
+     *  @param workspace The workspace into which to place entities.
+     *  @param panel The panel into which to place Placeable entities.
+     *  @param loader The class loader that will be used to create classes,
+     *  or null if the the bootstrap class loader is to be used.
+     */
+    public MoMLParser(Workspace workspace, Container panel,
+		      ClassLoader loader) {
+	this(workspace, panel);
+	_classLoader = loader;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -440,7 +461,7 @@ public class MoMLParser extends HandlerBase {
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
                 _current.deferMoMLDefinitionTo(null);
-                Class newClass = Class.forName(className);
+                Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
 
             } else if (elementName.equals("doc")) {
@@ -476,7 +497,8 @@ public class MoMLParser extends HandlerBase {
                 }
 
                 // Read external model definition.
-                MoMLParser newParser = new MoMLParser(_workspace);
+                MoMLParser newParser =
+		    new MoMLParser(_workspace, null, _classLoader);
                 URL xmlFile = new URL(base, source);
                 InputStream input = null;
                 Exception thrown = null;
@@ -486,9 +508,10 @@ public class MoMLParser extends HandlerBase {
                     // Cannot open the file.  Iterate through the
                     // classpath to attempt to open the file.
                     try {
-                        xmlFile =
-                            Class.forName("ptolemy.kernel.util.NamedObj").
-                            getClassLoader().getResource(source);
+                        xmlFile = _classLoader.getResource(source);
+			    //                            Class.forName("ptolemy.kernel.util.NamedObj").
+                            //getClassLoader().getResource(source);
+			    
                         try {
                             input = xmlFile.openStream();
                         } catch (NullPointerException e) {
@@ -615,7 +638,7 @@ public class MoMLParser extends HandlerBase {
 
                 Object[] arguments = new Object[1];
                 arguments[0] = _workspace;
-                Class newClass = Class.forName(className);
+                Class newClass = Class.forName(className, true, _classLoader);
                 _toplevel = _createInstance(newClass, arguments);
                 _toplevel.setName(modelName);
                 _toplevel.setMoMLElementName("model");
@@ -634,7 +657,7 @@ public class MoMLParser extends HandlerBase {
 
                 Class newClass = null;
                 if (className != null) {
-                    newClass = Class.forName(className);
+                    newClass = Class.forName(className, true, _classLoader);
                 }
                 Port port = container.getPort(portName);
                 if (port != null) {
@@ -706,7 +729,8 @@ public class MoMLParser extends HandlerBase {
                     String className = (String)_attributes.get("class");
                     Class newClass = null;
                     if (className != null) {
-                        newClass = Class.forName(className);
+                        newClass = 
+			    Class.forName(className, true, _classLoader);
                     }
 
                     if (property == null) {
@@ -773,7 +797,7 @@ public class MoMLParser extends HandlerBase {
                 CompositeEntity container = (CompositeEntity)_current;
                 Class newClass = null;
                 if (className != null) {
-                    newClass = Class.forName(className);
+                    newClass = Class.forName(className, true, _classLoader);
                 }
                 Relation relation = container.getRelation(relationName);
                 if (relation == null) {
@@ -809,7 +833,7 @@ public class MoMLParser extends HandlerBase {
                 arguments[1] = "_icon";
 
                 _containers.push(_current);
-                Class newClass = Class.forName(className);
+                Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
 
             } else if (elementName.equals("vertex")) {
@@ -952,8 +976,8 @@ public class MoMLParser extends HandlerBase {
         if (className != null) {
             reference = _searchForEntity(className);
             if (reference == null) {
-                newClass = Class.forName(className);
-            }
+		newClass = Class.forName(className, true, _classLoader);
+	    }
         }
         if (previous != null) {
             if (newClass != null) {
@@ -1044,6 +1068,8 @@ public class MoMLParser extends HandlerBase {
     //  invoking the constructor triggers an exception.
     private NamedObj _createInstance(Class newClass, Object[] arguments)
             throws Exception {
+	//System.out.println("class = " + newClass);
+	//System.out.println("class's classloader = " + newClass.getClassLoader());
         Constructor[] constructors = newClass.getConstructors();
         for (int i = 0; i < constructors.length; i++) {
             Constructor constructor = constructors[i];
@@ -1163,6 +1189,9 @@ public class MoMLParser extends HandlerBase {
 
     // Base for relative URLs.
     private URL _base;
+
+    // The class loader that will be used to instantiate objects.
+    private ClassLoader _classLoader = getClass().getClassLoader();
 
     // The stack of objects that contain the current one.
     private Stack _containers = new Stack();
