@@ -650,7 +650,7 @@ CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)
 
 clean:
-	rm -f $(CRUD)
+	rm -rf $(CRUD)
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
