@@ -247,13 +247,15 @@ public class TimeKeeper {
     public synchronized void sendOutNullTokens() {
 	Enumeration ports = _actor.outputPorts();
         double time = getCurrentTime();
+	System.out.println("\t\t" + ((NamedObj)_actor).getName() +
+		": null token time = " + time);
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
 	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
-                    if( time >=
-			    ((DDEReceiver)rcvrs[i][j]).getRcvrTime() ) {
+                    if( time >
+			    ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
                         ((DDEReceiver)rcvrs[i][j]).put(
                                 new NullToken(), time );
                     }
