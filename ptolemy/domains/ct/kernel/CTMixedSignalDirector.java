@@ -64,19 +64,19 @@ import ptolemy.kernel.util.Workspace;
    <UL>
    <LI> At the initialize stage of an execution, the director requests
    a firing at the global current time.
-   <LI> At each prefire stage of the execution, the end time the the firing is 
-   computed based on the current time of the executive director, t1, the next 
+   <LI> At each prefire stage of the execution, the end time the the firing is
+   computed based on the current time of the executive director, t1, the next
    iteration time of the executive director, t2, and the value of the parameter
    <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
    <LI> At the fire stage, the director will stop at the first of the
-   following two times, the fire end time and the time of the first detected 
+   following two times, the fire end time and the time of the first detected
    event.
    </ul>
    At the prefire stage, the local current time is compared with the
    current time of the executive director. If the local time is later than
    the executive director time, then the directed system will rollback to a
-   "known good" state. The "known good" state is the state of the system at 
-   the time when local time is equal to the current time of the executive 
+   "known good" state. The "known good" state is the state of the system at
+   the time when local time is equal to the current time of the executive
    director.
 
    @author  Jie Liu, Haiyang Zheng
@@ -165,10 +165,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     /** Execute the directed model for one iteration.
      *  <p>
-     *  If this director serves as a top-level director, this method behaves 
-     *  just like that is defined in the super class, CTMultiSolverDirector. 
+     *  If this director serves as a top-level director, this method behaves
+     *  just like that is defined in the super class, CTMultiSolverDirector.
      *  <p>
-     *  Otherwise, this method keeps advancing time and 
+     *  Otherwise, this method keeps advancing time and
      *  executing the model until the iteration time one of the following conditions
      *  is satisfied. 1) The iteration end time computed in the prefire()
      *  method is reached. 2) An event is generated.
@@ -185,8 +185,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
 
         _discretePhaseExecution();
-        
-        // Mark the FINAL states of the current model time for 
+
+        // Mark the FINAL states of the current model time for
         // possible roll back in the future.
         _markStates();
 
@@ -280,7 +280,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             if (_debugging) {
                 _debug("The current time of outside model is " + _outsideTime,
-                    " and its next iteration time is " 
+                    " and its next iteration time is "
                     + outsideNextIterationTime,
                     "\nThe current time of this director is " + localTime);
             }
@@ -305,7 +305,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         "Outside time is later than the local time. " +
                         "This should never happen.");
             } else if (_outsideTime.compareTo(localTime) < 0) {
-                // FIXME: get a concrete example that illustrates how this 
+                // FIXME: get a concrete example that illustrates how this
                 // can happen.
                 // Outside time less than the local time. Rollback!
                 System.out.println("Whaaat on earth are UUUUUU doing");
@@ -316,8 +316,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 }
                 // The local time is set backwards to a known good time.
                 _rollback();
-                
-                // restore the derivatives by propogating the restored states. 
+
+                // restore the derivatives by propogating the restored states.
                 _propagateResolvedStates();
 
                 // NOTE: At this time, new inputs are not transferred yet.

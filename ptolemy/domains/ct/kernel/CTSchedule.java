@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// CTSchedule
 /**
-   A static schedule for CT models. This class overrides the base class and 
+   A static schedule for CT models. This class overrides the base class and
    uses an ArrayList implementation for the first level of the schedule, so
    that accessing subschedules takes constant time. A CT schedule is an
    array of schedules. The array always has length X, consisting of the
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
    to the order they should be executed.
    <P>
    A typical use of this schedule is to get one of the above schedules.
-   For example, to schedule an execution of dynamic actor schedule, 
+   For example, to schedule an execution of dynamic actor schedule,
    (assume we have a CTScheduler called scheduler) do:
    <pre>
    CTSchedule schedule = scheduler.getSchedule();
@@ -91,7 +91,7 @@ public class CTSchedule extends Schedule {
      */
     public final static int DISCRETE_ACTORS = 1;
 
-    /** Index for dynamic actor schedule, in a topologically reverse order. 
+    /** Index for dynamic actor schedule, in a topologically reverse order.
      */
     public final static int DYNAMIC_ACTORS = 2;
 

@@ -32,13 +32,13 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// CTTransparentDirector
 /**
-   Interface for CT transparent directors. This director extends the 
-   CTGeneralDirector interface. 
-   <p> 
-   Transparent directors in the CT domain can transfer its internal step size 
-   control information to the executive director. It defines methods to support 
-   the step size control queries by the executive CTDirector, such that after 
-   the internal CT subsystem finishes one integration step, its step size 
+   Interface for CT transparent directors. This director extends the
+   CTGeneralDirector interface.
+   <p>
+   Transparent directors in the CT domain can transfer its internal step size
+   control information to the executive director. It defines methods to support
+   the step size control queries by the executive CTDirector, such that after
+   the internal CT subsystem finishes one integration step, its step size
    control information will be accessible by the outside CT director.
    <P>
    Directors that implement this interface are typically contained by
@@ -87,7 +87,7 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      *  true if the current integration step is accurate from
      *  this director's point of view.
      *  @return True if the current step is accurate.
-     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and 
+     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and
      *  isStateAccurate() methods instead.
      */
     public boolean isThisStepAccurate();

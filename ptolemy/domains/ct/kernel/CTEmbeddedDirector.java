@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
 /**
    An embedded director for CT inside CT or FSM. Conceptually, this director
    interacts with a continuous outside domain. As a consequence, this
-   director exposes its step size control information to the outer domain 
+   director exposes its step size control information to the outer domain
    through its container, which must be a CTCompositeActor.
    <P>
    Unlike the CTMixedSignalDirector, this director does not run ahead
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class CTEmbeddedDirector extends CTMultiSolverDirector
     implements CTTransparentDirector {
-    
+
     // FIXME: constrain this director to inherit the parameters of
     // the top-level CT director.
     /** Construct a director in the default workspace with an empty string
@@ -127,7 +127,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             Iterator dynamicActors = getScheduler().getSchedule().get(
                     CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while (dynamicActors.hasNext() && !_stopRequested) {
-                CTDynamicActor dynamicActor = 
+                CTDynamicActor dynamicActor =
                     (CTDynamicActor) dynamicActors.next();
                 dynamicActor.emitTentativeOutputs();
             }
@@ -141,11 +141,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  If states cannot be resolved accurately, then this subsystem
      *  may produce a meaningless output. It is the outside system's
      *  responsibility to check whether this subsystem is accurate in
-     *  this iteration, by calling the isOutputAccurate() and isStateAccurate() 
+     *  this iteration, by calling the isOutputAccurate() and isStateAccurate()
      *  methods of the CTCompositeActor that contains this director.
      *  @exception IllegalActionException If there does not exits a schedule,
-     *  or ODE solver cannot be set, or any actor throws it during this 
-     *  iteration. 
+     *  or ODE solver cannot be set, or any actor throws it during this
+     *  iteration.
      */
     public void fire() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
@@ -153,31 +153,31 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         // All directors at different levels of hierarchy must be synchronized
         // to that.
         CTExecutionPhase executionPhase = getExecutionPhase();
-        
-        if (executionPhase 
+
+        if (executionPhase
             == CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
             super._iteratePurelyDiscreteActors(schedule);
-        } else if (executionPhase 
+        } else if (executionPhase
             == CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
             getCurrentODESolver().fireDynamicActors();
-        } else if (executionPhase 
+        } else if (executionPhase
             == CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
             super.fireEventGenerators();
-        } else if (executionPhase 
+        } else if (executionPhase
             == CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
             getCurrentODESolver().fireStateTransitionActors();
-            // There is not a seperate state for producing output, 
-            // because a CT subsystem needs to produce output 
-            // if it works as a state transition actor. 
+            // There is not a seperate state for producing output,
+            // because a CT subsystem needs to produce output
+            // if it works as a state transition actor.
             super.produceOutput();
-        } else if (executionPhase 
+        } else if (executionPhase
             == CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             super._iterateEventGenerators(schedule);
-        } else if (executionPhase 
+        } else if (executionPhase
             == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
             super._iterateWaveformGenerators(schedule);
-        } 
-//        else if (executionPhase 
+        }
+//        else if (executionPhase
 //            == CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE) {
 //            super.prefireDynamicActors();
 //        }
@@ -188,7 +188,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return The current step size.
      */
     public double getCurrentStepSize() {
-        CTGeneralDirector executiveDirector = 
+        CTGeneralDirector executiveDirector =
             getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
             return getEnclosingCTGeneralDirector().getCurrentStepSize();
@@ -200,8 +200,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Return the enclosing CT general director of this director. 
-     *  @return The enclosing CT general director of this director. 
+    /** Return the enclosing CT general director of this director.
+     *  @return The enclosing CT general director of this director.
      */
     public CTGeneralDirector getEnclosingCTGeneralDirector() {
         CompositeActor container = (CompositeActor)getContainer();
@@ -221,7 +221,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return The current execution phase.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector = 
+        CTGeneralDirector executiveDirector =
             getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
             return getEnclosingCTGeneralDirector().getExecutionPhase();
@@ -233,11 +233,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Return the begin time of the current iteration. 
+    /** Return the begin time of the current iteration.
      *  @return The begin time of the current iteration.
      */
     public Time getIterationBeginTime() {
-        CTGeneralDirector executiveDirector = 
+        CTGeneralDirector executiveDirector =
             getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
             return getEnclosingCTGeneralDirector().getIterationBeginTime();
@@ -258,7 +258,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             Iterator statefulActors = getScheduler().getSchedule().get(
                     CTSchedule.STATEFUL_ACTORS).actorIterator();
             while (statefulActors.hasNext() && !_stopRequested) {
-                CTStatefulActor statefulActor = 
+                CTStatefulActor statefulActor =
                     (CTStatefulActor) statefulActors.next();
                 statefulActor.goToMarkedState();
             }
@@ -266,12 +266,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             throw new InternalErrorException (e);
         }
     }
-    
+
     /** Return true if this is the discrete phase execution.
      *  @return True if this is the discrete phase execution.
      */
     public boolean isDiscretePhase() {
-        CTGeneralDirector executiveDirector = 
+        CTGeneralDirector executiveDirector =
             getEnclosingCTGeneralDirector();
         if (executiveDirector != null) {
             return getEnclosingCTGeneralDirector().isDiscretePhase();
@@ -284,7 +284,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Return true if all output step size control actors are satisfied
-     *  with the current step size. 
+     *  with the current step size.
      *  @return True if the current step size is accurate with respect to
      *  output step size control actors.
      */
@@ -294,7 +294,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Return true if all state step size control actors are satisfied
-     *  with the current step size. 
+     *  with the current step size.
      *  @return True if the current step size is accurate with respect to
      *  state step size control actors.
      */
@@ -303,8 +303,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return _stateAcceptable;
     }
 
-    /** Return true if the current step size is accurate. 
-     *  This is determined by asking all the step size control actors 
+    /** Return true if the current step size is accurate.
+     *  This is determined by asking all the step size control actors
      *  in the state transition schedule and output schedule.
      *  @return True if the current step is accurate.
      */
@@ -325,7 +325,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             return true;
         }
     }
-    
+
     /** Mark the known good states. Including the iteration begin time
      *  and the states of the stateful actors.
      */
@@ -335,7 +335,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             Iterator statefulActors = getScheduler().getSchedule().get(
                     CTSchedule.STATEFUL_ACTORS).actorIterator();
             while (statefulActors.hasNext() && !_stopRequested) {
-                CTStatefulActor statefulActor = 
+                CTStatefulActor statefulActor =
                     (CTStatefulActor) statefulActors.next();
                 statefulActor.markState();
             }
@@ -362,15 +362,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Call the prefire of the super class. Change the ODE solver based on 
+    /** Call the prefire of the super class. Change the ODE solver based on
      *  the phase of execution.
      *  @return True if the prefire() method of super class returns true.
      *  @exception IllegalActionException If super class throws it or the ODE
      *  solver can not be set.
      */
     public boolean prefire() throws IllegalActionException {
-        // Use the correct solver. If the current phase of execution is a 
-        // discrete one, use a breakpoint solver. Otherwise, use a normal ODE 
+        // Use the correct solver. If the current phase of execution is a
+        // discrete one, use a breakpoint solver. Otherwise, use a normal ODE
         // solver.
         if (isDiscretePhase()) {
             _setCurrentODESolver(getBreakpointSolver());
@@ -384,7 +384,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  interface. If not, then throw an exception. Call the preinitialize
      *  method of the super class.
      *  @exception IllegalActionException If the container of this
-     *  director does not implement CTStepSizeControlActor, or the 
+     *  director does not implement CTStepSizeControlActor, or the
      *  preinitialize method throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -406,9 +406,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             double refinedStepSize = Double.MAX_VALUE;
             if (!_stateAcceptable) {
                 refinedStepSize = _refinedStepWRTState();
-            } 
+            }
             if (!_outputAcceptable) {
-                refinedStepSize = 
+                refinedStepSize =
                     Math.min(refinedStepSize, _refinedStepWRTOutput());
             }
             return refinedStepSize;
@@ -418,18 +418,18 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Return false if some actor returns false from its postfire method 
-     *  or a stop is requested. 
-     *  @return false if some actor returns false from its postfire method or 
+    /** Return false if some actor returns false from its postfire method
+     *  or a stop is requested.
+     *  @return false if some actor returns false from its postfire method or
      *  a stop is requested.
      *  @exception IllegalActionException If thrown by any actor during its
      *  postfire method.
      */
     public boolean postfire() throws IllegalActionException {
-        if (getExecutionPhase() 
+        if (getExecutionPhase()
             == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
             super.updateContinuousStates();
-        } else if (getExecutionPhase() 
+        } else if (getExecutionPhase()
             == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
             super.postfireEventGenerators();
         }

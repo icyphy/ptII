@@ -80,8 +80,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    <P>
    For different ODE solving methods, the functionality
    of an integrator may be different. The delegation and strategy design
-   patterns are used in this class, basic abstract ODESolver class, and the 
-   concrete ODE solver classes. Some solver-dependent methods of integrators 
+   patterns are used in this class, basic abstract ODESolver class, and the
+   concrete ODE solver classes. Some solver-dependent methods of integrators
    delegate to the concrete ODE solvers.
    <P>
    An integrator has one parameter: the <i>initialState</i>. At the
@@ -247,8 +247,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the state of the integrator. The returned state is the
-     *  latest confirmed state. If the history capacity is bigger than 0, 
-     *  the same state can be retrieved from getHistory(0)[0]. However, 
+     *  latest confirmed state. If the history capacity is bigger than 0,
+     *  the same state can be retrieved from getHistory(0)[0]. However,
      *  this method is more efficient.
      *
      *  @return A double number as the state of the integrator.
@@ -283,10 +283,10 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     /** Go to the marked state. After calling the markState() method,
      *  calling this method will bring the integrator back to the
-     *  marked state. This method is used for rollbacking the execution 
+     *  marked state. This method is used for rollbacking the execution
      *  to a previous time point. Note that derivative is not stored.
-     *  Therefore, when states are restored, they need to be propogated 
-     *  through state transition actors such that the derivatives are 
+     *  Therefore, when states are restored, they need to be propogated
+     *  through state transition actors such that the derivatives are
      *  restored (reconstructured) too.
      */
     public void goToMarkedState() {
@@ -301,7 +301,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *
      *  @exception IllegalActionException If there's no director,
      *  or, the director is not a CT director, or the director has
-     *  no ODE solver, or thrown in the super class, or the initialState 
+     *  no ODE solver, or thrown in the super class, or the initialState
      *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
@@ -355,7 +355,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return true if this integration step is accurate from this
-     *  integrator's point of view, where both the isStateAccurate() and 
+     *  integrator's point of view, where both the isStateAccurate() and
      *  isOutputAccurate() methods return true.
      *  @return True if the last integration step is accurate.
      */
@@ -374,13 +374,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** Mark and remember the current state. This remembered state can be
      *  retrieved by the goToMarkedState() method. The marked state
      *  may be used for rolling back the execution to a previous time point.
-     *  Note that the derivative is not saved. 
+     *  Note that the derivative is not saved.
      */
     public void markState() {
         _storedState = getState();
     }
 
-    /** Update the state and its derivative, and push them into history if 
+    /** Update the state and its derivative, and push them into history if
      *  the history capacity is bigger than 0.
      *  @return True always.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -537,7 +537,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     // Derivative.
     private double _derivative;
 
-    // State. 
+    // State.
     private double _state;
 
     // The state stored, may be used for rollback execution.

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    In the CT domain, normal opaque composite actors are not fired
    in every iteration. They are only fired in the discrete phase of execution
-   and when they have trigger events. On the other hand, CTCompositeActors 
+   and when they have trigger events. On the other hand, CTCompositeActors
    are fired in both discrete and continuous phases of execution in each
    iteration.
    <p>
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
    then any step-size control methods called on this actor will be delegated
    to the local director. If the local director is not a CTTransparentDirector,
    the implementations of the step-size control methods do not affect
-   the current step size. 
+   the current step size.
    <P>
    This composite actor should be used when a CT subsystem needs to transfer
    its step size control information to the outer domain. Typical usage
@@ -126,8 +126,8 @@ public class CTCompositeActor extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call the emitTentativeOutputs() method of the local director if the 
-     *  local director is an instance of CTTransparentDirector. Otherwise, 
+    /** Call the emitTentativeOutputs() method of the local director if the
+     *  local director is an instance of CTTransparentDirector. Otherwise,
      *  do nothing.
      *  @exception IllegalActionException If tentative states can not be emitted.
      */
@@ -220,9 +220,9 @@ public class CTCompositeActor extends TypedCompositeActor
         return java.lang.Double.MAX_VALUE;
     }
 
-    /** Call the prefireDynamicActors() method of the local director if the 
-     *  local director is an instance of CTTransparentDirector. Return true 
-     *  if all dynamic actors are prefired, otherwise, return false. If the 
+    /** Call the prefireDynamicActors() method of the local director if the
+     *  local director is an instance of CTTransparentDirector. Return true
+     *  if all dynamic actors are prefired, otherwise, return false. If the
      *  local director is not an instance of CTTransparentDirector, return true
      *  always.
      *  @return True if all dynamic actors are prefired.

@@ -55,26 +55,26 @@ import ptolemy.kernel.util.Workspace;
    A CTDirector that uses multiple ODE solvers. The reason for using different
    solvers is that we need to handle both normal integration of ODEs over a
    time interval and abrupt changes in signals or actors' functions that happen
-   at discrete time points. 
+   at discrete time points.
    <p>
    At the time points where abrupt changes happen, a special ODE solver, called
    <i>breakpointODESolver</i>, is used. Typically, breakpointODESolver does not
-   advance time. The job for a breakpointODESolver is to find the states of 
+   advance time. The job for a breakpointODESolver is to find the states of
    the system at a breakpoint. Usually, the system has more than one states at
    such time points, which is also known as discontinuities. We call the first
-   state at a discontinuity the <i>initial</i> state, and the last state the 
-   <i>final</i> states. Therefore, a breakpointODESolver is responsible to 
-   resolve the final state of a discontinuity from the inputs and the initial 
+   state at a discontinuity the <i>initial</i> state, and the last state the
+   <i>final</i> states. Therefore, a breakpointODESolver is responsible to
+   resolve the final state of a discontinuity from the inputs and the initial
    states.
    <p>
-   The following paper gives a detailed explanation of initial and final states 
+   The following paper gives a detailed explanation of initial and final states
    and how the final states are resolved.
    <ul>
-   <li>Edward A. Lee and Haiyang Zheng, <i>Operational Semantics of Hybrid 
-   Systems</i>, Invited paper in Proceedings of Hybrid Systems: Computation and 
+   <li>Edward A. Lee and Haiyang Zheng, <i>Operational Semantics of Hybrid
+   Systems</i>, Invited paper in Proceedings of Hybrid Systems: Computation and
    Control (HSCC) LNCS TBD, Zurich, Switzerland, March 9-11, 2005.
    </ul>
-   <p> 
+   <p>
    This director handles both predictable breakpoints, whose appearance can be
    told before the simulation, and unpredictable breakpoints, whose appearance
    is not known beforehand.
@@ -94,10 +94,10 @@ import ptolemy.kernel.util.Workspace;
    <P>
    This director has two more parameters than the CTDirector base class.<BR>
    <UL>
-   <LI><I>ODESolver</I>: This is the name of the ODE solver that is used 
+   <LI><I>ODESolver</I>: This is the name of the ODE solver that is used
    for integrate ODEs over a time interval.
    <LI><I>breakpointODESolver</I>: This is the name of the ODE solver used
-   at breakpoints. The breakpoint ODE solvers does not need history information 
+   at breakpoints. The breakpoint ODE solvers does not need history information
    (this property is called self-start). There is only one such solver in this
    director: {@link ptolemy.domains.ct.kernel.solver.DerivativeResolver}.
    </UL>
@@ -170,7 +170,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  parameter value will be updated.
      *  In particular, if either the <i>ODESolver</i> is changed, then
      *  the corresponding solver will be instantiated. If the new ODEsolver
-     *  can not be instantiated, an IllegalActionException will be thrown, and 
+     *  can not be instantiated, an IllegalActionException will be thrown, and
      *  the original ODESolver will be unchanged.
      *  @param attribute The changed attribute.
      *  @exception IllegalActionException If the new solver can not be
@@ -182,12 +182,12 @@ public class CTMultiSolverDirector extends CTDirector {
             if (_debugging) {
                 _debug(getFullName() + " updating ODE solver...");
             }
-            String newSolverClassName = 
+            String newSolverClassName =
                 ((StringToken)ODESolver.getToken()).stringValue();
             if (newSolverClassName.length() > 33) {
-                // The old solver name is a parameter starts with 
+                // The old solver name is a parameter starts with
                 // "ptolemy.domains.ct.kernel.solver."
-                _solverClassName = 
+                _solverClassName =
                     ((StringToken)ODESolver.getToken()).stringValue();
             } else {
                 _solverClassName = _solverClasspath + newSolverClassName;
@@ -220,14 +220,14 @@ public class CTMultiSolverDirector extends CTDirector {
     /** Fire the system for one iteration. One iteration is defined as
      *  solving the states of a system over a time interval [t_0, t_1].
      *  A complete iteration includes resolving final states at t_0,
-     *  resolving the initial states at t_1, and producing outputs. This 
+     *  resolving the initial states at t_1, and producing outputs. This
      *  process includes a discrete phase of execution and a continuous one.
      *  <P>
      *  To resolve the final states at the time point t_0, a discrete phase
      *  of execution is performed. A discrete phase of execution at a time point
      *  is a fixed-point iteration, where the fixed point is reached when no
-     *  more events exist and there will be no more events to be generated at 
-     *  that time point. To be concrete, at a discrete phase execution, event 
+     *  more events exist and there will be no more events to be generated at
+     *  that time point. To be concrete, at a discrete phase execution, event
      *  generators, purely discrete actors, waveform generators, and continuous
      *  acotrs are repeatly iterated. The whole execution stops only when no
      *  event generators generate any more events. At this ending of this
@@ -242,11 +242,11 @@ public class CTMultiSolverDirector extends CTDirector {
      *  breakpoint may cause overhead.
      *  <p>
      *  We could have used a smarter event queue like the one used by the DE
-     *  director, as a result only those actors with triggers events will be 
+     *  director, as a result only those actors with triggers events will be
      *  executed. However, this design will increase the complexity of this
      *  class. We assume that a CT model does not have many DE actors inside.
      *  If the discrete part of the model is complicated with a lot of DE
-     *  actors, we would suggest to use an opaque DE composite actor to 
+     *  actors, we would suggest to use an opaque DE composite actor to
      *  encapsulate these DE actors and associate the composite actor with a
      *  DE director to take charge of the execution of those DE actors.
      *  <p>
@@ -262,21 +262,21 @@ public class CTMultiSolverDirector extends CTDirector {
      *  should not be later than the first entry in the breakpoint table.
      *  <p>
      *  Because of the existence of unpredictable events, a step size may need
-     *  to be refined. Another reason to adjust step size is to achieve a 
-     *  reasonably accurate approximation of states. The mechanism to control 
-     *  step size is described below. After the states are resolved, step size 
-     *  control actors in the dynamic actor schedule and the state transition 
-     *  schedule are queried for the accuracy of the current step size. If any 
-     *  one of them is not satisfied with the current step size, then the states 
-     *  will be recalucated with a refined step size, which is the minimum of 
+     *  to be refined. Another reason to adjust step size is to achieve a
+     *  reasonably accurate approximation of states. The mechanism to control
+     *  step size is described below. After the states are resolved, step size
+     *  control actors in the dynamic actor schedule and the state transition
+     *  schedule are queried for the accuracy of the current step size. If any
+     *  one of them is not satisfied with the current step size, then the states
+     *  will be recalucated with a refined step size, which is the minimum of
      *  the refined step sizes from all step size control actors in the dynamic
      *  actor schedule and the state transition schedule. On the other hand,
-     *  if all the above actors are satisfied with the current step, then the 
-     *  actors in the output path will be fired according to the output 
-     *  schedule. Then, the step size control actors in the output path will be 
-     *  checked for accuracy. If any actor is not satisfied with the current 
-     *  step size, the current step size is refined. Note that states have to be 
-     *  resolved again with this new step size. States are completely resolved 
+     *  if all the above actors are satisfied with the current step, then the
+     *  actors in the output path will be fired according to the output
+     *  schedule. Then, the step size control actors in the output path will be
+     *  checked for accuracy. If any actor is not satisfied with the current
+     *  step size, the current step size is refined. Note that states have to be
+     *  resolved again with this new step size. States are completely resolved
      *  only when all actors agree that the step is accurate.
      *  <P>
      *  All the continuous actors are prefired before an iteration begins.
@@ -293,14 +293,14 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // A complete iteration consists of a discrete phase of execution
         // and a continuous phase of execution.
-        
+
         // The discrete phase of execution resolves the final states at the
         // current time by processing discrete events according to the SR
         // semantics.
         _discretePhaseExecution();
 
         // If the current time is the stop time, then the fire method
-        // should return because no further execution is necessary. 
+        // should return because no further execution is necessary.
         // NOTE: the final states at the model stop time are resolved before
         // the model stops.
         if (getModelTime().equals(getModelStopTime())) {
@@ -318,9 +318,9 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Fire event generators. This method is only called in a continuous
      *  phase of execution. Note that event generators are only fired but not
-     *  postfired in this method. 
-     *  @exception IllegalActionException If the schedule does not exist, 
-     *  or any actor can not be prefired, or any actor throws it during firing. 
+     *  postfired in this method.
+     *  @exception IllegalActionException If the schedule does not exist,
+     *  or any actor can not be prefired, or any actor throws it during firing.
      */
     public void fireEventGenerators() throws IllegalActionException {
         _setExecutionPhase(CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE);
@@ -368,12 +368,12 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Always return null, because this director can not be an inside director.
-     *  @return Null, always. 
+     *  @return Null, always.
      */
     public CTGeneralDirector getEnclosingCTGeneralDirector() {
         return null;
     }
-    
+
     /** Return the ODE solver for normal integration.
      *  @return The ODE solver for normal integration.
      */
@@ -389,13 +389,13 @@ public class CTMultiSolverDirector extends CTDirector {
     public boolean hasCurrentEvent() {
         // NOTE: We have to check both the breakpoint table and all event
         // generators, because event generators do not post breakpoints to
-        // breakpoint tables directly. 
+        // breakpoint tables directly.
         // The reason is that some events generated by event generator with the
-        // current step size may not exist if integration step size changes. 
-        // In fact, if multiple events are reported during one continuous phase 
-        // execution, only the earliest one is guaranteed to happen. The 
-        // integration step size therefore needs to be reduced according to 
-        // that event. Consequently, the rest of events may not occur in 
+        // current step size may not exist if integration step size changes.
+        // In fact, if multiple events are reported during one continuous phase
+        // execution, only the earliest one is guaranteed to happen. The
+        // integration step size therefore needs to be reduced according to
+        // that event. Consequently, the rest of events may not occur in
         // reality.
         // In summary, breakpoints and unpredicted events have to
         // be dinstinguished and treated differently.
@@ -437,22 +437,22 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_debugging) {
             _debug("----- Initializing: " + getFullName());
         }
-        // NOTE: The initialization order of the model is as follows: firstly, 
+        // NOTE: The initialization order of the model is as follows: firstly,
         // the container actor of this director initializes to resolve the
-        // signal types of its ports partialy (including the signal types of 
-        // input ports of the contained actors); then the contained actors 
-        // are initialized, where the signal types of the output ports the 
-        // contained actors are resolved; lastly, the signal types of the rest 
+        // signal types of its ports partialy (including the signal types of
+        // input ports of the contained actors); then the contained actors
+        // are initialized, where the signal types of the output ports the
+        // contained actors are resolved; lastly, the signal types of the rest
         // ports of the container actor are resolved.
         // NOTE: It is possible that the signal type of an input port of a
         // subsystem depends on one of its output ports, e.g., a feedback loop.
         // It may take several iterations (by going into and out of the
         // container) to completely resolve the signal type of all input and
-        // output ports. A fixed point can be reached when the signal type of 
+        // output ports. A fixed point can be reached when the signal type of
         // all ports are resolved and they will never be changed.
         // We have a lattice is UNKNOWN -> DISCRETE | CONTINUOUS -> GENERAL
-        // for the signal types. When a fixed point is reached, if any port 
-        // has either UNKNOWN or GENERAL signal type, there is something wrong 
+        // for the signal types. When a fixed point is reached, if any port
+        // has either UNKNOWN or GENERAL signal type, there is something wrong
         // with the model or the CTScheduler).
 
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
@@ -495,8 +495,8 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public boolean postfire() throws IllegalActionException {
         if (getModelTime().compareTo(getModelStopTime()) > 0) {
-            // This should never happen. Otherwise, 
-            // there is a bug in the fire method. 
+            // This should never happen. Otherwise,
+            // there is a bug in the fire method.
             // Whenever an InternalErrorException happens, there
             // is (at least) one bug. :(
             throw new IllegalActionException(
@@ -543,14 +543,14 @@ public class CTMultiSolverDirector extends CTDirector {
         // when the fire() method is called, the current solver gets set
         // corresponding to the phases of execution. We choose the normal solver
         // just to ensure back compatibility of tests.
-        // In parcicular, we set the solver here because the CTBaseIntegrator 
-        // checks the existence of solver during its initialize() method. 
+        // In parcicular, we set the solver here because the CTBaseIntegrator
+        // checks the existence of solver during its initialize() method.
         _setCurrentODESolver(_normalSolver);
     }
 
-    /** Call the prefire() method of the super class and return its value. 
+    /** Call the prefire() method of the super class and return its value.
      *  Record the current model time as the beginning time of the current
-     *  iteration. 
+     *  iteration.
      *  @return True if this director is ready to fire.
      *  @throws IllegalActionException If thrown by the super class.
      */
@@ -559,10 +559,10 @@ public class CTMultiSolverDirector extends CTDirector {
         // Record the start time of the current iteration
         // The begin time of an iteration can be changed only by directors.
         // On the other hand, the model time may be changed by ODE solvers.
-        // One example solver is the RK23 solver. It resolves the states in 
-        // three steps, and it increment the model time at each step. If 
+        // One example solver is the RK23 solver. It resolves the states in
+        // three steps, and it increment the model time at each step. If
         // the CurrentTime actor is involved as one of the state transition
-        // actors, it needs to report the model time at each intermediate steps. 
+        // actors, it needs to report the model time at each intermediate steps.
         // (The CurrentTime actor reports the model time.)
         _setIterationBeginTime(getModelTime());
         return prefireReturns;
@@ -580,7 +580,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  step sizes.
      *  <p>
      *  FIXME: If we treat time as a state, it should not change until the
-     *  postfire method! 
+     *  postfire method!
      *
      *  @exception IllegalActionException If there is no schedule, or any
      *  output actor can not be prefired or fired, or any output actor
@@ -666,8 +666,8 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Call the postfire() method on all continuous actors in the schedule.
-     *  For a correct CT simulation, the state of a continuous actor can only 
-     *  change at this stage of an iteration. Meanwhile, the current states 
+     *  For a correct CT simulation, the state of a continuous actor can only
+     *  change at this stage of an iteration. Meanwhile, the current states
      *  are marked as a known good checkpoint.
      *  <p>
      *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
@@ -746,7 +746,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  <p>
      *  Note that t_1 can be adjusted by the normal ODE solver with respect to
      *  the accuracy requirements from step size control actors. Therefore,
-     *  this method starts with a guess of t_1, or an integration step size 
+     *  this method starts with a guess of t_1, or an integration step size
      *  as (t_1 - t_0). If all step size control actors are satisfied with the
      *  guess, this method returns. Otherwise, the normal ODE solver chooses
      *  a smaller step size and tries to solve the states. Therefore, this
@@ -783,10 +783,10 @@ public class CTMultiSolverDirector extends CTDirector {
         _resolveInitialStates();
     }
 
-    /** Perform a discrete phase of execution by processing all discrete events 
-     *  happening at the current model time. In this method, event generators, 
+    /** Perform a discrete phase of execution by processing all discrete events
+     *  happening at the current model time. In this method, event generators,
      *  purely discrete actors, wavefore generators, and continuous actors are
-     *  repeatedly iterated until the execution reaches a fixed point, where no 
+     *  repeatedly iterated until the execution reaches a fixed point, where no
      *  more events exist at the current time.
      *  @exception IllegalActionException If one of the actors throws it or
      *  the schedule does not exist.
@@ -801,7 +801,7 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_firstIteration) {
             // propagate the initial states with a breakpoint solver
             _propagateResolvedStates();
-            // Restore the solver to normal solver to make the CTIntegrator 
+            // Restore the solver to normal solver to make the CTIntegrator
             // tests pass.
             _setCurrentODESolver(_normalSolver);
             _firstIteration = false;
@@ -821,7 +821,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // NOTE: If more events are generated by event generators,
         // a new iteration at the current time is necessary.
         // Otherwise, a fixed point is reached.
-        // NOTE: only when there are no events in two consecutive loops, 
+        // NOTE: only when there are no events in two consecutive loops,
         // will it be confirmed that a fixed point is reached.
         while (!fixedPointConfirmed && _postfireReturns) {
 
@@ -887,7 +887,7 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             _solverClassName =
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
-            ODESolver = new Parameter(this, "ODESolver", 
+            ODESolver = new Parameter(this, "ODESolver",
                     new StringToken("ExplicitRK23Solver"));
             ODESolver.setTypeEquals(BaseType.STRING);
             ODESolver.addChoice(
@@ -898,7 +898,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     new StringToken("ForwardEulerSolver").toString());
             _breakpointSolverClassName =
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver";
-            breakpointODESolver = new Parameter(this, "breakpointODESolver", 
+            breakpointODESolver = new Parameter(this, "breakpointODESolver",
                     new StringToken("DerivativeResolver"));
             breakpointODESolver.setTypeEquals(BaseType.STRING);
             // We have only one breakpoint ODE solver.
@@ -1045,7 +1045,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  is the minimum of predictions from all step size control actors,
      *  and it never exceeds 10 times of the current step size.
      *  If there are no step-size control actors at all, then return
-     *  the current step size times 5. However, it never exceeds the maximum 
+     *  the current step size times 5. However, it never exceeds the maximum
      *  step size.
      *  @return the prediced next step size.
      *  @exception IllegalActionException If the scheduler throws it.
@@ -1090,7 +1090,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Return the refined step size with respect to the output actors.
-     *  All the step size control actors in the output schedule are queried for 
+     *  All the step size control actors in the output schedule are queried for
      *  a refined step size. The smallest one is returned.
      *  @return The refined step size.
      *  @exception IllegalActionException If the scheduler throws it or the
@@ -1161,7 +1161,7 @@ public class CTMultiSolverDirector extends CTDirector {
         return refinedStep;
     }
 
-    /** Return true if the current time is the first element in the breakpoint 
+    /** Return true if the current time is the first element in the breakpoint
      *  table, and remove that element from the breakpoint table.
      *  @return true if the current time is a breakpoint.
      *  @exception IllegalActionException If a breakpoint is missed.
@@ -1209,8 +1209,8 @@ public class CTMultiSolverDirector extends CTDirector {
         // NOTE: The step size used in the breakpoint iteration will be
         // set by the breakpoint ODE solver. There is no need to set the
         // step size here.
-        // During this method, no step size refinement is needed. 
-        // Two important facts: states can always be resolved; 
+        // During this method, no step size refinement is needed.
+        // Two important facts: states can always be resolved;
         // outputs are always correct.
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
 
@@ -1318,7 +1318,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                 }
                 // NOTE: solver.resolveStates() returns true if the states are
-                // resolved, and it returns false if the maximum number of 
+                // resolved, and it returns false if the maximum number of
                 // iterations is reached but the states have not be resolved.
                 if (solver.resolveStates()) {
                     if (_debugging && _verbose) {
@@ -1342,7 +1342,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     }
                     setCurrentStepSize(0.5*getCurrentStepSize());
                 }
-                
+
                 // Restore the model time to the beginning time of this
                 // iteration.
                 setModelTime(getIterationBeginTime());
@@ -1374,7 +1374,7 @@ public class CTMultiSolverDirector extends CTDirector {
             // size is confirmed by all step size control actorls.
             fireEventGenerators();
 
-            // If event generators are not satisfied with the current step 
+            // If event generators are not satisfied with the current step
             // size, refine the step size to a smaller one.
             if (!_isOutputAccurate()) {
                 setModelTime(getIterationBeginTime());
@@ -1391,7 +1391,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
 
         // postfire all continuous actors to commit their states.
-        // Note that event generators are postfired 
+        // Note that event generators are postfired
         updateContinuousStates();
 
         // predict the next step size.
@@ -1483,8 +1483,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
     // The classname of the normal ODE solver.
     private String _solverClassName;
-    
+
     // The classpath for solvers.
-    private static String _solverClasspath 
+    private static String _solverClasspath
         = "ptolemy.domains.ct.kernel.solver.";
 }

@@ -66,15 +66,15 @@ import ptolemy.kernel.util.Workspace;
    <P>
    The continuous time (CT) domain is a timed domain. There is a global
    notion of time that all the actors are aware of. Time is maintained
-   by the director. The method getModelTime() returns the current notion of 
+   by the director. The method getModelTime() returns the current notion of
    model time. Time can be set by the setModelTime() method, but this
    method should not the called by the actors. Time can only be set
-   by directors or their ODE solvers. Because ODE solvers can change time 
-   in their fire() methods, we need to record the beginning time of an 
-   iteration to support roll back. The _setIterationBeginTime() method is just 
-   designed for this purpose. It is called in the prefire() method of each 
-   iteration to store the beginning time, and the getIterationBeginTime() 
-   returns the lastest stored time. 
+   by directors or their ODE solvers. Because ODE solvers can change time
+   in their fire() methods, we need to record the beginning time of an
+   iteration to support roll back. The _setIterationBeginTime() method is just
+   designed for this purpose. It is called in the prefire() method of each
+   iteration to store the beginning time, and the getIterationBeginTime()
+   returns the lastest stored time.
    <P>
    This base class maintains a list of parameters that may be used by
    ODE solvers and actors. These parameters are: <Br>
@@ -111,14 +111,14 @@ import ptolemy.kernel.util.Workspace;
    reached.
    Default value is 1e-6.
    <P>
-   This director maintains a breakpoint table to record all predictable 
-   breakpoints that are greater than or equal to 
+   This director maintains a breakpoint table to record all predictable
+   breakpoints that are greater than or equal to
    the current time. The breakpoints are sorted in their chronological order.
-   Breakpoints at the same time are considered to be identical, and the 
-   breakpoint table does not contain duplicate time points. A breakpoint can 
-   be inserted into the table by calling the fireAt() method. The fireAt method 
+   Breakpoints at the same time are considered to be identical, and the
+   breakpoint table does not contain duplicate time points. A breakpoint can
+   be inserted into the table by calling the fireAt() method. The fireAt method
    may be requested by the director, which inserts the start time of the
-   execution. The fireAt method may also be requested by actors and the 
+   execution. The fireAt method may also be requested by actors and the
    requested firing time will be inserted into the breakpoint table.
 
    @author Jie Liu, Haiyang Zheng
@@ -195,7 +195,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Error tolerance for local truncation error control, only effective 
+    /** Error tolerance for local truncation error control, only effective
      *  in variable step size methods.
      *  The default value is 1e-4, and the type is double.
      */
@@ -226,7 +226,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Parameter startTime;
 
-    /** Stop time of the simulation. The default value is Infinity, 
+    /** Stop time of the simulation. The default value is Infinity,
      *  and the type is double.
      */
     public Parameter stopTime;
@@ -284,7 +284,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot set a negative step size.");
-            } 
+            }
             _minStepSize = value;
         } else if (attribute == maxStepSize) {
             double value = ((DoubleToken)maxStepSize.getToken()).doubleValue();
@@ -335,8 +335,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public abstract void fire() throws IllegalActionException;
 
     /** Handle firing requests from the contained actors.
-     *  If the specified time is earlier than the current time, or the 
-     *  breakpoint table is null, throw an exception. Otherwise, insert 
+     *  If the specified time is earlier than the current time, or the
+     *  breakpoint table is null, throw an exception. Otherwise, insert
      *  the specified time into the breakpoint table.
 
      *  @param actor The actor that requests the firing.
@@ -366,7 +366,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _breakpoints.insert(time);
     }
 
-    /** Return the breakpoint table. The result can be null if the breakpoint 
+    /** Return the breakpoint table. The result can be null if the breakpoint
      *  table has never been created.
      *  @return The breakpoint table.
      */
@@ -489,7 +489,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Return the current iteration begin time plus the current step size.
      *  @return The iteration begin time plus the current step size.
-     *  @deprecated As of Ptolemy II 4.1, replaced by 
+     *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelNextIterationTime}
      */
     public double getNextIterationTime() {
@@ -714,11 +714,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         // Time objects can only initialized at the end of this method after
         // the time scale and time resolutioin are evaluated.
-        // NOTE: Time resolution is provided by the preinitialize() method in 
+        // NOTE: Time resolution is provided by the preinitialize() method in
         // the super class (Director). So, this method must be called
         // after the super.preinitialize() is called.
-        // NOTE: _timeBase is not initialized here but in the initialize() 
-        // method instead in order to provide more accurate real-time 
+        // NOTE: _timeBase is not initialized here but in the initialize()
+        // method instead in order to provide more accurate real-time
         // information.
         _startTime = new Time(this, _startTimeValue);
         _stopTime = new Time(this, _stopTimeValue);
@@ -726,7 +726,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _iterationEndTime = _stopTime;
     }
 
-    /** Set the current step size. Only CT directors can call this method. 
+    /** Set the current step size. Only CT directors can call this method.
      *  Solvers and actors must not call this method.
      *  @param stepSize The step size to be set.
      *  @see #getCurrentStepSize
@@ -884,7 +884,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  the stop time for the current integration. This variable is used
      *  to ensure an iteration ends at an expected time.
      *  <p>
-     *  If the argument is earlier than the current time, then an 
+     *  If the argument is earlier than the current time, then an
      *  InvalidStateException will be thrown.
      *  @param time The iteration end time.
      */

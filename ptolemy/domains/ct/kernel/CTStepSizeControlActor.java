@@ -34,12 +34,12 @@ import ptolemy.actor.Actor;
 //// CTStepSizeControlActor
 /**
    Interface for actors that control integration step sizes for handling
-   unpredictable breakpoints or controlling local truncation error when 
-   resolving states. Typically, actors that implement this interface are 
-   event detectors and dynamic actors. 
+   unpredictable breakpoints or controlling local truncation error when
+   resolving states. Typically, actors that implement this interface are
+   event detectors and dynamic actors.
    <P>
    Actors can affect the integration step size in two ways. The first one
-   is by introducing predictable breakpoints. For example, when the fireAt() 
+   is by introducing predictable breakpoints. For example, when the fireAt()
    method of CTDirector is called with an argument <i>t</i>,
    the CTDirector will treat <i>t</i> as a breakpoint. Actors that only
    introduce predictable breakpoints need not implement this interface.
@@ -51,10 +51,10 @@ import ptolemy.actor.Actor;
    Actors that use this mechanism need to implement this interface.
    At the end of each integration step, each CTStepSizeControlActors
    will be asked whether this step is accurate by calling their
-   isOutputAccurate() or isStateAccurate() method. If either method returns 
-   false, that actor will then be asked to suggest a refined step size. If 
+   isOutputAccurate() or isStateAccurate() method. If either method returns
+   false, that actor will then be asked to suggest a refined step size. If
    there are more than one actors find that this step is not accurate, then the
-   smallest of the suggested step size will be used by the director to restart 
+   smallest of the suggested step size will be used by the director to restart
    the integration step.
    <p>
    If all step size control actors find the integration step accurate,
@@ -102,7 +102,7 @@ public interface CTStepSizeControlActor extends Actor{
      *  missed during the integration step. The actor may only care
      *  about one of these aspects.
      *  @return True if the current integration step is accurate.
-     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and 
+     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and
      *  isStateAccurate() methods instead.
      */
     public boolean isThisStepAccurate();
