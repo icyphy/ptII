@@ -56,7 +56,7 @@ room in the queue to introduce the token.
 @see QueueReceiver    
 @see ptolemy.actor.QueueReceiver
 */
-public class PNQueueReceiver extends QueueReceiver {
+public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Construct an empty queue with no container
      */
     public PNQueueReceiver() {
@@ -235,7 +235,7 @@ public class PNQueueReceiver extends QueueReceiver {
     /** This sets the flag in the receiver to indicate the onset of termination
      *  the actor containing this receiver.
      */
-    public synchronized void setTerminate() {
+    public synchronized void setFinish() {
 	_terminate = true;
         //System.out.println("Terminating a receiver");
 	notifyAll();
