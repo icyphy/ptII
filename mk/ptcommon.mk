@@ -310,7 +310,7 @@ index.xml: makefile $(ROOT)/mk/ptcommon.mk
 	for actor in $(JSRCS); do \
 		baseactor=`basename $$actor .java`; \
 		class=`echo $(ME) | sed 's@/@\.@g'`; \
-	        echo "" >> $@
+	        echo "" >> $@; \
 		echo "<entity name=\"$$baseactor\" class=\"$$class.$$baseactor\">" >> $@; \
 		echo "<rendition class=\"ptolemy.vergil.toolbox.LibraryIcon\">" >> $@; \
 		echo "<configure>generic.transformer</configure>" >> $@; \
