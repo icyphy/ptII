@@ -88,15 +88,20 @@ labstaff ptolemy eal sysadmin root majordomo colorpr messer tools
 </pre>
 If you are not in the <CODE>ptolemy</CODE> Unix group, send email
 to <a href="mailto:root@mho.eecs.berkeley.edu">&lt;root@mho.eecs.berkeley.edu&gt;</a>.
-(Note that cvs only users on the mho cluster will not be able to run
-the groups command)
+(Note that cvs only users on the mho cluster might not be able to run
+the <CODE>groups</CODE> command)
 
 
 
-<li> Remote users can check out the tree with
+<li> Remote users can then exit the ssh session and 
+check out the tree by running the
+following command on their <B>local</B> machine:
+
 <pre>
 cvs -d :ext:carson.eecs.berkeley.edu:/users/cvs/Repository co ptII
 </pre>
+(cvs uses ssh to connect from the local machine to carson)
+
 </ol>
 <h3>Local Users</h3>
 
