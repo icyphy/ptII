@@ -97,12 +97,12 @@ so we search for the java compiler.])
     fi 
     AC_PATH_PROG(JAVAC, javac)
     if test -x "$JAVAC"; then	
-	JAVABIN=`dirname $JAVAC`
-	PTJAVA_DIR=`dirname $JAVABIN`
+	JAVABIN=`dirname "$JAVAC"`
+	PTJAVA_DIR=`dirname "$JAVABIN"`
 	if test "$PTJAVA_DIR" = "/"; then
 	    if test -d /usr/java; then
 		PTJAVA_DIR=/usr/java
-	        AC_MSG_WARN([ Found javac in '$JAVABIN', /usr/java exists, so
+	        AC_MSG_WARN([ Found javac in "$JAVABIN", /usr/java exists, so
   we are setting PTJAVA_DIR to '$PTJAVA_DIR'])
 	    fi	
 	fi
@@ -142,13 +142,16 @@ if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
     AC_MSG_CHECKING([that you have the right java in your path.])
     AC_PATH_PROG(JAVA, java)
     if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
-	AC_MSG_RESULT([  You have the right java in your path, $PTJAVA_DIR/bin/java = $JAVA])
+	AC_MSG_RESULT([  You have the right java in your path,
+    $PTJAVA_DIR/bin/java = "$JAVA"])
     else
-	AC_MSG_WARN([$PTJAVA_DIR/bin/java is not the same as $JAVA.
-    Perhaps $JAVA is in your path before $PTJAVA_DIR/bin/java?
+	AC_MSG_WARN([$PTJAVA_DIR/bin/java is not
+    the same as $JAVA.
+    Perhaps $JAVA is in your path before
+    $PTJAVA_DIR/bin/java?
     If you have problems later, be sure that you don't have a mismatch
     in JDK versions.])
-	JAVA=$PTJAVA_DIR/bin/java
+	JAVA="$PTJAVA_DIR/bin/java"
     fi
 else
     AC_MSG_ERROR([
@@ -166,12 +169,15 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
     AC_MSG_CHECKING([that you have the right javac in your path.])
     AC_PATH_PROG(JAVAC, javac)
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
-        AC_MSG_RESULT([  You have the right javac in your path, $PTJAVA_DIR/bin/javac = $JAVAC])
+        AC_MSG_RESULT([  You have the right javac in your path,
+	 $PTJAVA_DIR/bin/javac = $JAVAC])
     else
-        AC_MSG_WARN([$PTJAVA_DIR/bin/javac is not the same as $JAVAC.
-    Perhaps $JAVAC is in your path before $PTJAVA_DIR/bin/javac?
-    If you have problems later, be sure that you don't have a mismatch
-    in JDK versions.])
+        AC_MSG_WARN([$PTJAVA_DIR/bin/javac is not
+	 the same as $JAVAC.
+	 Perhaps $JAVAC is in your path
+	 before $PTJAVA_DIR/bin/javac?
+	 If you have problems later, be sure that you don't have a mismatch
+	 in JDK versions.])
 	JAVAC="$PTJAVA_DIR/bin/javac"
     fi
 else
@@ -190,19 +196,19 @@ AC_MSG_CHECKING([the Java compiler with a simple compile])
 startdir=`pwd`
 cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $JAVAC confTest.java ; then
+if "$JAVAC" confTest.java ; then
     AC_MSG_RESULT(ok)
 
     AC_MSG_CHECKING([the value of the java.version Property ])
     # Strip out the JDK1.3beta messages under Solaris2.5.1
-    JVERSION=`CLASSPATH=$PTII/config $JAVA confTest | 
+    JVERSION=`CLASSPATH=$PTII/config "$JAVA" confTest | 
 	grep -v "Warning! The libthread.so on your system is an older version than" |
 	grep -v "the one this VM was tested with. Please read the install documentation for" |
 	grep -v "patch installation instructions."`	
     AC_MSG_RESULT($JVERSION)
 
 else
-   AC_MSG_WARN(['$JAVAC confTest.java' failed'])
+   AC_MSG_WARN(['"$JAVAC" confTest.java' failed'])
 fi
 cd $startdir
 
@@ -433,15 +439,15 @@ else
     startdir=`pwd`
     cd $srcdir/config
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if $JAVAC java3dTest.java ; then
+    if "$JAVAC" java3dTest.java ; then
        AC_MSG_RESULT(ok)
        PTJAVA3D_DIR=gr 
     else
-       AC_MSG_WARN(['$JAVAC java3dTest.java' failed.
-    http://java.sun.com/products/java-media/3D/download.html
-    Java 3D is only needed if you want to build in
-    $JAVA3D_USER_DIR,
-    otherwise the build will proceed fine with out Java 3D.])
+       AC_MSG_WARN(['"$JAVAC" java3dTest.java' failed.
+	http://java.sun.com/products/java-media/3D/download.html
+	Java 3D is only needed if you want to build in
+	$JAVA3D_USER_DIR,
+	otherwise the build will proceed fine with out Java 3D.])
     fi
 fi
 cd $startdir
@@ -459,13 +465,14 @@ AC_MSG_CHECKING([for javax.sound])
 startdir=`pwd`
 cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $JAVAC javasoundTest.java ; then
+if $"JAVAC" javasoundTest.java ; then
     AC_MSG_RESULT(ok)
     PTJAVASOUND=javasound	
 else
-   AC_MSG_WARN(['$JAVAC javasoundTest.java' failed.
-    Perhaps you are running under JDK1.2?
-    javasound is used in actor.lib, but you can probably get away without it.])
+   AC_MSG_WARN(['"$JAVAC" javasoundTest.java' failed.
+	Perhaps you are running under JDK1.2?
+	javasound is used in actor.lib, but you can probably
+	get away without it.])
 fi
 cd $startdir
 
