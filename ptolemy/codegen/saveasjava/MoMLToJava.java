@@ -32,10 +32,12 @@ package ptolemy.codegen.saveasjava;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
 import java.io.IOException;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
@@ -46,7 +48,7 @@ import java.io.PrintWriter;
 A MoML-reading wrapper for the saving of Ptolemy II models as Java source code.
 This class converts MoML files to equivalent standalone Ptolemy II Java code.
 
-@author Shuvra S. Bhattacharyya
+@author Shuvra S. Bhattacharyya, Christopher Hylands
 @version $Id$
 */
 public class MoMLToJava {
@@ -55,10 +57,12 @@ public class MoMLToJava {
     /** Convert a MoML specification to Java code that implements the
      *  specification. The Java code is stored in a file called XXX.java,
      *  where XXX is the model name given in the MoML specification.
+     *  If the model has no name, then the basename of the xml file is used.
      *
      *  @param filename The file name that contains the MoML specification.
+     *  @return The name of the java file that was created
      */
-    public void convert(String filename) throws IllegalActionException {
+    public String convert(String fileName) throws IllegalActionException {
 
         // The Ptolemy II model returned by the Java parser.
         NamedObj toplevel;
@@ -73,16 +77,38 @@ public class MoMLToJava {
         // model.
         try {
             MoMLParser parser = new MoMLParser();
-            toplevel = parser.parseFile(filename);
-        } catch (Exception ex) {
-            throw new IllegalActionException(ex.getMessage()
-                    + "Exception raised from the MoML parser\n");
+            toplevel = parser.parseFile(fileName);
+        } catch (Exception exception) {
+            throw new IllegalActionException("MoMLtoJava failed to parse '" 
+					     + fileName + "': " + exception);
+
         }
 
-        // Convert the Ptolemy II model to Java code
+	// If the name of the model is the empty string, change it to
+	// the basename of the file.
+	if (toplevel.getName().length() == 0) {
+	    String baseName = (new File(fileName)).getName();
+	    if (baseName.lastIndexOf('.') != -1) {
+		baseName = baseName.substring(0,
+					      baseName.lastIndexOf('.'));
+	    }
+	    try {
+		toplevel.setName(baseName);
+	    } catch (NameDuplicationException nameDuplication) {
+		throw new IllegalActionException("MoMLToJava could not change "
+						 + "the model name to '" 
+						 + baseName + "': " 
+						 + nameDuplication
+						 );
+	    }
+	}
+
+        // Convert the Ptolemy II model to Java code.
+	String outputFileName = null;
         try {
             SaveAsJava saver = new SaveAsJava();
             generatedCode = saver.generate(toplevel);
+	    outputFileName = saver.sanitizeName(toplevel) + ".java";
         } catch (Exception ex) {
             throw new IllegalActionException(ex.getMessage()
                     + "Exception raised when attempting to generate Java\n");
@@ -90,15 +116,15 @@ public class MoMLToJava {
 
         // Write the Java text to a file.
         try {
-            FileWriter outfile = new FileWriter(toplevel.getName() + ".java");
-            PrintWriter outprinter = new PrintWriter(outfile);
-            outprinter.print(generatedCode);
-            outfile.close();
+            FileWriter outputFile = new FileWriter(outputFileName);
+            PrintWriter outputPrinter = new PrintWriter(outputFile);
+            outputPrinter.print(generatedCode);
+            outputFile.close();
         } catch (IOException ex) {
             MessageHandler.error("Could not create output file:\n\n"
                     + ex.getMessage(), ex);
         }
-
+	return outputFileName;
     }
 
     /** A simple main() to test the saving of Ptolemy II MoML models
@@ -114,6 +140,8 @@ public class MoMLToJava {
         }
 
         MoMLToJava converter = new MoMLToJava();
-        converter.convert(args[0]);
+
+	// Print the name of the java file that was generated
+        System.out.println(converter.convert(args[0]));
     }
 }
