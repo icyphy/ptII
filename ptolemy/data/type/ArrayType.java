@@ -90,19 +90,19 @@ public class ArrayType extends StructuredType {
         }
     }
 
-    /** Convert the argument token into an ArrayToken having this type,
-     *  if losslessly conversion can be done.
-     *  The argument must be an ArrayToken.
+    /** Convert the argument token into an ArrayToken having this
+     *  type, if losslessly conversion can be done.  The argument must
+     *  be an ArrayToken.
      *  @param token A token.
      *  @return An ArrayToken.
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if ( !isCompatible(token.getType())) {
-            throw new IllegalArgumentException("ArrayType.convert: " +
-                    "Cannot convert the argument token " + token +
-                    " to the type " + this + ".");
+        if(!(token instanceof ArrayToken)) {
+            throw new IllegalArgumentException(
+                    Token.notSupportedIncomparableConversionMessage(
+                            token, toString()));
         }
 
         ArrayToken argumentArrayToken = (ArrayToken)token;
@@ -110,20 +110,27 @@ public class ArrayType extends StructuredType {
         // if the argument array token is empty, return an empty array
         // token.
         if (argumentArrayToken.length() == 0) {
-            if (_elementType == BaseType.UNKNOWN) {
+            if (getElementType().equals(BaseType.UNKNOWN)) {
                 // Since any type is a substitution instance of UNKNOWN, just
                 // return the argument.
                 return token;
             } else {
-                return new ArrayToken(_elementType);
+                return new ArrayToken(getElementType());
             }
         }
 
         Token[] argumentArray = argumentArrayToken.arrayValue();
         Token[] resultArray = new Token[argumentArray.length];
-        for (int i = 0; i < argumentArray.length; i++) {
-            resultArray[i] = _elementType.convert(argumentArray[i]);
+        try {
+            for (int i = 0; i < argumentArray.length; i++) {
+                resultArray[i] = getElementType().convert(argumentArray[i]);
+            }
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(null, ex,
+                    Token.notSupportedConversionMessage(token, "int"));
+            
         }
+
         return new ArrayToken(resultArray);
     }
 
@@ -153,6 +160,12 @@ public class ArrayType extends StructuredType {
      */
     public InequalityTerm getElementTypeTerm() {
         return _elemTypeTerm;
+    }
+
+    /** Return the class for tokens that this type represents.
+     */
+    public Class getTokenClass() {
+        return ArrayToken.class;
     }
 
     /** Return a hash code value for this object.
