@@ -68,7 +68,7 @@ public class TypeConflictException extends KernelException {
      */
     public TypeConflictException(List inequalities) {
 	this(inequalities,
-	     "Type conflicts occurred at the following inequalities:");
+                "Type conflicts occurred at the following inequalities:");
     }
 
     /** Construct an Exception with a list of Inequality instances where

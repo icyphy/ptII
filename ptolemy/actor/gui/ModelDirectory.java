@@ -155,7 +155,7 @@ public class ModelDirectory extends CompositeEntity {
             boolean anyTableau = false;
             // Check to see if the remaining effigies have any tableaux.
             for (Iterator effigies = remainingEntities.iterator();
-                effigies.hasNext() && !anyTableau;) {
+                 effigies.hasNext() && !anyTableau;) {
                 Effigy effigy = (Effigy)effigies.next();
                 if (effigy.numberOfOpenTableaux() > 0) {
                     anyTableau = true;
@@ -165,11 +165,11 @@ public class ModelDirectory extends CompositeEntity {
             if (!anyTableau) {
                 try {
                     // This gets reentrant...  Ugh..
-                     for (Iterator effigies = remainingEntities.iterator();
+                    for (Iterator effigies = remainingEntities.iterator();
                          effigies.hasNext();) {
-                         Effigy effigy = (Effigy)effigies.next();
-                         effigy.setContainer(null);
-                     }
+                        Effigy effigy = (Effigy)effigies.next();
+                        effigy.setContainer(null);
+                    }
                 } catch (KernelException ex) {
                     throw new InternalErrorException(
                             "Cannot remove directory!");

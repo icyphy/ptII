@@ -194,16 +194,16 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 			    // check if there is any type constraints stored
 			    // in ports.
 			    List inPortConstraints =
-			                     inPort.typeConstraintList();
+                                inPort.typeConstraintList();
 			    List outPortConstraints =
-			                     outPort.typeConstraintList();
+                                outPort.typeConstraintList();
                             if (inPortConstraints.isEmpty() &&
-			        outPortConstraints.isEmpty()) {
+                                    outPortConstraints.isEmpty()) {
 				// ports not constrained, use default
 				// constraint
 		                Inequality inequality = new Inequality(
-                                    inPort.getTypeTerm(),
-                                    outPort.getTypeTerm());
+                                        inPort.getTypeTerm(),
+                                        outPort.getTypeTerm());
 			        result.add(inequality);
                             }
 

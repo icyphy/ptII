@@ -97,7 +97,7 @@ public class TypeEvent implements DebugEvent {
      */
     public String toString() {
         return "The type on " + getSource().getFullName() + " has changed "
-                + "from " + _oldType.toString() + " to " + _newType.toString();
+            + "from " + _oldType.toString() + " to " + _newType.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

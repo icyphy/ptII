@@ -79,7 +79,7 @@ by the user.
 @since Ptolemy II 1.0
 */
 public class EditParametersDialog extends ComponentDialog
-        implements ChangeListener {
+    implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
@@ -187,10 +187,10 @@ public class EditParametersDialog extends ComponentDialog
         // NOTE: Do this in the event thread, since this might be invoked
         // in whatever thread is processing mutations.
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new EditParametersDialog(_owner, _target);
-            }
-        });
+                public void run() {
+                    new EditParametersDialog(_owner, _target);
+                }
+            });
         _target.removeChangeListener(this);
     }
 
@@ -213,23 +213,23 @@ public class EditParametersDialog extends ComponentDialog
         // NOTE: Do this in the event thread, since this might be invoked
         // in whatever thread is processing mutations.
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                String newName = _query.stringValue("name");
-                ComponentDialog dialog = _openAddDialog(exception.getMessage()
-                       + "\n\nPlease enter a new default value:",
-                       newName,
-                       _query.stringValue("default"),
-                       _query.stringValue("class"));
-                _target.removeChangeListener(EditParametersDialog.this);
-                if (!dialog.buttonPressed().equals("OK")) {
-                    // Remove the parameter, since it seems to be erroneous
-                    // and the user hit cancel or close.
-                    String moml = "<deleteProperty name=\"" + newName + "\"/>";
-                    _target.requestChange(
-                            new MoMLChangeRequest(this, _target, moml));
+                public void run() {
+                    String newName = _query.stringValue("name");
+                    ComponentDialog dialog = _openAddDialog(exception.getMessage()
+                            + "\n\nPlease enter a new default value:",
+                            newName,
+                            _query.stringValue("default"),
+                            _query.stringValue("class"));
+                    _target.removeChangeListener(EditParametersDialog.this);
+                    if (!dialog.buttonPressed().equals("OK")) {
+                        // Remove the parameter, since it seems to be erroneous
+                        // and the user hit cancel or close.
+                        String moml = "<deleteProperty name=\"" + newName + "\"/>";
+                        _target.requestChange(
+                                new MoMLChangeRequest(this, _target, moml));
+                    }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////

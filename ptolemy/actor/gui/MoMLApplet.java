@@ -177,7 +177,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace,
-				    boolean filterGraphicalClasses)
+            boolean filterGraphicalClasses)
             throws Exception {
 
 	// ptolemy.vergil.MoMLViewerApplet() calls this with

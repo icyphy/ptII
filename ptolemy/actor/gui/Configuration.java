@@ -305,7 +305,7 @@ public class Configuration extends CompositeEntity {
 			effigy.setModifiable(false);
 		    }
 		} catch (java.security.AccessControlException
-			 accessControl) {
+                        accessControl) {
 		    // If we are running in a sandbox, then canWrite()
 		    // may throw an AccessControlException.
 		    effigy.setModifiable(false);

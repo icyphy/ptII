@@ -267,23 +267,23 @@ public class PtolemyQuery extends Query
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
 		request = new ChangeRequest(this, name) {
-                    protected void _execute() throws IllegalActionException {
+                        protected void _execute() throws IllegalActionException {
                             attribute.setExpression(stringValue(name));
 
-                        attribute.validate();
-                        /* NOTE: Earlier version:
-                        // Here, we need to handle instances of Variable
-                        // specially.  This is too bad...
-                        if (attribute instanceof Variable) {
-                            // FIXME: Will this ever happen?  A Variable that
-                            // is not a NamedObj???
-                            // Retrieve the token to force evaluation, so as to
-                            // check the validity of the new value.
-                            ((Variable)attribute).getToken();
+                            attribute.validate();
+                            /* NOTE: Earlier version:
+                               // Here, we need to handle instances of Variable
+                               // specially.  This is too bad...
+                               if (attribute instanceof Variable) {
+                               // FIXME: Will this ever happen?  A Variable that
+                               // is not a NamedObj???
+                               // Retrieve the token to force evaluation, so as to
+                               // check the validity of the new value.
+                               ((Variable)attribute).getToken();
+                               }
+                            */
                         }
-                        */
-                    }
-                };
+                    };
 	    }
             // NOTE: This object is never removed as a listener from
             // the change request.  This is OK because this query will
@@ -376,11 +376,11 @@ public class PtolemyQuery extends Query
                     + "\n\nPlease enter a new value:");
             /* NOTE: The error message used to be more verbose, as follows.
              * But this is intimidating to users.
-            _query.setMessage("Change failed:\n"
-                    + description
-                    + "\n" + exception.getMessage()
-                    + "\n\nPlease enter a new value:");
-             */
+             _query.setMessage("Change failed:\n"
+             + description
+             + "\n" + exception.getMessage()
+             + "\n\nPlease enter a new value:");
+            */
 
             // Need to extract the name of the entry from the request.
             // Default value is the description itself.
@@ -395,55 +395,55 @@ public class PtolemyQuery extends Query
             }
             final String entryName = tmpEntryName;
             final Settable attribute
-                    = (Settable)_attributes.get(entryName);
+                = (Settable)_attributes.get(entryName);
             // NOTE: Do this in the event thread, since this might be invoked
             // in whatever thread is processing mutations.
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    if (attribute != null) {
-                        _query.addStyledEntry(attribute);
-                    } else {
-                        throw new InternalErrorException(
-                                "Expected attribute attached to entry name: "
-                                + entryName);
-                    }
-                    _dialog = new ComponentDialog(null, "Error", _query, null);
+                    public void run() {
+                        if (attribute != null) {
+                            _query.addStyledEntry(attribute);
+                        } else {
+                            throw new InternalErrorException(
+                                    "Expected attribute attached to entry name: "
+                                    + entryName);
+                        }
+                        _dialog = new ComponentDialog(null, "Error", _query, null);
 
-                    // The above returns only when the modal dialog is closing.
-                    // The following will force a new dialog to
-                    // be created if the value is not valid.
-                    _query._isOpenErrorWindow = false;
+                        // The above returns only when the modal dialog is closing.
+                        // The following will force a new dialog to
+                        // be created if the value is not valid.
+                        _query._isOpenErrorWindow = false;
 
-                    if (_dialog.buttonPressed().equals("Cancel")) {
-                        if (_revertValue.containsKey(entryName)) {
-                            String revertValue = (String)
+                        if (_dialog.buttonPressed().equals("Cancel")) {
+                            if (_revertValue.containsKey(entryName)) {
+                                String revertValue = (String)
                                     _revertValue.get(entryName);
 
-                            // NOTE: Do not use setAndNotify() here because
-                            // that checks whether the string entry has
-                            // changed, and we want to force revert even
-                            // if it appears to not have changed.
-                            set(((NamedObj)attribute).getName(), revertValue);
-                            changed(entryName);
-                        }
-                    } else {
-                        // Force evaluation to check validity of the entry.
-                        // NOTE: Normally, we would not need to force
-                        // evaluation because if the value has changed, then
-                        // listeners are automatically notified.  However,
-                        // if the value has not changed, then they are not
-                        // notified.  Since the original value was invalid,
-                        // it is not acceptable to skip notification in this
-                        // case.  So we force it.
-                        try {
-                            attribute.validate();
-                        } catch (IllegalActionException ex) {
-                            change.setErrorReported(false);
-                            changeFailed(change, ex);
+                                // NOTE: Do not use setAndNotify() here because
+                                // that checks whether the string entry has
+                                // changed, and we want to force revert even
+                                // if it appears to not have changed.
+                                set(((NamedObj)attribute).getName(), revertValue);
+                                changed(entryName);
+                            }
+                        } else {
+                            // Force evaluation to check validity of the entry.
+                            // NOTE: Normally, we would not need to force
+                            // evaluation because if the value has changed, then
+                            // listeners are automatically notified.  However,
+                            // if the value has not changed, then they are not
+                            // notified.  Since the original value was invalid,
+                            // it is not acceptable to skip notification in this
+                            // case.  So we force it.
+                            try {
+                                attribute.validate();
+                            } catch (IllegalActionException ex) {
+                                change.setErrorReported(false);
+                                changeFailed(change, ex);
+                            }
                         }
                     }
-                }
-            });
+                });
         }
     }
 

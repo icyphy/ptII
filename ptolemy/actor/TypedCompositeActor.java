@@ -224,8 +224,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             throws TypeConflictException {
 	if (topLevel.getContainer() != null) {
 	    throw new IllegalArgumentException(
-	        "TypedCompositeActor.resolveTypes: The specified actor is "
-		+ "not the top level container.");
+                    "TypedCompositeActor.resolveTypes: The specified actor is "
+                    + "not the top level container.");
 	}
 
         try {
@@ -239,7 +239,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             List constraintList = topLevel.typeConstraintList();
 	    if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
-                                                       TypeLattice.lattice());
+                        TypeLattice.lattice());
        	        Iterator constraints = constraintList.iterator();
 		solver.addInequalities(constraints);
 
@@ -259,9 +259,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		        // Check if type variables are resolved to unacceptable
 		        //types
 		        InequalityTerm[] lesserVariables =
-			        inequality.getLesserTerm().getVariables();
+                            inequality.getLesserTerm().getVariables();
 		        InequalityTerm[] greaterVariables =
-			        inequality.getGreaterTerm().getVariables();
+                            inequality.getGreaterTerm().getVariables();
 		        boolean added = false;
 		        for (int i = 0; i < lesserVariables.length; i++) {
 		            InequalityTerm variable = lesserVariables[i];
@@ -548,8 +548,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                             destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
 		        Inequality inequality = new Inequality(
-		                             sourcePort.getTypeTerm(),
-					     destinationPort.getTypeTerm());
+                                sourcePort.getTypeTerm(),
+                                destinationPort.getTypeTerm());
 		    	result.add(inequality);
 	    	    }
 		}

@@ -231,8 +231,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
         // NOTE: This does not call send() here, because send()
         // repeats the above on each call.
-            for (int i = 0; i < farReceivers.length; i++) {
-                if (farReceivers[i] == null) continue;
+        for (int i = 0; i < farReceivers.length; i++) {
+            if (farReceivers[i] == null) continue;
 
             for (int j = 0; j < farReceivers[i].length; j++) {
                 TypedIOPort port =
@@ -290,7 +290,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	    for (int i = 0; i < tokenArray.length; i++) {
                 token = tokenArray[i];
                 int compare = TypeLattice.compare(token.getType(),
-                                                  _resolvedType);
+                        _resolvedType);
                 if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                     throw new IllegalActionException(
                             "Run-time type checking failed. Token type: "
@@ -331,7 +331,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     // For better efficiency, make sure
                     // all ports have the same type.
                     for (int k = 0; k < vectorLength; k++) {
-                       farReceivers[i][j].put(farType.convert(tokenArray[k]));
+                        farReceivers[i][j].put(farType.convert(tokenArray[k]));
                     }
                 }
             }
@@ -391,11 +391,11 @@ public class TypedIOPort extends IOPort implements Typeable {
 		        if (receivers[i] != null) {
 		            for (int j = 0; j < receivers[i].length; j++) {
 			        TypedIOPort port =
-				   (TypedIOPort)receivers[i][j].getContainer();
+                                    (TypedIOPort)receivers[i][j].getContainer();
 		                portTypeList.add(port.getType());
 	                    }
 	                }
-                     }
+                    }
                 }
 
 		CPO lattice = TypeLattice.lattice();
@@ -607,20 +607,20 @@ public class TypedIOPort extends IOPort implements Typeable {
 	        for (int i = 0; i < tokenArray.length; i++) {
                     token = tokenArray[i];
                     int compare = TypeLattice.compare(token.getType(),
-                                                      _resolvedType);
+                            _resolvedType);
                     if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                         throw new IllegalActionException(
-                            "Run-time type checking failed. Token type: "
-                            + token.getType().toString() + ", port: "
-                            + getFullName() + ", port type: "
-                            + getType().toString());
+                                "Run-time type checking failed. Token type: "
+                                + token.getType().toString() + ", port: "
+                                + getFullName() + ", port type: "
+                                + getType().toString());
                     }
 	        }
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
                 if (farReceivers == null ||
-		    farReceivers[channelIndex] == null) {
+                        farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
@@ -641,7 +641,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 if ( !needConversion) {
                     // Good, no conversion necessary.
                     farReceivers[channelIndex][j].putArray(tokenArray,
-                                                           vectorLength);
+                            vectorLength);
                 } else {
                     // Note: This is very bad for performance!
 		    // For better efficiency, make sure
@@ -1071,7 +1071,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             } else {
                 // _declaredType is a StructuredType
                 ((StructuredType)_resolvedType).updateType(
-		                                     (StructuredType)type);
+                        (StructuredType)type);
             }
 
             if (!oldType.equals((Type)type)) {

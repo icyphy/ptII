@@ -268,21 +268,21 @@ public class Tableau extends CompositeEntity {
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
-            // This is invoked if the window
-            // is disposed by the _close() method of Top.
-            public void windowClosed(WindowEvent e) {
-                try {
-                    (Tableau.this).setContainer(null);
-                } catch (KernelException ex) {
+                // This is invoked if the window
+                // is disposed by the _close() method of Top.
+                public void windowClosed(WindowEvent e) {
                     try {
-                        MessageHandler.warning("Cannot remove tableau: " + ex);
-                    } catch (CancelException exception) {}
+                        (Tableau.this).setContainer(null);
+                    } catch (KernelException ex) {
+                        try {
+                            MessageHandler.warning("Cannot remove tableau: " + ex);
+                        } catch (CancelException exception) {}
+                    }
                 }
-            }
-            // NOTE: We do not want to do the same in windowClosing()
-            // because this will override saving if modified as implemented
-            // in Top.
-        });
+                // NOTE: We do not want to do the same in windowClosing()
+                // because this will override saving if modified as implemented
+                // in Top.
+            });
     }
 
     /** Specify whether the window associated with this tableau

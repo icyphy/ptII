@@ -161,7 +161,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
      */
     protected boolean _parseArg(String arg) throws Exception {
         if (arg.equals("-class")) {
-             _expectingClass = true;
+            _expectingClass = true;
         } else if (arg.equals("-help")) {
             System.out.println(_usage());
             // NOTE: This means the test suites cannot test -help

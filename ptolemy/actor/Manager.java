@@ -257,13 +257,13 @@ public class Manager extends NamedObj implements Runnable {
 
             completedSuccessfully = true;
 
-   //   } catch (Exception e) {
-   //       throw new InternalErrorException(this, e, "Manager");
+            //   } catch (Exception e) {
+            //       throw new InternalErrorException(this, e, "Manager");
 
-   //   } catch (Exception e) {
-   //       System.err.println("Error caught by manager.");
-   //       e.printStackTrace();
-   //       throw new RuntimeException("Manager: " + e.getMessage());
+            //   } catch (Exception e) {
+            //       System.err.println("Error caught by manager.");
+            //       e.printStackTrace();
+            //       throw new RuntimeException("Manager: " + e.getMessage());
 
         } finally {
 	    try {
@@ -316,10 +316,10 @@ public class Manager extends NamedObj implements Runnable {
 	// Since Manager.resume() is synchronized, start a thread
 	// to call resume() in order to avoid deadlock
 	Thread resumeThread = new PtolemyThread( new Runnable() {
-	    public void run() {
-		resume();
-	    }
-	});
+                public void run() {
+                    resume();
+                }
+            });
 	resumeThread.start();
     }
 
@@ -703,7 +703,7 @@ public class Manager extends NamedObj implements Runnable {
 	    + " ms. Memory: "
 	    + totalMemory + "K Free: " + freeMemory + "K ("
 	    + Math.round( (((double)freeMemory)/((double)totalMemory))
-			  * 100.0)
+                    * 100.0)
 	    + "%)";
     }
 

@@ -161,7 +161,7 @@ public class Effigy extends CompositeEntity {
 		    try {
 			_modifiableURL = file.canWrite();
 		    } catch (java.security.AccessControlException
-		       accessControl) {
+                            accessControl) {
 			// If we are running in a sandbox, then canWrite()
 			// may throw an AccessControlException.
 			_modifiableURL = false;
