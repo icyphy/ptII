@@ -10,12 +10,11 @@ http://www.hpl.hp.com/personal/Hans_Boehm/gc/
 The source code itself came from
 http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc.tar.gz
 
-As of 4/03, we were using version 6.1
-
+As of 1/05, we were using version 6.4.
 
 
 If you have cvs access to the the Ptolemy tree, you can
-download a modified copy with
+download a modified copy of gc6.1 with:
 
 cd $PTII/vendors/gc
 cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co gc
@@ -30,10 +29,11 @@ Or, if you do not have cvs access to the Ptolemy tree, do
 
 cd $PTII/vendors/gc
 
-# Download http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
+# Download version 6.4 from
+# http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/
 
 tar -zxf gc.tar.gz
-cd gc6.1
+cd gc6.4
 ./configure --prefix=$PTII
 make
 make check
