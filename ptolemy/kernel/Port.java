@@ -241,6 +241,46 @@ public class Port extends NamedObj {
         }
     }
 
+    /** Link this port with a relation, and notify the container by
+     *  calling its connectionsChanged() method.  The relation is required
+     *  to be at the same level of the hierarchy as the entity that contains
+     *  this port, meaning that the container of the relation
+     *  is the same as the container of the container of the port.
+     *  That is, level-crossing links are not allowed.
+     *  <p>
+     *  If the argument is null, then create a null link. Note that a port
+     *  may be linked to the same relation more than once, in which case
+     *  the link will be reported more than once by the linkedRelations()
+     *  method. In derived classes, the relation may be required to be an
+     *  instance of a particular subclass of Relation (this is checked
+     *  by the _checkLink() protected method).
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     *  @param relation The relation to link to this port.
+     *  @exception IllegalActionException If the link would cross levels of
+     *   the hierarchy, or the relation is incompatible,
+     *   or the port has no container, or the port is not in the
+     *   same workspace as the relation.
+     */
+    public void link(Relation relation) throws IllegalActionException {
+        if (relation != null && _workspace != relation.workspace()) {
+            throw new IllegalActionException(this, relation,
+                    "Cannot link because workspaces are different.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            if (relation != null) {
+                _checkLink(relation);
+                _relationsList.link( relation._getPortList() );
+            } else {
+                _relationsList.link( null );
+            }
+            if (_container != null) _container.connectionsChanged(this);
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** List the linked relations.  Note that a relation may appear
      *  more than once if more than one link to it has been established.
      *  Also, some entries in the list may be null, indicating a <b>null
@@ -283,46 +323,6 @@ public class Port extends NamedObj {
             return _relationsList.getContainers();
         } finally {
             _workspace.doneReading();
-        }
-    }
-
-    /** Link this port with a relation, and notify the container by
-     *  calling its connectionsChanged() method.  The relation is required
-     *  to be at the same level of the hierarchy as the entity that contains
-     *  this port, meaning that the container of the relation
-     *  is the same as the container of the container of the port.
-     *  That is, level-crossing links are not allowed.
-     *  <p>
-     *  If the argument is null, then create a null link. Note that a port
-     *  may be linked to the same relation more than once, in which case
-     *  the link will be reported more than once by the linkedRelations()
-     *  method. In derived classes, the relation may be required to be an
-     *  instance of a particular subclass of Relation (this is checked
-     *  by the _checkLink() protected method).
-     *  This method is write-synchronized on the workspace and increments
-     *  its version number.
-     *  @param relation The relation to link to this port.
-     *  @exception IllegalActionException If the link would cross levels of
-     *   the hierarchy, or the relation is incompatible,
-     *   or the port has no container, or the port is not in the
-     *   same workspace as the relation.
-     */
-    public void link(Relation relation) throws IllegalActionException {
-        if (relation != null && _workspace != relation.workspace()) {
-            throw new IllegalActionException(this, relation,
-                    "Cannot link because workspaces are different.");
-        }
-        try {
-            _workspace.getWriteAccess();
-            if (relation != null) {
-                _checkLink(relation);
-                _relationsList.link( relation._getPortList() );
-            } else {
-                _relationsList.link( null );
-            }
-            if (_container != null) _container.connectionsChanged(this);
-        } finally {
-            _workspace.doneWriting();
         }
     }
 

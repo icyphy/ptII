@@ -665,6 +665,19 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Enumerate the contained entities in the order they were added
+     *  (using their setContainer() method).
+     *  The returned enumeration is static in the sense
+     *  that it is not affected by any subsequent additions or removals
+     *  of entities.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use entityList() instead.
+     *  @return An enumeration of ComponentEntity objects.
+     */
+    public Enumeration getEntities() {
+        return Collections.enumeration(entityList());
+    }
+
     /** Get a contained entity by name. The name may be compound,
      *  with fields separated by periods, in which case the entity
      *  returned is contained by a (deeply) contained entity.
@@ -693,19 +706,6 @@ public class CompositeEntity extends ComponentEntity {
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Enumerate the contained entities in the order they were added
-     *  (using their setContainer() method).
-     *  The returned enumeration is static in the sense
-     *  that it is not affected by any subsequent additions or removals
-     *  of entities.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use entityList() instead.
-     *  @return An enumeration of ComponentEntity objects.
-     */
-    public Enumeration getEntities() {
-        return Collections.enumeration(entityList());
     }
 
     /** Get a contained port by name. The name may be compound,
