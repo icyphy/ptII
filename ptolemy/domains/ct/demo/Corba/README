@@ -43,7 +43,7 @@ To execute the model in the applet, please follow these steps:
 	make
 
 2. You can either run
-	make demo
+	make demo_applet
    which will run the steps below for you, follow the steps below by hand
 
 3. Select a port for the name service, say 1050
@@ -76,19 +76,23 @@ To execute the model in the applet, please follow these steps:
 To execute the model in an application:
 1. Compile all the files on all the machines that are involved.
 2. Select a port for the name service, say 1050
-3. Start the transient name server from some machine, say 
+3. You can either run
+	make demo_application
+   which will run the steps below for you, follow the steps below by hand
+
+4. Start the transient name server from some machine, say 
    denon.eecs.berkeley.edu
    
    denon> tnameserv -ORBInitialPort 1050
    
-4. Possibly from another machine, say bennett.eecs.berkeley.edu running csh
+5. Possibly from another machine, say bennett.eecs.berkeley.edu running csh
   start the model server. (Don't forget the CLASSPATH)
    
    bennett> setenv CLASSPATH=$PTII
    bennett> java ptolemy.domains.ct.demo.Corba.ModelServer -ORBInitialHost 
    denon.eecs.berkeley.edu -ORBInitialPort 1050
    
-5. Possibly from a third machine, say lie.eecs.berkeley.edu 
+6. Possibly from a third machine, say lie.eecs.berkeley.edu 
    (a NT box running bash) start the client:
    
    lie> CLASSPATH=$PTII
