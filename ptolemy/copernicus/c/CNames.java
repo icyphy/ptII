@@ -145,7 +145,7 @@ public class CNames {
             final String suffix = "_init";
             String base = instanceNameOf(source) + suffix;
             Integer prefixCode = new Integer(base.hashCode());
-            name = "f" + prefixCode + suffix; 
+            name = _sanitize("f" + prefixCode + suffix); 
             _initializerMap.put(source, name);
         }
         return name;
