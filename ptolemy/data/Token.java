@@ -122,7 +122,7 @@ public abstract class Token implements Cloneable {
      *  @param The token with which to test equality
      *  @exception Thrown if this method is not supported by the derived class
      */
-    public Token equality(Token a) throws  IllegalActionException {
+    public BooleanToken equality(Token a) throws  IllegalActionException {
         String str = "Equality method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
