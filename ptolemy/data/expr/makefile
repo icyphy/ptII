@@ -100,9 +100,11 @@ DERIVED_JSRCS = PtParser.java
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
+	message.txt \
 	JJPtParserCalls.class \
 	PtParser.java \
-	PtParser.jj
+	PtParser.jj \
+	'PtParser$$JJCalls.class message.txt'
 
 JCLASS =  \
 	$(JSRCS:%.java=%.class) \
