@@ -891,17 +891,20 @@ clean_installshield:
 
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	(cd $(INSTALLSHIELD_SRC); \
-	 tar -zxf ../ptII$(VERSION).src.tar.$(SUFFIX); \
+	 tar -xf ../ptII$(VERSION).src.tar; \
 	 mv ptII$(VERSION) `basename $@`)
 
-INSTALLSHIELD_RUNTIME_DOMAINS=csp de fsm pn sdf
+INSTALLSHIELD_RUNTIME_DOMAINS=ct csp de fsm pn sdf
 $(INSTALLSHIELD_RUNTIME): bar
-	 mkdir -p $@ $@/lib $@/ptolemy $@/ptolemy/vergil
-	 mkdir -p $@/doc/codeDoc/ptolemy/actor/lib
+	 mkdir -p $@ $@/lib $@/ptolemy/vergil
+	 mkdir -p $@/doc/codeDoc/ptolemy/actor
+	 mkdir -p $@/moml/demo/Networked
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
 	 -mv $(INSTALLSHIELD_APP)/doc $@
 	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptsupport.jar $@/ptolemy
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
+		$(INSTALLSHIELD_APP)/ptolemy/configs \
+		$@/ptolemy
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
 	 for domain in $(INSTALLSHIELD_RUNTIME_DOMAINS); do \
 	  mkdir -p $@/ptolemy/domains/$$domain; \
@@ -909,10 +912,46 @@ $(INSTALLSHIELD_RUNTIME): bar
 	 	$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo \
 		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
 		$@/ptolemy/domains/$$domain; \
+	 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/$$domain \
+		 $@/doc/codeDoc/ptolemy
 	 done
 	 # We do want to ship actor/lib docs
 	 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/actor/lib \
-		$@/doc/codeDoc/ptolemy/actor/lib
+		$@/doc/codeDoc/ptolemy/actor
+	 # Set up for a few demos
+	 mkdir -p $@/ptolemy/actor/lib/javasound/demo
+	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
+		$@/ptolemy/actor/lib/javasound/demo
+	 mkdir -p $@/ptolemy/moml/demo
+	 mv $(INSTALLSHIELD_APP)/ptolemy/moml/demo/Networked \
+		$@/ptolemy/moml/demo
+	 mkdir -p $@/ptolemy/data/type/demo
+	 mv $(INSTALLSHIELD_APP)/ptolemy/data/type/demo/Router \
+		$@/ptolemy/data/type/demo
+	 # FIXME: vergil looks for ../actor/lib/logic/logic.xml, so
+	 # we don't find it in the jar file
+	 mkdir -p $@/ptolemy/actor/lib/logic
+	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/logic/logic.xml \
+		$@/ptolemy/actor/lib/logic
+	 mkdir -p $@/ptolemy/actor/lib/conversions
+	 mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/conversions/conversions.xml \
+		$@/ptolemy/actor/lib/conversions
+
+configsRuntime.jar: $(INSTALLSHIELD_RUNTIME)/ptolemy/configs/configsRuntime.jar
+$(INSTALLSHIELD_RUNTIME)/ptolemy/configs/configsRuntime.jar: \
+	$(INSTALLSHIELD_RUNTIME)/ptolemy/configs
+	(cd $(INSTALLSHIELD_RUNTIME); \
+		jar -cf ptolemy/configs/configsRuntime.jar \
+			ptolemy/configs)
+
+$(INSTALLSHIELD_RUNTIME)/ptolemy/configs:
+	mkdir $(INSTALLSHIELD_RUNTIME)/ptolemy/configs
+	mkdir $(INSTALLSHIELD_RUNTIME)/ptolemy/configs/doc
+	mv $(INSTALLSHIELD_APP)/ptolemy/configs/introRuntime.htm $@/intro.htm
+	mv $(INSTALLSHIELD_APP)/ptolemy/configs/vergilConfigurationRuntime.xml \
+		$@/vergilConfiguration.xml
+	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosRuntime.htm \
+		$@/doc/demos.htm
 
 $(INSTALLSHIELD_DESIGNDOC):
 	 mkdir -p $@/doc/design
