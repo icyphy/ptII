@@ -67,6 +67,10 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'HierarchicalStateController$$1.class' \
+	'HierarchicalStateController$$AddRefinementAction.class' \
+	'HierarchicalStateController$$RemoveRefinementAction.class' \
+	'ModalModel$$ModalTableauFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
