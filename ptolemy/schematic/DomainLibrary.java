@@ -160,6 +160,18 @@ public class DomainLibrary extends XMLElement{
         return getAttribute("name");
     }
 
+    /** Get the string that contains the PTII root path
+     */
+    public static String getPTIIRoot() {
+        return _ptIIRoot;
+    }
+
+   /** Return the version of Ptolemy.
+     */
+    public static String getPtolemyVersion() {
+        return "0.1";
+    }
+
     /** Return the version of this library.
      */
     public String getVersion() {
@@ -205,6 +217,12 @@ public class DomainLibrary extends XMLElement{
         setAttribute("name", s);
     }
 
+    /** Set the string that contains the PTII root path
+     */
+    public static void setPTIIRoot(String s) {
+        _ptIIRoot = s;
+    }
+
     /** Set the string that represents the version of this domainlibrary.
      */
     public void setVersion(String s) {
@@ -220,4 +238,7 @@ public class DomainLibrary extends XMLElement{
 
     // The single instance
     private static DomainLibrary _instance = null;
+
+    // The location of the PTII root
+    private static String _ptIIRoot = "UNKNOWN";
 }
