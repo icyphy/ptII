@@ -113,7 +113,7 @@ public interface Document {
     public boolean isEditable ();
 
     /** Test the "writable" flag. In general, editors should only allow
-     * a document's data to be writen to storage if this flag is set.
+     * a document's data to be written to storage if this flag is set.
      */
     public boolean isWritable ();
 
