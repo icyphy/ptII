@@ -470,7 +470,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  reason. One is that tokens are now stored by an internal variable.
      *  The other is that we have to transfer <i>all</i> tokens instead of
      *  those specified by rate parameters.
-     *  @throws IllegalActionException If conversion to the type of
+     *  @exception IllegalActionException If conversion to the type of
      *   the destination port cannot be done.
      */
     private void _transferInputs() throws IllegalActionException {
@@ -490,7 +490,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  connected opaque ports outside.We cannot use transferOutputs(IOPort)
      *  of the executive director because we have to transfer <i>all</i>
      *  tokens instead of those specified by rate parameters.
-     *  @throws IllegalActionException If conversion to the type of
+     *  @exception IllegalActionException If conversion to the type of
      *   the destination port cannot be done.
      */
     private void _transferOutputs() throws IllegalActionException {
