@@ -164,9 +164,9 @@ public class ComponentEntity extends Entity {
             IllegalActionException, NameDuplicationException {
         if (!(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-            "Cannot instantiate into a container that is not an instance of" +
-            " CompositeEntity: " +
-            container.getFullName());
+                    "Cannot instantiate into a container that is not an "
+                    + "instance of CompositeEntity: "
+                    + container.getFullName());
         }
         ComponentEntity clone = (ComponentEntity)
                 super.instantiate(container, name);
@@ -420,7 +420,8 @@ public class ComponentEntity extends Entity {
      *   or has the wrong class, or if the specified container is not
      *   an instance of CompositeEntity.
      */
-    protected NamedObj _getHeritageObject(String relativeName, NamedObj container)
+    protected NamedObj _getHeritageObject(String relativeName,
+            NamedObj container)
             throws InternalErrorException {
         if (!(container instanceof CompositeEntity)) {
             throw new InternalErrorException(
