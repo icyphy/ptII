@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Communicating Sequential Processes demos
+# Makefile for Ptolemy II SDF Expression actor demo
 #
-# @Authors: Christopher Hylands, Neil Smyth
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -40,6 +40,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	Expression
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
@@ -63,7 +67,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: $(JCLASS)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:

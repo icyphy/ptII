@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II SDF Fix point FIR demo
+# Makefile for Ptolemy II SDF Maximum Entropy Spectrum demo
 #
 # @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2001 The Regents of the University of California.
+# @Copyright (c) 1999-2001 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo/FixFIR
+ME =		ptolemy/domains/sdf/demo/MaximumEntropySpectrum
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,15 +41,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	FixFIR
+PTPACKAGE = 	MaximumEntropySpectrum
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
-	FixFIR.htm \
-	FixFIRVergil.htm \
-	FixFIR.xml
+	MaximumEntropySpectrum.htm \
+	MaximumEntropySpectrum.xml
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -71,13 +71,13 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer FixFIR.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer MaximumEntropySpectrum.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" FixFIR.xml
+	"$(PTII)/bin/ptolemy" MaximumEntropySpectrum.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" FixFIR.xml
+	"$(PTII)/bin/vergil" MaximumEntropySpectrum.xml
 
 depend:
 	@echo "no dependencies in this directory"

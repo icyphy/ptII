@@ -40,6 +40,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	Eye
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
@@ -63,7 +67,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:

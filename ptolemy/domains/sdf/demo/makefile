@@ -32,7 +32,8 @@ ME =		ptolemy/domains/sdf/demo
 
 # Keep these alphabetical please.
 DIRS = 		Butterfly Expression Eye FixFIR FixPoint \
-		HTVQ OrthogonalCom Sketch Spectrum Type
+		HTVQ LMSAdaptive MaximumEntropySpectrum \
+		OrthogonalCom Sketch Spectrum Type
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -43,12 +44,25 @@ include $(CONFIG)
 
 
 # Used to build jar files
-PTPACKAGE = 	sdf
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	Butterfly/Butterfly.jar \
+	Expression/Expression.jar \
+	Eye/Eye.jar \
+	FixFIR/FixFIR.jar \
+	FixPoint/FixPoint.jar \
+	HTVQ/HTVQ.jar \
+	LMSAdaptive/FixPoint.jar \
+	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
+	Sketch/Sketch.jar \
+	Spectrum/Spectrum.jar \
+	Type/Type.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
