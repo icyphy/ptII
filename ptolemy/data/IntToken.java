@@ -155,7 +155,7 @@ public class IntToken extends ScalarToken {
     public static Token convert(Token token)
             throws IllegalActionException {
 
-        int compare = TypeLattice.compare(new IntToken(), token);
+        int compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("IntToken.convert: " +
                     "type of argument: " + token.getClass().getName() +

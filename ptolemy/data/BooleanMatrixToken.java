@@ -140,7 +140,7 @@ public class BooleanMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new BooleanMatrixToken(), token);
+	int compare = TypeLattice.compare(BaseType.BOOLEAN_MATRIX, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("BooleanMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -153,7 +153,7 @@ public class BooleanMatrixToken extends MatrixToken {
 	}
 
 	// try boolean
-	compare = TypeLattice.compare(new BooleanToken(), token);
+	compare = TypeLattice.compare(BaseType.BOOLEAN, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    BooleanToken tem = (BooleanToken)BooleanToken.convert(token);
 	    boolean[][] result = new boolean[1][1];

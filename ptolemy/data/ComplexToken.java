@@ -162,7 +162,7 @@ public class ComplexToken extends ScalarToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new ComplexToken(), token);
+	int compare = TypeLattice.compare(BaseType.COMPLEX, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("DoubleToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -174,7 +174,7 @@ public class ComplexToken extends ScalarToken {
 	    return token;
 	}
 
-	compare = TypeLattice.compare(new DoubleToken(), token);
+	compare = TypeLattice.compare(BaseType.DOUBLE, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    DoubleToken doubletoken = (DoubleToken)DoubleToken.convert(token);
 	    return new ComplexToken(doubletoken.complexValue());

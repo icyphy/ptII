@@ -105,7 +105,7 @@ public class IntMatrixToken extends MatrixToken {
         ASTPtRootNode tree = parser.generateParseTree(init);
 	IntMatrixToken token = (IntMatrixToken)tree.evaluateParseTree();
         int[][] value = token.intMatrix();
-        _initialize(value, DO_COPY);
+        _initialize(value, DO_COPY); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -202,7 +202,7 @@ public class IntMatrixToken extends MatrixToken {
     public static final Token convert(Token token)
             throws IllegalActionException {
 
-        int compare = TypeLattice.compare(new IntMatrixToken(), token);
+        int compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("IntMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -215,7 +215,7 @@ public class IntMatrixToken extends MatrixToken {
         }
 
         // try int
-        compare = TypeLattice.compare(new IntToken(), token);
+        compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken tem = (IntToken) IntToken.convert(token);
             int[][] result = new int[1][1];
@@ -224,7 +224,7 @@ public class IntMatrixToken extends MatrixToken {
         }
 
         // try IntMatrix
-        compare = TypeLattice.compare(new IntMatrixToken(), token);
+        compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntMatrixToken tem = (IntMatrixToken) IntMatrixToken.convert(token);
             int[][] result = tem.intMatrix();

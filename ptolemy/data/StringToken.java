@@ -133,7 +133,7 @@ public class StringToken extends Token {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new StringToken(), token);
+	int compare = TypeLattice.compare(BaseType.STRING, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("StringToken.convert: " +
                     "type of argument: " + token.getClass().getName() +

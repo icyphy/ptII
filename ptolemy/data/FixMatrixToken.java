@@ -204,7 +204,7 @@ public class FixMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare( new FixMatrixToken(), token);
+	int compare = TypeLattice.compare(BaseType.FIX_MATRIX, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("FixMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -217,7 +217,7 @@ public class FixMatrixToken extends MatrixToken {
 	}
 
 	// try Fix
-	compare = TypeLattice.compare(new FixToken(0.0, 32, 32), token);
+	compare = TypeLattice.compare(BaseType.FIX, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    FixPoint[][] result = new FixPoint[1][1];
 	    FixToken tem = (FixToken)FixToken.convert(token);

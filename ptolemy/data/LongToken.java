@@ -141,7 +141,7 @@ public class LongToken extends ScalarToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new LongToken(), token);
+	int compare = TypeLattice.compare(BaseType.LONG, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("LongToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -153,7 +153,7 @@ public class LongToken extends ScalarToken {
 	    return token;
 	}
 
-	compare = TypeLattice.compare(new IntToken(), token);
+	compare = TypeLattice.compare(BaseType.INT, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    IntToken inttoken = (IntToken)IntToken.convert(token);
 	    return new LongToken(inttoken.longValue());

@@ -161,7 +161,7 @@ public class DoubleToken extends ScalarToken {
     public static Token convert(Token token)
             throws IllegalActionException {
 
-        int compare = TypeLattice.compare(new DoubleToken(), token);
+        int compare = TypeLattice.compare(BaseType.DOUBLE, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("DoubleToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -173,7 +173,7 @@ public class DoubleToken extends ScalarToken {
             return token;
         }
 
-        compare = TypeLattice.compare(new IntToken(), token);
+        compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken inttoken = (IntToken)IntToken.convert(token);
             return new DoubleToken(inttoken.doubleValue());

@@ -192,7 +192,7 @@ public class ComplexMatrixToken extends MatrixToken {
             throws IllegalActionException {
 
         int compare = TypeLattice.compare(BaseType.COMPLEX_MATRIX,
-                token.getType());
+                token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -205,7 +205,7 @@ public class ComplexMatrixToken extends MatrixToken {
         }
 
         // try Complex
-        compare = TypeLattice.compare(new ComplexToken(), token);
+        compare = TypeLattice.compare(BaseType.COMPLEX, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             Complex[][] result = new Complex[1][1];
             ComplexToken tem = (ComplexToken)ComplexToken.convert(token);
@@ -214,7 +214,7 @@ public class ComplexMatrixToken extends MatrixToken {
         }
 
         // try DoubleMatrix
-        compare = TypeLattice.compare(new DoubleMatrixToken(), token);
+        compare = TypeLattice.compare(BaseType.COMPLEX_MATRIX, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             DoubleMatrixToken tem =
                 (DoubleMatrixToken)DoubleMatrixToken.convert(token);

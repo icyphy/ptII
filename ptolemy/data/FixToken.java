@@ -181,6 +181,7 @@ public class FixToken extends ScalarToken {
 	// add is commutative on FixPoint.
         return add(token);
     }
+    // FIXME: convert????
 
     /** Return the fixed point value of this token as a double. The
      *  conversion from a fixed point to a double is not lossless, so

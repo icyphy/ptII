@@ -178,7 +178,7 @@ public class LongMatrixToken extends MatrixToken {
     public static Token convert(Token token)
 	    throws IllegalActionException {
 
-	int compare = TypeLattice.compare(new LongMatrixToken(), token);
+	int compare = TypeLattice.compare(BaseType.LONG_MATRIX, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
 	    throw new IllegalActionException("LongMatrixToken.convert: " +
                     "type of argument: " + token.getClass().getName() +
@@ -191,7 +191,7 @@ public class LongMatrixToken extends MatrixToken {
 	}
 
 	// try long
-	compare = TypeLattice.compare(new LongToken(), token);
+	compare = TypeLattice.compare(BaseType.LONG, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    LongToken tem = (LongToken)LongToken.convert(token);
 	    long[][] result = new long[1][1];
@@ -200,7 +200,7 @@ public class LongMatrixToken extends MatrixToken {
 	}
 
 	// try IntMatrix
-	compare = TypeLattice.compare(new IntMatrixToken(), token);
+	compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    IntMatrixToken tem = (IntMatrixToken)IntMatrixToken.convert(token);
 	    long[][] result = tem.longMatrix();
