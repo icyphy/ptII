@@ -99,7 +99,7 @@ public class PlotLiveDemo extends PlotLive {
 	});
 	frame.getContentPane().add("Center", plotLiveDemo);
 	frame.show();
-	plotLiveDemo.init();
+	plotLiveDemo.setButtons(true);
 	plotLiveDemo.start();
 	frame.pack();
     }
