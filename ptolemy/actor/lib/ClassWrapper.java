@@ -230,18 +230,18 @@ public class ClassWrapper extends TypedAtomicActor {
 		    argValues[i] = arg;
 		} else if (arg instanceof DoubleToken) {
 		    argValues[i] =
-			    new Double(((DoubleToken)arg).doubleValue());
+                        new Double(((DoubleToken)arg).doubleValue());
 		} else if (arg instanceof IntToken) {
 		    argValues[i] =
-                            new Integer(((IntToken)arg).intValue());
+                        new Integer(((IntToken)arg).intValue());
 		} else if (arg instanceof LongToken) {
 		    argValues[i] =
-		            new Long(((LongToken)arg).longValue());
+                        new Long(((LongToken)arg).longValue());
 		} else if (arg instanceof StringToken) {
 		    argValues[i] = ((StringToken)arg).stringValue();
 		} else if (arg instanceof BooleanToken) {
 		    argValues[i] =
-			    new Boolean(((BooleanToken)arg).booleanValue());
+                        new Boolean(((BooleanToken)arg).booleanValue());
 		} else if (arg instanceof ComplexToken) {
 		    argValues[i] = ((ComplexToken)arg).complexValue();
 		} else if (arg instanceof FixToken) {
