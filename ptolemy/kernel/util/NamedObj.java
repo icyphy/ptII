@@ -80,6 +80,10 @@ Classes derived from NamedObj may constrain attributes to be a subclass
 of Attribute.  To do that, they should override the protected
 _addAttribute() method to throw an exception if the
 object provided is not of the right class.
+<p>
+Derived classes should override the _description() method to append
+new fields if there is new information that should be included in the
+description.
 
 @author Mudit Goel, Edward A. Lee, Neil Smyth
 @version $Id$
@@ -138,11 +142,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and add the cloned object to the directory of the
-     *  workspace in which the original object resides.
-     *  This overrides the protected clone() method of
-     *  java.lang.Object, which makes a field-by-field copy, to
-     *  clone the attribute list.
+    /** Clone the object into the current workspace by calling the clone()
+     *  method that takes a Workspace argument.
      *  This method read-synchronizes on the workspace.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
@@ -175,18 +176,18 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         // created it and have not returned the reference.
         try {
             workspace().getReadAccess();
-            NamedObj result = (NamedObj)super.clone();
+            NamedObj newobj = (NamedObj)super.clone();
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
-            result._attributes = null;
-            result._workspace = ws;
+            newobj._attributes = null;
+            newobj._workspace = ws;
             Enumeration params = getAttributes();
             while (params.hasMoreElements()) {
                 Attribute p = (Attribute)params.nextElement();
                 Attribute np = (Attribute)p.clone(ws);
                 try {
-                    np.setContainer(result);
+                    np.setContainer(newobj);
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
                             "Failed to clone an Attribute of " +
@@ -199,7 +200,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 Attribute p = (Attribute)params.nextElement();
                 p.update();
             }
-            return result;
+            return newobj;
         } finally {
             workspace().doneReading();
         }
