@@ -560,11 +560,25 @@ awk '{
        indent = substr($0, 0, index($0,"<") - 1)  
        # FIXME: do more with types?
        propertyClass = "ptolemy.data.expr.Parameter"
+
        if (class == "vendors.ecsl_dp.ptolemy.ECSLSum") {
            if (name == "Inputs" || name == "IconShape") {
                propertyClass = "ptolemy.data.expr.StringParameter"
            }
        }
+
+       if (class == "vendors.ecsl_dp.ptolemy.ECSLGain") {
+           if (name == "Gain") {
+               # FIXME: Gain must be a double so that 1/1000 = 0.001
+               # instead of 0
+               if (index(value, ".") == 0 \
+                      && match(value, "[0-9]" != 0)) {
+                   # FIXME: append a .0.  This is _so_ wrong
+                   value = value ".0"
+               }
+           }
+       }
+
        print indent "<property name=\"" name "\" class=\"" propertyClass "\" value=\"" value "\"/>"
     } else {
        print $0
