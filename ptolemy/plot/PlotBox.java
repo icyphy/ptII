@@ -147,7 +147,7 @@ import java.lang.*;
  */
 public class PlotBox extends Panel {
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         constructor                              ////
 
     public PlotBox() {
@@ -158,8 +158,8 @@ public class PlotBox extends Panel {
         _measureFonts();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add a legend (displayed at the upper right) for the specified
      *  data set with the specified string.  Short strings generally
@@ -736,8 +736,8 @@ public class PlotBox extends Panel {
         repaint();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
@@ -1414,8 +1414,8 @@ public class PlotBox extends Panel {
         if (!_usecolor) output.println("Color: off");
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                           protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // The range of the data to be plotted.
     protected double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
@@ -1485,8 +1485,8 @@ public class PlotBox extends Panel {
     // Width and height of component in pixels.
     protected int _width = 400, _height = 400;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /*
      * Draw the legend in the upper right corner and return the width
@@ -2131,16 +2131,16 @@ public class PlotBox extends Panel {
         _zoomy = y;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // The document base we use to find the _filespec.
     // NOTE: Use of this variable is deprecated.  But it is made available
     // to derived classes for backward compatibility.
     protected URL _documentBase = null;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The file to be opened.
     private String _filespec = null;
@@ -2203,8 +2203,8 @@ public class PlotBox extends Panel {
     private boolean _zoomout = false;
     private boolean _drawn = false;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     class FillButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {

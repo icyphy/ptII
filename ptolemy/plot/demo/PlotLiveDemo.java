@@ -55,8 +55,8 @@ public class PlotLiveDemo extends PlotLive {
         setMarksStyle("dots");
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add points to the plot.  This is called by the base class
      *  run() method when the plot is live.
@@ -82,8 +82,8 @@ public class PlotLiveDemo extends PlotLive {
         } catch (InterruptedException e) {}
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private boolean _first = true;
     private double _count = 0.0;

@@ -190,8 +190,8 @@ import java.net.*;
  */
 public class Plot extends PlotBox {
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** In the specified data set, add the specified x, y point to the
      *  plot.  Data set indices begin with zero.  If the data set
@@ -1105,8 +1105,8 @@ public class Plot extends PlotBox {
         paint(g);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                          protected methods                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
 
     /** Check the argument to ensure that it is a valid data set index.
@@ -1739,8 +1739,8 @@ public class Plot extends PlotBox {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       protected variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // The current dataset.
     protected int _currentdataset = -1;
@@ -1754,8 +1754,8 @@ public class Plot extends PlotBox {
     // Indicate that painting is complete.
     protected boolean _painted = false;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private methods                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /* Add a legend if necessary, return the value of the connected flag.
      */
@@ -1939,8 +1939,8 @@ public class Plot extends PlotBox {
         }
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private int _pointsPersistence = 0;
     private int _sweepsPersistence = 0;
@@ -2005,8 +2005,8 @@ public class Plot extends PlotBox {
 //     // FIXME: This has to be friendly or Netscape fails
 //     boolean _painting = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
 // NOTE: This strategy fails due to a bug in jdk 1.1
 // Nothing drawn to the graphics object in this other thread ever appears.

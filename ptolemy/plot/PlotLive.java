@@ -59,8 +59,8 @@ import java.util.*;
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Redefine in derived classes to add points to the plot.
      *  Adding many points at once will make the plot somewhat faster
@@ -189,8 +189,8 @@ public abstract class PlotLive extends Plot implements Runnable {
         _plotLiveThread = null;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                       private variables                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Thread _plotLiveThread = null;
 
@@ -201,8 +201,8 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     private Button _startButton, _stopButton;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                            ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     class StartButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {

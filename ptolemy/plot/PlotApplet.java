@@ -170,8 +170,8 @@ public class PlotApplet extends Applet {
         return _myPlot;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // The Plot component we are running.
     private Plot _myPlot;

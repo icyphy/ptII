@@ -42,8 +42,8 @@ import java.applet.Applet;
  */
 public class PlotFourierSeries extends PlotApplet {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return a string describing this applet.

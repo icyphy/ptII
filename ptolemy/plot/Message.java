@@ -76,8 +76,8 @@ public class Message extends Frame {
         setVisible(true);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private TextArea _txtarea;
 }

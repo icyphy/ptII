@@ -54,11 +54,11 @@ public class Sound extends PtolemyPlot {
         _specialMenu.add(play);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
     /** Display basic information about the application.
      */
@@ -319,14 +319,14 @@ public class Sound extends PtolemyPlot {
 //         return result;
 //     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private ptolemy.math.SignalProcessing.AudioData _sound;
     private ByteArrayInputStream _instream;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     private class PlayListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
