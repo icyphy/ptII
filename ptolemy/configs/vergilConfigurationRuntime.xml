@@ -134,16 +134,17 @@
         <?moml
           <group>
             <doc>default entity library</doc>
-            <input source="../actor/lib/sources.xml"/>
-            <input source="../actor/lib/sinks.xml"/>
-            <input source="../actor/lib/math.xml"/>
-            <input source="../actor/lib/flowcontrol.xml"/>
-            <input source="../actor/lib/logic/logic.xml"/>
-            <input source="../actor/lib/conversions/conversions.xml"/>
-            <input source="../actor/lib/signalprocessing.xml"/>
-            <input source="../domains/sdf/lib/sdfentities.xml"/>
-            <input source="../domains/ct/lib/ctentities.xml"/>
-            <input source="../domains/de/lib/deentities.xml"/>
+	    <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
+            <input source="ptolemy/actor/lib/sources.xml"/>
+            <input source="ptolemy/actor/lib/sinks.xml"/>
+            <input source="ptolemy/actor/lib/math.xml"/>
+            <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+            <input source="ptolemy/actor/lib/logic/logic.xml"/>
+            <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+            <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+            <input source="ptolemy/domains/sdf/lib/sdfentities.xml"/>
+            <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
+            <input source="ptolemy/domains/de/lib/deentities.xml"/>
           </group>
         ?>
       </configure>
