@@ -43,6 +43,7 @@ import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -825,14 +826,76 @@ public class InterfaceAutomaton extends FSMActor {
         }
     }
 
-    // remove states unreacheable from the initial state. Also remove the
+    // Remove states unreacheable from the initial state. Also remove the
     // transition from and to these states. Note that these states may not
     // be disconnected from the initial state. For example, these states
     // may have transitions to the initial state, but the initial state does
     // not have transitions to these states.
+    // Use frontier exploration. The Set frontier stores the frontier states,
+    // and the Set reacheableStates stores all reacheable states. frontier
+    // is always a subset of reacheableStates.
     //
-
+    // init: if initial state does not exist (it was illegal and removed)
+    //           remove all states
+    //       else
+    //           reacheableStates = frontier = initial state
+    //
+    // iterate: Pick (remove) a state p from the frontier
+    //          for all states s reacheable from p
+    //              if s is not in reacheableStates
+    //                  add s to both reacheableStates and frontier
+    //
+    //          end when frontier is empty
+    //
+    // remove all states not in reacheableStates from this automaton
     private void _removeUnreacheableStates() {
+        // init
+        State initialState;
+	try {
+	    initialState = getInitialState();
+	} catch (IllegalActionException exception) {
+	    // initial state was removed since it was illegal. remove all
+	    // states from this automaton to make it empty.
+	    this.removeAllRelations();
+	    this.removeAllEntities();
+	    return;
+	}
+
+	Set reacheableStates = new HashSet();
+	Set frontier = new HashSet();
+	reacheableStates.add(initialState);
+	frontier.add(initialState);
+
+	// iterate
+        while ( !frontier.isEmpty()) {
+            // there does not seem to be an easy way to remove an arbitray
+            // element, except through Iterator
+            Iterator iterator = frontier.iterator();
+            State current = (State)iterator.next();
+            frontier.remove(current);
+
+            // make all states that are reacheable from current reacheable
+            ComponentPort outPort = current.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+            while (transitions.hasNext()) {
+                InterfaceAutomatonTransition transition =
+                    (InterfaceAutomatonTransition)transitions.next();
+                State destinationState = transition.destinationState();
+                if ( !reacheableStates.contains(destinationState)) {
+                    reacheableStates.add(destinationState);
+                    frontier.add(destinationState);
+                }
+            }
+        }
+
+	// remove all states not reacheable from initial state
+	List states = entityList();
+	states.removeAll(reacheableStates);
+	Iterator iterator = states.iterator();
+	while (iterator.hasNext()) {
+	    State state = (State)iterator.next();
+            _removeStateAndTransitions(state);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
