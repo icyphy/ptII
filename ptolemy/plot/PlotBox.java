@@ -2370,7 +2370,7 @@ public class PlotBox extends JPanel implements Printable {
             return true;
         } else if (lcLine.startsWith("title:")) {
             // Tolerate alternative tag.
-            setTitle((line.substring(10)).trim());
+            setTitle((line.substring(6)).trim());
             return true;
         } else if (lcLine.startsWith("xlabel:")) {
             setXLabel((line.substring(7)).trim());
