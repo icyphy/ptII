@@ -269,6 +269,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     /** The model for visible attributes
      */
     public class AttributeModel implements RemoveableNodeModel {
+        
 	/**
 	 * Return the graph parent of the given node.
 	 * @param node The node, which is assumed to be an icon.
@@ -309,25 +310,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             String moml = "<deleteProperty name=\""
 		+ attribute.getName(container) + "\"/>\n";
             
+            // Note: The source is NOT the graph model.
             ChangeRequest request =
-		new MoMLChangeRequest(PtolemyGraphModel.this, container, moml);
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-                
-                public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue nodeRemoved, since
-                    // this is connected to nothing.
-                    dispatchGraphEvent(new GraphEvent(eventSource,
-                            GraphEvent.NODE_REMOVED,
-                            node, prevParent));
-                }
-            });
+		new MoMLChangeRequest(this, container, moml);
             container.requestChange(request);
         }
         }
@@ -423,27 +408,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    moml.append("<deletePort name=\"" +
                     port.getName(container) +
                     "\"/>\n");
+
+            // Note: The source is NOT the graph model.
 	    ChangeRequest request =
-		new MoMLChangeRequest(PtolemyGraphModel.this,
+		new MoMLChangeRequest(this,
                         container,
                         moml.toString());
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-                
-		public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue structureChanged, since
-                    // this is likely connected to something.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-	    });
             container.requestChange(request);
         }
     }
@@ -532,26 +502,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             // Make the request in the context of the container.
             NamedObj container = getChangeRequestParent(deleteObj);
             
+            // Note: The source is NOT the graph model.
             ChangeRequest request =
                     new MoMLChangeRequest(
-                    PtolemyGraphModel.this, container, moml);
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-		}
-
-		public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue structureChanged, since
-                    // this is likely connected to something.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-	    });
+                   this, container, moml);
             container.requestChange(request);
 	}
     }
@@ -818,6 +772,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	    final String relationNameToAdd = relationName;
 
+            // Here the source IS the graph model, because we need to
+            // handle the event dispatch specially:  An event is only
+            // dispatched if both the head and the tail are attached.
+            // This rather obnoxious hack is here because edge creation
+            // is tricky and we can't rerender the edge while we are dragging
+            // it.
 	    ChangeRequest request =
 		new MoMLChangeRequest(PtolemyGraphModel.this,
 				      container,
@@ -837,46 +797,10 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		};
 
 	    // Handle what happens if the mutation fails.
-	    request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-					 Exception exception) {
-		    // If we fail here, then we remove the link entirely.
-                    _linkSet.remove(link);
-		    link.setHead(null);
-		    link.setTail(null);
-		    link.setRelation(null);
-		    // and queue a new change request to clean up the model
-                    // Note: JDK1.2.2 requires that this variable not be
-                    // called request or we get a compile error.
+	    request.addChangeListener(new LinkChangeListener(link, 
+                    container,
+                    failmoml));
 
-                    // Note the source is NOT the graph model
-                    ChangeRequest changeRequest =
-			new MoMLChangeRequest(this,
-					      container,
-					      failmoml.toString());
-		    container.requestChange(changeRequest);
-		}
-                
-                public void changeExecuted(ChangeRequest change) {
-                    if(GraphUtilities.isPartiallyContainedEdge(edge,
-                            getRoot(),
-                            PtolemyGraphModel.this)) {
-                        _linkSet.add(edge);
-                    } else {
-                        _linkSet.remove(edge);
-                    }
-                    // Note that there is no GraphEvent dispatched here.
-                    // This is because the rerendering of edges is handled
-                    // totally within the LinkController.
-                    if(link.getHead() != null && link.getTail() != null) 
-                        dispatchGraphEvent(
-                                new GraphEvent(PtolemyGraphModel.this,
-                                        GraphEvent.STRUCTURE_CHANGED,
-                                        getRoot()));
-                } 
-            });
-
-                
             container.requestChange(request);
         }
         
@@ -928,6 +852,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
 	    final String relationNameToAdd = relationName;
  
+            // Here the source IS the graph model, because we need to
+            // handle the event dispatch specially:  An event is only
+            // dispatched if both the head and the tail are attached.
+            // This rather obnoxious hack is here because edge creation
+            // is tricky and we can't rerender the edge while we are dragging
+            // it.
 	    ChangeRequest request =
 		new MoMLChangeRequest(PtolemyGraphModel.this,
 				      container,
@@ -945,48 +875,70 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	       };
 
 	    // Handle what happens if the mutation fails.
-	    request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-					 Exception exception) {
-		    // If we fail here, then we remove the link entirely.
-		    _linkSet.remove(link);
-		    link.setHead(null);
-		    link.setTail(null);
-		    link.setRelation(null);
-
-		    // and queue a new change request to clean up the model
-                    // Note: JDK1.2.2 requires that this variable not be
-                    // called request or we get a compile error.
-                    // Note the source is NOT the graph model
-		    ChangeRequest changeRequest =
-			new MoMLChangeRequest(this,
-					      container,
-					      failmoml.toString());
-		    container.requestChange(changeRequest);
-		}
-
-		public void changeExecuted(ChangeRequest change) {
-		    if(GraphUtilities.isPartiallyContainedEdge(edge,
-				   getRoot(),
-				   PtolemyGraphModel.this)) {
-			_linkSet.add(edge);
-		    } else {
-			_linkSet.remove(edge);
-		    }
-                    // Note that there is no GraphEvent dispatched here
-                    // if the edge is not fully connected.  This is to 
-                    // prevent an exception that will be thrown 
-                    // when edges are being created.
-                    if(link.getHead() != null && link.getTail() != null) 
-                        dispatchGraphEvent(
-                                new GraphEvent(PtolemyGraphModel.this,
-                                        GraphEvent.STRUCTURE_CHANGED,
-                                        getRoot()));
-  		}
-	    });
+	    request.addChangeListener(new LinkChangeListener(link, 
+                    container,
+                    failmoml));
 
 	    container.requestChange(request);
 	}
+
+        /** This change listener is responsible for dispatching graph events
+         *  when an edge is moved.  It works the same for heads and tails.
+         */
+        // Nested Inner Classes!  I love Java!
+        public class LinkChangeListener implements ChangeListener {
+            public LinkChangeListener(Link link, CompositeEntity container, 
+                    StringBuffer failMoML) {
+                _link = link;
+                _container = container;
+                _failMoML = failMoML;
+            }
+
+            public void changeFailed(ChangeRequest change,
+                    Exception exception) {
+                // If we fail here, then we remove the link entirely.
+                _linkSet.remove(_link);
+                _link.setHead(null);
+                _link.setTail(null);
+                _link.setRelation(null);
+                
+                // and queue a new change request to clean up the model
+                // Note: JDK1.2.2 requires that this variable not be
+                // called request or we get a compile error.
+                // Note the source is NOT the graph model
+                ChangeRequest changeRequest =
+                    new MoMLChangeRequest(this,
+                            _container,
+                            _failMoML.toString());
+                _container.requestChange(changeRequest);
+            }
+            
+            public void changeExecuted(ChangeRequest change) {
+                // modification to the linkset HAS to occur in the swing
+                // thread.
+                
+                if(GraphUtilities.isPartiallyContainedEdge(_link,
+                        getRoot(),
+                        PtolemyGraphModel.this)) {
+                    _linkSet.add(_link);
+                } else {
+                    _linkSet.remove(_link);
+                }
+                
+                // Note that there is no GraphEvent dispatched here
+                // if the edge is not fully connected.  This is to 
+                // prevent rerendering while
+                // an edge is being created.
+                if(_link.getHead() != null && _link.getTail() != null) 
+                    dispatchGraphEvent(
+                            new GraphEvent(PtolemyGraphModel.this,
+                                    GraphEvent.STRUCTURE_CHANGED,
+                                    getRoot()));
+            }
+            private Link _link;
+            private CompositeEntity _container;
+            private StringBuffer _failMoML;
+        }
     }
 
     /** The model for ports that are contained in icons in this graph.
@@ -1081,27 +1033,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    moml.append("<deletePort name=\"" +
                     port.getName(container) +
                     "\"/>\n");
+
+            // Note: The source is NOT the graph model.
 	    ChangeRequest request =
-		new MoMLChangeRequest(PtolemyGraphModel.this,
+		new MoMLChangeRequest(this,
                         container,
                         moml.toString());
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-                
-		public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue structureChanged, since
-                    // this is likely connected to something.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-	    });
 	    container.requestChange(request);
 	}
     }
@@ -1298,27 +1235,12 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    moml.append("<deleteRelation name=\"" +
 			relation.getName(container) +
 			"\"/>\n");
+
+            // Note: The source is NOT the graph mode.
 	    ChangeRequest request =
-		new MoMLChangeRequest(PtolemyGraphModel.this,
+		new MoMLChangeRequest(this,
                         container, moml.toString());
-            request.addChangeListener(new ChangeListener() {
-		public void changeFailed(ChangeRequest change,
-                        Exception exception) {
-                    // If we fail, then issue structureChanged.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-                
-		public void changeExecuted(ChangeRequest change) {
-                    // If we succeed, then issue structureChanged, since
-                    // this is likely connected to something.
-                    dispatchGraphEvent(new GraphEvent(eventSource, 
-                            GraphEvent.STRUCTURE_CHANGED,
-                            getRoot()));
-                }
-	    });
-	    container.requestChange(request);
+       	    container.requestChange(request);
 	}
     }
 
@@ -1327,9 +1249,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 
     /** Update the graph model.  This is called whenever a change request is 
      *  executed.  In this class the internal set of link objects is 
-     *  verified to be correct.
+     *  verified to be correct.  This method is usually called just before 
+     *  issuing a graph event.  If this method returns false, then the graph
+     *  event should not be issued, because further changes are necessary.
+     *  @return true if the model was successfully updated, or false if
+     *  further change requests were queued.   
      */
-    protected void _update() {
+    protected boolean _update() {
 	// Go through all the links that currently exist, and remove 
         // any that don't have both ends in the model.
 	Iterator links = _linkSet.iterator();
@@ -1362,6 +1288,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                             + relation.getName(container)
                             + "\"/>\n");
                     container.requestChange(request);
+                    // If updating requires further updates to the model 
+                    // i.e. the above change request, then return false.  
+                    // this is so that rerendering doesn't happen until the
+                    // graph model has reached a stable point.
+                    // Note that there is a bit of a performance tradeoff
+                    // here as to whether we queue a bunch of mutations in 
+                    // parallel (which may be redundant) or queue them 
+                    // serially (which may be slow).
+                    return false;
                 }
             }
         }
@@ -1371,6 +1306,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
         while(relations.hasNext()) {
             _updateLinks((ComponentRelation)relations.next());
         }
+        return true;
     }
     
     ///////////////////////////////////////////////////////////////////

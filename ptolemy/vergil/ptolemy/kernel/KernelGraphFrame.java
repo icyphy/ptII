@@ -76,7 +76,6 @@ import diva.graph.MutableGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LevelLayout;
 import diva.graph.layout.LayoutTarget;
-import diva.graph.toolbox.DeletionListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
