@@ -49,7 +49,9 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	ATestForJNIdeux.xml \
 	ATestForJNIquatre.xml \
-	ATestForJNItrois.xml
+	ATestForJNItrois.xml \
+	fourtyTwo.c \
+	main.c
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -79,6 +81,16 @@ demo: demo_vergil
 demo_vergil:
 	"$(PTII)/bin/vergil" \
 		ATestForJNIdeux.xml ATestForJNItrois.xml ATestForJNIquatre.xml
+
+fourtyTwo.o: fourtyTwo.c
+	$(CC) -c $^
+
+// FIXME: .dll is Windows only
+fourtyTwo.dll: fourtyTwo.o
+	gcc -shared -o $@ $^
+
+main: fourtyTwo.dll
+	$(CC) -o main main.c  -L./ -lfourtyTwo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
