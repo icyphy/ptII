@@ -228,6 +228,9 @@ public class TimedQueueReceiver {
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
+	    if( token instanceof NullToken ) {
+		return;
+	    }
 	    /*
 	    System.out.println("Time in the past: " + time + 
 			       "\t_lastTime:" + _lastTime);
@@ -338,7 +341,7 @@ public class TimedQueueReceiver {
      * @param time The new rcvr time.
      */
     synchronized void setRcvrTime(double time) {
-	if( !hasToken() ) {
+	if( !(_queue.size() > 0) ) {
             _rcvrTime = time;
 	}
     }
