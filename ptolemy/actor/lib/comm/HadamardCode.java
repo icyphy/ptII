@@ -252,7 +252,8 @@ public class HadamardCode extends Source {
             if (index >= halfDimension) {
                 indexIntoHalfMatrix -= halfDimension;
             }
-            boolean[] halfRow = _calculateRow(halfDimension, indexIntoHalfMatrix);
+            boolean[] halfRow =
+                _calculateRow(halfDimension, indexIntoHalfMatrix);
             System.arraycopy(halfRow, 0, result, 0, halfDimension);
             if (index >= halfDimension) {
                 for (int i = 0; i < halfDimension; i++) {

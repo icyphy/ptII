@@ -1,4 +1,4 @@
-/* A Slicer, which functions as a decoder of the LineCoder 
+/* A Slicer, which functions as a decoder of the LineCoder
    of complex type.
 
  Copyright (c) 2003 The Regents of the University of California.
@@ -25,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (zhouye@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -39,12 +39,9 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,7 +49,7 @@ import ptolemy.math.Complex;
 /**
 The Slicer functions as a decoder of the LineCoder. The parameter
 <i>table</i> and <i>wordLength</i> has the same meaning as in LineCoder,
-except that the type of <i>table</i> is constrained to an ArrayToken 
+except that the type of <i>table</i> is constrained to an ArrayToken
 of complex numbers. On each firing, the Slicer consumes one complex
 token from its input port and computes the Euclidean distance between
 the input data and the elements in the Slicer. The actor produces
@@ -60,7 +57,7 @@ the input data and the elements in the Slicer. The actor produces
 correspond to the index of the entry that minimizes the distance. For
 example, if the first entry minimizes the distance, then all of these
 values are <i>false</i>. If the second entry minimizes the distance,
-then only the first boolean is true. 
+then only the first boolean is true.
 
 @author Rachel Zhou
 @version $Id$
@@ -104,7 +101,7 @@ public class Slicer extends Transformer {
      *  The number of values in this array must be at least
      *  2<sup><i>wordLength</i></sup>, or an exception
      *  will be thrown. Its default value is {-1.0, 1.0}.
-     */ 
+     */
     public Parameter table;
 
     /** The word length is the number of boolean output that
@@ -115,19 +112,6 @@ public class Slicer extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to allow type changes on
-     *  <i>initialOutputs</i>.
-     *  @exception IllegalActionException If type changes are not
-     *   allowed on the specified attribute.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute != table) {
-            // The base class will probably throw an exception.
-            super.attributeTypeChanged(attribute);
-        }
-    }
 
     /** Consume the inputs and produce the corresponding symbol.
      *  @exception IllegalActionException If a runtime type error occurs.
@@ -180,7 +164,7 @@ public class Slicer extends Transformer {
 
     /** Compute the Euclidean distance between two complex numbers.
      *  @param x The first complex number.
-     *  @param y The second complex number. 
+     *  @param y The second complex number.
      *  @return The distance.
      */
     private double _computeEuclideanDistance(
@@ -188,7 +172,7 @@ public class Slicer extends Transformer {
         Complex z = x.subtract(y);
         return z.magnitude();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -196,7 +180,7 @@ public class Slicer extends Transformer {
     private int _wordLength;
     private int _size;
     private Complex[] _table;
-    
+
     // Consumption rate of the input port.
     private Parameter _inputRate;
 

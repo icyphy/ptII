@@ -41,17 +41,17 @@ import ptolemy.kernel.util.Settable;
 //// ViterbiDecoder
 /**
 The TrellisDecoder is a generalization of the ViterbiDecoder. It
-can handle trellis coding, which has non-antipodal constellation. 
+can handle trellis coding, which has non-antipodal constellation.
 For a <i>k</i>/<i>n</i> convolutional code, the constellation
 should map each codeword into a complex number. Hence the length
 of the constellation should be a complex array of length
 2<i><sup>n</sup></i>. For example, a 1/2 rate convolutional code
 should use 4PSK. a <i>k</i>/3 convolutional code should use 8PSK.
 <p>
-The input port of the TrellisDecoder is complex. On each firing, 
+The input port of the TrellisDecoder is complex. On each firing,
 the TrellisDecoder reads one input. The Euclidean distance is defined
-as the distance between the noisy input and the point in the 
-constellation mapped from the codeword. Like in ViterbiDecoder, 
+as the distance between the noisy input and the point in the
+constellation mapped from the codeword. Like in ViterbiDecoder,
 this actor produces <i>k</i> outputs on each firing.
 <p>
 See ConvolutionalCoder and ViterbiDecoder for details about
@@ -68,6 +68,7 @@ Kluwer, 2004.
 @version $Id$
 @since Ptolemy II 3.0
 */
+
 public class TrellisDecoder extends ViterbiDecoder {
 
     /** Construct an actor with the given container and name.
@@ -85,11 +86,10 @@ public class TrellisDecoder extends ViterbiDecoder {
 
         softDecoding.setVisibility(Settable.NONE);
         softDecoding.setExpression("false");
-        
+
         trellisDecoding.setExpression("true");
 
-        constellation.setTypeEquals(new ArrayType(BaseType.COMPLEX));        
+        constellation.setTypeEquals(new ArrayType(BaseType.COMPLEX));
         constellation.setExpression("{1.0, i, -1.0, -i}");
-
     }
 }

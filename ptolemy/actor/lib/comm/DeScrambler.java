@@ -165,7 +165,8 @@ public class DeScrambler extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _latestShiftReg = _shiftReg = ((IntToken)initialState.getToken()).intValue();
+        _latestShiftReg = _shiftReg =
+            ((IntToken)initialState.getToken()).intValue();
     }
 
     /** Record the most recent shift register state as the new

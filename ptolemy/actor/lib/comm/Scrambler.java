@@ -249,7 +249,7 @@ public class Scrambler extends Transformer {
             if (input.hasToken(0)){
                 BooleanToken inputToken = (BooleanToken)input.get(0);
                 boolean inputTokenValue = inputToken.booleanValue();
-                parity =parity ^ (inputTokenValue ? 1:0);
+                parity = parity ^ (inputTokenValue ? 1:0);
             }
         }
         _latestShiftReg = reg | parity;
