@@ -50,8 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 # NOTE:  All of the following tests use this director.
 
 set director [java::new ptolemy.domains.sdf.kernel.SDFDirector]
-set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler]
-$director setScheduler $scheduler
+set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################

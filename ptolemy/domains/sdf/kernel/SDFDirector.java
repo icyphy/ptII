@@ -456,13 +456,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** Initialize the object.   In this case, we give the SDFDirector a
      *  default scheduler of the class SDFScheduler.
      */
-
     private void _init() {
         try {
-            SDFScheduler scheduler = new SDFScheduler(workspace());
-            setScheduler(scheduler);
+            SDFScheduler scheduler = 
+                new SDFScheduler(this, uniqueName("Scheduler"));
         }
-        catch (IllegalActionException e) {
+        catch (Exception e) {
             // if setScheduler fails, then we should just set it to Null.
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.

@@ -121,6 +121,24 @@ public class SDFScheduler extends Scheduler {
 	_localMemberInitialize();
     }
 
+    /** Construct a scheduler in the given container with the given name.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public SDFScheduler(Director container, String name)
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -373,7 +391,6 @@ public class SDFScheduler extends Scheduler {
         // A linked list containing all the actors
         LinkedList AllActors = new LinkedList();
         Iterator entities = container.deepEntityList().iterator();
-
 
         while(entities.hasNext()) {
             ComponentEntity a = (ComponentEntity)entities.next();

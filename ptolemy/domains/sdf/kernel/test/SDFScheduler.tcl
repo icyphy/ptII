@@ -82,13 +82,15 @@ test SDFScheduler-4.1 {Test setScheduler and getScheduler} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
     set d0 [java::new ptolemy.domains.sdf.kernel.SDFDirector $e0 D1]
-    $d0 setScheduler $s2
-    set d1 [$s2 getContainer]
+    set s4 [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $s4 setName "TestScheduler"
+    $d0 setScheduler $s4
+    set d1 [$s4 getContainer]
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
 
-    list [$d0 getFullName] [$d1 getFullName] [$s2 getFullName]
-} {.E0.D1 .E0.D1 .E0.D1.Scheduler}
+    list [$d0 getFullName] [$d1 getFullName] [$s4 getFullName]
+} {.E0.D1 .E0.D1 .E0.D1.TestScheduler}
 
 test SDFScheduler-4.2 {Test setValid and isValid} {
     # NOTE: Uses the setup above
@@ -144,8 +146,7 @@ test SDFScheduler-5.1 {Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
@@ -169,8 +170,7 @@ test SDFScheduler-5.2 {Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay]
@@ -193,8 +193,7 @@ test SDFScheduler-5.3 {Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $toplevel Dist]
@@ -219,8 +218,7 @@ test SDFScheduler-5.4 {Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $toplevel Dist]
@@ -247,8 +245,7 @@ test SDFScheduler-6.1 {Multirate Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay]
@@ -313,8 +310,7 @@ test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
@@ -419,8 +415,7 @@ test SDFScheduler-8.1 {input Multiport, Multirate Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
@@ -498,8 +493,7 @@ test SDFScheduler-8.6 {input Multiport with no connections} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
     set port [java::field $a3 input]
@@ -518,8 +512,7 @@ test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph}
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
     set port [java::field $a3 input]
@@ -543,8 +536,7 @@ test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
@@ -622,8 +614,7 @@ test SDFScheduler-8.16 {output Multiport with no connections} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set port [java::field $a3 output]
@@ -647,8 +638,7 @@ test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
@@ -738,8 +728,7 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
@@ -833,8 +822,7 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
@@ -855,8 +843,7 @@ test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
@@ -937,8 +924,7 @@ test SDFScheduler-11.1 {Multirate and transparent hierarchy Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
@@ -1023,8 +1009,7 @@ test SDFScheduler-12.1 {Input Multirate and transparent hierarchy Scheduling tes
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
@@ -1098,8 +1083,7 @@ test SDFScheduler-12.11 {Output Multirate and hierarch Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
@@ -1179,8 +1163,7 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
@@ -1211,8 +1194,7 @@ test SDFScheduler-13.2 {Output External port connected } {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
@@ -1248,8 +1230,7 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
@@ -1297,8 +1278,7 @@ test SDFScheduler-14.1 {Multirate Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay1]

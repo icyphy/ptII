@@ -296,9 +296,8 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
-
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $director S]
+ 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
@@ -320,7 +319,7 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
     $toplevel connect $p2 [java::field $a3 input] R4
 
     set iter [$director getAttribute iterations]
-    $scheduler setValid false
+    $director invalidateSchedule
     $s5 setValid false
 
     _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
