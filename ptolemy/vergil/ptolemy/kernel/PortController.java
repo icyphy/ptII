@@ -140,7 +140,7 @@ public class PortController extends AttributeController {
             new Location(_GENERIC_INOUT_MULTIPORT, "_location");
         } catch (KernelException ex) {
             // Should not occur.
-            throw new InternalErrorException(ex.toString());
+            throw new InternalErrorException(null, ex, null);
         }
     }
 
