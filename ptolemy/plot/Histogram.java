@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot;
 
 import java.awt.Graphics;
+import java.awt.EventQueue;
 import java.io.*;
 import java.util.*;
 import javax.swing.SwingUtilities;
@@ -45,11 +46,10 @@ import javax.swing.SwingUtilities;
  * When calling the public methods, in most cases the changes will not
  * be visible until paint() has been called.  To request that this
  * be done, call repaint().  One exception is addPoint(), which
- * makes the affect of the new point visible immediately if the
- * plot is visible on the screen.
+ * makes the affect of the new point visible immediately (or nearly
+ * immediately) if the plot is visible on the screen.
  * <p>
- * The ASCII format for the file
- * file contains any number commands,
+ * The ASCII format for the file file contains any number commands,
  * one per line.  Unrecognized commands and commands with syntax
  * errors are ignored.  Comments are denoted by a line starting with a
  * pound sign "#".  The recognized commands include those supported by
@@ -136,63 +136,25 @@ public class Histogram extends PlotBox {
      *  The new point will visibly alter the histogram if the plot is visible
      *  on the screen.  Otherwise, it will be drawn the next time the histogram
      *  is drawn on the screen.
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the point will
+     *  not be added immediately (unless you call this method from within
+     *  the event dispatch thread). All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
+     *
      *  @param dataset The data set index.
      *  @param value The new value.
      */
-    public synchronized void addPoint(int dataset, double value) {
-        _checkDatasetIndex(dataset);
-
-        // Calculate the bin number.
-        int bin = (int)(Math.round((value-_binOffset)/_binWidth));
-        Integer binobj = new Integer(bin);
-
-        // Add to the appropriate bin
-        Hashtable bins = (Hashtable)_histogram.elementAt(dataset);
-        int count;
-        if (bins.containsKey(binobj)) {
-            // increase the count
-            count = 1 + ((Integer)bins.get(binobj)).intValue();
-            bins.put(binobj, new Integer(count));
-        } else {
-            // start a new entry.
-            count = 1;
-            bins.put(binobj, new Integer(count));
-        }
-
-        // For auto-ranging, keep track of min and max.
-        double x = bin*_binWidth + _binOffset;
-        if (x < _xBottom) _xBottom = x;
-        double xtop = x + _binWidth/2.0;
-        if (xtop > _xTop) _xTop = xtop;
-        if ((double)count > _yTop) _yTop = (double)count;
-        _yBottom = 0.0;
-        Vector pts = (Vector)_points.elementAt(dataset);
-        pts.addElement(new Double(value));
-
-        // Draw the point on the screen only if the plot is showing.
-        if (_showing) {
-            // In swing, updates to showing graphics must be done in the
-            // event thread, not here.  Thus, we have to queue the request.
-            final int pendingDataset = dataset;
-            final int pendingBin = bin;
-            final int pendingCount = count;
-            Runnable doPlotPoint = new Runnable() {
-                public void run() {
-                    _drawPlotPoint(getGraphics(), pendingDataset, pendingBin,
-                           pendingCount);
-                }
-            };
-            try {
-                // Have to use invokeAndWait() here, not invokeLater()
-                // because the "final" variables above, the semantics
-                // of which are nowhere specified, do not seem to remain
-                // constant if this is invoked later.
-                SwingUtilities.invokeAndWait(doPlotPoint);
-            } catch (Exception ex) {
-                // Lots of useless exceptions get invoked here.
-                System.err.println(ex.toString());
+    public synchronized void addPoint(final int dataset, final double value) {
+        Runnable doAddPoint = new Runnable() {
+            public void run() {
+                _addPoint(dataset, value);               
             }
-        }
+        };
+        _deferIfNecessary(doAddPoint);
     }
 
     /** In the specified data set, add the specified y value to the
@@ -213,28 +175,49 @@ public class Histogram extends PlotBox {
      *  reset all parameters to their initial conditions, including
      *  the persistence, plotting format, and axes formats.
      *  For the change to take effect, you must call repaint().
+     *  <p>
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the clear will
+     *  not be executed immediately (unless you call this method from within
+     *  the event dispatch thread).  All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
+     *
      *  @param format If true, clear the format controls as well.
      */
-    public synchronized void clear(boolean format) {
-        super.clear(format);
-        _currentdataset = -1;
-        _points = new Vector();
-        _histogram = new Vector();
-        _filename = null;
-        _showing = false;
+    public synchronized void clear(final boolean format) {
+        Runnable doClear = new Runnable() {
+            public void run() {
+                _clear(format);
+            }
+        };
+        _deferIfNecessary(doClear); 
+    }
 
-        if (format) {
-            // Reset format controls
-            _barwidth = 0.5;
-            _baroffset = 0.15;
-            _binWidth = 1.0;
-            _binOffset = 0.5;
-        }
+    /** Rescale so that the data that is currently plotted just fits.
+     *  This overrides the base class method to ensure that the
+     *  fill is actually performed in the event dispatch thread.
+     *  In order to work well with swing and be thread safe, this method
+     *  actually defers execution to the event dispatch thread, where
+     *  all user interface actions are performed.  Thus, the fill will
+     *  not occur immediately (unless you call this method from within
+     *  the event dispatch thread).  All the methods that do this deferring
+     *  coordinate so that they are executed in the order that you
+     *  called them.
+     */
+    public synchronized void fillPlot() {
+        Runnable doFill = new Runnable() {
+            public void run() {
+                _fillPlot();
+            }
+        };
+        _deferIfNecessary(doFill);
     }
 
     /** Create a sample plot.
      */
-    public void samplePlot() {
+    public synchronized void samplePlot() {
 
         // Create a sample plot.
         clear(true);
@@ -259,7 +242,7 @@ public class Histogram extends PlotBox {
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
      */
-    public void setBars(double width, double offset) {
+    public synchronized void setBars(double width, double offset) {
         _barwidth = width;
         _baroffset = offset;
     }
@@ -275,7 +258,7 @@ public class Histogram extends PlotBox {
      *  (<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
      *  @param offset The bin offset.
      */
-    public void setBinOffset(double offset) {
+    public synchronized void setBinOffset(double offset) {
         _binOffset = offset;
     }
 
@@ -360,10 +343,15 @@ public class Histogram extends PlotBox {
      *  This method is called by paint().  To cause it to be called you
      *  would normally call repaint(), which eventually causes paint() to
      *  be called.
+     *  <p>
+     *  Note that this is synchronized so that points are not added
+     *  by other threads while the drawing is occurring.  This method
+     *  should be called only from the event dispatch thread, consistent
+     *  with swing policy.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected void _drawPlot(Graphics graphics,
+    protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst) {
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
@@ -388,6 +376,7 @@ public class Histogram extends PlotBox {
     /** Parse a line that gives plotting information. Return true if
      *  the line is recognized.  Lines with syntax errors are ignored.
      *  @param line A command line.
+     *  It is not synchronized, so its caller should be.
      *  @return True if the line is recognized.
      */
     protected boolean _parseLine(String line) {
@@ -549,11 +538,143 @@ public class Histogram extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /*  In the specified data set, add the specified value to the
+     *  histogram.  Data set indices begin with zero.  If the data set
+     *  does not exist, create it.
+     *  The new point will visibly alter the histogram if the plot is visible
+     *  on the screen.  Otherwise, it will be drawn the next time the histogram
+     *  is drawn on the screen.
+     *
+     *  This is not synchronized, so the caller should be.  Moreover, this
+     *  should only be called in the event dispatch thread. It should only
+     *  be called by _executeDeferredActions().
+     *
+     *  @param dataset The data set index.
+     *  @param value The new value.
+     */
+    private void _addPoint(int dataset, double value) {
+        _checkDatasetIndex(dataset);
+
+        // Calculate the bin number.
+        int bin = (int)(Math.round((value-_binOffset)/_binWidth));
+        Integer binobj = new Integer(bin);
+
+        // Add to the appropriate bin
+        Hashtable bins = (Hashtable)_histogram.elementAt(dataset);
+        int count;
+        if (bins.containsKey(binobj)) {
+            // increase the count
+            count = 1 + ((Integer)bins.get(binobj)).intValue();
+            bins.put(binobj, new Integer(count));
+        } else {
+            // start a new entry.
+            count = 1;
+            bins.put(binobj, new Integer(count));
+        }
+
+        // For auto-ranging, keep track of min and max.
+        double x = bin*_binWidth + _binOffset;
+        if (x < _xBottom) _xBottom = x;
+        double xtop = x + _binWidth/2.0;
+        if (xtop > _xTop) _xTop = xtop;
+        if ((double)count > _yTop) _yTop = (double)count;
+        _yBottom = 0.0;
+        Vector pts = (Vector)_points.elementAt(dataset);
+        pts.addElement(new Double(value));
+
+        // Draw the point on the screen only if the plot is showing.
+        // Need to check that graphics is not null because plot may have
+        // been dismissed.
+        Graphics graphics = getGraphics();
+        if (_showing  && graphics != null) {
+            // In swing, updates to showing graphics must be done in the
+            // event thread, not here.  Thus, we have to queue the request.
+            final int pendingDataset = dataset;
+            final int pendingBin = bin;
+            final int pendingCount = count;
+            // We are in the event thread, so this is safe...
+            _drawPlotPoint(graphics, pendingDataset, pendingBin, pendingCount);
+        }
+    }
+
+    /*  Clear the plot of all data points.  If the argument is true, then
+     *  reset all parameters to their initial conditions, including
+     *  the persistence, plotting format, and axes formats.
+     *  For the change to take effect, you must call repaint().
+     *
+     *  @param format If true, clear the format controls as well.
+     */
+    private void _clear(boolean format) {
+        super.clear(format);
+        _currentdataset = -1;
+        _points = new Vector();
+        _histogram = new Vector();
+        _filename = null;
+        _showing = false;
+
+        if (format) {
+            // Reset format controls
+            _barwidth = 0.5;
+            _baroffset = 0.15;
+            _binWidth = 1.0;
+            _binOffset = 0.5;
+        }
+    }
+
+    /* If this method is called in the event thread, then simply
+     * execute the specified action.  Otherwise,
+     * if there are already deferred actions, then add the specified
+     * one to the list.  Otherwise, create a list of deferred actions,
+     * if necessary, and request that the list be processed in the
+     * event dispatch thread.
+     *
+     * Note that it does not work nearly as well to simply schedule
+     * the action yourself on the event thread because if there are a
+     * large number of actions, then the event thread will not be able
+     * to keep up.  By grouping these actions, we avoid this problem.
+     *
+     * This method is not synchronized, so the caller should be.
+     */
+    private void _deferIfNecessary(Runnable action) {
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request or add to a pending request.
+        if(EventQueue.isDispatchThread()) {
+            action.run();
+        } else {
+            if (!_actionsDeferred) {
+                if (_deferredActions == null) {
+                    _deferredActions = new LinkedList();
+                }
+                Runnable doActions = new Runnable() {
+                    public void run() {
+                        _executeDeferredActions();
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here risks causing
+                    // deadlock.  Don't do it!
+                    SwingUtilities.invokeLater(doActions);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
+                }
+            }
+            // Add the specified action to the list of actions to perform.
+            _deferredActions.add(action);
+            _actionsDeferred = true;
+        }
+    }
+
     /* Draw the specified histogram bar.
      * Note that paint() should be called before
      * calling this method so that it calls _drawPlot(), which sets
      * _xscale and _yscale. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
+     * 
+     * Note that this method is not synchronized, so the caller should be.
+     * Moreover this method should always be called from the event thread
+     * when being used to write to the screen.
      */
     private void _drawPlotPoint(Graphics graphics,
             int dataset, int bin, int count) {
@@ -598,8 +719,45 @@ public class Histogram extends PlotBox {
         graphics.setColor(_foreground);
     }
 
+    // Execute all actions pending on the deferred action list.
+    // The list is cleared and the _actionsDeferred variable is set
+    // to false, even if one of the deferred actions fails.
+    // This method should only be invoked in the event dispatch thread.
+    // It is synchronized, so the integrity of the deferred actions list
+    // is ensured, since modifications to that list occur only in other
+    // synchronized methods.
+    private synchronized void _executeDeferredActions() {
+        try {
+            Iterator actions = _deferredActions.iterator();
+            while (actions.hasNext()) {
+                Runnable action = (Runnable)actions.next();
+                action.run();
+            }
+        } finally {
+            _actionsDeferred = false;
+            _deferredActions.clear();
+        }
+    }
+
+    /* Rescale so that the data that is currently plotted just fits.
+     * This simply calls the base class.
+     *
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called by _executeDeferredActions().
+     */
+    private void _fillPlot() {
+        super.fillPlot();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** @serial Indicator of whether actions are deferred. */
+    private boolean _actionsDeferred = false;
+
+    /** @serial List of deferred actions. */
+    private List _deferredActions;
 
     /** @serial The width of a bar. */
     private double _barwidth = 0.5;
