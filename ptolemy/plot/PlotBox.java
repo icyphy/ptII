@@ -43,8 +43,6 @@ import java.util.*;
 // TO DO:
 //   - create a write() method that writes ASCII or binary
 //   - define a binary file format with formatting info.
-//   - Fix fillPlot so it doesn't use all historical data, but instead
-//     only what is available.
 //   - Augment getColorByName to support a full complement of colors
 //     (get the color list from Tycho).
 
@@ -139,6 +137,26 @@ import java.util.*;
  * All of the above commands can also be invoked directly by calling the
  * the corresponding public methods from some Java procedure.
  * <p>
+ * A small set of key bindings are provided for convenience.
+ * They are:
+ * <ul>
+ * <li> Cntr-c: Export the plot to the clipboard.
+ * <li> D: Dump the plot to standard output.
+ * <li> E: Export the plot to standard output in EPS format.
+ * <li> F: Fill the plot.
+ * <li> H or ?: Display a simple help message.
+ * </ul>
+ * At this time, the two export commands produce encapsulated postscript
+ * tuned for black-and-white printers.  In the future, more formats may
+ * supported.  Also at this time (jdk 1.1.4), Java's interface the
+ * clipboard does not work, so Cntr-c might not accomplish anything.
+ * Exporting to the clipboard and to standard output, in theory,
+ * is allowed for applets, unlike writing to a file. Thus, these
+ * key bindings provide a simple mechanism to obtain a high-resolution
+ * image of the plot from an applet, suitable for incorporation in
+ * a document. However, in some browsers, exporting to standard out
+ * triggers a security violation.  You can use Sun's appletviewer instead.
+ * <p>
  * This class uses features of JDK 1.1, and hence if used in an applet,
  * it can only be viewed by a browser that supports JDK 1.1.
  *
@@ -153,9 +171,12 @@ public class PlotBox extends Panel {
     public PlotBox() {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         addMouseListener(new ZoomListener());
+        addKeyListener(new CommandListener());
         addMouseMotionListener(new DragListener());
         // This is something we want to do only once...
         _measureFonts();
+        // Request the focus so that key events are heard.
+        requestFocus();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,11 +184,13 @@ public class PlotBox extends Panel {
 
     /** Add a legend (displayed at the upper right) for the specified
      *  data set with the specified string.  Short strings generally
-     *  fit better than long strings.
+     *  fit better than long strings.  If the string is empty, or the
+     *  argument is null, then no legend is added.
      *  @param dataset The dataset index.
      *  @param legend The label for the dataset.
      */
     public void addLegend(int dataset, String legend) {
+        if (legend == null || legend.equals("")) return;
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
@@ -244,10 +267,17 @@ public class PlotBox extends Panel {
         }
     }
 
-    /** Export an EPS description of the plot.
+    /** Export a description of the plot.
+     *  Currently, only EPS is supported.  But in the future, this
+     *  may cause a dialog box to open to allow the user to select
+     *  a format.  If the argument is null, then the description goes
+     *  to the clipboard.  Otherwise, it goes to the specified file.
+     *  To send it to standard output, use
+     *  <code>new FileWriter(FileDescriptor.out)</code> as an argument.
+     *  @param file A file writer to which to send the description.
      */
-    public void exportEPS (OutputStream file) {
-        EPSGraphics g = new EPSGraphics(file, _width, _height);
+    public void export (OutputStream out) {
+        EPSGraphics g = new EPSGraphics(out, _width, _height);
         _drawPlot(g, false);
         g.showpage();
     }
@@ -263,6 +293,8 @@ public class PlotBox extends Panel {
         _setXRange(_xBottom, _xTop);
         _setYRange(_yBottom, _yTop);
         repaint();
+        // Reacquire the focus so that key bindings work.
+        requestFocus();
     }
 
     /** Convert a color name into a Color. Currently, only a very limited
@@ -361,12 +393,14 @@ public class PlotBox extends Panel {
     public void paint(Graphics graphics) {
         // Return the if size has not been set.
         if (_buffer == null) return;
-
+        
         // Double buffer for maximally smooth rendering.
         Graphics gBuffer = _buffer.getGraphics();
         super.paint(gBuffer);
         _drawPlot(gBuffer, true);
         graphics.drawImage(_buffer, 0, 0, null);
+        // Acquire the focus so that key bindings work.
+        requestFocus();
     }
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
@@ -531,7 +565,7 @@ public class PlotBox extends Panel {
         }
     }
 
-    /** Do nothing in this base class. Derived classes might want to override
+    /** Do nothing in this base class. Derived classes might want to override 
      *  this class to give an example of their use.
      */
     public void samplePlot() {
@@ -569,13 +603,8 @@ public class PlotBox extends Panel {
             add(_fillButton);
         }
         _fillButton.setVisible(visible);
-
-        if (_exportButton == null) {
-            _exportButton = new Button("export");
-            _exportButton.addActionListener(new ExportButtonListener());
-            add(_exportButton);
-        }
-        _exportButton.setVisible(visible);
+        // Request the focus so that key events are heard.
+        requestFocus();
     }
 
     /** Set the size of the plot.
@@ -742,7 +771,10 @@ public class PlotBox extends Panel {
                 false);
         _write(output);
         output.flush();
-        output.close();
+        // Avoid closing standard out.
+        if(out != System.out) {
+            output.close();
+        }
     }
 
     /** Zoom in or out to the specified rectangle.
@@ -1305,6 +1337,27 @@ public class PlotBox extends Panel {
         graphics.fillRect((int)xpos-6, (int)ypos-6, 6, 6);
     }
 
+    /** Display basic information in its own window.
+     */
+    protected void _help() {
+        Message message = new Message(
+                "Ptolemy plot package\n" +
+                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+                "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+                "Version 2.0, Build: $Id$\n\n" +
+                "Key bindings:\n" +
+                // FIXME: When clipboard works. Also fix class comment.
+                // "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
+                "   D: dump plot data to standard out\n" +
+                "   E: export plot to standard out (EPS format)\n" +
+                "   F: fill plot\n" +
+                "   H or ?: print help message (this message)\n" +
+                "For more information, see\n" +
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+                null, null, 13, 60, TextArea.SCROLLBARS_NONE);
+        message.setTitle("About Ptolemy Plot Package");
+    }
+
     /** Parse a line that gives plotting information.  In this base
      *  class, only lines pertaining to the title and labels are processed.
      *  Everything else is ignored. Return true if the line is recognized.
@@ -1522,7 +1575,9 @@ public class PlotBox extends Panel {
     // The document base we use to find the _filespec.
     // NOTE: Use of this variable is deprecated.  But it is made available
     // to derived classes for backward compatibility.
-    protected URL _documentBase = null;
+    // FIXME: Sun's appletviewer gives an exception if this is protected.
+    // Why?? So we make it temporarily public.
+    public URL _documentBase = null;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -2203,9 +2258,6 @@ public class PlotBox extends Panel {
     // A button for filling the plot
     private transient Button _fillButton = null;
 
-    // A button for exporting an EPS description of the plot
-    private transient Button _exportButton = null;
-
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
     private transient int _zoomx = -1;
@@ -2220,13 +2272,6 @@ public class PlotBox extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
-    class ExportButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            // The "null" sends the output to the clipboard.
-            exportEPS(null);
-        }
-    }
 
     class FillButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
@@ -2255,5 +2300,84 @@ public class PlotBox extends Panel {
         }
         public void mouseMoved(MouseEvent event) {
         }
+    }
+
+    class CommandListener implements KeyListener {
+        public void keyPressed(KeyEvent e) {
+            int keycode = e.getKeyCode();
+            switch(keycode) {
+            case KeyEvent.VK_CONTROL:
+                _control = true;
+                break;
+            case KeyEvent.VK_SHIFT:
+                _shift = true;
+                break;
+            case KeyEvent.VK_C:
+                if (_control) {
+                    // The "null" sends the output to the clipboard.
+                    export(null);
+                    Message message = new Message(
+                    "Encapsulated PostScript (EPS) exported to clipboard.",
+                    null, null, 1, 60, TextArea.SCROLLBARS_NONE);
+                    message.setTitle("Ptolemy Plot Message");
+                }
+                break;
+            case KeyEvent.VK_D:
+                if (!_control && _shift) {
+                    write(System.out);
+                    Message message = new Message(
+                    "Plot data sent to standard out.",
+                    null, null, 1, 40, TextArea.SCROLLBARS_NONE);
+                    message.setTitle("Ptolemy Plot Message");
+                }
+                break;
+            case KeyEvent.VK_E:
+                if (!_control && _shift) {
+                    export(System.out);
+                    Message message = new Message(
+                    "Encapsulated PostScript (EPS) exported to standard out.",
+                    null, null, 1, 60, TextArea.SCROLLBARS_NONE);
+                    message.setTitle("Ptolemy Plot Message");
+                }
+                break;
+            case KeyEvent.VK_F:
+                if (!_control && _shift) {
+                    fillPlot();
+                }
+                break;
+            case KeyEvent.VK_H:
+                if (!_control && _shift) {
+                    _help();
+                }
+                break;
+            case KeyEvent.VK_SLASH:
+                if (_shift) {
+                    // Question mark is SHIFT-SLASH
+                    _help();
+                }
+                break;
+            default:
+                // None
+            }
+        }
+        public void keyReleased(KeyEvent e) {
+            int keycode = e.getKeyCode();
+            switch(keycode) {
+            case KeyEvent.VK_CONTROL:
+                _control = false;
+            case KeyEvent.VK_SHIFT:
+                _shift = false;
+            default:
+                // None
+            }
+        }
+
+        // The keyTyped method is broken in jdk 1.1.4.
+        // It always gets "unknown key code".
+        public void keyTyped(KeyEvent e) {
+        }
+
+        private boolean _control = false;
+        private boolean _shift = false;
     }
 }
