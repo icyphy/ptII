@@ -1403,9 +1403,9 @@ public class Graph implements Cloneable {
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
      *  @exception IllegalArgumentException If the specified node is not in
      *  the graph.
+     *  @see #validateWeight(Node, Object).
      */
     public boolean validateWeight(Node node) {
-        // FIXME:  @see #validateWeight(Node, Object).
         if (!containsNode(node)) {
             throw new IllegalArgumentException("The specified node is not "
                     + "in the graph." + _nodeDump(node));
