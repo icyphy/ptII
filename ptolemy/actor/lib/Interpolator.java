@@ -210,15 +210,11 @@ public class Interpolator extends SequenceSource {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        // try {
         Interpolator newobj = (Interpolator)super.clone(ws);
         newobj.indexes = (Parameter)newobj.getAttribute("indexes");
         newobj.values = (Parameter)newobj.getAttribute("values");
         newobj.order = (Parameter)newobj.getAttribute("order");
         newobj.period = (Parameter)newobj.getAttribute("period");
-        // } catch (IllegalActionException ex) {
-        //   throw new InternalErrorException(ex.getMessage());
-        // }
         return newobj;
     }
 
