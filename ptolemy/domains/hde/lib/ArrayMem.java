@@ -156,10 +156,6 @@ public class ArrayMem extends TypedAtomicActor {
      * defaults to 1;
      */
     public Parameter length;
-    ///////////////////////////////////////////////////////////////////
-    ////                         variable                       //////
-    public int alength;
-
 
 
     ///////////////////////////////////////////////////////////////////
@@ -169,8 +165,8 @@ public class ArrayMem extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException{
 
-        alength = ((IntToken)length.getToken()).intValue();
-        _mem = new Token[alength];
+        _lengthValue = ((IntToken)length.getToken()).intValue();
+        _mem = new Token[_lengthValue];
     }
 
     /** If read has a token, copy the ith elment of the memory to
@@ -191,10 +187,10 @@ public class ArrayMem extends TypedAtomicActor {
         /** Read the Index*/
         if (index.hasToken(0)) {
             _index = ((IntToken)index.get(0)).intValue();
-            if ((_index < 0) || (_index >= alength)) {
+            if ((_index < 0) || (_index >= _lengthValue)) {
                 throw new IllegalActionException(this,
                         "index " + _index + " is out of range for the memory "
-                        + "array, which has length " + alength);
+                        + "array, which has length " + _lengthValue);
             }
         }
         /** Write to the array*/
@@ -206,7 +202,7 @@ public class ArrayMem extends TypedAtomicActor {
                     _mem[_index] = (Token)dataInSer.get(0);
                 } else if (dataInPar.hasToken(0)) {
                     ArrayToken token = (ArrayToken)dataInPar.get(0);
-                    for (int i = 0; i < alength; i++) {
+                    for (int i = 0; i < _lengthValue; i++) {
                         _mem[i] = (token.getElement(i));
                     }
                 }
@@ -227,6 +223,9 @@ public class ArrayMem extends TypedAtomicActor {
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    //  The value of the length parameter.
+    public int _lengthValue;
 
     // The most recently read index token.
     private int _index = 0;
