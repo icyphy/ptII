@@ -535,7 +535,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     protected static String _getIndentPrefix(int level) {
         String result = "";
-        for (int i=0; i < level; i++) {
+        for (int i = 0; i < level; i++) {
             result += "    ";
         }
         return result;
