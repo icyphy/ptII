@@ -41,14 +41,14 @@ import ptolemy.actor.Director;
 //// CTEmbeddedDirector
 /**
 An embedded director for CT inside CT/FSM. Conceptually, this director
-interacts with a continuous outter domain. As a consequence, this
+interacts with a continuous outer domain. As a consequence, this
 director exposes its step size control information. If the container
 of this director is a CTCompositeActor, then this information is
-further exposed to the outter domain.
+further exposed to the outer domain.
 <P>
 Unlike the CTMixedSignalDirector, this director does not run ahead
 of the global time and rollback, simply because the step size control
-information is accessible from a outter domain which has a continuous
+information is accessible from outer domain which has a continuous
 time and understands the meaning of step size.
 
 @author  Jie Liu
@@ -61,7 +61,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  All the parameters takes their default values.
+     *  All the parameters take their default values.
      */
     public CTEmbeddedDirector() {
         super();
@@ -70,7 +70,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  All the parameters takes their default values.
+     *  All the parameters take their default values.
      *  @param workspace The workspace of this object.
      */
     public CTEmbeddedDirector(Workspace workspace)  {
@@ -78,11 +78,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
+     *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  All the parameters takes their default values.
+     *  All the parameters take their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
@@ -98,14 +98,16 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true since this director can be an inside director.
+    /** Always return true indicating that this director can be 
+     *  an inside director.
      *  @return True always.
      */
     public boolean canBeInsideDirector() {
         return true;
     }
 
-    /** Return flase since this director cannot be a top level director.
+    /** Always return flase indicating that this director cannot
+     *  be a top level director.
      *  @return False always.
      */
     public boolean canBeTopLevelDirector() {
@@ -114,10 +116,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
 
     /** Execute the subsystem for one iteration. An iteration includes
      *  an event phase, a state resolving phase, and a output phase.
-     *  If the process of resolving state is failed, then subsystem
-     *  may produce a meaningless output. It is the outter domain's
-     *  responsibility to check if this subsystem is satisfied in
-     *  this iteration.
+     *  If the state cannot be accurately resolved, then subsystem
+     *  may produce a meaningless output. It is the outer domain's
+     *  responsibility to check if this subsystem is accurate in
+     *  this iteration, by calling the isThisStepAccurate() method
+     *  of the CTCompositeActor that contains this director.
      *  @exception IllegalActionException If one of the actors throw
      *  it during one iteration.
      */
@@ -159,12 +162,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public boolean isThisStepAccurate() {
         try {
             _debug(getName() + ": Checking local actors for success.");
-            if (!_isStateAcceptable()) {
+            if (!_isStateAccurate()) {
                 //if(_debugging) _debug(getFullName() +
                 //        " current step not successful because of STATE.");
                 _stateAcceptable = false;
                 return false;
-            } else if(!_isOutputAcceptable()) {
+            } else if(!_isOutputAccurate()) {
                 //if(_debugging) _debug(getFullName() +
                 //        " current step not successful because of OUTPUT.");
                 _outputAcceptable = false;
@@ -181,14 +184,13 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** If the current time is greater
-     *  than the stop time, an InvalidStateException is thrown.
+    /** Update the states of actors directed by this director.
+     *  Discrete events at current time will be consumed and produced.
      *  @return True if this is not a top-level director, or the simulation
      *     is not finished.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean postfire() throws IllegalActionException {
-        //super.postfire();
         if(_debugging) _debug(getFullName(), " postfire.");
         _eventPhaseExecution();
         updateStates();
@@ -196,25 +198,24 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Return the predicted next step size, which is the minimum
-     *  of the prediction from all actors.
-     *  @return The predicted step size for this subsystem.
+     *  of the prediction from step size control actors.
+     *  @return The predicted step size from this subsystem.
      */
     public double predictedStepSize() {
         try {
             if(_debugging) _debug(getName(), "at " + getCurrentTime(),
-                    "predict next step size" + _predictNextStepSize());
+                    " predict next step size" + _predictNextStepSize());
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException (
-                    "Nothing to schedule with out make schedule invalid." +
-                    ex.getMessage());
+                    " Fail predict the next step size." + ex.getMessage());
         }
     }
 
     /** Return true always. Recompute the schedules if there
      *  was a mutation. Synchronize time with the outter domain,
-     *  and adjust the contents of the breakpoint table w.r.t.
-     *  the current time.
+     *  and adjust the contents of the breakpoint table with
+     *  respect to the current time.
      *  @return True always.
      */
     public boolean prefire() throws IllegalActionException {
@@ -254,10 +255,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 _setCurrentODESolver(getBreakpointSolver());
                 breakPoints.removeFirst();
                 // does not adjust step size, since the exe-dir should do it.
-                _setIsBPIteration(true);
+                _setBreakpointIteration(true);
             } else {
                 _setCurrentODESolver(getODESolver());
-                _setIsBPIteration(false);
+                _setBreakpointIteration(false);
             }
 
         }
@@ -268,7 +269,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return true;
     }
 
-    /** Return the refines step size if the current fire is not successful.
+    /** Return the refined step size if the current fire is not accurate.
      *  @return The refined step size.
      */
     public double refinedStepSize() {
@@ -282,15 +283,14 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             }
         } catch( IllegalActionException ex) {
             throw new InternalErrorException (
-                    "Nothing to schedule with out make schedule invalid." +
-                    ex.getMessage());
+                    "Fail to refine step size. " + ex.getMessage());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Step size of the outter domain.
+    // Step size of the outer domain.
     private double _outsideStepSize;
 
     // Indicates whether actors in the output schedule are satisfied.
@@ -300,7 +300,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     // state transition schedule are satisfied.
     private boolean _stateAcceptable;
 
-    // The current time of the outter domain.
+    // The current time of the outer domain.
     private double _outsideTime;
 }
 

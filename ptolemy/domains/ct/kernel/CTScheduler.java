@@ -748,6 +748,7 @@ public class CTScheduler extends Scheduler{
      * is wrong or arithmetic loop exists.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
+        System.out.println("Recompute schedule.");
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
             return null;
@@ -824,7 +825,7 @@ public class CTScheduler extends Scheduler{
 
             _scheList.addLast(_outputschedule);
         }
-
+        setValid(true);
         return Collections.enumeration(_scheList);
     }
 

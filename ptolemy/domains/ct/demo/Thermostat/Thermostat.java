@@ -293,7 +293,7 @@ public void init() {
         //_toplevel.connect(hstr, responsePlot.input);
 
         // try to run the system
-        topdir.setStopTime(5.0);
+        topdir.stopTime.setToken(new DoubleToken(5.0));
 
         // CT embedded director 1 parameters
         ctIncDir.initStepSize.setToken(new DoubleToken(0.01));

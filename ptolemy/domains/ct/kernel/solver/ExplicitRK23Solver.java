@@ -247,7 +247,7 @@ public class ExplicitRK23Solver extends ODESolver {
         resetRound();
         Iterator actors;
         // for the first iteration after a breakpoint, create the history.
-        if(dir.isBPIteration()) {
+        if(dir.isBreakpointIteration()) {
             if(dir.STAT) {
                 dir.NFUNC ++;
             }

@@ -216,7 +216,7 @@ test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
 
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
-    $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7182651860702431]
+    $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7182651863389447]
 
     $man run
     list [$testV isSuccessful]  

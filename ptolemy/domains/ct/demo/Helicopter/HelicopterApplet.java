@@ -500,7 +500,7 @@ public class HelicopterApplet extends CTApplet {
             _dir.maxStepSize.setToken(new DoubleToken(0.5));
 
             StringToken token1 = new StringToken(
-                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                    "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
             _dir.breakpointODESolver.setToken(token1);
 
             StringToken token2 = new StringToken(
@@ -714,7 +714,7 @@ public class HelicopterApplet extends CTApplet {
         subdir.maxStepSize.setToken(new DoubleToken(0.5));
 
         Token token1 = new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver");
         subdir.breakpointODESolver.setToken(token1);
 
         Token token2 = new StringToken(

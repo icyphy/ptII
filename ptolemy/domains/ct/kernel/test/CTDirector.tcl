@@ -251,11 +251,9 @@ test CTMultiSolverDirector-2.3 {sets and gets} {
     #Note: Use above set up.
     $dir setCurrentTime 0.1
     $dir setCurrentStepSize 0.2
-    $dir setStopTime 0.4
     list [$dir getCurrentTime] \
-	    [$dir getCurrentStepSize] \
-	    [$dir getStopTime] \
-} {0.1 0.2 0.4}
+	    [$dir getCurrentStepSize]
+} {0.1 0.2}
 
 #############################################################################
 #### Test set suggested next step size, it is larger than the maximum
