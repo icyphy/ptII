@@ -118,7 +118,13 @@ public class Query extends JPanel {
         // Add a message panel into which a message can be placed using
         // setMessage().
         add(_messagePanel);
-        add(_entryPanel);
+
+        _entryScrollPane = new JScrollPane(_entryPanel);
+        // Get rid of the border.
+        _entryScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        add(_entryScrollPane);
+        //add(_entryPanel);
+
         // Setting the background to null allegedly means it inherits the
         // background color from the container.
         _entryPanel.setBackground(null);
@@ -278,7 +284,8 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
-        Panel buttonPanel = new Panel(flow);
+        // These must be JPanels, not Panels, or the scroll bars won't work.
+        JPanel buttonPanel = new JPanel(flow);
         ButtonGroup group = new ButtonGroup();
         QueryActionListener listener = new QueryActionListener(name);
 
@@ -319,7 +326,8 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
-        Panel buttonPanel = new Panel(flow);
+        // These must be JPanels, not Panels, or the scroll bars won't work.
+        JPanel buttonPanel = new JPanel(flow);
         QueryActionListener listener = new QueryActionListener(name);
         if (initiallySelected == null) {
             initiallySelected = new HashSet();
@@ -1053,6 +1061,15 @@ public class Query extends JPanel {
         }
         _grid.setConstraints(widget, _constraints);
         _entryPanel.add(widget);
+
+        // Add some slop to the width to take in to account
+        // the width of the vertical scrollbar.
+        Dimension preferredSize = _entryPanel.getPreferredSize();
+        preferredSize.width += 25;
+        _entryScrollPane.setPreferredSize(preferredSize);
+        // Call revalidate for the scrollbar.
+        _entryPanel.revalidate();
+
         _entries.put(name, entry);
         _labels.put(name, label);
         _previous.put(name, getStringValue(name));
@@ -1121,6 +1138,9 @@ public class Query extends JPanel {
 
     // A panel within which the entries are placed.
     private JPanel _entryPanel = new JPanel();
+
+    // A scroll pane that contains the _entryPanel.
+    private JScrollPane _entryScrollPane;
 
     // The hashtable of labels in the query.
     private Map _labels = new HashMap();
