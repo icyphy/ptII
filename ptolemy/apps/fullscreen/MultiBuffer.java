@@ -87,7 +87,7 @@ public class MultiBuffer {
 	GraphicsEnvironment graphicsEnvironment =
 	    GraphicsEnvironment.getLocalGraphicsEnvironment();
 
-	//device = graphicsEnvironment.getDefaultScreenDevice();
+	device = graphicsEnvironment.getDefaultScreenDevice();
 
 	GraphicsConfiguration gc = device.getDefaultConfiguration();
 	Rectangle graphicsConfigurationBounds =
@@ -97,13 +97,13 @@ public class MultiBuffer {
 	mainFrame.setIgnoreRepaint(true);
 	mainFrame.enableInputMethods(false);
 	device.setFullScreenWindow(mainFrame);
-	//if (device.isDisplayChangeSupported()) {
-	//    MultiBuffer.chooseBestDisplayMode(device);
-	//}
+	if (device.isDisplayChangeSupported()) {
+	    MultiBuffer.chooseBestDisplayMode(device);
+	}
 	mainFrame.setLocation(graphicsConfigurationBounds.x,
 			      graphicsConfigurationBounds.y);
 
-	//mainFrame.createBufferStrategy(numberOfBuffers);
+	mainFrame.createBufferStrategy(numberOfBuffers);
 
 	return mainFrame;
     }
@@ -211,6 +211,7 @@ public class MultiBuffer {
     // Return a string representation of the DisplayMode.
     // This method is used for debugging.
     public static String displayModeToString(DisplayMode mode) {
+
 	return new String( mode.getWidth() + " x "
 			 + mode.getHeight() + ", "
 			 + (mode.getBitDepth()

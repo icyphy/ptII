@@ -91,7 +91,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
 
 demo: jclass
 	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) -Dptolemy.ptII.dir=$(ROOT) ptolemy.apps.fullscreen.test.MultiBufferTest 5
+		$(JAVA) -Dptolemy.ptII.dir=$(ROOT) ptolemy.apps.fullscreen.test.MultiBufferTest 2
 
 
 depend:

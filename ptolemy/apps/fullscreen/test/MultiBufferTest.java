@@ -44,10 +44,12 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.ImageCapabilities;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferStrategy;
+import java.awt.image.ColorModel;
 import java.io.File;
 import javax.swing.ImageIcon;
 
@@ -87,14 +89,23 @@ public class MultiBufferTest {
 	// Amount of time to delay in milliseconds. 
 	double delay = 1000.0;
 
+	System.out.println("All BufferCapabilities:\n" 
+			   + allBufferCapabilities());
+
 	GraphicsEnvironment graphicsEnvironment =
 	    GraphicsEnvironment.getLocalGraphicsEnvironment();
 	GraphicsDevice graphicsDevices[] =
 	    graphicsEnvironment.getScreenDevices();
 	GraphicsDevice device =
 	    graphicsDevices[graphicsDevices.length - 1];
-	System.out.println("Device: " + device);
-
+	System.out.println("Chosen Device: "
+			   + (graphicsDevices.length - 1 ) + " of "
+			   + graphicsDevices.length + ": "
+			   + device);
+	DisplayMode displayMode = device.getDisplayMode();
+	System.out.println("Chosen DisplayMode: " + displayMode + " "
+			       + MultiBuffer.displayModeToString(displayMode)
+			       + "\n");
 
         try {
 	    Frame mainFrame = MultiBuffer.enterFullScreenMode(device,
@@ -140,17 +151,7 @@ public class MultiBufferTest {
 	    BufferStrategy bufferStrategy = mainFrame.getBufferStrategy();
 	    BufferCapabilities bufferCapabilities = 
 		bufferStrategy.getCapabilities();
-	    System.out.println("bufferStrategy.getCapabilities()"
-			       + bufferCapabilities
-			       + " getFlipContents():"
-			       + bufferCapabilities.getFlipContents()
-			       + " isFullScreenRequired:"
-			       + bufferCapabilities.isFullScreenRequired()
-			       + " isPageFlipping:"
-			       + bufferCapabilities.isPageFlipping()
-			       + " isMultiBufferAvailable:"
-			       + bufferCapabilities.isMultiBufferAvailable());
-
+	    System.out.println(bufferCapabilitiesToString(bufferCapabilities));
 	    for (int i = 0; i < numberOfBuffers; i++) {
 		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		//Graphics2D g = (Graphics2D) mainFrame.getGraphics();
@@ -234,24 +235,32 @@ public class MultiBufferTest {
 		    bufferStrategy.show();
 		    //mainFrame.show();
 		    g.dispose();
-		    for( float alpha = 0.01f; alpha < 0.99f; alpha += 0.05f) {
-			AlphaComposite ac =
+		    AlphaComposite ac = null;
+
+		    for( int m = 0; m < 100; m++) { 
+			//float alpha = 0.01f; alpha < 0.99f; alpha += 0.01f
+			float alpha = 0.05f;
+			ac =
 			    AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
 					       alpha);
-			g = (Graphics2D) bufferStrategy.getDrawGraphics();
-			System.out.println("alpha: " + alpha);
 
+			//System.out.println("alpha: " + alpha);
+
+			g = (Graphics2D) bufferStrategy.getDrawGraphics();
 			g.setComposite(ac);
-			g.setColor(_COLORS[i]);
+
+			/*
 			g.drawImage(scaledImage, xOffset, yOffset,
 				    width, height,
 				    _COLORS[i],
 				    originalImageIcon.getImageObserver());
+			*/
 			g.fillRect(bounds.x, bounds.y,
 				   bounds.width, bounds.height);
+			g.dispose();
 			bufferStrategy.show();
 			//mainFrame.show();
-		    g.dispose();
+
 		    }
 		    //System.out.println("About to dispose");
 
@@ -268,6 +277,104 @@ public class MultiBufferTest {
         }
     }
     
+
+    public static String allBufferCapabilities() {
+	StringBuffer results = new StringBuffer();
+	GraphicsEnvironment graphicsEnvironment =
+	    GraphicsEnvironment.getLocalGraphicsEnvironment();
+	GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
+	System.out.println("Number of GraphicsDevices "
+			   + "from graphicsEnvironment\n    "
+			   + graphicsEnvironment + ": " 
+			   + graphicsDevices.length);
+	for (int j = 0; j < graphicsDevices.length; j++) { 
+	    GraphicsDevice graphicsDevice = graphicsDevices[j];
+	    results.append("GraphicsDevice: " + j + ". "
+			   + graphicsDevice + "\n");
+
+	    DisplayMode[] displayModes = graphicsDevice.getDisplayModes();
+	    System.out.println("  Number of DisplayModes " 
+			       + "from graphicsDevice\n     " 
+			       + graphicsDevice + ": " 
+			       + displayModes.length);
+
+	    for (int k = 0; k < displayModes.length; k++ ) {
+		results.append("  DisplayMode: " + k + ". "
+			       + displayModes[k] + " "
+			       + MultiBuffer.displayModeToString(displayModes[k])
+			       + "\n");
+	    }
+
+	    GraphicsConfiguration[] graphicsConfigurations =
+		graphicsDevice.getConfigurations();
+	    System.out.println("  Number of GraphicsConfigurations "
+			       + "from graphicsDevice\n    "  
+			       + graphicsDevice + ": " 
+			       + graphicsConfigurations.length);
+
+	    for (int i = 0; i < graphicsConfigurations.length; i++) {
+		GraphicsConfiguration graphicsConfiguration =
+		    graphicsConfigurations[i];
+		Rectangle bounds = graphicsConfiguration.getBounds();
+		results.append("  GraphicsConfiguration: " + i + ". "
+			       + graphicsConfiguration + "\n"
+			       + "   bounds (h,w)x x y: ("
+			       + bounds.height + ", " + bounds.width
+			       + ") " + bounds.x + " x " + bounds.y + "\n");
+
+		GraphicsDevice graphicsDevice2 =
+		    graphicsConfiguration.getDevice();
+		results.append("  graphicsDevice: "
+			       + graphicsDevice2 + "\n");
+
+		DisplayMode displayMode = graphicsDevice2.getDisplayMode();
+		results.append("  DisplayMode: " + displayMode + " "
+			       + MultiBuffer.displayModeToString(displayMode)
+			       + "\n");
+
+
+		ImageCapabilities imageCapabilities =
+		    graphicsConfiguration.getImageCapabilities();
+		results.append(imageCapabilitiesToString(imageCapabilities));
+		ColorModel colorModel =
+		    graphicsConfiguration.getColorModel();
+		results.append("   ColorModel: " + colorModel + "\n");
+
+		BufferCapabilities bufferCapabilities =
+		    graphicsConfiguration.getBufferCapabilities();
+		results.append(bufferCapabilitiesToString(bufferCapabilities));
+	    }
+	}
+	return results.toString();
+    }
+
+    public static String 
+	bufferCapabilitiesToString(BufferCapabilities bufferCapabilities) {
+	    return("   BufferCapabilities: " + bufferCapabilities
+		   + "\n    getBackBufferCapabilities():\n    "
+		   + imageCapabilitiesToString(bufferCapabilities.getBackBufferCapabilities())
+		   + "    getFrontBufferCapabilities():\n     "
+		   + imageCapabilitiesToString(bufferCapabilities.getFrontBufferCapabilities())
+		   + "    getFlipContents(): "
+		   + bufferCapabilities.getFlipContents()
+		   + "\n    isFullScreenRequired: "
+		   + bufferCapabilities.isFullScreenRequired()
+		   + "\n    isPageFlipping: "
+		   + bufferCapabilities.isPageFlipping()
+		   + "\n    isMultiBufferAvailable: "
+		   + bufferCapabilities.isMultiBufferAvailable() + "\n");
+
+    }
+
+    public static String
+	imageCapabilitiesToString(ImageCapabilities imageCapabilities) {
+	return ("  ImageCapabilities: " + imageCapabilities
+		+ "\n        isAccelerated: "
+		+ imageCapabilities.isAccelerated() 
+		+ " isTrueVolatile: "
+		+ imageCapabilities.isTrueVolatile()
+		+ "\n");
+    }
     public static void main(String[] args) {
         try {
             int numberOfBuffers = 2;
