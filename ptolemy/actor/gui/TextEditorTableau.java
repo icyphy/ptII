@@ -29,19 +29,8 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau
@@ -70,7 +59,7 @@ public class TextEditorTableau extends Tableau {
     public TextEditorTableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        final TextEditor frame = new TextEditor();
+        TextEditor frame = new TextEditor();
 	frame.text.setColumns(80);
 	frame.text.setRows(20);
 	setFrame(frame);

@@ -30,7 +30,6 @@
 package ptolemy.gui;
 
 // Java imports
-// FIXME: Trim this.
 import javax.swing.KeyStroke;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
@@ -41,16 +40,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Event;
-import java.awt.Graphics;
-import java.awt.PrintJob;
+import java.awt.Toolkit;
 import java.awt.event.*;
 import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////////
 //// Top
@@ -67,10 +62,10 @@ line like:
 */
 public abstract class Top extends JFrame {
 
-    /** Construct an empty top-level frame. The window is centered on the
-     *  screen, and is separately iconified and deiconified by the window
-     *  manager. After constructing this, it is necessary
+    /** Construct an empty top-level frame.
+     *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
      */
     public Top() {
         super();
@@ -137,6 +132,16 @@ public abstract class Top extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Center the window on the screen.  This must be called after the
+     *  window is populated with its contents, since it depends on the size
+     *  being known.
+     */
+    public void centerOnScreen() {
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        setLocation((tk.getScreenSize().width - getSize().width)/2,
+               (tk.getScreenSize().height - getSize().height)/2);
+    }
 
     /** Report an exception.  This displays a message in a dialog and
      *  prints the stack trace to the standard error stream.

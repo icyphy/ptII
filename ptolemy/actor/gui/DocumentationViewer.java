@@ -24,13 +24,16 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.gui;
+package ptolemy.actor.gui;
 
+// FIXME: Trim these
 // Ptolemy imports.
+import ptolemy.gui.CancelException;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 
@@ -38,6 +41,8 @@ import ptolemy.data.expr.Parameter;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.print.*;
+import java.io.IOException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Enumeration;
@@ -58,40 +63,46 @@ to load the resource
 To automatically create documentation for the ptolemy tree in this directory,
 run make in the doc directory.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 
-public class DocumentationViewer extends JPanel implements Printable {
+public class DocumentationViewer extends PtolemyTop {
+
+    /** Construct a blank viewer.
+     */
+    public DocumentationViewer() {
+	getContentPane().setLayout(new BorderLayout(0, 0));
+        pane.setEditable(false);
+        JScrollPane scroller = new JScrollPane(pane);
+        scroller.setPreferredSize(new Dimension(800, 600));
+        getContentPane().add(scroller);
+    }
 
     /** Construct a viewer for the documentation of the class of 
      *  the specified object.  If the documentation cannot be found, then
-     *  the viewer will contain an error message instead of the appropriate
-     *  documentation.
+     *  display an error message.
      */
     public DocumentationViewer(Object object) {
+        this();
 	String className = object.getClass().getName();
 	String docName = "doc.codeDoc." + className;
-	URL docURL = 
-	    getClass().getClassLoader().getResource(docName.replace('.', '/') +
-						    ".html");
-	setLayout(new BorderLayout(0, 0));
-	
-
+	URL docURL = getClass().getClassLoader().getResource(
+            docName.replace('.', '/') + ".html");
 	try {
-	    _pane = new JEditorPane(docURL);
-	    _pane.setEditable(false);
-	    JScrollPane scroller = new JScrollPane(_pane);
-	    scroller.setPreferredSize(new Dimension(800, 600));
-	    add(scroller);	
-	} catch (Exception ex) {
-	    JTextArea area = 
-		new JTextArea("Could not find any documentation for\n" + 
-			      className);
-	    area.setEditable(false);
-	    add(area);	    
+	    setPage(docURL);
+	} catch (IOException ex) {
+            try {
+                MessageHandler.warning(
+                        "Could not find any documentation for\n" + className);
+            } catch (CancelException exception) {}
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+// FIXME: This should be handled in Top...
 
     /** Print the documentation to a printer.  The documentation will be 
      *  scaled to fit the width of the paper, growing to as many pages as
@@ -106,12 +117,9 @@ public class DocumentationViewer extends JPanel implements Printable {
     public int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
 
-	if (_pane == null) {
-            return Printable.NO_SUCH_PAGE;
-        }
         //        graphics.translate((int)format.getImageableX(),
         //        (int)format.getImageableY());
-        Dimension dimension = _pane.getSize();   
+        Dimension dimension = pane.getSize();   
 	
 	// How much do we have to scale the width?
 	double scale = format.getImageableWidth() / dimension.getWidth();
@@ -130,12 +138,35 @@ public class DocumentationViewer extends JPanel implements Printable {
 	
         ((Graphics2D) graphics).transform(at);
 	        
-        _pane.paint(graphics);
+        pane.paint(graphics);
         return Printable.PAGE_EXISTS;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    /** Set the page displayed by this viewer to be that given by the
+     *  specified URL.
+     *  @param page The location of the documentation.
+     *  @exception IOException If the page cannot be read.
+     */
+    public void setPage(URL page) throws IOException {
+        pane.setPage(page);
+    }
 
-    JEditorPane _pane = null;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                 ////
+
+    /** The text pane. */
+    public JEditorPane pane = new JEditorPane();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Write the model to the specified file.
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
+     */
+    protected void _writeFile(File file) throws IOException {
+        java.io.FileWriter fout = new java.io.FileWriter(file);
+        fout.write(pane.getText());
+        fout.close();
+    }
 }

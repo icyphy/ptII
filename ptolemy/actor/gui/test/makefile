@@ -52,12 +52,13 @@ JSRCS = TestModel.java
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	CompositeActorApplication.tcl \
-	MoMLApplication.tcl
+	MoMLApplication.tcl \
+	PtExecuteApplication.tcl
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
-	PtolemyApplication.tcl
+
+#	PtolemyApplication.tcl
 
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) \

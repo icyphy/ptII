@@ -46,11 +46,11 @@ import java.net.URL;
 This is a base class for a composite entity that defines the
 configuration of an application that uses Ptolemy II classes.
 It must contain, at a minimum, an instance of ModelDirectory, called
-"directory", an instance of ModelReader, called "reader", and
-an instance of TableauFactory, called "factory".  This class uses
-those instances to manage a collection of models, open new models,
-and create tableaux of those models.  A tableau is a visual
-representation of the model in a top-level window.
+"directory", and an instance of ModelReader, called "reader".
+It may also contain an instance of TableauFactory, called "factory".
+A tableau is a visual representation of the model in a top-level window.
+This class uses those instances to manage a collection of models,
+open new models, and create tableaux of those models.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -96,29 +96,30 @@ public class Configuration extends CompositeEntity {
             throw new InternalErrorException("No model directory!");
         }
         // Check to see whether the model is already open.
-        Effigy model = directory.getEffigy(identifier);
-        if (model == null) {
-            // No previous model exists that is identified by this URL.
+        Effigy effigy = directory.getEffigy(identifier);
+        if (effigy == null) {
+            // No previous effigy exists that is identified by this URL.
             ModelReader reader = (ModelReader)getEntity("reader");
             if (reader == null) {
                 throw new InternalErrorException("No model reader!");
             }
-            model = reader.read(base, in);
-	    StringAttribute id = new StringAttribute(model, "identifier");
-	    id.setExpression(identifier);
-            model.setName(directory.uniqueName("model"));
-	    model.setContainer(directory);
+            effigy = reader.read(base, in);
+	    effigy.identifier.setExpression(identifier);
+            effigy.setName(directory.uniqueName("effigy"));
+	    effigy.setContainer(directory);
 
-            // Create a tableau.
+            // Create a tableau if there is a tableau factory.
             TableauFactory factory = (TableauFactory)getEntity("factory");
-            Tableau tableau = factory.createTableau(model);
-	    tableau.setName(model.uniqueName("tableau"));
-            tableau.setContainer(model);
-	    // The first tableau is a master.
-	    tableau.setMaster(true);
+            if (factory != null) {
+                Tableau tableau = factory.createTableau(effigy);
+                tableau.setName(effigy.uniqueName("tableau"));
+                tableau.setContainer(effigy);
+                // The first tableau is a master.
+                tableau.setMaster(true);
+            }
         } else {
             // Model already exists.
-            model.showTableaux();
+            effigy.showTableaux();
         }
     }
 

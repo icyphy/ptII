@@ -36,6 +36,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -75,6 +76,12 @@ public class Effigy extends CompositeEntity {
      */
     public Effigy(Workspace workspace) {
 	super(workspace);
+        try {
+            identifier = new StringAttribute(this, "identifier");
+            identifier.setExpression("Unnamed");
+        } catch (Exception ex) {
+            throw new InternalErrorException("Can't create identifier!");
+        }
     }
 
     /** Construct an effigy with the given name and container.
@@ -88,10 +95,32 @@ public class Effigy extends CompositeEntity {
     public Effigy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
+        identifier = new StringAttribute(this, "identifier");
+        identifier.setExpression("Unnamed");
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public parameters                 ////
+
+    /** The identifier for the effigy.  The default value is "Unnamed". */
+    public StringAttribute identifier;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the object into the specified workspace. This calls the
+     *  base class and then sets the <code>identifier</code>
+     *  public members to the parameters of the new object.
+     *  @param ws The workspace for the new object.
+     *  @return A new object.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Effigy newobj = (Effigy)super.clone(ws);
+        newobj.identifier = (StringAttribute)newobj.getAttribute("identifier");
+        return newobj;
+    }
 
     /** Override the base class so that tableaux contained by this object
      *  are removed before this effigy is removed from the ModelDirectory.

@@ -95,14 +95,8 @@ public class Tableau extends ComponentEntity {
      *  @return The title to put on the window.
      */
     public String getTitle() {
-	try {
-            Effigy effigy = (Effigy)getContainer();
-            StringAttribute id = 
-                  (StringAttribute)effigy.getAttribute("identifier");
-            return id.getExpression();
-	} catch (Exception ex) {
-	    return "Unnamed Tableau";
-	}
+        Effigy effigy = (Effigy)getContainer();
+        return effigy.identifier.getExpression();
     }
 
     /** Return true if this tableau is a master, which means that
@@ -166,6 +160,17 @@ public class Tableau extends ComponentEntity {
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
+            // This is invoked if the window is closed
+            // via the close command in the File menu.
+            public void windowClosed(WindowEvent e) {
+                try {
+		    setContainer(null);
+                } catch (KernelException ex) {
+		    try {
+			MessageHandler.warning("Cannot remove tableau: " + ex);
+                    } catch (CancelException exception) {}
+		}
+            }
             // This is invoked if the window is closed
             // via the window manager.
             public void windowClosing(WindowEvent e) {

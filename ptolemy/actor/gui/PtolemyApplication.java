@@ -1,4 +1,4 @@
-/* An application that contains models and frames for interacting with them.
+/* An application providing run control panels for given models.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -30,106 +30,47 @@
 
 package ptolemy.actor.gui;
 
-// Java imports
-// FIXME: Trim this.
-import java.awt.Color;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.System;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Map;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
 // Ptolemy imports
-import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
-// XML Imports
-import com.microstar.xml.XmlException;
+// Java imports
+import java.net.URL;
+import javax.swing.UIManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
 /**
-An application that opens a run control panel for each model that is 
-created, instead of automatically executing it. 
-Any number of models can be simultaneously running under
-the same application.  An instance of RunTableau is created for each model and
-added to the Model Directory.  When the frames displayed by this application
-are all closed, then the application will automatically exit.
-If no models are specified on the command line, then a default model is
-opened.
+This application opens run control panels for models specified on the
+command line.  The exact facilities that are available are determined
+by the configuration file ptolemy/configurations/runPanelConfiguration.xml,
+which is loaded before any command-line arguments are processed.
+If there are no command-line arguments at all, then the file
+ptolemy/configurations/runBlankConfiguration.xml is read instead.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 @see ModelFrame
 @see RunTableau
 */
-public class PtolemyApplication {
+public class PtolemyApplication extends MoMLApplication {
 
     /** Parse the specified command-line arguments, creating models
-     *  and frames to interact with them.  If the size of the argument
-     *  array is 0, then open a default model.
+     *  and frames to interact with them.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String args[]) throws Exception {
-	super();
-	_config = new Configuration(new Workspace());
-	new ModelDirectory(_config, "directory");
-	new RunTableau.Factory(_config, "factory");
-	new ModelReader(_config, "reader");
-
-	if (args.length == 0) {
-            // FIXME: We need a better initial default model,
-            // perhaps something with a console that we can type
-            // commands into?
-            String temporaryArgs[] = {"ptolemy/moml/demo/modulation.xml"};
-	    _parseArgs(temporaryArgs);
-	} else { 
-            _parseArgs(args);
-        }
-
-        // The Java look & feel is pretty lame, so we use the native
-        // look and feel of the platform we are running on.
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Ignore exceptions, which only result in the wrong look and feel.
-        }
+	super(args);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a new configuration in the default workspace.
-     *  If the command-line arguments include the names of MoML files or
-     *  URLs for MoML files, then one window is opened for each model.
+    /** Create a new instance of this application, passing it the
+     *  command-line arguments.
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
@@ -153,254 +94,52 @@ public class PtolemyApplication {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Parse a command-line argument.
-     *  @return True if the argument is understood, false otherwise.
-     *  @exception Exception If something goes wrong.
+    /** Return a default Configuration, which in this case is given by
+     *  the MoML file ptolemy/configuration/runPanelConfiguration.xml.
+     *  That configuration supports executing, but not editing,
+     *  Ptolemy models.
+     *  @return A default configuration.
+     *  @exception Exception If the configuration cannot be opened.
      */
-    protected boolean _parseArg(String arg) throws Exception {
-        if (arg.equals("-class")) {
-            _expectingClass = true;
-        } else if (arg.equals("-help")) {
-            System.out.println(_usage());
-            // Don't call System.exit(0) here, it will break the test suites
-        } else if (arg.equals("-test")) {
-            _test = true;
-        } else if (arg.equals("-version")) {
-            System.out.println("Version 1.0, Build $Id$");
-            // quit the program if the user asked for the version            
-            // Don't call System.exit(0) here, it will break the test suites
-        } else if (arg.equals("")) {
-            // Ignore blank argument.
-        } else {
-            ModelDirectory directory = 
-		(ModelDirectory)_config.getEntity("directory");
-            if (directory == null) {
-                throw new InternalErrorException("No model directory!");
-            }
-            if (_expectingClass) {
-                _expectingClass = false;
-
-                Effigy model = directory.getEffigy(arg);
-                if (model == null) {
-                    // No preexisting model.  Create class.
-                    Class newClass = Class.forName(arg);
-
-                    // Instantiate the specified class in a new workspace.
-                    Workspace workspace = new Workspace();
-
-                    // Get the constructor that takes a Workspace argument.
-                    Class[] argTypes = new Class[1];
-                    argTypes[0] = workspace.getClass();
-                    Constructor constructor = newClass.getConstructor(argTypes);
-
-                    Object args[] = new Object[1];
-                    args[0] = workspace;
-                    CompositeActor newModel
-                             = (CompositeActor)constructor.newInstance(args);
-		
-                    // Create an effigy for the model.
-                    PtolemyEffigy effigy
-                            = new PtolemyEffigy(_config.workspace());
-                    effigy.setModel(newModel);
-                } else {
-                    // Model already exists.
-                    model.showTableaux();
-                }
-	    } else {
-                if (!arg.startsWith("-")) {
-                    // Assume the argument is a file name.
-                    // Attempt to read it.
-                    URL inurl;
-                    URL base;
-                    // Default key is the argument itself.
-                    String key = arg;
-                    try {
-                        // First argument is null because we are only
-                        // processing absolute URLs this way.  Relative
-                        // URLs are opened as ordinary files.
-                        inurl = new URL(null, arg);
-                        
-                        // If URL was successfully constructed, use its external
-                        // form as the key.
-                        key = inurl.toExternalForm();
-
-                        // Strangely, the XmlParser does not want as base the
-                        // directory containing the file, but rather the
-                        // file itself.
-                        base = inurl;
-                    } catch (MalformedURLException ex) {
-                        try {
-                            File file = new File(arg);
-                            if(!file.exists()) {
-                                // I hate communicating by exceptions
-                                throw new MalformedURLException();
-                            }
-                            inurl = file.toURL();
-                            
-                            // Strangely, the XmlParser does not want as base
-                            // the directory containing the file, but rather
-                            // the file itself.
-                            base = file.toURL();
-
-                            // If the file was successfully constructed,
-                            // use its URL as the key.
-                            key = base.toExternalForm();
-
-                        } catch (MalformedURLException ex2) {
-                            // Try one last thing, using the classpath.
-                            // FIXME: why not getClass().getClassLoader()....?
-                            inurl = Class.forName(
-                                    "ptolemy.kernel.util.NamedObj").
-                            getClassLoader().getResource(arg);
-                            if (inurl == null) {
-                                throw new IOException("File not found: " + arg);
-                            }
-                            // If URL was successfully constructed, use its
-                            // external form as the key.
-                            key = inurl.toExternalForm();
-                            
-                            base = inurl;
-                        }
-                    }
-                    // Now defer to the model reader.
-                    _config.openModel(base, inurl, key);
-                } else {
-                    // Argument not recognized.
-                    return false;
-                }
-            }
-        }
-        return true;
+    protected Configuration _createDefaultConfiguration() throws Exception {
+        URL inurl = specToURL(
+                "ptolemy/configurations/runPanelConfiguration.xml");
+        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        NamedObj toplevel = parser.parse(inurl, inurl.openStream());
+        return (Configuration)toplevel;
     }
 
-    /** Parse the command-line arguments.
+    /** Return a default Configuration to use when there are no command-line
+     *  arguments, which in this case is given by the MoML file
+     *  ptolemy/configuration/runBlankConfiguration.xml.
+     *  @return A configuration for when there no command-line arguments.
+     *  @exception Exception If the configuration cannot be opened.
+     */
+    protected Configuration _createEmptyConfiguration() throws Exception {
+        URL inurl = specToURL(
+                "ptolemy/configurations/runBlankConfiguration.xml");
+        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        NamedObj toplevel = parser.parse(inurl, inurl.openStream());
+        return (Configuration)toplevel;
+    }
+
+    /** Parse the command-line arguments. This overrides the base class
+     *  only to set the usage information.
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
     protected void _parseArgs(String args[]) throws Exception {
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (_parseArg(arg) == false) {
-		// FIXME: parameters are handled differently from classes
-		// for no apparent reason.
-                if (arg.startsWith("-") && i < args.length - 1) {
-                    // Save in case this is a parameter name and value.
-                    _parameterNames.add(arg.substring(1));
-                    _parameterValues.add(args[i + 1]);
-                    i++;
-                } else {
-                    // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
-                }
-            }
-        }
-        if (_expectingClass) {
-            throw new IllegalActionException("Missing classname.");
-        }
-        // Check saved options to see whether any is a parameter.
-        Iterator names = _parameterNames.iterator();
-        Iterator values = _parameterValues.iterator();
-        while (names.hasNext() && values.hasNext()) {
-            String name = (String)names.next();
-            String value = (String)values.next();
+        _commandTemplate = "ptolemy [ options ] [file ...]";
 
-            boolean match = false;
-            ModelDirectory directory = 
-		(ModelDirectory)_config.getEntity("directory");
-            if (directory == null) {
-                throw new InternalErrorException("No model directory!");
-            }
-            Iterator proxies
-                    = directory.entityList(Effigy.class).iterator();
-            while(proxies.hasNext()) {
-		Effigy effigy = (Effigy)proxies.next();
-		if(effigy instanceof PtolemyEffigy) {
-		    NamedObj model = ((PtolemyEffigy)effigy).getModel();
-		    Attribute attribute = model.getAttribute(name);
-		    if (attribute instanceof Variable) {
-			match = true;
-			((Variable)attribute).setExpression(value);
-			// Force evaluation so that listeners are notified.
-			((Variable)attribute).getToken();
-		    }
-                    if (model instanceof CompositeActor) {
-                        Director director
-                                = ((CompositeActor)model).getDirector();
-		        if (director != null) {
-                            attribute = director.getAttribute(name);
-                            if (attribute instanceof Variable) {
-                                match = true;
-                                ((Variable)attribute).setExpression(value);
-                                // Force evaluation so that listeners
-                                // are notified.
-                                ((Variable)attribute).getToken();
-                            }
-			}
-		    }
-		}
-            }
-            if (!match) {
-                // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: "
-                        + "-" + name);
-            }
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
         }
+
+        super._parseArgs(args);
     }
-
-    /** Return a string summarizing the command-line arguments.
-     *  @return A usage string.
-     */
-    protected String _usage() {
-        String result = "Usage: " + _commandTemplate + "\n\n"
-            + "Options that take values:\n";
-
-        int i;
-        for(i = 0; i < _commandOptions.length; i++) {
-            result += " " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n";
-        }
-        result += "\nBoolean flags:\n";
-        for(i = 0; i < _commandFlags.length; i++) {
-            result += " " + _commandFlags[i];
-        }
-        return result;
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    /** The command-line options that are either present or not. */
-    protected String _commandFlags[] = {
-        "-help",
-        "-test",
-        "-version",
-    };
-
-    /** The command-line options that take arguments. */
-    protected String _commandOptions[][] = {
-        {"-class",  "<classname>"},
-        {"-<parameter name>", "<parameter value>"},
-    };
-
-    /** The form of the command line. */
-    protected String _commandTemplate = "ptolemy [ options ] [file ...]";
-
-    /** If true, then auto exit after a few seconds. */
-    protected static boolean _test = false;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
-
-    // Flag indicating that the previous argument was -class.
-    private boolean _expectingClass = false;
-
-    // List of parameter names seen on the command line.
-    private List _parameterNames = new LinkedList();
-
-    // List of parameter values seen on the command line.
-    private List _parameterValues = new LinkedList();
-
-    // The configuration model of this application.
-    private Configuration _config;
 }

@@ -57,14 +57,17 @@ line like:
 */
 public abstract class PtolemyTop extends Top {
 
-    /** Construct an empty top-level frame. The window is centered on the
-     *  screen, and is separately iconified and deiconified by the window
-     *  manager. After constructing this, it is necessary
+    /** Construct an empty top-level frame.
+     *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
      */
     public PtolemyTop() {
         super();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the tableau that created this frame.
      *  @return The tableau.
@@ -79,12 +82,6 @@ public abstract class PtolemyTop extends Top {
     public void setTableau(Tableau tableau) {
 	_tableau = tableau;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The tableau that created this frame.
-    private Tableau _tableau = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -153,4 +150,10 @@ public abstract class PtolemyTop extends Top {
             _save();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The tableau that created this frame.
+    private Tableau _tableau = null;
 }

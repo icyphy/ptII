@@ -56,6 +56,8 @@ JSRCS = \
 	Configurer.java \
 	DebugListenerTableau.java \
 	Documentation.java \
+	DocumentationViewer.java \
+	DocumentationViewerTableau.java \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
 	Effigy.java \
@@ -64,7 +66,9 @@ JSRCS = \
 	ModelPane.java \
 	ModelReader.java \
 	MoMLApplet.java \
+	MoMLApplication.java \
 	Placeable.java \
+	PtExecuteApplication.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
 	PtolemyEffigy.java \
