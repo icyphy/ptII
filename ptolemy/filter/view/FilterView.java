@@ -122,9 +122,16 @@ public abstract class FilterView implements Observer {
     }
 
     //////////////////////////////////////////////////////////////////////////
+    ////                           public variables                      ////
+
+    public final static int FRAMEMODE = 0;
+    public final static int APPLETMODE = 1;
+
+    //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
     protected Frame _createViewFrame(String title){
-        ViewFrame frame = new ViewFrame(title); 
+        Frame frame = new Frame(title); 
+        frame.addWindowListener(new ViewWinAdapter());    
         return frame;
     }
 
@@ -143,7 +150,7 @@ public abstract class FilterView implements Observer {
     protected Frame _frame;
     /** Observed filter object */
     protected FilterObj _observed; 
-    /** Mode for operation, see Operation Mode in Manager */
+    /** Mode for operation, see Operation Mode in this class */
     protected int _opMode;  
 
     /** View controller.  Controller that handles show/hide of all
@@ -159,23 +166,11 @@ public abstract class FilterView implements Observer {
     //////////////////////////////////////////////////////////////////////////
     ////                         inner class                        ////
   
-    class ViewFrame extends Frame {
-
-        public ViewFrame(String title){
-            super(title);
-            addWindowListener(new ViewWinAdapter());
-        }
-
-        public void windowClosing(){
+    class ViewWinAdapter extends WindowAdapter {
+        public void windowClosing(WindowEvent e){
+            System.out.println("Window closing event"); 
+            _frame.setVisible(false);
             FilterView.this._notifyViewController();
-        }
-
-        class ViewWinAdapter extends WindowAdapter {
-            public void windowClosing(WindowEvent e){
-                System.out.println("Window closing event"); 
-                ViewFrame.this.setVisible(false);
-                ViewFrame.this.windowClosing();
-            }
         }
     }
 }

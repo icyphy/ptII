@@ -29,7 +29,6 @@ package ptolemy.filter.view;
  
 import ptolemy.math.Complex; 
 import ptolemy.filter.filtermodel.FilterObj;
-import ptolemy.filter.controller.Manager;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -94,7 +93,7 @@ public class FreqView extends PlotView {
           mgplot.setXRange(-3.15, 3.15);
           mgplot.setYRange(-0.3, 1.3);
           mgplot.setTitle("Frequency Response: Magnitude");
-          mgplot.setNumSets(5);
+          mgplot.setNumSets(3);
           mgplot.setSize(300, 300);
           dbplot.setBackground(_plotBack);
           dbplot.setForeground(_plotFore);
@@ -116,8 +115,11 @@ public class FreqView extends PlotView {
           _viewPanel = new FreqPlotPanel(mgplot, dbplot, phplot); 
 
           // create the frame if in frame mode 
-          if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame  = _createViewFrame(((FilterObj) filter).getName());
+          if (_opMode == FilterView.FRAMEMODE){ // frame mode
+              String name = new String("");
+              if (filter != null) name = filter.getName();
+                  
+              _frame  = _createViewFrame(name);
               _frame.add("Center",_viewPanel);
               _frame.setSize(360, 480);
               _frame.setLocation(500, 10);
@@ -131,17 +133,19 @@ public class FreqView extends PlotView {
               mgplot.init();
           } 
 
-          // create three hashtables
-          _crossref = new Hashtable[4];
+          // create two hashtables, one for frequencies, one for gains
+          _crossref = new Hashtable[2];
           _crossref[0] = new Hashtable();
           _crossref[1] = new Hashtable();
-          _crossref[2] = new Hashtable();
-          _crossref[3] = new Hashtable();
 
           // get initial data and spec
-          _setViewFreqValue();
-          _setViewFreqSpec();
-
+          if (filter != null){
+              Complex [] freqresponse = filter.getFrequency(); 
+              _setViewFreqValue(freqresponse);
+              double [] edgefreq = filter.getFreqBand(); 
+              double [] edgegain = filter.getFreqGain(); 
+              _setViewFreqSpec(edgefreq, edgegain);
+          }
     }
     
     //////////////////////////////////////////////////////////////////////////
@@ -163,9 +167,12 @@ public class FreqView extends PlotView {
           String command = (String)arg;
 
           if (command.equals("UpdatedFilter")){
-System.out.println("updating the frequency response value");
-               _setViewFreqValue();
-               _setViewFreqSpec();
+              FilterObj filter = (FilterObj) _observed;
+              Complex [] freqresponse = filter.getFrequency(); 
+              _setViewFreqValue(freqresponse);
+              double [] edgefreq = filter.getFreqBand(); 
+              double [] edgegain = filter.getFreqGain(); 
+              _setViewFreqSpec(edgefreq, edgegain);
           }  
      }
 
@@ -195,6 +202,28 @@ System.out.println("updating the frequency response value");
       */ 
      public void moveInteractComp(InteractComponent ic){
    
+          // reorganize all the spec, and passes them to filter object.
+          _changeFreqSpecValue(ic);
+    
+          // get edge frequencies
+          double [] edgefreq = _getEdgeFrequencies(); 
+          // get gain at edge frequencies 
+          double [] edgegain = _getEdgeGains(); 
+
+          FilterObj jf = (FilterObj) _observed;
+          jf.updateFreqSpec(edgefreq, edgegain);
+     }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                       protected methods                          ////
+
+     /** Change the underlying spec data with the given InteractComponent.
+      * The interact component repsents the critical frequencies, and 
+      * gain at critical frequencies.  The value that corresponding to
+      * that interact component in the hashtable will be changed.
+      * @param ic the InteractComponent to be changed
+      */ 
+     protected void _changeFreqSpecValue(InteractComponent ic){
           // check and change the underlying spec value represented by ic 
           if (_crossref[0].containsKey(ic)){
 
@@ -211,48 +240,50 @@ System.out.println("updating the frequency response value");
               _crossref[1].put(ic, newvalue);
  
           }
+     }    
 
-          // reorganize all the spec, and passes them to filter object.
-         
+     /** Retrieve the critical frequencies from the cross reference hashtable.
+      *  The edge frequencies are stored in an array of double.
+      * @return array of double contains the edge frequencies
+      */  
+     protected double [] _getEdgeFrequencies(){
+
           double [] edgefreq = new double[_crossref[0].size()]; 
-          double [] edgegain = new double[_crossref[1].size()]; 
-       
-          // get edge frequencies
           int ind = 0; 
           Enumeration edgeenum = _crossref[0].keys();
           while (edgeenum.hasMoreElements()){
                InteractComponent edgeic = (InteractComponent) edgeenum.nextElement();
                Double edge = (Double) _crossref[0].get(edgeic);
                edgefreq[edgeic.getDataIndex()] = edge.doubleValue();
-System.out.println("edge freq: "+edge.doubleValue());
           }
+          return edgefreq;
+     }
 
-          // get gain at edge frequencies 
+     /** Retrieve the critical gains from the cross reference hashtable.
+      *  The edge gains are stored in an array of double.
+      * @return array of double contains the edge gains. 
+      */  
+     protected double [] _getEdgeGains(){
+
+          double [] edgegain = new double[_crossref[1].size()]; 
           Enumeration gainenum = _crossref[1].keys();
           while (gainenum.hasMoreElements()){
                InteractComponent gainic = (InteractComponent) gainenum.nextElement();
                Double gain = (Double) _crossref[1].get(gainic);
                edgegain[gainic.getDataIndex()] = gain.doubleValue();
           }
-
-          // notify the filter object about the new changes. 
-          FilterObj jf = (FilterObj) _observed;
-          jf.updateFreqSpec(edgefreq, edgegain);
+          return edgegain;
      }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-     // Get frequency domain data from the filter object.  
-     // Magnitude, Magnitude-db and phase plots will get the new
-     // data. 
-     private void _setViewFreqValue(){
-         FilterObj jf = (FilterObj) _observed;
-
-         // get new frequency response data
-         Complex [] freq = jf.getFrequency();
-         int step = jf.getStep();
-         double stepsize = 2*Math.PI/step;
+     
+     /** Get frequency domain data that is obtained from the filter object.  
+      * Magnitude, Magnitude-db and phase plots will get the new
+      * data. 
+      * @param freq frequency response data.
+      */
+     protected void _setViewFreqValue(Complex [] freq){
+ 
+         double stepsize = 2*Math.PI/freq.length;
      
          if (freq != null){
                
@@ -298,18 +329,18 @@ System.out.println("edge freq: "+edge.doubleValue());
         }
     }
 
-    // Get specification from filter object.  Interact components will
-    // be created for these spec: edge frequencies, gain at edge frequencies.
-    // These interact component's references will be
-    // store in hastables, _crossref.
-    // _crossref[0] : for edge frequencies
-    // _crossref[1] : for gains at edge frequencies
-    //
-    private void _setViewFreqSpec(){
-
-        FilterObj jf = (FilterObj) _observed;
-        double [] edgefreq = jf.getFreqBand();
-        double [] edgegain = jf.getFreqGain();
+   /**
+    * Change the filter spec on the graph.  Interact components will
+    * be created for these spec: edge frequencies, gain at edge frequencies.
+    * These interact component's references will be
+    * store in hastables, _crossref.
+    * _crossref[0] : for edge frequencies
+    * _crossref[1] : for gains at edge frequencies
+    * @param edgefreq array of double contains edge frequencies, the array length = 2 for
+    * lowpass/highpass, the array length = 3 for bandstop/bandpass 
+    * @param edgegain array of double contains edge gains, the array length = 2 
+    */ 
+    protected void _setViewFreqSpec(double [] edgefreq, double [] edgegain){
 
         // erase interact components in plot
         ((InteractPlot)_plots[0]).eraseInteractComponents();
@@ -318,14 +349,9 @@ System.out.println("edge freq: "+edge.doubleValue());
         _plots[0].eraseAllPoints(1);
         _plots[0].eraseAllPoints(2);
 
-        if (_crossref[2].size()>0) _plots[0].eraseAllPoints(3);  
-        if (_crossref[3].size()>0) _plots[0].eraseAllPoints(4);
-  
         // clear hashtable
         _crossref[0].clear();
         _crossref[1].clear();
-        _crossref[2].clear();
-        _crossref[3].clear();
 
 
         if ((edgefreq != null) && (edgegain != null)){

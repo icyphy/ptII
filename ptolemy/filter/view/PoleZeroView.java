@@ -27,7 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.filter.view;
  
-import ptolemy.filter.controller.Manager; 
 import ptolemy.filter.filtermodel.*; 
 import ptolemy.math.Complex; 
 
@@ -78,7 +77,8 @@ public class PoleZeroView extends PlotView implements ActionListener {
           plot.setYRange(-1.2, 1.2);
           plot.setNumSets(5);
           plot.setMergeInteractComp(true); 
-          if (filter.getType() == ptolemy.math.filter.Filter.IIR){
+          if ((filter != null) && (filter.getType() == ptolemy.math.filter.Filter.IIR)){
+
               plot.setEditPermission(false);
           }
           // set the view reference
@@ -110,8 +110,10 @@ public class PoleZeroView extends PlotView implements ActionListener {
           _viewPanel.setSize(300,380);
          
           // place view panel in frame 
-          if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame  = _createViewFrame(((FilterObj) filter).getName());
+          if (_opMode == FilterView.FRAMEMODE){ // frame mode
+              String name = new String("");
+              if (filter != null) name = filter.getName(); 
+              _frame  = _createViewFrame(name);
               _frame.add("Center", _viewPanel);
               _frame.setSize(300, 390);
               _frame.setLocation(10, 10);
@@ -133,7 +135,6 @@ public class PoleZeroView extends PlotView implements ActionListener {
               _unitcircleadded = true;
 
           } 
-          _observed = filter;
 
           // create two new hashtable for cross link between interact component
           // and underlying data.  
@@ -142,7 +143,13 @@ public class PoleZeroView extends PlotView implements ActionListener {
           _crossref[1] = new Hashtable();   // for zero
 
           // get the initial data 
-          _setViewPoleZero();
+          if (filter != null){
+              FilterObj jf = (FilterObj) _observed;
+              Complex [] poledata = jf.getPole();
+              Complex [] zerodata = jf.getZero();
+
+              _setViewPoleZero(poledata, zerodata);
+          }
     }  
     
 
@@ -165,7 +172,10 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
           // "UpdatedFilter" means filter's data is new. 
           if (command.equals("UpdatedFilter")){ 
-              _setViewPoleZero();
+              FilterObj jf = (FilterObj) _observed;
+              Complex [] poledata = jf.getPole();
+              Complex [] zerodata = jf.getZero();
+              _setViewPoleZero(poledata, zerodata);
           }
    }
 
@@ -365,11 +375,17 @@ public class PoleZeroView extends PlotView implements ActionListener {
    }
  
    //////////////////////////////////////////////////////////////////////////
-   ////                     private methods                              ////
+   ////                   protected methods                              ////
 
-   private void _setViewPoleZero(){
-
-       FilterObj jf = (FilterObj) _observed;
+   /**
+    *  Set the pole - zero on the polezer plot.  InteractComponents are created
+    *  for pole/zero, and added to interact plot.  The cross referencing between
+    *  the interact component and the underlying data is established with the 
+    *  hashtable. The unit circle is also added if it was not there before.
+    *  @param poledata array of Complex that describes poles location. 
+    *  @param zerodata array of Complex that describes zeroes location. 
+    */ 
+   protected void _setViewPoleZero(Complex [] poledata, Complex [] zerodata ){
           
        // erase interact components in plot
        ((InteractPlot)_plots[0]).eraseInteractComponents();
@@ -397,8 +413,6 @@ public class PoleZeroView extends PlotView implements ActionListener {
                 }
            }
        }
-
-       Complex [] poledata = jf.getPole();
 
        // clear hashtable
        _crossref[0].clear();
@@ -430,7 +444,6 @@ public class PoleZeroView extends PlotView implements ActionListener {
 
        }
 
-       Complex [] zerodata = jf.getZero();
        if (zerodata!=null){
 
            // add zero to plot

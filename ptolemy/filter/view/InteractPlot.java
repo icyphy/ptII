@@ -60,14 +60,22 @@ public class InteractPlot extends Plot {
     ////                         public methods                           ////
 
     /**
+     * Get the editing permission on the interact plot.
+     * @return edit permission 
+     */ 
+    public boolean getEditPermission(){
+        return _editpermission;
+    }
+
+    /**
      * Initialize the plot.  Set the frame for user data entry.  And set
      * up the mouse listener for select and dragging the interact objects.
      */ 
     public void init(){
         _cxyframe = new ChangeXY();
-        SelectObjectListener selectlistener = new SelectObjectListener();
+        SelectObjectListener selectlistener = new SelectObjectListener(this);
         this.addMouseListener(selectlistener);
-        DragObjectListener draglistener = new DragObjectListener();
+        DragObjectListener draglistener = new DragObjectListener(this);
         this.addMouseMotionListener(draglistener);
     }
    
@@ -694,55 +702,5 @@ public class InteractPlot extends Plot {
        private Button _ok;
        private Button _cancel;
 
-    }
-
-    // 
-    // Mouse listener to handle the mouse action in selecting, and 
-    // unselecting the interact objects on the plot.
-    // 
-    public class SelectObjectListener implements MouseListener {
-        public void mouseClicked (MouseEvent event) {
-            if (event.isControlDown()){
-                if (_editpermission){
-                    selectInteractcompAndShowValueWin(event.getX(), event.getY()); 
-                }
-            }
-        }
-
-        public void mouseEntered(MouseEvent event) {
-        }
-
-        public void mouseExited(MouseEvent event) {
-        }
-
-        public void mousePressed(MouseEvent event) {
-            if (event.isMetaDown()){
-                InteractPlot.this.selectInteractcomp(event.getX(), event.getY());
-            }
-        }
-        public void mouseReleased(MouseEvent event) {
-            if (event.isMetaDown()){
-                InteractPlot.this.finishDragInteractcomp(event.getX(), event.getY());
-            }
-        }
-
-    }
-
-    // 
-    // Mouse listener to handle the mouse action in draging the 
-    // selected interact objects on the plot.
-    // 
-    public class DragObjectListener implements MouseMotionListener {
-        public void mouseDragged (MouseEvent event) {
-            if (event.isMetaDown()){
-                if (_editpermission){
-                   // drag the selected the interact object
-                   dragInteractcomp(event.getX(), event.getY());
-                }
-            }
-        }
-        public void mouseMoved(MouseEvent event) {
-        }
-  
     }
 } 

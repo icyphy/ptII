@@ -28,7 +28,6 @@ package ptolemy.filter.view;
 
 import ptolemy.math.filter.Filter; 
 import ptolemy.filter.filtermodel.*;
-import ptolemy.filter.controller.Manager;
 
 import java.util.*;
 import java.awt.*;
@@ -65,8 +64,10 @@ public class IIRFiltSetView extends FilterView {
           _viewPanel = new FiltSet(this);
           _observed = filter;
           _opMode = mode;
-          if (_opMode == 0){ // frame mode
-              _frame  = _createViewFrame(((FilterObj) filter).getName());
+          if (_opMode == FilterView.FRAMEMODE){ // frame mode
+              String name = new String("");
+              if (filter != null) name = filter.getName();
+              _frame  = _createViewFrame(name);
               _frame.add("Center", _viewPanel);
               _frame.pack();
               _frame.setLocation(10, 350);
@@ -74,7 +75,8 @@ public class IIRFiltSetView extends FilterView {
           } 
  
           // get initial data value 
-          _setViewIIRParam();
+     
+          if (filter != null) _setViewIIRParam();
         
     }
 
@@ -105,9 +107,12 @@ public class IIRFiltSetView extends FilterView {
 
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ////                       protected methods                          ////
 
-    private void _setViewIIRParam(){
+    /**
+     * Get the initial IIR design parameter, and set them to the view.
+     */
+    protected void _setViewIIRParam(){
          Vector param = ((FilterObj)_observed).getIIRParameter();
          int aprox = ((Integer)param.elementAt(0)).intValue();
          int mapm = ((Integer)param.elementAt(1)).intValue();
@@ -115,10 +120,13 @@ public class IIRFiltSetView extends FilterView {
          double fs = ((Double)param.elementAt(3)).doubleValue();
          ((FiltSet) _viewPanel).update(aprox,mapm,band,fs);
     }
- 
-    // called by setup dialog to notify the viewer about the new changes 
-    // made on the dialog.  parse the list of options 
-    private void _newIIRParamChange(int approx, int mapmethod, int bandtype, 
+
+    /** 
+     * The parameter is modified on the panel.  This method notify the viewer 
+     * about the new changes made on the dialog.  
+     * The new parameter is sent to FilterObj.
+     */
+    protected void _newIIRParamChange(int approx, int mapmethod, int bandtype, 
                                     double fs){
          FilterObj jf = (FilterObj) _observed;
          jf.setIIRParameter(approx, mapmethod, bandtype, fs);

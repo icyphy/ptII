@@ -33,7 +33,6 @@ import java.awt.event.*;
 import java.util.*;
 import ptolemy.math.Complex;
 import ptolemy.filter.filtermodel.FilterObj;
-import ptolemy.filter.controller.Manager;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransFunctView 
@@ -43,7 +42,7 @@ import ptolemy.filter.controller.Manager;
   User can save the these info by press the save button on top of the panel.
   <p> 
   @author William Wu (wbwu@eecs.berkeley.edu) 
-  @version
+  @version: $id$ 
  */
 public class TransFunctView extends FilterView implements ActionListener, ItemListener {
 
@@ -92,8 +91,10 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
           _viewPanel.add("Center", scrollPane);
           _viewPanel.setSize(500,250);
   
-          if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame = _createViewFrame(((FilterObj)filter).getName());
+          if (_opMode == FilterView.FRAMEMODE){ // frame mode
+              String name = new String("");
+              if (filter != null) name = filter.getName();
+              _frame = _createViewFrame(name);
               _frame.add("Center", _viewPanel);
               _frame.setSize(500,250);
               _frame.setLocation(300,210);
@@ -103,7 +104,24 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
           }
 
           // get initial transfer function value
-          _setViewTransferFunction();
+          if (filter!= null){
+              Complex [] complexnum = null;
+              Complex [] complexden = null;  
+              double [] realnum = null;
+              double [] realden = null;  
+              Complex complexgain = null;  
+              double realgain = 0.0;
+              if (filter.getType()==ptolemy.math.filter.Filter.BLANK){
+                  complexnum = filter.getComplexNumerator();
+                  complexden = filter.getComplexDenominator();
+                  complexgain = filter.getComplexGain();
+              } else{
+                  realnum = filter.getRealNumerator();
+                  realden = filter.getRealDenominator();
+                  realgain = filter.getRealGain();
+              }
+              _setViewTransferFunction(complexnum, realnum, complexden, realden, complexgain, realgain);
+          }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,7 +130,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
     public void actionPerformed(ActionEvent evt){
         if (evt.getActionCommand().equals("save")){
 
-            if (_opMode != Manager.FRAMEMODE) return;
+            if (_opMode != FilterView.FRAMEMODE) return;
 
             if (_curDir!=null) _saveFileDialog.setDirectory(_curDir);
             if (_curFile!=null) _saveFileDialog.setFile(_curFile);
@@ -129,9 +147,31 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
 
     public void itemStateChanged(ItemEvent evt){
         String precision = _precision.getSelectedItem();
-        _prec = Integer.valueOf(precision).intValue();
-        _setViewTransferFunction();
+        setPrec(Integer.valueOf(precision).intValue());
     }
+
+    public void setPrec(int prec){
+        _prec = prec;
+        if (_observed == null) return;
+        FilterObj jf = (FilterObj) _observed;
+        Complex [] complexnum = null;
+        Complex [] complexden = null;  
+        double [] realnum = null;
+        double [] realden = null;  
+        Complex complexgain = null;  
+        double realgain = 0.0;
+        if (jf.getType()==ptolemy.math.filter.Filter.BLANK){
+            complexnum = jf.getComplexNumerator();
+            complexden = jf.getComplexDenominator();
+            complexgain = jf.getComplexGain();
+        } else{
+            realnum = jf.getRealNumerator();
+            realden = jf.getRealDenominator();
+            realgain = jf.getRealGain();
+        }
+        _setViewTransferFunction(complexnum, realnum, complexden, realden, complexgain, realgain);
+    }
+
 
     /**
      * To notify the view about the updated filter.  When
@@ -145,22 +185,46 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
      public void update(Observable observed, Object arg){
           String command = (String)arg;
           if (command.equals("UpdatedFilter")){
-              _setViewTransferFunction();
+              FilterObj jf = (FilterObj) _observed;
+              Complex [] complexnum = null;
+              Complex [] complexden = null;  
+              double [] realnum = null;
+              double [] realden = null;  
+              Complex complexgain = null;  
+              double realgain = 0.0;
+              if (jf.getType()==ptolemy.math.filter.Filter.BLANK){
+                  complexnum = jf.getComplexNumerator();
+                  complexden = jf.getComplexDenominator();
+                  complexgain = jf.getComplexGain();
+              } else{
+                  realnum = jf.getRealNumerator();
+                  realden = jf.getRealDenominator();
+                  realgain = jf.getRealGain();
+              }
+              _setViewTransferFunction(complexnum, realnum, complexden, realden, complexgain, realgain);
           }
      }
 
       
      //////////////////////////////////////////////////////////////////////////
-     ////                     private methods                              ////
+     ////                     protected methods                            ////
 
-     private void _setViewTransferFunction(){
+     /**
+      * Set the numerator, denominator and gain on the panel.  Since the transfer
+      * could be complex, both real case and complex case inputs are given.  If
+      * the filter is real, the complex inputs should be null, and vise versa.
+      *
+      * @param complexnum numerator in complex
+      * @param realnum numerator in real
+      * @param complexden denominator in complex
+      * @param realden denominator in real
+      * @param complexgain gain in complex
+      * @param realgain gain in real
+      */
+     protected void _setViewTransferFunction(Complex [] complexnum, double [] realnum,
+                                           Complex [] complexden, double [] realden,
+                                           Complex complexgain, double realgain){
          FilterObj jf = (FilterObj) _observed;
-         Complex [] complexnum;
-         Complex [] complexden;
-         Complex complexgain;
-         double [] realnum;
-         double [] realden;
-         double realgain;
          _realNumerator = null; 
          _realDenominator = null; 
          _realGain = 0.0; 
@@ -168,11 +232,8 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
          _complexDenominator = null; 
          _complexGain = null;
          int size;
- 
-         if (jf.getType() == ptolemy.math.filter.Filter.BLANK){
-             complexnum = jf.getComplexNumerator();
-             complexden = jf.getComplexDenominator();
-             complexgain = jf.getComplexGain();
+
+         if (complexgain != null){ 
              _complexNumerator = new Complex[complexnum.length];
              _complexDenominator = new Complex[complexden.length];
              _complexGain = new Complex(_chop(complexgain.real, _prec),
@@ -187,9 +248,6 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
              }
              size = Math.max(complexnum.length, complexden.length)*140+70; 
          } else {
-             realnum = jf.getRealNumerator();
-             realden = jf.getRealDenominator();
-             realgain = jf.getRealGain();
              _realNumerator = new double[realnum.length];
              _realDenominator = new double[realden.length];
              _realGain = _chop(realgain, _prec);
@@ -206,6 +264,9 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
          _canvasPane.setSize(size, 150);
          _canvasPane.repaint();
      }
+
+     //////////////////////////////////////////////////////////////////////////
+     ////                     private methods                              ////
 
      private double _chop(double number, int prec){
          String strValue = String.valueOf(number);
@@ -271,7 +332,7 @@ public class TransFunctView extends FilterView implements ActionListener, ItemLi
      private String _curDir;
      private String _curFile;
      private Choice _precision;  
-     private int _prec = 5;
+     protected int _prec = 5;
 
      ///////////////////////////////////////////////////////////////////
      ////                        inner class                        ////

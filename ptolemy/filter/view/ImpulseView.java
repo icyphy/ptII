@@ -29,7 +29,6 @@ package ptolemy.filter.view;
 
 import ptolemy.math.Complex; 
 import ptolemy.filter.filtermodel.FilterObj;
-import ptolemy.filter.controller.Manager;
 
 import java.util.*;
 import java.awt.*;
@@ -85,8 +84,10 @@ public class ImpulseView extends PlotView {
           _viewPanel.setBackground(_plotBack); 
           _viewPanel.setForeground(_plotFore); 
 
-          if (_opMode == Manager.FRAMEMODE){ // frame mode
-              _frame  = _createViewFrame(((FilterObj) filter).getName());
+          if (_opMode == FilterView.FRAMEMODE){ // frame mode
+              String name = new String("");
+              if (filter != null) name = filter.getName();
+              _frame  = _createViewFrame(name);
               _frame.add("Center", _viewPanel);
               _frame.setSize(300,350);
               _frame.setLocation(300,10);
@@ -95,7 +96,16 @@ public class ImpulseView extends PlotView {
           }
 
           // get initial data 
-          _setViewImpulse();
+          if (filter != null) {
+              Complex [] complexdata = null;
+              double [] realdata = null;
+              if (filter.getType() == ptolemy.math.filter.Filter.BLANK){
+                  complexdata = filter.getComplexImpulse();
+              } else {    
+                  realdata = filter.getRealImpulse();
+              }
+              _setViewImpulse(complexdata, realdata);
+          }
      }  
 
 
@@ -123,7 +133,15 @@ public class ImpulseView extends PlotView {
      public void update(Observable observed, Object arg){
           String command = (String)arg;
           if (command.equals("UpdatedFilter")){
-              _setViewImpulse();
+              FilterObj jf = (FilterObj) _observed;
+              Complex [] complexdata = null;
+              double [] realdata = null;
+              if (jf.getType() == ptolemy.math.filter.Filter.BLANK){
+                  complexdata = jf.getComplexImpulse();
+              } else {    
+                  realdata = jf.getRealImpulse();
+              }
+              _setViewImpulse(complexdata, realdata);
           }
      }
 
@@ -152,19 +170,9 @@ public class ImpulseView extends PlotView {
      }
 
      //////////////////////////////////////////////////////////////////////////
-     ////                     private methods                              ////
+     ////                     protected methods                              ////
 
-     private void _setViewImpulse(){
-         FilterObj jf = (FilterObj) _observed;
-         Complex [] complexdata = null;
-         double [] realdata = null;
-         if (jf.getType() == ptolemy.math.filter.Filter.BLANK){
-             complexdata = jf.getComplexImpulse();
-         } else {    
-             realdata = jf.getRealImpulse();
-         }
-
-         // double [] data = jf.getImpulse();
+     protected void _setViewImpulse(Complex [] complexdata, double [] realdata){
          if ((complexdata != null) || (realdata != null)){
              _plots[0].eraseAllPoints(0);
              _plots[0].eraseAllPoints(1);
