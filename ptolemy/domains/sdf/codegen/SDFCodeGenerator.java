@@ -236,6 +236,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
             renamedSourceList.addLast(renamedSource);
         }
 
+	if (_exitAfterPass1) {
+	    System.out.println("\nSDFCodeGenerator: exiting after pass 1");
+	    return;
+	}
+
         System.out.println("\nSDFCodeGenerator: pass2 ---"
 			   + _timeAndMemory(startTime));
 
@@ -253,6 +258,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
 
         _generateMainClass();
+
+	if (_exitAfterPass2) {
+	    System.out.println("\nSDFCodeGenerator: exiting after pass 2");
+	    return;
+	}
 
         System.out.println("\nSDFCodeGenerator: pass3 ---"
 			   + _timeAndMemory(startTime));
@@ -1031,6 +1041,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
             _expectingOutputDirectory = true;
         } else if (arg.equals("-outpkg")) {
             _expectingOutputPackage = true;
+        } else if (arg.equals("-pass1")) {
+            _exitAfterPass1 = true;
+        } else if (arg.equals("-pass2")) {
+            _exitAfterPass2 = true;
         } else if (arg.equals("-shallowLoading")) {
             StaticResolution.enableShallowLoading();
         } else if (arg.equals("-version")) {
@@ -1086,6 +1100,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
             result += " " + _commandFlags[i];
         }
         result += " -makefileOnly    Just generate a makefile\n";
+        result += " -pass1           Exit after pass1\n";
+        result += " -pass2           Exit after pass2\n";
         result += " -shallowLoading  Load ASTs shallowly\n";
 
         return result;
@@ -1162,6 +1178,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
     // SDF Code Generator Class Factory.
     protected CodeGeneratorClassFactory _codeGeneratorClassFactory =
             SDFCodeGeneratorClassFactory.getInstance();
+
+    // If true, then exit after pass 1 is completed.  
+    private boolean _exitAfterPass1 = false;
+
+    // If true, then exit after pass 2 is completed.  
+    private boolean _exitAfterPass2 = false;
 
     // A flag indicating that we are expecting an output directory as the
     //  next argument in the command-line.
