@@ -21,7 +21,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.actor.gui.PtolemyApplet;
 
 import java.awt.*;
 import java.io.*;
