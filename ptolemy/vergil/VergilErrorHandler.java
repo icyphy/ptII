@@ -33,6 +33,7 @@ package ptolemy.vergil;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.ErrorHandler;
+import ptolemy.util.StringUtilities;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -96,8 +97,10 @@ public class VergilErrorHandler implements ErrorHandler {
         // FIXME: This pattern window actually is never set.
         Component parentWindow = GraphicalMessageHandler.getContext();
 
+        // If the element is longer than 80 characters, we split it
+        // into shorter new line separated strings.
         String message = "Error encountered in:\n"
-            + element
+            + StringUtilities.split(element)
             + "\n"
             + exception.getMessage();
 
