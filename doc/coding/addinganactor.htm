@@ -53,7 +53,7 @@ bash-2.04$ make &gt;&amp; make.out
 	directory</i>, we would also have to change the package
 	statement (usually near line 31) in the java code.
 	This is good to keep in mind since
-	there is no error message to clue you in to this case.<p>
+	there is no error message to clue you in to this particular error.<p>
 	
 	<li> Edit <CODE>Ramp2.java</CODE> and change:
 	<menu>
@@ -113,7 +113,7 @@ line:
 This step is not strictly necessary, but it is good programming
 practice to put all source files in the makefile.
 Another reason we add it to the makefile is so that our new actor
-will be included in the <CODE>lib.jar</CODE> file<p>
+will be included in the <CODE>lib.jar</CODE> file.<p>
 
 <li> Run <CODE>make</CODE> in the <CODE>$PTII/ptolemy/actor/lib</CODE>
 directory (which is where you should already be).  <CODE>make</CODE>
@@ -153,25 +153,34 @@ To:
 
 </pre>
 
-<li> Start up vergil, click on File-&gt;New-&gt;Graph Editor<p>
+<li> Start up Vergil.
+<pre>
+bash-2.04$ vergil
+</pre>
+If this does not work, you may not have created an alias for vergil.  Try specifing the full path name, like this.
+<pre>
+bash-2.04$ "$PTII/bin/vergil"
+</pre>
 
-<li> In the Graph Editor window, click on actor library-&gt;sources.
+<li> In Vergil, click on <u>File</u>-&gt;<u>New</u>-&gt;<u>Graph Editor</u><p>
+
+<li> In the Graph Editor window, click on <u>actor library</u>-&gt;<u>sources</u>.
 The Ramp2 actor will appear. <p>
 
 <li>  To test the Ramp2 actor:
 <ol>
 <li> Drag the Ramp2 actor over to the main canvas on the right
 
-<li> Clock on actor library -&gt; sinks and drag a Display actor
+<li> Clock on <u>actor library</u> -&gt; <u>sinks</u> and drag a Display actor
 over to the main canvas
 
 <li> Connect the two actors by left clicking on the output
 of the ramp2 actor and dragging over to the input of the Display actor
 
-<li> Select director library -&gt; SDF and drag the SDF director
+<li> Select <u>director library</u> -&gt; <u>SDF</u> and drag the SDF director
 over to the right window
 
-<li> Select View -&gt; Run and change the number of iterations
+<li> Select <u>View</u> -&gt; <u>Run</u> and change the number of iterations
 from <CODE>0</CODE> to <CODE>10</CODE>, then hit the Run button.
 
 <li> You should see the numbers from 0 to 18 in the display
@@ -248,7 +257,7 @@ below do not cause the inputted pallet to be a sub pallet.
 Sub-palleting is caused by the <CODE>entity</CODE>
 statement in the 4th line of your myactors.xml file.
 
- <p>We change
+ <p>In <CODE>ptolemy/configs/ptinyActors.xml</CODE> we change
 <pre>
             &lt;doc&gt;default entity library&lt;/doc&gt;
             &lt;input source="../actor/lib/sources.xml"/&gt;
