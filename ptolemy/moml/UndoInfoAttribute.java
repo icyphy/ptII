@@ -186,8 +186,9 @@ public class UndoInfoAttribute extends SingletonAttribute
     }
 
     /**
-     *  Returns the undo entry at the top of the stack without removing it
-     *  fromthe stack. If there is no undo entry on the stack then return null.
+     *  Returns the undo entry at the top of the stack without
+     *  removing it from the stack. If there is no undo entry on the
+     *  stack then return null.
      *
      * @return    the MoML from the first undo entry, or null if there are no
      *      undo entries
