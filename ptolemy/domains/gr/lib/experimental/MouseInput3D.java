@@ -53,9 +53,9 @@ public class MouseInput3D extends GRActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        output = new TypedIOPort(this, "output");
-        output.setOutput(true);
-        output.setTypeEquals(BaseType.GENERAL);
+        sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
+        sceneGraphOut.setOutput(true);
+        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         x = new TypedIOPort(this, "x");
         x.setOutput(true);
         x.setTypeEquals(BaseType.INT);
@@ -65,17 +65,17 @@ public class MouseInput3D extends GRActor {
         
     }
     
-    public TypedIOPort output;
+    public TypedIOPort sceneGraphOut;
     public TypedIOPort x;
     public TypedIOPort y;
     
    
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MouseInput3D newObject = (MouseInput3D)super.clone(workspace);
-        newObject.output = (TypedIOPort) newObject.getPort("output");
-        newObject.x = (TypedIOPort) newObject.getPort("x");
-        newObject.y = (TypedIOPort) newObject.getPort("y");
-        return newObject;
+        MouseInput3D newobj = (MouseInput3D)super.clone(workspace);
+        newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
+        newobj.x = (TypedIOPort) newobj.getPort("x");
+        newobj.y = (TypedIOPort) newobj.getPort("y");
+        return newobj;
     }
     
     public void initialize() throws IllegalActionException {
@@ -98,6 +98,10 @@ public class MouseInput3D extends GRActor {
             _hasData = false;
             System.out.println("clicked location -> "+_xClicked+" "+_yClicked);
         }
+    }
+    
+    public void makeSceneGraphConnection() throws IllegalActionException {
+        sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
     }
     
     private class _React extends Behavior {

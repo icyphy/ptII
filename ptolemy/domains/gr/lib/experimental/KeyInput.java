@@ -51,24 +51,27 @@ public class KeyInput extends GRActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        output = new TypedIOPort(this, "output");
-        output.setOutput(true);
-        output.setTypeEquals(BaseType.GENERAL);
+        sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
+        sceneGraphOut.setOutput(true);
+        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         keycode = new TypedIOPort(this, "keycode");
         keycode.setOutput(true);
         keycode.setTypeEquals(BaseType.INT);
     }
     
-    public TypedIOPort output;
+    public TypedIOPort sceneGraphOut;
     public TypedIOPort keycode;
     
+    public void makeSceneGraphConnection() throws IllegalActionException {
+        sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
+    }
    
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        KeyInput newObject = (KeyInput) super.clone(workspace);
+        KeyInput newobj = (KeyInput) super.clone(workspace);
         
-        newObject.output = (TypedIOPort) newObject.getPort("output");
-        newObject.keycode = (TypedIOPort) newObject.getPort("keycode");
-        return newObject;
+        newobj.sceneGraphOut = (TypedIOPort) newobj.getPort("sceneGraphOut");
+        newobj.keycode = (TypedIOPort) newobj.getPort("keycode");
+        return newobj;
     }
     
     public void initialize() throws IllegalActionException {
