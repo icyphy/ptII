@@ -99,6 +99,8 @@ public class WirelessReceiver extends DEReceiver {
     /** Override the base class to attach an empty properties token.
      *  @param token The token to put.
      *  @param time The time in the future.
+     *  @exception IllegalActionException If there are problems creating
+     *  the RecordToken or if the parent class throws it.
      *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token, double)
      */
     public synchronized void put(Token token, double time)

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 This port is used in a channel to mediate type constraints between
 senders and receivers on a wireless channel. It does not actually
-get involved in the tranmission of data (that is handled by the
+get involved in the transmission of data (that is handled by the
 transmit() method of the channel).  This port is always both an
 input and an output.  This port is not persistent and is always
 hidden in a user interface.

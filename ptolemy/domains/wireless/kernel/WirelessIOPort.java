@@ -334,6 +334,7 @@ public class WirelessIOPort
     }
 
     /** Override the base class to create a single receiver if
+     *  there are outside or inside channels.   
      *  @exception IllegalActionException If this port is not
      *   an opaque input port or if there is no director.
      */

@@ -54,6 +54,7 @@ public interface WirelessChannel extends Nameable {
 
     /** Return a channel port that can be used to set type constraints
      *  between senders and receivers.
+     *  @return The channel port.
      */
     public ChannelPort getChannelPort();
 
@@ -82,9 +83,12 @@ public interface WirelessChannel extends Nameable {
     public List listeningOutputPorts() throws IllegalActionException;
 
     /** Register a PropertyTransformer for a wirelessIOPort.
+     *  @param port The port with which the PropertyTransformer is registered.
+     *  @param transformer The PropertyTransformer to be registered.
      */
     public void registerPropertyTransformer(WirelessIOPort port,
             PropertyTransformer transformer);
+
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
      *  the container of this channel that
