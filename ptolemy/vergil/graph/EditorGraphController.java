@@ -139,7 +139,8 @@ public class EditorGraphController extends ViewerGraphController {
 	((CompositeInteractor)getRelationController().getNodeInteractor()).addInteractor(_linkCreator);
 
 	//LinkCreator linkCreator2 = new LinkCreator();
-	//linkCreator2.setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK,0));
+	//linkCreator2.setMouseFilter(
+        //   new MouseFilter(InputEvent.BUTTON1_MASK,0));
 	//((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
 
 
@@ -204,7 +205,8 @@ public class EditorGraphController extends ViewerGraphController {
                 ex.printStackTrace();
                 throw new RuntimeException(ex.getMessage());
             }
-            getRelationController().addNode(vertex, e.getLayerX(), e.getLayerY());
+            getRelationController().addNode(
+                    vertex, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -311,13 +313,13 @@ public class EditorGraphController extends ViewerGraphController {
 
     /** The filter for control operations
      */
-    private MouseFilter _controlFilter = new MouseFilter (
+    private MouseFilter _controlFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.CTRL_MASK);
 
     /** The filter for shift operations
      */
-    private MouseFilter _shiftFilter = new MouseFilter (
+    private MouseFilter _shiftFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
 }
