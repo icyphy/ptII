@@ -84,7 +84,8 @@ JSRCS = \
 	TypedIOPort.java \
 	TypedIORelation.java \
 	TypeEvent.java \
-	TypeListener.java
+	TypeListener.java \
+	Vectorizable.java
 
 EXTRA_SRCS =	$(JSRCS)
 
