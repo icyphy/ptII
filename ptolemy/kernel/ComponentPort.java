@@ -153,8 +153,9 @@ public class ComponentPort extends Port {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new port with no connections and no container.
-     *  @param ws The workspace in which to place the cloned object.
-     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one or more of the
+     *   attributes cannot be cloned.
      *  @return A new ComponentPort.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {

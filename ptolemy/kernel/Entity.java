@@ -113,9 +113,10 @@ public class Entity extends NamedObj {
      *  yourself if you want it there).
      *  The result is a new entity with clones of the ports of the original
      *  entity.  The ports are not connected to anything.
-     *  @param ws The workspace in which to place the cloned object.
+     *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
-     *   as their container the cloned entity (this should not occur).
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
      *  @return The new Entity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {

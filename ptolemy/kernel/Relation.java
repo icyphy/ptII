@@ -115,8 +115,9 @@ public class Relation extends NamedObj {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new relation with no links and no container.
-     *  @param ws The workspace in which to place the cloned object.
-     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes cannot
+     *   be cloned.
      *  @return A new Relation.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {

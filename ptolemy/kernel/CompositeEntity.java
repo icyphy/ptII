@@ -143,9 +143,10 @@ public class CompositeEntity extends ComponentEntity {
      *  The ports of the returned entity are not connected to anything.
      *  The connections of the relations are duplicated in the new entity,
      *  unless they cross levels, in which case an exception is thrown.
-     *  @param ws The workspace in which to place the cloned object.
+     *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If the entity contains
-     *   level crossing transitions so that its connections cannot be cloned.
+     *   level crossing transitions so that its connections cannot be cloned,
+     *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeEntity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
