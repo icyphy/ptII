@@ -65,15 +65,25 @@ public class FileUtilities {
      *  @param destinationFile The destination File.
      *  @return true if the file was copied, false if the file was not
      *  copied because the sourceURL and the destinationFile refer to the   
-     *  same file
+     *  same file.
+     *  @exception IOException If the source file is not the same as the
+     *  destination file and the destination file does not exist.
      */
     public static boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile)
             throws IOException {
 
-        if (sourceURL.sameFile(destinationFile.getCanonicalFile().toURL())) {
+        URL destinationURL = destinationFile.getCanonicalFile().toURL();
+        if (sourceURL.sameFile(destinationURL)) {
             return false;
         }
+
+        // If sourceURL is of the form file:./foo, then we need to try again.
+        File sourceFile = new File(sourceURL.getFile());
+        if (sourceFile.getCanonicalFile().toURL().sameFile(destinationURL)) {
+            return false;
+        }
+
         BufferedInputStream input = null;
         BufferedOutputStream output = null;
         try {
